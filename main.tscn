@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://dt016lk3fnt00"]
+[gd_scene format=3 uid="uid://clwybiiql164j"]
 
 [ext_resource type="Script" uid="uid://btydsv8tvb880" path="res://CardManager.gd" id="1_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://l28s3hnlv4iy" path="res://card.tscn" id="2_h2yge"]

@@ -6,6 +6,7 @@ const COLLISION_MASK_CARD_SLOT = 2
 var screen_size
 var card_being_dragged = null
 var is_hovering_on_card: bool = false
+@onready var player_hand = $"../PlayerHand"
 
 func _ready() -> void:
 	screen_size = get_viewport_rect().size
@@ -42,10 +43,13 @@ func finish_drag():
 	if slot and not slot.card_in_slot:
 		card_being_dragged.global_position = slot.global_position
 		
-		# disable card interaction
 		card_being_dragged.get_node("CollisionShape2D").disabled = true
-		
 		slot.card_in_slot = true
+		
+		player_hand.remove_card_from_hand(card_being_dragged)
+
+	else:
+		player_hand.add_card_to_hand(card_being_dragged)
 
 	if card_being_dragged:
 		card_being_dragged.scale = Vector2(1.05, 1.05)
