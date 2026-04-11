@@ -6,6 +6,8 @@ signal hovered_off(card)
 signal pressed(card)
 signal released(card)
 
+var hand_position: Vector2
+
 func _on_mouse_entered() -> void:
 	hovered.emit(self)
 

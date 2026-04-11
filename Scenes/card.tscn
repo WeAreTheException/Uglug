@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cufp1may3b8l4"]
 
-[ext_resource type="Script" uid="uid://bgw4gcc8buxly" path="res://Scripts/card.gd" id="1_rjlel"]
+[ext_resource type="Script" uid="uid://dtoyyse7bnjuv" path="res://Code/States/CardInputListener.gd" id="1_brehn"]
 [ext_resource type="Texture2D" uid="uid://b86c6mggcrsk4" path="res://Sprites/IMG_6221.PNG" id="2_brehn"]
 [ext_resource type="Texture2D" uid="uid://cwrn656wtnb84" path="res://Sprites/Ant.png" id="2_rjlel"]
 
@@ -165,7 +165,7 @@ _data = {
 }
 
 [node name="Card" type="Area2D" unique_id=1832133933]
-script = ExtResource("1_rjlel")
+script = ExtResource("1_brehn")
 
 [node name="CardBackImage" type="Sprite2D" parent="." unique_id=1018563419]
 position = Vector2(-1.1920929e-07, 0)
