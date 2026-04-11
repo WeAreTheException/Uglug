@@ -1,4 +1,4 @@
-extends Node
+extends Node2D
 class_name CardDragHandler
 
 var card_being_dragged: Node2D = null

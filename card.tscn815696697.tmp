@@ -4,7 +4,6 @@
 [ext_resource type="Texture2D" uid="uid://cwrn656wtnb84" path="res://Sprites/Ant.png" id="2_rjlel"]
 [ext_resource type="Script" uid="uid://d0qu3q360kdsl" path="res://Code/States/CardInputReciever.gd" id="3_e484p"]
 [ext_resource type="Script" uid="uid://ro02870urhpb" path="res://Code/States/CardStateMachine.gd" id="4_e484p"]
-[ext_resource type="Script" uid="uid://clgbwnniuqm7g" path="res://Code/Handlers/CardDragHandler.gd" id="5_fpac0"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
 size = Vector2(176, 267)
@@ -12,16 +11,8 @@ size = Vector2(176, 267)
 [node name="Card" type="Area2D" unique_id=1832133933]
 script = ExtResource("2_q5obu")
 
-[node name="InputReciver" type="Node" parent="." unique_id=213661670 node_paths=PackedStringArray("card_state_machine", "card_input_listener", "card_drag_handler", "card_root")]
+[node name="InputReciver" type="Node" parent="." unique_id=213661670]
 script = ExtResource("3_e484p")
-card_state_machine = NodePath("../CardStateMachine")
-card_input_listener = NodePath("..")
-card_drag_handler = NodePath("../DragHandler")
-card_root = NodePath("..")
-
-[node name="CardStateMachine" type="Node" parent="." unique_id=1069228844]
-script = ExtResource("4_e484p")
-metadata/_custom_type_script = "uid://ro02870urhpb"
 
 [node name="CardImage" type="Sprite2D" parent="." unique_id=1482464689]
 scale = Vector2(0.14520307, 0.14520307)
@@ -31,8 +22,9 @@ texture = ExtResource("2_rjlel")
 position = Vector2(-3.0517578e-05, 0.43333435)
 shape = SubResource("RectangleShape2D_rjlel")
 
-[node name="DragHandler" type="Node2D" parent="." unique_id=1428327336]
-script = ExtResource("5_fpac0")
+[node name="CardStateMachine" type="Node" parent="." unique_id=1069228844]
+script = ExtResource("4_e484p")
+metadata/_custom_type_script = "uid://ro02870urhpb"
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

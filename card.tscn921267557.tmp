@@ -12,12 +12,11 @@ size = Vector2(176, 267)
 [node name="Card" type="Area2D" unique_id=1832133933]
 script = ExtResource("2_q5obu")
 
-[node name="InputReciver" type="Node" parent="." unique_id=213661670 node_paths=PackedStringArray("card_state_machine", "card_input_listener", "card_drag_handler", "card_root")]
+[node name="InputReciver" type="Node" parent="." unique_id=213661670 node_paths=PackedStringArray("card_state_machine", "card_input_listener", "card_drag_handler")]
 script = ExtResource("3_e484p")
 card_state_machine = NodePath("../CardStateMachine")
 card_input_listener = NodePath("..")
 card_drag_handler = NodePath("../DragHandler")
-card_root = NodePath("..")
 
 [node name="CardStateMachine" type="Node" parent="." unique_id=1069228844]
 script = ExtResource("4_e484p")
