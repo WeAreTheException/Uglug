@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cwrn656wtnb84"
-path="res://.godot/imported/AntFirstPass.png-90c0fa7bb708c541008577dfbe4b1671.ctex"
+path="res://.godot/imported/AntFirstPass.png-6fcb8549872082d3d161fe017eb61bf9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://AntFirstPass.png"
-dest_files=["res://.godot/imported/AntFirstPass.png-90c0fa7bb708c541008577dfbe4b1671.ctex"]
+source_file="res://Sprites/AntFirstPass.png"
+dest_files=["res://.godot/imported/AntFirstPass.png-6fcb8549872082d3d161fe017eb61bf9.ctex"]
 
 [params]
 
