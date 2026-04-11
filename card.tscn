@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://l28s3hnlv4iy"]
 
-[ext_resource type="Script" uid="uid://bgw4gcc8buxly" path="res://Code/States/CardInputListener.gd" id="1_rjlel"]
-[ext_resource type="Texture2D" uid="uid://cwrn656wtnb84" path="res://AntFirstPass.png" id="2_rjlel"]
+[ext_resource type="Script" uid="uid://bgw4gcc8buxly" path="res://Scripts/card.gd" id="1_rjlel"]
+[ext_resource type="Texture2D" uid="uid://cwrn656wtnb84" path="res://Sprites/Ant.png" id="2_rjlel"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
 size = Vector2(176, 267)
