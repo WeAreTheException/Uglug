@@ -9,13 +9,19 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
 size = Vector2(176, 267)
 
-[node name="Card" type="Area2D" unique_id=1832133933]
+[node name="Card" type="Node2D" unique_id=1703534497]
+
+[node name="InputListener" type="Area2D" parent="." unique_id=1220273102]
 script = ExtResource("1_qg6cx")
+
+[node name="CardCollision" type="CollisionShape2D" parent="InputListener" unique_id=2061957776]
+position = Vector2(-3.0517578e-05, 0.43333435)
+shape = SubResource("RectangleShape2D_rjlel")
 
 [node name="InputReciver" type="Node" parent="." unique_id=213661670 node_paths=PackedStringArray("card_state_machine", "card_input_listener", "card_drag_handler", "card_root")]
 script = ExtResource("2_5yxk3")
 card_state_machine = NodePath("../CardStateMachine")
-card_input_listener = NodePath("..")
+card_input_listener = NodePath("../InputListener")
 card_drag_handler = NodePath("../DragHandler")
 card_root = NodePath("..")
 
@@ -27,12 +33,5 @@ metadata/_custom_type_script = "uid://ro02870urhpb"
 scale = Vector2(0.14520307, 0.14520307)
 texture = ExtResource("4_85qlg")
 
-[node name="CardCollision" type="CollisionShape2D" parent="." unique_id=2061957776]
-position = Vector2(-3.0517578e-05, 0.43333435)
-shape = SubResource("RectangleShape2D_rjlel")
-
 [node name="DragHandler" type="Node2D" parent="." unique_id=1428327336]
 script = ExtResource("5_kbm25")
-
-[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
