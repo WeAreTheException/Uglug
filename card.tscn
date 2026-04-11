@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cufp1may3b8l4"]
 
-[ext_resource type="Texture2D" uid="uid://b5bjhsx4scrok" path="res://image_1775785671342.jpg" id="1_kikvd"]
 [ext_resource type="Script" uid="uid://bgw4gcc8buxly" path="res://card.gd" id="1_rjlel"]
+[ext_resource type="Texture2D" uid="uid://cwrn656wtnb84" path="res://AntFirstPass.png" id="2_rjlel"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
 size = Vector2(176, 267)
@@ -10,9 +10,8 @@ size = Vector2(176, 267)
 script = ExtResource("1_rjlel")
 
 [node name="CardImage" type="Sprite2D" parent="." unique_id=1482464689]
-position = Vector2(1, -0.56666565)
-scale = Vector2(0.48333332, 0.48333335)
-texture = ExtResource("1_kikvd")
+scale = Vector2(0.14520307, 0.14520307)
+texture = ExtResource("2_rjlel")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2061957776]
 position = Vector2(-3.0517578e-05, 0.43333435)

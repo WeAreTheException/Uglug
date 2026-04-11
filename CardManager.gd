@@ -1,6 +1,7 @@
 extends Node2D
 
 const COLLISION_MASK_CARD = 1
+const COLLISION_MASK_CARD_SLOT = 2
 
 var screen_size
 var card_being_dragged = null
@@ -24,7 +25,8 @@ func _input(event):
 			if card:
 				start_drag(card)
 		else:
-			finish_drag()
+			if card_being_dragged: # bug fix
+				finish_drag()
 
 # -------------------------
 # DRAG
@@ -32,12 +34,41 @@ func _input(event):
 
 func start_drag(card):
 	card_being_dragged = card
-	card.scale = Vector2(1, 1) # remove hover effect while dragging
+	card.scale = Vector2(1, 1)
 
 func finish_drag():
+	var slot = raycast_check_for_card_slot()
+
+	if slot and not slot.card_in_slot:
+		card_being_dragged.global_position = slot.global_position
+		
+		# disable card interaction
+		card_being_dragged.get_node("CollisionShape2D").disabled = true
+		
+		slot.card_in_slot = true
+
 	if card_being_dragged:
 		card_being_dragged.scale = Vector2(1.05, 1.05)
+
 	card_being_dragged = null
+
+# -------------------------
+# SLOT RAYCAST
+# -------------------------
+
+func raycast_check_for_card_slot():
+	var space_state = get_viewport().world_2d.direct_space_state
+	var parameters = PhysicsPointQueryParameters2D.new()
+	parameters.position = get_viewport().get_mouse_position()
+	parameters.collide_with_areas = true
+	parameters.collision_mask = COLLISION_MASK_CARD_SLOT
+
+	var result = space_state.intersect_point(parameters)
+
+	if result.size() == 0:
+		return null
+
+	return result[0].collider  # IMPORTANT: no get_parent()
 
 # -------------------------
 # HOVER SIGNAL CONNECTION
@@ -74,7 +105,7 @@ func highlight_card(card, hovered: bool):
 		card.z_index = 1
 
 # -------------------------
-# RAYCAST
+# CARD RAYCAST
 # -------------------------
 
 func raycast_check_for_card():
@@ -97,15 +128,13 @@ func get_card_with_highest_z_index(results):
 	var best_y = -INF
 
 	for hit in results:
-		var card = hit.collider  # since your card IS Area2D
+		var card = hit.collider
 
-		# First priority: z_index
 		if card.z_index > best_z:
 			best_card = card
 			best_z = card.z_index
 			best_y = card.global_position.y
 
-		# If same z_index → use Y position (lower on screen = visually on top)
 		elif card.z_index == best_z:
 			if card.global_position.y > best_y:
 				best_card = card
