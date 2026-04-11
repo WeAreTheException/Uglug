@@ -2,13 +2,14 @@ extends Node
 class_name CardInputReceiver
 
 @export var card_state_machine: CardStateMachine
+@export var card_input_listener: CardInputListener
 
-func connect_card_signals(listener: CardInputListener) -> void:
-	if listener == null:
+func _ready() -> void:
+	if card_input_listener == null:
 		return
 
-	listener.hovered.connect(_on_card_hovered)
-	listener.hovered_off.connect(_on_card_hovered_off)
+	card_input_listener.hovered.connect(_on_card_hovered)
+	card_input_listener.hovered_off.connect(_on_card_hovered_off)
 
 func _on_card_hovered(_card) -> void:
 	pass

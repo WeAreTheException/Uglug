@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://dwhd3egllaqi3"]
+
+[ext_resource type="PackedScene" uid="uid://canr6iu8py351" path="res://CardSlot.tscn" id="3_xsr8f"]
+
+[node name="Main" type="Node2D" unique_id=1013433856]
+
+[node name="Slots" type="Node" parent="." unique_id=1229334766]
+
+[node name="CardSlot" parent="Slots" unique_id=312582489 instance=ExtResource("3_xsr8f")]
+position = Vector2(216, 760)
+
+[node name="CardSlot2" parent="Slots" unique_id=1712623475 instance=ExtResource("3_xsr8f")]
+position = Vector2(544, 762)
+
+[node name="CardSlot3" parent="Slots" unique_id=1143455738 instance=ExtResource("3_xsr8f")]
+position = Vector2(1192, 760)
+
+[node name="CardSlot4" parent="Slots" unique_id=1330432234 instance=ExtResource("3_xsr8f")]
+position = Vector2(864, 762)
