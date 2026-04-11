@@ -1,0 +1,210 @@
+[gd_scene format=3 uid="uid://cufp1may3b8l4"]
+
+[ext_resource type="Script" uid="uid://bgw4gcc8buxly" path="res://Scripts/card.gd" id="1_rjlel"]
+[ext_resource type="Texture2D" uid="uid://b86c6mggcrsk4" path="res://Sprites/IMG_6221.PNG" id="2_brehn"]
+[ext_resource type="Texture2D" uid="uid://cwrn656wtnb84" path="res://Sprites/Ant.png" id="2_rjlel"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
+size = Vector2(172, 267.93335)
+
+[sub_resource type="Animation" id="Animation_brehn"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Attack:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Health:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CardBackImage:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.11666668, 0.12761904)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("CardBackImage:z_index")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("CardImage:scale")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.14520307, 0.14520307)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("CardImage:z_index")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [-1]
+}
+
+[sub_resource type="Animation" id="Animation_eumee"]
+resource_name = "card_flip"
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Attack:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Health:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CardBackImage:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0.11666668, 0.12761904), Vector2(0.01, 0.128), Vector2(0.11, 0.128)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("CardBackImage:z_index")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [0, -1]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("CardImage:scale")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0.14520307, 0.14520307), Vector2(0.014, 0.145), Vector2(0.14453782, 0.145)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("CardImage:z_index")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [-1, 0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_e6po8"]
+_data = {
+&"RESET": SubResource("Animation_brehn"),
+&"card_flip": SubResource("Animation_eumee")
+}
+
+[node name="Card" type="Area2D" unique_id=1832133933]
+script = ExtResource("1_rjlel")
+
+[node name="CardBackImage" type="Sprite2D" parent="." unique_id=1018563419]
+position = Vector2(-1.1920929e-07, 0)
+scale = Vector2(0.11666668, 0.12761904)
+texture = ExtResource("2_brehn")
+
+[node name="CardImage" type="Sprite2D" parent="." unique_id=1482464689]
+z_index = -1
+position = Vector2(-1.66893e-06, 0)
+scale = Vector2(0.14520307, 0.14520307)
+texture = ExtResource("2_rjlel")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2061957776]
+position = Vector2(0, -0.033332825)
+shape = SubResource("RectangleShape2D_rjlel")
+
+[node name="Attack" type="RichTextLabel" parent="." unique_id=1921050804]
+offset_left = -127.00001
+offset_top = 26.0
+offset_right = -87.00001
+offset_bottom = 66.0
+scale = Vector2(3, 3)
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Health" type="RichTextLabel" parent="." unique_id=2002333263]
+modulate = Color(1, 1, 1, 0)
+offset_left = 8.999992
+offset_top = 48.0
+offset_right = 48.999992
+offset_bottom = 88.0
+scale = Vector2(3, 3)
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=173141130]
+libraries/ = SubResource("AnimationLibrary_e6po8")
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

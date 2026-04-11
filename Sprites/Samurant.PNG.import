@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cwrn656wtnb84"
-path="res://.godot/imported/AntFirstPass.png-90c0fa7bb708c541008577dfbe4b1671.ctex"
+uid="uid://cedyxxvsbeewu"
+path="res://.godot/imported/Samurant.PNG-fc2fe70665ad8f7d198ea829c0da929a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://AntFirstPass.png"
-dest_files=["res://.godot/imported/AntFirstPass.png-90c0fa7bb708c541008577dfbe4b1671.ctex"]
+source_file="res://Sprites/Samurant.PNG"
+dest_files=["res://.godot/imported/Samurant.PNG-fc2fe70665ad8f7d198ea829c0da929a.ctex"]
 
 [params]
 
