@@ -15,15 +15,10 @@ script = ExtResource("1_rjlel")
 [node name="CardStateMachine" type="Node" parent="." unique_id=28614701]
 script = ExtResource("2_q5obu")
 
-[node name="CardReciever" type="Node" parent="." unique_id=860441122 node_paths=PackedStringArray("card_state_machine", "card_input_listener", "card_drag_handler", "card_root")]
+[node name="CardReciever" type="Node" parent="." unique_id=860441122 node_paths=PackedStringArray("card_state_machine", "card_input_listener")]
 script = ExtResource("3_e484p")
 card_state_machine = NodePath("../CardStateMachine")
 card_input_listener = NodePath("..")
-card_drag_handler = NodePath("../CardDragHandler")
-card_root = NodePath("..")
-
-[node name="CardDragHandler" type="Node2D" parent="." unique_id=284732935]
-script = ExtResource("5_fpac0")
 
 [node name="CardImage" type="Sprite2D" parent="." unique_id=1482464689]
 scale = Vector2(0.14520307, 0.14520307)
@@ -34,3 +29,6 @@ metadata/_edit_lock_ = true
 position = Vector2(-3.0517578e-05, 0.43333435)
 shape = SubResource("RectangleShape2D_rjlel")
 metadata/_edit_lock_ = true
+
+[node name="Node" type="Node2D" parent="." unique_id=284732935]
+script = ExtResource("5_fpac0")
