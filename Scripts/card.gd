@@ -3,10 +3,12 @@ class_name Card
 
 @export var input_listener: CardInputListener
 @export var drag_handler: CardDragHandler
+var player_hand: Node2D = null
 
 var current_slot: CardSlot = null
 var overlapping_slot: CardSlot = null
 var is_hovered: bool = false
+var hand_position: Vector2
 
 func _ready() -> void:
 	if input_listener == null:
@@ -33,6 +35,9 @@ func _on_pressed(_listener) -> void:
 		current_slot.card_in_slot = false
 		current_slot = null
 
+	if player_hand != null:
+		player_hand.remove_card_from_hand(self)
+
 	drag_handler.start_drag(self)
 
 func _on_released(_listener) -> void:
@@ -43,6 +48,9 @@ func _on_released(_listener) -> void:
 
 	if overlapping_slot != null and not overlapping_slot.card_in_slot:
 		snap_to_slot(overlapping_slot)
+	else:
+		if player_hand != null:
+			player_hand.add_card_to_hand(self)
 
 func _on_slot_entered(slot: CardSlot) -> void:
 	overlapping_slot = slot
