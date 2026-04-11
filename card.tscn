@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://cufp1may3b8l4"]
+[gd_scene format=3 uid="uid://l28s3hnlv4iy"]
 
 [ext_resource type="Script" uid="uid://bgw4gcc8buxly" path="res://card.gd" id="1_rjlel"]
 [ext_resource type="Texture2D" uid="uid://cwrn656wtnb84" path="res://AntFirstPass.png" id="2_rjlel"]
