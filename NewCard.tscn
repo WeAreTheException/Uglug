@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://l28s3hnlv4iy"]
 
+[ext_resource type="Script" uid="uid://bgw4gcc8buxly" path="res://Scripts/card.gd" id="1_5yxk3"]
 [ext_resource type="Script" uid="uid://dtoyyse7bnjuv" path="res://Code/States/CardInputListener.gd" id="1_qg6cx"]
 [ext_resource type="Script" uid="uid://d0qu3q360kdsl" path="res://Code/States/CardInputReciever.gd" id="2_5yxk3"]
 [ext_resource type="Script" uid="uid://ro02870urhpb" path="res://Code/States/CardStateMachine.gd" id="3_6ogv0"]
@@ -9,7 +10,10 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
 size = Vector2(176, 267)
 
-[node name="Card" type="Node2D" unique_id=1703534497]
+[node name="Card" type="Node2D" unique_id=1703534497 node_paths=PackedStringArray("input_listener", "drag_handler")]
+script = ExtResource("1_5yxk3")
+input_listener = NodePath("InputListener")
+drag_handler = NodePath("DragHandler")
 
 [node name="InputListener" type="Area2D" parent="." unique_id=1220273102]
 script = ExtResource("1_qg6cx")
