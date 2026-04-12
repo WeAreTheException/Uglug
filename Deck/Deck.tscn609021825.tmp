@@ -1,0 +1,115 @@
+[gd_scene format=3 uid="uid://bxghpl6h2pl6u"]
+
+[ext_resource type="Texture2D" uid="uid://b86c6mggcrsk4" path="res://Sprites/IMG_6221.PNG" id="2_kjdvm"]
+[ext_resource type="Script" uid="uid://cde1kc0mhh5jv" path="res://Deck/DeckData.gd" id="2_wj4mp"]
+[ext_resource type="Script" uid="uid://chcqvu28271sh" path="res://Deck/DrawHandler.gd" id="4_4nk3w"]
+[ext_resource type="Script" uid="uid://c8owoh3gv45g4" path="res://Deck/DeckView.gd" id="5_wj4mp"]
+
+[sub_resource type="GDScript" id="GDScript_xxeap"]
+script/source = "extends Node2D
+
+const CARD_SCENE_PATH = \"res://NewCard.tscn\"
+const CARD_DRAW_SPEED = 0.4
+const CARD_DATABASE = preload(\"res://Scripts/CardDatabase.gd\")
+
+@export var total_cards: int = 5
+@export var player_hand: Node2D
+@export var card_manager: Node2D
+
+var card_scene: PackedScene = preload(CARD_SCENE_PATH)
+
+@onready var input_listener: DeckInputListener = $DeckInputListener
+@onready var counter: RichTextLabel = $RichTextLabel
+@onready var deck_sprite: Sprite2D = $Sprite2D
+
+func _ready() -> void:
+	update_view()
+
+func draw_card() -> void:
+	if total_cards <= 0:
+		return
+
+	if player_hand == null:
+		push_error(\"Deck: player_hand not assigned.\")
+		return
+
+	if card_manager == null:
+		push_error(\"Deck: card_manager not assigned.\")
+		return
+
+	total_cards -= 1
+	update_view()
+
+	var card_name := \"Ant\"
+	var card_data: Dictionary = CARD_DATABASE.CARDS[card_name]
+
+	var new_card = card_scene.instantiate()
+	new_card.player_hand = player_hand
+	new_card.setup_card(card_name, card_data)
+
+	card_manager.add_child(new_card)
+	new_card.global_position = global_position
+	player_hand.add_card_to_hand(new_card, CARD_DRAW_SPEED)
+
+	if new_card.has_node(\"AnimationPlayer\"):
+		new_card.get_node(\"AnimationPlayer\").play(\"card_flip\")
+
+func update_view() -> void:
+	if counter != null:
+		counter.text = str(total_cards)
+
+	if deck_sprite != null:
+		deck_sprite.visible = total_cards > 0
+"
+
+[sub_resource type="GDScript" id="GDScript_2sl2c"]
+script/source = "extends Area2D
+class_name DeckInputListener
+
+var draw_handler: DeckRoot = null
+
+func _ready() -> void:
+	input_pickable = true
+
+func _input_event(_viewport, event, _shape_idx) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		if draw_handler != null:
+			draw_handler.draw_card()
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4nk3w"]
+size = Vector2(180, 266)
+
+[node name="Deck" type="Node2D" unique_id=1069789393]
+script = SubResource("GDScript_xxeap")
+
+[node name="DeckData" type="Node" parent="." unique_id=58160234]
+script = ExtResource("2_wj4mp")
+
+[node name="DeckInputListener" type="Area2D" parent="." unique_id=935371638]
+script = SubResource("GDScript_2sl2c")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeckInputListener" unique_id=282564198]
+shape = SubResource("RectangleShape2D_4nk3w")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=127635550]
+z_index = -2
+scale = Vector2(0.120000005, 0.12661907)
+texture = ExtResource("2_kjdvm")
+script = ExtResource("5_wj4mp")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="." unique_id=305945305]
+z_index = -2
+offset_left = -89.99988
+offset_top = -132.99994
+offset_right = -53.999878
+offset_bottom = -79.79993
+scale = Vector2(5, 5)
+mouse_filter = 2
+text = "0
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DrawHandler" type="Node" parent="." unique_id=1995550717]
+script = ExtResource("4_4nk3w")

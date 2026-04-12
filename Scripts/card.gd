@@ -3,6 +3,10 @@ class_name Card
 
 @export var input_listener: CardInputListener
 @export var drag_handler: CardDragHandler
+@export var card_sprite: Sprite2D
+@export var attack_label: RichTextLabel
+@export var health_label: RichTextLabel
+@export var cost_hearts: Array[Sprite2D]
 
 var player_hand: Node2D = null
 var current_slot: NewSlots = null
@@ -10,16 +14,55 @@ var overlapping_slot: NewSlots = null
 var hand_position: Vector2
 var is_hovered: bool = false
 
+var card_name: String = ""
+var card_data: Dictionary = {}
+
 func _ready() -> void:
-	if input_listener == null:
+	if input_listener != null:
+		input_listener.hovered.connect(_on_hovered)
+		input_listener.hovered_off.connect(_on_hovered_off)
+		input_listener.pressed.connect(_on_pressed)
+		input_listener.released.connect(_on_released)
+		input_listener.slot_entered.connect(_on_slot_entered)
+		input_listener.slot_exited.connect(_on_slot_exited)
+
+func setup_card(new_card_name: String, new_card_data: Dictionary) -> void:
+	card_name = new_card_name
+	card_data = new_card_data
+
+	update_sprite_display()
+	update_attack_display()
+	update_health_display()
+	update_cost_display()
+
+func update_sprite_display() -> void:
+	if card_sprite == null:
 		return
 
-	input_listener.hovered.connect(_on_hovered)
-	input_listener.hovered_off.connect(_on_hovered_off)
-	input_listener.pressed.connect(_on_pressed)
-	input_listener.released.connect(_on_released)
-	input_listener.slot_entered.connect(_on_slot_entered)
-	input_listener.slot_exited.connect(_on_slot_exited)
+	if not card_data.has("sprite_path"):
+		return
+
+	var texture = load(card_data["sprite_path"])
+	if texture != null:
+		card_sprite.texture = texture
+
+func update_attack_display() -> void:
+	if attack_label != null and card_data.has("attack"):
+		attack_label.text = str(card_data["attack"])
+
+func update_health_display() -> void:
+	if health_label != null and card_data.has("health"):
+		health_label.text = str(card_data["health"])
+
+func update_cost_display() -> void:
+	if not card_data.has("cost"):
+		return
+
+	var cost: int = card_data["cost"]
+
+	for i in range(cost_hearts.size()):
+		if cost_hearts[i] != null:
+			cost_hearts[i].visible = i < cost
 
 func _on_hovered(_listener) -> void:
 	is_hovered = true
@@ -31,12 +74,10 @@ func _on_pressed(_listener) -> void:
 	if drag_handler == null:
 		return
 
-	# free old slot if this card came from one
 	if current_slot != null:
 		current_slot.clear_card()
 		current_slot = null
 
-	# remove from hand if this card was in hand
 	if player_hand != null:
 		player_hand.remove_card_from_hand(self)
 
@@ -65,12 +106,11 @@ func place_into_slot(slot: NewSlots) -> void:
 		return_to_hand()
 		return
 
-	# kick old card out if slot already occupied
 	if slot.current_card != null and slot.current_card != self:
 		var old_card = slot.current_card
 		slot.clear_card()
-
 		old_card.current_slot = null
+
 		if old_card.player_hand != null:
 			old_card.player_hand.add_card_to_hand(old_card)
 

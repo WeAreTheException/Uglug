@@ -3,6 +3,7 @@ class_name DeckRoot
 
 const CARD_SCENE_PATH = "res://NewCard.tscn"
 const CARD_DRAW_SPEED = 0.4
+const CARD_DATABASE = preload("res://Data/CardDatabase.gd")
 
 @export var total_cards: int = 5
 @export var player_hand: Node2D
@@ -33,8 +34,12 @@ func draw_card() -> void:
 	total_cards -= 1
 	update_view()
 
+	var card_name := "Ant"
+	var card_data: Dictionary = CARD_DATABASE.CARDS[card_name]
+
 	var new_card = card_scene.instantiate()
 	new_card.player_hand = player_hand
+	new_card.setup_card(card_name, card_data)
 
 	card_manager.add_child(new_card)
 	new_card.global_position = global_position
