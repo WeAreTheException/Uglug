@@ -1,17 +1,20 @@
 [gd_scene format=3 uid="uid://c8mekq0tyuadn"]
 
-[ext_resource type="Script" uid="uid://co5ru43ce4tkq" path="res://NewSlots.gd" id="1_0x5xu"]
 [ext_resource type="Texture2D" uid="uid://bkafxhbg4kvug" path="res://Sprites/CardSlot.png" id="1_xbaqm"]
+
+[sub_resource type="GDScript" id="GDScript_pqsda"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pqsda"]
 size = Vector2(180, 265)
 
-[node name="NewSlots" type="Area2D" unique_id=1580627812]
-script = ExtResource("1_0x5xu")
+[node name="NewSlots" type="Node2D" unique_id=457786523]
 
 [node name="CardSlotImage" type="Sprite2D" parent="." unique_id=1462752532]
 texture = ExtResource("1_xbaqm")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=112184198]
+[node name="Collision" type="Area2D" parent="." unique_id=1542654023]
+script = SubResource("GDScript_pqsda")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collision" unique_id=112184198]
 position = Vector2(0, 0.5)
 shape = SubResource("RectangleShape2D_pqsda")

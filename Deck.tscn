@@ -1,21 +1,32 @@
 [gd_scene format=3 uid="uid://bxghpl6h2pl6u"]
 
-[ext_resource type="Script" uid="uid://o6854ysw5jet" path="res://NewDeck.gd" id="1_2qa5t"]
+[ext_resource type="Script" uid="uid://o6854ysw5jet" path="res://DeckRoot.gd" id="1_2qa5t"]
+[ext_resource type="Script" uid="uid://chw242mi2nxl4" path="res://DeckInputListener.gd" id="2_4nk3w"]
 [ext_resource type="Texture2D" uid="uid://b86c6mggcrsk4" path="res://Sprites/IMG_6221.PNG" id="2_kjdvm"]
+[ext_resource type="Script" uid="uid://cde1kc0mhh5jv" path="res://DeckData.gd" id="2_wj4mp"]
+[ext_resource type="Script" uid="uid://chcqvu28271sh" path="res://DrawHandler.gd" id="4_4nk3w"]
+[ext_resource type="Script" uid="uid://c8owoh3gv45g4" path="res://DeckView.gd" id="5_wj4mp"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4nk3w"]
 size = Vector2(180, 266)
 
-[node name="Deck" type="Area2D" unique_id=1434682879]
+[node name="Deck" type="Node2D" unique_id=1069789393]
 script = ExtResource("1_2qa5t")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=282564198]
+[node name="DeckData" type="Node" parent="." unique_id=58160234]
+script = ExtResource("2_wj4mp")
+
+[node name="DeckInputListener" type="Area2D" parent="." unique_id=935371638]
+script = ExtResource("2_4nk3w")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeckInputListener" unique_id=282564198]
 shape = SubResource("RectangleShape2D_4nk3w")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=127635550]
 z_index = -2
 scale = Vector2(0.120000005, 0.12661907)
 texture = ExtResource("2_kjdvm")
+script = ExtResource("5_wj4mp")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="." unique_id=305945305]
 z_index = -2
@@ -29,3 +40,6 @@ text = "0
 "
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="DrawHandler" type="Node" parent="." unique_id=1995550717]
+script = ExtResource("4_4nk3w")

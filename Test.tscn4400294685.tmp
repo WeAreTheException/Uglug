@@ -12,10 +12,8 @@
 [node name="PlayerHand" parent="." unique_id=2142011949 instance=ExtResource("5_aq4fw")]
 position = Vector2(384, 960)
 
-[node name="Deck" parent="." unique_id=1434682879 node_paths=PackedStringArray("player_hand", "card_manager") instance=ExtResource("3_2au82")]
+[node name="Deck" parent="." unique_id=1434682879 instance=ExtResource("3_2au82")]
 position = Vector2(1728, 704)
-player_hand = NodePath("../PlayerHand")
-card_manager = NodePath("../CardManager")
 
 [node name="NewSlots" parent="." unique_id=457786523 instance=ExtResource("1_njov2")]
 position = Vector2(960, 896)

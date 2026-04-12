@@ -28,9 +28,9 @@ func _input_event(_viewport, event, _shape_idx) -> void:
 			released.emit(self)
 
 func _on_area_entered(area: Area2D) -> void:
-	if area is CardSlot:
+	if area is NewSlots:
 		slot_entered.emit(area)
 
 func _on_area_exited(area: Area2D) -> void:
-	if area is CardSlot:
+	if area is NewSlots:
 		slot_exited.emit(area)

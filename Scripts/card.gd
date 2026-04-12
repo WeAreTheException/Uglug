@@ -3,12 +3,12 @@ class_name Card
 
 @export var input_listener: CardInputListener
 @export var drag_handler: CardDragHandler
-var player_hand: Node2D = null
 
-var current_slot: CardSlot = null
-var overlapping_slot: CardSlot = null
-var is_hovered: bool = false
+var player_hand: Node2D = null
+var current_slot: NewSlots = null
+var overlapping_slot: NewSlots = null
 var hand_position: Vector2
+var is_hovered: bool = false
 
 func _ready() -> void:
 	if input_listener == null:
@@ -31,10 +31,12 @@ func _on_pressed(_listener) -> void:
 	if drag_handler == null:
 		return
 
+	# free old slot if this card came from one
 	if current_slot != null:
-		current_slot.card_in_slot = false
+		current_slot.clear_card()
 		current_slot = null
 
+	# remove from hand if this card was in hand
 	if player_hand != null:
 		player_hand.remove_card_from_hand(self)
 
@@ -46,20 +48,40 @@ func _on_released(_listener) -> void:
 
 	drag_handler.stop_drag()
 
-	if overlapping_slot != null and not overlapping_slot.card_in_slot:
-		snap_to_slot(overlapping_slot)
+	if overlapping_slot != null:
+		place_into_slot(overlapping_slot)
 	else:
-		if player_hand != null:
-			player_hand.add_card_to_hand(self)
+		return_to_hand()
 
-func _on_slot_entered(slot: CardSlot) -> void:
+func _on_slot_entered(slot: NewSlots) -> void:
 	overlapping_slot = slot
 
-func _on_slot_exited(slot: CardSlot) -> void:
+func _on_slot_exited(slot: NewSlots) -> void:
 	if overlapping_slot == slot:
 		overlapping_slot = null
 
-func snap_to_slot(slot: CardSlot) -> void:
-	global_position = slot.global_position
+func place_into_slot(slot: NewSlots) -> void:
+	if slot == null:
+		return_to_hand()
+		return
+
+	# kick old card out if slot already occupied
+	if slot.current_card != null and slot.current_card != self:
+		var old_card = slot.current_card
+		slot.clear_card()
+
+		old_card.current_slot = null
+		if old_card.player_hand != null:
+			old_card.player_hand.add_card_to_hand(old_card)
+
+	slot.assign_card(self)
 	current_slot = slot
-	slot.card_in_slot = true
+	global_position = slot.global_position
+
+func return_to_hand() -> void:
+	if current_slot != null:
+		current_slot.clear_card()
+		current_slot = null
+
+	if player_hand != null:
+		player_hand.add_card_to_hand(self)
