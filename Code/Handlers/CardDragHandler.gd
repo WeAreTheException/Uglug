@@ -1,6 +1,8 @@
 extends Node2D
 class_name CardDragHandler
 
+var phase_manager: PhaseManager = null
+
 var card_being_dragged: Card = null
 var screen_size: Vector2
 
@@ -22,6 +24,14 @@ func update_drag() -> void:
 
 func start_drag(card: Card) -> void:
 	if card == null:
+		return
+
+	if phase_manager == null:
+		print("start_drag blocked: phase_manager is null")
+		return
+
+	if not phase_manager.is_place_phase():
+		print("start_drag blocked: not in PLACE phase")
 		return
 
 	card_being_dragged = card

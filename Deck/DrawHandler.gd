@@ -9,6 +9,7 @@ var deck: DeckCount = null
 var player_hand: Node2D = null
 var card_manager: Node2D = null
 var spawn_anchor: Node2D = null
+var phase_manager: PhaseManager = null
 
 func draw_card() -> void:
 	if deck == null:
@@ -23,6 +24,12 @@ func draw_card() -> void:
 		return
 	if deck.card_scene == null:
 		return
+	if phase_manager == null:
+		print("Draw blocked: phase_manager is null")
+		return
+	if not phase_manager.is_draw_phase():
+		print("Draw blocked: not in DRAW phase")
+		return
 
 	if player_hand.is_hand_full():
 		print("Hand full. Cannot draw.")
@@ -35,8 +42,13 @@ func draw_card() -> void:
 	if not deck.consume_card():
 		return
 
-	var new_card = deck.card_scene.instantiate()
+	var new_card := deck.card_scene.instantiate() as Card
+	if new_card == null:
+		print("Draw failed: spawned scene is not a Card")
+		return
+
 	new_card.player_hand = player_hand
+	new_card.phase_manager = phase_manager
 
 	card_manager.add_child(new_card)
 	new_card.global_position = spawn_anchor.global_position

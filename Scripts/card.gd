@@ -4,6 +4,7 @@ class_name Card
 @export var input_listener: CardInputListener
 @export var drag_handler: CardDragHandler
 @export var stats: Stats
+@export var phase_manager: PhaseManager
 
 var player_hand: Node2D = null
 var current_slot: NewSlots = null
@@ -14,6 +15,9 @@ var is_hovered: bool = false
 var card_name: String = ""
 
 func _ready() -> void:
+	if drag_handler != null:
+		drag_handler.phase_manager = phase_manager
+
 	if input_listener != null:
 		input_listener.hovered.connect(_on_hovered)
 		input_listener.hovered_off.connect(_on_hovered_off)

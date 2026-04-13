@@ -1,4 +1,3 @@
-# DeckRoot.gd
 extends Node2D
 class_name DeckRoot
 
@@ -12,6 +11,7 @@ class_name DeckRoot
 @export var player_hand: Node2D
 @export var card_manager: Node2D
 @export var spawn_anchor: Node2D
+@export var phase_manager: PhaseManager
 
 func _ready() -> void:
 	if input_listener != null:
@@ -27,3 +27,4 @@ func _ready() -> void:
 		draw_handler.player_hand = player_hand
 		draw_handler.card_manager = card_manager
 		draw_handler.spawn_anchor = spawn_anchor
+		draw_handler.phase_manager = phase_manager
