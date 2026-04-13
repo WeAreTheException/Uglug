@@ -25,21 +25,23 @@ func _unhandled_input(event: InputEvent) -> void:
 	if card == null:
 		return
 
-	if card.current_slot == null:
-		if event is InputEventKey and event.pressed and not event.echo:
-			match event.keycode:
-				KEY_A, KEY_H, KEY_D:
-					print("card must be in a slot")
-		return
-
 	if event is InputEventKey and event.pressed and not event.echo:
 		match event.keycode:
-			KEY_A:
-				set_main_state(MainState.ATTACK)
-			KEY_H:
-				set_main_state(MainState.HURT)
-			KEY_D:
-				set_main_state(MainState.DEATH)
+			KEY_A, KEY_H, KEY_D:
+				if card.current_slot == null:
+					print("card must be in a slot")
+					return
+
+				if not card.is_hovered:
+					return
+
+				match event.keycode:
+					KEY_A:
+						set_main_state(MainState.ATTACK)
+					KEY_H:
+						set_main_state(MainState.HURT)
+					KEY_D:
+						set_main_state(MainState.DEATH)
 
 func set_main_state(new_state: MainState) -> void:
 	if current_main_state == new_state:

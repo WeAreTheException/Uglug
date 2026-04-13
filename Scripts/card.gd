@@ -19,6 +19,7 @@ var overlapping_slot: NewSlots = null
 var hand_position: Vector2
 
 var card_name: String = ""
+var is_hovered: bool = false
 
 var current_attack: int = 0
 var current_health: int = 0
@@ -26,6 +27,8 @@ var current_cost: int = 0
 
 func _ready() -> void:
 	if input_listener != null:
+		input_listener.hovered.connect(_on_hovered)
+		input_listener.hovered_off.connect(_on_hovered_off)
 		input_listener.slot_entered.connect(_on_slot_entered)
 		input_listener.slot_exited.connect(_on_slot_exited)
 
@@ -80,6 +83,12 @@ func kill() -> void:
 		current_slot = null
 
 	queue_free()
+
+func _on_hovered(_listener) -> void:
+	is_hovered = true
+
+func _on_hovered_off(_listener) -> void:
+	is_hovered = false
 
 func _on_slot_entered(slot: NewSlots) -> void:
 	overlapping_slot = slot
