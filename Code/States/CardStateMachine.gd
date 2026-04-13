@@ -26,9 +26,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 
 	if card.current_slot == null:
-		return
-
-	if not card.is_hovered:
+		if event is InputEventKey and event.pressed and not event.echo:
+			match event.keycode:
+				KEY_A, KEY_H, KEY_D:
+					print("Card must be in a slot to enter states")
 		return
 
 	if event is InputEventKey and event.pressed and not event.echo:
@@ -46,6 +47,41 @@ func set_main_state(new_state: MainState) -> void:
 
 	current_main_state = new_state
 	print("Main state entered: ", MainState.keys()[current_main_state])
+
+	match current_main_state:
+		MainState.ATTACK:
+			enter_attack()
+		MainState.HURT:
+			enter_hurt()
+		MainState.DEATH:
+			enter_death()
+		MainState.WAIT:
+			enter_wait()
+
+func enter_attack() -> void:
+	print("Attack logic goes here")
+
+func enter_hurt() -> void:
+	print("Hurt logic goes here")
+
+	if card == null:
+		return
+
+	card.take_damage(1)
+
+	if card.current_health <= 0:
+		set_main_state(MainState.DEATH)
+	else:
+		set_main_state(MainState.WAIT)
+
+func enter_death() -> void:
+	print("Death logic goes here")
+
+	if card != null:
+		card.kill()
+
+func enter_wait() -> void:
+	print("Wait logic goes here")
 
 func set_power_state(new_state: PowerState) -> void:
 	if current_power_state == new_state:

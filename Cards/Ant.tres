@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="CardData" format=3 uid="uid://fspnnewatlod"]
+
+[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="1_jd7h7"]
+[ext_resource type="Texture2D" uid="uid://cgs5k6p3mggyf" path="res://Art/AntSprite.png" id="2_3sjih"]
+
+[resource]
+script = ExtResource("1_jd7h7")
+name = "Ant"
+attack = 1
+health = 2
+cost = 1
+sprite = ExtResource("2_3sjih")
+metadata/_custom_type_script = "uid://duslcpxrhurv8"

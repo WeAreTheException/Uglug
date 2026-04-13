@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://o6854ysw5jet" path="res://Deck/DeckRoot.gd" id="1_2sl2c"]
 [ext_resource type="Texture2D" uid="uid://b86c6mggcrsk4" path="res://Sprites/IMG_6221.PNG" id="2_kjdvm"]
 [ext_resource type="Script" uid="uid://cde1kc0mhh5jv" path="res://Deck/DeckCount.gd" id="2_wj4mp"]
-[ext_resource type="PackedScene" uid="uid://l28s3hnlv4iy" path="res://NewCard.tscn" id="3_5cebq"]
+[ext_resource type="PackedScene" uid="uid://l28s3hnlv4iy" path="res://Cards/NewCard.tscn" id="3_5cebq"]
 [ext_resource type="Script" uid="uid://chw242mi2nxl4" path="res://Deck/DeckInputListener.gd" id="3_6omjd"]
 [ext_resource type="Script" uid="uid://chcqvu28271sh" path="res://Deck/DrawHandler.gd" id="4_4nk3w"]
 [ext_resource type="Script" uid="uid://blq43rpyvye6c" path="res://Data/CardDatabase.gd" id="4_xceh1"]

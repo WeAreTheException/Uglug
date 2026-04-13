@@ -1,37 +1,37 @@
 [gd_scene format=3 uid="uid://l28s3hnlv4iy"]
 
-[ext_resource type="Script" uid="uid://bgw4gcc8buxly" path="res://Scripts/card.gd" id="1_5yxk3"]
-[ext_resource type="Script" uid="uid://dtoyyse7bnjuv" path="res://Code/States/CardInputListener.gd" id="1_qg6cx"]
-[ext_resource type="Script" uid="uid://d0qu3q360kdsl" path="res://Code/States/CardInputReciever.gd" id="2_5yxk3"]
-[ext_resource type="Script" uid="uid://ro02870urhpb" path="res://Code/States/CardStateMachine.gd" id="3_6ogv0"]
-[ext_resource type="Script" uid="uid://clgbwnniuqm7g" path="res://Code/Handlers/DragHandler.gd" id="5_kbm25"]
-[ext_resource type="Script" uid="uid://dbemrm25gvek6" path="res://Stats.gd" id="6_6ogv0"]
-[ext_resource type="Texture2D" uid="uid://d1ypj3toan6r1" path="res://Art/Blood.png" id="7_85qlg"]
-[ext_resource type="Texture2D" uid="uid://bdi7eyt5cmur0" path="res://Art/Numbers/1.png" id="7_n7m2t"]
-[ext_resource type="Texture2D" uid="uid://clk0ori80b5gg" path="res://Art/Numbers/2.png" id="8_uunv8"]
-[ext_resource type="Texture2D" uid="uid://bnj2kyvgakfq3" path="res://Art/Numbers/3.png" id="9_gbuxm"]
-[ext_resource type="Texture2D" uid="uid://4f3gn63utyru" path="res://Art/Numbers/4.png" id="10_mtuvq"]
-[ext_resource type="Texture2D" uid="uid://c1fev2dw4ehne" path="res://Art/Numbers/5.png" id="11_q5rvn"]
-[ext_resource type="Texture2D" uid="uid://bq8esv4xpuv68" path="res://Art/Numbers/6.png" id="12_fyanw"]
+[ext_resource type="Script" uid="uid://bgw4gcc8buxly" path="res://Scripts/card.gd" id="1_ch35y"]
+[ext_resource type="Script" uid="uid://dbemrm25gvek6" path="res://Cards/Stats.gd" id="2_52a3h"]
+[ext_resource type="Texture2D" uid="uid://bdi7eyt5cmur0" path="res://Art/Numbers/1.png" id="3_5yjln"]
+[ext_resource type="Texture2D" uid="uid://clk0ori80b5gg" path="res://Art/Numbers/2.png" id="4_krn1d"]
+[ext_resource type="Texture2D" uid="uid://bnj2kyvgakfq3" path="res://Art/Numbers/3.png" id="5_s0kml"]
+[ext_resource type="Texture2D" uid="uid://4f3gn63utyru" path="res://Art/Numbers/4.png" id="6_r4p8t"]
+[ext_resource type="Texture2D" uid="uid://c1fev2dw4ehne" path="res://Art/Numbers/5.png" id="7_fuvn1"]
+[ext_resource type="Texture2D" uid="uid://bq8esv4xpuv68" path="res://Art/Numbers/6.png" id="8_sphwu"]
+[ext_resource type="Texture2D" uid="uid://d1ypj3toan6r1" path="res://Art/Blood.png" id="9_dm30q"]
+[ext_resource type="Script" uid="uid://dtoyyse7bnjuv" path="res://Code/States/CardInputListener.gd" id="10_koaue"]
+[ext_resource type="Script" uid="uid://d0qu3q360kdsl" path="res://Code/States/CardInputReciever.gd" id="11_2w08q"]
+[ext_resource type="Script" uid="uid://ro02870urhpb" path="res://Code/States/CardStateMachine.gd" id="12_lsojp"]
+[ext_resource type="Script" uid="uid://clgbwnniuqm7g" path="res://Code/Handlers/DragHandler.gd" id="13_vartc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
 size = Vector2(176, 267)
 
 [node name="Card" type="Node2D" unique_id=1703534497 node_paths=PackedStringArray("input_listener", "drag_handler", "stats")]
-script = ExtResource("1_5yxk3")
+script = ExtResource("1_ch35y")
 input_listener = NodePath("InputListener")
 drag_handler = NodePath("DragHandler")
 stats = NodePath("Stats")
 
 [node name="Stats" type="Node2D" parent="." unique_id=1314998697 node_paths=PackedStringArray("card_sprite", "attack", "health", "cost", "name_label")]
-script = ExtResource("6_6ogv0")
+script = ExtResource("2_52a3h")
 card_sprite = NodePath("../CardImage")
 attack = NodePath("Attack")
 health = NodePath("Health")
 cost = [NodePath("Blood"), NodePath("Blood2"), NodePath("Blood3"), NodePath("Blood4")]
 name_label = NodePath("Name")
-attack_textures = Array[Texture2D]([ExtResource("7_n7m2t"), ExtResource("8_uunv8"), ExtResource("9_gbuxm"), ExtResource("10_mtuvq"), ExtResource("11_q5rvn"), ExtResource("12_fyanw")])
-health_textures = Array[Texture2D]([ExtResource("7_n7m2t"), ExtResource("8_uunv8"), ExtResource("9_gbuxm"), ExtResource("10_mtuvq"), ExtResource("11_q5rvn"), ExtResource("12_fyanw")])
+attack_textures = Array[Texture2D]([ExtResource("3_5yjln"), ExtResource("4_krn1d"), ExtResource("5_s0kml"), ExtResource("6_r4p8t"), ExtResource("7_fuvn1"), ExtResource("8_sphwu")])
+health_textures = Array[Texture2D]([ExtResource("3_5yjln"), ExtResource("4_krn1d"), ExtResource("5_s0kml"), ExtResource("6_r4p8t"), ExtResource("7_fuvn1"), ExtResource("8_sphwu")])
 
 [node name="Attack" type="Sprite2D" parent="Stats" unique_id=1488390869]
 position = Vector2(-69.4375, 89)
@@ -45,25 +45,25 @@ scale = Vector2(0.14727725, 0.14345993)
 z_index = 100
 position = Vector2(71, -83)
 scale = Vector2(0.157, 0.144)
-texture = ExtResource("7_85qlg")
+texture = ExtResource("9_dm30q")
 
 [node name="Blood2" type="Sprite2D" parent="Stats" unique_id=1630070528]
 z_index = 100
 position = Vector2(55, -83)
 scale = Vector2(0.157, 0.144)
-texture = ExtResource("7_85qlg")
+texture = ExtResource("9_dm30q")
 
 [node name="Blood3" type="Sprite2D" parent="Stats" unique_id=1751345964]
 z_index = 100
 position = Vector2(63, -64)
 scale = Vector2(0.157, 0.144)
-texture = ExtResource("7_85qlg")
+texture = ExtResource("9_dm30q")
 
 [node name="Blood4" type="Sprite2D" parent="Stats" unique_id=221770338]
 z_index = 100
 position = Vector2(47, -64)
 scale = Vector2(0.157, 0.144)
-texture = ExtResource("7_85qlg")
+texture = ExtResource("9_dm30q")
 
 [node name="Name" type="RichTextLabel" parent="Stats" unique_id=484770799]
 anchors_preset = -1
@@ -84,22 +84,22 @@ scale = Vector2(0.14520307, 0.14520307)
 metadata/_edit_lock_ = true
 
 [node name="InputListener" type="Area2D" parent="." unique_id=1220273102]
-script = ExtResource("1_qg6cx")
+script = ExtResource("10_koaue")
 
 [node name="CardCollision" type="CollisionShape2D" parent="InputListener" unique_id=2061957776]
 position = Vector2(-3.0517578e-05, 0.43333435)
 shape = SubResource("RectangleShape2D_rjlel")
 
 [node name="InputReciver" type="Node" parent="." unique_id=213661670 node_paths=PackedStringArray("card_state_machine", "card_input_listener", "drag_handler", "card_root")]
-script = ExtResource("2_5yxk3")
+script = ExtResource("11_2w08q")
 card_state_machine = NodePath("../CardStateMachine")
 card_input_listener = NodePath("../InputListener")
 drag_handler = NodePath("../DragHandler")
 card_root = NodePath("..")
 
 [node name="CardStateMachine" type="Node" parent="." unique_id=1069228844]
-script = ExtResource("3_6ogv0")
+script = ExtResource("12_lsojp")
 metadata/_custom_type_script = "uid://ro02870urhpb"
 
 [node name="DragHandler" type="Node2D" parent="." unique_id=1428327336]
-script = ExtResource("5_kbm25")
+script = ExtResource("13_vartc")

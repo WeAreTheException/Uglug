@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://c00xd58jcjbu4"]
+
+[ext_resource type="PackedScene" uid="uid://l28s3hnlv4iy" path="res://Cards/NewCard.tscn" id="1_vrh5a"]
+[ext_resource type="PackedScene" uid="uid://c8mekq0tyuadn" path="res://Slots/NewSlots.tscn" id="2_8m5fa"]
+[ext_resource type="Resource" uid="uid://fspnnewatlod" path="res://Cards/Ant.tres" id="2_ydv2a"]
+
+[node name="StateTest" type="Node2D" unique_id=590443076]
+
+[node name="Card" parent="." unique_id=1703534497 instance=ExtResource("1_vrh5a")]
+position = Vector2(576, 384)
+test_data = ExtResource("2_ydv2a")
+
+[node name="NewSlots" parent="." unique_id=1783533892 instance=ExtResource("2_8m5fa")]
+position = Vector2(960, 384)

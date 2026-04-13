@@ -26,17 +26,14 @@ func start_drag(card) -> void:
 	if card == null:
 		return
 
-	if phase_manager == null:
-		print("start_drag blocked: phase_manager is null")
-		return
+	if phase_manager != null:
+		if card.card_owner != Card.Owner.PLAYER:
+			print("start_drag blocked: not player-owned card")
+			return
 
-	if card.card_owner != Card.Owner.PLAYER:
-		print("start_drag blocked: not player-owned card")
-		return
-
-	if not phase_manager.is_player_place_phase():
-		print("start_drag blocked: not in PLAYER_PLACE phase")
-		return
+		if not phase_manager.is_player_place_phase():
+			print("start_drag blocked: not in PLAYER_PLACE phase")
+			return
 
 	card_being_dragged = card
 	card.scale = Vector2(1, 1)

@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://dghepdyjm378q"]
 
 [ext_resource type="Script" uid="uid://bk5xe42i5d0hs" path="res://TestScene.gd" id="1_ivycn"]
-[ext_resource type="PackedScene" uid="uid://c8mekq0tyuadn" path="res://NewSlots.tscn" id="1_njov2"]
+[ext_resource type="PackedScene" uid="uid://c8mekq0tyuadn" path="res://Slots/NewSlots.tscn" id="1_njov2"]
 [ext_resource type="PackedScene" uid="uid://bxghpl6h2pl6u" path="res://Deck/Deck.tscn" id="3_2au82"]
 [ext_resource type="PackedScene" uid="uid://bif5q1mjmf8e5" path="res://PlayerHand.tscn" id="5_aq4fw"]
-[ext_resource type="PackedScene" uid="uid://0y4bo4fdwdc" path="res://CardManager.tscn" id="5_ivycn"]
+[ext_resource type="PackedScene" uid="uid://0y4bo4fdwdc" path="res://Cards/CardManager.tscn" id="5_ivycn"]
 [ext_resource type="Script" uid="uid://ckhj5f54piprm" path="res://Phasemanager.gd" id="5_q1uvj"]
 [ext_resource type="Script" uid="uid://sodd748rdqha" path="res://OpponentController.gd" id="7_q1uvj"]
 
