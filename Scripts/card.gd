@@ -3,10 +3,7 @@ class_name Card
 
 @export var input_listener: CardInputListener
 @export var drag_handler: CardDragHandler
-@export var card_sprite: Sprite2D
-@export var attack: RichTextLabel
-@export var health: RichTextLabel
-@export var cost: Array[Sprite2D]
+@export var stats: Stats
 
 var player_hand: Node2D = null
 var current_slot: NewSlots = null
@@ -15,7 +12,6 @@ var hand_position: Vector2
 var is_hovered: bool = false
 
 var card_name: String = ""
-var card_data: Dictionary = {}
 
 func _ready() -> void:
 	if input_listener != null:
@@ -26,43 +22,14 @@ func _ready() -> void:
 		input_listener.slot_entered.connect(_on_slot_entered)
 		input_listener.slot_exited.connect(_on_slot_exited)
 
-func setup_card(new_card_name: String, new_card_data: Dictionary) -> void:
-	card_name = new_card_name
-	card_data = new_card_data
-
-	update_sprite_display()
-	update_attack_display()
-	update_health_display()
-	update_cost_display()
-
-func update_sprite_display() -> void:
-	if card_sprite == null:
+func setup_card(data: CardData) -> void:
+	if data == null:
 		return
 
-	if not card_data.has("sprite_path"):
-		return
+	card_name = data.name
 
-	var texture = load(card_data["sprite_path"])
-	if texture != null:
-		card_sprite.texture = texture
-
-func update_attack_display() -> void:
-	if attack != null and card_data.has("attack"):
-		attack.text = str(card_data["attack"])
-
-func update_health_display() -> void:
-	if health != null and card_data.has("health"):
-		health.text = str(card_data["health"])
-
-func update_cost_display() -> void:
-	var card_cost: int = 0
-
-	if card_data.has("cost"):
-		card_cost = card_data["cost"]
-
-	for i in range(cost.size()):
-		if cost[i] != null:
-			cost[i].visible = i < card_cost
+	if stats != null:
+		stats.setup_from_card_data(data)
 
 func _on_hovered(_listener) -> void:
 	is_hovered = true

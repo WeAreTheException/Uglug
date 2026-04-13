@@ -3,9 +3,21 @@
 [ext_resource type="Script" uid="uid://o6854ysw5jet" path="res://Deck/DeckRoot.gd" id="1_2sl2c"]
 [ext_resource type="Texture2D" uid="uid://b86c6mggcrsk4" path="res://Sprites/IMG_6221.PNG" id="2_kjdvm"]
 [ext_resource type="Script" uid="uid://cde1kc0mhh5jv" path="res://Deck/DeckCount.gd" id="2_wj4mp"]
+[ext_resource type="PackedScene" uid="uid://l28s3hnlv4iy" path="res://NewCard.tscn" id="3_5cebq"]
 [ext_resource type="Script" uid="uid://chw242mi2nxl4" path="res://Deck/DeckInputListener.gd" id="3_6omjd"]
 [ext_resource type="Script" uid="uid://chcqvu28271sh" path="res://Deck/DrawHandler.gd" id="4_4nk3w"]
+[ext_resource type="Script" uid="uid://blq43rpyvye6c" path="res://Data/CardDatabase.gd" id="4_xceh1"]
 [ext_resource type="Script" uid="uid://c8owoh3gv45g4" path="res://Deck/DeckView.gd" id="5_wj4mp"]
+[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://CardData.gd" id="6_efqef"]
+[ext_resource type="Texture2D" uid="uid://cgs5k6p3mggyf" path="res://Art/AntSprite.png" id="7_hsdj0"]
+
+[sub_resource type="Resource" id="Resource_hsdj0"]
+script = ExtResource("6_efqef")
+name = "Ant"
+health = 1
+cost = 2
+sprite = ExtResource("7_hsdj0")
+metadata/_custom_type_script = "uid://duslcpxrhurv8"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4nk3w"]
 size = Vector2(180, 266)
@@ -21,9 +33,16 @@ draw_handler = NodePath("DeckDrawHandler")
 
 [node name="DeckCount" type="Node" parent="." unique_id=58160234]
 script = ExtResource("2_wj4mp")
+total_cards = 10
+card_scene = ExtResource("3_5cebq")
 
-[node name="DeckDrawHandler" type="Node" parent="." unique_id=1995550717]
+[node name="DeckDrawHandler" type="Node" parent="." unique_id=1995550717 node_paths=PackedStringArray("card_database")]
 script = ExtResource("4_4nk3w")
+card_database = NodePath("../CardDatabase")
+
+[node name="CardDatabase" type="Node" parent="." unique_id=1978405134]
+script = ExtResource("4_xceh1")
+cards = Array[ExtResource("6_efqef")]([SubResource("Resource_hsdj0")])
 
 [node name="DeckView" type="Node" parent="." unique_id=696320865]
 script = ExtResource("5_wj4mp")

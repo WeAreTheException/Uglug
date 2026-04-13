@@ -5,43 +5,45 @@
 [ext_resource type="Script" uid="uid://d0qu3q360kdsl" path="res://Code/States/CardInputReciever.gd" id="2_5yxk3"]
 [ext_resource type="Script" uid="uid://ro02870urhpb" path="res://Code/States/CardStateMachine.gd" id="3_6ogv0"]
 [ext_resource type="Script" uid="uid://clgbwnniuqm7g" path="res://Code/Handlers/CardDragHandler.gd" id="5_kbm25"]
+[ext_resource type="Script" uid="uid://dbemrm25gvek6" path="res://Stats.gd" id="6_6ogv0"]
 [ext_resource type="Texture2D" uid="uid://d1ypj3toan6r1" path="res://Art/Blood.png" id="7_85qlg"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
 size = Vector2(176, 267)
 
-[node name="Card" type="Node2D" unique_id=1703534497 node_paths=PackedStringArray("input_listener", "drag_handler", "card_sprite")]
+[node name="Card" type="Node2D" unique_id=1703534497 node_paths=PackedStringArray("input_listener", "drag_handler", "stats")]
 script = ExtResource("1_5yxk3")
-input_listener = NodePath("InputListener")
-drag_handler = NodePath("DragHandler")
-card_sprite = NodePath("CardImage")
+input_listener = NodePath("Code/InputListener")
+drag_handler = NodePath("Code/DragHandler")
+stats = NodePath("Stats")
 
-[node name="InputListener" type="Area2D" parent="." unique_id=1220273102]
+[node name="Code" type="Node" parent="." unique_id=375358737]
+
+[node name="InputListener" type="Area2D" parent="Code" unique_id=1220273102]
 script = ExtResource("1_qg6cx")
 
-[node name="CardCollision" type="CollisionShape2D" parent="InputListener" unique_id=2061957776]
+[node name="CardCollision" type="CollisionShape2D" parent="Code/InputListener" unique_id=2061957776]
 position = Vector2(-3.0517578e-05, 0.43333435)
 shape = SubResource("RectangleShape2D_rjlel")
 
-[node name="InputReciver" type="Node" parent="." unique_id=213661670 node_paths=PackedStringArray("card_state_machine", "card_input_listener", "card_drag_handler", "card_root")]
+[node name="InputReciver" type="Node" parent="Code" unique_id=213661670 node_paths=PackedStringArray("card_state_machine", "card_input_listener", "card_drag_handler", "card_root")]
 script = ExtResource("2_5yxk3")
 card_state_machine = NodePath("../CardStateMachine")
 card_input_listener = NodePath("../InputListener")
 card_drag_handler = NodePath("../DragHandler")
-card_root = NodePath("..")
+card_root = NodePath("../..")
 
-[node name="CardStateMachine" type="Node" parent="." unique_id=1069228844]
+[node name="CardStateMachine" type="Node" parent="Code" unique_id=1069228844]
 script = ExtResource("3_6ogv0")
 metadata/_custom_type_script = "uid://ro02870urhpb"
 
-[node name="CardImage" type="Sprite2D" parent="." unique_id=1482464689]
-scale = Vector2(0.14520307, 0.14520307)
-metadata/_edit_lock_ = true
-
-[node name="DragHandler" type="Node2D" parent="." unique_id=1428327336]
+[node name="DragHandler" type="Node2D" parent="Code" unique_id=1428327336]
 script = ExtResource("5_kbm25")
 
-[node name="Stats" type="Node" parent="." unique_id=2071413226]
+[node name="Stats" type="Node2D" parent="." unique_id=1314998697 node_paths=PackedStringArray("card_sprite", "cost")]
+script = ExtResource("6_6ogv0")
+card_sprite = NodePath("../CardImage")
+cost = [NodePath("Cost/Blood"), NodePath("Cost/Blood2"), NodePath("Cost/Blood3"), NodePath("Cost/Blood4")]
 
 [node name="Attack" type="Sprite2D" parent="Stats" unique_id=1488390869]
 position = Vector2(-69.4375, 89)
@@ -51,28 +53,32 @@ scale = Vector2(0.14727725, 0.14345993)
 position = Vector2(66, 111.00001)
 scale = Vector2(0.14727725, 0.14345993)
 
-[node name="Cost" type="Node" parent="Stats" unique_id=1110462057]
+[node name="Cost" type="Node2D" parent="Stats" unique_id=1912349997]
 
 [node name="Blood" type="Sprite2D" parent="Stats/Cost" unique_id=1555982944]
+z_index = 100
 position = Vector2(71, -83)
-rotation = -3.1415927
-scale = Vector2(0.15654323, -0.1441023)
+scale = Vector2(0.157, 0.144)
 texture = ExtResource("7_85qlg")
 
 [node name="Blood2" type="Sprite2D" parent="Stats/Cost" unique_id=1630070528]
+z_index = 100
 position = Vector2(55, -83)
-rotation = -3.1415927
-scale = Vector2(0.15654323, -0.1441023)
+scale = Vector2(0.157, 0.144)
 texture = ExtResource("7_85qlg")
 
 [node name="Blood3" type="Sprite2D" parent="Stats/Cost" unique_id=1751345964]
+z_index = 100
 position = Vector2(63, -64)
-rotation = -3.1415927
-scale = Vector2(0.15654323, -0.1441023)
+scale = Vector2(0.157, 0.144)
 texture = ExtResource("7_85qlg")
 
 [node name="Blood4" type="Sprite2D" parent="Stats/Cost" unique_id=221770338]
+z_index = 100
 position = Vector2(47, -64)
-rotation = -3.1415927
-scale = Vector2(0.15654323, -0.1441023)
+scale = Vector2(0.157, 0.144)
 texture = ExtResource("7_85qlg")
+
+[node name="CardImage" type="Sprite2D" parent="." unique_id=1482464689]
+scale = Vector2(0.14520307, 0.14520307)
+metadata/_edit_lock_ = true
