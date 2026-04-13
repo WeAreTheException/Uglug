@@ -10,13 +10,22 @@
 [ext_resource type="Script" uid="uid://c8owoh3gv45g4" path="res://Deck/DeckView.gd" id="5_wj4mp"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="6_efqef"]
 [ext_resource type="Texture2D" uid="uid://cgs5k6p3mggyf" path="res://Art/AntSprite.png" id="7_hsdj0"]
+[ext_resource type="Texture2D" uid="uid://calki5jjktjaf" path="res://Art/Sergio.jpg" id="8_mp65t"]
 
 [sub_resource type="Resource" id="Resource_hsdj0"]
 script = ExtResource("6_efqef")
 name = "Ant"
 health = 3
-cost = 2
 sprite = ExtResource("7_hsdj0")
+metadata/_custom_type_script = "uid://duslcpxrhurv8"
+
+[sub_resource type="Resource" id="Resource_mp65t"]
+script = ExtResource("6_efqef")
+name = "Sergio"
+attack = 1
+health = 3
+cost = 2
+sprite = ExtResource("8_mp65t")
 metadata/_custom_type_script = "uid://duslcpxrhurv8"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4nk3w"]
@@ -42,7 +51,7 @@ card_database = NodePath("../CardDatabase")
 
 [node name="CardDatabase" type="Node" parent="." unique_id=1978405134]
 script = ExtResource("4_xceh1")
-cards = Array[ExtResource("6_efqef")]([SubResource("Resource_hsdj0")])
+cards = Array[ExtResource("6_efqef")]([SubResource("Resource_hsdj0"), SubResource("Resource_mp65t")])
 
 [node name="DeckView" type="Node" parent="." unique_id=696320865]
 script = ExtResource("5_wj4mp")
