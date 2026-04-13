@@ -15,6 +15,7 @@ func add_card_to_hand(card: Node2D, speed := DEFAULT_CARD_MOVE_SPEED) -> void:
 func remove_card_from_hand(card: Node2D) -> void:
 	if card in player_hand:
 		player_hand.erase(card)
+		kill_card_tween(card)
 		update_hand_positions()
 
 func is_hand_full() -> bool:
@@ -36,5 +37,19 @@ func calculate_card_position(index: int) -> Vector2:
 	return global_position + Vector2(x_offset, 0)
 
 func animate_card_to_position(card: Node2D, new_position: Vector2, speed: float) -> void:
+	kill_card_tween(card)
+
 	var tween = get_tree().create_tween()
+	card.set_meta("move_tween", tween)
 	tween.tween_property(card, "global_position", new_position, speed)
+	tween.finished.connect(func():
+		if card.has_meta("move_tween") and card.get_meta("move_tween") == tween:
+			card.remove_meta("move_tween")
+	)
+
+func kill_card_tween(card: Node2D) -> void:
+	if card.has_meta("move_tween"):
+		var tween = card.get_meta("move_tween")
+		if tween != null:
+			tween.kill()
+		card.remove_meta("move_tween")

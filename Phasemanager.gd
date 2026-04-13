@@ -68,6 +68,10 @@ func start_opponent_draw_phase() -> void:
 			Card.Owner.OPPONENT
 		)
 
+	await get_tree().create_timer(0.8).timeout
+
+	start_opponent_place_phase()
+
 	start_opponent_place_phase()
 
 func start_opponent_place_phase() -> void:

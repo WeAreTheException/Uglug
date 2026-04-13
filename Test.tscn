@@ -72,6 +72,7 @@ offset_bottom = 8.0
 text = "End Placement Phase
 "
 
-[node name="OpponentController" type="Node" parent="." unique_id=1381366670 node_paths=PackedStringArray("opponent_hand")]
+[node name="OpponentController" type="Node" parent="." unique_id=1381366670 node_paths=PackedStringArray("opponent_hand", "enemy_slot_roots")]
 script = ExtResource("7_q1uvj")
 opponent_hand = NodePath("../EnemyHand")
+enemy_slot_roots = [NodePath("../EnemySlots/NewSlots"), NodePath("../EnemySlots/NewSlots2"), NodePath("../EnemySlots/NewSlots3"), NodePath("../EnemySlots/NewSlots4")]
