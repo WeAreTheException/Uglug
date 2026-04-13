@@ -4,9 +4,9 @@ class_name Card
 @export var input_listener: CardInputListener
 @export var drag_handler: CardDragHandler
 @export var card_sprite: Sprite2D
-@export var attack_label: RichTextLabel
-@export var health_label: RichTextLabel
-@export var cost_hearts: Array[Sprite2D]
+@export var attack: RichTextLabel
+@export var health: RichTextLabel
+@export var cost: Array[Sprite2D]
 
 var player_hand: Node2D = null
 var current_slot: NewSlots = null
@@ -47,22 +47,22 @@ func update_sprite_display() -> void:
 		card_sprite.texture = texture
 
 func update_attack_display() -> void:
-	if attack_label != null and card_data.has("attack"):
-		attack_label.text = str(card_data["attack"])
+	if attack != null and card_data.has("attack"):
+		attack.text = str(card_data["attack"])
 
 func update_health_display() -> void:
-	if health_label != null and card_data.has("health"):
-		health_label.text = str(card_data["health"])
+	if health != null and card_data.has("health"):
+		health.text = str(card_data["health"])
 
 func update_cost_display() -> void:
-	if not card_data.has("cost"):
-		return
+	var card_cost: int = 0
 
-	var cost: int = card_data["cost"]
+	if card_data.has("cost"):
+		card_cost = card_data["cost"]
 
-	for i in range(cost_hearts.size()):
-		if cost_hearts[i] != null:
-			cost_hearts[i].visible = i < cost
+	for i in range(cost.size()):
+		if cost[i] != null:
+			cost[i].visible = i < card_cost
 
 func _on_hovered(_listener) -> void:
 	is_hovered = true

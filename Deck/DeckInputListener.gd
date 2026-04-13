@@ -1,7 +1,7 @@
 extends Area2D
 class_name DeckInputListener
 
-var draw_handler: DeckRoot = null
+var draw_handler: DeckDrawHandler = null
 
 func _ready() -> void:
 	input_pickable = true

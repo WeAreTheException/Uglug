@@ -1,7 +1,7 @@
 extends Node
 class_name DeckView
 
-var deck: Deck = null
+var deck: DeckCount = null
 var counter: RichTextLabel = null
 var deck_sprite: Sprite2D = null
 

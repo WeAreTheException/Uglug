@@ -6,7 +6,6 @@
 [ext_resource type="Script" uid="uid://ro02870urhpb" path="res://Code/States/CardStateMachine.gd" id="3_6ogv0"]
 [ext_resource type="Script" uid="uid://clgbwnniuqm7g" path="res://Code/Handlers/CardDragHandler.gd" id="5_kbm25"]
 [ext_resource type="Texture2D" uid="uid://d1ypj3toan6r1" path="res://Art/Blood.png" id="7_85qlg"]
-[ext_resource type="Texture2D" uid="uid://bdi7eyt5cmur0" path="res://Art/Numbers/1.png" id="8_85qlg"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
 size = Vector2(176, 267)
@@ -42,27 +41,38 @@ metadata/_edit_lock_ = true
 [node name="DragHandler" type="Node2D" parent="." unique_id=1428327336]
 script = ExtResource("5_kbm25")
 
-[node name="Blood" type="Sprite2D" parent="." unique_id=1555982944]
-position = Vector2(71, -83)
-scale = Vector2(-0.15654323, 0.1441023)
-texture = ExtResource("7_85qlg")
+[node name="Stats" type="Node" parent="." unique_id=2071413226]
 
-[node name="Blood2" type="Sprite2D" parent="." unique_id=1630070528]
-position = Vector2(54, -83)
-scale = Vector2(-0.15654323, 0.1441023)
-texture = ExtResource("7_85qlg")
-
-[node name="Blood3" type="Sprite2D" parent="." unique_id=1751345964]
-position = Vector2(62, -64)
-scale = Vector2(-0.15654323, 0.1441023)
-texture = ExtResource("7_85qlg")
-
-[node name="Attack" type="Sprite2D" parent="." unique_id=1488390869]
+[node name="Attack" type="Sprite2D" parent="Stats" unique_id=1488390869]
 position = Vector2(-69.4375, 89)
 scale = Vector2(0.14727725, 0.14345993)
-texture = ExtResource("8_85qlg")
 
-[node name="Health" type="Sprite2D" parent="." unique_id=1034605430]
+[node name="Health" type="Sprite2D" parent="Stats" unique_id=1034605430]
 position = Vector2(66, 111.00001)
 scale = Vector2(0.14727725, 0.14345993)
-texture = ExtResource("8_85qlg")
+
+[node name="Cost" type="Node" parent="Stats" unique_id=1110462057]
+
+[node name="Blood" type="Sprite2D" parent="Stats/Cost" unique_id=1555982944]
+position = Vector2(71, -83)
+rotation = -3.1415927
+scale = Vector2(0.15654323, -0.1441023)
+texture = ExtResource("7_85qlg")
+
+[node name="Blood2" type="Sprite2D" parent="Stats/Cost" unique_id=1630070528]
+position = Vector2(55, -83)
+rotation = -3.1415927
+scale = Vector2(0.15654323, -0.1441023)
+texture = ExtResource("7_85qlg")
+
+[node name="Blood3" type="Sprite2D" parent="Stats/Cost" unique_id=1751345964]
+position = Vector2(63, -64)
+rotation = -3.1415927
+scale = Vector2(0.15654323, -0.1441023)
+texture = ExtResource("7_85qlg")
+
+[node name="Blood4" type="Sprite2D" parent="Stats/Cost" unique_id=221770338]
+position = Vector2(47, -64)
+rotation = -3.1415927
+scale = Vector2(0.15654323, -0.1441023)
+texture = ExtResource("7_85qlg")

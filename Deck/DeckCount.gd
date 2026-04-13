@@ -1,5 +1,5 @@
 extends Node
-class_name Deck
+class_name DeckCount
 
 const CARD_SCENE_PATH = "res://NewCard.tscn"
 

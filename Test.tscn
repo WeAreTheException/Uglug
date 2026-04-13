@@ -12,10 +12,11 @@
 [node name="PlayerHand" parent="." unique_id=2142011949 instance=ExtResource("5_aq4fw")]
 position = Vector2(768, 896)
 
-[node name="SacrificeDeck" parent="." unique_id=1434682879 node_paths=PackedStringArray("player_hand", "card_manager") instance=ExtResource("3_2au82")]
+[node name="SacrificeDeck" parent="." unique_id=1434682879 node_paths=PackedStringArray("player_hand", "card_manager", "spawn_anchor") instance=ExtResource("3_2au82")]
 position = Vector2(1792, 896)
 player_hand = NodePath("../PlayerHand")
 card_manager = NodePath("../CardManager")
+spawn_anchor = NodePath(".")
 
 [node name="MySlots" type="Node2D" parent="." unique_id=80076534]
 position = Vector2(0, 256)
