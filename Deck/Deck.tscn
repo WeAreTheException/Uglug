@@ -16,6 +16,7 @@
 [ext_resource type="Texture2D" uid="uid://dnffnc1xuveq5" path="res://Art/Ants/Growant.png" id="12_g41ub"]
 [ext_resource type="Texture2D" uid="uid://cpgvdfdrt7v4o" path="res://Art/Ants/Pregnant.png" id="13_otsu0"]
 [ext_resource type="Texture2D" uid="uid://b55jkuhdyk7wl" path="res://Art/Ants/QueenAnt.png" id="14_bq3m0"]
+[ext_resource type="Texture2D" uid="uid://b86c6mggcrsk4" path="res://Sprites/IMG_6221.PNG" id="17_g41ub"]
 
 [sub_resource type="Resource" id="Resource_hsdj0"]
 script = ExtResource("6_efqef")
@@ -133,6 +134,7 @@ shape = SubResource("RectangleShape2D_4nk3w")
 [node name="DeckImage" type="Sprite2D" parent="." unique_id=127635550]
 z_index = -2
 scale = Vector2(0.120000005, 0.12661907)
+texture = ExtResource("17_g41ub")
 script = ExtResource("5_wj4mp")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="." unique_id=305945305]

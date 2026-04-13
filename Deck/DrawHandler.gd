@@ -56,8 +56,10 @@ func draw_card_to_hand(target_hand: Node2D, target_spawn_anchor: Node2D, card_ow
 		return false
 
 	new_card.player_hand = target_hand
-	new_card.phase_manager = phase_manager
 	new_card.card_owner = card_owner
+
+	if new_card.drag_handler != null:
+		new_card.drag_handler.phase_manager = phase_manager
 
 	card_manager.add_child(new_card)
 	new_card.global_position = target_spawn_anchor.global_position

@@ -13,8 +13,6 @@ enum PowerState {
 	EMPOWERED
 }
 
-@export var dummy_target: Node2D
-
 var current_main_state: MainState = MainState.WAIT
 var current_power_state: PowerState = PowerState.BASE
 
@@ -66,8 +64,8 @@ func enter_attack() -> void:
 	if card == null:
 		return
 
-	if dummy_target != null and dummy_target.has_method("take_damage"):
-		dummy_target.take_damage(card.current_attack)
+	if card.dummy_target != null and card.dummy_target.has_method("take_damage"):
+		card.dummy_target.take_damage(card.current_attack)
 	else:
 		print(card.card_name, " attacked for ", card.current_attack)
 
