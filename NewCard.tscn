@@ -7,6 +7,13 @@
 [ext_resource type="Script" uid="uid://clgbwnniuqm7g" path="res://Code/Handlers/CardDragHandler.gd" id="5_kbm25"]
 [ext_resource type="Script" uid="uid://dbemrm25gvek6" path="res://Stats.gd" id="6_6ogv0"]
 [ext_resource type="Texture2D" uid="uid://d1ypj3toan6r1" path="res://Art/Blood.png" id="7_85qlg"]
+[ext_resource type="Texture2D" uid="uid://bdi7eyt5cmur0" path="res://Art/Numbers/1.png" id="7_n7m2t"]
+[ext_resource type="Texture2D" uid="uid://clk0ori80b5gg" path="res://Art/Numbers/2.png" id="8_uunv8"]
+[ext_resource type="Texture2D" uid="uid://bnj2kyvgakfq3" path="res://Art/Numbers/3.png" id="9_gbuxm"]
+[ext_resource type="Texture2D" uid="uid://4f3gn63utyru" path="res://Art/Numbers/4.png" id="10_mtuvq"]
+[ext_resource type="Texture2D" uid="uid://c1fev2dw4ehne" path="res://Art/Numbers/5.png" id="11_q5rvn"]
+[ext_resource type="Texture2D" uid="uid://bq8esv4xpuv68" path="res://Art/Numbers/6.png" id="12_fyanw"]
+[ext_resource type="Texture2D" uid="uid://cgs5k6p3mggyf" path="res://Art/AntSprite.png" id="14_uunv8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
 size = Vector2(176, 267)
@@ -40,10 +47,15 @@ metadata/_custom_type_script = "uid://ro02870urhpb"
 [node name="DragHandler" type="Node2D" parent="Code" unique_id=1428327336]
 script = ExtResource("5_kbm25")
 
-[node name="Stats" type="Node2D" parent="." unique_id=1314998697 node_paths=PackedStringArray("card_sprite", "cost")]
+[node name="Stats" type="Node2D" parent="." unique_id=1314998697 node_paths=PackedStringArray("card_sprite", "attack", "health", "cost", "name_label")]
 script = ExtResource("6_6ogv0")
 card_sprite = NodePath("../CardImage")
-cost = [NodePath("Cost/Blood"), NodePath("Cost/Blood2"), NodePath("Cost/Blood3"), NodePath("Cost/Blood4")]
+attack = NodePath("Attack")
+health = NodePath("Health")
+cost = [NodePath("Blood"), NodePath("Blood2"), NodePath("Blood3"), NodePath("Blood4")]
+name_label = NodePath("Name")
+attack_textures = Array[Texture2D]([ExtResource("7_n7m2t"), ExtResource("8_uunv8"), ExtResource("9_gbuxm"), ExtResource("10_mtuvq"), ExtResource("11_q5rvn"), ExtResource("12_fyanw")])
+health_textures = Array[Texture2D]([ExtResource("7_n7m2t"), ExtResource("8_uunv8"), ExtResource("9_gbuxm"), ExtResource("10_mtuvq"), ExtResource("11_q5rvn"), ExtResource("12_fyanw")])
 
 [node name="Attack" type="Sprite2D" parent="Stats" unique_id=1488390869]
 position = Vector2(-69.4375, 89)
@@ -53,32 +65,45 @@ scale = Vector2(0.14727725, 0.14345993)
 position = Vector2(66, 111.00001)
 scale = Vector2(0.14727725, 0.14345993)
 
-[node name="Cost" type="Node2D" parent="Stats" unique_id=1912349997]
-
-[node name="Blood" type="Sprite2D" parent="Stats/Cost" unique_id=1555982944]
+[node name="Blood" type="Sprite2D" parent="Stats" unique_id=1555982944]
 z_index = 100
 position = Vector2(71, -83)
 scale = Vector2(0.157, 0.144)
 texture = ExtResource("7_85qlg")
 
-[node name="Blood2" type="Sprite2D" parent="Stats/Cost" unique_id=1630070528]
+[node name="Blood2" type="Sprite2D" parent="Stats" unique_id=1630070528]
 z_index = 100
 position = Vector2(55, -83)
 scale = Vector2(0.157, 0.144)
 texture = ExtResource("7_85qlg")
 
-[node name="Blood3" type="Sprite2D" parent="Stats/Cost" unique_id=1751345964]
+[node name="Blood3" type="Sprite2D" parent="Stats" unique_id=1751345964]
 z_index = 100
 position = Vector2(63, -64)
 scale = Vector2(0.157, 0.144)
 texture = ExtResource("7_85qlg")
 
-[node name="Blood4" type="Sprite2D" parent="Stats/Cost" unique_id=221770338]
+[node name="Blood4" type="Sprite2D" parent="Stats" unique_id=221770338]
 z_index = 100
 position = Vector2(47, -64)
 scale = Vector2(0.157, 0.144)
 texture = ExtResource("7_85qlg")
 
+[node name="Name" type="RichTextLabel" parent="Stats" unique_id=484770799]
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -78.0
+offset_top = -128.0
+offset_right = 78.0
+offset_bottom = -103.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0.16206557, 0.1620656, 0.16206557, 1)
+
 [node name="CardImage" type="Sprite2D" parent="." unique_id=1482464689]
 scale = Vector2(0.14520307, 0.14520307)
+texture = ExtResource("14_uunv8")
 metadata/_edit_lock_ = true

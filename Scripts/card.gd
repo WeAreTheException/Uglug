@@ -24,12 +24,16 @@ func _ready() -> void:
 
 func setup_card(data: CardData) -> void:
 	if data == null:
+		print("FAIL: setup_card got null data")
 		return
 
 	card_name = data.name
+	print("CARD setup_card called with: ", data.name)
 
 	if stats != null:
 		stats.setup_from_card_data(data)
+	else:
+		print("FAIL: stats is null on card")
 
 func _on_hovered(_listener) -> void:
 	is_hovered = true
