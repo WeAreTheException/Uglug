@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://bxghpl6h2pl6u"]
 
 [ext_resource type="Script" uid="uid://o6854ysw5jet" path="res://Deck/DeckRoot.gd" id="1_2sl2c"]
-[ext_resource type="Texture2D" uid="uid://b86c6mggcrsk4" path="res://Sprites/IMG_6221.PNG" id="2_kjdvm"]
 [ext_resource type="Script" uid="uid://cde1kc0mhh5jv" path="res://Deck/DeckCount.gd" id="2_wj4mp"]
 [ext_resource type="PackedScene" uid="uid://l28s3hnlv4iy" path="res://Cards/NewCard.tscn" id="3_5cebq"]
 [ext_resource type="Script" uid="uid://chw242mi2nxl4" path="res://Deck/DeckInputListener.gd" id="3_6omjd"]
@@ -9,8 +8,14 @@
 [ext_resource type="Script" uid="uid://blq43rpyvye6c" path="res://Data/CardDatabase.gd" id="4_xceh1"]
 [ext_resource type="Script" uid="uid://c8owoh3gv45g4" path="res://Deck/DeckView.gd" id="5_wj4mp"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="6_efqef"]
-[ext_resource type="Texture2D" uid="uid://cgs5k6p3mggyf" path="res://Art/AntSprite.png" id="7_hsdj0"]
-[ext_resource type="Texture2D" uid="uid://calki5jjktjaf" path="res://Art/Sergio.jpg" id="8_mp65t"]
+[ext_resource type="Texture2D" uid="uid://cgs5k6p3mggyf" path="res://Art/Ants/AntSprite.png" id="7_hsdj0"]
+[ext_resource type="Texture2D" uid="uid://di66ndoe6cgnp" path="res://Art/Ants/Antler.png" id="8_hsdj0"]
+[ext_resource type="Texture2D" uid="uid://b1soqhrvsu86i" path="res://Art/Ants/Aviant.png" id="9_d6k4u"]
+[ext_resource type="Texture2D" uid="uid://bd3n84cq63rtf" path="res://Art/Ants/Eliminant.png" id="10_at7ke"]
+[ext_resource type="Texture2D" uid="uid://dqynxdcij0qpn" path="res://Art/Ants/Giant.png" id="11_334mj"]
+[ext_resource type="Texture2D" uid="uid://dnffnc1xuveq5" path="res://Art/Ants/Growant.png" id="12_g41ub"]
+[ext_resource type="Texture2D" uid="uid://cpgvdfdrt7v4o" path="res://Art/Ants/Pregnant.png" id="13_otsu0"]
+[ext_resource type="Texture2D" uid="uid://b55jkuhdyk7wl" path="res://Art/Ants/QueenAnt.png" id="14_bq3m0"]
 
 [sub_resource type="Resource" id="Resource_hsdj0"]
 script = ExtResource("6_efqef")
@@ -21,11 +26,73 @@ metadata/_custom_type_script = "uid://duslcpxrhurv8"
 
 [sub_resource type="Resource" id="Resource_mp65t"]
 script = ExtResource("6_efqef")
-name = "Sergio"
+name = "Antler"
 attack = 1
-health = 3
+health = 1
+cost = 1
+sprite = ExtResource("8_hsdj0")
+metadata/_custom_type_script = "uid://duslcpxrhurv8"
+
+[sub_resource type="Resource" id="Resource_vx53f"]
+script = ExtResource("6_efqef")
+name = "Aviant"
+attack = 2
+health = 1
+cost = 1
+sprite = ExtResource("9_d6k4u")
+metadata/_custom_type_script = "uid://duslcpxrhurv8"
+
+[sub_resource type="Resource" id="Resource_buwnv"]
+script = ExtResource("6_efqef")
+name = "Distant"
+attack = 1
+health = 2
+cost = 1
+sprite = ExtResource("9_d6k4u")
+metadata/_custom_type_script = "uid://duslcpxrhurv8"
+
+[sub_resource type="Resource" id="Resource_334mj"]
+script = ExtResource("6_efqef")
+name = "Eliminant"
+attack = 1
+health = 1
 cost = 2
-sprite = ExtResource("8_mp65t")
+sprite = ExtResource("10_at7ke")
+metadata/_custom_type_script = "uid://duslcpxrhurv8"
+
+[sub_resource type="Resource" id="Resource_rpdxx"]
+script = ExtResource("6_efqef")
+name = "Giant"
+attack = 4
+health = 6
+cost = 4
+sprite = ExtResource("11_334mj")
+metadata/_custom_type_script = "uid://duslcpxrhurv8"
+
+[sub_resource type="Resource" id="Resource_1oh5c"]
+script = ExtResource("6_efqef")
+name = "Growant"
+attack = 1
+health = 1
+cost = 1
+sprite = ExtResource("12_g41ub")
+metadata/_custom_type_script = "uid://duslcpxrhurv8"
+
+[sub_resource type="Resource" id="Resource_3v71i"]
+script = ExtResource("6_efqef")
+name = "Pregnant"
+health = 2
+cost = 1
+sprite = ExtResource("13_otsu0")
+metadata/_custom_type_script = "uid://duslcpxrhurv8"
+
+[sub_resource type="Resource" id="Resource_0ckc6"]
+script = ExtResource("6_efqef")
+name = "QueenAnt"
+attack = 2
+health = 4
+cost = 3
+sprite = ExtResource("14_bq3m0")
 metadata/_custom_type_script = "uid://duslcpxrhurv8"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4nk3w"]
@@ -51,7 +118,7 @@ card_database = NodePath("../CardDatabase")
 
 [node name="CardDatabase" type="Node" parent="." unique_id=1978405134]
 script = ExtResource("4_xceh1")
-cards = Array[ExtResource("6_efqef")]([SubResource("Resource_hsdj0"), SubResource("Resource_mp65t")])
+cards = Array[ExtResource("6_efqef")]([SubResource("Resource_hsdj0"), SubResource("Resource_mp65t"), SubResource("Resource_vx53f"), SubResource("Resource_buwnv"), SubResource("Resource_334mj"), SubResource("Resource_rpdxx"), SubResource("Resource_1oh5c"), SubResource("Resource_3v71i"), SubResource("Resource_0ckc6")])
 
 [node name="DeckView" type="Node" parent="." unique_id=696320865]
 script = ExtResource("5_wj4mp")
@@ -66,7 +133,6 @@ shape = SubResource("RectangleShape2D_4nk3w")
 [node name="DeckImage" type="Sprite2D" parent="." unique_id=127635550]
 z_index = -2
 scale = Vector2(0.120000005, 0.12661907)
-texture = ExtResource("2_kjdvm")
 script = ExtResource("5_wj4mp")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="." unique_id=305945305]
