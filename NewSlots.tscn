@@ -6,12 +6,14 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pqsda"]
 size = Vector2(180, 265)
 
-[node name="NewSlots" type="Area2D" unique_id=1580627812]
-script = ExtResource("1_0x5xu")
+[node name="NewSlots" type="Node2D" unique_id=1783533892]
 
 [node name="CardSlotImage" type="Sprite2D" parent="." unique_id=1462752532]
 texture = ExtResource("1_xbaqm")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=112184198]
+[node name="Area2D" type="Area2D" parent="." unique_id=225223713]
+script = ExtResource("1_0x5xu")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=112184198]
 position = Vector2(0, 0.5)
 shape = SubResource("RectangleShape2D_pqsda")

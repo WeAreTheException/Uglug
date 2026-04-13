@@ -4,7 +4,8 @@ class_name PhaseManager
 enum Phase {
 	PLAYER_DRAW,
 	PLAYER_PLACE,
-	OPPONENT_DRAW
+	OPPONENT_DRAW,
+	OPPONENT_PLACE
 }
 
 const PLAYER_DRAWS_PER_TURN := 2
@@ -13,6 +14,7 @@ const OPPONENT_DRAWS_PER_TURN := 2
 @export var deck_root: DeckRoot
 @export var opponent_hand: Node2D
 @export var opponent_spawn_anchor: Node2D
+@export var opponent_controller: OpponentController
 
 var current_phase: Phase = Phase.PLAYER_DRAW
 var player_draw_count: int = 0
@@ -25,9 +27,6 @@ func is_player_draw_phase() -> bool:
 
 func is_player_place_phase() -> bool:
 	return current_phase == Phase.PLAYER_PLACE
-
-func is_opponent_draw_phase() -> bool:
-	return current_phase == Phase.OPPONENT_DRAW
 
 func start_player_draw_phase() -> void:
 	current_phase = Phase.PLAYER_DRAW
@@ -58,20 +57,8 @@ func start_opponent_draw_phase() -> void:
 	current_phase = Phase.OPPONENT_DRAW
 	print("OPPONENT DRAW PHASE")
 
-	if deck_root == null:
-		print("OPPONENT DRAW FAILED: deck_root is null")
-		return
-
-	if deck_root.draw_handler == null:
-		print("OPPONENT DRAW FAILED: draw_handler is null")
-		return
-
-	if opponent_hand == null:
-		print("OPPONENT DRAW FAILED: opponent_hand is null")
-		return
-
-	if opponent_spawn_anchor == null:
-		print("OPPONENT DRAW FAILED: opponent_spawn_anchor is null")
+	if deck_root == null or deck_root.draw_handler == null:
+		print("Opponent draw failed: missing deck")
 		return
 
 	for i in OPPONENT_DRAWS_PER_TURN:
@@ -80,5 +67,14 @@ func start_opponent_draw_phase() -> void:
 			opponent_spawn_anchor,
 			Card.Owner.OPPONENT
 		)
+
+	start_opponent_place_phase()
+
+func start_opponent_place_phase() -> void:
+	current_phase = Phase.OPPONENT_PLACE
+	print("OPPONENT PLACE PHASE")
+
+	if opponent_controller != null:
+		opponent_controller.place_cards()
 
 	start_player_draw_phase()

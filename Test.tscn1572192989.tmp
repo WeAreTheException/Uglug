@@ -59,12 +59,11 @@ position = Vector2(640, 65)
 [node name="NewSlots4" parent="EnemySlots" unique_id=1483558962 instance=ExtResource("1_njov2")]
 position = Vector2(384, 64)
 
-[node name="PhaseManager" type="Node" parent="." unique_id=384942188 node_paths=PackedStringArray("deck_root", "opponent_hand", "opponent_spawn_anchor", "opponent_controller")]
+[node name="PhaseManager" type="Node" parent="." unique_id=384942188 node_paths=PackedStringArray("deck_root", "opponent_hand", "opponent_spawn_anchor")]
 script = ExtResource("5_q1uvj")
 deck_root = NodePath("../Deck")
 opponent_hand = NodePath("../EnemyHand")
 opponent_spawn_anchor = NodePath("../Deck")
-opponent_controller = NodePath("../OpponentController")
 
 [node name="Button" type="Button" parent="." unique_id=109142189]
 offset_right = 8.0
@@ -72,6 +71,5 @@ offset_bottom = 8.0
 text = "End Placement Phase
 "
 
-[node name="OpponentController" type="Node" parent="." unique_id=1381366670 node_paths=PackedStringArray("opponent_hand")]
+[node name="Node" type="Node" parent="." unique_id=1381366670]
 script = ExtResource("7_q1uvj")
-opponent_hand = NodePath("../EnemyHand")
