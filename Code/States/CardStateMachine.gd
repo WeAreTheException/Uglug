@@ -29,7 +29,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event is InputEventKey and event.pressed and not event.echo:
 			match event.keycode:
 				KEY_A, KEY_H, KEY_D:
-					print("Card must be in a slot to enter states")
+					print("card must be in a slot")
 		return
 
 	if event is InputEventKey and event.pressed and not event.echo:
@@ -46,7 +46,7 @@ func set_main_state(new_state: MainState) -> void:
 		return
 
 	current_main_state = new_state
-	print("Main state entered: ", MainState.keys()[current_main_state])
+	print(MainState.keys()[current_main_state].to_lower())
 
 	match current_main_state:
 		MainState.ATTACK:
@@ -59,46 +59,50 @@ func set_main_state(new_state: MainState) -> void:
 			enter_wait()
 
 func enter_attack() -> void:
-	print("Attack logic")
-
 	if card == null:
 		return
 
-	if card.dummy_target != null and card.dummy_target.has_method("take_damage"):
-		card.dummy_target.take_damage(card.current_attack)
+	if card.current_slot == null:
+		print("attack blocked")
+		set_main_state(MainState.WAIT)
+		return
+
+	var opposing_slot = card.current_slot.opposing_slot
+
+	if opposing_slot != null and opposing_slot.current_card != null:
+		var opposing_card = opposing_slot.current_card
+
+		if opposing_card.has_method("take_damage"):
+			print(card.card_name, " -> ", opposing_card.card_name, " (", card.current_attack, " dmg)")
+			opposing_card.take_damage(card.current_attack)
+		else:
+			print("opposing card has no take_damage")
 	else:
-		print(card.card_name, " attacked for ", card.current_attack)
+		print(card.card_name, " -> player (", card.current_attack, " dmg)")
 
 	set_main_state(MainState.WAIT)
 
 func enter_hurt() -> void:
-	print("Hurt logic")
-
 	if card == null:
 		return
 
 	card.take_damage(1)
 
-	if card.current_health <= 0:
-		set_main_state(MainState.DEATH)
-	else:
+	if is_instance_valid(card) and card.current_health > 0:
 		set_main_state(MainState.WAIT)
 
 func enter_death() -> void:
-	print("Death logic")
-
 	if card != null:
 		card.kill()
 
 func enter_wait() -> void:
-	print("Wait logic")
+	pass
 
 func set_power_state(new_state: PowerState) -> void:
 	if current_power_state == new_state:
 		return
 
 	current_power_state = new_state
-	print("Power state entered: ", PowerState.keys()[current_power_state])
 
 func is_in_main_state(state: MainState) -> bool:
 	return current_main_state == state

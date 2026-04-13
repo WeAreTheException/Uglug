@@ -10,7 +10,6 @@ enum Owner {
 @export var drag_handler: DragHandler
 @export var stats: Stats
 @export var test_data: CardData
-@export var dummy_target: Node2D
 
 var card_owner: Owner = Owner.PLAYER
 
@@ -43,7 +42,7 @@ func setup_card(data: CardData) -> void:
 	current_health = data.health
 	current_cost = data.cost
 
-	print("CARD setup_card called with: ", data.name)
+	print("setup: ", data.name)
 
 	if stats != null:
 		stats.setup_from_card_data(data)
@@ -56,17 +55,31 @@ func take_damage(amount: int) -> void:
 	if current_health < 0:
 		current_health = 0
 
-	print(card_name, " took damage. Current health: ", current_health)
+	if current_health <= 0:
+		if stats != null:
+			stats.update_health(current_health)
+
+		kill()
+		return
 
 	if stats != null:
 		stats.update_health(current_health)
+
+	print(card_name, " (", current_health, " hp)")
 
 func kill() -> void:
 	current_health = 0
-	print(card_name, " died. Current health: ", current_health)
 
 	if stats != null:
 		stats.update_health(current_health)
+
+	print(card_name, " died")
+
+	if current_slot != null:
+		current_slot.clear_card()
+		current_slot = null
+
+	queue_free()
 
 func _on_slot_entered(slot: NewSlots) -> void:
 	overlapping_slot = slot
@@ -81,12 +94,8 @@ func place_into_slot(slot: NewSlots) -> void:
 		return
 
 	if slot.current_card != null and slot.current_card != self:
-		var old_card = slot.current_card
-		slot.clear_card()
-		old_card.current_slot = null
-
-		if old_card.player_hand != null:
-			old_card.player_hand.add_card_to_hand(old_card)
+		print("slot full")
+		return
 
 	slot.assign_card(self)
 	current_slot = slot

@@ -8,13 +8,15 @@
 
 [node name="StateTest" type="Node2D" unique_id=590443076]
 
-[node name="Card" parent="." unique_id=1703534497 instance=ExtResource("1_vrh5a")]
+[node name="Card" parent="." unique_id=1703534497 node_paths=PackedStringArray("dummy_target") instance=ExtResource("1_vrh5a")]
 position = Vector2(576, 384)
 test_data = ExtResource("2_jxqb7")
+dummy_target = NodePath("../Dummy")
 
-[node name="Antler" parent="." unique_id=840545449 instance=ExtResource("1_vrh5a")]
+[node name="Antler" parent="." unique_id=840545449 node_paths=PackedStringArray("dummy_target") instance=ExtResource("1_vrh5a")]
 position = Vector2(1408, 384)
 test_data = ExtResource("4_m5din")
+dummy_target = NodePath("../Dummy")
 
 [node name="NewSlots" parent="." unique_id=1783533892 instance=ExtResource("2_8m5fa")]
 position = Vector2(960, 384)
