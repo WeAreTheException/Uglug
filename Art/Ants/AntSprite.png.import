@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cgs5k6p3mggyf"
-path="res://.godot/imported/AntSprite.png-f049f6d3ff5b93621116c7df380cd487.ctex"
+path="res://.godot/imported/AntSprite.png-d0baf419ed3d43bb16788a9f923bf2c4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Art/AntSprite.png"
-dest_files=["res://.godot/imported/AntSprite.png-f049f6d3ff5b93621116c7df380cd487.ctex"]
+source_file="res://Art/Ants/AntSprite.png"
+dest_files=["res://.godot/imported/AntSprite.png-d0baf419ed3d43bb16788a9f923bf2c4.ctex"]
 
 [params]
 
