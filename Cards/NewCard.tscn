@@ -23,6 +23,10 @@ input_listener = NodePath("InputListener")
 drag_handler = NodePath("DragHandler")
 stats = NodePath("Stats")
 
+[node name="CardStateMachine" type="Node" parent="." unique_id=1069228844]
+script = ExtResource("12_lsojp")
+metadata/_custom_type_script = "uid://ro02870urhpb"
+
 [node name="Stats" type="Node2D" parent="." unique_id=1314998697 node_paths=PackedStringArray("card_sprite", "attack", "health", "cost", "name_label")]
 script = ExtResource("2_52a3h")
 card_sprite = NodePath("../CardImage")
@@ -96,10 +100,6 @@ card_state_machine = NodePath("../CardStateMachine")
 card_input_listener = NodePath("../InputListener")
 drag_handler = NodePath("../DragHandler")
 card_root = NodePath("..")
-
-[node name="CardStateMachine" type="Node" parent="." unique_id=1069228844]
-script = ExtResource("12_lsojp")
-metadata/_custom_type_script = "uid://ro02870urhpb"
 
 [node name="DragHandler" type="Node2D" parent="." unique_id=1428327336]
 script = ExtResource("13_vartc")

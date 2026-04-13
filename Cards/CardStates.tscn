@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://l28s3hnlv4iy" path="res://Cards/NewCard.tscn" id="1_vrh5a"]
 [ext_resource type="PackedScene" uid="uid://c8mekq0tyuadn" path="res://Slots/NewSlots.tscn" id="2_8m5fa"]
 [ext_resource type="Resource" uid="uid://fspnnewatlod" path="res://Cards/Ant.tres" id="2_ydv2a"]
+[ext_resource type="Script" uid="uid://cqj622citfc1y" path="res://Cards/Dummy.gd" id="4_ydv2a"]
 
 [node name="StateTest" type="Node2D" unique_id=590443076]
 
@@ -12,3 +13,6 @@ test_data = ExtResource("2_ydv2a")
 
 [node name="NewSlots" parent="." unique_id=1783533892 instance=ExtResource("2_8m5fa")]
 position = Vector2(960, 384)
+
+[node name="Dummy" type="Node2D" parent="." unique_id=1618062051]
+script = ExtResource("4_ydv2a")
