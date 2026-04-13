@@ -1,5 +1,5 @@
 extends Node2D
-class_name CardDragHandler
+class_name DragHandler
 
 var phase_manager: PhaseManager = null
 
@@ -22,12 +22,16 @@ func update_drag() -> void:
 		clamp(mouse_pos.y, 0, screen_size.y)
 	)
 
-func start_drag(card: Card) -> void:
+func start_drag(card) -> void:
 	if card == null:
 		return
 
 	if phase_manager == null:
 		print("start_drag blocked: phase_manager is null")
+		return
+
+	if card.card_owner != Card.Owner.PLAYER:
+		print("start_drag blocked: not player-owned card")
 		return
 
 	if not phase_manager.is_player_place_phase():

@@ -3,7 +3,7 @@ class_name CardInputReceiver
 
 @export var card_state_machine: CardStateMachine
 @export var card_input_listener: CardInputListener
-@export var card_drag_handler: CardDragHandler
+@export var drag_handler: DragHandler
 @export var card_root: Card
 
 var is_hovered: bool = false
@@ -24,15 +24,15 @@ func _on_card_hovered_off(_card) -> void:
 	is_hovered = false
 
 func _on_card_pressed(_card) -> void:
-	if card_drag_handler == null:
+	if drag_handler == null:
 		return
 	if card_root == null:
 		return
 
-	card_drag_handler.start_drag(card_root)
+	drag_handler.start_drag(card_root)
 
 func _on_card_released(_card) -> void:
-	if card_drag_handler == null:
+	if drag_handler == null:
 		return
 
-	card_drag_handler.stop_drag()
+	drag_handler.stop_drag()

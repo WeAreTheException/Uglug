@@ -11,56 +11,65 @@ var card_manager: Node2D = null
 var spawn_anchor: Node2D = null
 var phase_manager: PhaseManager = null
 
-func draw_card() -> void:
-	if deck == null:
-		return
-	if player_hand == null:
-		return
-	if card_manager == null:
-		return
-	if spawn_anchor == null:
-		return
-	if card_database == null:
-		return
-	if deck.card_scene == null:
-		return
+func draw_player_card() -> void:
 	if phase_manager == null:
 		print("Draw blocked: phase_manager is null")
 		return
+
 	if not phase_manager.is_player_draw_phase():
 		print("Draw blocked: not in PLAYER_DRAW phase")
 		return
 
-	if player_hand.is_hand_full():
+	var success := draw_card_to_hand(player_hand, spawn_anchor, Card.Owner.PLAYER)
+
+	if success:
+		phase_manager.on_player_drew_card()
+
+func draw_card_to_hand(target_hand: Node2D, target_spawn_anchor: Node2D, card_owner: int) -> bool:
+	if deck == null:
+		return false
+	if target_hand == null:
+		return false
+	if card_manager == null:
+		return false
+	if target_spawn_anchor == null:
+		return false
+	if card_database == null:
+		return false
+	if deck.card_scene == null:
+		return false
+
+	if target_hand.is_hand_full():
 		print("Hand full. Cannot draw.")
-		return
+		return false
 
 	var data: CardData = pick_card_data()
 	if data == null:
-		return
+		return false
 
 	if not deck.consume_card():
-		return
+		return false
 
-	var new_card := deck.card_scene.instantiate() as Card
+	var new_card = deck.card_scene.instantiate()
 	if new_card == null:
-		print("Draw failed: spawned scene is not a Card")
-		return
+		print("Draw failed: could not instantiate card")
+		return false
 
-	new_card.player_hand = player_hand
+	new_card.player_hand = target_hand
 	new_card.phase_manager = phase_manager
+	new_card.card_owner = card_owner
 
 	card_manager.add_child(new_card)
-	new_card.global_position = spawn_anchor.global_position
+	new_card.global_position = target_spawn_anchor.global_position
 
 	new_card.setup_card(data)
 
-	player_hand.add_card_to_hand(new_card, CARD_DRAW_SPEED)
+	target_hand.add_card_to_hand(new_card, CARD_DRAW_SPEED)
 
 	if new_card.has_node("AnimationPlayer"):
 		new_card.get_node("AnimationPlayer").play("card_flip")
 
-	phase_manager.on_player_drew_card()
+	return true
 
 func pick_card_data() -> CardData:
 	if card_database.cards.is_empty():

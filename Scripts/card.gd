@@ -1,10 +1,17 @@
 extends Node2D
 class_name Card
 
+enum Owner {
+	PLAYER,
+	OPPONENT
+}
+
 @export var input_listener: CardInputListener
-@export var drag_handler: CardDragHandler
+@export var drag_handler: DragHandler
 @export var stats: Stats
 @export var phase_manager: PhaseManager
+
+var card_owner: Owner = Owner.PLAYER
 
 var player_hand: Node2D = null
 var current_slot: NewSlots = null

@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://dtoyyse7bnjuv" path="res://Code/States/CardInputListener.gd" id="1_qg6cx"]
 [ext_resource type="Script" uid="uid://d0qu3q360kdsl" path="res://Code/States/CardInputReciever.gd" id="2_5yxk3"]
 [ext_resource type="Script" uid="uid://ro02870urhpb" path="res://Code/States/CardStateMachine.gd" id="3_6ogv0"]
-[ext_resource type="Script" uid="uid://clgbwnniuqm7g" path="res://Code/Handlers/CardDragHandler.gd" id="5_kbm25"]
+[ext_resource type="Script" uid="uid://clgbwnniuqm7g" path="res://Code/Handlers/DragHandler.gd" id="5_kbm25"]
 [ext_resource type="Script" uid="uid://dbemrm25gvek6" path="res://Stats.gd" id="6_6ogv0"]
 [ext_resource type="Texture2D" uid="uid://d1ypj3toan6r1" path="res://Art/Blood.png" id="7_85qlg"]
 [ext_resource type="Texture2D" uid="uid://bdi7eyt5cmur0" path="res://Art/Numbers/1.png" id="7_n7m2t"]
@@ -92,11 +92,11 @@ script = ExtResource("1_qg6cx")
 position = Vector2(-3.0517578e-05, 0.43333435)
 shape = SubResource("RectangleShape2D_rjlel")
 
-[node name="InputReciver" type="Node" parent="." unique_id=213661670 node_paths=PackedStringArray("card_state_machine", "card_input_listener", "card_drag_handler", "card_root")]
+[node name="InputReciver" type="Node" parent="." unique_id=213661670 node_paths=PackedStringArray("card_state_machine", "card_input_listener", "drag_handler", "card_root")]
 script = ExtResource("2_5yxk3")
 card_state_machine = NodePath("../CardStateMachine")
 card_input_listener = NodePath("../InputListener")
-card_drag_handler = NodePath("../DragHandler")
+drag_handler = NodePath("../DragHandler")
 card_root = NodePath("..")
 
 [node name="CardStateMachine" type="Node" parent="." unique_id=1069228844]
