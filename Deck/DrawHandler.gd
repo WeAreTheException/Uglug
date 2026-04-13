@@ -23,11 +23,16 @@ func draw_card() -> void:
 		return
 	if deck.card_scene == null:
 		return
-	if not deck.consume_card():
+
+	if player_hand.is_hand_full():
+		print("Hand full. Cannot draw.")
 		return
 
 	var data: CardData = pick_card_data()
 	if data == null:
+		return
+
+	if not deck.consume_card():
 		return
 
 	var new_card = deck.card_scene.instantiate()

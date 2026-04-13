@@ -1,7 +1,9 @@
 extends Node2D
+class_name NewPlayerHand
 
 const CARD_WIDTH = 200
 const DEFAULT_CARD_MOVE_SPEED = 0.1
+const MAX_HAND_SIZE = 7
 
 var player_hand: Array = []
 
@@ -14,6 +16,9 @@ func remove_card_from_hand(card: Node2D) -> void:
 	if card in player_hand:
 		player_hand.erase(card)
 		update_hand_positions()
+
+func is_hand_full() -> bool:
+	return player_hand.size() >= MAX_HAND_SIZE
 
 func update_hand_positions(speed := DEFAULT_CARD_MOVE_SPEED) -> void:
 	for i in range(player_hand.size()):
