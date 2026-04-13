@@ -13,38 +13,16 @@
 [ext_resource type="Texture2D" uid="uid://4f3gn63utyru" path="res://Art/Numbers/4.png" id="10_mtuvq"]
 [ext_resource type="Texture2D" uid="uid://c1fev2dw4ehne" path="res://Art/Numbers/5.png" id="11_q5rvn"]
 [ext_resource type="Texture2D" uid="uid://bq8esv4xpuv68" path="res://Art/Numbers/6.png" id="12_fyanw"]
+[ext_resource type="Texture2D" uid="uid://cgs5k6p3mggyf" path="res://Art/AntSprite.png" id="14_uunv8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
 size = Vector2(176, 267)
 
 [node name="Card" type="Node2D" unique_id=1703534497 node_paths=PackedStringArray("input_listener", "drag_handler", "stats")]
 script = ExtResource("1_5yxk3")
-input_listener = NodePath("Code/InputListener")
-drag_handler = NodePath("Code/DragHandler")
+input_listener = NodePath("InputListener")
+drag_handler = NodePath("DragHandler")
 stats = NodePath("Stats")
-
-[node name="Code" type="Node" parent="." unique_id=375358737]
-
-[node name="InputListener" type="Area2D" parent="Code" unique_id=1220273102]
-script = ExtResource("1_qg6cx")
-
-[node name="CardCollision" type="CollisionShape2D" parent="Code/InputListener" unique_id=2061957776]
-position = Vector2(-3.0517578e-05, 0.43333435)
-shape = SubResource("RectangleShape2D_rjlel")
-
-[node name="InputReciver" type="Node" parent="Code" unique_id=213661670 node_paths=PackedStringArray("card_state_machine", "card_input_listener", "card_drag_handler", "card_root")]
-script = ExtResource("2_5yxk3")
-card_state_machine = NodePath("../CardStateMachine")
-card_input_listener = NodePath("../InputListener")
-card_drag_handler = NodePath("../DragHandler")
-card_root = NodePath("../..")
-
-[node name="CardStateMachine" type="Node" parent="Code" unique_id=1069228844]
-script = ExtResource("3_6ogv0")
-metadata/_custom_type_script = "uid://ro02870urhpb"
-
-[node name="DragHandler" type="Node2D" parent="Code" unique_id=1428327336]
-script = ExtResource("5_kbm25")
 
 [node name="Stats" type="Node2D" parent="." unique_id=1314998697 node_paths=PackedStringArray("card_sprite", "attack", "health", "cost", "name_label")]
 script = ExtResource("6_6ogv0")
@@ -104,4 +82,26 @@ theme_override_colors/default_color = Color(0.16206557, 0.1620656, 0.16206557, 1
 
 [node name="CardImage" type="Sprite2D" parent="." unique_id=1482464689]
 scale = Vector2(0.14520307, 0.14520307)
+texture = ExtResource("14_uunv8")
 metadata/_edit_lock_ = true
+
+[node name="InputListener" type="Area2D" parent="." unique_id=1220273102]
+script = ExtResource("1_qg6cx")
+
+[node name="CardCollision" type="CollisionShape2D" parent="InputListener" unique_id=2061957776]
+position = Vector2(-3.0517578e-05, 0.43333435)
+shape = SubResource("RectangleShape2D_rjlel")
+
+[node name="InputReciver" type="Node" parent="." unique_id=213661670 node_paths=PackedStringArray("card_state_machine", "card_input_listener", "card_drag_handler", "card_root")]
+script = ExtResource("2_5yxk3")
+card_state_machine = NodePath("../CardStateMachine")
+card_input_listener = NodePath("../InputListener")
+card_drag_handler = NodePath("../DragHandler")
+card_root = NodePath("..")
+
+[node name="CardStateMachine" type="Node" parent="." unique_id=1069228844]
+script = ExtResource("3_6ogv0")
+metadata/_custom_type_script = "uid://ro02870urhpb"
+
+[node name="DragHandler" type="Node2D" parent="." unique_id=1428327336]
+script = ExtResource("5_kbm25")

@@ -4,7 +4,7 @@ class_name CardInputReceiver
 @export var card_state_machine: CardStateMachine
 @export var card_input_listener: CardInputListener
 @export var card_drag_handler: CardDragHandler
-@export var card_root: Node2D
+@export var card_root: Card
 
 var is_hovered: bool = false
 

@@ -1,7 +1,7 @@
 extends Node2D
 class_name CardDragHandler
 
-var card_being_dragged: Node2D = null
+var card_being_dragged: Card = null
 var screen_size: Vector2
 
 func _ready() -> void:
@@ -15,20 +15,37 @@ func update_drag() -> void:
 		return
 
 	var mouse_pos = get_viewport().get_mouse_position()
-	card_being_dragged.position = Vector2(
+	card_being_dragged.global_position = Vector2(
 		clamp(mouse_pos.x, 0, screen_size.x),
 		clamp(mouse_pos.y, 0, screen_size.y)
 	)
 
-func start_drag(card: Node2D) -> void:
+func start_drag(card: Card) -> void:
+	if card == null:
+		return
+
 	card_being_dragged = card
 	card.scale = Vector2(1, 1)
+
+	if card.current_slot != null:
+		card.current_slot.clear_card()
+		card.current_slot = null
+
+	if card.player_hand != null:
+		card.player_hand.remove_card_from_hand(card)
 
 func stop_drag() -> Node2D:
 	var card := card_being_dragged
 
-	if card:
-		card.scale = Vector2(1.05, 1.05)
+	if card == null:
+		return null
 
+	card.scale = Vector2(1.05, 1.05)
 	card_being_dragged = null
+
+	if card.overlapping_slot != null:
+		card.place_into_slot(card.overlapping_slot)
+	else:
+		card.return_to_hand()
+
 	return card
