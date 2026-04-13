@@ -7,10 +7,10 @@
 [ext_resource type="PackedScene" uid="uid://0y4bo4fdwdc" path="res://CardManager.tscn" id="5_ivycn"]
 [ext_resource type="Script" uid="uid://ckhj5f54piprm" path="res://Phasemanager.gd" id="5_q1uvj"]
 
-[node name="Playground" type="Node2D" unique_id=1073653813 node_paths=PackedStringArray("phase_manager", "end_turn_button")]
+[node name="Playground" type="Node2D" unique_id=1073653813 node_paths=PackedStringArray("phase_manager", "end_placement_button")]
 script = ExtResource("1_ivycn")
 phase_manager = NodePath("PhaseManager")
-end_turn_button = NodePath("Button")
+end_placement_button = NodePath("Button")
 
 [node name="CardManager" parent="." unique_id=59503870 instance=ExtResource("5_ivycn")]
 
@@ -45,4 +45,5 @@ script = ExtResource("5_q1uvj")
 [node name="Button" type="Button" parent="." unique_id=109142189]
 offset_right = 8.0
 offset_bottom = 8.0
-text = "End Draw Phase"
+text = "End Placement Phase
+"

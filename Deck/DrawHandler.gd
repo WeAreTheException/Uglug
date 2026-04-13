@@ -27,8 +27,8 @@ func draw_card() -> void:
 	if phase_manager == null:
 		print("Draw blocked: phase_manager is null")
 		return
-	if not phase_manager.is_draw_phase():
-		print("Draw blocked: not in DRAW phase")
+	if not phase_manager.is_player_draw_phase():
+		print("Draw blocked: not in PLAYER_DRAW phase")
 		return
 
 	if player_hand.is_hand_full():
@@ -59,6 +59,8 @@ func draw_card() -> void:
 
 	if new_card.has_node("AnimationPlayer"):
 		new_card.get_node("AnimationPlayer").play("card_flip")
+
+	phase_manager.on_player_drew_card()
 
 func pick_card_data() -> CardData:
 	if card_database.cards.is_empty():

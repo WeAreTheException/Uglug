@@ -30,8 +30,8 @@ func start_drag(card: Card) -> void:
 		print("start_drag blocked: phase_manager is null")
 		return
 
-	if not phase_manager.is_place_phase():
-		print("start_drag blocked: not in PLACE phase")
+	if not phase_manager.is_player_place_phase():
+		print("start_drag blocked: not in PLAYER_PLACE phase")
 		return
 
 	card_being_dragged = card
