@@ -21,10 +21,14 @@ var hand_position: Vector2
 
 var card_name: String = ""
 var is_hovered: bool = false
+var is_selected: bool = false
 
 var current_attack: int = 0
 var current_health: int = 0
 var current_cost: int = 0
+
+var move_tween: Tween = null
+var scale_tween: Tween = null
 
 func _ready() -> void:
 	if input_listener != null:
@@ -98,21 +102,57 @@ func _on_slot_exited(slot: NewSlots) -> void:
 	if overlapping_slot == slot:
 		overlapping_slot = null
 
+func set_selected(value: bool) -> void:
+	is_selected = value
+
+	if scale_tween != null:
+		scale_tween.kill()
+
+	scale_tween = create_tween()
+
+	if is_selected:
+		scale_tween.tween_property(self, "scale", Vector2(1.15, 1.15), 0.12)
+	else:
+		scale_tween.tween_property(self, "scale", Vector2(1.0, 1.0), 0.12)
+
 func place_into_slot(slot: NewSlots) -> void:
 	if slot == null:
+		print("place_into_slot failed: slot null")
 		return
 
+	print("place_into_slot called for ", card_name, " -> ", slot.name)
+
 	if not slot.assign_card(self):
+		print("place_into_slot failed: assign_card returned false")
 		return
 
 	if current_slot != null and current_slot != slot:
 		current_slot.clear_card()
 
 	current_slot = slot
-	global_position = slot.global_position
+
+	if player_hand != null:
+		player_hand.remove_card_from_hand(self)
+
+	animate_to_position(slot.global_position)
 
 	apply_slot_owner(slot)
 	print_slot_info()
+
+	if player_hand != null:
+		player_hand.remove_card_from_hand(self)
+
+	animate_to_position(slot.global_position)
+
+	apply_slot_owner(slot)
+	print_slot_info()
+
+func animate_to_position(target_pos: Vector2) -> void:
+	if move_tween != null:
+		move_tween.kill()
+
+	move_tween = create_tween()
+	move_tween.tween_property(self, "global_position", target_pos, 0.18)
 
 func apply_slot_owner(slot: NewSlots) -> void:
 	if slot == null:
@@ -142,6 +182,8 @@ func print_slot_info() -> void:
 		card_side = "opponent card"
 
 	print(card_name, " -> ", slot_side, " / ", card_side)
+	
+	
 
 func return_to_hand() -> void:
 	if current_slot != null:
@@ -150,3 +192,5 @@ func return_to_hand() -> void:
 
 	if player_hand != null:
 		player_hand.add_card_to_hand(self)
+
+	set_selected(false)

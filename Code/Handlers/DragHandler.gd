@@ -1,62 +1,76 @@
 extends Node2D
 class_name DragHandler
 
+static var selected_card: Card = null
+
 var phase_manager: PhaseManager = null
 
-var card_being_dragged: Card = null
-var screen_size: Vector2
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		try_place_into_slot_under_mouse()
 
-func _ready() -> void:
-	screen_size = get_viewport().get_visible_rect().size
-
-func _process(_delta: float) -> void:
-	update_drag()
-
-func update_drag() -> void:
-	if card_being_dragged == null:
+func select_card(card: Card) -> void:
+	if card == null:
 		return
 
-	var mouse_pos = get_viewport().get_mouse_position()
-	card_being_dragged.global_position = Vector2(
-		clamp(mouse_pos.x, 0, screen_size.x),
-		clamp(mouse_pos.y, 0, screen_size.y)
-	)
-
-func start_drag(card) -> void:
-	if card == null:
+	if card.current_slot != null:
+		print("select_card blocked: card already in slot")
 		return
 
 	if phase_manager != null:
 		if card.card_owner != Card.Owner.PLAYER:
-			print("start_drag blocked: not player-owned card")
+			print("select_card blocked: not player-owned card")
 			return
 
 		if not phase_manager.is_player_place_phase():
-			print("start_drag blocked: not in PLAYER_PLACE phase")
+			print("select_card blocked: not in PLAYER_PLACE phase")
 			return
 
-	card_being_dragged = card
-	card.scale = Vector2(1, 1)
+	if DragHandler.selected_card != null and DragHandler.selected_card != card:
+		DragHandler.selected_card.set_selected(false)
 
-	if card.current_slot != null:
-		card.current_slot.clear_card()
-		card.current_slot = null
+	if DragHandler.selected_card == card:
+		unselect_current_card()
+		return
 
-	if card.player_hand != null:
-		card.player_hand.remove_card_from_hand(card)
+	DragHandler.selected_card = card
+	DragHandler.selected_card.set_selected(true)
 
-func stop_drag() -> Node2D:
-	var card := card_being_dragged
+	print("selected_card = ", DragHandler.selected_card.card_name)
 
-	if card == null:
-		return null
+func try_place_into_slot_under_mouse() -> void:
+	if DragHandler.selected_card == null:
+		return
 
-	card.scale = Vector2(1.05, 1.05)
-	card_being_dragged = null
+	var space_state := get_viewport().world_2d.direct_space_state
+	var params := PhysicsPointQueryParameters2D.new()
+	params.position = get_viewport().get_mouse_position()
+	params.collide_with_areas = true
 
-	if card.overlapping_slot != null:
-		card.place_into_slot(card.overlapping_slot)
-	else:
-		card.return_to_hand()
+	var results := space_state.intersect_point(params)
 
-	return card
+	for hit in results:
+		var collider = hit.collider
+		if collider is NewSlots:
+			var slot: NewSlots = collider
+
+			if phase_manager != null:
+				if not phase_manager.is_player_place_phase():
+					print("place blocked: not in PLAYER_PLACE phase")
+					return
+
+				if slot.slot_owner != NewSlots.SlotOwner.PLAYER:
+					print("place blocked: not a player slot")
+					return
+
+			DragHandler.selected_card.place_into_slot(slot)
+			DragHandler.selected_card.set_selected(false)
+			DragHandler.selected_card = null
+			return
+
+func unselect_current_card() -> void:
+	if DragHandler.selected_card == null:
+		return
+
+	DragHandler.selected_card.set_selected(false)
+	DragHandler.selected_card = null

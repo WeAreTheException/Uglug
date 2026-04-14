@@ -28,11 +28,10 @@ func _on_card_pressed(_card) -> void:
 		return
 	if card_root == null:
 		return
-
-	drag_handler.start_drag(card_root)
-
-func _on_card_released(_card) -> void:
-	if drag_handler == null:
+	if card_root.current_slot != null:
 		return
 
-	drag_handler.stop_drag()
+	drag_handler.select_card(card_root)
+
+func _on_card_released(_card) -> void:
+	pass
