@@ -1,9 +1,15 @@
 extends Node
 class_name DeckDrawHandler
 
+enum DeckType {
+	WORKER,
+	WARRIOR
+}
+
 const CARD_DRAW_SPEED = 0.4
 
 @export var card_database: CardDatabase
+@export var deck_type: DeckType = DeckType.WORKER
 
 var deck: DeckCount = null
 var player_hand: Node2D = null
@@ -20,10 +26,24 @@ func draw_player_card() -> void:
 		print("Draw blocked: not in PLAYER_DRAW phase")
 		return
 
+	if deck_type == DeckType.WORKER:
+		if not phase_manager.can_draw_worker_card():
+			print("Draw blocked: worker draw not allowed")
+			return
+	elif deck_type == DeckType.WARRIOR:
+		if not phase_manager.can_draw_warrior_card():
+			print("Draw blocked: warrior draw not allowed")
+			return
+
 	var success := draw_card_to_hand(player_hand, spawn_anchor, Card.Owner.PLAYER)
 
-	if success:
-		phase_manager.on_player_drew_card()
+	if not success:
+		return
+
+	if deck_type == DeckType.WORKER:
+		phase_manager.on_player_drew_worker_card()
+	elif deck_type == DeckType.WARRIOR:
+		phase_manager.on_player_drew_warrior_card()
 
 func draw_card_to_hand(target_hand: Node2D, target_spawn_anchor: Node2D, card_owner: int) -> bool:
 	if deck == null:

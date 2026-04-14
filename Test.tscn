@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://0y4bo4fdwdc" path="res://Cards/CardManager.tscn" id="5_ivycn"]
 [ext_resource type="Script" uid="uid://ckhj5f54piprm" path="res://Phasemanager.gd" id="5_q1uvj"]
 [ext_resource type="Script" uid="uid://sodd748rdqha" path="res://OpponentController.gd" id="7_q1uvj"]
+[ext_resource type="PackedScene" uid="uid://ctp48eusxy1qn" path="res://Deck/WarriorDeck.tscn" id="8_qs82m"]
 
 [node name="Playground" type="Node2D" unique_id=1073653813 node_paths=PackedStringArray("phase_manager", "end_placement_button")]
 script = ExtResource("1_ivycn")
@@ -20,13 +21,6 @@ position = Vector2(768, 896)
 
 [node name="EnemyHand" parent="." unique_id=587472935 instance=ExtResource("5_aq4fw")]
 position = Vector2(768, 64)
-
-[node name="WarriorDeck" parent="." unique_id=1434682879 node_paths=PackedStringArray("player_hand", "card_manager", "spawn_anchor", "phase_manager") instance=ExtResource("3_2au82")]
-position = Vector2(1792, 896)
-player_hand = NodePath("../PlayerHand")
-card_manager = NodePath("../CardManager")
-spawn_anchor = NodePath(".")
-phase_manager = NodePath("../PhaseManager")
 
 [node name="WorkerDeck" parent="." unique_id=1069789393 node_paths=PackedStringArray("player_hand", "card_manager", "spawn_anchor", "phase_manager") instance=ExtResource("3_2au82")]
 position = Vector2(1792, 576)
@@ -68,9 +62,9 @@ position = Vector2(384, 64)
 
 [node name="PhaseManager" type="Node" parent="." unique_id=384942188 node_paths=PackedStringArray("deck_root", "opponent_hand", "opponent_spawn_anchor", "opponent_controller")]
 script = ExtResource("5_q1uvj")
-deck_root = NodePath("../WarriorDeck")
+deck_root = NodePath("../WorkerDeck")
 opponent_hand = NodePath("../EnemyHand")
-opponent_spawn_anchor = NodePath("../WarriorDeck")
+opponent_spawn_anchor = NodePath("../WorkerDeck")
 opponent_controller = NodePath("../OpponentController")
 
 [node name="Button" type="Button" parent="." unique_id=109142189]
@@ -83,3 +77,10 @@ text = "End Placement Phase
 script = ExtResource("7_q1uvj")
 opponent_hand = NodePath("../EnemyHand")
 enemy_slot_roots = [NodePath("../EnemySlots/NewSlots"), NodePath("../EnemySlots/NewSlots2"), NodePath("../EnemySlots/NewSlots3"), NodePath("../EnemySlots/NewSlots4")]
+
+[node name="WarriroDeck" parent="." unique_id=280972336 node_paths=PackedStringArray("player_hand", "card_manager", "spawn_anchor", "phase_manager") instance=ExtResource("8_qs82m")]
+position = Vector2(1792, 896)
+player_hand = NodePath("../PlayerHand")
+card_manager = NodePath("../CardManager")
+spawn_anchor = NodePath(".")
+phase_manager = NodePath("../PhaseManager")

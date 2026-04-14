@@ -55,8 +55,6 @@ func can_draw_worker_card() -> bool:
 func can_draw_warrior_card() -> bool:
 	if not is_player_draw_phase():
 		return false
-	if not player_drew_worker_this_phase:
-		return false
 	return player_draw_count < get_player_draw_limit()
 
 func on_player_drew_worker_card() -> void:
