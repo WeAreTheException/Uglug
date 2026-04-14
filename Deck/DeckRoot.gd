@@ -12,6 +12,7 @@ class_name DeckRoot
 @export var card_manager: Node2D
 @export var spawn_anchor: Node2D
 @export var phase_manager: PhaseManager
+@export var battle_scale: BattleScale
 
 func _ready() -> void:
 	if input_listener != null:
@@ -28,3 +29,4 @@ func _ready() -> void:
 		draw_handler.card_manager = card_manager
 		draw_handler.spawn_anchor = spawn_anchor
 		draw_handler.phase_manager = phase_manager
+		draw_handler.battle_scale = battle_scale
