@@ -48,19 +48,15 @@ func start_player_draw_phase() -> void:
 func can_draw_worker_card() -> bool:
 	if not is_player_draw_phase():
 		return false
-
 	if player_drew_warrior_this_phase:
 		return false
-
 	return player_draw_count < get_player_draw_limit()
 
 func can_draw_warrior_card() -> bool:
 	if not is_player_draw_phase():
 		return false
-
 	if not player_drew_worker_this_phase:
 		return false
-
 	return player_draw_count < get_player_draw_limit()
 
 func on_player_drew_worker_card() -> void:
@@ -122,3 +118,12 @@ func start_opponent_draw_phase() -> void:
 func start_opponent_place_phase() -> void:
 	current_phase = Phase.OPPONENT_PLACE
 	print("OPPONENT PLACE PHASE")
+
+	if opponent_controller == null:
+		print("Opponent place failed: missing opponent_controller")
+		return
+
+	opponent_controller.place_cards()
+
+	await get_tree().create_timer(0.8).timeout
+	start_player_draw_phase()
