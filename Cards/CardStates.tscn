@@ -10,10 +10,11 @@
 [node name="StateTest" type="Node2D" unique_id=590443076]
 script = ExtResource("1_m5din")
 
-[node name="Card" parent="." unique_id=1703534497 instance=ExtResource("1_vrh5a")]
+[node name="Card" parent="." unique_id=1703534497 node_paths=PackedStringArray("battle_scale") instance=ExtResource("1_vrh5a")]
 visible = false
 position = Vector2(576, 384)
 test_data = ExtResource("2_jxqb7")
+battle_scale = NodePath("..")
 
 [node name="Antler" parent="." unique_id=840545449 node_paths=PackedStringArray("battle_scale") instance=ExtResource("1_vrh5a")]
 position = Vector2(1408, 384)

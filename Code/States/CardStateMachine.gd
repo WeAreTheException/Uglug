@@ -69,6 +69,9 @@ func enter_attack() -> void:
 		set_main_state(MainState.WAIT)
 		return
 
+	print("slot owner: ", card.current_slot.slot_owner)
+	print("card owner: ", card.card_owner)
+
 	var opposing_slot = card.current_slot.opposing_slot
 
 	if opposing_slot != null and opposing_slot.current_card != null:
@@ -80,10 +83,13 @@ func enter_attack() -> void:
 		else:
 			print("opposing card has no take_damage")
 	else:
-		print(card.card_name, " -> player (", card.current_attack, " dmg)")
+		if card.card_owner == Card.Owner.PLAYER:
+			print(card.card_name, " -> opponent (", card.current_attack, " dmg)")
+		else:
+			print(card.card_name, " -> player (", card.current_attack, " dmg)")
 
 		if card.battle_scale != null:
-			card.battle_scale.add_damage(card.current_attack)
+			card.battle_scale.add_direct_damage(card.current_attack, card.card_owner)
 
 	set_main_state(MainState.WAIT)
 

@@ -100,16 +100,48 @@ func _on_slot_exited(slot: NewSlots) -> void:
 
 func place_into_slot(slot: NewSlots) -> void:
 	if slot == null:
-		return_to_hand()
 		return
 
-	if slot.current_card != null and slot.current_card != self:
-		print("slot full")
+	if not slot.assign_card(self):
 		return
 
-	slot.assign_card(self)
+	if current_slot != null and current_slot != slot:
+		current_slot.clear_card()
+
 	current_slot = slot
 	global_position = slot.global_position
+
+	apply_slot_owner(slot)
+	print_slot_info()
+
+func apply_slot_owner(slot: NewSlots) -> void:
+	if slot == null:
+		return
+
+	if slot.slot_owner == NewSlots.SlotOwner.PLAYER:
+		card_owner = Owner.PLAYER
+	else:
+		card_owner = Owner.OPPONENT
+
+func print_slot_info() -> void:
+	if current_slot == null:
+		print(card_name, " has no slot")
+		return
+
+	var slot_side := ""
+	var card_side := ""
+
+	if current_slot.slot_owner == NewSlots.SlotOwner.PLAYER:
+		slot_side = "player slot"
+	else:
+		slot_side = "opponent slot"
+
+	if card_owner == Owner.PLAYER:
+		card_side = "player card"
+	else:
+		card_side = "opponent card"
+
+	print(card_name, " -> ", slot_side, " / ", card_side)
 
 func return_to_hand() -> void:
 	if current_slot != null:

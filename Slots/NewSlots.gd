@@ -1,6 +1,12 @@
 extends Area2D
 class_name NewSlots
 
+enum SlotOwner {
+	PLAYER,
+	OPPONENT
+}
+
+@export var slot_owner: SlotOwner = SlotOwner.PLAYER
 @export var opposing_slot: NewSlots
 
 var current_card: Node2D = null
@@ -16,7 +22,7 @@ func can_accept_card(card: Node2D) -> bool:
 
 func assign_card(card: Node2D) -> bool:
 	if not can_accept_card(card):
-		print("Slot already occupied")
+		print("slot full")
 		return false
 
 	current_card = card
