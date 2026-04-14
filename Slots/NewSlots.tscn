@@ -10,6 +10,7 @@ size = Vector2(180, 265)
 metadata/_edit_lock_ = true
 
 [node name="Player1" type="Area2D" parent="." unique_id=225223713]
+position = Vector2(0, 192)
 script = ExtResource("1_0x5xu")
 
 [node name="MySlotCollider" type="CollisionShape2D" parent="Player1" unique_id=112184198]
@@ -20,7 +21,7 @@ shape = SubResource("RectangleShape2D_pqsda")
 texture = ExtResource("1_xbaqm")
 
 [node name="Player2" type="Area2D" parent="." unique_id=814552453]
-position = Vector2(0, -320)
+position = Vector2(0, -192)
 script = ExtResource("1_0x5xu")
 slot_owner = 1
 
