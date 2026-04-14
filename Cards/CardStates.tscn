@@ -6,6 +6,7 @@
 [ext_resource type="Resource" uid="uid://co2ltt7oof6h1" path="res://Cards/Prefabs/QueenAnt.tres" id="2_jxqb7"]
 [ext_resource type="Resource" uid="uid://ct70e1p70euk5" path="res://Cards/Prefabs/Antler.tres" id="4_m5din"]
 [ext_resource type="Script" uid="uid://cqj622citfc1y" path="res://Cards/Dummy.gd" id="4_ydv2a"]
+[ext_resource type="Resource" uid="uid://c3i7oef51wu84" path="res://Cards/Prefabs/Ant.tres" id="7_mxbme"]
 
 [node name="StateTest" type="Node2D" unique_id=590443076]
 script = ExtResource("1_m5din")
@@ -26,3 +27,7 @@ position = Vector2(960, 384)
 
 [node name="Dummy" type="Node2D" parent="." unique_id=1618062051]
 script = ExtResource("4_ydv2a")
+
+[node name="Card2" parent="." unique_id=169545017 instance=ExtResource("1_vrh5a")]
+position = Vector2(575, 325)
+test_data = ExtResource("7_mxbme")
