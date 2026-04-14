@@ -1,5 +1,5 @@
 extends Node2D
-class_name DragHandler
+class_name SelectHandler
 
 static var selected_card: Card = null
 
@@ -26,20 +26,20 @@ func select_card(card: Card) -> void:
 			print("select_card blocked: not in PLAYER_PLACE phase")
 			return
 
-	if DragHandler.selected_card != null and DragHandler.selected_card != card:
-		DragHandler.selected_card.set_selected(false)
+	if SelectHandler.selected_card != null and SelectHandler.selected_card != card:
+		SelectHandler.selected_card.set_selected(false)
 
-	if DragHandler.selected_card == card:
+	if SelectHandler.selected_card == card:
 		unselect_current_card()
 		return
 
-	DragHandler.selected_card = card
-	DragHandler.selected_card.set_selected(true)
+	SelectHandler.selected_card = card
+	SelectHandler.selected_card.set_selected(true)
 
-	print("selected_card = ", DragHandler.selected_card.card_name)
+	print("selected_card = ", SelectHandler.selected_card.card_name)
 
 func try_place_into_slot_under_mouse() -> void:
-	if DragHandler.selected_card == null:
+	if SelectHandler.selected_card == null:
 		return
 
 	var space_state := get_viewport().world_2d.direct_space_state
@@ -63,14 +63,14 @@ func try_place_into_slot_under_mouse() -> void:
 					print("place blocked: not a player slot")
 					return
 
-			DragHandler.selected_card.place_into_slot(slot)
-			DragHandler.selected_card.set_selected(false)
-			DragHandler.selected_card = null
+			SelectHandler.selected_card.place_into_slot(slot)
+			SelectHandler.selected_card.set_selected(false)
+			SelectHandler.selected_card = null
 			return
 
 func unselect_current_card() -> void:
-	if DragHandler.selected_card == null:
+	if SelectHandler.selected_card == null:
 		return
 
-	DragHandler.selected_card.set_selected(false)
-	DragHandler.selected_card = null
+	SelectHandler.selected_card.set_selected(false)
+	SelectHandler.selected_card = null

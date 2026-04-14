@@ -7,7 +7,7 @@ enum SlotOwner {
 }
 
 @export var slot_owner: SlotOwner = SlotOwner.PLAYER
-@export var drag_handler: DragHandler
+@export var select_handler: SelectHandler
 
 var current_card: Node2D = null
 
@@ -30,7 +30,7 @@ func _input_event(_viewport, event, _shape_idx) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		print("slot clicked: ", name)
 
-		if drag_handler != null:
-			drag_handler.try_place_selected_in_slot(self)
+		if select_handler != null:
+			select_handler.try_place_selected_in_slot(self)
 		else:
 			print("slot click failed: drag_handler is null")

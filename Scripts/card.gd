@@ -7,7 +7,7 @@ enum Owner {
 }
 
 @export var input_listener: CardInputListener
-@export var drag_handler: DragHandler
+@export var select_handler: SelectHandler
 @export var stats: Stats
 @export var test_data: CardData
 @export var battle_scale: BattleScale
