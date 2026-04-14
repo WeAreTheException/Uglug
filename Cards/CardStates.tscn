@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://c00xd58jcjbu4"]
 
-[ext_resource type="Script" uid="uid://ga6f6537weuu" path="res://Managers/BattleScale.gd" id="1_m5din"]
+[ext_resource type="Script" uid="uid://ga6f6537weuu" path="res://Tugga/BattleScale.gd" id="1_m5din"]
 [ext_resource type="PackedScene" uid="uid://l28s3hnlv4iy" path="res://Cards/NewCard.tscn" id="1_vrh5a"]
 [ext_resource type="PackedScene" uid="uid://c8mekq0tyuadn" path="res://Slots/NewSlots.tscn" id="2_8m5fa"]
 [ext_resource type="Resource" uid="uid://co2ltt7oof6h1" path="res://Cards/Prefabs/QueenAnt.tres" id="2_jxqb7"]

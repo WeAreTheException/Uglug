@@ -16,6 +16,7 @@ var player_hand: Node2D = null
 var card_manager: Node2D = null
 var spawn_anchor: Node2D = null
 var phase_manager: PhaseManager = null
+var battle_scale: BattleScale = null
 
 func draw_player_card() -> void:
 	if phase_manager == null:
@@ -77,6 +78,7 @@ func draw_card_to_hand(target_hand: Node2D, target_spawn_anchor: Node2D, card_ow
 
 	new_card.player_hand = target_hand
 	new_card.card_owner = card_owner
+	new_card.battle_scale = battle_scale
 
 	if new_card.select_handler != null:
 		new_card.select_handler.phase_manager = phase_manager
