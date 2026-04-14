@@ -5,17 +5,24 @@ enum Phase {
 	PLAYER_DRAW,
 	PLAYER_PLACE,
 	OPPONENT_DRAW,
-	OPPONENT_PLACE
+	OPPONENT_PLACE,
+	PLAYER_ATTACK,
+	OPPONENT_ATTACK
 }
 
 const FIRST_PLAYER_DRAWS_PER_TURN := 4
 const NORMAL_PLAYER_DRAWS_PER_TURN := 3
-const OPPONENT_DRAWS_PER_TURN := 2
+const OPPONENT_DRAWS_PER_TURN := 3
+
+const OPPONENT_DRAW_TO_PLACE_DELAY := 0.8
+const OPPONENT_PLACE_TO_ATTACK_DELAY := 0.8
+const ATTACK_BETWEEN_CARDS_DELAY := 0.5
 
 @export var deck_root: DeckRoot
 @export var opponent_hand: Node2D
 @export var opponent_spawn_anchor: Node2D
 @export var opponent_controller: OpponentController
+@export var slots: Array[Node2D] # each = one slot pair root
 
 var current_phase: Phase = Phase.PLAYER_DRAW
 var player_draw_count: int = 0
@@ -32,6 +39,12 @@ func is_player_draw_phase() -> bool:
 
 func is_player_place_phase() -> bool:
 	return current_phase == Phase.PLAYER_PLACE
+
+func is_player_attack_phase() -> bool:
+	return current_phase == Phase.PLAYER_ATTACK
+
+func is_opponent_attack_phase() -> bool:
+	return current_phase == Phase.OPPONENT_ATTACK
 
 func get_player_draw_limit() -> int:
 	if is_first_player_draw_phase:
@@ -110,7 +123,7 @@ func start_opponent_draw_phase() -> void:
 			Card.Owner.OPPONENT
 		)
 
-	await get_tree().create_timer(0.8).timeout
+	await get_tree().create_timer(OPPONENT_DRAW_TO_PLACE_DELAY).timeout
 	start_opponent_place_phase()
 
 func start_opponent_place_phase() -> void:
@@ -123,5 +136,59 @@ func start_opponent_place_phase() -> void:
 
 	opponent_controller.place_cards()
 
-	await get_tree().create_timer(0.8).timeout
+	await get_tree().create_timer(OPPONENT_PLACE_TO_ATTACK_DELAY).timeout
+	start_player_attack_phase()
+
+func start_player_attack_phase() -> void:
+	current_phase = Phase.PLAYER_ATTACK
+	print("PLAYER ATTACK PHASE")
+
+	var player_cards: Array = get_all_slotted_cards_for_owner(Card.Owner.PLAYER)
+
+	for card in player_cards:
+		trigger_card_attack(card)
+		await get_tree().create_timer(ATTACK_BETWEEN_CARDS_DELAY).timeout
+
+	start_opponent_attack_phase()
+
+func start_opponent_attack_phase() -> void:
+	current_phase = Phase.OPPONENT_ATTACK
+	print("OPPONENT ATTACK PHASE")
+
+	var opponent_cards: Array = get_all_slotted_cards_for_owner(Card.Owner.OPPONENT)
+
+	for card in opponent_cards:
+		trigger_card_attack(card)
+		await get_tree().create_timer(ATTACK_BETWEEN_CARDS_DELAY).timeout
+
 	start_player_draw_phase()
+
+func get_all_slotted_cards_for_owner(owner: int) -> Array:
+	var cards: Array = []
+
+	for pair_root in slots:
+		if pair_root == null:
+			continue
+
+		for child in pair_root.get_children():
+			if child is NewSlots:
+				var slot: NewSlots = child
+
+				if slot.current_card == null:
+					continue
+
+				if slot.current_card.card_owner == owner:
+					cards.append(slot.current_card)
+
+	return cards
+
+func trigger_card_attack(card) -> void:
+	if card == null:
+		return
+
+	var state_machine = card.get_node_or_null("CardStateMachine")
+	if state_machine == null:
+		print("Attack skipped: no CardStateMachine on ", card.name)
+		return
+
+	state_machine.set_main_state(CardStateMachine.MainState.ATTACK)

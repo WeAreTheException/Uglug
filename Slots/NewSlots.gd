@@ -7,30 +7,34 @@ enum SlotOwner {
 }
 
 @export var slot_owner: SlotOwner = SlotOwner.PLAYER
-@export var select_handler: SelectHandler
+@export var opposing_slot: NewSlots
 
 var current_card: Node2D = null
 
 func is_empty() -> bool:
 	return current_card == null
 
+func can_accept_card(card: Node2D) -> bool:
+	if card == null:
+		return false
+
+	var c := card as Card
+	if c == null:
+		return false
+
+	if c.card_owner != slot_owner:
+		print("wrong side")
+		return false
+
+	return current_card == null or current_card == card
+
 func assign_card(card: Node2D) -> bool:
-	if current_card != null and current_card != card:
-		print("assign_card failed: slot occupied")
+	if not can_accept_card(card):
+		print("slot full")
 		return false
 
 	current_card = card
-	print("assign_card success: ", card.name, " -> ", name)
 	return true
 
 func clear_card() -> void:
 	current_card = null
-
-func _input_event(_viewport, event, _shape_idx) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		print("slot clicked: ", name)
-
-		if select_handler != null:
-			select_handler.try_place_selected_in_slot(self)
-		else:
-			print("slot click failed: drag_handler is null")

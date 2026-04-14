@@ -29,12 +29,13 @@ card_manager = NodePath("../CardManager")
 spawn_anchor = NodePath(".")
 phase_manager = NodePath("../PhaseManager")
 
-[node name="PhaseManager" type="Node" parent="." unique_id=384942188 node_paths=PackedStringArray("deck_root", "opponent_hand", "opponent_spawn_anchor", "opponent_controller")]
+[node name="PhaseManager" type="Node" parent="." unique_id=384942188 node_paths=PackedStringArray("deck_root", "opponent_hand", "opponent_spawn_anchor", "opponent_controller", "slots")]
 script = ExtResource("5_q1uvj")
 deck_root = NodePath("../WorkerDeck")
 opponent_hand = NodePath("../EnemyHand")
 opponent_spawn_anchor = NodePath("../WorkerDeck")
 opponent_controller = NodePath("../OpponentController")
+slots = [NodePath("../Slot/Slots"), NodePath("../Slot/Slots3"), NodePath("../Slot/Slots4"), NodePath("../Slot/Slots2")]
 
 [node name="Button" type="Button" parent="." unique_id=109142189]
 offset_right = 8.0
