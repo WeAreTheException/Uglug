@@ -82,6 +82,9 @@ func enter_attack() -> void:
 	else:
 		print(card.card_name, " -> player (", card.current_attack, " dmg)")
 
+		if card.battle_scale != null:
+			card.battle_scale.add_damage(card.current_attack)
+
 	set_main_state(MainState.WAIT)
 
 func enter_hurt() -> void:

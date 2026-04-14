@@ -10,6 +10,7 @@ enum Owner {
 @export var drag_handler: DragHandler
 @export var stats: Stats
 @export var test_data: CardData
+@export var battle_scale: BattleScale
 
 var card_owner: Owner = Owner.PLAYER
 

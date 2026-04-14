@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://cf7sbxj3s2hm2"]
+
+[ext_resource type="Script" uid="uid://ga6f6537weuu" path="res://BattleScale.gd" id="1_inqkl"]
+[ext_resource type="PackedScene" uid="uid://l28s3hnlv4iy" path="res://Cards/NewCard.tscn" id="2_tgf3w"]
+
+[node name="TugofWar" type="Node2D" unique_id=1424160546]
+script = ExtResource("1_inqkl")
+
+[node name="Card" parent="." unique_id=1703534497 node_paths=PackedStringArray("battle_scale") instance=ExtResource("2_tgf3w")]
+position = Vector2(640, 448)
+battle_scale = NodePath("..")
