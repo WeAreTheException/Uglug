@@ -3,6 +3,7 @@ class_name CardData
 
 @export var name: String
 @export var attack: int
-@export var health: int
+@export var health: int = 1
 @export var cost: int
+@export var worth: int = 1
 @export var sprite: Texture2D
