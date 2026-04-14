@@ -139,14 +139,6 @@ func place_into_slot(slot: NewSlots) -> void:
 	apply_slot_owner(slot)
 	print_slot_info()
 
-	if player_hand != null:
-		player_hand.remove_card_from_hand(self)
-
-	animate_to_position(slot.global_position)
-
-	apply_slot_owner(slot)
-	print_slot_info()
-
 func animate_to_position(target_pos: Vector2) -> void:
 	if move_tween != null:
 		move_tween.kill()
