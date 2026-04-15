@@ -26,6 +26,7 @@ var is_selected: bool = false
 var current_attack: int = 0
 var current_health: int = 0
 var current_cost: int = 0
+var current_worth: int = 0
 
 var move_tween: Tween = null
 var scale_tween: Tween = null
@@ -36,6 +37,7 @@ func _ready() -> void:
 		input_listener.hovered_off.connect(_on_hovered_off)
 		input_listener.slot_entered.connect(_on_slot_entered)
 		input_listener.slot_exited.connect(_on_slot_exited)
+		input_listener.pressed.connect(_on_pressed)
 
 	if test_data != null:
 		setup_card(test_data)
@@ -49,6 +51,7 @@ func setup_card(data: CardData) -> void:
 	current_attack = data.attack
 	current_health = data.health
 	current_cost = data.cost
+	current_worth = data.worth
 
 	print("setup: ", data.name)
 
@@ -56,6 +59,15 @@ func setup_card(data: CardData) -> void:
 		stats.setup_from_card_data(data)
 	else:
 		print("FAIL: stats is null on card")
+
+func _on_pressed(_listener) -> void:
+	print("card clicked: ", card_name, " / select_handler = ", select_handler)
+
+	if select_handler == null:
+		print("card press blocked: select_handler is null")
+		return
+
+	select_handler.select_card(self)
 
 func take_damage(amount: int) -> void:
 	current_health -= amount
@@ -174,8 +186,6 @@ func print_slot_info() -> void:
 		card_side = "opponent card"
 
 	print(card_name, " -> ", slot_side, " / ", card_side)
-	
-	
 
 func return_to_hand() -> void:
 	if current_slot != null:

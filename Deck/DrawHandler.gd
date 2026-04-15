@@ -10,6 +10,7 @@ const CARD_DRAW_SPEED = 0.4
 
 @export var card_database: CardDatabase
 @export var deck_type: DeckType = DeckType.WORKER
+@export var select_handler: SelectHandler
 
 var deck: DeckCount = null
 var player_hand: Node2D = null
@@ -71,7 +72,7 @@ func draw_card_to_hand(target_hand: Node2D, target_spawn_anchor: Node2D, card_ow
 	if not deck.consume_card():
 		return false
 
-	var new_card = deck.card_scene.instantiate()
+	var new_card := deck.card_scene.instantiate() as Card
 	if new_card == null:
 		print("Draw failed: could not instantiate card")
 		return false
@@ -79,6 +80,7 @@ func draw_card_to_hand(target_hand: Node2D, target_spawn_anchor: Node2D, card_ow
 	new_card.player_hand = target_hand
 	new_card.card_owner = card_owner
 	new_card.battle_scale = battle_scale
+	new_card.select_handler = select_handler
 
 	if new_card.select_handler != null:
 		new_card.select_handler.phase_manager = phase_manager
