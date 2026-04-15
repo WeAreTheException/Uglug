@@ -7,4 +7,4 @@ class_name CardData
 @export var cost: int
 @export var worth: int = 1
 @export var sprite: Texture2D
-@export var quirk: Resource
+@export var quirk: CardQuirk

@@ -28,6 +28,8 @@ var current_health: int = 0
 var current_cost: int = 0
 var current_worth: int = 0
 
+var quirk: CardQuirk = null
+
 var move_tween: Tween = null
 var scale_tween: Tween = null
 
@@ -58,6 +60,7 @@ func setup_card(data: CardData) -> void:
 	current_health = data.health
 	current_cost = data.cost
 	current_worth = data.worth
+	quirk = data.quirk as CardQuirk
 
 	print("setup: ", data.name)
 
