@@ -86,6 +86,8 @@ func try_select_hand_card(card: Card) -> void:
 	SelectHandler.selected_card = card
 	card.set_selected(true)
 
+	refresh_sacrifice_hints()
+
 	print("pending_play_card = ", pending_play_card.card_name)
 
 func try_select_sacrifice(card: Card) -> void:
@@ -122,6 +124,8 @@ func try_select_sacrifice(card: Card) -> void:
 	var total := get_selected_sacrifice_worth()
 	print("added sacrifice: ", card.card_name, " / total worth = ", total)
 
+	refresh_sacrifice_hints()
+
 	if total >= pending_play_card.current_cost:
 		resolve_sacrifice_payment()
 
@@ -136,6 +140,8 @@ func resolve_sacrifice_payment() -> void:
 	var sacrifices_to_remove := selected_sacrifices.duplicate()
 	paid_sacrifice_worth = total
 	payment_completed = true
+
+	clear_sacrifice_hints()
 
 	for sacrifice in sacrifices_to_remove:
 		if sacrifice == null:
@@ -205,6 +211,7 @@ func resolve_pending_play(slot: NewSlots) -> void:
 
 	var card_to_play := pending_play_card
 
+	clear_sacrifice_hints()
 	clear_current_selection_visuals()
 
 	card_to_play.place_into_slot(slot)
@@ -216,6 +223,7 @@ func resolve_pending_play(slot: NewSlots) -> void:
 	SelectHandler.selected_card = null
 
 func cancel_pending_play() -> void:
+	clear_sacrifice_hints()
 	clear_current_selection_visuals()
 
 	pending_play_card = null
@@ -277,3 +285,45 @@ func get_selected_sacrifice_worth() -> int:
 		total += card.current_worth
 
 	return total
+
+func refresh_sacrifice_hints() -> void:
+	clear_sacrifice_hints()
+
+	if pending_play_card == null:
+		return
+
+	if payment_completed:
+		return
+
+	if pending_play_card.current_cost <= 0:
+		return
+
+	for slot in slots:
+		if slot == null:
+			continue
+
+		if slot.current_card == null:
+			continue
+
+		var board_card := slot.current_card as Card
+		if board_card == null:
+			continue
+
+		if selected_sacrifices.has(board_card):
+			continue
+
+		board_card.start_sacrifice_hint()
+
+func clear_sacrifice_hints() -> void:
+	for slot in slots:
+		if slot == null:
+			continue
+
+		if slot.current_card == null:
+			continue
+
+		var board_card := slot.current_card as Card
+		if board_card == null:
+			continue
+
+		board_card.stop_sacrifice_hint()

@@ -31,6 +31,9 @@ var current_worth: int = 0
 var move_tween: Tween = null
 var scale_tween: Tween = null
 
+var sacrifice_hint_active: bool = false
+var sacrifice_hint_time: float = 0.0
+
 func _ready() -> void:
 	if input_listener != null:
 		input_listener.hovered.connect(_on_hovered)
@@ -41,6 +44,9 @@ func _ready() -> void:
 
 	if test_data != null:
 		setup_card(test_data)
+
+func _process(delta: float) -> void:
+	update_sacrifice_hint(delta)
 
 func setup_card(data: CardData) -> void:
 	if data == null:
@@ -196,3 +202,19 @@ func return_to_hand() -> void:
 		player_hand.add_card_to_hand(self)
 
 	set_selected(false)
+
+func start_sacrifice_hint() -> void:
+	sacrifice_hint_active = true
+	sacrifice_hint_time = 0.0
+
+func stop_sacrifice_hint() -> void:
+	sacrifice_hint_active = false
+	sacrifice_hint_time = 0.0
+	rotation = 0.0
+
+func update_sacrifice_hint(delta: float) -> void:
+	if not sacrifice_hint_active:
+		return
+
+	sacrifice_hint_time += delta
+	rotation = sin(sacrifice_hint_time * 8.0) * deg_to_rad(3.0)
