@@ -8,6 +8,11 @@ static var selected_card: Card = null
 var slots: Array[NewSlots] = []
 var phase_manager: PhaseManager = null
 
+var pending_play_card: Card = null
+var selected_sacrifices: Array[Card] = []
+var paid_sacrifice_worth: int = 0
+var payment_completed: bool = false
+
 func _ready() -> void:
 	cache_slots()
 
@@ -27,9 +32,8 @@ func cache_slots() -> void:
 func _collect_player_slots_recursive(node: Node) -> void:
 	for child in node.get_children():
 		var slot := child as NewSlots
-		if slot != null:
-			if slot.slot_owner == NewSlots.SlotOwner.PLAYER:
-				slots.append(slot)
+		if slot != null and slot.slot_owner == NewSlots.SlotOwner.PLAYER:
+			slots.append(slot)
 
 		_collect_player_slots_recursive(child)
 
@@ -41,10 +45,6 @@ func select_card(card: Card) -> void:
 	if card == null:
 		return
 
-	if card.current_slot != null:
-		print("select_card blocked: card already in slot")
-		return
-
 	if phase_manager != null:
 		if card.card_owner != Card.Owner.PLAYER:
 			print("select_card blocked: not player-owned card")
@@ -54,24 +54,110 @@ func select_card(card: Card) -> void:
 			print("select_card blocked: not in PLAYER_PLACE phase")
 			return
 
-	if not can_afford_card_selection(card):
+	if card.current_slot != null:
+		try_select_sacrifice(card)
+		return
+
+	try_select_hand_card(card)
+
+func try_select_hand_card(card: Card) -> void:
+	if card == null:
+		return
+
+	if card.current_slot != null:
+		print("try_select_hand_card blocked: card already in slot")
+		return
+
+	if payment_completed and pending_play_card != null and pending_play_card != card:
+		print("try_select_hand_card blocked: payment already completed for ", pending_play_card.card_name)
+		return
+
+	if card.current_cost > 0 and not can_afford_card_selection(card):
 		print("select_card blocked: not enough sacrifice value for ", card.card_name)
 		return
 
-	if SelectHandler.selected_card != null and SelectHandler.selected_card != card:
-		SelectHandler.selected_card.set_selected(false)
-
-	if SelectHandler.selected_card == card:
-		unselect_current_card()
+	if pending_play_card == card:
+		cancel_pending_play()
 		return
 
-	SelectHandler.selected_card = card
-	SelectHandler.selected_card.set_selected(true)
+	cancel_pending_play()
 
-	print("selected_card = ", SelectHandler.selected_card.card_name)
+	pending_play_card = card
+	SelectHandler.selected_card = card
+	card.set_selected(true)
+
+	print("pending_play_card = ", pending_play_card.card_name)
+
+func try_select_sacrifice(card: Card) -> void:
+	if card == null:
+		return
+
+	if pending_play_card == null:
+		print("sacrifice blocked: no pending play card")
+		return
+
+	if payment_completed:
+		print("sacrifice blocked: payment already completed")
+		return
+
+	if pending_play_card.current_cost <= 0:
+		print("sacrifice blocked: pending play card is free")
+		return
+
+	if card.current_slot == null:
+		print("sacrifice blocked: card not in slot")
+		return
+
+	if card.current_slot.slot_owner != NewSlots.SlotOwner.PLAYER:
+		print("sacrifice blocked: not in player slot")
+		return
+
+	if selected_sacrifices.has(card):
+		print("sacrifice blocked: card already chosen")
+		return
+
+	selected_sacrifices.append(card)
+	card.set_selected(true)
+
+	var total := get_selected_sacrifice_worth()
+	print("added sacrifice: ", card.card_name, " / total worth = ", total)
+
+	if total >= pending_play_card.current_cost:
+		resolve_sacrifice_payment()
+
+func resolve_sacrifice_payment() -> void:
+	if pending_play_card == null:
+		return
+
+	var total := get_selected_sacrifice_worth()
+	if total < pending_play_card.current_cost:
+		return
+
+	var sacrifices_to_remove := selected_sacrifices.duplicate()
+	paid_sacrifice_worth = total
+	payment_completed = true
+
+	for sacrifice in sacrifices_to_remove:
+		if sacrifice == null:
+			continue
+
+		if sacrifice.current_slot != null:
+			sacrifice.current_slot.clear_card()
+
+	for sacrifice in sacrifices_to_remove:
+		if sacrifice == null:
+			continue
+		sacrifice.queue_free()
+
+	selected_sacrifices.clear()
+
+	if pending_play_card != null:
+		pending_play_card.set_selected(true)
+
+	print("payment complete for ", pending_play_card.card_name, " / paid worth = ", paid_sacrifice_worth)
 
 func try_place_into_slot_under_mouse() -> void:
-	if SelectHandler.selected_card == null:
+	if pending_play_card == null:
 		return
 
 	var space_state := get_viewport().world_2d.direct_space_state
@@ -95,17 +181,61 @@ func try_place_into_slot_under_mouse() -> void:
 					print("place blocked: not a player slot")
 					return
 
-			SelectHandler.selected_card.place_into_slot(slot)
-			SelectHandler.selected_card.set_selected(false)
-			SelectHandler.selected_card = null
+			if not slot.is_empty():
+				print("place blocked: slot is occupied")
+				return
+
+			if pending_play_card.current_cost > 0 and paid_sacrifice_worth < pending_play_card.current_cost:
+				print("place blocked: payment not completed")
+				return
+
+			resolve_pending_play(slot)
 			return
 
-func unselect_current_card() -> void:
-	if SelectHandler.selected_card == null:
+func resolve_pending_play(slot: NewSlots) -> void:
+	if pending_play_card == null:
 		return
 
-	SelectHandler.selected_card.set_selected(false)
+	if slot == null:
+		return
+
+	if not slot.is_empty():
+		print("resolve blocked: slot is occupied")
+		return
+
+	var card_to_play := pending_play_card
+
+	clear_current_selection_visuals()
+
+	card_to_play.place_into_slot(slot)
+
+	pending_play_card = null
+	selected_sacrifices.clear()
+	paid_sacrifice_worth = 0
+	payment_completed = false
 	SelectHandler.selected_card = null
+
+func cancel_pending_play() -> void:
+	clear_current_selection_visuals()
+
+	pending_play_card = null
+	selected_sacrifices.clear()
+	paid_sacrifice_worth = 0
+	payment_completed = false
+	SelectHandler.selected_card = null
+
+	print("pending play cancelled")
+
+func clear_current_selection_visuals() -> void:
+	if pending_play_card != null:
+		pending_play_card.set_selected(false)
+
+	for sacrifice in selected_sacrifices:
+		if sacrifice != null:
+			sacrifice.set_selected(false)
+
+func unselect_current_card() -> void:
+	cancel_pending_play()
 
 func can_afford_card_selection(card: Card) -> bool:
 	if card == null:
@@ -122,29 +252,28 @@ func can_afford_card_selection(card: Card) -> bool:
 func get_total_player_board_worth() -> int:
 	var total := 0
 
-	print("---- checking board worth ----")
-	print("slots size = ", slots.size())
-
 	for slot in slots:
 		if slot == null:
-			print("slot is null")
 			continue
 
-		print("slot name = ", slot.name, " owner = ", slot.slot_owner)
-
 		if slot.current_card == null:
-			print("skipped: no current_card")
 			continue
 
 		var board_card := slot.current_card as Card
 		if board_card == null:
-			print("skipped: current_card is not Card")
 			continue
 
-		print("found board card: ", board_card.card_name, " worth = ", board_card.current_worth)
 		total += board_card.current_worth
 
-	print("total board worth = ", total)
-	print("-----------------------------")
+	return total
+
+func get_selected_sacrifice_worth() -> int:
+	var total := 0
+
+	for card in selected_sacrifices:
+		if card == null:
+			continue
+
+		total += card.current_worth
 
 	return total
