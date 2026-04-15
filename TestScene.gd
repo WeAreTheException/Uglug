@@ -4,8 +4,12 @@ extends Node2D
 @export var end_placement_button: Button
 
 func _ready() -> void:
+	print("entered multiplayer scene")
+	print("my peer id: ", multiplayer.get_unique_id())
+	print("is server: ", multiplayer.is_server())
 	if end_placement_button != null:
 		end_placement_button.pressed.connect(_on_end_placement_pressed)
+
 
 func _on_end_placement_pressed() -> void:
 	if phase_manager == null:
