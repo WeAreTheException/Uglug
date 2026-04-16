@@ -22,7 +22,7 @@ const ATTACK_BETWEEN_CARDS_DELAY := 0.5
 @export var opponent_hand: Node2D
 @export var opponent_spawn_anchor: Node2D
 @export var opponent_controller: OpponentController
-@export var slots: Array[Node2D] # each = one slot pair root
+@export var slots: Array[Node2D]
 
 var current_phase: Phase = Phase.PLAYER_DRAW
 var player_draw_count: int = 0
@@ -123,7 +123,8 @@ func end_player_place_phase() -> void:
 	if not is_player_place_phase():
 		return
 
-	start_opponent_draw_phase()
+	print("PLAYER PLACE PHASE ENDED")
+	print("Multiplayer opponent turn flow not implemented yet")
 
 func start_opponent_draw_phase() -> void:
 	current_phase = Phase.OPPONENT_DRAW

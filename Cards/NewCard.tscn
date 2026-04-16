@@ -16,10 +16,9 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
 size = Vector2(176, 267)
 
-[node name="Card" type="Node2D" unique_id=1703534497 node_paths=PackedStringArray("input_listener", "select_handler", "stats")]
+[node name="Card" type="Node2D" unique_id=1703534497 node_paths=PackedStringArray("input_listener", "stats")]
 script = ExtResource("1_ch35y")
 input_listener = NodePath("InputListener")
-select_handler = NodePath("")
 stats = NodePath("Stats")
 
 [node name="CardStateMachine" type="Node" parent="." unique_id=1069228844]
@@ -93,9 +92,8 @@ script = ExtResource("10_koaue")
 position = Vector2(-3.0517578e-05, 0.43333435)
 shape = SubResource("RectangleShape2D_rjlel")
 
-[node name="InputReciver" type="Node" parent="." unique_id=213661670 node_paths=PackedStringArray("card_state_machine", "card_input_listener", "select_handler", "card_root")]
+[node name="InputReciver" type="Node" parent="." unique_id=213661670 node_paths=PackedStringArray("card_state_machine", "card_input_listener", "card_root")]
 script = ExtResource("11_2w08q")
 card_state_machine = NodePath("../CardStateMachine")
 card_input_listener = NodePath("../InputListener")
-select_handler = NodePath("")
 card_root = NodePath("..")

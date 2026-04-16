@@ -25,10 +25,6 @@ func cache_slots() -> void:
 
 	_collect_player_slots_recursive(slots_root)
 
-	print("cached player slots = ", slots.size())
-	for slot in slots:
-		print("cached slot: ", slot.name)
-
 func _collect_player_slots_recursive(node: Node) -> void:
 	for child in node.get_children():
 		var slot := child as NewSlots

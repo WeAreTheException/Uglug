@@ -20,6 +20,8 @@ var overlapping_slot: NewSlots = null
 var hand_position: Vector2
 
 var card_name: String = ""
+var multiplayer_card_id: int = -1
+
 var is_hovered: bool = false
 var is_selected: bool = false
 
@@ -59,7 +61,7 @@ func setup_card(data: CardData) -> void:
 	current_cost = data.cost
 	current_worth = data.worth
 
-	print("setup: ", data.name)
+	print("setup: ", data.name, " id=", multiplayer_card_id)
 
 	if stats != null:
 		stats.setup_from_card_data(data)

@@ -8,6 +8,8 @@ enum DeckType {
 
 const CARD_DRAW_SPEED = 0.4
 
+static var next_card_id: int = 1
+
 @export var card_database: CardDatabase
 @export var deck_type: DeckType = DeckType.WORKER
 @export var select_handler: SelectHandler
@@ -40,9 +42,23 @@ func draw_player_card() -> void:
 			return
 
 	if multiplayer.multiplayer_peer == null:
-		var local_success := draw_card_to_hand(player_hand, spawn_anchor, Card.Owner.PLAYER)
+		var local_data := pick_card_data()
+		if local_data == null:
+			return
+
+		var local_card_id := DeckDrawHandler.next_card_id
+		DeckDrawHandler.next_card_id += 1
+
+		var local_success := draw_specific_card_to_hand(
+			player_hand,
+			spawn_anchor,
+			Card.Owner.PLAYER,
+			local_data.name,
+			local_card_id
+		)
 		if not local_success:
 			return
+
 		_on_local_draw_confirmed()
 		return
 
@@ -65,19 +81,22 @@ func _host_resolve_draw(drawer_peer_id: int) -> void:
 		print("Draw failed: no card data available")
 		return
 
-	var local_success := _commit_draw_local(drawer_peer_id, data.name)
+	var card_id := DeckDrawHandler.next_card_id
+	DeckDrawHandler.next_card_id += 1
+
+	var local_success := _commit_draw_local(drawer_peer_id, data.name, card_id)
 	if not local_success:
 		print("Draw failed: host local commit failed")
 		return
 
-	rpc("commit_draw_remote", drawer_peer_id, data.name)
+	rpc("commit_draw_remote", drawer_peer_id, data.name, card_id)
 
 	if drawer_peer_id == multiplayer.get_unique_id():
 		_on_local_draw_confirmed()
 
 @rpc("authority", "call_remote", "reliable")
-func commit_draw_remote(drawer_peer_id: int, card_name: String) -> void:
-	var success := _commit_draw_local(drawer_peer_id, card_name)
+func commit_draw_remote(drawer_peer_id: int, card_name: String, card_id: int) -> void:
+	var success := _commit_draw_local(drawer_peer_id, card_name, card_id)
 	if not success:
 		print("Remote draw commit failed for ", card_name)
 		return
@@ -85,7 +104,7 @@ func commit_draw_remote(drawer_peer_id: int, card_name: String) -> void:
 	if multiplayer.get_unique_id() == drawer_peer_id:
 		_on_local_draw_confirmed()
 
-func _commit_draw_local(drawer_peer_id: int, card_name: String) -> bool:
+func _commit_draw_local(drawer_peer_id: int, card_name: String, card_id: int) -> bool:
 	var target_hand: Node2D = null
 	var target_spawn_anchor: Node2D = null
 	var card_owner: int = Card.Owner.PLAYER
@@ -102,7 +121,7 @@ func _commit_draw_local(drawer_peer_id: int, card_name: String) -> bool:
 	if target_spawn_anchor == null and target_hand != null:
 		target_spawn_anchor = target_hand
 
-	return draw_specific_card_to_hand(target_hand, target_spawn_anchor, card_owner, card_name)
+	return draw_specific_card_to_hand(target_hand, target_spawn_anchor, card_owner, card_name, card_id)
 
 func _on_local_draw_confirmed() -> void:
 	if phase_manager == null:
@@ -118,9 +137,18 @@ func draw_card_to_hand(target_hand: Node2D, target_spawn_anchor: Node2D, card_ow
 	if data == null:
 		return false
 
-	return draw_specific_card_to_hand(target_hand, target_spawn_anchor, card_owner, data.name)
+	var card_id := DeckDrawHandler.next_card_id
+	DeckDrawHandler.next_card_id += 1
 
-func draw_specific_card_to_hand(target_hand: Node2D, target_spawn_anchor: Node2D, card_owner: int, card_name: String) -> bool:
+	return draw_specific_card_to_hand(target_hand, target_spawn_anchor, card_owner, data.name, card_id)
+
+func draw_specific_card_to_hand(
+	target_hand: Node2D,
+	target_spawn_anchor: Node2D,
+	card_owner: int,
+	card_name: String,
+	card_id: int
+) -> bool:
 	if deck == null:
 		return false
 	if target_hand == null:
@@ -152,6 +180,7 @@ func draw_specific_card_to_hand(target_hand: Node2D, target_spawn_anchor: Node2D
 		print("Draw failed: could not instantiate card")
 		return false
 
+	new_card.multiplayer_card_id = card_id
 	new_card.player_hand = target_hand
 	new_card.card_owner = card_owner
 	new_card.battle_scale = battle_scale

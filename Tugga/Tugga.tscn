@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://crnprdt5qnnlh"]
+
+[ext_resource type="PackedScene" uid="uid://c8mekq0tyuadn" path="res://Slots/NewSlots.tscn" id="1_fipfa"]
+
+[node name="Tugga" type="Node2D" unique_id=101183231]
+
+[node name="Slots" type="Node2D" parent="." unique_id=1977464802]
+position = Vector2(512, 0)
+
+[node name="Slot1" parent="Slots" unique_id=1783533892 instance=ExtResource("1_fipfa")]
+position = Vector2(704, 512)
+
+[node name="Slot2" parent="Slots" unique_id=1941741563 instance=ExtResource("1_fipfa")]
+position = Vector2(512, 512)
+
+[node name="Slot3" parent="Slots" unique_id=2080470915 instance=ExtResource("1_fipfa")]
+position = Vector2(320, 512)
+
+[node name="Slot4" parent="Slots" unique_id=1635748906 instance=ExtResource("1_fipfa")]
+position = Vector2(128, 512)
