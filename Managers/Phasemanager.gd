@@ -32,7 +32,7 @@ var player_drew_worker_this_phase: bool = false
 var player_drew_warrior_this_phase: bool = false
 
 func _ready() -> void:
-	start_player_draw_phase()
+	pass
 
 func is_player_draw_phase() -> bool:
 	return current_phase == Phase.PLAYER_DRAW
