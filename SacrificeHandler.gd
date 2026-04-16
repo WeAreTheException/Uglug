@@ -1,6 +1,8 @@
 extends Node
 class_name SacrificeHandler
 
+@export var card_manager: Node
+
 var slots: Array[NewSlots] = []
 
 var selected_sacrifices: Array[Card] = []
@@ -76,15 +78,45 @@ func resolve_sacrifice_payment(pending_play_card: Card) -> void:
 
 	clear_sacrifice_hints()
 
+	var sacrificed_ids: Array[int] = []
+
 	for sacrifice in sacrifices_to_remove:
 		if sacrifice == null:
 			continue
 
+		sacrificed_ids.append(sacrifice.multiplayer_card_id)
 		sacrifice.kill()
 
 	selected_sacrifices.clear()
 
 	print("payment complete for ", pending_play_card.card_name, " / paid worth = ", paid_sacrifice_worth)
+
+	if multiplayer.multiplayer_peer != null:
+		rpc("replicate_sacrifice", sacrificed_ids)
+
+@rpc("any_peer", "call_remote", "reliable")
+func replicate_sacrifice(sacrificed_ids: Array[int]) -> void:
+	for card_id in sacrificed_ids:
+		var card := find_card_by_multiplayer_id(card_id)
+		if card == null:
+			print("replicate_sacrifice failed: card not found for id ", card_id)
+			continue
+
+		card.kill()
+
+func find_card_by_multiplayer_id(card_id: int) -> Card:
+	if card_manager == null:
+		return null
+
+	for child in card_manager.get_children():
+		var card := child as Card
+		if card == null:
+			continue
+
+		if card.multiplayer_card_id == card_id:
+			return card
+
+	return null
 
 func get_total_player_board_worth() -> int:
 	var total := 0

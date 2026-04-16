@@ -65,8 +65,9 @@ slots_root = NodePath("../Slots")
 card_manager = NodePath("../CardManager")
 sacrifice_handler = NodePath("../SacrificeHandler")
 
-[node name="SacrificeHandler" type="Node2D" parent="." unique_id=39636248]
+[node name="SacrificeHandler" type="Node2D" parent="." unique_id=39636248 node_paths=PackedStringArray("card_manager")]
 script = ExtResource("10_7w5cs")
+card_manager = NodePath("../CardManager")
 
 [node name="Decks" type="Node2D" parent="." unique_id=1794454942]
 
