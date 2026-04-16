@@ -31,6 +31,10 @@ var is_first_player_draw_phase: bool = true
 var player_drew_worker_this_phase: bool = false
 var player_drew_warrior_this_phase: bool = false
 
+var host_place_done: bool = false
+var client_place_done: bool = false
+var client_peer_id: int = -1
+
 func _ready() -> void:
 	if multiplayer.multiplayer_peer == null:
 		print("PhaseManager: no multiplayer peer, idle")
@@ -124,7 +128,68 @@ func end_player_place_phase() -> void:
 		return
 
 	print("PLAYER PLACE PHASE ENDED")
-	print("Multiplayer opponent turn flow not implemented yet")
+
+	if multiplayer.multiplayer_peer == null:
+		return
+
+	if multiplayer.is_server():
+		host_place_done = true
+		current_phase = Phase.OPPONENT_PLACE
+
+		if client_place_done:
+			rpc("run_attack_round_remote", multiplayer.get_unique_id(), client_peer_id)
+	else:
+		current_phase = Phase.OPPONENT_PLACE
+		rpc_id(1, "notify_client_place_done")
+
+@rpc("any_peer", "call_remote", "reliable")
+func notify_client_place_done() -> void:
+	if not multiplayer.is_server():
+		return
+
+	client_peer_id = multiplayer.get_remote_sender_id()
+	client_place_done = true
+	print("CLIENT PLACE PHASE ENDED (reported to host)")
+
+	if host_place_done:
+		rpc("run_attack_round_remote", multiplayer.get_unique_id(), client_peer_id)
+
+@rpc("authority", "call_local", "reliable")
+func run_attack_round_remote(host_peer: int, second_peer: int) -> void:
+	await run_single_attack_phase_for_peer(host_peer)
+	await run_single_attack_phase_for_peer(second_peer)
+
+	host_place_done = false
+	client_place_done = false
+
+	if multiplayer.is_server():
+		start_player_draw_phase()
+	else:
+		current_phase = Phase.OPPONENT_DRAW
+		print("CLIENT WAITING: host draws first")
+
+func run_single_attack_phase_for_peer(attacker_peer_id: int) -> void:
+	var local_owner: int
+
+	if multiplayer.get_unique_id() == attacker_peer_id:
+		local_owner = Card.Owner.PLAYER
+		current_phase = Phase.PLAYER_ATTACK
+		print("PLAYER ATTACK PHASE")
+	else:
+		local_owner = Card.Owner.OPPONENT
+		current_phase = Phase.OPPONENT_ATTACK
+		print("OPPONENT ATTACK PHASE")
+
+	var cards: Array = get_all_slotted_cards_for_owner(local_owner)
+
+	for card in cards:
+		if card == null:
+			continue
+		if not is_instance_valid(card):
+			continue
+
+		trigger_card_attack(card)
+		await get_tree().create_timer(ATTACK_BETWEEN_CARDS_DELAY).timeout
 
 func start_opponent_draw_phase() -> void:
 	current_phase = Phase.OPPONENT_DRAW
