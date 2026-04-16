@@ -11,6 +11,7 @@ enum Owner {
 @export var stats: Stats
 @export var test_data: CardData
 @export var battle_scale: BattleScale
+@export var sigil_sprite: Sprite2D
 
 var card_scene: PackedScene = null
 var worker_draw_handler: DeckDrawHandler = null
@@ -67,6 +68,8 @@ func setup_card(data: CardData) -> void:
 	current_cost = data.cost
 	current_worth = data.worth
 	quirk = data.quirk as CardQuirk
+	
+	update_sigil()
 
 	print("setup: ", data.name, " id=", multiplayer_card_id)
 
@@ -74,6 +77,32 @@ func setup_card(data: CardData) -> void:
 		stats.setup_from_card_data(data)
 	else:
 		print("FAIL: stats is null on card")
+		
+func update_sigil() -> void:
+	print("update_sigil called for ", card_name)
+
+	if sigil_sprite == null:
+		print("sigil failed: sigil_sprite is null")
+		return
+
+	if quirk == null:
+		print("sigil: no quirk on ", card_name)
+		sigil_sprite.texture = null
+		sigil_sprite.visible = false
+		return
+
+	print("sigil quirk = ", quirk)
+
+	if quirk.sigil_texture == null:
+		print("sigil failed: quirk has no sigil texture")
+		sigil_sprite.texture = null
+		sigil_sprite.visible = false
+		return
+
+	sigil_sprite.texture = quirk.sigil_texture
+	sigil_sprite.visible = true
+
+	print("sigil applied for ", card_name)
 
 func _on_pressed(_listener) -> void:
 	print("card clicked: ", card_name, " / select_handler = ", select_handler)

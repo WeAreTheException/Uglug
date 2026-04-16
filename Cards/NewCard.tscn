@@ -16,10 +16,16 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
 size = Vector2(176, 267)
 
-[node name="Card" type="Node2D" unique_id=1703534497 node_paths=PackedStringArray("input_listener", "stats")]
+[node name="Card" type="Node2D" unique_id=1703534497 node_paths=PackedStringArray("input_listener", "stats", "sigil_sprite")]
 script = ExtResource("1_ch35y")
 input_listener = NodePath("InputListener")
 stats = NodePath("Stats")
+sigil_sprite = NodePath("SigilSprite")
+
+[node name="SigilSprite" type="Sprite2D" parent="." unique_id=755891900]
+z_index = 1
+position = Vector2(1.1920929e-07, 92)
+scale = Vector2(0.026123073, 0.026123073)
 
 [node name="CardStateMachine" type="Node" parent="." unique_id=1069228844]
 script = ExtResource("12_lsojp")

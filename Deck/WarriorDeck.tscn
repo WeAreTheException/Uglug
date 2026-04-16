@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="6_00oes"]
 [ext_resource type="Texture2D" uid="uid://di66ndoe6cgnp" path="res://Art/Ants/Antler.png" id="8_w60k8"]
 [ext_resource type="Script" uid="uid://bev4i65sbtpqe" path="res://Quirks/FlyingAnt.gd" id="9_7lkv5"]
+[ext_resource type="Texture2D" uid="uid://bvc74ci321o8a" path="res://Art/Quirks/FlyingAntSigil.PNG" id="9_mmvm6"]
 [ext_resource type="Texture2D" uid="uid://b1soqhrvsu86i" path="res://Art/Ants/Aviant.png" id="9_ujcl4"]
 [ext_resource type="Script" uid="uid://dvdfwl2ud70ua" path="res://Quirks/TouchOfDeath.gd" id="9_x7m7j"]
 [ext_resource type="Texture2D" uid="uid://wpq5780kx6ao" path="res://Art/Ants/Distant.png" id="10_7lkv5"]
@@ -17,11 +18,14 @@
 [ext_resource type="Texture2D" uid="uid://mdhe2loswtvl" path="res://Art/Ants/Duriant.png" id="11_rw1me"]
 [ext_resource type="Texture2D" uid="uid://dnffnc1xuveq5" path="res://Art/Ants/Growant.png" id="12_06fvk"]
 [ext_resource type="Texture2D" uid="uid://cpgvdfdrt7v4o" path="res://Art/Ants/Pregnant.png" id="13_0knip"]
+[ext_resource type="Texture2D" uid="uid://dn6576awctsek" path="res://Art/Quirks/SpikyArmorSigil.PNG" id="13_ujcl4"]
 [ext_resource type="Texture2D" uid="uid://b55jkuhdyk7wl" path="res://Art/Ants/QueenAnt.png" id="14_r8s31"]
 [ext_resource type="Script" uid="uid://ba3decuns1cvn" path="res://Quirks/PregnAnt.gd" id="15_gy366"]
 [ext_resource type="Script" uid="uid://c8owoh3gv45g4" path="res://Deck/DeckView.gd" id="15_iie84"]
 [ext_resource type="Script" uid="uid://chw242mi2nxl4" path="res://Deck/DeckInputListener.gd" id="16_4kasc"]
+[ext_resource type="Texture2D" uid="uid://mxu53s4pbfyg" path="res://Art/Quirks/TouchOfDeathSigil.PNG" id="16_i1d6c"]
 [ext_resource type="Texture2D" uid="uid://b86c6mggcrsk4" path="res://Sprites/IMG_6221.PNG" id="17_rmli2"]
+[ext_resource type="Texture2D" uid="uid://dlqdhwxcfkoby" path="res://Art/Quirks/PregnAntSigil.PNG" id="21_i1d6c"]
 
 [sub_resource type="Resource" id="Resource_mp65t"]
 script = ExtResource("6_00oes")
@@ -31,8 +35,9 @@ cost = 1
 sprite = ExtResource("8_w60k8")
 metadata/_custom_type_script = "uid://duslcpxrhurv8"
 
-[sub_resource type="Resource" id="Resource_n0yp5"]
+[sub_resource type="Resource" id="Resource_w60k8"]
 script = ExtResource("9_7lkv5")
+sigil_texture = ExtResource("9_mmvm6")
 metadata/_custom_type_script = "uid://bev4i65sbtpqe"
 
 [sub_resource type="Resource" id="Resource_vx53f"]
@@ -41,7 +46,7 @@ name = "Aviant"
 attack = 2
 cost = 1
 sprite = ExtResource("9_ujcl4")
-quirk = SubResource("Resource_n0yp5")
+quirk = SubResource("Resource_w60k8")
 metadata/_custom_type_script = "uid://duslcpxrhurv8"
 
 [sub_resource type="Resource" id="Resource_buwnv"]
@@ -55,6 +60,7 @@ metadata/_custom_type_script = "uid://duslcpxrhurv8"
 
 [sub_resource type="Resource" id="Resource_mmvm6"]
 script = ExtResource("11_00oes")
+sigil_texture = ExtResource("13_ujcl4")
 metadata/_custom_type_script = "uid://dvg4r4x5ffbcs"
 
 [sub_resource type="Resource" id="Resource_00oes"]
@@ -69,6 +75,7 @@ metadata/_custom_type_script = "uid://duslcpxrhurv8"
 
 [sub_resource type="Resource" id="Resource_7lkv5"]
 script = ExtResource("9_x7m7j")
+sigil_texture = ExtResource("16_i1d6c")
 metadata/_custom_type_script = "uid://dvdfwl2ud70ua"
 
 [sub_resource type="Resource" id="Resource_334mj"]
@@ -97,8 +104,9 @@ cost = 1
 sprite = ExtResource("12_06fvk")
 metadata/_custom_type_script = "uid://duslcpxrhurv8"
 
-[sub_resource type="Resource" id="Resource_rw1me"]
+[sub_resource type="Resource" id="Resource_i1d6c"]
 script = ExtResource("15_gy366")
+sigil_texture = ExtResource("21_i1d6c")
 metadata/_custom_type_script = "uid://ba3decuns1cvn"
 
 [sub_resource type="Resource" id="Resource_3v71i"]
@@ -107,7 +115,7 @@ name = "Pregnant"
 health = 2
 cost = 1
 sprite = ExtResource("13_0knip")
-quirk = SubResource("Resource_rw1me")
+quirk = SubResource("Resource_i1d6c")
 metadata/_custom_type_script = "uid://duslcpxrhurv8"
 
 [sub_resource type="Resource" id="Resource_0ckc6"]
