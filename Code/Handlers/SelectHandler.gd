@@ -17,6 +17,7 @@ func _ready() -> void:
 
 	if sacrifice_handler != null:
 		sacrifice_handler.slots = slots
+		sacrifice_handler.card_manager = card_manager
 
 func cache_slots() -> void:
 	slots.clear()
