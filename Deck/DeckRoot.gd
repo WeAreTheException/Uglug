@@ -19,6 +19,8 @@ class_name DeckRoot
 @export var battle_scale: BattleScale
 @export var select_handler: SelectHandler
 
+@export var worker_deck_root: DeckRoot
+
 func _ready() -> void:
 	if input_listener != null:
 		input_listener.draw_handler = draw_handler
@@ -38,3 +40,10 @@ func _ready() -> void:
 		draw_handler.phase_manager = phase_manager
 		draw_handler.battle_scale = battle_scale
 		draw_handler.select_handler = select_handler
+
+		if draw_handler.deck_type == DeckDrawHandler.DeckType.WORKER:
+			draw_handler.worker_draw_handler = draw_handler
+		elif worker_deck_root != null and worker_deck_root.draw_handler != null:
+			draw_handler.worker_draw_handler = worker_deck_root.draw_handler
+		else:
+			print("DeckRoot: worker_draw_handler could not be assigned for ", name)

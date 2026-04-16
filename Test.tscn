@@ -34,7 +34,7 @@ phase_manager = NodePath("../PhaseManager")
 battle_scale = NodePath("../BattleScale")
 select_handler = NodePath("../SelectHandler")
 
-[node name="WarriorDeck" parent="." unique_id=280972336 node_paths=PackedStringArray("player_hand", "card_manager", "spawn_anchor", "phase_manager", "battle_scale", "select_handler") instance=ExtResource("8_qs82m")]
+[node name="WarriorDeck" parent="." unique_id=280972336 node_paths=PackedStringArray("player_hand", "card_manager", "spawn_anchor", "phase_manager", "battle_scale", "select_handler", "worker_deck_root") instance=ExtResource("8_qs82m")]
 position = Vector2(1792, 896)
 player_hand = NodePath("../PlayerHand")
 card_manager = NodePath("../CardManager")
@@ -42,6 +42,7 @@ spawn_anchor = NodePath(".")
 phase_manager = NodePath("../PhaseManager")
 battle_scale = NodePath("../BattleScale")
 select_handler = NodePath("../SelectHandler")
+worker_deck_root = NodePath("../WorkerDeck")
 
 [node name="PhaseManager" type="Node" parent="." unique_id=384942188 node_paths=PackedStringArray("deck_root", "opponent_hand", "opponent_spawn_anchor", "opponent_controller", "slots")]
 script = ExtResource("5_q1uvj")

@@ -13,6 +13,7 @@ enum Owner {
 @export var battle_scale: BattleScale
 
 var card_scene: PackedScene = null
+var worker_draw_handler: DeckDrawHandler = null
 
 var card_owner: Owner = Owner.PLAYER
 
@@ -122,6 +123,26 @@ func kill() -> void:
 
 	queue_free()
 
+func draw_worker_cards(amount: int) -> void:
+	if worker_draw_handler == null:
+		print("draw_worker_cards failed: worker_draw_handler is null")
+		return
+
+	if player_hand == null:
+		print("draw_worker_cards failed: player_hand is null")
+		return
+
+	for i in range(amount):
+		var success := worker_draw_handler.draw_card_to_hand(
+			player_hand,
+			worker_draw_handler.spawn_anchor,
+			card_owner
+		)
+
+		if not success:
+			print("draw_worker_cards stopped early at ", i)
+			break
+
 func spawn_card_to_hand(data: CardData) -> void:
 	if data == null:
 		print("spawn_card_to_hand failed: data null")
@@ -144,6 +165,7 @@ func spawn_card_to_hand(data: CardData) -> void:
 	new_card.select_handler = select_handler
 	new_card.battle_scale = battle_scale
 	new_card.card_scene = card_scene
+	new_card.worker_draw_handler = worker_draw_handler
 	new_card.card_owner = card_owner
 
 	player_hand.add_child(new_card)

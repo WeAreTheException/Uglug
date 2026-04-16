@@ -19,7 +19,6 @@
 [ext_resource type="Script" uid="uid://ba3decuns1cvn" path="res://Quirks/PregnAnt.gd" id="15_gy366"]
 [ext_resource type="Script" uid="uid://c8owoh3gv45g4" path="res://Deck/DeckView.gd" id="15_iie84"]
 [ext_resource type="Script" uid="uid://chw242mi2nxl4" path="res://Deck/DeckInputListener.gd" id="16_4kasc"]
-[ext_resource type="Resource" uid="uid://c3i7oef51wu84" path="res://Cards/Prefabs/Ant.tres" id="16_rw1me"]
 [ext_resource type="Texture2D" uid="uid://b86c6mggcrsk4" path="res://Sprites/IMG_6221.PNG" id="17_rmli2"]
 
 [sub_resource type="Resource" id="Resource_mp65t"]
@@ -84,7 +83,6 @@ metadata/_custom_type_script = "uid://duslcpxrhurv8"
 
 [sub_resource type="Resource" id="Resource_rw1me"]
 script = ExtResource("15_gy366")
-spawned_card_data = ExtResource("16_rw1me")
 metadata/_custom_type_script = "uid://ba3decuns1cvn"
 
 [sub_resource type="Resource" id="Resource_3v71i"]
