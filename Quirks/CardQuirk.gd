@@ -6,3 +6,6 @@ func get_attack_target(attacker: Card, opposing_card: Card) -> Card:
 
 func modify_damage(attacker: Card, defender: Card, base_damage: int) -> int:
 	return base_damage
+
+func on_death(card: Card) -> void:
+	pass
