@@ -68,7 +68,11 @@ func try_select_hand_card(card: Card) -> void:
 		return
 
 	if sacrifice_handler != null:
-		if sacrifice_handler.payment_completed and pending_play_card != null and pending_play_card != card:
+		if sacrifice_handler.payment_completed and pending_play_card != null:
+			if pending_play_card == card:
+				print("try_select_hand_card blocked: cannot unselect after payment completed")
+				return
+
 			print("try_select_hand_card blocked: payment already completed for ", pending_play_card.card_name)
 			return
 
@@ -213,6 +217,10 @@ func find_opposing_slot_by_lane_id(node: Node, lane_id: int) -> NewSlots:
 	return null
 
 func cancel_pending_play() -> void:
+	if sacrifice_handler != null and sacrifice_handler.payment_completed:
+		print("cancel_pending_play blocked: payment already completed")
+		return
+
 	if sacrifice_handler != null:
 		sacrifice_handler.clear_sacrifice_hints()
 
