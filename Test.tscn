@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://ctp48eusxy1qn" path="res://Deck/WarriorDeck.tscn" id="8_qs82m"]
 [ext_resource type="Script" uid="uid://ga6f6537weuu" path="res://Tugga/BattleScale.gd" id="9_c4vo5"]
 [ext_resource type="Script" uid="uid://clgbwnniuqm7g" path="res://Code/Handlers/SelectHandler.gd" id="10_vwb7u"]
+[ext_resource type="Script" uid="uid://bqtoohcvy57vk" path="res://SacrificeHandler.gd" id="11_cqdos"]
 
 [node name="Playground" type="Node2D" unique_id=1073653813 node_paths=PackedStringArray("phase_manager", "end_placement_button")]
 script = ExtResource("1_ivycn")
@@ -79,6 +80,11 @@ position = Vector2(128, 512)
 [node name="BattleScale" type="Node" parent="." unique_id=284856531]
 script = ExtResource("9_c4vo5")
 
-[node name="SelectHandler" type="Node2D" parent="." unique_id=1598983565 node_paths=PackedStringArray("slots_root")]
+[node name="SelectHandler" type="Node2D" parent="." unique_id=1598983565 node_paths=PackedStringArray("slots_root", "card_manager", "sacrifice_handler")]
 script = ExtResource("10_vwb7u")
 slots_root = NodePath("../Slots")
+card_manager = NodePath("../CardManager")
+sacrifice_handler = NodePath("../SacrificeHandler")
+
+[node name="SacrificeHandler" type="Node2D" parent="." unique_id=240265303]
+script = ExtResource("11_cqdos")
