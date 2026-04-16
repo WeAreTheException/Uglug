@@ -32,7 +32,15 @@ var player_drew_worker_this_phase: bool = false
 var player_drew_warrior_this_phase: bool = false
 
 func _ready() -> void:
-	pass
+	if multiplayer.multiplayer_peer == null:
+		print("PhaseManager: no multiplayer peer, idle")
+		return
+
+	if multiplayer.is_server():
+		start_player_draw_phase()
+	else:
+		current_phase = Phase.OPPONENT_DRAW
+		print("CLIENT WAITING: host draws first")
 
 func is_player_draw_phase() -> bool:
 	return current_phase == Phase.PLAYER_DRAW
@@ -96,11 +104,20 @@ func on_player_drew_card() -> void:
 	if player_draw_count >= get_player_draw_limit():
 		if is_first_player_draw_phase:
 			is_first_player_draw_phase = false
+
 		start_player_place_phase()
+
+		if multiplayer.multiplayer_peer != null and multiplayer.is_server():
+			rpc("begin_client_draw_phase")
 
 func start_player_place_phase() -> void:
 	current_phase = Phase.PLAYER_PLACE
 	print("PLAYER PLACE PHASE")
+
+@rpc("authority", "call_remote", "reliable")
+func begin_client_draw_phase() -> void:
+	print("CLIENT DRAW UNLOCKED")
+	start_player_draw_phase()
 
 func end_player_place_phase() -> void:
 	if not is_player_place_phase():
