@@ -60,20 +60,24 @@ slots_root = NodePath("../Slots")
 
 [node name="Decks" type="Node2D" parent="." unique_id=1794454942]
 
-[node name="WorkerDeck" parent="Decks" unique_id=1069789393 node_paths=PackedStringArray("player_hand", "card_manager", "spawn_anchor", "phase_manager", "battle_scale", "select_handler") instance=ExtResource("4_jyw1y")]
+[node name="WorkerDeck" parent="Decks" unique_id=1069789393 node_paths=PackedStringArray("player_hand", "opponent_hand", "card_manager", "spawn_anchor", "opponent_spawn_anchor", "phase_manager", "battle_scale", "select_handler") instance=ExtResource("4_jyw1y")]
 position = Vector2(1792, 576)
 player_hand = NodePath("../../PlayerHand")
+opponent_hand = NodePath("../../EnemyHand")
 card_manager = NodePath("../../CardManager")
 spawn_anchor = NodePath(".")
+opponent_spawn_anchor = NodePath(".")
 phase_manager = NodePath("../../PhaseManager")
 battle_scale = NodePath("../../BattleScale")
 select_handler = NodePath("../../SelectHandler")
 
-[node name="WarriorDeck" parent="Decks" unique_id=280972336 node_paths=PackedStringArray("player_hand", "card_manager", "spawn_anchor", "phase_manager", "battle_scale", "select_handler") instance=ExtResource("5_nrbjv")]
+[node name="WarriorDeck" parent="Decks" unique_id=280972336 node_paths=PackedStringArray("player_hand", "opponent_hand", "card_manager", "spawn_anchor", "opponent_spawn_anchor", "phase_manager", "battle_scale", "select_handler") instance=ExtResource("5_nrbjv")]
 position = Vector2(1792, 896)
 player_hand = NodePath("../../PlayerHand")
+opponent_hand = NodePath("../../EnemyHand")
 card_manager = NodePath("../../CardManager")
 spawn_anchor = NodePath(".")
+opponent_spawn_anchor = NodePath(".")
 phase_manager = NodePath("../../PhaseManager")
 battle_scale = NodePath("../../BattleScale")
 select_handler = NodePath("../../SelectHandler")
