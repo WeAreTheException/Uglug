@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bgw4gcc8buxly" path="res://Cards/card.gd" id="1_ch35y"]
 [ext_resource type="Script" uid="uid://dbemrm25gvek6" path="res://Cards/Stats.gd" id="2_52a3h"]
+[ext_resource type="Texture2D" uid="uid://bvc74ci321o8a" path="res://Art/Quirks/FlyingAntSigil.PNG" id="2_ch35y"]
 [ext_resource type="Texture2D" uid="uid://bdi7eyt5cmur0" path="res://Art/Numbers/1.png" id="3_5yjln"]
 [ext_resource type="Texture2D" uid="uid://clk0ori80b5gg" path="res://Art/Numbers/2.png" id="4_krn1d"]
 [ext_resource type="Texture2D" uid="uid://bnj2kyvgakfq3" path="res://Art/Numbers/3.png" id="5_s0kml"]
@@ -24,8 +25,9 @@ sigil_sprite = NodePath("SigilSprite")
 
 [node name="SigilSprite" type="Sprite2D" parent="." unique_id=755891900]
 z_index = 1
-position = Vector2(1.1920929e-07, 92)
-scale = Vector2(0.026123073, 0.026123073)
+position = Vector2(-0.3750138, 96.624985)
+scale = Vector2(0.028686536, 0.028686536)
+texture = ExtResource("2_ch35y")
 
 [node name="CardStateMachine" type="Node" parent="." unique_id=1069228844]
 script = ExtResource("12_lsojp")
