@@ -28,7 +28,7 @@ script = ExtResource("6_q6li5")
 deck_root = NodePath("../Decks/WorkerDeck")
 opponent_hand = NodePath("../EnemyHand")
 opponent_spawn_anchor = NodePath("../Decks/WorkerDeck")
-slots = [NodePath("../Slots/Slot1"), NodePath("../Slots/Slot3"), NodePath("../Slots/Slot2"), NodePath("../Slots/Slot4")]
+slots = [NodePath("../Slots/Lane4"), NodePath("../Slots/Lane2"), NodePath("../Slots/Lane3"), NodePath("../Slots/Lane1")]
 
 [node name="Button" type="Button" parent="." unique_id=109142189]
 offset_right = 8.0
@@ -39,17 +39,21 @@ text = "End Placement Phase
 [node name="Slots" type="Node2D" parent="." unique_id=739226081]
 position = Vector2(512, 0)
 
-[node name="Slot1" parent="Slots" unique_id=1783533892 instance=ExtResource("8_tlmyv")]
+[node name="Lane4" parent="Slots" unique_id=1783533892 instance=ExtResource("8_tlmyv")]
 position = Vector2(704, 512)
+lane_id = 4
 
-[node name="Slot2" parent="Slots" unique_id=962105340 instance=ExtResource("8_tlmyv")]
+[node name="Lane3" parent="Slots" unique_id=962105340 instance=ExtResource("8_tlmyv")]
 position = Vector2(512, 512)
+lane_id = 3
 
-[node name="Slot3" parent="Slots" unique_id=1904701811 instance=ExtResource("8_tlmyv")]
+[node name="Lane2" parent="Slots" unique_id=1904701811 instance=ExtResource("8_tlmyv")]
 position = Vector2(320, 512)
+lane_id = 2
 
-[node name="Slot4" parent="Slots" unique_id=1531690399 instance=ExtResource("8_tlmyv")]
+[node name="Lane1" parent="Slots" unique_id=1531690399 instance=ExtResource("8_tlmyv")]
 position = Vector2(128, 512)
+lane_id = 1
 
 [node name="BattleScale" type="Node" parent="." unique_id=284856531]
 script = ExtResource("9_fbrwd")

@@ -144,7 +144,13 @@ func resolve_sacrifice_payment() -> void:
 		if sacrifice == null:
 			continue
 
-		sacrifice.kill()
+		if sacrifice.current_slot != null:
+			sacrifice.current_slot.clear_card()
+
+	for sacrifice in sacrifices_to_remove:
+		if sacrifice == null:
+			continue
+		sacrifice.queue_free()
 
 	selected_sacrifices.clear()
 
@@ -202,7 +208,7 @@ func resolve_pending_play(slot: NewSlots) -> void:
 
 	var card_to_play := pending_play_card
 	var placed_card_id := card_to_play.multiplayer_card_id
-	var placed_slot_name := slot.name
+	var placed_lane_id := slot.lane_id
 
 	clear_sacrifice_hints()
 	clear_current_selection_visuals()
@@ -210,7 +216,7 @@ func resolve_pending_play(slot: NewSlots) -> void:
 	card_to_play.place_into_slot(slot)
 
 	if multiplayer.multiplayer_peer != null:
-		rpc("replicate_place_card", placed_card_id, placed_slot_name)
+		rpc("replicate_place_card", placed_card_id, placed_lane_id)
 
 	pending_play_card = null
 	selected_sacrifices.clear()
@@ -219,21 +225,16 @@ func resolve_pending_play(slot: NewSlots) -> void:
 	SelectHandler.selected_card = null
 
 @rpc("any_peer", "call_remote", "reliable")
-func replicate_place_card(card_id: int, local_player_slot_name: String) -> void:
+func replicate_place_card(card_id: int, lane_id: int) -> void:
 	var card := find_card_by_multiplayer_id(card_id)
 	if card == null:
 		print("replicate_place_card failed: card not found for id ", card_id)
 		return
 
-	var source_slot := find_slot_by_name_recursive(slots_root, local_player_slot_name)
-	if source_slot == null:
-		print("replicate_place_card failed: slot not found ", local_player_slot_name)
-		return
-
-	var target_slot := source_slot.opposing_slot
+	var target_slot := find_opposing_slot_by_lane_id(slots_root, lane_id)
 	if target_slot == null:
-		print("replicate_place_card warning: opposing_slot missing on ", local_player_slot_name)
-		target_slot = source_slot
+		print("replicate_place_card failed: opposing slot not found for lane ", lane_id)
+		return
 
 	if not target_slot.is_empty():
 		print("replicate_place_card blocked: mirrored slot occupied")
@@ -255,16 +256,17 @@ func find_card_by_multiplayer_id(card_id: int) -> Card:
 
 	return null
 
-func find_slot_by_name_recursive(node: Node, target_name: String) -> NewSlots:
+func find_opposing_slot_by_lane_id(node: Node, lane_id: int) -> NewSlots:
 	if node == null:
 		return null
 
 	for child in node.get_children():
 		var slot := child as NewSlots
-		if slot != null and slot.name == target_name:
-			return slot
+		if slot != null:
+			if slot.lane_id == lane_id and slot.slot_owner == NewSlots.SlotOwner.OPPONENT:
+				return slot
 
-		var found := find_slot_by_name_recursive(child, target_name)
+		var found := find_opposing_slot_by_lane_id(child, lane_id)
 		if found != null:
 			return found
 

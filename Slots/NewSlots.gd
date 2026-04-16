@@ -6,6 +6,7 @@ enum SlotOwner {
 	OPPONENT
 }
 
+@export var lane_id: int = 0
 @export var slot_owner: SlotOwner = SlotOwner.PLAYER
 @export var opposing_slot: NewSlots
 
