@@ -12,6 +12,8 @@ enum Owner {
 @export var test_data: CardData
 @export var battle_scale: BattleScale
 
+var card_scene: PackedScene = null
+
 var card_owner: Owner = Owner.PLAYER
 
 var player_hand: Node2D = null
@@ -29,6 +31,9 @@ var current_attack: int = 0
 var current_health: int = 0
 var current_cost: int = 0
 var current_worth: int = 0
+
+var quirk: CardQuirk = null
+var death_processed: bool = false
 
 var move_tween: Tween = null
 var scale_tween: Tween = null
@@ -60,6 +65,7 @@ func setup_card(data: CardData) -> void:
 	current_health = data.health
 	current_cost = data.cost
 	current_worth = data.worth
+	quirk = data.quirk as CardQuirk
 
 	print("setup: ", data.name, " id=", multiplayer_card_id)
 
@@ -96,6 +102,10 @@ func take_damage(amount: int) -> void:
 	print(card_name, " (", current_health, " hp)")
 
 func kill() -> void:
+	if death_processed:
+		return
+
+	death_processed = true
 	current_health = 0
 
 	if stats != null:
@@ -103,11 +113,44 @@ func kill() -> void:
 
 	print(card_name, " died")
 
+	if quirk != null:
+		quirk.on_death(self)
+
 	if current_slot != null:
 		current_slot.clear_card()
 		current_slot = null
 
 	queue_free()
+
+func spawn_card_to_hand(data: CardData) -> void:
+	if data == null:
+		print("spawn_card_to_hand failed: data null")
+		return
+
+	if card_scene == null:
+		print("spawn_card_to_hand failed: card_scene null")
+		return
+
+	if player_hand == null:
+		print("spawn_card_to_hand failed: player_hand null")
+		return
+
+	var new_card = card_scene.instantiate() as Card
+	if new_card == null:
+		print("spawn_card_to_hand failed: instantiated node is not Card")
+		return
+
+	new_card.player_hand = player_hand
+	new_card.select_handler = select_handler
+	new_card.battle_scale = battle_scale
+	new_card.card_scene = card_scene
+	new_card.card_owner = card_owner
+
+	player_hand.add_child(new_card)
+	new_card.setup_card(data)
+
+	if player_hand.has_method("add_card_to_hand"):
+		player_hand.add_card_to_hand(new_card)
 
 func _on_hovered(_listener) -> void:
 	is_hovered = true

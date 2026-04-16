@@ -144,13 +144,7 @@ func resolve_sacrifice_payment() -> void:
 		if sacrifice == null:
 			continue
 
-		if sacrifice.current_slot != null:
-			sacrifice.current_slot.clear_card()
-
-	for sacrifice in sacrifices_to_remove:
-		if sacrifice == null:
-			continue
-		sacrifice.queue_free()
+		sacrifice.kill()
 
 	selected_sacrifices.clear()
 

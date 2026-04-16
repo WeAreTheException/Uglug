@@ -185,6 +185,7 @@ func draw_specific_card_to_hand(
 	new_card.card_owner = card_owner
 	new_card.battle_scale = battle_scale
 	new_card.select_handler = select_handler
+	new_card.card_scene = deck.card_scene
 
 	if new_card.select_handler != null:
 		new_card.select_handler.phase_manager = phase_manager

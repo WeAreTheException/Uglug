@@ -73,23 +73,37 @@ func enter_attack() -> void:
 	print("card owner: ", card.card_owner)
 
 	var opposing_slot = card.current_slot.opposing_slot
+	var opposing_card: Card = null
 
-	if opposing_slot != null and opposing_slot.current_card != null:
-		var opposing_card = opposing_slot.current_card
+	if opposing_slot != null:
+		opposing_card = opposing_slot.current_card
 
-		if opposing_card.has_method("take_damage"):
-			print(card.card_name, " -> ", opposing_card.card_name, " (", card.current_attack, " dmg)")
-			opposing_card.take_damage(card.current_attack)
+	var final_target: Card = opposing_card
+
+	if card.quirk != null:
+		final_target = card.quirk.get_attack_target(card, opposing_card)
+
+	if final_target != null:
+		if final_target.has_method("take_damage"):
+			var damage := card.current_attack
+
+			if card.quirk != null:
+				damage = card.quirk.modify_damage(card, final_target, damage)
+
+			print(card.card_name, " -> ", final_target.card_name, " (", damage, " dmg)")
+			final_target.take_damage(damage)
 		else:
-			print("opposing card has no take_damage")
+			print("target card has no take_damage")
 	else:
+		var direct_damage := card.current_attack
+
 		if card.card_owner == Card.Owner.PLAYER:
-			print(card.card_name, " -> opponent (", card.current_attack, " dmg)")
+			print(card.card_name, " -> opponent (", direct_damage, " dmg)")
 		else:
-			print(card.card_name, " -> player (", card.current_attack, " dmg)")
+			print(card.card_name, " -> player (", direct_damage, " dmg)")
 
 		if card.battle_scale != null:
-			card.battle_scale.add_direct_damage(card.current_attack, card.card_owner)
+			card.battle_scale.add_direct_damage(direct_damage, card.card_owner)
 
 	set_main_state(MainState.WAIT)
 
