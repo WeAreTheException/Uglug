@@ -4,6 +4,7 @@ class_name SelectHandler
 static var selected_card: Card = null
 
 @export var slots_root: Node
+@export var card_manager: Node
 
 var slots: Array[NewSlots] = []
 var phase_manager: PhaseManager = null
@@ -206,17 +207,74 @@ func resolve_pending_play(slot: NewSlots) -> void:
 		return
 
 	var card_to_play := pending_play_card
+	var placed_card_id := card_to_play.multiplayer_card_id
+	var placed_slot_name := slot.name
 
 	clear_sacrifice_hints()
 	clear_current_selection_visuals()
 
 	card_to_play.place_into_slot(slot)
 
+	if multiplayer.multiplayer_peer != null:
+		rpc("replicate_place_card", placed_card_id, placed_slot_name)
+
 	pending_play_card = null
 	selected_sacrifices.clear()
 	paid_sacrifice_worth = 0
 	payment_completed = false
 	SelectHandler.selected_card = null
+
+@rpc("any_peer", "call_remote", "reliable")
+func replicate_place_card(card_id: int, local_player_slot_name: String) -> void:
+	var card := find_card_by_multiplayer_id(card_id)
+	if card == null:
+		print("replicate_place_card failed: card not found for id ", card_id)
+		return
+
+	var source_slot := find_slot_by_name_recursive(slots_root, local_player_slot_name)
+	if source_slot == null:
+		print("replicate_place_card failed: slot not found ", local_player_slot_name)
+		return
+
+	var target_slot := source_slot.opposing_slot
+	if target_slot == null:
+		print("replicate_place_card warning: opposing_slot missing on ", local_player_slot_name)
+		target_slot = source_slot
+
+	if not target_slot.is_empty():
+		print("replicate_place_card blocked: mirrored slot occupied")
+		return
+
+	card.place_into_slot(target_slot)
+
+func find_card_by_multiplayer_id(card_id: int) -> Card:
+	if card_manager == null:
+		return null
+
+	for child in card_manager.get_children():
+		var card := child as Card
+		if card == null:
+			continue
+
+		if card.multiplayer_card_id == card_id:
+			return card
+
+	return null
+
+func find_slot_by_name_recursive(node: Node, target_name: String) -> NewSlots:
+	if node == null:
+		return null
+
+	for child in node.get_children():
+		var slot := child as NewSlots
+		if slot != null and slot.name == target_name:
+			return slot
+
+		var found := find_slot_by_name_recursive(child, target_name)
+		if found != null:
+			return found
+
+	return null
 
 func cancel_pending_play() -> void:
 	clear_sacrifice_hints()

@@ -54,9 +54,10 @@ position = Vector2(128, 512)
 [node name="BattleScale" type="Node" parent="." unique_id=284856531]
 script = ExtResource("9_fbrwd")
 
-[node name="SelectHandler" type="Node2D" parent="." unique_id=1598983565 node_paths=PackedStringArray("slots_root")]
+[node name="SelectHandler" type="Node2D" parent="." unique_id=1598983565 node_paths=PackedStringArray("slots_root", "card_manager")]
 script = ExtResource("10_qfr8t")
 slots_root = NodePath("../Slots")
+card_manager = NodePath("../CardManager")
 
 [node name="Decks" type="Node2D" parent="." unique_id=1794454942]
 
