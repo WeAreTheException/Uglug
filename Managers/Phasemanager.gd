@@ -31,8 +31,6 @@ var is_first_player_draw_phase: bool = true
 var player_drew_worker_this_phase: bool = false
 var player_drew_warrior_this_phase: bool = false
 
-var host_place_done: bool = false
-var client_place_done: bool = false
 var client_peer_id: int = -1
 
 func _ready() -> void:
@@ -109,10 +107,17 @@ func on_player_drew_card() -> void:
 		if is_first_player_draw_phase:
 			is_first_player_draw_phase = false
 
-		start_player_place_phase()
+		if multiplayer.multiplayer_peer != null:
+			if multiplayer.is_server():
+				start_player_place_phase()
 
-		if multiplayer.multiplayer_peer != null and multiplayer.is_server():
-			rpc("begin_client_draw_phase")
+				if multiplayer.multiplayer_peer != null:
+					rpc("begin_client_draw_phase")
+			else:
+				current_phase = Phase.OPPONENT_PLACE
+				print("CLIENT WAITING: host places first")
+		else:
+			start_player_place_phase()
 
 func start_player_place_phase() -> void:
 	current_phase = Phase.PLAYER_PLACE
@@ -122,6 +127,11 @@ func start_player_place_phase() -> void:
 func begin_client_draw_phase() -> void:
 	print("CLIENT DRAW UNLOCKED")
 	start_player_draw_phase()
+
+@rpc("authority", "call_remote", "reliable")
+func begin_client_place_phase() -> void:
+	print("CLIENT PLACE UNLOCKED")
+	start_player_place_phase()
 
 func end_player_place_phase() -> void:
 	if not is_player_place_phase():
@@ -133,13 +143,17 @@ func end_player_place_phase() -> void:
 		return
 
 	if multiplayer.is_server():
-		host_place_done = true
-		current_phase = Phase.OPPONENT_PLACE
+		print("HOST DONE PLACING")
 
-		if client_place_done:
-			rpc("run_attack_round_remote", multiplayer.get_unique_id(), client_peer_id)
-	else:
+		if client_peer_id != -1:
+			rpc_id(client_peer_id, "begin_client_place_phase")
+		else:
+			rpc("begin_client_place_phase")
+
 		current_phase = Phase.OPPONENT_PLACE
+	else:
+		print("CLIENT DONE PLACING")
+		current_phase = Phase.OPPONENT_ATTACK
 		rpc_id(1, "notify_client_place_done")
 
 @rpc("any_peer", "call_remote", "reliable")
@@ -148,19 +162,13 @@ func notify_client_place_done() -> void:
 		return
 
 	client_peer_id = multiplayer.get_remote_sender_id()
-	client_place_done = true
 	print("CLIENT PLACE PHASE ENDED (reported to host)")
-
-	if host_place_done:
-		rpc("run_attack_round_remote", multiplayer.get_unique_id(), client_peer_id)
+	rpc("run_attack_round_remote", multiplayer.get_unique_id(), client_peer_id)
 
 @rpc("authority", "call_local", "reliable")
 func run_attack_round_remote(host_peer: int, second_peer: int) -> void:
 	await run_single_attack_phase_for_peer(host_peer)
 	await run_single_attack_phase_for_peer(second_peer)
-
-	host_place_done = false
-	client_place_done = false
 
 	if multiplayer.is_server():
 		start_player_draw_phase()
