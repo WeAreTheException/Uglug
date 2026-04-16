@@ -84,21 +84,21 @@ func _on_pressed(_listener) -> void:
 
 	select_handler.select_card(self)
 
-func take_damage(amount: int) -> void:
+func take_damage(amount: int, attacker: Card = null) -> void:
 	current_health -= amount
 
 	if current_health < 0:
 		current_health = 0
 
-	if current_health <= 0:
-		if stats != null:
-			stats.update_health(current_health)
-
-		kill()
-		return
-
 	if stats != null:
 		stats.update_health(current_health)
+
+	if quirk != null:
+		quirk.on_damaged(self, attacker, amount)
+
+	if current_health <= 0:
+		kill()
+		return
 
 	print(card_name, " (", current_health, " hp)")
 

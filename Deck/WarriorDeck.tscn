@@ -12,7 +12,9 @@
 [ext_resource type="Script" uid="uid://dvdfwl2ud70ua" path="res://Quirks/TouchOfDeath.gd" id="9_x7m7j"]
 [ext_resource type="Texture2D" uid="uid://wpq5780kx6ao" path="res://Art/Ants/Distant.png" id="10_7lkv5"]
 [ext_resource type="Texture2D" uid="uid://bd3n84cq63rtf" path="res://Art/Ants/Eliminant.png" id="10_i1d6c"]
+[ext_resource type="Script" uid="uid://dvg4r4x5ffbcs" path="res://Quirks/SpikyArmor.gd" id="11_00oes"]
 [ext_resource type="Texture2D" uid="uid://dqynxdcij0qpn" path="res://Art/Ants/Giant.png" id="11_eu8gw"]
+[ext_resource type="Texture2D" uid="uid://mdhe2loswtvl" path="res://Art/Ants/Duriant.png" id="11_rw1me"]
 [ext_resource type="Texture2D" uid="uid://dnffnc1xuveq5" path="res://Art/Ants/Growant.png" id="12_06fvk"]
 [ext_resource type="Texture2D" uid="uid://cpgvdfdrt7v4o" path="res://Art/Ants/Pregnant.png" id="13_0knip"]
 [ext_resource type="Texture2D" uid="uid://b55jkuhdyk7wl" path="res://Art/Ants/QueenAnt.png" id="14_r8s31"]
@@ -49,6 +51,20 @@ attack = 1
 health = 2
 cost = 1
 sprite = ExtResource("10_7lkv5")
+metadata/_custom_type_script = "uid://duslcpxrhurv8"
+
+[sub_resource type="Resource" id="Resource_mmvm6"]
+script = ExtResource("11_00oes")
+metadata/_custom_type_script = "uid://dvg4r4x5ffbcs"
+
+[sub_resource type="Resource" id="Resource_00oes"]
+script = ExtResource("6_00oes")
+name = "Duriant"
+attack = 1
+health = 2
+cost = 1
+sprite = ExtResource("11_rw1me")
+quirk = SubResource("Resource_mmvm6")
 metadata/_custom_type_script = "uid://duslcpxrhurv8"
 
 [sub_resource type="Resource" id="Resource_7lkv5"]
@@ -127,7 +143,7 @@ deck_type = 1
 
 [node name="CardDatabase" type="Node" parent="." unique_id=1978405134]
 script = ExtResource("5_rw1me")
-cards = Array[ExtResource("6_00oes")]([SubResource("Resource_mp65t"), SubResource("Resource_vx53f"), SubResource("Resource_buwnv"), SubResource("Resource_334mj"), SubResource("Resource_rpdxx"), SubResource("Resource_1oh5c"), SubResource("Resource_3v71i"), SubResource("Resource_0ckc6")])
+cards = Array[ExtResource("6_00oes")]([SubResource("Resource_mp65t"), SubResource("Resource_vx53f"), SubResource("Resource_buwnv"), SubResource("Resource_00oes"), SubResource("Resource_334mj"), SubResource("Resource_rpdxx"), SubResource("Resource_1oh5c"), SubResource("Resource_3v71i"), SubResource("Resource_0ckc6")])
 
 [node name="DeckView" type="Node" parent="." unique_id=696320865]
 script = ExtResource("15_iie84")

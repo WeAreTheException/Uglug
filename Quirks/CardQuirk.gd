@@ -9,3 +9,6 @@ func modify_damage(attacker: Card, defender: Card, base_damage: int) -> int:
 
 func on_death(card: Card) -> void:
 	pass
+
+func on_damaged(card: Card, attacker: Card, amount: int) -> void:
+	pass
