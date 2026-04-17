@@ -3,10 +3,11 @@
 [ext_resource type="Script" uid="uid://cfsbl06ahe2c3" path="res://Main Menu/MainMenu.gd" id="1_7b88o"]
 [ext_resource type="PackedScene" uid="uid://t0ygmapw4xv0" path="res://Multiplayer/MultiplayerScene.tscn" id="2_vpabl"]
 
-[node name="Main_Menu" type="Node2D" unique_id=1094824997 node_paths=PackedStringArray("host_button", "join_button")]
+[node name="Main_Menu" type="Node2D" unique_id=1094824997 node_paths=PackedStringArray("host_button", "join_button", "address_input")]
 script = ExtResource("1_7b88o")
 host_button = NodePath("Host")
 join_button = NodePath("Join")
+address_input = NodePath("AddressInput")
 multiplayer_scene = ExtResource("2_vpabl")
 
 [node name="Host" type="Button" parent="." unique_id=1666733725]
@@ -24,3 +25,8 @@ offset_right = 1856.0
 offset_bottom = 1024.0
 text = "JOIN
 "
+
+[node name="AddressInput" type="LineEdit" parent="." unique_id=882632352]
+offset_left = 768.0
+offset_right = 1280.0
+offset_bottom = 64.0

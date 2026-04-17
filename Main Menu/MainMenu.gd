@@ -2,10 +2,10 @@ extends Node
 class_name MainMenu
 
 const PORT := 9999
-const SERVER_ADDRESS := "127.0.0.1"
 
 @export var host_button: Button
 @export var join_button: Button
+@export var address_input: LineEdit
 @export var multiplayer_scene: PackedScene
 
 var peer := ENetMultiplayerPeer.new()
@@ -38,7 +38,15 @@ func _on_join_button_pressed() -> void:
 	host_button.disabled = true
 	join_button.disabled = true
 
-	var error := peer.create_client(SERVER_ADDRESS, PORT)
+	var address := address_input.text.strip_edges()
+
+	if address == "":
+		print("no address entered")
+		host_button.disabled = false
+		join_button.disabled = false
+		return
+
+	var error := peer.create_client(address, PORT)
 	if error != OK:
 		print("failed to start join attempt: ", error)
 		host_button.disabled = false
@@ -46,7 +54,7 @@ func _on_join_button_pressed() -> void:
 		return
 
 	multiplayer.multiplayer_peer = peer
-	print("attempting to join server at: ", SERVER_ADDRESS, ":", PORT)
+	print("attempting to join server at: ", address, ":", PORT)
 
 func _on_connected_to_server() -> void:
 	print("successfully connected to server")
