@@ -13,6 +13,8 @@ config_version=5
 version="0.14"
 useSenderID=false
 uniqueUsername=true
+privateKey="c2681b834e21a4d7"
+publicKey="688819a945748505"
 
 [animation]
 
