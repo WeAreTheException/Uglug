@@ -46,6 +46,7 @@ var sacrifice_hint_time: float = 0.0
 
 var quirk_turn_counter: int = 0
 var training_arc_used: bool = false
+var nah_id_win_used: bool = false
 
 func _ready() -> void:
 	if input_listener != null:
@@ -148,7 +149,16 @@ func _on_pressed(_listener) -> void:
 	select_handler.select_card(self)
 
 func take_damage(amount: int, attacker: Card = null) -> void:
-	current_health -= amount
+	var final_damage := amount
+
+	if quirk != null:
+		final_damage = quirk.on_before_take_damage(self, attacker, final_damage)
+
+	if final_damage <= 0:
+		print(card_name, " took no damage")
+		return
+
+	current_health -= final_damage
 
 	if current_health < 0:
 		current_health = 0
@@ -157,21 +167,11 @@ func take_damage(amount: int, attacker: Card = null) -> void:
 		stats.update_health(current_health)
 
 	if quirk != null:
-		quirk.on_damaged(self, attacker, amount)
+		quirk.on_damaged(self, attacker, final_damage)
 
-	var state_machine := get_node_or_null("CardStateMachine") as CardStateMachine
-
-	# DEAD
 	if current_health <= 0:
-		if state_machine != null:
-			await state_machine.play_death_state()
-		else:
-			kill()
+		kill()
 		return
-
-	# HURT (only if still alive)
-	if state_machine != null:
-		await state_machine.play_hurt_state()
 
 	print(card_name, " (", current_health, " hp)")
 

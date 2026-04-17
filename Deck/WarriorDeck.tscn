@@ -28,6 +28,9 @@
 [ext_resource type="Texture2D" uid="uid://cq6n2ja4fhihb" path="res://Art/Quirks/TrainingArcSigil.PNG" id="20_0knip"]
 [ext_resource type="Texture2D" uid="uid://dlqdhwxcfkoby" path="res://Art/Quirks/PregnAntSigil.PNG" id="21_i1d6c"]
 [ext_resource type="Texture2D" uid="uid://dgceyq4phwwts" path="res://Art/AntBack/WarriorDeck.png" id="26_i1d6c"]
+[ext_resource type="Script" uid="uid://btyd0mei0te4o" path="res://Quirks/NahIdWin.gd" id="26_r8s31"]
+[ext_resource type="Texture2D" uid="uid://b4g310guywepd" path="res://Art/Quirks/NahIdWinSigil.PNG" id="27_4kasc"]
+[ext_resource type="Texture2D" uid="uid://bksinpabg61ha" path="res://Art/Ants/Escucheant.png" id="27_iie84"]
 
 [sub_resource type="Resource" id="Resource_mp65t"]
 script = ExtResource("6_00oes")
@@ -90,6 +93,22 @@ attack = 1
 cost = 2
 sprite = ExtResource("10_i1d6c")
 quirk = SubResource("Resource_7lkv5")
+metadata/_custom_type_script = "uid://duslcpxrhurv8"
+
+[sub_resource type="Resource" id="Resource_4kasc"]
+script = ExtResource("26_r8s31")
+sigil_texture = ExtResource("27_4kasc")
+description = "Completely negates opposing cards' damage on the first hit"
+metadata/_custom_type_script = "uid://btyd0mei0te4o"
+
+[sub_resource type="Resource" id="Resource_rmli2"]
+script = ExtResource("6_00oes")
+name = "Escucheant"
+attack = 1
+health = 2
+cost = 1
+sprite = ExtResource("27_iie84")
+quirk = SubResource("Resource_4kasc")
 metadata/_custom_type_script = "uid://duslcpxrhurv8"
 
 [sub_resource type="Resource" id="Resource_rpdxx"]
@@ -164,7 +183,7 @@ deck_type = 1
 
 [node name="CardDatabase" type="Node" parent="." unique_id=1978405134]
 script = ExtResource("5_rw1me")
-cards = Array[ExtResource("6_00oes")]([SubResource("Resource_mp65t"), SubResource("Resource_vx53f"), SubResource("Resource_buwnv"), SubResource("Resource_00oes"), SubResource("Resource_334mj"), SubResource("Resource_rpdxx"), SubResource("Resource_1oh5c"), SubResource("Resource_3v71i"), SubResource("Resource_0ckc6")])
+cards = Array[ExtResource("6_00oes")]([SubResource("Resource_mp65t"), SubResource("Resource_vx53f"), SubResource("Resource_buwnv"), SubResource("Resource_00oes"), SubResource("Resource_334mj"), SubResource("Resource_rmli2"), SubResource("Resource_rpdxx"), SubResource("Resource_1oh5c"), SubResource("Resource_3v71i"), SubResource("Resource_0ckc6")])
 
 [node name="DeckView" type="Node" parent="." unique_id=696320865]
 script = ExtResource("15_iie84")
