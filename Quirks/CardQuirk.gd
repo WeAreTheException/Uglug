@@ -1,6 +1,8 @@
 extends Resource
 class_name CardQuirk
 
+@export var quirk_name: String = ""
+@export_multiline var description: String = ""
 @export var sigil_texture: Texture2D
 
 func get_attack_target(attacker: Card, opposing_card: Card) -> Card:

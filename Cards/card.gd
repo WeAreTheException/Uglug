@@ -15,6 +15,7 @@ enum Owner {
 
 var card_scene: PackedScene = null
 var worker_draw_handler: DeckDrawHandler = null
+var quirk_tooltip: QuirkTooltip = null
 
 var card_owner: Owner = Owner.PLAYER
 
@@ -56,6 +57,9 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	update_sacrifice_hint(delta)
+
+	if is_hovered and quirk_tooltip != null and quirk != null:
+		quirk_tooltip.move_tooltip(get_viewport().get_mouse_position())
 
 func setup_card(data: CardData) -> void:
 	if data == null:
@@ -104,6 +108,33 @@ func update_sigil() -> void:
 
 	print("sigil applied for ", card_name)
 
+func show_quirk_tooltip() -> void:
+	if quirk_tooltip == null:
+		return
+
+	if quirk == null:
+		quirk_tooltip.hide_tooltip()
+		return
+
+	var title_text := quirk.quirk_name
+	var body_text := quirk.description
+
+	if title_text.strip_edges() == "" and body_text.strip_edges() == "":
+		quirk_tooltip.hide_tooltip()
+		return
+
+	quirk_tooltip.show_tooltip(
+		title_text,
+		body_text,
+		get_viewport().get_mouse_position()
+	)
+
+func hide_quirk_tooltip() -> void:
+	if quirk_tooltip == null:
+		return
+
+	quirk_tooltip.hide_tooltip()
+
 func _on_pressed(_listener) -> void:
 	print("card clicked: ", card_name, " / select_handler = ", select_handler)
 
@@ -145,6 +176,8 @@ func kill() -> void:
 
 	if quirk != null:
 		quirk.on_death(self)
+
+	hide_quirk_tooltip()
 
 	if current_slot != null:
 		current_slot.clear_card()
@@ -196,6 +229,7 @@ func spawn_card_to_hand(data: CardData) -> void:
 	new_card.card_scene = card_scene
 	new_card.worker_draw_handler = worker_draw_handler
 	new_card.card_owner = card_owner
+	new_card.quirk_tooltip = quirk_tooltip
 
 	player_hand.add_child(new_card)
 	new_card.setup_card(data)
@@ -205,9 +239,11 @@ func spawn_card_to_hand(data: CardData) -> void:
 
 func _on_hovered(_listener) -> void:
 	is_hovered = true
+	show_quirk_tooltip()
 
 func _on_hovered_off(_listener) -> void:
 	is_hovered = false
+	hide_quirk_tooltip()
 
 func _on_slot_entered(slot: NewSlots) -> void:
 	overlapping_slot = slot

@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://ga6f6537weuu" path="res://Tugga/BattleScale.gd" id="9_fbrwd"]
 [ext_resource type="Script" uid="uid://bqtoohcvy57vk" path="res://SacrificeHandler.gd" id="10_7w5cs"]
 [ext_resource type="Script" uid="uid://clgbwnniuqm7g" path="res://Code/Handlers/SelectHandler.gd" id="10_qfr8t"]
+[ext_resource type="Script" uid="uid://fwreysi361xu" path="res://Multiplayer/QuirkToolTip.gd" id="11_1sjwm"]
 
 [node name="Playground" type="Node2D" unique_id=1073653813 node_paths=PackedStringArray("phase_manager", "end_placement_button")]
 script = ExtResource("1_iaqyw")
@@ -82,7 +83,7 @@ phase_manager = NodePath("../../PhaseManager")
 battle_scale = NodePath("../../BattleScale")
 select_handler = NodePath("../../SelectHandler")
 
-[node name="WarriorDeck" parent="Decks" unique_id=280972336 node_paths=PackedStringArray("player_hand", "opponent_hand", "card_manager", "spawn_anchor", "opponent_spawn_anchor", "phase_manager", "battle_scale", "select_handler", "worker_deck_root") instance=ExtResource("5_nrbjv")]
+[node name="WarriorDeck" parent="Decks" unique_id=280972336 node_paths=PackedStringArray("player_hand", "opponent_hand", "card_manager", "spawn_anchor", "opponent_spawn_anchor", "phase_manager", "battle_scale", "select_handler", "worker_deck_root", "quirk_tooltip") instance=ExtResource("5_nrbjv")]
 position = Vector2(1792, 896)
 player_hand = NodePath("../../PlayerHand")
 opponent_hand = NodePath("../../EnemyHand")
@@ -93,3 +94,20 @@ phase_manager = NodePath("../../PhaseManager")
 battle_scale = NodePath("../../BattleScale")
 select_handler = NodePath("../../SelectHandler")
 worker_deck_root = NodePath("../WorkerDeck")
+quirk_tooltip = NodePath("../../QuirkToolTip")
+
+[node name="QuirkToolTip" type="CanvasLayer" parent="." unique_id=1166965953 node_paths=PackedStringArray("panel", "label")]
+script = ExtResource("11_1sjwm")
+panel = NodePath("Panel")
+label = NodePath("Panel/RichTextLabel")
+
+[node name="Panel" type="Panel" parent="QuirkToolTip" unique_id=1957862754]
+offset_left = 123.0
+offset_top = 35.0
+offset_right = 376.0
+offset_bottom = 97.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="QuirkToolTip/Panel" unique_id=988618600]
+layout_mode = 0
+offset_right = 253.0
+offset_bottom = 62.0

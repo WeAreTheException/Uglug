@@ -37,6 +37,7 @@ metadata/_custom_type_script = "uid://duslcpxrhurv8"
 
 [sub_resource type="Resource" id="Resource_w60k8"]
 script = ExtResource("9_7lkv5")
+description = "Attack opponent directly"
 sigil_texture = ExtResource("9_mmvm6")
 metadata/_custom_type_script = "uid://bev4i65sbtpqe"
 
@@ -60,6 +61,8 @@ metadata/_custom_type_script = "uid://duslcpxrhurv8"
 
 [sub_resource type="Resource" id="Resource_mmvm6"]
 script = ExtResource("11_00oes")
+description = "Deals 1 damage to any card that attacks it
+"
 sigil_texture = ExtResource("13_ujcl4")
 metadata/_custom_type_script = "uid://dvg4r4x5ffbcs"
 
@@ -75,6 +78,7 @@ metadata/_custom_type_script = "uid://duslcpxrhurv8"
 
 [sub_resource type="Resource" id="Resource_7lkv5"]
 script = ExtResource("9_x7m7j")
+description = "Will kill any card it attacks"
 sigil_texture = ExtResource("16_i1d6c")
 metadata/_custom_type_script = "uid://dvdfwl2ud70ua"
 
@@ -106,6 +110,7 @@ metadata/_custom_type_script = "uid://duslcpxrhurv8"
 
 [sub_resource type="Resource" id="Resource_i1d6c"]
 script = ExtResource("15_gy366")
+description = "Gives 2 Worker Ant Cards on death"
 sigil_texture = ExtResource("21_i1d6c")
 metadata/_custom_type_script = "uid://ba3decuns1cvn"
 

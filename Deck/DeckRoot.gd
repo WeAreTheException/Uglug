@@ -20,6 +20,7 @@ class_name DeckRoot
 @export var select_handler: SelectHandler
 
 @export var worker_deck_root: DeckRoot
+@export var quirk_tooltip: QuirkTooltip
 
 func _ready() -> void:
 	if input_listener != null:
@@ -40,6 +41,7 @@ func _ready() -> void:
 		draw_handler.phase_manager = phase_manager
 		draw_handler.battle_scale = battle_scale
 		draw_handler.select_handler = select_handler
+		draw_handler.quirk_tooltip = quirk_tooltip
 
 		if draw_handler.deck_type == DeckDrawHandler.DeckType.WORKER:
 			draw_handler.worker_draw_handler = draw_handler
