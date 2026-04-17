@@ -102,12 +102,14 @@ panel = NodePath("Panel")
 label = NodePath("Panel/RichTextLabel")
 
 [node name="Panel" type="Panel" parent="QuirkToolTip" unique_id=1957862754]
-offset_left = 123.0
-offset_top = 35.0
-offset_right = 376.0
-offset_bottom = 97.0
+offset_left = 550.0
+offset_top = 576.0
+offset_right = 1349.0
+offset_bottom = 899.0
 
 [node name="RichTextLabel" type="RichTextLabel" parent="QuirkToolTip/Panel" unique_id=988618600]
 layout_mode = 0
-offset_right = 253.0
-offset_bottom = 62.0
+offset_right = 799.0
+offset_bottom = 323.0
+theme_override_font_sizes/normal_font_size = 50
+text = "MAOOOOOOOOOOO"
