@@ -91,7 +91,7 @@ func enter_attack() -> void:
 				damage = card.quirk.modify_damage(card, final_target, damage)
 
 			print(card.card_name, " -> ", final_target.card_name, " (", damage, " dmg)")
-			final_target.take_damage(damage)
+			final_target.take_damage(damage, card)
 		else:
 			print("target card has no take_damage")
 	else:

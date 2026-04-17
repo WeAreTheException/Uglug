@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bgw4gcc8buxly" path="res://Cards/card.gd" id="1_ch35y"]
 [ext_resource type="Script" uid="uid://dbemrm25gvek6" path="res://Cards/Stats.gd" id="2_52a3h"]
+[ext_resource type="Texture2D" uid="uid://bvc74ci321o8a" path="res://Art/Quirks/FlyingAntSigil.PNG" id="2_ch35y"]
 [ext_resource type="Texture2D" uid="uid://bdi7eyt5cmur0" path="res://Art/Numbers/1.png" id="3_5yjln"]
 [ext_resource type="Texture2D" uid="uid://clk0ori80b5gg" path="res://Art/Numbers/2.png" id="4_krn1d"]
 [ext_resource type="Texture2D" uid="uid://bnj2kyvgakfq3" path="res://Art/Numbers/3.png" id="5_s0kml"]
@@ -14,16 +15,25 @@
 [ext_resource type="Script" uid="uid://ro02870urhpb" path="res://Code/States/CardStateMachine.gd" id="12_lsojp"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
-size = Vector2(176, 267)
+size = Vector2(176, 270)
 
-[node name="Card" type="Node2D" unique_id=1703534497 node_paths=PackedStringArray("input_listener", "stats")]
+[node name="Card" type="Node2D" unique_id=1703534497 node_paths=PackedStringArray("input_listener", "stats", "sigil_sprite")]
 script = ExtResource("1_ch35y")
 input_listener = NodePath("InputListener")
 stats = NodePath("Stats")
+sigil_sprite = NodePath("SigilSprite")
+
+[node name="SigilSprite" type="Sprite2D" parent="." unique_id=755891900]
+z_index = 1
+position = Vector2(-0.3750138, 96.624985)
+scale = Vector2(0.028686536, 0.028686536)
+texture = ExtResource("2_ch35y")
 
 [node name="CardStateMachine" type="Node" parent="." unique_id=1069228844]
 script = ExtResource("12_lsojp")
 metadata/_custom_type_script = "uid://ro02870urhpb"
+
+[node name="Attack" type="Node" parent="CardStateMachine" unique_id=1288671045]
 
 [node name="Stats" type="Node2D" parent="." unique_id=1314998697 node_paths=PackedStringArray("card_sprite", "attack", "health", "cost", "name_label")]
 script = ExtResource("2_52a3h")
@@ -89,7 +99,7 @@ metadata/_edit_lock_ = true
 script = ExtResource("10_koaue")
 
 [node name="CardCollision" type="CollisionShape2D" parent="InputListener" unique_id=2061957776]
-position = Vector2(-3.0517578e-05, 0.43333435)
+position = Vector2(-3.0517578e-05, -7.6293945e-06)
 shape = SubResource("RectangleShape2D_rjlel")
 
 [node name="InputReciver" type="Node" parent="." unique_id=213661670 node_paths=PackedStringArray("card_state_machine", "card_input_listener", "card_root")]

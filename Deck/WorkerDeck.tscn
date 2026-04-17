@@ -9,7 +9,7 @@
 [ext_resource type="Script" uid="uid://c8owoh3gv45g4" path="res://Deck/DeckView.gd" id="5_wj4mp"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="6_efqef"]
 [ext_resource type="Texture2D" uid="uid://cgs5k6p3mggyf" path="res://Art/Ants/AntSprite.png" id="7_hsdj0"]
-[ext_resource type="Texture2D" uid="uid://calki5jjktjaf" path="res://Art/Sergio.jpg" id="10_y0yai"]
+[ext_resource type="Texture2D" uid="uid://dvdolafjjvaxb" path="res://Art/AntBack/WorkerAnt.png" id="10_y0yai"]
 
 [sub_resource type="Resource" id="Resource_hsdj0"]
 script = ExtResource("6_efqef")
@@ -18,7 +18,7 @@ sprite = ExtResource("7_hsdj0")
 metadata/_custom_type_script = "uid://duslcpxrhurv8"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4nk3w"]
-size = Vector2(180, 266)
+size = Vector2(174, 270)
 
 [node name="Deck" type="Node2D" unique_id=1069789393 node_paths=PackedStringArray("input_listener", "counter", "deck_sprite", "deck", "deck_view", "draw_handler")]
 script = ExtResource("1_2sl2c")
@@ -54,7 +54,7 @@ shape = SubResource("RectangleShape2D_4nk3w")
 
 [node name="DeckImage" type="Sprite2D" parent="." unique_id=127635550]
 z_index = -2
-scale = Vector2(0.120000005, 0.12661907)
+scale = Vector2(0.145, 0.145)
 texture = ExtResource("10_y0yai")
 script = ExtResource("5_wj4mp")
 

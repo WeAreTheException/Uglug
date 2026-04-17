@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://ctpwjfpdouwp8"]
+
+[ext_resource type="Texture2D" uid="uid://brw577e6u1rp8" path="res://Art/Untitled-1.png" id="1_ngbr3"]
+
+[node name="WinScreen" type="Node2D" unique_id=981274082]
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1509809206]
+anchor_mode = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=803721690]
+position = Vector2(960, 558)
+scale = Vector2(1, 1.0333333)
+texture = ExtResource("1_ngbr3")

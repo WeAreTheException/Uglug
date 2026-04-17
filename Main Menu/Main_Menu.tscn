@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://doscvmerviyvy" path="res://Main Menu/SteamManager.gd" id="3_ectev"]
 
 [node name="Main_Menu" type="Node2D" unique_id=1094824997 node_paths=PackedStringArray("host_button", "join_button")]
+scale = Vector2(0.950005, 1.0128386)
 script = ExtResource("1_7b88o")
 host_button = NodePath("Host")
 join_button = NodePath("Join")
