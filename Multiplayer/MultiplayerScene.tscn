@@ -86,6 +86,8 @@ texture_5 = ExtResource("22_k4kyb")
 
 [node name="BattleScale" type="Node" parent="." unique_id=284856531]
 script = ExtResource("9_fbrwd")
+win_scene_path = "uid://cnd7d5ewb2p6i"
+lose_scene_path = "uid://ctpwjfpdouwp8"
 
 [node name="SelectHandler" type="Node2D" parent="." unique_id=1598983565 node_paths=PackedStringArray("slots_root", "card_manager", "sacrifice_handler")]
 script = ExtResource("10_qfr8t")

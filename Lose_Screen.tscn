@@ -1,3 +1,15 @@
-[gd_scene format=3 uid="uid://ctpwjfpdouwp8"]
+[gd_scene format=3 uid="uid://cnd7d5ewb2p6i"]
 
-[node name="LoseScreen" type="Node2D" unique_id=981274082]
+[ext_resource type="Texture2D" uid="uid://nxbld5te5jcb" path="res://Art/LosingScreen.jpg" id="1_ngbr3"]
+
+[node name="LoseScreen" type="Node2D" unique_id=456906499]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2076706872]
+
+[node name="LosingScreen" type="Sprite2D" parent="." unique_id=1021426056]
+position = Vector2(959.99994, 704)
+scale = Vector2(2.5534759, 3.0936556)
+texture = ExtResource("1_ngbr3")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=578559263]
+anchor_mode = 0
