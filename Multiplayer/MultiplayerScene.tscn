@@ -10,6 +10,18 @@
 [ext_resource type="Script" uid="uid://ga6f6537weuu" path="res://Tugga/BattleScale.gd" id="9_fbrwd"]
 [ext_resource type="Script" uid="uid://bqtoohcvy57vk" path="res://SacrificeHandler.gd" id="10_7w5cs"]
 [ext_resource type="Script" uid="uid://clgbwnniuqm7g" path="res://Code/Handlers/SelectHandler.gd" id="10_qfr8t"]
+[ext_resource type="Texture2D" uid="uid://b88ligni3by3t" path="res://Tugga/ScaleArt/Neutral.jpeg" id="11_1sjwm"]
+[ext_resource type="Script" uid="uid://dsifsjjn64ofo" path="res://Multiplayer/TuggaManager.gd" id="12_8whpw"]
+[ext_resource type="Texture2D" uid="uid://c2vygxadae5va" path="res://Tugga/ScaleArt/-5.jpeg" id="13_nqdjp"]
+[ext_resource type="Texture2D" uid="uid://cw0yef6sm7t4j" path="res://Tugga/ScaleArt/-4.jpeg" id="14_k4ney"]
+[ext_resource type="Texture2D" uid="uid://u38o5dwonm1p" path="res://Tugga/ScaleArt/-3.jpeg" id="15_px62j"]
+[ext_resource type="Texture2D" uid="uid://bgaxb25acm1rx" path="res://Tugga/ScaleArt/-2.jpeg" id="16_ikjqb"]
+[ext_resource type="Texture2D" uid="uid://ceb0k5hofdlgm" path="res://Tugga/ScaleArt/-1.jpeg" id="17_uc1di"]
+[ext_resource type="Texture2D" uid="uid://cgxct3geo0et5" path="res://Tugga/ScaleArt/+1.jpeg" id="18_sfhmb"]
+[ext_resource type="Texture2D" uid="uid://jpvtuwiw7x6" path="res://Tugga/ScaleArt/+2.jpeg" id="19_rqpa8"]
+[ext_resource type="Texture2D" uid="uid://dsqu76o7b6pus" path="res://Tugga/ScaleArt/+3.jpeg" id="20_byflb"]
+[ext_resource type="Texture2D" uid="uid://ckmml0pq43oek" path="res://Tugga/ScaleArt/+4.jpeg" id="21_khi2w"]
+[ext_resource type="Texture2D" uid="uid://dal2kfuthlkfy" path="res://Tugga/ScaleArt/+5.jpeg" id="22_k4kyb"]
 
 [node name="Playground" type="Node2D" unique_id=1073653813 node_paths=PackedStringArray("phase_manager", "end_placement_button")]
 script = ExtResource("1_iaqyw")
@@ -56,6 +68,22 @@ lane_id = 2
 position = Vector2(128, 512)
 lane_id = 1
 
+[node name="Tugga" type="Sprite2D" parent="." unique_id=1008813017 node_paths=PackedStringArray("battle_scale")]
+position = Vector2(448, 512)
+script = ExtResource("12_8whpw")
+battle_scale = NodePath("../BattleScale")
+texture_neg_5 = ExtResource("13_nqdjp")
+texture_neg_4 = ExtResource("14_k4ney")
+texture_neg_3 = ExtResource("15_px62j")
+texture_neg_2 = ExtResource("16_ikjqb")
+texture_neg_1 = ExtResource("17_uc1di")
+texture_0 = ExtResource("11_1sjwm")
+texture_1 = ExtResource("18_sfhmb")
+texture_2 = ExtResource("19_rqpa8")
+texture_3 = ExtResource("20_byflb")
+texture_4 = ExtResource("21_khi2w")
+texture_5 = ExtResource("22_k4kyb")
+
 [node name="BattleScale" type="Node" parent="." unique_id=284856531]
 script = ExtResource("9_fbrwd")
 
@@ -73,6 +101,7 @@ card_manager = NodePath("../CardManager")
 
 [node name="WorkerDeck" parent="Decks" unique_id=1069789393 node_paths=PackedStringArray("player_hand", "opponent_hand", "card_manager", "spawn_anchor", "opponent_spawn_anchor", "phase_manager", "battle_scale", "select_handler") instance=ExtResource("4_jyw1y")]
 position = Vector2(1792, 576)
+scale = Vector2(1.0008286, 0.98258185)
 player_hand = NodePath("../../PlayerHand")
 opponent_hand = NodePath("../../EnemyHand")
 card_manager = NodePath("../../CardManager")
@@ -93,3 +122,7 @@ phase_manager = NodePath("../../PhaseManager")
 battle_scale = NodePath("../../BattleScale")
 select_handler = NodePath("../../SelectHandler")
 worker_deck_root = NodePath("../WorkerDeck")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1389829679]
+anchor_mode = 0
+metadata/_edit_lock_ = true
