@@ -1,73 +1,59 @@
 extends Node
 class_name MainMenu
 
-const PORT := 9999
-
 @export var host_button: Button
 @export var join_button: Button
-@export var address_input: LineEdit
 @export var multiplayer_scene: PackedScene
 
-var peer := ENetMultiplayerPeer.new()
+var gdsync_ready: bool = false
+var started: bool = false
 
 func _ready() -> void:
+	if started:
+		return
+	started = true
+
 	host_button.pressed.connect(_on_host_button_pressed)
 	join_button.pressed.connect(_on_join_button_pressed)
 
-	multiplayer.connected_to_server.connect(_on_connected_to_server)
-	multiplayer.connection_failed.connect(_on_connection_failed)
-	multiplayer.server_disconnected.connect(_on_server_disconnected)
+	GDSync.connected.connect(_on_gdsync_connected)
+	GDSync.connection_failed.connect(_on_gdsync_connection_failed)
+	GDSync.disconnected.connect(_on_gdsync_disconnected)
+
+	host_button.disabled = true
+	join_button.disabled = true
+
+	print("starting GD-Sync...")
+	GDSync.start_multiplayer()
 
 func _on_host_button_pressed() -> void:
-	host_button.disabled = true
-	join_button.disabled = true
-
-	var error := peer.create_server(PORT)
-	if error != OK:
-		print("failed to host server: ", error)
-		host_button.disabled = false
-		join_button.disabled = false
+	if not gdsync_ready:
+		print("GD-Sync not connected yet")
 		return
 
-	multiplayer.multiplayer_peer = peer
-	print("server hosted on port: ", PORT)
-
-	get_tree().change_scene_to_packed(multiplayer_scene)
+	print("host pressed")
 
 func _on_join_button_pressed() -> void:
-	host_button.disabled = true
-	join_button.disabled = true
-
-	var address := address_input.text.strip_edges()
-
-	if address == "":
-		print("no address entered")
-		host_button.disabled = false
-		join_button.disabled = false
+	if not gdsync_ready:
+		print("GD-Sync not connected yet")
 		return
 
-	var error := peer.create_client(address, PORT)
-	if error != OK:
-		print("failed to start join attempt: ", error)
-		host_button.disabled = false
-		join_button.disabled = false
-		return
+	print("join pressed")
 
-	multiplayer.multiplayer_peer = peer
-	print("attempting to join server at: ", address, ":", PORT)
-
-func _on_connected_to_server() -> void:
-	print("successfully connected to server")
-	get_tree().change_scene_to_packed(multiplayer_scene)
-
-func _on_connection_failed() -> void:
-	print("connection failed")
+func _on_gdsync_connected() -> void:
+	gdsync_ready = true
 	host_button.disabled = false
 	join_button.disabled = false
-	multiplayer.multiplayer_peer = null
+	print("GD-Sync connected")
 
-func _on_server_disconnected() -> void:
-	print("server disconnected")
+func _on_gdsync_connection_failed(error: int) -> void:
+	gdsync_ready = false
 	host_button.disabled = false
 	join_button.disabled = false
-	multiplayer.multiplayer_peer = null
+	print("GD-Sync connection failed: ", error)
+
+func _on_gdsync_disconnected() -> void:
+	gdsync_ready = false
+	host_button.disabled = false
+	join_button.disabled = false
+	print("GD-Sync disconnected")

@@ -4,11 +4,10 @@
 [ext_resource type="PackedScene" uid="uid://t0ygmapw4xv0" path="res://Multiplayer/MultiplayerScene.tscn" id="2_vpabl"]
 [ext_resource type="Script" uid="uid://doscvmerviyvy" path="res://Main Menu/SteamManager.gd" id="3_ectev"]
 
-[node name="Main_Menu" type="Node2D" unique_id=1094824997 node_paths=PackedStringArray("host_button", "join_button", "address_input")]
+[node name="Main_Menu" type="Node2D" unique_id=1094824997 node_paths=PackedStringArray("host_button", "join_button")]
 script = ExtResource("1_7b88o")
 host_button = NodePath("Host")
 join_button = NodePath("Join")
-address_input = NodePath("AddressInput")
 multiplayer_scene = ExtResource("2_vpabl")
 
 [node name="Host" type="Button" parent="." unique_id=1666733725]

@@ -8,6 +8,12 @@
 
 config_version=5
 
+[GD-Sync]
+
+version="0.14"
+useSenderID=false
+uniqueUsername=true
+
 [animation]
 
 compatibility/default_parent_skeleton_in_mesh_instance_3d=true
@@ -18,8 +24,23 @@ config/name="Uglug"
 run/main_scene="uid://l28s3hnlv4iy"
 config/features=PackedStringArray("4.6", "Forward Plus")
 
+[autoload]
+
+GDSync="*uid://cdj63usxdvfrj"
+
 [display]
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/vsync/vsync_mode=0
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/GD-Sync/plugin.cfg", "res://addons/godotsteam/plugin.cfg")
+
+[steam]
+
+initialization/app_id=0
+initialization/initialize_on_startup=false
+initialization/embed_callbacks=false
+multiplayer_peer/max_channels=4
