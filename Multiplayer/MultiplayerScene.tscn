@@ -28,6 +28,13 @@ script = ExtResource("1_iaqyw")
 phase_manager = NodePath("PhaseManager")
 end_placement_button = NodePath("Button")
 
+[node name="PhaseManager" type="Node" parent="." unique_id=384942188 node_paths=PackedStringArray("deck_root", "opponent_hand", "opponent_spawn_anchor", "slots")]
+script = ExtResource("6_q6li5")
+deck_root = NodePath("../Decks/WorkerDeck")
+opponent_hand = NodePath("../EnemyHand")
+opponent_spawn_anchor = NodePath("../Decks/WorkerDeck")
+slots = [NodePath("../Slots/Lane4"), NodePath("../Slots/Lane2"), NodePath("../Slots/Lane3"), NodePath("../Slots/Lane1")]
+
 [node name="CardManager" parent="." unique_id=59503870 instance=ExtResource("2_hfs3j")]
 
 [node name="PlayerHand" parent="." unique_id=2142011949 instance=ExtResource("3_1xvpt")]
@@ -35,13 +42,6 @@ position = Vector2(768, 1024)
 
 [node name="EnemyHand" parent="." unique_id=587472935 instance=ExtResource("3_1xvpt")]
 position = Vector2(768, 64)
-
-[node name="PhaseManager" type="Node" parent="." unique_id=384942188 node_paths=PackedStringArray("deck_root", "opponent_hand", "opponent_spawn_anchor", "slots")]
-script = ExtResource("6_q6li5")
-deck_root = NodePath("../Decks/WorkerDeck")
-opponent_hand = NodePath("../EnemyHand")
-opponent_spawn_anchor = NodePath("../Decks/WorkerDeck")
-slots = [NodePath("../Slots/Lane4"), NodePath("../Slots/Lane2"), NodePath("../Slots/Lane3"), NodePath("../Slots/Lane1")]
 
 [node name="Button" type="Button" parent="." unique_id=109142189]
 offset_right = 8.0

@@ -9,6 +9,7 @@ var gdsync_ready: bool = false
 var started: bool = false
 var is_creating_lobby: bool = false
 var is_joining_lobby: bool = false
+var pending_host_lobby_name: String = ""
 
 func _ready() -> void:
 	if started:
@@ -67,10 +68,10 @@ func _on_host_button_pressed() -> void:
 	host_button.disabled = true
 	join_button.disabled = true
 
-	var lobby_name := "Lobby_%s" % str(Time.get_unix_time_from_system())
-	print("creating lobby: ", lobby_name)
+	pending_host_lobby_name = "Lobby_%s" % str(Time.get_unix_time_from_system())
+	print("creating lobby: ", pending_host_lobby_name)
 
-	GDSync.lobby_create(lobby_name, "", true, 2)
+	GDSync.lobby_create(pending_host_lobby_name, "", true, 2)
 
 func _on_join_button_pressed() -> void:
 	if not gdsync_ready:
@@ -114,7 +115,8 @@ func _on_gdsync_disconnected() -> void:
 func _on_lobby_created(lobby_name: String) -> void:
 	is_creating_lobby = false
 	print("lobby created: ", lobby_name)
-	get_tree().change_scene_to_packed(multiplayer_scene)
+	print("host joining own lobby: ", lobby_name)
+	GDSync.lobby_join(lobby_name)
 
 func _on_lobby_creation_failed(lobby_name: String, error: int) -> void:
 	is_creating_lobby = false
