@@ -22,6 +22,7 @@
 [ext_resource type="Texture2D" uid="uid://dsqu76o7b6pus" path="res://Tugga/ScaleArt/+3.jpeg" id="20_byflb"]
 [ext_resource type="Texture2D" uid="uid://ckmml0pq43oek" path="res://Tugga/ScaleArt/+4.jpeg" id="21_khi2w"]
 [ext_resource type="Texture2D" uid="uid://dal2kfuthlkfy" path="res://Tugga/ScaleArt/+5.jpeg" id="22_k4kyb"]
+[ext_resource type="Script" uid="uid://fwreysi361xu" path="res://Multiplayer/QuirkToolTip.gd" id="23_k4ney"]
 
 [node name="Playground" type="Node2D" unique_id=1073653813 node_paths=PackedStringArray("phase_manager", "end_placement_button")]
 script = ExtResource("1_iaqyw")
@@ -113,7 +114,7 @@ phase_manager = NodePath("../../PhaseManager")
 battle_scale = NodePath("../../BattleScale")
 select_handler = NodePath("../../SelectHandler")
 
-[node name="WarriorDeck" parent="Decks" unique_id=280972336 node_paths=PackedStringArray("player_hand", "opponent_hand", "card_manager", "spawn_anchor", "opponent_spawn_anchor", "phase_manager", "battle_scale", "select_handler", "worker_deck_root") instance=ExtResource("5_nrbjv")]
+[node name="WarriorDeck" parent="Decks" unique_id=280972336 node_paths=PackedStringArray("player_hand", "opponent_hand", "card_manager", "spawn_anchor", "opponent_spawn_anchor", "phase_manager", "battle_scale", "select_handler", "worker_deck_root", "quirk_tooltip") instance=ExtResource("5_nrbjv")]
 position = Vector2(1792, 896)
 player_hand = NodePath("../../PlayerHand")
 opponent_hand = NodePath("../../EnemyHand")
@@ -124,7 +125,24 @@ phase_manager = NodePath("../../PhaseManager")
 battle_scale = NodePath("../../BattleScale")
 select_handler = NodePath("../../SelectHandler")
 worker_deck_root = NodePath("../WorkerDeck")
+quirk_tooltip = NodePath("../../QuirkToolTip")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1389829679]
 anchor_mode = 0
 metadata/_edit_lock_ = true
+
+[node name="QuirkToolTip" type="CanvasLayer" parent="." unique_id=1401015222 node_paths=PackedStringArray("panel", "label")]
+script = ExtResource("23_k4ney")
+panel = NodePath("Panel")
+label = NodePath("Panel/RichTextLabel")
+
+[node name="Panel" type="Panel" parent="QuirkToolTip" unique_id=1627607505]
+offset_right = 550.0
+offset_bottom = 188.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="QuirkToolTip/Panel" unique_id=519019582]
+layout_mode = 0
+offset_right = 550.0
+offset_bottom = 188.0
+theme_override_font_sizes/normal_font_size = 40
+text = "Maooooooooooooooooooooooooooooooooooooooooooooooooooo"
