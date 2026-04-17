@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cfsbl06ahe2c3" path="res://Main Menu/MainMenu.gd" id="1_7b88o"]
 [ext_resource type="PackedScene" uid="uid://t0ygmapw4xv0" path="res://Multiplayer/MultiplayerScene.tscn" id="2_vpabl"]
+[ext_resource type="Script" uid="uid://doscvmerviyvy" path="res://Main Menu/SteamManager.gd" id="3_ectev"]
 
 [node name="Main_Menu" type="Node2D" unique_id=1094824997 node_paths=PackedStringArray("host_button", "join_button", "address_input")]
 script = ExtResource("1_7b88o")
@@ -30,3 +31,6 @@ text = "JOIN
 offset_left = 768.0
 offset_right = 1280.0
 offset_bottom = 64.0
+
+[node name="SteamManager" type="Node" parent="." unique_id=1151080917]
+script = ExtResource("3_ectev")
