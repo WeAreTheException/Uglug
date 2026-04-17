@@ -67,6 +67,10 @@ func play_attack_state() -> void:
 	if busy:
 		return
 
+	if card.current_attack <= 0:
+		print(card.card_name, " has 0 attack, skipping attack")
+		return
+
 	busy = true
 	set_main_state(MainState.ATTACK)
 
