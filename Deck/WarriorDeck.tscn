@@ -24,6 +24,8 @@
 [ext_resource type="Script" uid="uid://c8owoh3gv45g4" path="res://Deck/DeckView.gd" id="15_iie84"]
 [ext_resource type="Script" uid="uid://chw242mi2nxl4" path="res://Deck/DeckInputListener.gd" id="16_4kasc"]
 [ext_resource type="Texture2D" uid="uid://mxu53s4pbfyg" path="res://Art/Quirks/TouchOfDeathSigil.PNG" id="16_i1d6c"]
+[ext_resource type="Script" uid="uid://cx4veqijjjliv" path="res://Quirks/TrainingArc.gd" id="19_06fvk"]
+[ext_resource type="Texture2D" uid="uid://cq6n2ja4fhihb" path="res://Art/Quirks/TrainingArcSigil.PNG" id="20_0knip"]
 [ext_resource type="Texture2D" uid="uid://dlqdhwxcfkoby" path="res://Art/Quirks/PregnAntSigil.PNG" id="21_i1d6c"]
 [ext_resource type="Texture2D" uid="uid://dgceyq4phwwts" path="res://Art/AntBack/WarriorDeck.png" id="26_i1d6c"]
 
@@ -38,6 +40,7 @@ metadata/_custom_type_script = "uid://duslcpxrhurv8"
 [sub_resource type="Resource" id="Resource_w60k8"]
 script = ExtResource("9_7lkv5")
 sigil_texture = ExtResource("9_mmvm6")
+description = "Attacks opponent directly"
 metadata/_custom_type_script = "uid://bev4i65sbtpqe"
 
 [sub_resource type="Resource" id="Resource_vx53f"]
@@ -61,6 +64,7 @@ metadata/_custom_type_script = "uid://duslcpxrhurv8"
 [sub_resource type="Resource" id="Resource_mmvm6"]
 script = ExtResource("11_00oes")
 sigil_texture = ExtResource("13_ujcl4")
+description = "Deals 1 damage to any card that attacks it(including distant)"
 metadata/_custom_type_script = "uid://dvg4r4x5ffbcs"
 
 [sub_resource type="Resource" id="Resource_00oes"]
@@ -76,6 +80,7 @@ metadata/_custom_type_script = "uid://duslcpxrhurv8"
 [sub_resource type="Resource" id="Resource_7lkv5"]
 script = ExtResource("9_x7m7j")
 sigil_texture = ExtResource("16_i1d6c")
+description = "Will kill any card it attacks"
 metadata/_custom_type_script = "uid://dvdfwl2ud70ua"
 
 [sub_resource type="Resource" id="Resource_334mj"]
@@ -96,17 +101,25 @@ cost = 4
 sprite = ExtResource("11_eu8gw")
 metadata/_custom_type_script = "uid://duslcpxrhurv8"
 
+[sub_resource type="Resource" id="Resource_r8s31"]
+script = ExtResource("19_06fvk")
+sigil_texture = ExtResource("20_0knip")
+description = "Gains 2 hp after 1 turn"
+metadata/_custom_type_script = "uid://cx4veqijjjliv"
+
 [sub_resource type="Resource" id="Resource_1oh5c"]
 script = ExtResource("6_00oes")
 name = "Growant"
 attack = 1
 cost = 1
 sprite = ExtResource("12_06fvk")
+quirk = SubResource("Resource_r8s31")
 metadata/_custom_type_script = "uid://duslcpxrhurv8"
 
 [sub_resource type="Resource" id="Resource_i1d6c"]
 script = ExtResource("15_gy366")
 sigil_texture = ExtResource("21_i1d6c")
+description = "Gives the player 2 Worker Ant Cards on death"
 metadata/_custom_type_script = "uid://ba3decuns1cvn"
 
 [sub_resource type="Resource" id="Resource_3v71i"]
@@ -141,7 +154,7 @@ draw_handler = NodePath("DeckDrawHandler")
 
 [node name="DeckCount" type="Node" parent="." unique_id=58160234]
 script = ExtResource("2_n0yp5")
-total_cards = 10
+total_cards = 100
 card_scene = ExtResource("3_7lkv5")
 
 [node name="DeckDrawHandler" type="Node" parent="." unique_id=1995550717 node_paths=PackedStringArray("card_database")]

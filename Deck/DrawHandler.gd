@@ -23,6 +23,7 @@ var spawn_anchor: Node2D = null
 var opponent_spawn_anchor: Node2D = null
 var phase_manager: PhaseManager = null
 var battle_scale: BattleScale = null
+var quirk_tooltip: QuirkTooltip = null
 
 func _ready() -> void:
 	if deck_type == DeckType.WORKER and worker_draw_handler == null:
@@ -192,6 +193,7 @@ func draw_specific_card_to_hand(
 	new_card.select_handler = select_handler
 	new_card.card_scene = deck.card_scene
 	new_card.worker_draw_handler = worker_draw_handler
+	new_card.quirk_tooltip = quirk_tooltip
 
 	if new_card.select_handler != null:
 		new_card.select_handler.phase_manager = phase_manager

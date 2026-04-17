@@ -13,9 +13,12 @@
 [ext_resource type="Script" uid="uid://dtoyyse7bnjuv" path="res://Code/States/CardInputListener.gd" id="10_koaue"]
 [ext_resource type="Script" uid="uid://d0qu3q360kdsl" path="res://Code/States/CardInputReciever.gd" id="11_2w08q"]
 [ext_resource type="Script" uid="uid://ro02870urhpb" path="res://Code/States/CardStateMachine.gd" id="12_lsojp"]
+[ext_resource type="Script" uid="uid://b60v1nednloun" path="res://Cards/AttackFeedbackHandler.gd" id="14_52a3h"]
+[ext_resource type="Script" uid="uid://6h6rq0vmde" path="res://Cards/HurtFeedbackHandler.gd" id="15_5yjln"]
+[ext_resource type="Script" uid="uid://tbmfinv8ypd1" path="res://Cards/DeathFeedbackHandler.gd" id="16_krn1d"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
-size = Vector2(176, 270)
+size = Vector2(166, 270)
 
 [node name="Card" type="Node2D" unique_id=1703534497 node_paths=PackedStringArray("input_listener", "stats", "sigil_sprite")]
 script = ExtResource("1_ch35y")
@@ -29,8 +32,11 @@ position = Vector2(-0.3750138, 96.624985)
 scale = Vector2(0.028686536, 0.028686536)
 texture = ExtResource("2_ch35y")
 
-[node name="CardStateMachine" type="Node" parent="." unique_id=1069228844]
+[node name="CardStateMachine" type="Node" parent="." unique_id=1069228844 node_paths=PackedStringArray("attack_feedback", "hurt_feedback", "death_feedback")]
 script = ExtResource("12_lsojp")
+attack_feedback = NodePath("../AttackFeedbackHandler")
+hurt_feedback = NodePath("../HurtFeedbackHandler")
+death_feedback = NodePath("../DeathFeedbackHandler")
 metadata/_custom_type_script = "uid://ro02870urhpb"
 
 [node name="Attack" type="Node" parent="CardStateMachine" unique_id=1288671045]
@@ -99,7 +105,7 @@ metadata/_edit_lock_ = true
 script = ExtResource("10_koaue")
 
 [node name="CardCollision" type="CollisionShape2D" parent="InputListener" unique_id=2061957776]
-position = Vector2(-3.0517578e-05, -7.6293945e-06)
+position = Vector2(0, -7.6293945e-06)
 shape = SubResource("RectangleShape2D_rjlel")
 
 [node name="InputReciver" type="Node" parent="." unique_id=213661670 node_paths=PackedStringArray("card_state_machine", "card_input_listener", "card_root")]
@@ -107,3 +113,12 @@ script = ExtResource("11_2w08q")
 card_state_machine = NodePath("../CardStateMachine")
 card_input_listener = NodePath("../InputListener")
 card_root = NodePath("..")
+
+[node name="AttackFeedbackHandler" type="Node2D" parent="." unique_id=1675671263]
+script = ExtResource("14_52a3h")
+
+[node name="HurtFeedbackHandler" type="Node2D" parent="." unique_id=1729663697]
+script = ExtResource("15_5yjln")
+
+[node name="DeathFeedbackHandler" type="Node2D" parent="." unique_id=159944365]
+script = ExtResource("16_krn1d")

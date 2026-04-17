@@ -2,6 +2,8 @@ extends Resource
 class_name CardQuirk
 
 @export var sigil_texture: Texture2D
+@export var quirk_name: String
+@export var description: String
 
 func get_attack_target(attacker: Card, opposing_card: Card) -> Card:
 	return opposing_card
@@ -13,4 +15,7 @@ func on_death(card: Card) -> void:
 	pass
 
 func on_damaged(card: Card, attacker: Card, amount: int) -> void:
+	pass
+
+func on_turn_end(card: Card) -> void:
 	pass

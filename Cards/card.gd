@@ -15,6 +15,7 @@ enum Owner {
 
 var card_scene: PackedScene = null
 var worker_draw_handler: DeckDrawHandler = null
+var quirk_tooltip: QuirkTooltip = null
 
 var card_owner: Owner = Owner.PLAYER
 
@@ -43,6 +44,9 @@ var scale_tween: Tween = null
 var sacrifice_hint_active: bool = false
 var sacrifice_hint_time: float = 0.0
 
+var quirk_turn_counter: int = 0
+var training_arc_used: bool = false
+
 func _ready() -> void:
 	if input_listener != null:
 		input_listener.hovered.connect(_on_hovered)
@@ -57,6 +61,9 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	update_sacrifice_hint(delta)
 
+	if is_hovered and quirk_tooltip != null and quirk != null:
+		quirk_tooltip.move_tooltip(get_viewport().get_mouse_position())
+
 func setup_card(data: CardData) -> void:
 	if data == null:
 		print("FAIL: setup_card got null data")
@@ -68,7 +75,7 @@ func setup_card(data: CardData) -> void:
 	current_cost = data.cost
 	current_worth = data.worth
 	quirk = data.quirk as CardQuirk
-	
+
 	update_sigil()
 
 	print("setup: ", data.name, " id=", multiplayer_card_id)
@@ -77,7 +84,7 @@ func setup_card(data: CardData) -> void:
 		stats.setup_from_card_data(data)
 	else:
 		print("FAIL: stats is null on card")
-		
+
 func update_sigil() -> void:
 	print("update_sigil called for ", card_name)
 
@@ -104,6 +111,33 @@ func update_sigil() -> void:
 
 	print("sigil applied for ", card_name)
 
+func show_quirk_tooltip() -> void:
+	if quirk_tooltip == null:
+		return
+
+	if quirk == null:
+		quirk_tooltip.hide_tooltip()
+		return
+
+	var title_text: String = quirk.quirk_name
+	var body_text: String = quirk.description
+
+	if title_text.strip_edges() == "" and body_text.strip_edges() == "":
+		quirk_tooltip.hide_tooltip()
+		return
+
+	quirk_tooltip.show_tooltip(
+		title_text,
+		body_text,
+		get_viewport().get_mouse_position()
+	)
+
+func hide_quirk_tooltip() -> void:
+	if quirk_tooltip == null:
+		return
+
+	quirk_tooltip.hide_tooltip()
+
 func _on_pressed(_listener) -> void:
 	print("card clicked: ", card_name, " / select_handler = ", select_handler)
 
@@ -125,9 +159,19 @@ func take_damage(amount: int, attacker: Card = null) -> void:
 	if quirk != null:
 		quirk.on_damaged(self, attacker, amount)
 
+	var state_machine := get_node_or_null("CardStateMachine") as CardStateMachine
+
+	# DEAD
 	if current_health <= 0:
-		kill()
+		if state_machine != null:
+			await state_machine.play_death_state()
+		else:
+			kill()
 		return
+
+	# HURT (only if still alive)
+	if state_machine != null:
+		await state_machine.play_hurt_state()
 
 	print(card_name, " (", current_health, " hp)")
 
@@ -145,6 +189,8 @@ func kill() -> void:
 
 	if quirk != null:
 		quirk.on_death(self)
+
+	hide_quirk_tooltip()
 
 	if current_slot != null:
 		current_slot.clear_card()
@@ -196,6 +242,7 @@ func spawn_card_to_hand(data: CardData) -> void:
 	new_card.card_scene = card_scene
 	new_card.worker_draw_handler = worker_draw_handler
 	new_card.card_owner = card_owner
+	new_card.quirk_tooltip = quirk_tooltip
 
 	player_hand.add_child(new_card)
 	new_card.setup_card(data)
@@ -205,9 +252,11 @@ func spawn_card_to_hand(data: CardData) -> void:
 
 func _on_hovered(_listener) -> void:
 	is_hovered = true
+	show_quirk_tooltip()
 
 func _on_hovered_off(_listener) -> void:
 	is_hovered = false
+	hide_quirk_tooltip()
 
 func _on_slot_entered(slot: NewSlots) -> void:
 	overlapping_slot = slot
@@ -298,6 +347,23 @@ func return_to_hand() -> void:
 		player_hand.add_card_to_hand(self)
 
 	set_selected(false)
+
+func heal(amount: int) -> void:
+	current_health += amount
+
+	if stats != null:
+		stats.update_health(current_health)
+
+	print(card_name, " healed for ", amount, " / hp = ", current_health)
+	
+func get_main_sprite() -> Sprite2D:
+	if stats == null:
+		return null
+	return stats.get_node_or_null("CardImage") as Sprite2D
+
+func on_turn_end() -> void:
+	if quirk != null:
+		quirk.on_turn_end(self)
 
 func start_sacrifice_hint() -> void:
 	sacrifice_hint_active = true

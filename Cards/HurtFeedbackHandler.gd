@@ -1,0 +1,42 @@
+extends Node
+class_name HurtFeedbackHandler
+
+@export var shake_distance: float = 10.0
+@export var shake_time: float = 0.04
+@export var flash_time: float = 0.05
+
+var card: Card = null
+var is_playing: bool = false
+
+func _ready() -> void:
+	card = get_parent() as Card
+
+func play_hurt() -> void:
+	if card == null:
+		return
+	if is_playing:
+		return
+
+	is_playing = true
+
+	var start_pos := card.position
+	var sprite: Sprite2D = card.get_main_sprite()
+
+	if sprite != null:
+		sprite.modulate = Color(1, 0.5, 0.5, 1)
+
+	var tween := create_tween()
+	tween.set_trans(Tween.TRANS_SINE)
+	tween.set_ease(Tween.EASE_OUT)
+
+	tween.tween_property(card, "position", start_pos + Vector2(-shake_distance, 0), shake_time)
+	tween.tween_property(card, "position", start_pos + Vector2(shake_distance, 0), shake_time)
+	tween.tween_property(card, "position", start_pos, shake_time)
+
+	await tween.finished
+
+	if sprite != null:
+		await get_tree().create_timer(flash_time).timeout
+		sprite.modulate = Color(1, 1, 1, 1)
+
+	is_playing = false

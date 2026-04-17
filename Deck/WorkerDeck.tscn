@@ -31,7 +31,7 @@ draw_handler = NodePath("DeckDrawHandler")
 
 [node name="DeckCount" type="Node" parent="." unique_id=58160234]
 script = ExtResource("2_wj4mp")
-total_cards = 10
+total_cards = 100
 card_scene = ExtResource("3_5cebq")
 
 [node name="DeckDrawHandler" type="Node" parent="." unique_id=1995550717 node_paths=PackedStringArray("card_database")]
