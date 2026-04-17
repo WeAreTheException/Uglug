@@ -44,6 +44,9 @@ var scale_tween: Tween = null
 var sacrifice_hint_active: bool = false
 var sacrifice_hint_time: float = 0.0
 
+var quirk_turn_counter: int = 0
+var training_arc_used: bool = false
+
 func _ready() -> void:
 	if input_listener != null:
 		input_listener.hovered.connect(_on_hovered)
@@ -72,7 +75,7 @@ func setup_card(data: CardData) -> void:
 	current_cost = data.cost
 	current_worth = data.worth
 	quirk = data.quirk as CardQuirk
-	
+
 	update_sigil()
 
 	print("setup: ", data.name, " id=", multiplayer_card_id)
@@ -81,7 +84,7 @@ func setup_card(data: CardData) -> void:
 		stats.setup_from_card_data(data)
 	else:
 		print("FAIL: stats is null on card")
-		
+
 func update_sigil() -> void:
 	print("update_sigil called for ", card_name)
 
@@ -116,8 +119,8 @@ func show_quirk_tooltip() -> void:
 		quirk_tooltip.hide_tooltip()
 		return
 
-	var title_text := quirk.quirk_name
-	var body_text := quirk.description
+	var title_text: String = quirk.quirk_name
+	var body_text: String = quirk.description
 
 	if title_text.strip_edges() == "" and body_text.strip_edges() == "":
 		quirk_tooltip.hide_tooltip()
@@ -334,6 +337,18 @@ func return_to_hand() -> void:
 		player_hand.add_card_to_hand(self)
 
 	set_selected(false)
+
+func heal(amount: int) -> void:
+	current_health += amount
+
+	if stats != null:
+		stats.update_health(current_health)
+
+	print(card_name, " healed for ", amount, " / hp = ", current_health)
+
+func on_turn_end() -> void:
+	if quirk != null:
+		quirk.on_turn_end(self)
 
 func start_sacrifice_hint() -> void:
 	sacrifice_hint_active = true

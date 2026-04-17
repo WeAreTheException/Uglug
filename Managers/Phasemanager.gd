@@ -170,6 +170,8 @@ func run_attack_round_remote(host_peer: int, second_peer: int) -> void:
 	await run_single_attack_phase_for_peer(host_peer)
 	await run_single_attack_phase_for_peer(second_peer)
 
+	trigger_turn_end_for_all_cards()
+
 	if multiplayer.is_server():
 		start_player_draw_phase()
 	else:
@@ -252,7 +254,22 @@ func start_opponent_attack_phase() -> void:
 		trigger_card_attack(card)
 		await get_tree().create_timer(ATTACK_BETWEEN_CARDS_DELAY).timeout
 
+	trigger_turn_end_for_all_cards()
 	start_player_draw_phase()
+
+func trigger_turn_end_for_all_cards() -> void:
+	var all_cards: Array = []
+
+	all_cards.append_array(get_all_slotted_cards_for_owner(Card.Owner.PLAYER))
+	all_cards.append_array(get_all_slotted_cards_for_owner(Card.Owner.OPPONENT))
+
+	for card in all_cards:
+		if card == null:
+			continue
+		if not is_instance_valid(card):
+			continue
+
+		card.on_turn_end()
 
 func get_all_slotted_cards_for_owner(owner: int) -> Array:
 	var cards: Array = []
