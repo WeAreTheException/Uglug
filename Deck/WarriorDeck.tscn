@@ -24,8 +24,8 @@
 [ext_resource type="Script" uid="uid://c8owoh3gv45g4" path="res://Deck/DeckView.gd" id="15_iie84"]
 [ext_resource type="Script" uid="uid://chw242mi2nxl4" path="res://Deck/DeckInputListener.gd" id="16_4kasc"]
 [ext_resource type="Texture2D" uid="uid://mxu53s4pbfyg" path="res://Art/Quirks/TouchOfDeathSigil.PNG" id="16_i1d6c"]
-[ext_resource type="Texture2D" uid="uid://b86c6mggcrsk4" path="res://Sprites/IMG_6221.PNG" id="17_rmli2"]
 [ext_resource type="Texture2D" uid="uid://dlqdhwxcfkoby" path="res://Art/Quirks/PregnAntSigil.PNG" id="21_i1d6c"]
+[ext_resource type="Texture2D" uid="uid://dgceyq4phwwts" path="res://Art/AntBack/WarriorDeck.png" id="26_i1d6c"]
 
 [sub_resource type="Resource" id="Resource_mp65t"]
 script = ExtResource("6_00oes")
@@ -128,7 +128,7 @@ sprite = ExtResource("14_r8s31")
 metadata/_custom_type_script = "uid://duslcpxrhurv8"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4nk3w"]
-size = Vector2(180, 266)
+size = Vector2(174, 266)
 
 [node name="Deck" type="Node2D" unique_id=1069789393 node_paths=PackedStringArray("input_listener", "counter", "deck_sprite", "deck", "deck_view", "draw_handler")]
 script = ExtResource("1_x7m7j")
@@ -165,8 +165,9 @@ shape = SubResource("RectangleShape2D_4nk3w")
 
 [node name="DeckImage" type="Sprite2D" parent="." unique_id=127635550]
 z_index = -2
-scale = Vector2(0.120000005, 0.12661907)
-texture = ExtResource("17_rmli2")
+position = Vector2(-4.2915344e-06, -4.7683716e-06)
+scale = Vector2(0.145, 0.143)
+texture = ExtResource("26_i1d6c")
 script = ExtResource("15_iie84")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="." unique_id=305945305]

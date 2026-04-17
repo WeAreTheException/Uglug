@@ -15,7 +15,7 @@
 [ext_resource type="Script" uid="uid://ro02870urhpb" path="res://Code/States/CardStateMachine.gd" id="12_lsojp"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
-size = Vector2(176, 267)
+size = Vector2(176, 270)
 
 [node name="Card" type="Node2D" unique_id=1703534497 node_paths=PackedStringArray("input_listener", "stats", "sigil_sprite")]
 script = ExtResource("1_ch35y")
@@ -97,7 +97,7 @@ metadata/_edit_lock_ = true
 script = ExtResource("10_koaue")
 
 [node name="CardCollision" type="CollisionShape2D" parent="InputListener" unique_id=2061957776]
-position = Vector2(-3.0517578e-05, 0.43333435)
+position = Vector2(-3.0517578e-05, -7.6293945e-06)
 shape = SubResource("RectangleShape2D_rjlel")
 
 [node name="InputReciver" type="Node" parent="." unique_id=213661670 node_paths=PackedStringArray("card_state_machine", "card_input_listener", "card_root")]
