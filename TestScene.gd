@@ -5,11 +5,11 @@ extends Node2D
 
 func _ready() -> void:
 	print("entered multiplayer scene")
-	print("my peer id: ", multiplayer.get_unique_id())
-	print("is server: ", multiplayer.is_server())
+	print("GD-Sync client id: ", GDSync.get_client_id())
+	print("GD-Sync is host: ", GDSync.is_host())
+
 	if end_placement_button != null:
 		end_placement_button.pressed.connect(_on_end_placement_pressed)
-
 
 func _on_end_placement_pressed() -> void:
 	if phase_manager == null:

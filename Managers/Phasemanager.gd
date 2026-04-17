@@ -31,14 +31,15 @@ var is_first_player_draw_phase: bool = true
 var player_drew_worker_this_phase: bool = false
 var player_drew_warrior_this_phase: bool = false
 
-var client_peer_id: int = -1
-
 func _ready() -> void:
-	if multiplayer.multiplayer_peer == null:
-		print("PhaseManager: no multiplayer peer, idle")
+	if not GDSync.is_active():
+		print("PhaseManager: GD-Sync not active, idle")
 		return
 
-	if multiplayer.is_server():
+	GDSync.expose_node(self)
+	GDSync.expose_func(begin_client_draw_phase)
+
+	if GDSync.is_host():
 		start_player_draw_phase()
 	else:
 		current_phase = Phase.OPPONENT_DRAW
@@ -107,28 +108,38 @@ func on_player_drew_card() -> void:
 		if is_first_player_draw_phase:
 			is_first_player_draw_phase = false
 
-		if multiplayer.multiplayer_peer != null:
-			if multiplayer.is_server():
+		if GDSync.is_active():
+			if GDSync.is_host():
 				start_player_place_phase()
-
-				if multiplayer.multiplayer_peer != null:
-					rpc("begin_client_draw_phase")
+				unlock_client_draw_phase()
 			else:
 				current_phase = Phase.OPPONENT_PLACE
 				print("CLIENT WAITING: host places first")
 		else:
 			start_player_place_phase()
 
+func unlock_client_draw_phase() -> void:
+	var clients := GDSync.lobby_get_all_clients()
+	var my_id := GDSync.get_client_id()
+
+	for client_id in clients:
+		if client_id == my_id:
+			continue
+
+		print("unlocking client draw for client id: ", client_id)
+		GDSync.call_func_on(client_id, begin_client_draw_phase)
+		return
+
+	print("unlock_client_draw_phase: no other client found")
+
 func start_player_place_phase() -> void:
 	current_phase = Phase.PLAYER_PLACE
 	print("PLAYER PLACE PHASE")
 
-@rpc("authority", "call_remote", "reliable")
 func begin_client_draw_phase() -> void:
 	print("CLIENT DRAW UNLOCKED")
 	start_player_draw_phase()
 
-@rpc("authority", "call_remote", "reliable")
 func begin_client_place_phase() -> void:
 	print("CLIENT PLACE UNLOCKED")
 	start_player_place_phase()
@@ -139,65 +150,14 @@ func end_player_place_phase() -> void:
 
 	print("PLAYER PLACE PHASE ENDED")
 
-	if multiplayer.multiplayer_peer == null:
-		return
-
-	if multiplayer.is_server():
-		print("HOST DONE PLACING")
-
-		if client_peer_id != -1:
-			rpc_id(client_peer_id, "begin_client_place_phase")
-		else:
-			rpc("begin_client_place_phase")
-
-		current_phase = Phase.OPPONENT_PLACE
-	else:
-		print("CLIENT DONE PLACING")
-		current_phase = Phase.OPPONENT_ATTACK
-		rpc_id(1, "notify_client_place_done")
-
-@rpc("any_peer", "call_remote", "reliable")
 func notify_client_place_done() -> void:
-	if not multiplayer.is_server():
-		return
+	pass
 
-	client_peer_id = multiplayer.get_remote_sender_id()
-	print("CLIENT PLACE PHASE ENDED (reported to host)")
-	rpc("run_attack_round_remote", multiplayer.get_unique_id(), client_peer_id)
-
-@rpc("authority", "call_local", "reliable")
 func run_attack_round_remote(host_peer: int, second_peer: int) -> void:
-	await run_single_attack_phase_for_peer(host_peer)
-	await run_single_attack_phase_for_peer(second_peer)
-
-	if multiplayer.is_server():
-		start_player_draw_phase()
-	else:
-		current_phase = Phase.OPPONENT_DRAW
-		print("CLIENT WAITING: host draws first")
+	pass
 
 func run_single_attack_phase_for_peer(attacker_peer_id: int) -> void:
-	var local_owner: int
-
-	if multiplayer.get_unique_id() == attacker_peer_id:
-		local_owner = Card.Owner.PLAYER
-		current_phase = Phase.PLAYER_ATTACK
-		print("PLAYER ATTACK PHASE")
-	else:
-		local_owner = Card.Owner.OPPONENT
-		current_phase = Phase.OPPONENT_ATTACK
-		print("OPPONENT ATTACK PHASE")
-
-	var cards: Array = get_all_slotted_cards_for_owner(local_owner)
-
-	for card in cards:
-		if card == null:
-			continue
-		if not is_instance_valid(card):
-			continue
-
-		trigger_card_attack(card)
-		await get_tree().create_timer(ATTACK_BETWEEN_CARDS_DELAY).timeout
+	pass
 
 func start_opponent_draw_phase() -> void:
 	current_phase = Phase.OPPONENT_DRAW
