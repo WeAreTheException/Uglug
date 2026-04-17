@@ -16,7 +16,7 @@ const OPPONENT_DRAWS_PER_TURN := 1
 
 const OPPONENT_DRAW_TO_PLACE_DELAY := 0.8
 const OPPONENT_PLACE_TO_ATTACK_DELAY := 0.8
-const ATTACK_BETWEEN_CARDS_DELAY := 0.5
+const ATTACK_BETWEEN_CARDS_DELAY := 1
 
 @export var deck_root: DeckRoot
 @export var opponent_hand: Node2D
@@ -299,4 +299,4 @@ func trigger_card_attack(card) -> void:
 		print("Attack skipped: no CardStateMachine on ", card.name)
 		return
 
-	state_machine.set_main_state(CardStateMachine.MainState.ATTACK)
+	await state_machine.play_attack_state()

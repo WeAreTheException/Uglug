@@ -159,9 +159,19 @@ func take_damage(amount: int, attacker: Card = null) -> void:
 	if quirk != null:
 		quirk.on_damaged(self, attacker, amount)
 
+	var state_machine := get_node_or_null("CardStateMachine") as CardStateMachine
+
+	# DEAD
 	if current_health <= 0:
-		kill()
+		if state_machine != null:
+			await state_machine.play_death_state()
+		else:
+			kill()
 		return
+
+	# HURT (only if still alive)
+	if state_machine != null:
+		await state_machine.play_hurt_state()
 
 	print(card_name, " (", current_health, " hp)")
 
@@ -345,6 +355,11 @@ func heal(amount: int) -> void:
 		stats.update_health(current_health)
 
 	print(card_name, " healed for ", amount, " / hp = ", current_health)
+	
+func get_main_sprite() -> Sprite2D:
+	if stats == null:
+		return null
+	return stats.get_node_or_null("CardImage") as Sprite2D
 
 func on_turn_end() -> void:
 	if quirk != null:

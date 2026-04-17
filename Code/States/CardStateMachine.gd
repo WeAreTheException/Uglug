@@ -13,16 +13,30 @@ enum PowerState {
 	EMPOWERED
 }
 
+@export var attack_feedback: AttackFeedbackHandler
+@export var hurt_feedback: HurtFeedbackHandler
+@export var death_feedback: DeathFeedbackHandler
+
 var current_main_state: MainState = MainState.WAIT
 var current_power_state: PowerState = PowerState.BASE
 
 var card: Card = null
+var busy: bool = false
 
 func _ready() -> void:
 	card = get_parent() as Card
 
+	if attack_feedback == null:
+		attack_feedback = get_node_or_null("../AttackFeedbackHandler")
+	if hurt_feedback == null:
+		hurt_feedback = get_node_or_null("../HurtFeedbackHandler")
+	if death_feedback == null:
+		death_feedback = get_node_or_null("../DeathFeedbackHandler")
+
 func _unhandled_input(event: InputEvent) -> void:
 	if card == null:
+		return
+	if busy:
 		return
 
 	if event is InputEventKey and event.pressed and not event.echo:
@@ -37,40 +51,30 @@ func _unhandled_input(event: InputEvent) -> void:
 
 				match event.keycode:
 					KEY_A:
-						set_main_state(MainState.ATTACK)
+						await play_attack_state()
 					KEY_H:
-						set_main_state(MainState.HURT)
+						await play_hurt_state()
 					KEY_D:
-						set_main_state(MainState.DEATH)
+						await play_death_state()
 
 func set_main_state(new_state: MainState) -> void:
-	if current_main_state == new_state:
-		return
-
 	current_main_state = new_state
 	print(MainState.keys()[current_main_state].to_lower())
 
-	match current_main_state:
-		MainState.ATTACK:
-			enter_attack()
-		MainState.HURT:
-			enter_hurt()
-		MainState.DEATH:
-			enter_death()
-		MainState.WAIT:
-			enter_wait()
-
-func enter_attack() -> void:
+func play_attack_state() -> void:
 	if card == null:
 		return
+	if busy:
+		return
+
+	busy = true
+	set_main_state(MainState.ATTACK)
 
 	if card.current_slot == null:
 		print("attack blocked")
 		set_main_state(MainState.WAIT)
+		busy = false
 		return
-
-	print("slot owner: ", card.current_slot.slot_owner)
-	print("card owner: ", card.card_owner)
 
 	var opposing_slot = card.current_slot.opposing_slot
 	var opposing_card: Card = null
@@ -82,6 +86,9 @@ func enter_attack() -> void:
 
 	if card.quirk != null:
 		final_target = card.quirk.get_attack_target(card, opposing_card)
+
+	if attack_feedback != null:
+		await attack_feedback.play_attack(final_target)
 
 	if final_target != null:
 		if final_target.has_method("take_damage"):
@@ -106,22 +113,39 @@ func enter_attack() -> void:
 			card.battle_scale.add_direct_damage(direct_damage, card.card_owner)
 
 	set_main_state(MainState.WAIT)
+	busy = false
 
-func enter_hurt() -> void:
+func play_hurt_state() -> void:
 	if card == null:
 		return
+	if busy:
+		return
 
-	card.take_damage(1)
+	busy = true
+	set_main_state(MainState.HURT)
 
-	if is_instance_valid(card) and card.current_health > 0:
-		set_main_state(MainState.WAIT)
+	if hurt_feedback != null:
+		await hurt_feedback.play_hurt()
 
-func enter_death() -> void:
-	if card != null:
+	set_main_state(MainState.WAIT)
+	busy = false
+
+func play_death_state() -> void:
+	if card == null:
+		return
+	if busy:
+		return
+
+	busy = true
+	set_main_state(MainState.DEATH)
+
+	if death_feedback != null:
+		await death_feedback.play_death()
+
+	if is_instance_valid(card):
 		card.kill()
 
-func enter_wait() -> void:
-	pass
+	busy = false
 
 func set_power_state(new_state: PowerState) -> void:
 	if current_power_state == new_state:
