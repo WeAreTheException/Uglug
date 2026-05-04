@@ -12,6 +12,7 @@ offset_left = 64.0
 offset_top = 896.0
 offset_right = 384.0
 offset_bottom = 1024.0
+text = "Trex"
 
 [node name="EnemyName" type="Label" parent="Names" unique_id=33840969]
 offset_left = 64.0

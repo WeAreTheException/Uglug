@@ -1,6 +1,5 @@
 [gd_scene format=3 uid="uid://t0ygmapw4xv0"]
 
-[ext_resource type="Script" uid="uid://bk5xe42i5d0hs" path="res://TestScene.gd" id="1_iaqyw"]
 [ext_resource type="PackedScene" uid="uid://0y4bo4fdwdc" path="res://Cards/CardManager.tscn" id="2_hfs3j"]
 [ext_resource type="PackedScene" uid="uid://bif5q1mjmf8e5" path="res://PlayerHand/PlayerHand.tscn" id="3_1xvpt"]
 [ext_resource type="PackedScene" uid="uid://bxghpl6h2pl6u" path="res://Deck/WorkerDeck.tscn" id="4_jyw1y"]
@@ -22,10 +21,7 @@
 [ext_resource type="Texture2D" uid="uid://ckmml0pq43oek" path="res://Tugga/ScaleArt/+4.jpeg" id="21_khi2w"]
 [ext_resource type="Texture2D" uid="uid://dal2kfuthlkfy" path="res://Tugga/ScaleArt/+5.jpeg" id="22_k4kyb"]
 
-[node name="Playground" type="Node2D" unique_id=1073653813 node_paths=PackedStringArray("player_name_label", "enemy_name_label")]
-script = ExtResource("1_iaqyw")
-player_name_label = NodePath("PlayerNameLabel")
-enemy_name_label = NodePath("EnemyNameLabel")
+[node name="Playground" type="Node2D" unique_id=1073653813]
 
 [node name="PhaseManager" type="Node" parent="." unique_id=384942188]
 
