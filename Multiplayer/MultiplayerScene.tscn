@@ -23,10 +23,10 @@
 [ext_resource type="Texture2D" uid="uid://ckmml0pq43oek" path="res://Tugga/ScaleArt/+4.jpeg" id="21_khi2w"]
 [ext_resource type="Texture2D" uid="uid://dal2kfuthlkfy" path="res://Tugga/ScaleArt/+5.jpeg" id="22_k4kyb"]
 
-[node name="Playground" type="Node2D" unique_id=1073653813 node_paths=PackedStringArray("phase_manager", "end_placement_button")]
+[node name="Playground" type="Node2D" unique_id=1073653813 node_paths=PackedStringArray("player_name_label", "enemy_name_label")]
 script = ExtResource("1_iaqyw")
-phase_manager = NodePath("PhaseManager")
-end_placement_button = NodePath("Button")
+player_name_label = NodePath("PlayerNameLabel")
+enemy_name_label = NodePath("EnemyNameLabel")
 
 [node name="PhaseManager" type="Node" parent="." unique_id=384942188 node_paths=PackedStringArray("deck_root", "opponent_hand", "opponent_spawn_anchor", "slots")]
 script = ExtResource("6_q6li5")
@@ -129,14 +129,14 @@ worker_deck_root = NodePath("../WorkerDeck")
 anchor_mode = 0
 metadata/_edit_lock_ = true
 
-[node name="Player1" type="Label" parent="." unique_id=1076756967]
-offset_left = 64.0
-offset_top = 31.0
-offset_right = 512.0
-offset_bottom = 159.0
-
-[node name="Player2" type="Label" parent="." unique_id=1628585734]
+[node name="PlayerNameLabel" type="Label" parent="." unique_id=1628585734]
 offset_left = 64.0
 offset_top = 896.0
 offset_right = 512.0
 offset_bottom = 1024.0
+
+[node name="EnemyNameLabel" type="Label" parent="." unique_id=1076756967]
+offset_left = 64.0
+offset_top = 31.0
+offset_right = 512.0
+offset_bottom = 159.0

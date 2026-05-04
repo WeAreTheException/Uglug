@@ -3,7 +3,7 @@ extends Node2D
 @export var code_label: Label
 @export var status_label: Label
 @export var multiplayer_scene: PackedScene
-@export var start_timer: Timer   # 👈 assign your Timer node
+@export var start_timer: Timer
 
 var has_started := false
 
@@ -56,15 +56,14 @@ func check_start() -> void:
 
 	print("2 players ready → preparing start")
 
-	# ✅ Update UI BEFORE delay
+	# UI update
 	status_label.text = "Players: 2 / 2"
 	code_label.text = "Starting match..."
 
-	# ✅ Start delay
+	# delay before scene change
 	if start_timer != null:
 		start_timer.start()
 	else:
-		# fallback if timer not assigned
 		await get_tree().create_timer(2.0).timeout
 		start_match()
 
@@ -74,7 +73,10 @@ func _on_start_timer_timeout() -> void:
 
 
 func start_match() -> void:
+	# 🔥 PREVENT DOUBLE SCENE CHANGE
+	if get_tree().current_scene.scene_file_path == multiplayer_scene.resource_path:
+		return
+
 	print("starting match now")
 
-	# 🔥 synced scene change
 	GDSync.change_scene(multiplayer_scene.resource_path)
