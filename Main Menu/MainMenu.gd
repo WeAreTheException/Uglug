@@ -4,6 +4,7 @@ class_name MainMenu
 @export var host_button: Button
 @export var join_button: Button
 @export var multiplayer_scene: PackedScene
+@export var steam_manager: SteamManager
 
 var gdsync_ready: bool = false
 var started: bool = false
@@ -55,6 +56,7 @@ func _ready() -> void:
 		print("starting GD-Sync...")
 		GDSync.start_multiplayer()
 
+
 func _on_host_button_pressed() -> void:
 	if not gdsync_ready:
 		print("GD-Sync not connected yet")
@@ -73,6 +75,7 @@ func _on_host_button_pressed() -> void:
 
 	GDSync.lobby_create(pending_host_lobby_name, "", true, 2)
 
+
 func _on_join_button_pressed() -> void:
 	if not gdsync_ready:
 		print("GD-Sync not connected yet")
@@ -89,12 +92,24 @@ func _on_join_button_pressed() -> void:
 	print("requesting public lobbies")
 	GDSync.get_public_lobbies()
 
+
 func _on_gdsync_connected() -> void:
 	gdsync_ready = true
+
+	# ✅ SET USERNAME HERE (CRITICAL)
+	if steam_manager != null and steam_manager.steam_enabled:
+		GDSync.player_set_username(steam_manager.steam_name)
+		print("Set GD-Sync username: ", steam_manager.steam_name)
+	else:
+		GDSync.player_set_username("Unknown")
+		print("Set fallback username")
+
 	if not is_creating_lobby and not is_joining_lobby:
 		host_button.disabled = false
 		join_button.disabled = false
+
 	print("GD-Sync connected")
+
 
 func _on_gdsync_connection_failed(error: int) -> void:
 	gdsync_ready = false
@@ -104,6 +119,7 @@ func _on_gdsync_connection_failed(error: int) -> void:
 	join_button.disabled = false
 	print("GD-Sync connection failed: ", error)
 
+
 func _on_gdsync_disconnected() -> void:
 	gdsync_ready = false
 	is_creating_lobby = false
@@ -112,17 +128,20 @@ func _on_gdsync_disconnected() -> void:
 	join_button.disabled = false
 	print("GD-Sync disconnected")
 
+
 func _on_lobby_created(lobby_name: String) -> void:
 	is_creating_lobby = false
 	print("lobby created: ", lobby_name)
 	print("host joining own lobby: ", lobby_name)
 	GDSync.lobby_join(lobby_name)
 
+
 func _on_lobby_creation_failed(lobby_name: String, error: int) -> void:
 	is_creating_lobby = false
 	host_button.disabled = false
 	join_button.disabled = false
 	print("lobby creation failed: ", lobby_name, " error: ", error)
+
 
 func _on_lobbies_received(lobbies: Array) -> void:
 	print("public lobbies received: ", lobbies.size())
@@ -150,10 +169,12 @@ func _on_lobbies_received(lobbies: Array) -> void:
 	print("joining lobby: ", lobby_name)
 	GDSync.lobby_join(lobby_name)
 
+
 func _on_lobby_joined(lobby_name: String) -> void:
 	is_joining_lobby = false
 	print("lobby joined: ", lobby_name)
 	get_tree().change_scene_to_packed(multiplayer_scene)
+
 
 func _on_lobby_join_failed(lobby_name: String, error: int) -> void:
 	is_joining_lobby = false
