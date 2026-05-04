@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://dpx20viu4na86"]
+
+[ext_resource type="Script" uid="uid://bxbqihkit6rgo" path="res://Managers/PhaseManager.gd" id="1_hco1x"]
+[ext_resource type="Script" uid="uid://ukqcaw2u1h1i" path="res://MultiplayerManager.gd" id="2_gdibd"]
+
+[node name="NewMuliplayer_Room" type="Node2D" unique_id=719324581]
+
+[node name="Names" type="Node" parent="." unique_id=1220800706]
+
+[node name="PlayerName" type="Label" parent="Names" unique_id=1890505661]
+offset_left = 64.0
+offset_top = 896.0
+offset_right = 384.0
+offset_bottom = 1024.0
+
+[node name="EnemyName" type="Label" parent="Names" unique_id=33840969]
+offset_left = 64.0
+offset_top = 64.0
+offset_right = 384.0
+offset_bottom = 192.0
+
+[node name="Managers" type="Node" parent="." unique_id=5384537]
+
+[node name="PhaseManager" type="Node" parent="Managers" unique_id=822521768]
+script = ExtResource("1_hco1x")
+
+[node name="MultiplayerManager" type="Node" parent="Managers" unique_id=2113897365 node_paths=PackedStringArray("player_name_label", "enemy_name_label")]
+script = ExtResource("2_gdibd")
+player_name_label = NodePath("../../Names/PlayerName")
+enemy_name_label = NodePath("../../Names/EnemyName")
+
+[node name="PlacementTime" type="Timer" parent="." unique_id=250586227]
+wait_time = 5.0

@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bhqj6mqf1rn54"]
 
 [ext_resource type="Script" uid="uid://cr6dru7f4wx6h" path="res://WaitingRoom.gd" id="1_j36fe"]
-[ext_resource type="PackedScene" uid="uid://t0ygmapw4xv0" path="res://Multiplayer/MultiplayerScene.tscn" id="2_p3oxq"]
+[ext_resource type="PackedScene" uid="uid://dpx20viu4na86" path="res://New_Multiplayer_Room.tscn" id="2_p3oxq"]
 
 [node name="Waiting_Room" type="Node2D" unique_id=1883661809 node_paths=PackedStringArray("code_label", "status_label", "start_timer")]
 script = ExtResource("1_j36fe")
