@@ -1,34 +1,65 @@
 [gd_scene format=3 uid="uid://dpx20viu4na86"]
 
 [ext_resource type="Script" uid="uid://bxbqihkit6rgo" path="res://Managers/PhaseManager.gd" id="1_hco1x"]
+[ext_resource type="Script" uid="uid://cwireilh2n5g3" path="res://TurnOrderLabel.gd" id="1_vaqi8"]
 [ext_resource type="Script" uid="uid://ukqcaw2u1h1i" path="res://MultiplayerManager.gd" id="2_gdibd"]
+[ext_resource type="Script" uid="uid://bneanu1h8dlxb" path="res://TurnOrderManager.gd" id="3_npu2i"]
 
 [node name="NewMuliplayer_Room" type="Node2D" unique_id=719324581]
 
-[node name="Names" type="Node" parent="." unique_id=1220800706]
+[node name="Labels" type="Node" parent="." unique_id=1220800706]
 
-[node name="PlayerName" type="Label" parent="Names" unique_id=1890505661]
+[node name="PlayerName" type="Label" parent="Labels" unique_id=1890505661]
 offset_left = 64.0
 offset_top = 896.0
 offset_right = 384.0
 offset_bottom = 1024.0
+theme_override_font_sizes/font_size = 64
 text = "Trex"
+vertical_alignment = 1
 
-[node name="EnemyName" type="Label" parent="Names" unique_id=33840969]
+[node name="EnemyName" type="Label" parent="Labels" unique_id=33840969]
 offset_left = 64.0
 offset_top = 64.0
 offset_right = 384.0
 offset_bottom = 192.0
+theme_override_font_sizes/font_size = 64
+text = "Sergio"
+vertical_alignment = 1
+
+[node name="AttackingLabel" type="Label" parent="Labels" unique_id=1158761306 node_paths=PackedStringArray("first_player_label")]
+offset_left = 512.0
+offset_top = 256.0
+offset_right = 1536.0
+offset_bottom = 832.0
+theme_override_font_sizes/font_size = 120
+text = "Mao Goes First"
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("1_vaqi8")
+first_player_label = NodePath(".")
+
+[node name="AttackingTime" type="Timer" parent="Labels/AttackingLabel" unique_id=250586227]
+wait_time = 5.0
+
+[node name="PhaseLabel" type="Label" parent="Labels" unique_id=229779506]
+offset_left = 512.0
+offset_right = 1408.0
+offset_bottom = 192.0
+theme_override_font_sizes/font_size = 64
+text = "DRAW"
+horizontal_alignment = 1
 
 [node name="Managers" type="Node" parent="." unique_id=5384537]
 
 [node name="PhaseManager" type="Node" parent="Managers" unique_id=822521768]
 script = ExtResource("1_hco1x")
 
+[node name="TurnOrderManager" type="Node" parent="Managers" unique_id=1986901783 node_paths=PackedStringArray("phase_manager")]
+script = ExtResource("3_npu2i")
+phase_manager = NodePath("../PhaseManager")
+
 [node name="MultiplayerManager" type="Node" parent="Managers" unique_id=2113897365 node_paths=PackedStringArray("player_name_label", "enemy_name_label")]
 script = ExtResource("2_gdibd")
-player_name_label = NodePath("../../Names/PlayerName")
-enemy_name_label = NodePath("../../Names/EnemyName")
-
-[node name="PlacementTime" type="Timer" parent="." unique_id=250586227]
-wait_time = 5.0
+player_name_label = NodePath("../../Labels/PlayerName")
+enemy_name_label = NodePath("../../Labels/EnemyName")

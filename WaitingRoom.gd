@@ -73,10 +73,12 @@ func _on_start_timer_timeout() -> void:
 
 
 func start_match() -> void:
-	# 🔥 PREVENT DOUBLE SCENE CHANGE
+	if not GDSync.is_host():
+		print("not host, waiting for synced scene change")
+		return
+
 	if get_tree().current_scene.scene_file_path == multiplayer_scene.resource_path:
 		return
 
-	print("starting match now")
-
+	print("host starting match now")
 	GDSync.change_scene(multiplayer_scene.resource_path)
