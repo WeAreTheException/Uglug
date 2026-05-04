@@ -3,7 +3,7 @@ class_name MainMenu
 
 @export var host_button: Button
 @export var join_button: Button
-@export var multiplayer_scene: PackedScene
+@export var waiting_room: PackedScene
 @export var steam_manager: SteamManager
 
 var gdsync_ready: bool = false
@@ -173,7 +173,7 @@ func _on_lobbies_received(lobbies: Array) -> void:
 func _on_lobby_joined(lobby_name: String) -> void:
 	is_joining_lobby = false
 	print("lobby joined: ", lobby_name)
-	get_tree().change_scene_to_packed(multiplayer_scene)
+	get_tree().change_scene_to_packed(waiting_room)
 
 
 func _on_lobby_join_failed(lobby_name: String, error: int) -> void:
