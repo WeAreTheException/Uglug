@@ -12,13 +12,15 @@ func _ready() -> void:
 	var lobby_name := GDSync.lobby_get_name()
 	code_label.text = "Code: " + lobby_name
 
-	update_status()
-
 	if not GDSync.client_joined.is_connected(_on_client_joined):
 		GDSync.client_joined.connect(_on_client_joined)
 
 	if not GDSync.client_left.is_connected(_on_client_left):
 		GDSync.client_left.connect(_on_client_left)
+
+	# 🔥 IMPORTANT: check immediately too
+	update_status()
+	check_start()
 
 
 func _on_client_joined(client_id: int) -> void:
@@ -34,6 +36,7 @@ func _on_client_left(client_id: int) -> void:
 
 func update_status() -> void:
 	var count := GDSync.lobby_get_player_count()
+	print("lobby count = ", count)
 	status_label.text = "Players: %d / 2" % count
 
 
@@ -44,11 +47,11 @@ func check_start() -> void:
 	var count := GDSync.lobby_get_player_count()
 
 	if count < 2:
+		print("waiting for more players...")
 		return
 
 	has_started = true
-
 	print("2 players ready → starting match")
 
-	# ✅ THIS IS IMPORTANT — use GD-Sync scene change
+	# 🔥 MUST USE GD-SYNC
 	GDSync.change_scene(multiplayer_scene.resource_path)
