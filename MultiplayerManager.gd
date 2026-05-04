@@ -1,4 +1,4 @@
-extends Node2D
+extends Node
 
 @export var player_name_label: Label
 @export var enemy_name_label: Label
