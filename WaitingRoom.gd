@@ -3,6 +3,7 @@ extends Node2D
 @export var code_label: Label
 @export var status_label: Label
 @export var multiplayer_scene: PackedScene
+@export var start_timer: Timer   # 👈 assign your Timer node
 
 var has_started := false
 
@@ -18,7 +19,9 @@ func _ready() -> void:
 	if not GDSync.client_left.is_connected(_on_client_left):
 		GDSync.client_left.connect(_on_client_left)
 
-	# 🔥 IMPORTANT: check immediately too
+	if start_timer != null:
+		start_timer.timeout.connect(_on_start_timer_timeout)
+
 	update_status()
 	check_start()
 
@@ -36,8 +39,8 @@ func _on_client_left(client_id: int) -> void:
 
 func update_status() -> void:
 	var count := GDSync.lobby_get_player_count()
-	print("lobby count = ", count)
 	status_label.text = "Players: %d / 2" % count
+	print("lobby count = ", count)
 
 
 func check_start() -> void:
@@ -47,11 +50,31 @@ func check_start() -> void:
 	var count := GDSync.lobby_get_player_count()
 
 	if count < 2:
-		print("waiting for more players...")
 		return
 
 	has_started = true
-	print("2 players ready → starting match")
 
-	# 🔥 MUST USE GD-SYNC
+	print("2 players ready → preparing start")
+
+	# ✅ Update UI BEFORE delay
+	status_label.text = "Players: 2 / 2"
+	code_label.text = "Starting match..."
+
+	# ✅ Start delay
+	if start_timer != null:
+		start_timer.start()
+	else:
+		# fallback if timer not assigned
+		await get_tree().create_timer(2.0).timeout
+		start_match()
+
+
+func _on_start_timer_timeout() -> void:
+	start_match()
+
+
+func start_match() -> void:
+	print("starting match now")
+
+	# 🔥 synced scene change
 	GDSync.change_scene(multiplayer_scene.resource_path)

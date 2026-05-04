@@ -128,3 +128,15 @@ worker_deck_root = NodePath("../WorkerDeck")
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1389829679]
 anchor_mode = 0
 metadata/_edit_lock_ = true
+
+[node name="Player1" type="Label" parent="." unique_id=1076756967]
+offset_left = 64.0
+offset_top = 31.0
+offset_right = 512.0
+offset_bottom = 159.0
+
+[node name="Player2" type="Label" parent="." unique_id=1628585734]
+offset_left = 64.0
+offset_top = 896.0
+offset_right = 512.0
+offset_bottom = 1024.0

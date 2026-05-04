@@ -3,11 +3,12 @@
 [ext_resource type="Script" uid="uid://cr6dru7f4wx6h" path="res://WaitingRoom.gd" id="1_j36fe"]
 [ext_resource type="PackedScene" uid="uid://t0ygmapw4xv0" path="res://Multiplayer/MultiplayerScene.tscn" id="2_p3oxq"]
 
-[node name="Waiting_Room" type="Node2D" unique_id=1883661809 node_paths=PackedStringArray("code_label", "status_label")]
+[node name="Waiting_Room" type="Node2D" unique_id=1883661809 node_paths=PackedStringArray("code_label", "status_label", "start_timer")]
 script = ExtResource("1_j36fe")
 code_label = NodePath("CodeLabel")
 status_label = NodePath("StatusLabel")
 multiplayer_scene = ExtResource("2_p3oxq")
+start_timer = NodePath("MatchStartDelay")
 
 [node name="CodeLabel" type="Label" parent="." unique_id=987235936]
 offset_left = 512.0
@@ -20,3 +21,6 @@ offset_left = 512.0
 offset_top = 704.0
 offset_right = 1536.0
 offset_bottom = 896.0
+
+[node name="MatchStartDelay" type="Timer" parent="." unique_id=1781453611]
+wait_time = 2.0

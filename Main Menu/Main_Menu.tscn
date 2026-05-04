@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://c14yrjk60cmg1"]
 
 [ext_resource type="Script" uid="uid://cfsbl06ahe2c3" path="res://Main Menu/MainMenu.gd" id="1_7b88o"]
+[ext_resource type="PackedScene" uid="uid://bhqj6mqf1rn54" path="res://Waiting_Room.tscn" id="2_ectev"]
 [ext_resource type="Script" uid="uid://doscvmerviyvy" path="res://Main Menu/SteamManager.gd" id="3_ectev"]
 
 [node name="Main_Menu" type="Node2D" unique_id=1094824997 node_paths=PackedStringArray("host_button", "join_button", "steam_manager")]
@@ -8,6 +9,7 @@ scale = Vector2(0.950005, 1.0128386)
 script = ExtResource("1_7b88o")
 host_button = NodePath("Host")
 join_button = NodePath("Join")
+waiting_room = ExtResource("2_ectev")
 steam_manager = NodePath("SteamManager")
 
 [node name="Host" type="Button" parent="." unique_id=1666733725]
