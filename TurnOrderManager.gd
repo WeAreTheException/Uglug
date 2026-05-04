@@ -1,6 +1,8 @@
 extends Node
 class_name TurnManager
 
+signal turn_player_changed(client_id: int)
+
 const DEBUG_PLACE_SECONDS := 6.0
 
 @export var phase_manager: PhaseManager
@@ -65,6 +67,8 @@ func receive_place_order(first_id: int, second_id: int) -> void:
 	print("first placer id: ", first_placer_id)
 	print("second placer id: ", second_placer_id)
 
+	turn_player_changed.emit(first_placer_id)
+
 	if my_id == first_placer_id:
 		_start_my_place_turn("FIRST")
 	else:
@@ -127,6 +131,8 @@ func start_second_placer_turn(second_id: int) -> void:
 	second_placer_id = second_id
 
 	var my_id := GDSync.get_client_id()
+
+	turn_player_changed.emit(second_placer_id)
 
 	if my_id == second_placer_id:
 		_start_my_place_turn("SECOND")

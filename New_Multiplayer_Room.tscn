@@ -9,12 +9,25 @@
 
 [node name="Labels" type="Node" parent="." unique_id=1220800706]
 
-[node name="PlayerName" type="Label" parent="Labels" unique_id=1890505661]
+[node name="PlayerLabels" type="Node2D" parent="Labels" unique_id=1533272939]
+metadata/_edit_lock_ = true
+
+[node name="PlayerName" type="Label" parent="Labels/PlayerLabels" unique_id=1890505661]
+offset_left = 64.0
+offset_top = 960.0
+offset_right = 256.0
+offset_bottom = 1024.0
+theme_override_font_sizes/font_size = 24
+text = "1:00"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="PlayerTime" type="Label" parent="Labels/PlayerLabels" unique_id=2057396889]
 offset_left = 64.0
 offset_top = 896.0
-offset_right = 384.0
-offset_bottom = 1024.0
-theme_override_font_sizes/font_size = 64
+offset_right = 256.0
+offset_bottom = 963.0
+theme_override_font_sizes/font_size = 48
 text = "Trex"
 vertical_alignment = 1
 
@@ -27,7 +40,7 @@ theme_override_font_sizes/font_size = 64
 text = "Sergio"
 vertical_alignment = 1
 
-[node name="AttackingLabel" type="Label" parent="Labels" unique_id=1158761306 node_paths=PackedStringArray("first_player_label")]
+[node name="AttackingLabel" type="Label" parent="Labels" unique_id=1158761306 node_paths=PackedStringArray("turn_manager")]
 offset_left = 512.0
 offset_top = 256.0
 offset_right = 1536.0
@@ -37,10 +50,10 @@ text = "Mao Goes First"
 horizontal_alignment = 1
 vertical_alignment = 1
 script = ExtResource("1_vaqi8")
-first_player_label = NodePath(".")
+turn_manager = NodePath("../../Managers/TurnManager")
 
 [node name="AttackingTime" type="Timer" parent="Labels/AttackingLabel" unique_id=250586227]
-wait_time = 5.0
+wait_time = 2.0
 
 [node name="PhaseLabel" type="Label" parent="Labels" unique_id=229779506]
 offset_left = 512.0
@@ -55,11 +68,11 @@ horizontal_alignment = 1
 [node name="PhaseManager" type="Node" parent="Managers" unique_id=822521768]
 script = ExtResource("1_hco1x")
 
-[node name="TurnOrderManager" type="Node" parent="Managers" unique_id=1986901783 node_paths=PackedStringArray("phase_manager")]
+[node name="TurnManager" type="Node" parent="Managers" unique_id=1986901783 node_paths=PackedStringArray("phase_manager")]
 script = ExtResource("3_npu2i")
 phase_manager = NodePath("../PhaseManager")
 
 [node name="MultiplayerManager" type="Node" parent="Managers" unique_id=2113897365 node_paths=PackedStringArray("player_name_label", "enemy_name_label")]
 script = ExtResource("2_gdibd")
-player_name_label = NodePath("../../Labels/PlayerName")
+player_name_label = NodePath("../../Labels/PlayerLabels/PlayerName")
 enemy_name_label = NodePath("../../Labels/EnemyName")

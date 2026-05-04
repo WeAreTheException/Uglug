@@ -1,49 +1,38 @@
-extends Node
-class_name MatchStartBanner
+extends Label
+class_name AttackingLabel
 
-@export var first_player_label: Label
-@export var visible_seconds: float = 2.5
+@export var turn_manager: TurnManager
+
+var hide_timer: Timer
 
 func _ready() -> void:
-	if first_player_label != null:
-		first_player_label.visible = false
+	visible = false
 
-	GDSync.expose_node(self)
-	GDSync.expose_func(show_first_player_banner)
+	hide_timer = get_node_or_null("Timer") as Timer
 
-	await get_tree().create_timer(1.0).timeout
+	if hide_timer != null:
+		hide_timer.one_shot = true
+		if not hide_timer.timeout.is_connected(_on_hide_timer_timeout):
+			hide_timer.timeout.connect(_on_hide_timer_timeout)
+	else:
+		print("AttackingLabel: missing child Timer")
 
-	if GDSync.is_host():
-		choose_and_show_first_player()
+	if turn_manager != null:
+		if not turn_manager.turn_player_changed.is_connected(_on_turn_player_changed):
+			turn_manager.turn_player_changed.connect(_on_turn_player_changed)
+	else:
+		print("AttackingLabel: turn_manager not assigned")
 
+func _on_turn_player_changed(client_id: int) -> void:
+	var player_name := GDSync.player_get_username(client_id, "Unknown Player")
 
-func choose_and_show_first_player() -> void:
-	var clients := GDSync.lobby_get_all_clients()
+	text = player_name + " is placing"
+	visible = true
 
-	if clients.size() < 2:
-		print("MatchStartBanner: not enough clients")
-		return
+	print("AttackingLabel: ", text)
 
-	var rng := RandomNumberGenerator.new()
-	rng.randomize()
+	if hide_timer != null:
+		hide_timer.start()
 
-	var first_index := rng.randi_range(0, clients.size() - 1)
-	var first_player_id := int(clients[first_index])
-	var first_player_name := GDSync.player_get_username(first_player_id, "Unknown Player")
-
-	print("MatchStartBanner: first player is ", first_player_name)
-
-	GDSync.call_func_all(show_first_player_banner, first_player_name)
-
-
-func show_first_player_banner(first_player_name: String) -> void:
-	if first_player_label == null:
-		return
-
-	first_player_label.text = first_player_name + " is placing first"
-	first_player_label.visible = true
-
-	await get_tree().create_timer(visible_seconds).timeout
-
-	if first_player_label != null:
-		first_player_label.visible = false
+func _on_hide_timer_timeout() -> void:
+	visible = false
