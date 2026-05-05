@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://bxbqihkit6rgo" path="res://Managers/PhaseManager.gd" id="1_hco1x"]
 [ext_resource type="Script" uid="uid://cwireilh2n5g3" path="res://TurnOrderLabel.gd" id="1_vaqi8"]
 [ext_resource type="Script" uid="uid://ukqcaw2u1h1i" path="res://MultiplayerManager.gd" id="2_gdibd"]
+[ext_resource type="Script" uid="uid://bfxl8a4iwbxde" path="res://PhaseLabel.gd" id="2_yxvsl"]
 [ext_resource type="Script" uid="uid://bneanu1h8dlxb" path="res://TurnOrderManager.gd" id="3_npu2i"]
 
 [node name="NewMuliplayer_Room" type="Node2D" unique_id=719324581]
@@ -27,30 +28,32 @@ offset_top = 957.0
 offset_right = 256.0
 offset_bottom = 1024.0
 theme_override_font_sizes/font_size = 48
-text = "Trex"
-horizontal_alignment = 2
+text = "1:00"
+horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PlayerTime2" type="Label" parent="Labels/PlayerLabels" unique_id=210119641]
-offset_left = 64.0
-offset_top = 957.0
-offset_right = 256.0
-offset_bottom = 1024.0
-theme_override_font_sizes/font_size = 48
-text = "Trex"
-horizontal_alignment = 2
-vertical_alignment = 1
+[node name="EnemyLabels" type="Node2D" parent="Labels" unique_id=1690967513]
+metadata/_edit_lock_ = true
 
-[node name="EnemyName" type="Label" parent="Labels" unique_id=33840969]
+[node name="EnemyName" type="Label" parent="Labels/EnemyLabels" unique_id=33840969]
 offset_left = 64.0
-offset_top = 64.0
 offset_right = 384.0
-offset_bottom = 192.0
-theme_override_font_sizes/font_size = 64
+offset_bottom = 67.0
+theme_override_font_sizes/font_size = 48
 text = "Sergio"
 vertical_alignment = 1
 
-[node name="AttackingLabel" type="Label" parent="Labels" unique_id=1158761306 node_paths=PackedStringArray("turn_manager")]
+[node name="PlayerTime2" type="Label" parent="Labels/EnemyLabels" unique_id=1772899700]
+offset_left = 64.0
+offset_top = 64.0
+offset_right = 256.0
+offset_bottom = 131.0
+theme_override_font_sizes/font_size = 48
+text = "1:00"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AttackingLabel" type="Label" parent="Labels" unique_id=1158761306 node_paths=PackedStringArray("turn_manager", "visibility_timer")]
 offset_left = 512.0
 offset_top = 256.0
 offset_right = 1536.0
@@ -61,17 +64,21 @@ horizontal_alignment = 1
 vertical_alignment = 1
 script = ExtResource("1_vaqi8")
 turn_manager = NodePath("../../Managers/TurnManager")
+visibility_timer = NodePath("AttackLabelTimer")
 
-[node name="AttackingTime" type="Timer" parent="Labels/AttackingLabel" unique_id=250586227]
-wait_time = 2.0
+[node name="AttackLabelTimer" type="Timer" parent="Labels/AttackingLabel" unique_id=250586227]
+wait_time = 0.5
 
-[node name="PhaseLabel" type="Label" parent="Labels" unique_id=229779506]
-offset_left = 512.0
-offset_right = 1408.0
-offset_bottom = 192.0
-theme_override_font_sizes/font_size = 64
+[node name="PhaseLabel" type="Label" parent="Labels" unique_id=229779506 node_paths=PackedStringArray("phase_manager")]
+offset_left = 832.0
+offset_right = 1088.0
+offset_bottom = 64.0
+theme_override_font_sizes/font_size = 36
 text = "DRAW"
 horizontal_alignment = 1
+vertical_alignment = 2
+script = ExtResource("2_yxvsl")
+phase_manager = NodePath("../../Managers/PhaseManager")
 
 [node name="Managers" type="Node" parent="." unique_id=5384537]
 
@@ -85,4 +92,4 @@ phase_manager = NodePath("../PhaseManager")
 [node name="MultiplayerManager" type="Node" parent="Managers" unique_id=2113897365 node_paths=PackedStringArray("player_name_label", "enemy_name_label")]
 script = ExtResource("2_gdibd")
 player_name_label = NodePath("../../Labels/PlayerLabels/PlayerName")
-enemy_name_label = NodePath("../../Labels/EnemyName")
+enemy_name_label = NodePath("../../Labels/EnemyLabels/EnemyName")

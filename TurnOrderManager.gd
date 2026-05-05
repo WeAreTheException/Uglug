@@ -1,155 +1,91 @@
 extends Node
 class_name TurnManager
 
-signal turn_player_changed(client_id: int)
-
-const DEBUG_PLACE_SECONDS := 6.0
+signal turn_player_changed(client_id: int, phase_name: String)
 
 @export var phase_manager: PhaseManager
+@export var step_seconds: float = 1.0
 
-var first_placer_id: int = -1
-var second_placer_id: int = -1
-var local_place_active: bool = false
+var first_player_id: int = -1
+var second_player_id: int = -1
+var round_starter_id: int = -1
+var other_player_id: int = -1
 
 func _ready() -> void:
-	print("TURN MANAGER READY")
-	print("my GD-Sync id: ", GDSync.get_client_id())
-	print("host id: ", GDSync.get_host())
-	print("am I host: ", GDSync.is_host())
-
-	GDSync.expose_node(self)
-	GDSync.expose_func(receive_place_order)
-	GDSync.expose_func(first_placer_done)
-	GDSync.expose_func(start_second_placer_turn)
-	GDSync.expose_func(second_placer_done)
-
 	await get_tree().create_timer(1.0).timeout
 
 	if GDSync.is_host():
-		_choose_random_place_order()
-	else:
-		print("CLIENT WAITING FOR PLACE ORDER")
+		choose_starting_player()
 
-func _choose_random_place_order() -> void:
+func choose_starting_player() -> void:
 	var clients := GDSync.lobby_get_all_clients()
-
-	print("host choosing place order from clients: ", clients)
-
 	if clients.size() < 2:
-		print("ERROR: not enough clients to choose place order")
 		return
 
 	var rng := RandomNumberGenerator.new()
 	rng.randomize()
 
 	var first_index := rng.randi_range(0, clients.size() - 1)
-	first_placer_id = int(clients[first_index])
+	first_player_id = int(clients[first_index])
 
 	for id in clients:
-		if int(id) != first_placer_id:
-			second_placer_id = int(id)
+		if int(id) != first_player_id:
+			second_player_id = int(id)
 			break
 
-	print("RANDOM PLACE ORDER CHOSEN")
-	print("first placer id: ", first_placer_id)
-	print("second placer id: ", second_placer_id)
+	GDSync.expose_node(self)
+	GDSync.expose_func(receive_starting_players)
+	GDSync.call_func_all(receive_starting_players, first_player_id, second_player_id)
 
-	GDSync.call_func_all(receive_place_order, first_placer_id, second_placer_id)
+func receive_starting_players(p1: int, p2: int) -> void:
+	first_player_id = p1
+	second_player_id = p2
 
-func receive_place_order(first_id: int, second_id: int) -> void:
-	first_placer_id = first_id
-	second_placer_id = second_id
+	round_starter_id = first_player_id
+	other_player_id = second_player_id
 
-	var my_id := GDSync.get_client_id()
+	if GDSync.is_host():
+		run_turn_loop()
 
-	print("PLACE ORDER RECEIVED")
-	print("my id: ", my_id)
-	print("first placer id: ", first_placer_id)
-	print("second placer id: ", second_placer_id)
+func run_turn_loop() -> void:
+	while true:
+		await run_round(round_starter_id, other_player_id)
 
-	turn_player_changed.emit(first_placer_id)
+		var old_starter := round_starter_id
+		round_starter_id = other_player_id
+		other_player_id = old_starter
 
-	if my_id == first_placer_id:
-		_start_my_place_turn("FIRST")
-	else:
-		print("I WAIT. OPPONENT PLACES FIRST.")
+func run_round(starter_id: int, follower_id: int) -> void:
+	run_step(PhaseManager.Phase.DRAW, starter_id)
+	await get_tree().create_timer(step_seconds).timeout
 
-func _start_my_place_turn(order_label: String) -> void:
-	if phase_manager != null and not phase_manager.is_place_phase():
-		print("Turn blocked: phase is not PLACE")
-		return
+	run_step(PhaseManager.Phase.DRAW, follower_id)
+	await get_tree().create_timer(step_seconds).timeout
 
-	local_place_active = true
+	run_step(PhaseManager.Phase.PLACE, starter_id)
+	await get_tree().create_timer(step_seconds).timeout
 
-	print("================================")
-	print("I PLACE ", order_label)
-	print("YOU CAN PLACE CARDS NOW")
-	print("DEBUG TIMER: ", DEBUG_PLACE_SECONDS, " seconds")
-	print("================================")
+	run_step(PhaseManager.Phase.PLACE, follower_id)
+	await get_tree().create_timer(step_seconds).timeout
 
-	await get_tree().create_timer(DEBUG_PLACE_SECONDS).timeout
+	run_step(PhaseManager.Phase.ATTACK, starter_id)
+	await get_tree().create_timer(step_seconds).timeout
 
-	if not local_place_active:
-		return
+	run_step(PhaseManager.Phase.ATTACK, follower_id)
+	await get_tree().create_timer(step_seconds).timeout
 
-	_finish_my_place_turn()
+func run_step(phase: PhaseManager.Phase, active_player_id: int) -> void:
+	GDSync.call_func_all(apply_step, phase, active_player_id)
 
-func _finish_my_place_turn() -> void:
-	if not local_place_active:
-		return
-
-	local_place_active = false
-
-	var my_id := GDSync.get_client_id()
-
-	print("MY PLACE TURN FINISHED")
-
-	if my_id == first_placer_id:
-		print("I WAS FIRST PLACER. REPORTING DONE.")
-		if GDSync.is_host():
-			first_placer_done()
-		else:
-			GDSync.call_func_on(GDSync.get_host(), first_placer_done)
-
-	elif my_id == second_placer_id:
-		print("I WAS SECOND PLACER. REPORTING DONE.")
-		if GDSync.is_host():
-			second_placer_done()
-		else:
-			GDSync.call_func_on(GDSync.get_host(), second_placer_done)
-
-func first_placer_done() -> void:
-	if not GDSync.is_host():
-		return
-
-	print("HOST RECEIVED: FIRST PLACER DONE")
-	print("UNLOCKING SECOND PLACER: ", second_placer_id)
-
-	GDSync.call_func_all(start_second_placer_turn, second_placer_id)
-
-func start_second_placer_turn(second_id: int) -> void:
-	second_placer_id = second_id
-
-	var my_id := GDSync.get_client_id()
-
-	turn_player_changed.emit(second_placer_id)
-
-	if my_id == second_placer_id:
-		_start_my_place_turn("SECOND")
-	else:
-		print("I AM DONE. OPPONENT PLACES SECOND.")
-
-func second_placer_done() -> void:
-	if not GDSync.is_host():
-		return
-
+func apply_step(phase: PhaseManager.Phase, active_player_id: int) -> void:
 	if phase_manager != null:
-		phase_manager.set_done()
+		phase_manager.set_phase(phase)
 
-	print("HOST RECEIVED: SECOND PLACER DONE")
-	print("================================")
-	print("DEBUG PLACEMENT ORDER TEST COMPLETE")
-	print("================================")
+	var phase_name := ""
+	if phase_manager != null:
+		phase_name = phase_manager.get_phase_name()
 
-func is_my_place_turn() -> bool:
-	return local_place_active
+	turn_player_changed.emit(active_player_id, phase_name)
+
+func is_my_turn() -> bool:
+	return false

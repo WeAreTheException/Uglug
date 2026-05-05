@@ -23,7 +23,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 [application]
 
 config/name="Uglug"
-run/main_scene="uid://l28s3hnlv4iy"
+run/main_scene="uid://c14yrjk60cmg1"
 config/features=PackedStringArray("4.6", "Forward Plus")
 
 [autoload]
