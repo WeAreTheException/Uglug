@@ -41,6 +41,10 @@ window/vsync/vsync_mode=0
 
 enabled=PackedStringArray("res://addons/GD-Sync/plugin.cfg", "res://addons/godotsteam/plugin.cfg")
 
+[rendering]
+
+textures/vram_compression/import_etc2_astc=true
+
 [steam]
 
 initialization/app_id=0
