@@ -1,5 +1,5 @@
 extends Label
-class_name AttackingLabel
+class_name AttackingFirstLabel
 
 @export var turn_manager: TurnManager
 @export var visibility_timer: Timer
@@ -13,16 +13,13 @@ func _ready() -> void:
 			visibility_timer.timeout.connect(_on_visibility_timer_timeout)
 
 	if turn_manager != null:
-		if not turn_manager.turn_player_changed.is_connected(_on_turn_player_changed):
-			turn_manager.turn_player_changed.connect(_on_turn_player_changed)
+		if not turn_manager.attacking_first_changed.is_connected(_on_attacking_first_changed):
+			turn_manager.attacking_first_changed.connect(_on_attacking_first_changed)
 
-func _on_turn_player_changed(client_id: int, phase_name: String) -> void:
-	if phase_name != "Attack":
-		return
-
+func _on_attacking_first_changed(client_id: int) -> void:
 	var player_name := GDSync.player_get_username(client_id, "Unknown Player")
 
-	text = player_name + " is attacking"
+	text = player_name + " is attacking first"
 	visible = true
 
 	if visibility_timer != null:
