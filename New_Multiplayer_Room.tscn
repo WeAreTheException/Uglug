@@ -1,21 +1,43 @@
 [gd_scene format=3 uid="uid://dpx20viu4na86"]
 
 [ext_resource type="Script" uid="uid://bxbqihkit6rgo" path="res://Managers/PhaseManager.gd" id="1_hco1x"]
+[ext_resource type="PackedScene" uid="uid://c8mekq0tyuadn" path="res://Slots/NewSlots.tscn" id="1_phlo6"]
 [ext_resource type="Script" uid="uid://cwireilh2n5g3" path="res://TurnOrderLabel.gd" id="1_vaqi8"]
 [ext_resource type="Script" uid="uid://ukqcaw2u1h1i" path="res://MultiplayerManager.gd" id="2_gdibd"]
+[ext_resource type="Texture2D" uid="uid://kwpbjydk33rh" path="res://Art/P1_AttackOrder.png" id="2_m7shj"]
 [ext_resource type="Script" uid="uid://bfxl8a4iwbxde" path="res://PhaseLabel.gd" id="2_yxvsl"]
 [ext_resource type="Script" uid="uid://bneanu1h8dlxb" path="res://TurnOrderManager.gd" id="3_npu2i"]
 [ext_resource type="Texture2D" uid="uid://bqvhbvonl6m57" path="res://References/maxresdefault.jpg" id="6_cpbwq"]
+[ext_resource type="Script" uid="uid://bg4foc8mrsyhd" path="res://AttackOrderSpriteHandler.gd" id="8_cymfb"]
+[ext_resource type="Texture2D" uid="uid://brsmr8tj8tbtg" path="res://Art/P2_AttackOrder.png" id="10_r8uo6"]
 
 [node name="NewMuliplayer_Room" type="Node2D" unique_id=719324581]
 
 [node name="Labels" type="Node" parent="." unique_id=1220800706]
 
+[node name="Slots" type="Node2D" parent="Labels" unique_id=1282402441]
+
+[node name="Lane4" parent="Labels/Slots" unique_id=1783533892 instance=ExtResource("1_phlo6")]
+position = Vector2(1280, 480)
+lane_id = 4
+
+[node name="Lane3" parent="Labels/Slots" unique_id=120099331 instance=ExtResource("1_phlo6")]
+position = Vector2(832, 480)
+lane_id = 3
+
+[node name="Lane2" parent="Labels/Slots" unique_id=918336549 instance=ExtResource("1_phlo6")]
+position = Vector2(1056, 480)
+lane_id = 2
+
+[node name="Lane1" parent="Labels/Slots" unique_id=1932373052 instance=ExtResource("1_phlo6")]
+position = Vector2(608, 480)
+lane_id = 1
+
 [node name="PlayerLabels" type="Node2D" parent="Labels" unique_id=1533272939]
 metadata/_edit_lock_ = true
 
 [node name="PlayerName" type="Label" parent="Labels/PlayerLabels" unique_id=1890505661]
-offset_left = 1088.0
+offset_left = 1024.0
 offset_top = 32.0
 offset_right = 1184.0
 offset_bottom = 82.0
@@ -38,9 +60,9 @@ vertical_alignment = 1
 metadata/_edit_lock_ = true
 
 [node name="EnemyName" type="Label" parent="Labels/EnemyLabels" unique_id=33840969]
-offset_left = 640.0
+offset_left = 704.0
 offset_top = 32.0
-offset_right = 800.0
+offset_right = 864.0
 offset_bottom = 82.0
 theme_override_font_sizes/font_size = 24
 text = "Sergio"
@@ -59,9 +81,9 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="AttackingFirstLabel" type="Label" parent="Labels" unique_id=1158761306 node_paths=PackedStringArray("turn_manager", "visibility_timer")]
-offset_left = 512.0
+offset_left = 416.0
 offset_top = 256.0
-offset_right = 1536.0
+offset_right = 1440.0
 offset_bottom = 832.0
 theme_override_font_sizes/font_size = 120
 text = "Mao Goes First"
@@ -70,21 +92,35 @@ vertical_alignment = 1
 script = ExtResource("1_vaqi8")
 turn_manager = NodePath("../../Managers/TurnManager")
 visibility_timer = NodePath("AttackFirstLabelTimer")
+metadata/_edit_lock_ = true
 
 [node name="AttackFirstLabelTimer" type="Timer" parent="Labels/AttackingFirstLabel" unique_id=250586227]
 wait_time = 0.5
 
 [node name="PhaseLabel" type="Label" parent="Labels" unique_id=229779506 node_paths=PackedStringArray("phase_manager")]
-offset_left = 800.0
+offset_left = 864.0
 offset_top = 32.0
-offset_right = 1088.0
+offset_right = 1024.0
 offset_bottom = 82.0
 theme_override_font_sizes/font_size = 36
-text = "DRAW"
+text = "Attack"
 horizontal_alignment = 1
 vertical_alignment = 2
 script = ExtResource("2_yxvsl")
 phase_manager = NodePath("../../Managers/PhaseManager")
+
+[node name="PhaseLabel2" type="Label" parent="Labels" unique_id=181246000]
+offset_left = 896.0
+offset_top = 82.0
+offset_right = 992.0
+offset_bottom = 121.0
+theme_override_font_sizes/font_size = 28
+text = "1:00"
+horizontal_alignment = 1
+vertical_alignment = 2
+metadata/_edit_lock_ = true
+
+[node name="PlaceTimer" type="Timer" parent="Labels" unique_id=523465007]
 
 [node name="Managers" type="Node" parent="." unique_id=5384537]
 
@@ -99,6 +135,20 @@ phase_manager = NodePath("../PhaseManager")
 script = ExtResource("2_gdibd")
 player_name_label = NodePath("../../Labels/PlayerLabels/PlayerName")
 enemy_name_label = NodePath("../../Labels/EnemyLabels/EnemyName")
+
+[node name="AttackOrderSpriteHandler" type="Node" parent="Managers" unique_id=345904283 node_paths=PackedStringArray("turn_manager", "player_one_sprite", "player_two_sprite")]
+script = ExtResource("8_cymfb")
+turn_manager = NodePath("../TurnManager")
+player_one_sprite = NodePath("P1AttackOrder")
+player_two_sprite = NodePath("P2AttackOrder")
+
+[node name="P2AttackOrder" type="Sprite2D" parent="Managers/AttackOrderSpriteHandler" unique_id=1399297561]
+position = Vector2(960, 448)
+texture = ExtResource("10_r8uo6")
+
+[node name="P1AttackOrder" type="Sprite2D" parent="Managers/AttackOrderSpriteHandler" unique_id=741321835]
+position = Vector2(960, 448)
+texture = ExtResource("2_m7shj")
 
 [node name="Maxresdefault" type="Sprite2D" parent="." unique_id=2129313480]
 visible = false
