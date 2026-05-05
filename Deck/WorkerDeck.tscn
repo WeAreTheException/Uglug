@@ -20,14 +20,8 @@ metadata/_custom_type_script = "uid://duslcpxrhurv8"
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4nk3w"]
 size = Vector2(174, 270)
 
-[node name="Deck" type="Node2D" unique_id=1069789393 node_paths=PackedStringArray("input_listener", "counter", "deck_sprite", "deck", "deck_view", "draw_handler")]
+[node name="WorkerDeck" type="Node2D" unique_id=1069789393]
 script = ExtResource("1_2sl2c")
-input_listener = NodePath("DeckInputListener")
-counter = NodePath("RichTextLabel")
-deck_sprite = NodePath("DeckImage")
-deck = NodePath("DeckCount")
-deck_view = NodePath("DeckView")
-draw_handler = NodePath("DeckDrawHandler")
 
 [node name="DeckCount" type="Node" parent="." unique_id=58160234]
 script = ExtResource("2_wj4mp")

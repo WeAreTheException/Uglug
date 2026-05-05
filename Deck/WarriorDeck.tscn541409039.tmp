@@ -130,7 +130,7 @@ metadata/_custom_type_script = "uid://duslcpxrhurv8"
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4nk3w"]
 size = Vector2(174, 266)
 
-[node name="WarriorDeck" type="Node2D" unique_id=1069789393]
+[node name="Deck" type="Node2D" unique_id=1069789393]
 script = ExtResource("1_x7m7j")
 
 [node name="DeckCount" type="Node" parent="." unique_id=58160234]

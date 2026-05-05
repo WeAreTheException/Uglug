@@ -11,6 +11,18 @@ enum Phase {
 
 var current_phase: Phase = Phase.DRAW
 
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo:
+		match event.keycode:
+			KEY_1:
+				set_phase(Phase.DRAW)
+
+			KEY_2:
+				set_phase(Phase.PLACE)
+
+			KEY_3:
+				set_phase(Phase.ATTACK)
+
 func set_phase(new_phase: Phase) -> void:
 	current_phase = new_phase
 	phase_changed.emit(get_phase_name())
@@ -19,10 +31,13 @@ func get_phase_name() -> String:
 	match current_phase:
 		Phase.DRAW:
 			return "Draw"
+
 		Phase.PLACE:
 			return "Place"
+
 		Phase.ATTACK:
 			return "Attack"
+
 	return ""
 
 func is_draw_phase() -> bool:

@@ -13,9 +13,6 @@ enum Owner {
 @export var battle_scale: BattleScale
 @export var sigil_sprite: Sprite2D
 
-var card_scene: PackedScene = null
-var worker_draw_handler: DeckDrawHandler = null
-
 var card_owner: Owner = Owner.PLAYER
 
 var player_hand: Node2D = null
@@ -59,7 +56,6 @@ func _process(delta: float) -> void:
 
 func setup_card(data: CardData) -> void:
 	if data == null:
-		print("FAIL: setup_card got null data")
 		return
 
 	card_name = data.name
@@ -68,33 +64,22 @@ func setup_card(data: CardData) -> void:
 	current_cost = data.cost
 	current_worth = data.worth
 	quirk = data.quirk as CardQuirk
-	
-	update_sigil()
 
-	print("setup: ", data.name, " id=", multiplayer_card_id)
+	update_sigil()
 
 	if stats != null:
 		stats.setup_from_card_data(data)
-	else:
-		print("FAIL: stats is null on card")
-		
-func update_sigil() -> void:
-	print("update_sigil called for ", card_name)
 
+func update_sigil() -> void:
 	if sigil_sprite == null:
-		print("sigil failed: sigil_sprite is null")
 		return
 
 	if quirk == null:
-		print("sigil: no quirk on ", card_name)
 		sigil_sprite.texture = null
 		sigil_sprite.visible = false
 		return
 
-	print("sigil quirk = ", quirk)
-
 	if quirk.sigil_texture == null:
-		print("sigil failed: quirk has no sigil texture")
 		sigil_sprite.texture = null
 		sigil_sprite.visible = false
 		return
@@ -102,13 +87,8 @@ func update_sigil() -> void:
 	sigil_sprite.texture = quirk.sigil_texture
 	sigil_sprite.visible = true
 
-	print("sigil applied for ", card_name)
-
 func _on_pressed(_listener) -> void:
-	print("card clicked: ", card_name, " / select_handler = ", select_handler)
-
 	if select_handler == null:
-		print("card press blocked: select_handler is null")
 		return
 
 	select_handler.select_card(self)
@@ -127,9 +107,6 @@ func take_damage(amount: int, attacker: Card = null) -> void:
 
 	if current_health <= 0:
 		kill()
-		return
-
-	print(card_name, " (", current_health, " hp)")
 
 func kill() -> void:
 	if death_processed:
@@ -141,8 +118,6 @@ func kill() -> void:
 	if stats != null:
 		stats.update_health(current_health)
 
-	print(card_name, " died")
-
 	if quirk != null:
 		quirk.on_death(self)
 
@@ -151,57 +126,6 @@ func kill() -> void:
 		current_slot = null
 
 	queue_free()
-
-func draw_worker_cards(amount: int) -> void:
-	if worker_draw_handler == null:
-		print("draw_worker_cards failed: worker_draw_handler is null")
-		return
-
-	if player_hand == null:
-		print("draw_worker_cards failed: player_hand is null")
-		return
-
-	for i in range(amount):
-		var success := worker_draw_handler.draw_card_to_hand(
-			player_hand,
-			worker_draw_handler.spawn_anchor,
-			card_owner
-		)
-
-		if not success:
-			print("draw_worker_cards stopped early at ", i)
-			break
-
-func spawn_card_to_hand(data: CardData) -> void:
-	if data == null:
-		print("spawn_card_to_hand failed: data null")
-		return
-
-	if card_scene == null:
-		print("spawn_card_to_hand failed: card_scene null")
-		return
-
-	if player_hand == null:
-		print("spawn_card_to_hand failed: player_hand null")
-		return
-
-	var new_card = card_scene.instantiate() as Card
-	if new_card == null:
-		print("spawn_card_to_hand failed: instantiated node is not Card")
-		return
-
-	new_card.player_hand = player_hand
-	new_card.select_handler = select_handler
-	new_card.battle_scale = battle_scale
-	new_card.card_scene = card_scene
-	new_card.worker_draw_handler = worker_draw_handler
-	new_card.card_owner = card_owner
-
-	player_hand.add_child(new_card)
-	new_card.setup_card(data)
-
-	if player_hand.has_method("add_card_to_hand"):
-		player_hand.add_card_to_hand(new_card)
 
 func _on_hovered(_listener) -> void:
 	is_hovered = true
@@ -231,13 +155,9 @@ func set_selected(value: bool) -> void:
 
 func place_into_slot(slot: NewSlots) -> void:
 	if slot == null:
-		print("place_into_slot failed: slot null")
 		return
 
-	print("place_into_slot called for ", card_name, " -> ", slot.name)
-
 	if not slot.assign_card(self):
-		print("place_into_slot failed: assign_card returned false")
 		return
 
 	if current_slot != null and current_slot != slot:
@@ -251,7 +171,6 @@ func place_into_slot(slot: NewSlots) -> void:
 	animate_to_position(slot.global_position)
 
 	apply_slot_owner(slot)
-	print_slot_info()
 
 func animate_to_position(target_pos: Vector2) -> void:
 	if move_tween != null:
@@ -268,26 +187,6 @@ func apply_slot_owner(slot: NewSlots) -> void:
 		card_owner = Owner.PLAYER
 	else:
 		card_owner = Owner.OPPONENT
-
-func print_slot_info() -> void:
-	if current_slot == null:
-		print(card_name, " has no slot")
-		return
-
-	var slot_side := ""
-	var card_side := ""
-
-	if current_slot.slot_owner == NewSlots.SlotOwner.PLAYER:
-		slot_side = "player slot"
-	else:
-		slot_side = "opponent slot"
-
-	if card_owner == Owner.PLAYER:
-		card_side = "player card"
-	else:
-		card_side = "opponent card"
-
-	print(card_name, " -> ", slot_side, " / ", card_side)
 
 func return_to_hand() -> void:
 	if current_slot != null:
