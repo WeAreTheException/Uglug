@@ -6,6 +6,7 @@ static var selected_card: Card = null
 @export var slots_root: Node
 @export var sacrifice_handler: SacrificeHandler
 @export var phase_manager: PhaseManager
+@export var animation_handler: SelectAnimation
 
 var slots: Array[NewSlots] = []
 var pending_play_card: Card = null
@@ -103,7 +104,11 @@ func try_select_hand_card(card: Card) -> void:
 
 	pending_play_card = card
 	SelectHandler.selected_card = card
-	card.set_selected(true)
+
+	if animation_handler != null:
+		animation_handler.show_card_selected(card)
+	else:
+		card.set_selected(true)
 
 	if sacrifice_handler != null:
 		sacrifice_handler.refresh_sacrifice_hints(pending_play_card)
@@ -260,6 +265,11 @@ func cancel_pending_play() -> void:
 	print("pending play cancelled")
 
 func clear_current_selection_visuals() -> void:
+	if animation_handler != null:
+		animation_handler.clear_pending_visual(pending_play_card)
+		animation_handler.clear_sacrifice_visuals(sacrifice_handler)
+		return
+
 	if pending_play_card != null:
 		pending_play_card.set_selected(false)
 
