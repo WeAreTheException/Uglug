@@ -11,9 +11,6 @@ var slots: Array[NewSlots] = []
 var pending_play_card: Card = null
 
 func _ready() -> void:
-	GDSync.expose_node(self)
-	GDSync.expose_func(apply_place_card)
-
 	cache_slots()
 
 	if sacrifice_handler != null:
@@ -177,7 +174,10 @@ func resolve_pending_play(slot: NewSlots) -> void:
 
 	clear_current_selection_visuals()
 
-	GDSync.call_func_all(apply_place_card, placed_card_id, placed_lane_id)
+	card_to_play.place_into_slot(slot)
+
+	if multiplayer.multiplayer_peer != null:
+		rpc("replicate_place_card", placed_card_id, placed_lane_id)
 
 	pending_play_card = null
 
@@ -186,26 +186,20 @@ func resolve_pending_play(slot: NewSlots) -> void:
 
 	SelectHandler.selected_card = null
 
-func apply_place_card(card_id: int, lane_id: int) -> void:
+@rpc("any_peer", "call_remote", "reliable")
+func replicate_place_card(card_id: int, lane_id: int) -> void:
 	var card := find_card_by_multiplayer_id(card_id)
 	if card == null:
-		print("apply_place_card failed: card not found for id ", card_id)
+		print("replicate_place_card failed: card not found for id ", card_id)
 		return
 
-	var target_owner := NewSlots.SlotOwner.PLAYER
-
-	if card.card_owner == Card.Owner.PLAYER:
-		target_owner = NewSlots.SlotOwner.PLAYER
-	else:
-		target_owner = NewSlots.SlotOwner.OPPONENT
-
-	var target_slot := find_slot_by_lane_id_and_owner(slots_root, lane_id, target_owner)
+	var target_slot := find_opposing_slot_by_lane_id(slots_root, lane_id)
 	if target_slot == null:
-		print("apply_place_card failed: slot not found for lane ", lane_id)
+		print("replicate_place_card failed: opposing slot not found for lane ", lane_id)
 		return
 
 	if not target_slot.is_empty():
-		print("apply_place_card blocked: slot occupied")
+		print("replicate_place_card blocked: mirrored slot occupied")
 		return
 
 	card.place_into_slot(target_slot)
@@ -230,17 +224,17 @@ func find_card_by_multiplayer_id_recursive(node: Node, card_id: int) -> Card:
 
 	return null
 
-func find_slot_by_lane_id_and_owner(node: Node, lane_id: int, owner: NewSlots.SlotOwner) -> NewSlots:
+func find_opposing_slot_by_lane_id(node: Node, lane_id: int) -> NewSlots:
 	if node == null:
 		return null
 
 	for child in node.get_children():
 		var slot := child as NewSlots
 		if slot != null:
-			if slot.lane_id == lane_id and slot.slot_owner == owner:
+			if slot.lane_id == lane_id and slot.slot_owner == NewSlots.SlotOwner.OPPONENT:
 				return slot
 
-		var found := find_slot_by_lane_id_and_owner(child, lane_id, owner)
+		var found := find_opposing_slot_by_lane_id(child, lane_id)
 		if found != null:
 			return found
 
