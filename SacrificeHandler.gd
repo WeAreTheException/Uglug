@@ -2,8 +2,7 @@ extends Node
 class_name SacrificeHandler
 
 @export var card_manager: Node
-
-var slots: Array[NewSlots] = []
+@export var player_hand: Node
 
 var selected_sacrifices: Array[Card] = []
 var paid_sacrifice_worth: int = 0
@@ -23,7 +22,7 @@ func can_afford_card(card: Card) -> bool:
 	if card.current_cost <= 0:
 		return true
 
-	return get_total_player_board_worth() >= card.current_cost
+	return get_total_player_hand_worth(card) >= card.current_cost
 
 func try_select_sacrifice(card: Card, pending_play_card: Card) -> void:
 	if card == null:
@@ -41,12 +40,16 @@ func try_select_sacrifice(card: Card, pending_play_card: Card) -> void:
 		print("sacrifice blocked: pending play card is free")
 		return
 
-	if card.current_slot == null:
-		print("sacrifice blocked: card not in slot")
+	if card == pending_play_card:
+		print("sacrifice blocked: cannot sacrifice the card being played")
 		return
 
-	if card.current_slot.slot_owner != NewSlots.SlotOwner.PLAYER:
-		print("sacrifice blocked: not in player slot")
+	if card.current_slot != null:
+		print("sacrifice blocked: card is on board")
+		return
+
+	if card.card_owner != Card.Owner.PLAYER:
+		print("sacrifice blocked: not player card")
 		return
 
 	if selected_sacrifices.has(card):
@@ -57,7 +60,7 @@ func try_select_sacrifice(card: Card, pending_play_card: Card) -> void:
 	card.set_selected(true)
 
 	var total := get_selected_sacrifice_worth()
-	print("added sacrifice: ", card.card_name, " / total worth = ", total)
+	print("added hand sacrifice: ", card.card_name, " / total worth = ", total)
 
 	refresh_sacrifice_hints(pending_play_card)
 
@@ -85,6 +88,8 @@ func resolve_sacrifice_payment(pending_play_card: Card) -> void:
 			continue
 
 		sacrificed_ids.append(sacrifice.multiplayer_card_id)
+
+		remove_card_from_player_hand(sacrifice)
 		sacrifice.kill()
 
 	selected_sacrifices.clear()
@@ -118,21 +123,20 @@ func find_card_by_multiplayer_id(card_id: int) -> Card:
 
 	return null
 
-func get_total_player_board_worth() -> int:
+func get_total_player_hand_worth(pending_play_card: Card = null) -> int:
 	var total := 0
 
-	for slot in slots:
-		if slot == null:
+	for card in get_player_hand_cards():
+		if card == null:
 			continue
 
-		if slot.current_card == null:
+		if card == pending_play_card:
 			continue
 
-		var board_card := slot.current_card as Card
-		if board_card == null:
+		if card.current_slot != null:
 			continue
 
-		total += board_card.current_worth
+		total += card.current_worth
 
 	return total
 
@@ -159,35 +163,30 @@ func refresh_sacrifice_hints(pending_play_card: Card) -> void:
 	if pending_play_card.current_cost <= 0:
 		return
 
-	for slot in slots:
-		if slot == null:
+	for card in get_player_hand_cards():
+		if card == null:
 			continue
 
-		if slot.current_card == null:
+		if card == pending_play_card:
 			continue
 
-		var board_card := slot.current_card as Card
-		if board_card == null:
+		if card.current_slot != null:
 			continue
 
-		if selected_sacrifices.has(board_card):
+		if card.card_owner != Card.Owner.PLAYER:
 			continue
 
-		board_card.start_sacrifice_hint()
+		if selected_sacrifices.has(card):
+			continue
+
+		card.start_sacrifice_hint()
 
 func clear_sacrifice_hints() -> void:
-	for slot in slots:
-		if slot == null:
+	for card in get_player_hand_cards():
+		if card == null:
 			continue
 
-		if slot.current_card == null:
-			continue
-
-		var board_card := slot.current_card as Card
-		if board_card == null:
-			continue
-
-		board_card.stop_sacrifice_hint()
+		card.stop_sacrifice_hint()
 
 func clear_selected_sacrifice_visuals() -> void:
 	for card in selected_sacrifices:
@@ -195,3 +194,42 @@ func clear_selected_sacrifice_visuals() -> void:
 			continue
 
 		card.set_selected(false)
+
+func get_player_hand_cards() -> Array[Card]:
+	var cards: Array[Card] = []
+
+	if player_hand == null:
+		return cards
+
+	for child in player_hand.get_children():
+		var card := child as Card
+		if card != null and not cards.has(card):
+			cards.append(card)
+
+	var hand_array = player_hand.get("player_hand")
+	if hand_array is Array:
+		for item in hand_array:
+			var card := item as Card
+			if card != null and not cards.has(card):
+				cards.append(card)
+
+	return cards
+
+func remove_card_from_player_hand(card: Card) -> void:
+	if card == null:
+		return
+
+	if player_hand == null:
+		return
+
+	if player_hand.has_method("remove_card_from_hand"):
+		player_hand.remove_card_from_hand(card)
+		return
+
+	if player_hand.has_method("remove_card"):
+		player_hand.remove_card(card)
+		return
+
+	var hand_array = player_hand.get("player_hand")
+	if hand_array is Array:
+		hand_array.erase(card)

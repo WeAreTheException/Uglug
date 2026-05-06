@@ -15,7 +15,7 @@ enum Owner {
 
 var card_owner: Owner = Owner.PLAYER
 
-var player_hand: Node2D = null
+var player_hand: Node = null
 var current_slot: NewSlots = null
 var overlapping_slot: NewSlots = null
 var hand_position: Vector2
@@ -88,7 +88,10 @@ func update_sigil() -> void:
 	sigil_sprite.visible = true
 
 func _on_pressed(_listener) -> void:
+	print("card pressed: ", card_name)
+
 	if select_handler == null:
+		print("card pressed blocked: select_handler is null on ", card_name)
 		return
 
 	select_handler.select_card(self)
@@ -166,7 +169,8 @@ func place_into_slot(slot: NewSlots) -> void:
 	current_slot = slot
 
 	if player_hand != null:
-		player_hand.remove_card_from_hand(self)
+		if player_hand.has_method("remove_card_from_hand"):
+			player_hand.remove_card_from_hand(self)
 
 	animate_to_position(slot.global_position)
 
@@ -194,7 +198,8 @@ func return_to_hand() -> void:
 		current_slot = null
 
 	if player_hand != null:
-		player_hand.add_card_to_hand(self)
+		if player_hand.has_method("add_card_to_hand"):
+			player_hand.add_card_to_hand(self)
 
 	set_selected(false)
 

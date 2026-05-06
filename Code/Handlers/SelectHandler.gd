@@ -1,4 +1,4 @@
-extends Node2D
+extends Node
 class_name SelectHandler
 
 static var selected_card: Card = null
@@ -16,7 +16,6 @@ func _ready() -> void:
 	cache_slots()
 
 	if sacrifice_handler != null:
-		sacrifice_handler.slots = slots
 		sacrifice_handler.card_manager = card_manager
 
 func cache_slots() -> void:
@@ -54,9 +53,14 @@ func select_card(card: Card) -> void:
 			return
 
 	if card.current_slot != null:
-		if sacrifice_handler != null:
-			sacrifice_handler.try_select_sacrifice(card, pending_play_card)
+		print("select_card blocked: card is already on board")
 		return
+
+	if pending_play_card != null and pending_play_card != card:
+		if sacrifice_handler != null:
+			if not sacrifice_handler.payment_completed and pending_play_card.current_cost > 0:
+				sacrifice_handler.try_select_sacrifice(card, pending_play_card)
+				return
 
 	try_select_hand_card(card)
 
@@ -78,7 +82,7 @@ func try_select_hand_card(card: Card) -> void:
 			return
 
 		if card.current_cost > 0 and not sacrifice_handler.can_afford_card(card):
-			print("select_card blocked: not enough sacrifice value for ", card.card_name)
+			print("select_card blocked: not enough hand sacrifice value for ", card.card_name)
 			return
 
 	if pending_play_card == card:
@@ -100,6 +104,11 @@ func try_place_into_slot_under_mouse() -> void:
 	if pending_play_card == null:
 		return
 
+	if phase_manager != null:
+		if not phase_manager.is_player_place_phase():
+			print("place blocked: not in PLAYER_PLACE phase")
+			return
+
 	var space_state := get_viewport().world_2d.direct_space_state
 	var params := PhysicsPointQueryParameters2D.new()
 	params.position = get_viewport().get_mouse_position()
@@ -112,14 +121,9 @@ func try_place_into_slot_under_mouse() -> void:
 		if collider is NewSlots:
 			var slot: NewSlots = collider
 
-			if phase_manager != null:
-				if not phase_manager.is_player_place_phase():
-					print("place blocked: not in PLAYER_PLACE phase")
-					return
-
-				if slot.slot_owner != NewSlots.SlotOwner.PLAYER:
-					print("place blocked: not a player slot")
-					return
+			if slot.slot_owner != NewSlots.SlotOwner.PLAYER:
+				print("place blocked: not a player slot")
+				return
 
 			if not slot.is_empty():
 				print("place blocked: slot is occupied")

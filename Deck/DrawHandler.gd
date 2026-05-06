@@ -17,6 +17,7 @@ var deck: DeckCount = null
 var player_hand: Node2D = null
 var opponent_hand: Node2D = null
 var phase_manager: PhaseManager = null
+var select_handler: SelectHandler = null
 
 func draw_player_card() -> void:
 	if phase_manager == null:
@@ -74,18 +75,18 @@ func _draw_local_card(drawer_peer_id: int) -> void:
 
 func _commit_draw_local(drawer_peer_id: int, card_name: String, card_id: int) -> bool:
 	var target_hand: Node2D = player_hand
-	var card_owner: int = Card.Owner.PLAYER
+	var new_card_owner: int = Card.Owner.PLAYER
 
 	if multiplayer.multiplayer_peer != null:
 		if multiplayer.get_unique_id() != drawer_peer_id:
 			target_hand = opponent_hand
-			card_owner = Card.Owner.OPPONENT
+			new_card_owner = Card.Owner.OPPONENT
 
-	return draw_specific_card_to_hand(target_hand, card_owner, card_name, card_id)
+	return draw_specific_card_to_hand(target_hand, new_card_owner, card_name, card_id)
 
 func draw_specific_card_to_hand(
 	target_hand: Node2D,
-	card_owner: int,
+	new_card_owner: int,
 	card_name: String,
 	card_id: int
 ) -> bool:
@@ -114,8 +115,13 @@ func draw_specific_card_to_hand(
 		return false
 
 	new_card.multiplayer_card_id = card_id
-	new_card.card_owner = card_owner
+	new_card.card_owner = new_card_owner
 	new_card.player_hand = target_hand
+
+	if new_card_owner == Card.Owner.PLAYER:
+		new_card.select_handler = select_handler
+	else:
+		new_card.select_handler = null
 
 	target_hand.add_child(new_card)
 
