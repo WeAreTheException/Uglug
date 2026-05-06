@@ -19,24 +19,6 @@
 
 [node name="Labels" type="Node" parent="." unique_id=1220800706]
 
-[node name="Slots" type="Node2D" parent="Labels" unique_id=1282402441]
-
-[node name="Lane4" parent="Labels/Slots" unique_id=1783533892 instance=ExtResource("1_phlo6")]
-position = Vector2(1280, 480)
-lane_id = 4
-
-[node name="Lane3" parent="Labels/Slots" unique_id=120099331 instance=ExtResource("1_phlo6")]
-position = Vector2(832, 480)
-lane_id = 3
-
-[node name="Lane2" parent="Labels/Slots" unique_id=918336549 instance=ExtResource("1_phlo6")]
-position = Vector2(1056, 480)
-lane_id = 2
-
-[node name="Lane1" parent="Labels/Slots" unique_id=1932373052 instance=ExtResource("1_phlo6")]
-position = Vector2(608, 480)
-lane_id = 1
-
 [node name="PlayerLabels" type="Node2D" parent="Labels" unique_id=1533272939]
 metadata/_edit_lock_ = true
 
@@ -168,8 +150,33 @@ player_hand = NodePath("../PlayerHand")
 opponent_hand = NodePath("../OpponentHand")
 phase_manager = NodePath("../../Managers/PhaseManager")
 
-[node name="WorkerDeck" parent="Hand&Deck" unique_id=429916346 instance=ExtResource("13_27s8c")]
+[node name="WorkerDeck" parent="Hand&Deck" unique_id=429916346 node_paths=PackedStringArray("player_hand", "opponent_hand", "phase_manager") instance=ExtResource("13_27s8c")]
 position = Vector2(1696, 640)
+player_hand = NodePath("../PlayerHand")
+opponent_hand = NodePath("../OpponentHand")
+phase_manager = NodePath("../../Managers/PhaseManager")
+
+[node name="SelectHandler" type="Node2D" parent="Hand&Deck" unique_id=2085405624 node_paths=PackedStringArray("slots_root")]
+script = ExtResource("14_f7lcf")
+slots_root = NodePath("../../Slots")
+
+[node name="Slots" type="Node2D" parent="." unique_id=1282402441]
+
+[node name="Lane4" parent="Slots" unique_id=1783533892 instance=ExtResource("1_phlo6")]
+position = Vector2(1280, 480)
+lane_id = 4
+
+[node name="Lane3" parent="Slots" unique_id=120099331 instance=ExtResource("1_phlo6")]
+position = Vector2(832, 480)
+lane_id = 3
+
+[node name="Lane2" parent="Slots" unique_id=918336549 instance=ExtResource("1_phlo6")]
+position = Vector2(1056, 480)
+lane_id = 2
+
+[node name="Lane1" parent="Slots" unique_id=1932373052 instance=ExtResource("1_phlo6")]
+position = Vector2(608, 480)
+lane_id = 1
 
 [node name="Ref" type="Node" parent="." unique_id=2030852127]
 
@@ -178,9 +185,3 @@ visible = false
 position = Vector2(960.0001, 527.99994)
 scale = Vector2(1.5, 1.4666666)
 texture = ExtResource("6_cpbwq")
-
-[node name="SelectHandler" type="Node2D" parent="." unique_id=2085405624 node_paths=PackedStringArray("slots_root", "card_manager", "sacrifice_handler")]
-script = ExtResource("14_f7lcf")
-slots_root = NodePath("../Labels/Slots")
-card_manager = NodePath("")
-sacrifice_handler = NodePath("")

@@ -141,7 +141,6 @@ card_scene = ExtResource("3_7lkv5")
 [node name="DeckDrawHandler" type="Node" parent="." unique_id=1995550717 node_paths=PackedStringArray("card_database")]
 script = ExtResource("4_gy366")
 card_database = NodePath("../CardDatabase")
-deck_type = 1
 
 [node name="CardDatabase" type="Node" parent="." unique_id=1978405134]
 script = ExtResource("5_rw1me")

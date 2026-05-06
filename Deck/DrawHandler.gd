@@ -25,26 +25,16 @@ func draw_player_card() -> void:
 	if not phase_manager.is_draw_phase():
 		return
 
-	var local_peer_id := multiplayer.get_unique_id()
+	var my_peer_id := multiplayer.get_unique_id()
 
-	if multiplayer.multiplayer_peer == null or multiplayer.get_peers().is_empty():
-		_draw_local_card(local_peer_id)
+	if multiplayer.multiplayer_peer == null:
+		_draw_local_card(my_peer_id)
 		return
 
 	if multiplayer.is_server():
-		_host_resolve_draw(local_peer_id)
+		_host_resolve_draw(my_peer_id)
 	else:
 		rpc_id(1, "request_draw_from_host")
-
-func _draw_local_card(drawer_peer_id: int) -> void:
-	var data := pick_card_data()
-	if data == null:
-		return
-
-	var card_id := DeckDrawHandler.next_card_id
-	DeckDrawHandler.next_card_id += 1
-
-	_commit_draw_local(drawer_peer_id, data.name, card_id)
 
 @rpc("any_peer", "call_remote", "reliable")
 func request_draw_from_host() -> void:
@@ -71,6 +61,16 @@ func _host_resolve_draw(drawer_peer_id: int) -> void:
 @rpc("authority", "call_remote", "reliable")
 func commit_draw_remote(drawer_peer_id: int, card_name: String, card_id: int) -> void:
 	_commit_draw_local(drawer_peer_id, card_name, card_id)
+
+func _draw_local_card(drawer_peer_id: int) -> void:
+	var data := pick_card_data()
+	if data == null:
+		return
+
+	var card_id := DeckDrawHandler.next_card_id
+	DeckDrawHandler.next_card_id += 1
+
+	_commit_draw_local(drawer_peer_id, data.name, card_id)
 
 func _commit_draw_local(drawer_peer_id: int, card_name: String, card_id: int) -> bool:
 	var target_hand: Node2D = player_hand
