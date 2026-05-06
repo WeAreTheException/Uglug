@@ -4,9 +4,17 @@ class_name SacrificeHandler
 @export var player_hand: Node
 @export var phase_manager: PhaseManager
 
+var sacrifice_animation: SacrificeAnimation = null
+
 var selected_sacrifices: Array[Card] = []
 var paid_sacrifice_worth: int = 0
 var payment_completed: bool = false
+
+func _ready() -> void:
+	sacrifice_animation = find_child("SacrificeAnimation", false, false) as SacrificeAnimation
+
+	if sacrifice_animation == null:
+		print("SacrificeHandler could not find child SacrificeAnimation")
 
 func reset_state() -> void:
 	clear_sacrifice_hints()
@@ -70,7 +78,11 @@ func try_select_sacrifice(card: Card, pending_play_card: Card) -> void:
 		return
 
 	selected_sacrifices.append(card)
-	card.set_selected(true)
+
+	if sacrifice_animation != null:
+		sacrifice_animation.show_sacrifice_selected(card)
+	else:
+		card.set_selected(true)
 
 	var total := get_selected_sacrifice_worth()
 	print("added hand sacrifice: ", card.card_name, " / total worth = ", total)
@@ -205,21 +217,30 @@ func refresh_sacrifice_hints(pending_play_card: Card) -> void:
 		if selected_sacrifices.has(card):
 			continue
 
-		card.start_sacrifice_hint()
+		if sacrifice_animation != null:
+			sacrifice_animation.show_sacrifice_hint(card)
+		else:
+			card.start_sacrifice_hint()
 
 func clear_sacrifice_hints() -> void:
 	for card in get_player_hand_cards():
 		if card == null:
 			continue
 
-		card.stop_sacrifice_hint()
+		if sacrifice_animation != null:
+			sacrifice_animation.hide_sacrifice_hint(card)
+		else:
+			card.stop_sacrifice_hint()
 
 func clear_selected_sacrifice_visuals() -> void:
 	for card in selected_sacrifices:
 		if card == null:
 			continue
 
-		card.set_selected(false)
+		if sacrifice_animation != null:
+			sacrifice_animation.show_sacrifice_unselected(card)
+		else:
+			card.set_selected(false)
 
 func get_player_hand_cards() -> Array[Card]:
 	var cards: Array[Card] = []

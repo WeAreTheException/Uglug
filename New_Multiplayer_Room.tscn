@@ -13,6 +13,7 @@
 [ext_resource type="Script" uid="uid://cftnkry62jh5d" path="res://SelectAnimation.gd" id="10_rs0lp"]
 [ext_resource type="PackedScene" uid="uid://bif5q1mjmf8e5" path="res://PlayerHand/PlayerHand.tscn" id="11_hkqe4"]
 [ext_resource type="PackedScene" uid="uid://ctp48eusxy1qn" path="res://Deck/WarriorDeck.tscn" id="12_f7lcf"]
+[ext_resource type="Script" uid="uid://jv8gks4tscbj" path="res://SacrificeAnimation.gd" id="12_rvenm"]
 [ext_resource type="PackedScene" uid="uid://bxghpl6h2pl6u" path="res://Deck/WorkerDeck.tscn" id="13_27s8c"]
 [ext_resource type="Script" uid="uid://clgbwnniuqm7g" path="res://Code/Handlers/SelectHandler.gd" id="14_f7lcf"]
 [ext_resource type="Script" uid="uid://bqtoohcvy57vk" path="res://SacrificeHandler.gd" id="15_27s8c"]
@@ -153,6 +154,9 @@ script = ExtResource("15_27s8c")
 player_hand = NodePath("../../../Hand&Deck/PlayerHand")
 phase_manager = NodePath("../../PhaseManager")
 metadata/_custom_type_script = "uid://bqtoohcvy57vk"
+
+[node name="Node" type="Node" parent="Managers/Cards&Slots/SacrificeHandler" unique_id=1154187561]
+script = ExtResource("12_rvenm")
 
 [node name="Slots" type="Node2D" parent="Managers/Cards&Slots" unique_id=1282402441]
 
