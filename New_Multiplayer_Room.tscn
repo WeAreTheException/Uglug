@@ -139,14 +139,16 @@ texture = ExtResource("2_m7shj")
 
 [node name="Cards&Slots" type="Node" parent="Managers" unique_id=1440310065]
 
-[node name="SelectHandler" type="Node" parent="Managers/Cards&Slots" unique_id=1360695726 node_paths=PackedStringArray("slots_root", "sacrifice_handler")]
+[node name="SelectHandler" type="Node" parent="Managers/Cards&Slots" unique_id=1360695726 node_paths=PackedStringArray("slots_root", "sacrifice_handler", "phase_manager")]
 script = ExtResource("14_f7lcf")
 slots_root = NodePath("../Slots")
 sacrifice_handler = NodePath("../SacrificeHandler")
+phase_manager = NodePath("../../PhaseManager")
 
-[node name="SacrificeHandler" type="Node" parent="Managers/Cards&Slots" unique_id=776371688 node_paths=PackedStringArray("player_hand")]
+[node name="SacrificeHandler" type="Node" parent="Managers/Cards&Slots" unique_id=776371688 node_paths=PackedStringArray("player_hand", "phase_manager")]
 script = ExtResource("15_27s8c")
 player_hand = NodePath("../../../Hand&Deck/PlayerHand")
+phase_manager = NodePath("../../PhaseManager")
 metadata/_custom_type_script = "uid://bqtoohcvy57vk"
 
 [node name="Slots" type="Node2D" parent="Managers/Cards&Slots" unique_id=1282402441]

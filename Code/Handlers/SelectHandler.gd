@@ -4,19 +4,17 @@ class_name SelectHandler
 static var selected_card: Card = null
 
 @export var slots_root: Node
-@export var card_manager: Node
 @export var sacrifice_handler: SacrificeHandler
+@export var phase_manager: PhaseManager
 
 var slots: Array[NewSlots] = []
-var phase_manager: PhaseManager = null
-
 var pending_play_card: Card = null
 
 func _ready() -> void:
 	cache_slots()
 
 	if sacrifice_handler != null:
-		sacrifice_handler.card_manager = card_manager
+		sacrifice_handler.phase_manager = phase_manager
 
 func cache_slots() -> void:
 	slots.clear()
@@ -36,21 +34,29 @@ func _collect_player_slots_recursive(node: Node) -> void:
 		_collect_player_slots_recursive(child)
 
 func _unhandled_input(event: InputEvent) -> void:
+	if not can_use_place_logic():
+		return
+
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		try_place_into_slot_under_mouse()
 
+func can_use_place_logic() -> bool:
+	if phase_manager == null:
+		return true
+
+	return phase_manager.is_place_phase()
+
 func select_card(card: Card) -> void:
+	if not can_use_place_logic():
+		print("select_card blocked: not place phase")
+		return
+
 	if card == null:
 		return
 
-	if phase_manager != null:
-		if card.card_owner != Card.Owner.PLAYER:
-			print("select_card blocked: not player-owned card")
-			return
-
-		if not phase_manager.is_player_place_phase():
-			print("select_card blocked: not in PLAYER_PLACE phase")
-			return
+	if card.card_owner != Card.Owner.PLAYER:
+		print("select_card blocked: not player-owned card")
+		return
 
 	if card.current_slot != null:
 		print("select_card blocked: card is already on board")
@@ -65,6 +71,10 @@ func select_card(card: Card) -> void:
 	try_select_hand_card(card)
 
 func try_select_hand_card(card: Card) -> void:
+	if not can_use_place_logic():
+		print("try_select_hand_card blocked: not place phase")
+		return
+
 	if card == null:
 		return
 
@@ -101,13 +111,12 @@ func try_select_hand_card(card: Card) -> void:
 	print("pending_play_card = ", pending_play_card.card_name)
 
 func try_place_into_slot_under_mouse() -> void:
-	if pending_play_card == null:
+	if not can_use_place_logic():
+		print("place blocked: not place phase")
 		return
 
-	if phase_manager != null:
-		if not phase_manager.is_player_place_phase():
-			print("place blocked: not in PLAYER_PLACE phase")
-			return
+	if pending_play_card == null:
+		return
 
 	var space_state := get_viewport().world_2d.direct_space_state
 	var params := PhysicsPointQueryParameters2D.new()
@@ -142,6 +151,10 @@ func try_place_into_slot_under_mouse() -> void:
 			return
 
 func resolve_pending_play(slot: NewSlots) -> void:
+	if not can_use_place_logic():
+		print("resolve blocked: not place phase")
+		return
+
 	if pending_play_card == null:
 		return
 
@@ -192,16 +205,22 @@ func replicate_place_card(card_id: int, lane_id: int) -> void:
 	card.place_into_slot(target_slot)
 
 func find_card_by_multiplayer_id(card_id: int) -> Card:
-	if card_manager == null:
+	var scene := get_tree().current_scene
+	if scene == null:
 		return null
 
-	for child in card_manager.get_children():
-		var card := child as Card
-		if card == null:
-			continue
+	return find_card_by_multiplayer_id_recursive(scene, card_id)
 
+func find_card_by_multiplayer_id_recursive(node: Node, card_id: int) -> Card:
+	var card := node as Card
+	if card != null:
 		if card.multiplayer_card_id == card_id:
 			return card
+
+	for child in node.get_children():
+		var found := find_card_by_multiplayer_id_recursive(child, card_id)
+		if found != null:
+			return found
 
 	return null
 

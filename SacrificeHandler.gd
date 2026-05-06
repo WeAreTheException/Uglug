@@ -1,8 +1,8 @@
 extends Node
 class_name SacrificeHandler
 
-@export var card_manager: Node
 @export var player_hand: Node
+@export var phase_manager: PhaseManager
 
 var selected_sacrifices: Array[Card] = []
 var paid_sacrifice_worth: int = 0
@@ -15,7 +15,16 @@ func reset_state() -> void:
 	paid_sacrifice_worth = 0
 	payment_completed = false
 
+func can_use_sacrifice_logic() -> bool:
+	if phase_manager == null:
+		return true
+
+	return phase_manager.is_place_phase()
+
 func can_afford_card(card: Card) -> bool:
+	if not can_use_sacrifice_logic():
+		return false
+
 	if card == null:
 		return false
 
@@ -25,6 +34,10 @@ func can_afford_card(card: Card) -> bool:
 	return get_total_player_hand_worth(card) >= card.current_cost
 
 func try_select_sacrifice(card: Card, pending_play_card: Card) -> void:
+	if not can_use_sacrifice_logic():
+		print("sacrifice blocked: not place phase")
+		return
+
 	if card == null:
 		return
 
@@ -68,6 +81,10 @@ func try_select_sacrifice(card: Card, pending_play_card: Card) -> void:
 		resolve_sacrifice_payment(pending_play_card)
 
 func resolve_sacrifice_payment(pending_play_card: Card) -> void:
+	if not can_use_sacrifice_logic():
+		print("resolve sacrifice blocked: not place phase")
+		return
+
 	if pending_play_card == null:
 		return
 
@@ -110,16 +127,22 @@ func replicate_sacrifice(sacrificed_ids: Array[int]) -> void:
 		card.kill()
 
 func find_card_by_multiplayer_id(card_id: int) -> Card:
-	if card_manager == null:
+	var scene := get_tree().current_scene
+	if scene == null:
 		return null
 
-	for child in card_manager.get_children():
-		var card := child as Card
-		if card == null:
-			continue
+	return find_card_by_multiplayer_id_recursive(scene, card_id)
 
+func find_card_by_multiplayer_id_recursive(node: Node, card_id: int) -> Card:
+	var card := node as Card
+	if card != null:
 		if card.multiplayer_card_id == card_id:
 			return card
+
+	for child in node.get_children():
+		var found := find_card_by_multiplayer_id_recursive(child, card_id)
+		if found != null:
+			return found
 
 	return null
 
@@ -153,6 +176,9 @@ func get_selected_sacrifice_worth() -> int:
 
 func refresh_sacrifice_hints(pending_play_card: Card) -> void:
 	clear_sacrifice_hints()
+
+	if not can_use_sacrifice_logic():
+		return
 
 	if pending_play_card == null:
 		return
