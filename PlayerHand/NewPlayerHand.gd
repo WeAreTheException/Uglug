@@ -3,7 +3,7 @@ class_name NewPlayerHand
 
 const CARD_WIDTH = 200
 const DEFAULT_CARD_MOVE_SPEED = 0.1
-const MAX_HAND_SIZE = 100
+const MAX_HAND_SIZE = 3
 
 var player_hand: Array = []
 
