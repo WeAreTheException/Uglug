@@ -5,7 +5,6 @@ signal attacking_first_changed(client_id: int)
 signal turn_player_changed(client_id: int, phase_name: String)
 
 @export var phase_manager: PhaseManager
-@export var step_seconds: float = 1.0
 
 var player_one_id: int = -1
 var player_two_id: int = -1
@@ -23,6 +22,24 @@ func _ready() -> void:
 
 	if GDSync.is_host():
 		choose_starting_players()
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not GDSync.is_host():
+		return
+
+	if event is InputEventKey and event.pressed and not event.echo:
+		match event.keycode:
+			KEY_1:
+				run_step(PhaseManager.Phase.DRAW, current_first_id)
+
+			KEY_2:
+				run_step(PhaseManager.Phase.PLACE, current_first_id)
+
+			KEY_3:
+				run_step(PhaseManager.Phase.ATTACK, current_first_id)
+
+			KEY_4:
+				debug_flip_attacking_first()
 
 func choose_starting_players() -> void:
 	var clients := GDSync.lobby_get_all_clients()
@@ -49,47 +66,31 @@ func receive_starting_players(p1: int, p2: int) -> void:
 	current_first_id = player_one_id
 	current_second_id = player_two_id
 
-	if GDSync.is_host():
-		run_turn_loop()
-
-func run_turn_loop() -> void:
-	while true:
-		await run_round(current_first_id, current_second_id)
-
-		var old_first := current_first_id
-		current_first_id = current_second_id
-		current_second_id = old_first
-
-func run_round(first_id: int, second_id: int) -> void:
-	GDSync.call_func_all(receive_round_start, first_id)
-	await get_tree().create_timer(step_seconds).timeout
-
-	run_step(PhaseManager.Phase.DRAW, first_id)
-	await get_tree().create_timer(step_seconds).timeout
-
-	run_step(PhaseManager.Phase.DRAW, second_id)
-	await get_tree().create_timer(step_seconds).timeout
-
-	run_step(PhaseManager.Phase.PLACE, first_id)
-	await get_tree().create_timer(step_seconds).timeout
-
-	run_step(PhaseManager.Phase.PLACE, second_id)
-	await get_tree().create_timer(step_seconds).timeout
-
-	run_step(PhaseManager.Phase.ATTACK, first_id)
-	await get_tree().create_timer(step_seconds).timeout
-
-	run_step(PhaseManager.Phase.ATTACK, second_id)
-	await get_tree().create_timer(step_seconds).timeout
+	receive_round_start(current_first_id)
 
 func receive_round_start(first_id: int) -> void:
 	current_first_id = first_id
+
+	if current_first_id == player_one_id:
+		current_second_id = player_two_id
+	else:
+		current_second_id = player_one_id
+
 	attacking_first_changed.emit(first_id)
+
+func debug_flip_attacking_first() -> void:
+	var old_first := current_first_id
+	current_first_id = current_second_id
+	current_second_id = old_first
+
+	GDSync.call_func_all(receive_round_start, current_first_id)
 
 func run_step(phase: PhaseManager.Phase, active_player_id: int) -> void:
 	GDSync.call_func_all(apply_step, phase, active_player_id)
 
 func apply_step(phase: PhaseManager.Phase, active_player_id: int) -> void:
-	if phase_manager != null:
-		phase_manager.set_phase(phase)
-		turn_player_changed.emit(active_player_id, phase_manager.get_phase_name())
+	if phase_manager == null:
+		return
+
+	phase_manager.set_phase(phase)
+	turn_player_changed.emit(active_player_id, phase_manager.get_phase_name())
