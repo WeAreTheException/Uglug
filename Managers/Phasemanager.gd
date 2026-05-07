@@ -9,7 +9,28 @@ enum Phase {
 	ATTACK
 }
 
+@export var turn_manager: TurnManager
+
 var current_phase: Phase = Phase.DRAW
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo:
+		match event.keycode:
+			KEY_1:
+				if turn_manager != null:
+					turn_manager.request_step(Phase.DRAW)
+
+			KEY_2:
+				if turn_manager != null:
+					turn_manager.request_step(Phase.PLACE)
+
+			KEY_3:
+				if turn_manager != null:
+					turn_manager.request_step(Phase.ATTACK)
+
+			KEY_4:
+				if turn_manager != null:
+					turn_manager.request_flip_attacking_first()
 
 func set_phase(new_phase: Phase) -> void:
 	current_phase = new_phase
