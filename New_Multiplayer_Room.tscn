@@ -23,6 +23,7 @@
 [ext_resource type="Script" uid="uid://dsifsjjn64ofo" path="res://Multiplayer/TuggaManager.gd" id="18_ebxid"]
 [ext_resource type="Texture2D" uid="uid://2pljvs41hqvt" path="res://Art/Tugga/P1_Tugga_Emptyl.png" id="19_7p785"]
 [ext_resource type="Texture2D" uid="uid://c3bh4b5ajh8a1" path="res://Art/Tugga/P2_Tugga_Emptypng.png" id="20_7p785"]
+[ext_resource type="Script" uid="uid://2atv8mfbeu07" path="res://BoardManager.gd" id="20_jgxe7"]
 
 [node name="NewMuliplayer_Room" type="Node" unique_id=462638439]
 
@@ -214,10 +215,13 @@ texture = ExtResource("2_m7shj")
 
 [node name="Cards&Slots" type="Node" parent="Managers/Handlers" unique_id=1440310065]
 
-[node name="SelectHandler" type="Node" parent="Managers/Handlers/Cards&Slots" unique_id=1360695726 node_paths=PackedStringArray("sacrifice_handler", "phase_manager")]
+[node name="SelectHandler" type="Node" parent="Managers/Handlers/Cards&Slots" unique_id=1360695726 node_paths=PackedStringArray("slots_root", "sacrifice_handler", "phase_manager", "animation_handler", "board_manager")]
 script = ExtResource("14_f7lcf")
+slots_root = NodePath("../Slots")
 sacrifice_handler = NodePath("../SacrificeHandler")
 phase_manager = NodePath("../../../PhaseManager")
+animation_handler = NodePath("SelectAnimation")
+board_manager = NodePath("../../../BoardManager")
 
 [node name="SelectAnimation" type="Node" parent="Managers/Handlers/Cards&Slots/SelectHandler" unique_id=1915039610]
 script = ExtResource("10_rs0lp")
@@ -248,6 +252,11 @@ lane_id = 2
 [node name="Lane1" parent="Managers/Handlers/Cards&Slots/Slots" unique_id=1932373052 instance=ExtResource("1_phlo6")]
 position = Vector2(608, 480)
 lane_id = 1
+
+[node name="BoardManager" type="Node" parent="Managers" unique_id=755916807 node_paths=PackedStringArray("slots_root", "phase_manager")]
+script = ExtResource("20_jgxe7")
+slots_root = NodePath("../Handlers/Cards&Slots/Slots")
+phase_manager = NodePath("../PhaseManager")
 
 [node name="Hand&Deck" type="Node" parent="." unique_id=473256067]
 

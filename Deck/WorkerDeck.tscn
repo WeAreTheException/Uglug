@@ -9,7 +9,6 @@
 [ext_resource type="Script" uid="uid://c8owoh3gv45g4" path="res://Deck/DeckView.gd" id="5_wj4mp"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="6_efqef"]
 [ext_resource type="Texture2D" uid="uid://cgs5k6p3mggyf" path="res://Art/Ants/AntSprite.png" id="7_hsdj0"]
-[ext_resource type="Texture2D" uid="uid://dvdolafjjvaxb" path="res://Art/AntBack/WorkerAnt.png" id="10_y0yai"]
 
 [sub_resource type="Resource" id="Resource_hsdj0"]
 script = ExtResource("6_efqef")
@@ -49,7 +48,7 @@ shape = SubResource("RectangleShape2D_4nk3w")
 [node name="DeckImage" type="Sprite2D" parent="." unique_id=127635550]
 z_index = -2
 scale = Vector2(0.145, 0.145)
-texture = ExtResource("10_y0yai")
+texture = ExtResource("7_hsdj0")
 script = ExtResource("5_wj4mp")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="." unique_id=305945305]
