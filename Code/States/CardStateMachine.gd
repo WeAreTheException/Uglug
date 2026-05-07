@@ -17,9 +17,16 @@ var current_main_state: MainState = MainState.WAIT
 var current_power_state: PowerState = PowerState.BASE
 
 var card: Card = null
+var attack_handler: AttackHandler = null
+var hurt_handler: HurtHandler = null
+var die_handler: DieHandler = null
 
 func _ready() -> void:
 	card = get_parent() as Card
+
+	attack_handler = get_node_or_null("Attack") as AttackHandler
+	hurt_handler = get_node_or_null("Hurt") as HurtHandler
+	die_handler = get_node_or_null("Die") as DieHandler
 
 func _unhandled_input(event: InputEvent) -> void:
 	if card == null:
@@ -61,64 +68,31 @@ func set_main_state(new_state: MainState) -> void:
 			enter_wait()
 
 func enter_attack() -> void:
-	if card == null:
-		return
-
-	if card.current_slot == null:
-		print("attack blocked")
+	if attack_handler == null:
+		print("attack blocked: attack_handler is null")
 		set_main_state(MainState.WAIT)
 		return
 
-	print("slot owner: ", card.current_slot.slot_owner)
-	print("card owner: ", card.card_owner)
-
-	var opposing_slot = card.current_slot.opposing_slot
-	var opposing_card: Card = null
-
-	if opposing_slot != null:
-		opposing_card = opposing_slot.current_card
-
-	var final_target: Card = opposing_card
-
-	if card.quirk != null:
-		final_target = card.quirk.get_attack_target(card, opposing_card)
-
-	if final_target != null:
-		if final_target.has_method("take_damage"):
-			var damage := card.current_attack
-
-			if card.quirk != null:
-				damage = card.quirk.modify_damage(card, final_target, damage)
-
-			print(card.card_name, " -> ", final_target.card_name, " (", damage, " dmg)")
-			final_target.take_damage(damage, card)
-		else:
-			print("target card has no take_damage")
-	else:
-		var direct_damage := card.current_attack
-
-		if card.card_owner == Card.Owner.PLAYER:
-			print(card.card_name, " -> opponent (", direct_damage, " dmg)")
-		else:
-			print(card.card_name, " -> player (", direct_damage, " dmg)")
-
-		if card.battle_scale != null:
-			card.battle_scale.add_direct_damage(direct_damage, card.card_owner)
-
+	attack_handler.attack()
 	set_main_state(MainState.WAIT)
 
 func enter_hurt() -> void:
-	if card == null:
+	if hurt_handler == null:
+		print("hurt blocked: hurt_handler is null")
+		set_main_state(MainState.WAIT)
 		return
 
-	card.take_damage(1)
+	hurt_handler.take_damage(1)
 
 	if is_instance_valid(card) and card.current_health > 0:
 		set_main_state(MainState.WAIT)
 
 func enter_death() -> void:
-	if card != null:
-		card.kill()
+	if die_handler == null:
+		print("death blocked: die_handler is null")
+		return
+
+	die_handler.die()
 
 func enter_wait() -> void:
 	pass

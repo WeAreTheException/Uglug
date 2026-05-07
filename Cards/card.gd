@@ -41,7 +41,17 @@ var scale_tween: Tween = null
 var sacrifice_hint_active: bool = false
 var sacrifice_hint_time: float = 0.0
 
+var state_machine: CardStateMachine = null
+var attack_handler: AttackHandler = null
+var hurt_handler: HurtHandler = null
+var die_handler: DieHandler = null
+
 func _ready() -> void:
+	state_machine = get_node_or_null("CardStateMachine") as CardStateMachine
+	attack_handler = get_node_or_null("CardStateMachine/Attack") as AttackHandler
+	hurt_handler = get_node_or_null("CardStateMachine/Hurt") as HurtHandler
+	die_handler = get_node_or_null("CardStateMachine/Die") as DieHandler
+
 	if input_listener != null:
 		input_listener.hovered.connect(_on_hovered)
 		input_listener.hovered_off.connect(_on_hovered_off)
@@ -88,6 +98,13 @@ func update_sigil() -> void:
 	sigil_sprite.texture = quirk.sigil_texture
 	sigil_sprite.visible = true
 
+func get_main_sprite() -> Sprite2D:
+	for child in get_children():
+		if child is Sprite2D:
+			return child as Sprite2D
+
+	return null
+
 func _on_pressed(_listener) -> void:
 	print("card pressed: ", card_name)
 
@@ -98,6 +115,10 @@ func _on_pressed(_listener) -> void:
 	select_handler.select_card(self)
 
 func take_damage(amount: int, attacker: Card = null) -> void:
+	if hurt_handler != null:
+		hurt_handler.take_damage(amount, attacker)
+		return
+
 	current_health -= amount
 
 	if current_health < 0:
@@ -113,6 +134,10 @@ func take_damage(amount: int, attacker: Card = null) -> void:
 		kill()
 
 func kill() -> void:
+	if die_handler != null:
+		die_handler.die()
+		return
+
 	if death_processed:
 		return
 
