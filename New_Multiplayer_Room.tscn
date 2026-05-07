@@ -266,7 +266,7 @@ phase_manager = NodePath("../PhaseManager")
 position = Vector2(922, 960)
 
 [node name="OpponentHand" parent="Hand&Deck" unique_id=269402124 instance=ExtResource("11_hkqe4")]
-position = Vector2(922, 0)
+position = Vector2(928, -96)
 
 [node name="WarriorDeck" parent="Hand&Deck" unique_id=1069789393 node_paths=PackedStringArray("player_hand", "opponent_hand", "phase_manager", "select_handler") instance=ExtResource("12_f7lcf")]
 position = Vector2(1696, 352)
