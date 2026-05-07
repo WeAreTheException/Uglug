@@ -172,6 +172,7 @@ func resolve_pending_play(slot: NewSlots) -> void:
 
 	var card_to_play := pending_play_card
 	var placed_card_id := card_to_play.multiplayer_card_id
+	var placed_owner_peer_id := card_to_play.owning_peer_id
 	var placed_lane_id := slot.lane_id
 
 	if sacrifice_handler != null:
@@ -182,7 +183,7 @@ func resolve_pending_play(slot: NewSlots) -> void:
 	card_to_play.place_into_slot(slot)
 
 	if multiplayer.multiplayer_peer != null:
-		rpc("replicate_place_card", placed_card_id, placed_lane_id)
+		rpc("replicate_place_card", placed_card_id, placed_owner_peer_id, placed_lane_id)
 
 	pending_play_card = null
 
@@ -192,10 +193,10 @@ func resolve_pending_play(slot: NewSlots) -> void:
 	SelectHandler.selected_card = null
 
 @rpc("any_peer", "call_remote", "reliable")
-func replicate_place_card(card_id: int, lane_id: int) -> void:
-	var card := find_card_by_multiplayer_id(card_id)
+func replicate_place_card(card_id: int, owner_peer_id: int, lane_id: int) -> void:
+	var card := find_card_by_multiplayer_data(card_id, owner_peer_id)
 	if card == null:
-		print("replicate_place_card failed: card not found for id ", card_id)
+		print("replicate_place_card failed: card not found for id ", card_id, " owner_peer=", owner_peer_id)
 		return
 
 	var target_slot := find_opposing_slot_by_lane_id(slots_root, lane_id)
@@ -209,21 +210,21 @@ func replicate_place_card(card_id: int, lane_id: int) -> void:
 
 	card.place_into_slot(target_slot)
 
-func find_card_by_multiplayer_id(card_id: int) -> Card:
+func find_card_by_multiplayer_data(card_id: int, owner_peer_id: int) -> Card:
 	var scene := get_tree().current_scene
 	if scene == null:
 		return null
 
-	return find_card_by_multiplayer_id_recursive(scene, card_id)
+	return find_card_by_multiplayer_data_recursive(scene, card_id, owner_peer_id)
 
-func find_card_by_multiplayer_id_recursive(node: Node, card_id: int) -> Card:
+func find_card_by_multiplayer_data_recursive(node: Node, card_id: int, owner_peer_id: int) -> Card:
 	var card := node as Card
 	if card != null:
-		if card.multiplayer_card_id == card_id:
+		if card.multiplayer_card_id == card_id and card.owning_peer_id == owner_peer_id:
 			return card
 
 	for child in node.get_children():
-		var found := find_card_by_multiplayer_id_recursive(child, card_id)
+		var found := find_card_by_multiplayer_data_recursive(child, card_id, owner_peer_id)
 		if found != null:
 			return found
 
