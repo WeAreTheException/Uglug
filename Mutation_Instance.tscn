@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://cqf5jbfh1y1ul"]
+
+[node name="MutationInstance" type="Button" unique_id=1703988290]
+offset_left = -128.0
+offset_top = -128.0
+offset_right = 128.0
+offset_bottom = 128.0

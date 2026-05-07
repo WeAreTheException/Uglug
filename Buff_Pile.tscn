@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://52uj0s5wxoub"]
+
+[ext_resource type="Script" uid="uid://cbd4f43ddcg3k" path="res://BuffPileButton.gd" id="1_g5o64"]
+[ext_resource type="PackedScene" uid="uid://cqf5jbfh1y1ul" path="res://Mutation_Instance.tscn" id="2_gg26q"]
+
+[node name="BuffPile" type="Button" unique_id=1953419234 node_paths=PackedStringArray("spawn_anchor")]
+offset_right = 512.0
+offset_bottom = 512.0
+script = ExtResource("1_g5o64")
+spawned_button_scene = ExtResource("2_gg26q")
+spawn_anchor = NodePath("BuffSpawnAnchor")
+
+[node name="BuffSpawnAnchor" type="Node2D" parent="." unique_id=346133918]
+position = Vector2(768, 512)
