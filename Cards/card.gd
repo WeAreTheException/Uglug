@@ -33,7 +33,9 @@ var current_health: int = 0
 var current_cost: int = 0
 var current_worth: int = 0
 
-var quirk: CardQuirk = null
+var base_mutations: Array[CardQuirk] = []
+var additional_mutations: Array[CardQuirk] = []
+
 var death_processed: bool = false
 
 var move_tween: Tween = null
@@ -77,7 +79,9 @@ func setup_card(data: CardData) -> void:
 	current_health = data.health
 	current_cost = data.cost
 	current_worth = data.worth
-	quirk = data.quirk as CardQuirk
+
+	base_mutations = data.base_mutations.duplicate()
+	additional_mutations = []
 
 	update_sigil()
 
@@ -88,17 +92,24 @@ func update_sigil() -> void:
 	if sigil_sprite == null:
 		return
 
-	if quirk == null:
+	if base_mutations.size() <= 0:
 		sigil_sprite.texture = null
 		sigil_sprite.visible = false
 		return
 
-	if quirk.sigil_texture == null:
+	var first_mutation := base_mutations[0]
+
+	if first_mutation == null:
 		sigil_sprite.texture = null
 		sigil_sprite.visible = false
 		return
 
-	sigil_sprite.texture = quirk.sigil_texture
+	if first_mutation.sigil_texture == null:
+		sigil_sprite.texture = null
+		sigil_sprite.visible = false
+		return
+
+	sigil_sprite.texture = first_mutation.sigil_texture
 	sigil_sprite.visible = true
 
 func get_main_sprite() -> Sprite2D:
@@ -131,8 +142,13 @@ func take_damage(amount: int, attacker: Card = null) -> void:
 	if stats != null:
 		stats.update_health(current_health)
 
-	if quirk != null:
-		quirk.on_damaged(self, attacker, amount)
+	for mutation in base_mutations:
+		if mutation != null:
+			mutation.on_damaged(self, attacker, amount)
+
+	for mutation in additional_mutations:
+		if mutation != null:
+			mutation.on_damaged(self, attacker, amount)
 
 	if current_health <= 0:
 		kill()
@@ -151,8 +167,13 @@ func kill() -> void:
 	if stats != null:
 		stats.update_health(current_health)
 
-	if quirk != null:
-		quirk.on_death(self)
+	for mutation in base_mutations:
+		if mutation != null:
+			mutation.on_death(self)
+
+	for mutation in additional_mutations:
+		if mutation != null:
+			mutation.on_death(self)
 
 	if current_slot != null:
 		current_slot.clear_card()
