@@ -8,6 +8,9 @@ static var selected_card: Card = null
 @export var phase_manager: PhaseManager
 @export var animation_handler: SelectAnimation
 
+@export var card_database: CardDatabase
+@export var card_scene: PackedScene
+
 var slots: Array[NewSlots] = []
 var pending_play_card: Card = null
 
@@ -173,6 +176,7 @@ func resolve_pending_play(slot: NewSlots) -> void:
 	var card_to_play := pending_play_card
 	var placed_card_id := card_to_play.multiplayer_card_id
 	var placed_owner_peer_id := card_to_play.owning_peer_id
+	var placed_card_name := card_to_play.card_name
 	var placed_lane_id := slot.lane_id
 
 	if sacrifice_handler != null:
@@ -183,7 +187,7 @@ func resolve_pending_play(slot: NewSlots) -> void:
 	card_to_play.place_into_slot(slot)
 
 	if multiplayer.multiplayer_peer != null:
-		rpc("replicate_place_card", placed_card_id, placed_owner_peer_id, placed_lane_id)
+		rpc("replicate_place_card", placed_card_id, placed_owner_peer_id, placed_card_name, placed_lane_id)
 
 	pending_play_card = null
 
@@ -193,12 +197,7 @@ func resolve_pending_play(slot: NewSlots) -> void:
 	SelectHandler.selected_card = null
 
 @rpc("any_peer", "call_remote", "reliable")
-func replicate_place_card(card_id: int, owner_peer_id: int, lane_id: int) -> void:
-	var card := find_card_by_multiplayer_data(card_id, owner_peer_id)
-	if card == null:
-		print("replicate_place_card failed: card not found for id ", card_id, " owner_peer=", owner_peer_id)
-		return
-
+func replicate_place_card(card_id: int, owner_peer_id: int, card_name: String, lane_id: int) -> void:
 	var target_slot := find_opposing_slot_by_lane_id(slots_root, lane_id)
 	if target_slot == null:
 		print("replicate_place_card failed: opposing slot not found for lane ", lane_id)
@@ -208,7 +207,61 @@ func replicate_place_card(card_id: int, owner_peer_id: int, lane_id: int) -> voi
 		print("replicate_place_card blocked: mirrored slot occupied")
 		return
 
+	var card := find_card_by_multiplayer_data(card_id, owner_peer_id)
+
+	if card == null:
+		print("replicate_place_card: card not found in hand, spawning fallback card")
+		card = spawn_remote_card(card_id, owner_peer_id, card_name)
+
+	if card == null:
+		print("replicate_place_card failed: could not find or spawn card")
+		return
+
 	card.place_into_slot(target_slot)
+
+func spawn_remote_card(card_id: int, owner_peer_id: int, card_name: String) -> Card:
+	if card_scene == null:
+		print("spawn_remote_card failed: card_scene is null")
+		return null
+
+	if card_database == null:
+		print("spawn_remote_card failed: card_database is null")
+		return null
+
+	var data := get_card_data_by_name(card_name)
+	if data == null:
+		print("spawn_remote_card failed: card data not found for ", card_name)
+		return null
+
+	var new_card := card_scene.instantiate() as Card
+	if new_card == null:
+		print("spawn_remote_card failed: instantiated scene is not Card")
+		return null
+
+	new_card.multiplayer_card_id = card_id
+	new_card.owning_peer_id = owner_peer_id
+	new_card.card_owner = Card.Owner.OPPONENT
+	new_card.select_handler = null
+	new_card.player_hand = null
+
+	get_tree().current_scene.add_child(new_card)
+
+	new_card.setup_card(data)
+
+	return new_card
+
+func get_card_data_by_name(card_name: String) -> CardData:
+	if card_database == null:
+		return null
+
+	for data in card_database.cards:
+		if data == null:
+			continue
+
+		if data.name == card_name:
+			return data
+
+	return null
 
 func find_card_by_multiplayer_data(card_id: int, owner_peer_id: int) -> Card:
 	var scene := get_tree().current_scene

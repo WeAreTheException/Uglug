@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://chcqvu28271sh" path="res://Deck/DrawHandler.gd" id="4_gy366"]
 [ext_resource type="Script" uid="uid://blq43rpyvye6c" path="res://Data/CardDatabase.gd" id="5_rw1me"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="6_00oes"]
+[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Quirks/CardQuirk.gd" id="7_eu8gw"]
 [ext_resource type="Texture2D" uid="uid://di66ndoe6cgnp" path="res://Art/Ants/Antler.png" id="8_w60k8"]
 [ext_resource type="Script" uid="uid://bev4i65sbtpqe" path="res://Quirks/FlyingAnt.gd" id="9_7lkv5"]
 [ext_resource type="Texture2D" uid="uid://bvc74ci321o8a" path="res://Art/Quirks/FlyingAntSigil.PNG" id="9_mmvm6"]
@@ -27,12 +28,17 @@
 [ext_resource type="Texture2D" uid="uid://dlqdhwxcfkoby" path="res://Art/Quirks/PregnAntSigil.PNG" id="21_i1d6c"]
 [ext_resource type="Texture2D" uid="uid://dgceyq4phwwts" path="res://Art/AntBack/WarriorDeck.png" id="26_i1d6c"]
 
+[sub_resource type="Resource" id="Resource_06fvk"]
+script = ExtResource("7_eu8gw")
+metadata/_custom_type_script = "uid://be8yk3djwb5oc"
+
 [sub_resource type="Resource" id="Resource_mp65t"]
 script = ExtResource("6_00oes")
 name = "Antler"
 attack = 1
 cost = 1
 sprite = ExtResource("8_w60k8")
+quirk = SubResource("Resource_06fvk")
 metadata/_custom_type_script = "uid://duslcpxrhurv8"
 
 [sub_resource type="Resource" id="Resource_w60k8"]
