@@ -19,6 +19,13 @@ var opponent_hand: Node2D = null
 var phase_manager: PhaseManager = null
 var select_handler: SelectHandler = null
 
+func _ready() -> void:
+	GDSync.expose_node(self)
+	GDSync.expose_func(request_draw_from_host)
+	GDSync.expose_func(commit_draw_remote)
+
+	print("DeckDrawHandler ready / GDSync host = ", GDSync.is_host())
+
 func draw_player_card() -> void:
 	if phase_manager == null:
 		return
@@ -26,23 +33,17 @@ func draw_player_card() -> void:
 	if not phase_manager.is_draw_phase():
 		return
 
-	var my_peer_id := multiplayer.get_unique_id()
+	var my_peer_id := int(GDSync.get_client_id())
 
-	if multiplayer.multiplayer_peer == null:
-		_draw_local_card(my_peer_id)
-		return
-
-	if multiplayer.is_server():
+	if GDSync.is_host():
 		_host_resolve_draw(my_peer_id)
 	else:
-		rpc_id(1, "request_draw_from_host")
+		GDSync.call_func(request_draw_from_host, my_peer_id)
 
-@rpc("any_peer", "call_remote", "reliable")
-func request_draw_from_host() -> void:
-	if not multiplayer.is_server():
+func request_draw_from_host(requesting_peer_id: int) -> void:
+	if not GDSync.is_host():
 		return
 
-	var requesting_peer_id := multiplayer.get_remote_sender_id()
 	_host_resolve_draw(requesting_peer_id)
 
 func _host_resolve_draw(drawer_peer_id: int) -> void:
@@ -57,30 +58,18 @@ func _host_resolve_draw(drawer_peer_id: int) -> void:
 	if not success:
 		return
 
-	rpc("commit_draw_remote", drawer_peer_id, data.name, card_id)
+	GDSync.call_func_all(commit_draw_remote, drawer_peer_id, data.name, card_id)
 
-@rpc("authority", "call_remote", "reliable")
 func commit_draw_remote(drawer_peer_id: int, card_name: String, card_id: int) -> void:
 	_commit_draw_local(drawer_peer_id, card_name, card_id)
-
-func _draw_local_card(drawer_peer_id: int) -> void:
-	var data := pick_card_data()
-	if data == null:
-		return
-
-	var card_id := DeckDrawHandler.next_card_id
-	DeckDrawHandler.next_card_id += 1
-
-	_commit_draw_local(drawer_peer_id, data.name, card_id)
 
 func _commit_draw_local(drawer_peer_id: int, card_name: String, card_id: int) -> bool:
 	var target_hand: Node2D = player_hand
 	var new_card_owner: int = Card.Owner.PLAYER
 
-	if multiplayer.multiplayer_peer != null:
-		if multiplayer.get_unique_id() != drawer_peer_id:
-			target_hand = opponent_hand
-			new_card_owner = Card.Owner.OPPONENT
+	if int(GDSync.get_client_id()) != drawer_peer_id:
+		target_hand = opponent_hand
+		new_card_owner = Card.Owner.OPPONENT
 
 	return draw_specific_card_to_hand(target_hand, new_card_owner, card_name, card_id, drawer_peer_id)
 
@@ -138,7 +127,16 @@ func draw_specific_card_to_hand(
 	if new_card.has_node("AnimationPlayer"):
 		new_card.get_node("AnimationPlayer").play("card_flip")
 
-	print("drew card: ", new_card.card_name, " id=", card_id, " owner_peer=", owning_peer_id)
+	print(
+		"drew card: ",
+		new_card.card_name,
+		" card_id=",
+		card_id,
+		" owning_peer_id=",
+		owning_peer_id,
+		" local_client_id=",
+		int(GDSync.get_client_id())
+	)
 
 	return true
 
