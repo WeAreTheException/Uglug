@@ -54,11 +54,8 @@ func _host_resolve_draw(drawer_peer_id: int) -> void:
 	var card_id := DeckDrawHandler.next_card_id
 	DeckDrawHandler.next_card_id += 1
 
-	var success := _commit_draw_local(drawer_peer_id, data.name, card_id)
-	if not success:
-		return
-
 	GDSync.call_func_all(commit_draw_remote, drawer_peer_id, data.name, card_id)
+
 
 func commit_draw_remote(drawer_peer_id: int, card_name: String, card_id: int) -> void:
 	_commit_draw_local(drawer_peer_id, card_name, card_id)
