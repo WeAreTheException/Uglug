@@ -82,13 +82,14 @@ func _commit_draw_local(drawer_peer_id: int, card_name: String, card_id: int) ->
 			target_hand = opponent_hand
 			new_card_owner = Card.Owner.OPPONENT
 
-	return draw_specific_card_to_hand(target_hand, new_card_owner, card_name, card_id)
+	return draw_specific_card_to_hand(target_hand, new_card_owner, card_name, card_id, drawer_peer_id)
 
 func draw_specific_card_to_hand(
 	target_hand: Node2D,
 	new_card_owner: int,
 	card_name: String,
-	card_id: int
+	card_id: int,
+	owning_peer_id: int
 ) -> bool:
 	if deck == null:
 		return false
@@ -115,6 +116,7 @@ func draw_specific_card_to_hand(
 		return false
 
 	new_card.multiplayer_card_id = card_id
+	new_card.owning_peer_id = owning_peer_id
 	new_card.card_owner = new_card_owner
 	new_card.player_hand = target_hand
 
@@ -135,6 +137,8 @@ func draw_specific_card_to_hand(
 
 	if new_card.has_node("AnimationPlayer"):
 		new_card.get_node("AnimationPlayer").play("card_flip")
+
+	print("drew card: ", new_card.card_name, " id=", card_id, " owner_peer=", owning_peer_id)
 
 	return true
 

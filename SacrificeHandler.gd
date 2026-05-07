@@ -110,13 +110,16 @@ func resolve_sacrifice_payment(pending_play_card: Card) -> void:
 
 	clear_sacrifice_hints()
 
-	var sacrificed_ids: Array[int] = []
+	var sacrificed_data: Array = []
 
 	for sacrifice in sacrifices_to_remove:
 		if sacrifice == null:
 			continue
 
-		sacrificed_ids.append(sacrifice.multiplayer_card_id)
+		sacrificed_data.append({
+			"card_id": sacrifice.multiplayer_card_id,
+			"owner_peer_id": sacrifice.owning_peer_id
+		})
 
 		remove_card_from_player_hand(sacrifice)
 		sacrifice.kill()
@@ -126,33 +129,51 @@ func resolve_sacrifice_payment(pending_play_card: Card) -> void:
 	print("payment complete for ", pending_play_card.card_name, " / paid worth = ", paid_sacrifice_worth)
 
 	if multiplayer.multiplayer_peer != null:
-		rpc("replicate_sacrifice", sacrificed_ids)
+		rpc("replicate_sacrifice", sacrificed_data)
 
 @rpc("any_peer", "call_remote", "reliable")
-func replicate_sacrifice(sacrificed_ids: Array[int]) -> void:
-	for card_id in sacrificed_ids:
-		var card := find_card_by_multiplayer_id(card_id)
+func replicate_sacrifice(sacrificed_data: Array) -> void:
+	for data in sacrificed_data:
+		var card_id: int = data["card_id"]
+		var owner_peer_id: int = data["owner_peer_id"]
+
+		var card := find_card_by_multiplayer_data(card_id, owner_peer_id)
+
 		if card == null:
 			print("replicate_sacrifice failed: card not found for id ", card_id)
 			continue
 
 		card.kill()
 
-func find_card_by_multiplayer_id(card_id: int) -> Card:
+func find_card_by_multiplayer_data(card_id: int, owner_peer_id: int) -> Card:
 	var scene := get_tree().current_scene
+
 	if scene == null:
 		return null
 
-	return find_card_by_multiplayer_id_recursive(scene, card_id)
+	return find_card_by_multiplayer_data_recursive(scene, card_id, owner_peer_id)
 
-func find_card_by_multiplayer_id_recursive(node: Node, card_id: int) -> Card:
+func find_card_by_multiplayer_data_recursive(
+	node: Node,
+	card_id: int,
+	owner_peer_id: int
+) -> Card:
 	var card := node as Card
+
 	if card != null:
-		if card.multiplayer_card_id == card_id:
+		if (
+			card.multiplayer_card_id == card_id
+			and card.owning_peer_id == owner_peer_id
+		):
 			return card
 
 	for child in node.get_children():
-		var found := find_card_by_multiplayer_id_recursive(child, card_id)
+		var found := find_card_by_multiplayer_data_recursive(
+			child,
+			card_id,
+			owner_peer_id
+		)
+
 		if found != null:
 			return found
 
@@ -254,9 +275,11 @@ func get_player_hand_cards() -> Array[Card]:
 			cards.append(card)
 
 	var hand_array = player_hand.get("player_hand")
+
 	if hand_array is Array:
 		for item in hand_array:
 			var card := item as Card
+
 			if card != null and not cards.has(card):
 				cards.append(card)
 
@@ -278,5 +301,6 @@ func remove_card_from_player_hand(card: Card) -> void:
 		return
 
 	var hand_array = player_hand.get("player_hand")
+
 	if hand_array is Array:
 		hand_array.erase(card)

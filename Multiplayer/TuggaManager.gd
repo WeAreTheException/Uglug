@@ -1,53 +1,89 @@
-extends Sprite2D
-class_name TuggaManager
+extends Node2D
+class_name TuggaUI
 
-@export var battle_scale: BattleScale
+@export var tugga_handler: TuggaHandler
 
-@export var texture_neg_5: Texture2D
-@export var texture_neg_4: Texture2D
-@export var texture_neg_3: Texture2D
-@export var texture_neg_2: Texture2D
-@export var texture_neg_1: Texture2D
-@export var texture_0: Texture2D
-@export var texture_1: Texture2D
-@export var texture_2: Texture2D
-@export var texture_3: Texture2D
-@export var texture_4: Texture2D
-@export var texture_5: Texture2D
+@export var player_one_full_texture: Texture2D
+@export var player_two_full_texture: Texture2D
+
+@export var player_one_slot_1: Sprite2D
+@export var player_one_slot_2: Sprite2D
+@export var player_one_slot_3: Sprite2D
+@export var player_one_slot_4: Sprite2D
+@export var player_one_slot_5: Sprite2D
+
+@export var player_two_slot_1: Sprite2D
+@export var player_two_slot_2: Sprite2D
+@export var player_two_slot_3: Sprite2D
+@export var player_two_slot_4: Sprite2D
+@export var player_two_slot_5: Sprite2D
+
+var player_one_empty_textures: Array[Texture2D] = []
+var player_two_empty_textures: Array[Texture2D] = []
 
 func _ready() -> void:
-	if battle_scale != null and not battle_scale.scale_changed.is_connected(_on_scale_changed):
-		battle_scale.scale_changed.connect(_on_scale_changed)
+	cache_empty_textures()
 
-	update_sprite()
+	if tugga_handler != null and not tugga_handler.scale_changed.is_connected(_on_scale_changed):
+		tugga_handler.scale_changed.connect(_on_scale_changed)
+
+	update_ui()
+
+func cache_empty_textures() -> void:
+	player_one_empty_textures = [
+		player_one_slot_1.texture,
+		player_one_slot_2.texture,
+		player_one_slot_3.texture,
+		player_one_slot_4.texture,
+		player_one_slot_5.texture
+	]
+
+	player_two_empty_textures = [
+		player_two_slot_1.texture,
+		player_two_slot_2.texture,
+		player_two_slot_3.texture,
+		player_two_slot_4.texture,
+		player_two_slot_5.texture
+	]
 
 func _on_scale_changed(_value: int) -> void:
-	update_sprite()
+	update_ui()
 
-func update_sprite() -> void:
-	if battle_scale == null:
+func update_ui() -> void:
+	if tugga_handler == null:
 		return
 
-	match battle_scale.current_value:
-		-5:
-			texture = texture_neg_5
-		-4:
-			texture = texture_neg_4
-		-3:
-			texture = texture_neg_3
-		-2:
-			texture = texture_neg_2
-		-1:
-			texture = texture_neg_1
-		0:
-			texture = texture_0
-		1:
-			texture = texture_1
-		2:
-			texture = texture_2
-		3:
-			texture = texture_3
-		4:
-			texture = texture_4
-		5:
-			texture = texture_5
+	var value := tugga_handler.current_value
+
+	update_player_one_slots(value)
+	update_player_two_slots(value)
+
+func update_player_one_slots(value: int) -> void:
+	var slots := [
+		player_one_slot_1,
+		player_one_slot_2,
+		player_one_slot_3,
+		player_one_slot_4,
+		player_one_slot_5
+	]
+
+	for i in range(slots.size()):
+		if value >= i + 1:
+			slots[i].texture = player_one_full_texture
+		else:
+			slots[i].texture = player_one_empty_textures[i]
+
+func update_player_two_slots(value: int) -> void:
+	var slots := [
+		player_two_slot_1,
+		player_two_slot_2,
+		player_two_slot_3,
+		player_two_slot_4,
+		player_two_slot_5
+	]
+
+	for i in range(slots.size()):
+		if value <= -(i + 1):
+			slots[i].texture = player_two_full_texture
+		else:
+			slots[i].texture = player_two_empty_textures[i]

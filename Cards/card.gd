@@ -22,6 +22,7 @@ var hand_position: Vector2
 
 var card_name: String = ""
 var multiplayer_card_id: int = -1
+var owning_peer_id: int = 0
 
 var is_hovered: bool = false
 var is_selected: bool = false
@@ -174,7 +175,9 @@ func place_into_slot(slot: NewSlots) -> void:
 
 	animate_to_position(slot.global_position)
 
-	apply_slot_owner(slot)
+	# Do not change card_owner here in multiplayer.
+	# Ownership should be decided when the card is spawned/drawn.
+	# apply_slot_owner(slot)
 
 func animate_to_position(target_pos: Vector2) -> void:
 	if move_tween != null:
