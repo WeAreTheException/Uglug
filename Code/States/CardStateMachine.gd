@@ -68,6 +68,15 @@ func set_main_state(new_state: MainState) -> void:
 			enter_wait()
 
 func enter_attack() -> void:
+	if card == null:
+		set_main_state(MainState.WAIT)
+		return
+
+	if card.combat_manager != null:
+		card.combat_manager.request_attack(card)
+		set_main_state(MainState.WAIT)
+		return
+
 	if attack_handler == null:
 		print("attack blocked: attack_handler is null")
 		set_main_state(MainState.WAIT)
