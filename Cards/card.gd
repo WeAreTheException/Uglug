@@ -12,6 +12,7 @@ enum Owner {
 @export var test_data: CardData
 @export var battle_scale: BattleScale
 @export var sigil_sprite: Sprite2D
+@export var combat_manager: CombatManager
 
 var card_owner: Owner = Owner.PLAYER
 
@@ -47,6 +48,8 @@ var hurt_handler: HurtHandler = null
 var die_handler: DieHandler = null
 
 func _ready() -> void:
+	add_to_group("cards")
+
 	state_machine = get_node_or_null("CardStateMachine") as CardStateMachine
 	attack_handler = get_node_or_null("CardStateMachine/Attack") as AttackHandler
 	hurt_handler = get_node_or_null("CardStateMachine/Hurt") as HurtHandler
@@ -99,11 +102,12 @@ func update_sigil() -> void:
 	sigil_sprite.visible = true
 
 func get_main_sprite() -> Sprite2D:
-	for child in get_children():
-		if child is Sprite2D:
-			return child as Sprite2D
+	var found := find_children("*", "Sprite2D", true, false)
 
-	return null
+	if found.size() <= 0:
+		return null
+
+	return found[0] as Sprite2D
 
 func _on_pressed(_listener) -> void:
 	print("card pressed: ", card_name)
@@ -199,10 +203,6 @@ func place_into_slot(slot: NewSlots) -> void:
 			player_hand.remove_card_from_hand(self)
 
 	animate_to_position(slot.global_position)
-
-	# Do not change card_owner here in multiplayer.
-	# Ownership should be decided when the card is spawned/drawn.
-	# apply_slot_owner(slot)
 
 func animate_to_position(target_pos: Vector2) -> void:
 	if move_tween != null:

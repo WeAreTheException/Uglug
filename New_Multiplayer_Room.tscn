@@ -10,10 +10,10 @@
 [ext_resource type="Texture2D" uid="uid://bqvhbvonl6m57" path="res://References/maxresdefault.jpg" id="6_cpbwq"]
 [ext_resource type="Script" uid="uid://bg4foc8mrsyhd" path="res://AttackOrderSpriteHandler.gd" id="8_cymfb"]
 [ext_resource type="Texture2D" uid="uid://brsmr8tj8tbtg" path="res://Art/P2_AttackOrder.png" id="10_r8uo6"]
-[ext_resource type="Script" uid="uid://cftnkry62jh5d" path="res://SelectAnimation.gd" id="10_rs0lp"]
+[ext_resource type="Script" path="res://SelectAnimation.gd" id="10_rs0lp"]
 [ext_resource type="PackedScene" uid="uid://bif5q1mjmf8e5" path="res://PlayerHand/PlayerHand.tscn" id="11_hkqe4"]
 [ext_resource type="PackedScene" uid="uid://ctp48eusxy1qn" path="res://Deck/WarriorDeck.tscn" id="12_f7lcf"]
-[ext_resource type="Script" uid="uid://jv8gks4tscbj" path="res://SacrificeAnimation.gd" id="12_rvenm"]
+[ext_resource type="Script" path="res://SacrificeAnimation.gd" id="12_rvenm"]
 [ext_resource type="PackedScene" uid="uid://bxghpl6h2pl6u" path="res://Deck/WorkerDeck.tscn" id="13_27s8c"]
 [ext_resource type="Script" uid="uid://clgbwnniuqm7g" path="res://Code/Handlers/SelectHandler.gd" id="14_f7lcf"]
 [ext_resource type="Script" path="res://TuggaManager.gd" id="14_oiy75"]
@@ -23,8 +23,9 @@
 [ext_resource type="Script" uid="uid://dsifsjjn64ofo" path="res://Multiplayer/TuggaManager.gd" id="18_ebxid"]
 [ext_resource type="Texture2D" uid="uid://2pljvs41hqvt" path="res://Art/Tugga/P1_Tugga_Emptyl.png" id="19_7p785"]
 [ext_resource type="Texture2D" uid="uid://c3bh4b5ajh8a1" path="res://Art/Tugga/P2_Tugga_Emptypng.png" id="20_7p785"]
-[ext_resource type="Script" uid="uid://2atv8mfbeu07" path="res://BoardManager.gd" id="20_jgxe7"]
+[ext_resource type="Script" path="res://BoardManager.gd" id="20_jgxe7"]
 [ext_resource type="PackedScene" uid="uid://l28s3hnlv4iy" path="res://Cards/NewCard.tscn" id="21_nxiui"]
+[ext_resource type="Script" uid="uid://ccnjnfxdpodn8" path="res://CombatManager.gd" id="22_v2l0b"]
 
 [node name="NewMuliplayer_Room" type="Node" unique_id=462638439]
 
@@ -260,6 +261,9 @@ slots_root = NodePath("../Handlers/Cards&Slots/Slots")
 card_scene = ExtResource("21_nxiui")
 phase_manager = NodePath("../PhaseManager")
 
+[node name="CombatManager" type="Node" parent="Managers" unique_id=1319232202]
+script = ExtResource("22_v2l0b")
+
 [node name="Hand&Deck" type="Node" parent="." unique_id=473256067]
 
 [node name="PlayerHand" parent="Hand&Deck" unique_id=2142011949 instance=ExtResource("11_hkqe4")]
@@ -268,19 +272,21 @@ position = Vector2(922, 960)
 [node name="OpponentHand" parent="Hand&Deck" unique_id=269402124 instance=ExtResource("11_hkqe4")]
 position = Vector2(928, -96)
 
-[node name="WarriorDeck" parent="Hand&Deck" unique_id=1069789393 node_paths=PackedStringArray("player_hand", "opponent_hand", "phase_manager", "select_handler") instance=ExtResource("12_f7lcf")]
+[node name="WarriorDeck" parent="Hand&Deck" unique_id=1069789393 node_paths=PackedStringArray("player_hand", "opponent_hand", "phase_manager", "select_handler", "combat_manager") instance=ExtResource("12_f7lcf")]
 position = Vector2(1696, 352)
 player_hand = NodePath("../PlayerHand")
 opponent_hand = NodePath("../OpponentHand")
 phase_manager = NodePath("../../Managers/PhaseManager")
 select_handler = NodePath("../../Managers/Handlers/Cards&Slots/SelectHandler")
+combat_manager = NodePath("../../Managers/CombatManager")
 
-[node name="WorkerDeck" parent="Hand&Deck" unique_id=429916346 node_paths=PackedStringArray("player_hand", "opponent_hand", "phase_manager", "select_handler") instance=ExtResource("13_27s8c")]
+[node name="WorkerDeck" parent="Hand&Deck" unique_id=429916346 node_paths=PackedStringArray("player_hand", "opponent_hand", "phase_manager", "select_handler", "combat_manager") instance=ExtResource("13_27s8c")]
 position = Vector2(1696, 640)
 player_hand = NodePath("../PlayerHand")
 opponent_hand = NodePath("../OpponentHand")
 phase_manager = NodePath("../../Managers/PhaseManager")
 select_handler = NodePath("../../Managers/Handlers/Cards&Slots/SelectHandler")
+combat_manager = NodePath("../../Managers/CombatManager")
 
 [node name="Ref" type="Node" parent="." unique_id=2030852127]
 

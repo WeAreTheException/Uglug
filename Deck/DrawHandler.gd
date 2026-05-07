@@ -13,6 +13,8 @@ static var next_card_id: int = 1
 @export var card_database: CardDatabase
 @export var deck_type: DeckType = DeckType.WORKER
 
+var combat_manager: CombatManager = null
+
 var deck: DeckCount = null
 var player_hand: Node2D = null
 var opponent_hand: Node2D = null
@@ -56,7 +58,6 @@ func _host_resolve_draw(drawer_peer_id: int) -> void:
 
 	GDSync.call_func_all(commit_draw_remote, drawer_peer_id, data.name, card_id)
 
-
 func commit_draw_remote(drawer_peer_id: int, card_name: String, card_id: int) -> void:
 	_commit_draw_local(drawer_peer_id, card_name, card_id)
 
@@ -68,7 +69,13 @@ func _commit_draw_local(drawer_peer_id: int, card_name: String, card_id: int) ->
 		target_hand = opponent_hand
 		new_card_owner = Card.Owner.OPPONENT
 
-	return draw_specific_card_to_hand(target_hand, new_card_owner, card_name, card_id, drawer_peer_id)
+	return draw_specific_card_to_hand(
+		target_hand,
+		new_card_owner,
+		card_name,
+		card_id,
+		drawer_peer_id
+	)
 
 func draw_specific_card_to_hand(
 	target_hand: Node2D,
@@ -79,18 +86,24 @@ func draw_specific_card_to_hand(
 ) -> bool:
 	if deck == null:
 		return false
+
 	if target_hand == null:
 		return false
+
 	if card_database == null:
 		return false
+
 	if deck.card_scene == null:
 		return false
+
 	if not target_hand.has_method("add_card_to_hand"):
 		return false
+
 	if target_hand.has_method("is_hand_full") and target_hand.is_hand_full():
 		return false
 
 	var data := get_card_data_by_name(card_name)
+
 	if data == null:
 		return false
 
@@ -98,6 +111,7 @@ func draw_specific_card_to_hand(
 		return false
 
 	var new_card := deck.card_scene.instantiate() as Card
+
 	if new_card == null:
 		return false
 
@@ -105,6 +119,7 @@ func draw_specific_card_to_hand(
 	new_card.owning_peer_id = owning_peer_id
 	new_card.card_owner = new_card_owner
 	new_card.player_hand = target_hand
+	new_card.combat_manager = combat_manager
 
 	if new_card_owner == Card.Owner.PLAYER:
 		new_card.select_handler = select_handler
@@ -114,6 +129,7 @@ func draw_specific_card_to_hand(
 	target_hand.add_child(new_card)
 
 	var deck_root := get_parent() as Node2D
+
 	if deck_root != null:
 		new_card.global_position = deck_root.global_position
 
