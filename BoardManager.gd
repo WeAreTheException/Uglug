@@ -5,11 +5,22 @@ class_name BoardManager
 @export var card_scene: PackedScene
 @export var phase_manager: PhaseManager
 
+func _ready() -> void:
+	GDSync.expose_node(self)
+	GDSync.expose_func(request_place_card_from_client)
+	GDSync.expose_func(commit_place_card)
+
+	print("BoardManager ready / GDSync host = ", GDSync.is_host())
+
 func request_place_card(card: Card, slot: NewSlots) -> void:
+	print("BOARD request_place_card")
+
 	if card == null:
+		print("BoardManager place blocked: card is null")
 		return
 
 	if slot == null:
+		print("BoardManager place blocked: slot is null")
 		return
 
 	if phase_manager != null and not phase_manager.is_place_phase():
@@ -30,36 +41,32 @@ func request_place_card(card: Card, slot: NewSlots) -> void:
 
 	var snapshot := make_card_snapshot(card, slot.lane_id)
 
-	if multiplayer.multiplayer_peer == null:
-		apply_place_card(snapshot)
-		return
+	print("BOARD snapshot made: ", snapshot)
 
-	if multiplayer.is_server():
+	if GDSync.is_host():
 		host_resolve_place_card(snapshot)
 	else:
-		rpc_id(1, "request_place_card_from_host", snapshot)
+		print("BOARD sending request to host")
+		GDSync.call_func(request_place_card_from_client, snapshot)
 
-@rpc("any_peer", "call_remote", "reliable")
-func request_place_card_from_host(snapshot: Dictionary) -> void:
-	if not multiplayer.is_server():
-		return
+func request_place_card_from_client(snapshot: Dictionary) -> void:
+	print("BOARD host received client place request: ", snapshot)
 
-	var sender_peer_id := multiplayer.get_remote_sender_id()
-	var owner_peer_id: int = snapshot["owner_peer_id"]
-
-	if sender_peer_id != owner_peer_id:
-		print("Host place blocked: sender does not own card")
+	if not GDSync.is_host():
+		print("BOARD ignored request because this machine is not host")
 		return
 
 	host_resolve_place_card(snapshot)
 
 func host_resolve_place_card(snapshot: Dictionary) -> void:
+	print("BOARD host_resolve_place_card: ", snapshot)
+
 	if phase_manager != null and not phase_manager.is_place_phase():
 		print("Host place blocked: not place phase")
 		return
 
-	var owner_peer_id: int = snapshot["owner_peer_id"]
-	var lane_id: int = snapshot["lane_id"]
+	var owner_peer_id: int = int(snapshot["owner_peer_id"])
+	var lane_id: int = int(snapshot["lane_id"])
 
 	var target_slot := find_visual_slot_for_owner(owner_peer_id, lane_id)
 	if target_slot == null:
@@ -70,38 +77,46 @@ func host_resolve_place_card(snapshot: Dictionary) -> void:
 		print("Host place blocked: target slot occupied")
 		return
 
-	apply_place_card(snapshot)
-	rpc("commit_place_card", snapshot)
+	print("BOARD host approved placement, broadcasting")
 
-@rpc("authority", "call_remote", "reliable")
+	GDSync.call_func_all(commit_place_card, snapshot)
+
 func commit_place_card(snapshot: Dictionary) -> void:
+	print("BOARD commit_place_card received: ", snapshot)
+
 	apply_place_card(snapshot)
 
 func apply_place_card(snapshot: Dictionary) -> void:
-	var card_id: int = snapshot["card_id"]
-	var owner_peer_id: int = snapshot["owner_peer_id"]
-	var lane_id: int = snapshot["lane_id"]
+	var card_id: int = int(snapshot["card_id"])
+	var owner_peer_id: int = int(snapshot["owner_peer_id"])
+	var lane_id: int = int(snapshot["lane_id"])
 
 	var target_slot := find_visual_slot_for_owner(owner_peer_id, lane_id)
 
 	if target_slot == null:
-		print("apply_place_card failed: slot not found")
+		print("apply_place_card failed: slot not found lane=", lane_id, " owner_peer=", owner_peer_id)
 		return
 
 	if not target_slot.is_empty():
-		print("apply_place_card blocked: slot occupied")
+		print("apply_place_card blocked: slot occupied lane=", lane_id)
 		return
 
 	var card := find_card_by_multiplayer_data(card_id, owner_peer_id)
 
 	if card == null:
+		print("apply_place_card: card not found, spawning from snapshot")
 		card = spawn_card_from_snapshot(snapshot)
+	else:
+		print("apply_place_card: found existing card ", card.card_name)
 
 	if card == null:
 		print("apply_place_card failed: card missing")
 		return
 
 	apply_snapshot_to_card(card, snapshot)
+
+	print("BOARD placing card ", card.card_name, " into lane ", lane_id)
+
 	card.place_into_slot(target_slot)
 
 func make_card_snapshot(card: Card, lane_id: int) -> Dictionary:
@@ -134,15 +149,15 @@ func spawn_card_from_snapshot(snapshot: Dictionary) -> Card:
 	return new_card
 
 func apply_snapshot_to_card(card: Card, snapshot: Dictionary) -> void:
-	card.multiplayer_card_id = snapshot["card_id"]
-	card.owning_peer_id = snapshot["owner_peer_id"]
-	card.card_name = snapshot["card_name"]
-	card.current_attack = snapshot["attack"]
-	card.current_health = snapshot["health"]
-	card.current_cost = snapshot["cost"]
-	card.current_worth = snapshot["worth"]
+	card.multiplayer_card_id = int(snapshot["card_id"])
+	card.owning_peer_id = int(snapshot["owner_peer_id"])
+	card.card_name = str(snapshot["card_name"])
+	card.current_attack = int(snapshot["attack"])
+	card.current_health = int(snapshot["health"])
+	card.current_cost = int(snapshot["cost"])
+	card.current_worth = int(snapshot["worth"])
 
-	if multiplayer.multiplayer_peer != null and multiplayer.get_unique_id() == card.owning_peer_id:
+	if int(GDSync.get_client_id()) == card.owning_peer_id:
 		card.card_owner = Card.Owner.PLAYER
 	else:
 		card.card_owner = Card.Owner.OPPONENT
@@ -153,14 +168,16 @@ func apply_snapshot_to_card(card: Card, snapshot: Dictionary) -> void:
 func find_visual_slot_for_owner(owner_peer_id: int, lane_id: int) -> NewSlots:
 	var wanted_owner := NewSlots.SlotOwner.OPPONENT
 
-	if multiplayer.multiplayer_peer == null:
-		wanted_owner = NewSlots.SlotOwner.PLAYER
-	elif multiplayer.get_unique_id() == owner_peer_id:
+	if int(GDSync.get_client_id()) == owner_peer_id:
 		wanted_owner = NewSlots.SlotOwner.PLAYER
 
 	return find_slot_by_lane_and_owner(slots_root, lane_id, wanted_owner)
 
-func find_slot_by_lane_and_owner(node: Node, lane_id: int, slot_owner: NewSlots.SlotOwner) -> NewSlots:
+func find_slot_by_lane_and_owner(
+	node: Node,
+	lane_id: int,
+	slot_owner: NewSlots.SlotOwner
+) -> NewSlots:
 	if node == null:
 		return null
 
@@ -183,7 +200,11 @@ func find_card_by_multiplayer_data(card_id: int, owner_peer_id: int) -> Card:
 
 	return find_card_by_multiplayer_data_recursive(scene, card_id, owner_peer_id)
 
-func find_card_by_multiplayer_data_recursive(node: Node, card_id: int, owner_peer_id: int) -> Card:
+func find_card_by_multiplayer_data_recursive(
+	node: Node,
+	card_id: int,
+	owner_peer_id: int
+) -> Card:
 	var card := node as Card
 
 	if card != null:

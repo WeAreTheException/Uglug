@@ -24,6 +24,7 @@
 [ext_resource type="Texture2D" uid="uid://2pljvs41hqvt" path="res://Art/Tugga/P1_Tugga_Emptyl.png" id="19_7p785"]
 [ext_resource type="Texture2D" uid="uid://c3bh4b5ajh8a1" path="res://Art/Tugga/P2_Tugga_Emptypng.png" id="20_7p785"]
 [ext_resource type="Script" uid="uid://2atv8mfbeu07" path="res://BoardManager.gd" id="20_jgxe7"]
+[ext_resource type="PackedScene" uid="uid://l28s3hnlv4iy" path="res://Cards/NewCard.tscn" id="21_nxiui"]
 
 [node name="NewMuliplayer_Room" type="Node" unique_id=462638439]
 
@@ -256,6 +257,7 @@ lane_id = 1
 [node name="BoardManager" type="Node" parent="Managers" unique_id=755916807 node_paths=PackedStringArray("slots_root", "phase_manager")]
 script = ExtResource("20_jgxe7")
 slots_root = NodePath("../Handlers/Cards&Slots/Slots")
+card_scene = ExtResource("21_nxiui")
 phase_manager = NodePath("../PhaseManager")
 
 [node name="Hand&Deck" type="Node" parent="." unique_id=473256067]
