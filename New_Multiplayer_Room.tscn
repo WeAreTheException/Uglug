@@ -5,15 +5,16 @@
 [ext_resource type="Script" uid="uid://cwireilh2n5g3" path="res://TurnOrderLabel.gd" id="1_vaqi8"]
 [ext_resource type="Script" uid="uid://ukqcaw2u1h1i" path="res://MultiplayerManager.gd" id="2_gdibd"]
 [ext_resource type="Texture2D" uid="uid://kwpbjydk33rh" path="res://Art/P1_AttackOrder.png" id="2_m7shj"]
+[ext_resource type="Script" uid="uid://dgiphjbgc46k0" path="res://AttackFirstSlotLabel.gd" id="2_ykjx8"]
 [ext_resource type="Script" uid="uid://bfxl8a4iwbxde" path="res://PhaseLabel.gd" id="2_yxvsl"]
 [ext_resource type="Script" uid="uid://bneanu1h8dlxb" path="res://TurnOrderManager.gd" id="3_npu2i"]
 [ext_resource type="Texture2D" uid="uid://bqvhbvonl6m57" path="res://References/maxresdefault.jpg" id="6_cpbwq"]
 [ext_resource type="Script" uid="uid://bg4foc8mrsyhd" path="res://AttackOrderSpriteHandler.gd" id="8_cymfb"]
 [ext_resource type="Texture2D" uid="uid://brsmr8tj8tbtg" path="res://Art/P2_AttackOrder.png" id="10_r8uo6"]
-[ext_resource type="Script" path="res://SelectAnimation.gd" id="10_rs0lp"]
+[ext_resource type="Script" uid="uid://cftnkry62jh5d" path="res://SelectAnimation.gd" id="10_rs0lp"]
 [ext_resource type="PackedScene" uid="uid://bif5q1mjmf8e5" path="res://PlayerHand/PlayerHand.tscn" id="11_hkqe4"]
 [ext_resource type="PackedScene" uid="uid://ctp48eusxy1qn" path="res://Deck/WarriorDeck.tscn" id="12_f7lcf"]
-[ext_resource type="Script" path="res://SacrificeAnimation.gd" id="12_rvenm"]
+[ext_resource type="Script" uid="uid://jv8gks4tscbj" path="res://SacrificeAnimation.gd" id="12_rvenm"]
 [ext_resource type="PackedScene" uid="uid://bxghpl6h2pl6u" path="res://Deck/WorkerDeck.tscn" id="13_27s8c"]
 [ext_resource type="Script" uid="uid://clgbwnniuqm7g" path="res://Code/Handlers/SelectHandler.gd" id="14_f7lcf"]
 [ext_resource type="Script" path="res://TuggaManager.gd" id="14_oiy75"]
@@ -23,9 +24,11 @@
 [ext_resource type="Script" uid="uid://dsifsjjn64ofo" path="res://Multiplayer/TuggaManager.gd" id="18_ebxid"]
 [ext_resource type="Texture2D" uid="uid://2pljvs41hqvt" path="res://Art/Tugga/P1_Tugga_Emptyl.png" id="19_7p785"]
 [ext_resource type="Texture2D" uid="uid://c3bh4b5ajh8a1" path="res://Art/Tugga/P2_Tugga_Emptypng.png" id="20_7p785"]
-[ext_resource type="Script" path="res://BoardManager.gd" id="20_jgxe7"]
+[ext_resource type="Script" uid="uid://2atv8mfbeu07" path="res://BoardManager.gd" id="20_jgxe7"]
 [ext_resource type="PackedScene" uid="uid://l28s3hnlv4iy" path="res://Cards/NewCard.tscn" id="21_nxiui"]
 [ext_resource type="Script" uid="uid://ccnjnfxdpodn8" path="res://CombatManager.gd" id="22_v2l0b"]
+[ext_resource type="Texture2D" uid="uid://it6pftgf2ru4" path="res://References/Screenshot 2026-05-07 at 4.48.53 PM.png" id="27_ebn5f"]
+[ext_resource type="Texture2D" uid="uid://bkafxhbg4kvug" path="res://Sprites/CardSlot.png" id="28_e2c01"]
 
 [node name="NewMuliplayer_Room" type="Node" unique_id=462638439]
 
@@ -80,6 +83,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="AttackingFirstLabel" type="Label" parent="Labels" unique_id=1158761306 node_paths=PackedStringArray("turn_manager", "visibility_timer")]
+z_index = 2
 offset_left = 416.0
 offset_top = 256.0
 offset_right = 1440.0
@@ -93,7 +97,16 @@ turn_manager = NodePath("../../Managers/TurnManager")
 visibility_timer = NodePath("AttackFirstLabelTimer")
 
 [node name="AttackFirstLabelTimer" type="Timer" parent="Labels/AttackingFirstLabel" unique_id=250586227]
-wait_time = 0.5
+wait_time = 2.0
+
+[node name="Background Darken" type="CanvasLayer" parent="Labels/AttackingFirstLabel" unique_id=718699754]
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="Labels/AttackingFirstLabel/Background Darken" unique_id=382273033]
+z_index = 1
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0, 0, 0, 0.49803922)
 
 [node name="PhaseLabel" type="Label" parent="Labels" unique_id=229779506 node_paths=PackedStringArray("phase_manager")]
 offset_left = 864.0
@@ -118,6 +131,33 @@ theme_override_font_sizes/font_size = 28
 text = "1:00"
 horizontal_alignment = 1
 vertical_alignment = 2
+
+[node name="AttackFirstSlotLabels" type="Node" parent="Labels" unique_id=1548268673 node_paths=PackedStringArray("player_one_label", "player_two_label")]
+script = ExtResource("2_ykjx8")
+player_one_label = NodePath("P1Label")
+player_two_label = NodePath("P2Label")
+
+[node name="P1Label" type="Label" parent="Labels/AttackFirstSlotLabels" unique_id=1072540119]
+offset_left = 1370.0
+offset_top = 594.0
+offset_right = 1612.0
+offset_bottom = 735.0
+theme_override_font_sizes/font_size = 50
+text = "Attacking 
+First"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="P2Label" type="Label" parent="Labels/AttackFirstSlotLabels" unique_id=1582942877]
+offset_left = 1370.0
+offset_top = 156.0
+offset_right = 1612.0
+offset_bottom = 297.0
+theme_override_font_sizes/font_size = 50
+text = "Attacking 
+First"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Managers" type="Node" parent="." unique_id=5384537]
 
@@ -299,3 +339,15 @@ visible = false
 position = Vector2(960.0001, 527.99994)
 scale = Vector2(1.5, 1.4666666)
 texture = ExtResource("6_cpbwq")
+
+[node name="HandRef" type="Sprite2D" parent="Ref" unique_id=185652076]
+position = Vector2(966, 957)
+texture = ExtResource("27_ebn5f")
+
+[node name="JokerRef" type="Sprite2D" parent="Ref" unique_id=290771361]
+position = Vector2(380, 608)
+texture = ExtResource("28_e2c01")
+
+[node name="JokerRef2" type="Sprite2D" parent="Ref" unique_id=1563058551]
+position = Vector2(380, 288)
+texture = ExtResource("28_e2c01")
