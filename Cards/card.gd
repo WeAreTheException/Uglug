@@ -11,8 +11,11 @@ enum Owner {
 @export var stats: Stats
 @export var test_data: CardData
 @export var battle_scale: BattleScale
-@export var sigil_container: Node2D
+@export var base_sigil_container: Node2D
+@export var additional_sigil_container: Node2D
 @export var combat_manager: CombatManager
+
+var additional_sigil_sprite: Sprite2D = null
 
 var card_owner: Owner = Owner.PLAYER
 
@@ -52,10 +55,15 @@ var die_handler: DieHandler = null
 func _ready() -> void:
 	add_to_group("cards")
 
+	cache_sigil_nodes()
+
 	state_machine = get_node_or_null("CardStateMachine") as CardStateMachine
 	attack_handler = get_node_or_null("CardStateMachine/Attack") as AttackHandler
 	hurt_handler = get_node_or_null("CardStateMachine/Hurt") as HurtHandler
 	die_handler = get_node_or_null("CardStateMachine/Die") as DieHandler
+
+	if additional_sigil_sprite != null:
+		additional_sigil_sprite.z_index = 50
 
 	if input_listener != null:
 		input_listener.hovered.connect(_on_hovered)
@@ -70,9 +78,15 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	update_sacrifice_hint(delta)
 
+func cache_sigil_nodes() -> void:
+	if additional_sigil_container != null:
+		additional_sigil_sprite = additional_sigil_container.get_node_or_null("Sprite2D") as Sprite2D
+
 func setup_card(data: CardData) -> void:
 	if data == null:
 		return
+
+	cache_sigil_nodes()
 
 	card_name = data.name
 	current_attack = data.attack
@@ -93,7 +107,10 @@ func add_additional_mutation(mutation: Mutation) -> void:
 		return
 
 	additional_mutations.append(mutation)
+
 	update_sigils()
+
+	print(card_name, " gained mutation")
 
 func get_all_mutations() -> Array[Mutation]:
 	var combined: Array[Mutation] = []
@@ -109,36 +126,60 @@ func get_all_mutations() -> Array[Mutation]:
 	return combined
 
 func update_sigils() -> void:
-	if sigil_container == null:
-		print("sigil blocked: sigil_container is null on ", card_name)
+	update_base_sigils()
+	update_additional_sigil()
+
+func update_base_sigils() -> void:
+	if base_sigil_container == null:
 		return
 
-	for child in sigil_container.get_children():
+	for child in base_sigil_container.get_children():
 		child.queue_free()
 
-	var all_mutations := get_all_mutations()
-
-	if all_mutations.size() <= 0:
+	if base_mutations.size() <= 0:
 		return
 
 	var spacing := 36.0
-	var start_x := -((all_mutations.size() - 1) * spacing) / 2.0
+	var start_x := -((base_mutations.size() - 1) * spacing) / 2.0
 
-	for i in range(all_mutations.size()):
-		var mutation := all_mutations[i]
+	for i in range(base_mutations.size()):
+		var mutation := base_mutations[i]
 
 		if mutation == null:
 			continue
 
 		if mutation.sigil_texture == null:
-			print("sigil blocked: mutation has no sigil_texture on ", card_name)
 			continue
 
 		var sigil := Sprite2D.new()
+
 		sigil.texture = mutation.sigil_texture
 		sigil.position = Vector2(start_x + (i * spacing), 0)
+		sigil.z_index = 50
 
-		sigil_container.add_child(sigil)
+		base_sigil_container.add_child(sigil)
+
+func update_additional_sigil() -> void:
+	cache_sigil_nodes()
+
+	if additional_sigil_sprite == null:
+		print("additional sigil sprite missing on ", card_name)
+		return
+
+	if additional_mutations.size() <= 0:
+		return
+
+	var mutation := additional_mutations[additional_mutations.size() - 1]
+
+	if mutation == null:
+		return
+
+	if mutation.sigil_texture == null:
+		return
+
+	additional_sigil_sprite.texture = mutation.sigil_texture
+	additional_sigil_sprite.visible = true
+	additional_sigil_sprite.z_index = 50
 
 func get_main_sprite() -> Sprite2D:
 	var found := find_children("*", "Sprite2D", true, false)

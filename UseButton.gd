@@ -11,8 +11,7 @@ func _ready() -> void:
 	set_usable(false)
 
 func _process(_delta: float) -> void:
-	var has_selected_hand_card := SelectHandler.selected_card != null
-	set_usable(has_selected_hand_card)
+	set_usable(SelectHandler.selected_card != null)
 
 func set_usable(value: bool) -> void:
 	disabled = not value
@@ -23,20 +22,16 @@ func _pressed() -> void:
 		return
 
 	if mutation_instance == null:
-		print("use blocked: mutation_instance is null")
 		return
 
 	if mutation_instance.mutation == null:
-		print("use blocked: mutation is null")
 		return
 
 	var selected_card := SelectHandler.selected_card
+
 	if selected_card == null:
-		print("use blocked: no selected card")
 		return
 
 	selected_card.add_additional_mutation(mutation_instance.mutation)
-
-	print(selected_card.card_name, " gained mutation: ", mutation_instance.mutation.mutation_name)
 
 	mutation_instance.queue_free()
