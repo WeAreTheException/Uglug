@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://cwireilh2n5g3" path="res://TurnOrderLabel.gd" id="1_vaqi8"]
 [ext_resource type="Script" uid="uid://ukqcaw2u1h1i" path="res://MultiplayerManager.gd" id="2_gdibd"]
 [ext_resource type="Texture2D" uid="uid://kwpbjydk33rh" path="res://Art/P1_AttackOrder.png" id="2_m7shj"]
+[ext_resource type="Script" uid="uid://dgiphjbgc46k0" path="res://AttackFirstSlotLabel.gd" id="2_ykjx8"]
 [ext_resource type="Script" uid="uid://bfxl8a4iwbxde" path="res://PhaseLabel.gd" id="2_yxvsl"]
 [ext_resource type="Script" uid="uid://bneanu1h8dlxb" path="res://TurnOrderManager.gd" id="3_npu2i"]
 [ext_resource type="Texture2D" uid="uid://bqvhbvonl6m57" path="res://References/maxresdefault.jpg" id="6_cpbwq"]
@@ -132,6 +133,33 @@ text = "1:00"
 horizontal_alignment = 1
 vertical_alignment = 2
 metadata/_edit_lock_ = true
+
+[node name="AttackFirstSlotLabels" type="Node" parent="Labels" unique_id=1548268673 node_paths=PackedStringArray("player_one_label", "player_two_label")]
+script = ExtResource("2_ykjx8")
+player_one_label = NodePath("P1Label")
+player_two_label = NodePath("P2Label")
+
+[node name="P1Label" type="Label" parent="Labels/AttackFirstSlotLabels" unique_id=1072540119]
+offset_left = 1370.0
+offset_top = 594.0
+offset_right = 1612.0
+offset_bottom = 735.0
+theme_override_font_sizes/font_size = 50
+text = "Attacking 
+First"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="P2Label" type="Label" parent="Labels/AttackFirstSlotLabels" unique_id=1582942877]
+offset_left = 1370.0
+offset_top = 156.0
+offset_right = 1612.0
+offset_bottom = 297.0
+theme_override_font_sizes/font_size = 50
+text = "Attacking 
+First"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Managers" type="Node" parent="." unique_id=5384537]
 

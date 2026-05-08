@@ -1,0 +1,115 @@
+[gd_scene format=3 uid="uid://gbba1wsos5ra"]
+
+[ext_resource type="Script" uid="uid://cwireilh2n5g3" path="res://TurnOrderLabel.gd" id="1_ypl6a"]
+[ext_resource type="Script" uid="uid://dgiphjbgc46k0" path="res://AttackFirstSlotLabel.gd" id="2_vmr01"]
+[ext_resource type="Script" uid="uid://bfxl8a4iwbxde" path="res://PhaseLabel.gd" id="3_itewj"]
+
+[node name="Labels" type="Node2D" unique_id=1491680415]
+
+[node name="Labels" type="Node" parent="." unique_id=1389038907]
+
+[node name="PlayerLabels" type="Node2D" parent="Labels" unique_id=1135125611]
+metadata/_edit_lock_ = true
+
+[node name="PlayerName" type="Label" parent="Labels/PlayerLabels" unique_id=13702110]
+offset_left = 1024.0
+offset_top = 32.0
+offset_right = 1184.0
+offset_bottom = 82.0
+theme_override_font_sizes/font_size = 24
+text = "Trex"
+vertical_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="PlayerTime" type="Label" parent="Labels/PlayerLabels" unique_id=429210431]
+visible = false
+offset_left = 64.0
+offset_top = 957.0
+offset_right = 256.0
+offset_bottom = 1024.0
+theme_override_font_sizes/font_size = 48
+text = "1:00"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="EnemyLabels" type="Node2D" parent="Labels" unique_id=539157590]
+metadata/_edit_lock_ = true
+
+[node name="EnemyName" type="Label" parent="Labels/EnemyLabels" unique_id=1472714789]
+offset_left = 704.0
+offset_top = 32.0
+offset_right = 864.0
+offset_bottom = 82.0
+theme_override_font_sizes/font_size = 24
+text = "Sergio"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="PlayerTime2" type="Label" parent="Labels/EnemyLabels" unique_id=1332356844]
+visible = false
+offset_left = 64.0
+offset_top = 64.0
+offset_right = 256.0
+offset_bottom = 131.0
+theme_override_font_sizes/font_size = 48
+text = "1:00"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AttackingFirstLabel" type="Label" parent="Labels" unique_id=1482118730 node_paths=PackedStringArray("turn_manager", "visibility_timer")]
+z_index = 2
+offset_left = 416.0
+offset_top = 256.0
+offset_right = 1440.0
+offset_bottom = 832.0
+theme_override_font_sizes/font_size = 120
+text = "Mao Goes First"
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("1_ypl6a")
+turn_manager = NodePath("")
+visibility_timer = NodePath("AttackFirstLabelTimer")
+metadata/_edit_lock_ = true
+
+[node name="AttackFirstLabelTimer" type="Timer" parent="Labels/AttackingFirstLabel" unique_id=2062265731]
+wait_time = 2.0
+
+[node name="Background Darken" type="CanvasLayer" parent="Labels/AttackingFirstLabel" unique_id=871343498]
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="Labels/AttackingFirstLabel/Background Darken" unique_id=611955549]
+z_index = 1
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0, 0, 0, 0.49803922)
+
+[node name="AttackFirstSlotLabel" type="Label" parent="Labels" unique_id=954240923]
+visible = false
+offset_right = 40.0
+offset_bottom = 23.0
+script = ExtResource("2_vmr01")
+
+[node name="PhaseLabel" type="Label" parent="Labels" unique_id=799206568 node_paths=PackedStringArray("phase_manager")]
+offset_left = 864.0
+offset_top = 32.0
+offset_right = 1024.0
+offset_bottom = 82.0
+theme_override_font_sizes/font_size = 36
+text = "Attack"
+horizontal_alignment = 1
+vertical_alignment = 2
+script = ExtResource("3_itewj")
+phase_manager = NodePath("")
+
+[node name="PlaceTimer" type="Timer" parent="Labels/PhaseLabel" unique_id=1736337624]
+
+[node name="Timer" type="Label" parent="Labels" unique_id=2018962770]
+offset_left = 896.0
+offset_top = 82.0
+offset_right = 992.0
+offset_bottom = 121.0
+theme_override_font_sizes/font_size = 28
+text = "1:00"
+horizontal_alignment = 1
+vertical_alignment = 2
+metadata/_edit_lock_ = true
