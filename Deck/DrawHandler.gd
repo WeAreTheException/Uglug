@@ -33,6 +33,11 @@ func draw_player_card() -> void:
 		return
 
 	if not phase_manager.is_draw_phase():
+		print("draw blocked: not draw phase")
+		return
+
+	if not phase_manager.is_my_turn():
+		print("draw blocked: not your turn")
 		return
 
 	var my_peer_id := int(GDSync.get_client_id())
@@ -49,6 +54,17 @@ func request_draw_from_host(requesting_peer_id: int) -> void:
 	_host_resolve_draw(requesting_peer_id)
 
 func _host_resolve_draw(drawer_peer_id: int) -> void:
+	if phase_manager == null:
+		return
+
+	if not phase_manager.is_draw_phase():
+		print("host draw blocked: not draw phase")
+		return
+
+	if phase_manager.active_client_id != drawer_peer_id:
+		print("host draw blocked: not active player")
+		return
+
 	var data := pick_card_data()
 	if data == null:
 		return
