@@ -169,6 +169,8 @@ turn_manager = NodePath("../TurnManager")
 script = ExtResource("3_npu2i")
 phase_manager = NodePath("../PhaseManager")
 combat_manager = NodePath("../CombatManager")
+draw_time = 10.0
+place_time = 15.0
 
 [node name="MultiplayerManager" type="Node" parent="Managers" unique_id=2113897365 node_paths=PackedStringArray("player_name_label", "enemy_name_label")]
 script = ExtResource("2_gdibd")
