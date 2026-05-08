@@ -28,8 +28,13 @@ func attack() -> void:
 
 	var final_target: Card = opposing_card
 
-	if card.quirk != null:
-		final_target = card.quirk.get_attack_target(card, opposing_card)
+	for mutation in card.base_mutations:
+		if mutation != null:
+			final_target = mutation.get_attack_target(card, final_target)
+
+	for mutation in card.additional_mutations:
+		if mutation != null:
+			final_target = mutation.get_attack_target(card, final_target)
 
 	if attack_anim != null and attack_anim.has_method("play_attack"):
 		attack_anim.play_attack(final_target)
@@ -37,8 +42,13 @@ func attack() -> void:
 	if final_target != null:
 		var damage := card.current_attack
 
-		if card.quirk != null:
-			damage = card.quirk.modify_damage(card, final_target, damage)
+		for mutation in card.base_mutations:
+			if mutation != null:
+				damage = mutation.modify_damage(card, final_target, damage)
+
+		for mutation in card.additional_mutations:
+			if mutation != null:
+				damage = mutation.modify_damage(card, final_target, damage)
 
 		print(card.card_name, " -> ", final_target.card_name, " (", damage, " dmg)")
 		final_target.take_damage(damage, card)
@@ -55,6 +65,7 @@ func _find_card_parent() -> Card:
 	while current != null:
 		if current is Card:
 			return current as Card
+
 		current = current.get_parent()
 
 	return null

@@ -17,7 +17,7 @@
 [ext_resource type="Script" uid="uid://jv8gks4tscbj" path="res://SacrificeAnimation.gd" id="12_rvenm"]
 [ext_resource type="PackedScene" uid="uid://bxghpl6h2pl6u" path="res://Deck/WorkerDeck.tscn" id="13_27s8c"]
 [ext_resource type="Script" uid="uid://clgbwnniuqm7g" path="res://Code/Handlers/SelectHandler.gd" id="14_f7lcf"]
-[ext_resource type="Script" path="res://TuggaManager.gd" id="14_oiy75"]
+[ext_resource type="Script" uid="uid://b730hf2p1uwqw" path="res://TuggaManager.gd" id="14_oiy75"]
 [ext_resource type="Script" uid="uid://bqtoohcvy57vk" path="res://SacrificeHandler.gd" id="15_27s8c"]
 [ext_resource type="Texture2D" uid="uid://b0lmg14eavi20" path="res://Art/Tugga/P2_Tugga_Full.png" id="16_mo65u"]
 [ext_resource type="Texture2D" uid="uid://dydn83tce2knf" path="res://Art/Tugga/P1_Tugga_Fulll.png" id="17_jgxe7"]
@@ -297,16 +297,16 @@ lane_id = 1
 
 [node name="BoardManager" type="Node" parent="Managers" unique_id=755916807 node_paths=PackedStringArray("slots_root", "phase_manager")]
 script = ExtResource("20_jgxe7")
-card_scene = ExtResource("21_nxiui")
 slots_root = NodePath("../Handlers/Cards&Slots/Slots")
+card_scene = ExtResource("21_nxiui")
 phase_manager = NodePath("../PhaseManager")
 
 [node name="CombatManager" type="Node" parent="Managers" unique_id=1319232202 node_paths=PackedStringArray("slots_root", "turn_manager")]
 script = ExtResource("22_v2l0b")
-delay_between_attacks = 0.5
-delay_between_sides = 0.5
 slots_root = NodePath("../Handlers/Cards&Slots/Slots")
 turn_manager = NodePath("../TurnManager")
+delay_between_attacks = 0.5
+delay_between_sides = 0.5
 
 [node name="Hand&Deck" type="Node" parent="." unique_id=473256067]
 
@@ -341,13 +341,16 @@ scale = Vector2(1.5, 1.4666666)
 texture = ExtResource("6_cpbwq")
 
 [node name="HandRef" type="Sprite2D" parent="Ref" unique_id=185652076]
+visible = false
 position = Vector2(966, 957)
 texture = ExtResource("27_ebn5f")
 
 [node name="JokerRef" type="Sprite2D" parent="Ref" unique_id=290771361]
+visible = false
 position = Vector2(380, 608)
 texture = ExtResource("28_e2c01")
 
 [node name="JokerRef2" type="Sprite2D" parent="Ref" unique_id=1563058551]
+visible = false
 position = Vector2(380, 288)
 texture = ExtResource("28_e2c01")
