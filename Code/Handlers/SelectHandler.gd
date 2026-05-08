@@ -46,6 +46,14 @@ func can_use_place_logic() -> bool:
 	if phase_manager == null:
 		return true
 
+	if not phase_manager.is_place_phase():
+		return false
+
+	if not phase_manager.is_my_turn():
+		return false
+
+	return true
+
 	return phase_manager.is_place_phase()
 
 func select_card(card: Card) -> void:
