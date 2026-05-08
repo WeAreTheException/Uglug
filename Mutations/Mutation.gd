@@ -1,5 +1,5 @@
 extends Resource
-class_name CardQuirk
+class_name Mutation
 
 @export var sigil_texture: Texture2D
 

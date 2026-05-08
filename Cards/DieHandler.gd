@@ -21,8 +21,13 @@ func die() -> void:
 	if card.stats != null:
 		card.stats.update_health(card.current_health)
 
-	if card.quirk != null:
-		card.quirk.on_death(card)
+	for mutation in card.base_mutations:
+		if mutation != null:
+			mutation.on_death(card)
+
+	for mutation in card.additional_mutations:
+		if mutation != null:
+			mutation.on_death(card)
 
 	if die_anim != null and die_anim.has_method("play_death"):
 		await die_anim.play_death()
@@ -39,6 +44,7 @@ func _find_card_parent() -> Card:
 	while current != null:
 		if current is Card:
 			return current as Card
+
 		current = current.get_parent()
 
 	return null

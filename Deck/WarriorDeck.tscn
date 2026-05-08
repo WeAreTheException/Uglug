@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://chcqvu28271sh" path="res://Deck/DrawHandler.gd" id="4_gy366"]
 [ext_resource type="Script" uid="uid://blq43rpyvye6c" path="res://Data/CardDatabase.gd" id="5_rw1me"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="6_00oes"]
-[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Quirks/CardQuirk.gd" id="7_eu8gw"]
+[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Mutations/Mutation.gd" id="7_eu8gw"]
 [ext_resource type="Texture2D" uid="uid://di66ndoe6cgnp" path="res://Art/Ants/Antler.png" id="8_w60k8"]
 [ext_resource type="Texture2D" uid="uid://b1soqhrvsu86i" path="res://Art/Ants/Aviant.png" id="9_ujcl4"]
 [ext_resource type="Texture2D" uid="uid://wpq5780kx6ao" path="res://Art/Ants/Distant.png" id="10_7lkv5"]
@@ -35,6 +35,7 @@ name = "Aviant"
 attack = 2
 cost = 1
 sprite = ExtResource("9_ujcl4")
+base_mutations = Array[ExtResource("7_eu8gw")]([null])
 metadata/_custom_type_script = "uid://duslcpxrhurv8"
 
 [sub_resource type="Resource" id="Resource_buwnv"]

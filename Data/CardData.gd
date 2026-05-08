@@ -8,6 +8,5 @@ class_name CardData
 @export var worth: int = 1
 @export var sprite: Texture2D
 
-@export var base_mutations: Array[CardQuirk] = []
-
-var additional_mutations: Array[CardQuirk] = []
+@export var base_mutations: Array[Mutation] = []
+var additional_mutations: Array[Mutation] = []

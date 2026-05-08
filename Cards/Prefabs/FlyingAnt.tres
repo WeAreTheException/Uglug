@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="FlyingAnt" format=3 uid="uid://cd6q56i51qkgo"]
+
+[ext_resource type="Script" uid="uid://bev4i65sbtpqe" path="res://Mutations/FlyingAnt.gd" id="1_8mf6t"]
+[ext_resource type="Texture2D" uid="uid://brw577e6u1rp8" path="res://Art/Untitled-1.png" id="2_8mf6t"]
+
+[resource]
+script = ExtResource("1_8mf6t")
+sigil_texture = ExtResource("2_8mf6t")
+metadata/_custom_type_script = "uid://bev4i65sbtpqe"

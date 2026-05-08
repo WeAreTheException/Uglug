@@ -1,4 +1,179 @@
 extends Node2D
+class_name Card
+
+enum Owner {
+	PLAYER,
+	OPPONENT
+}
+
+@export var input_listener: CardInputListener
+@export var select_handler: SelectHandler
+@export var stats: Stats
+@export var test_data: CardData
+@export var battle_scale: BattleScale
+@export var sigil_container: Node2D
+@export var combat_manager: CombatManager
+
+var card_owner: Owner = Owner.PLAYER
+
+var player_hand: Node = null
+var current_slot: NewSlots = null
+var overlapping_slot: NewSlots = null
+var hand_position: Vector2
+
+var card_name: String = ""
+var multiplayer_card_id: int = -1
+var owning_peer_id: int = 0
+
+var is_hovered: bool = false
+var is_selected: bool = false
+
+var current_attack: int = 0
+var current_health: int = 0
+var current_cost: int = 0
+var current_worth: int = 0
+
+var base_mutations: Array[Mutation] = []
+var additional_mutations: Array[Mutation] = []
+
+var death_processed: bool = false
+
+var move_tween: Tween = null
+var scale_tween: Tween = null
+
+var sacrifice_hint_active: bool = false
+var sacrifice_hint_time: float = 0.0
+
+var state_machine: CardStateMachine = null
+var attack_handler: AttackHandler = null
+var hurt_handler: HurtHandler = null
+var die_handler: DieHandler = null
+
+func _ready() -> void:
+	add_to_group("cards")
+
+	state_machine = get_node_or_null("CardStateMachine") as CardStateMachine
+	attack_handler = get_node_or_null("CardStateMachine/Attack") as AttackHandler
+	hurt_handler = get_node_or_null("CardStateMachine/Hurt") as HurtHandler
+	die_handler = get_node_or_null("CardStateMachine/Die") as DieHandler
+
+	if input_listener != null:
+		input_listener.hovered.connect(_on_hovered)
+		input_listener.hovered_off.connect(_on_hovered_off)
+		input_listener.slot_entered.connect(_on_slot_entered)
+		input_listener.slot_exited.connect(_on_slot_exited)
+		input_listener.pressed.connect(_on_pressed)
+
+	if test_data != null:
+		setup_card(test_data)
+
+func _process(delta: float) -> void:
+	update_sacrifice_hint(delta)
+
+func setup_card(data: CardData) -> void:
+	if data == null:
+		return
+
+	card_name = data.name
+	current_attack = data.attack
+	current_health = data.health
+	current_cost = data.cost
+	current_worth = data.worth
+
+	base_mutations = data.base_mutations.duplicate()
+	additional_mutations = []
+
+	update_sigils()
+
+	if stats != null:
+		stats.setup_from_card_data(data)
+
+func add_additional_mutation(mutation: Mutation) -> void:
+	if mutation == null:
+		return
+
+	additional_mutations.append(mutation)
+	update_sigils()
+
+func get_all_mutations() -> Array[Mutation]:
+	var combined: Array[Mutation] = []
+
+	for mutation in base_mutations:
+		if mutation != null:
+			combined.append(mutation)
+
+	for mutation in additional_mutations:
+		if mutation != null:
+			combined.append(mutation)
+
+	return combined
+
+func update_sigils() -> void:
+	if sigil_container == null:
+		print("sigil blocked: sigil_container is null on ", card_name)
+		return
+
+	for child in sigil_container.get_children():
+		child.queue_free()
+
+	var all_mutations := get_all_mutations()
+
+	if all_mutations.size() <= 0:
+		return
+
+	var spacing := 36.0
+	var start_x := -((all_mutations.size() - 1) * spacing) / 2.0
+
+	for i in range(all_mutations.size()):
+		var mutation := all_mutations[i]
+
+		if mutation == null:
+			continue
+
+		if mutation.sigil_texture == null:
+			print("sigil blocked: mutation has no sigil_texture on ", card_name)
+			continue
+
+		var sigil := Sprite2D.new()
+		sigil.texture = mutation.sigil_texture
+		sigil.position = Vector2(start_x + (i * spacing), 0)
+
+		sigil_container.add_child(sigil)
+
+func get_main_sprite() -> Sprite2D:
+	var found := find_children("*", "Sprite2D", true, false)
+
+	if found.size() <= 0:
+		return null
+
+	return found[0] as Sprite2D
+
+func _on_pressed(_listener) -> void:
+	print("card pressed: ", card_name)
+
+	if select_handler == null:
+		print("card pressed blocked: select_handler is null on ", card_name)
+		return
+
+	select_handler.select_card(self)
+
+func take_damage(amount: int, attacker: Card = null) -> void:
+	if hurt_handler != null:
+		hurt_handler.take_damage(amount, attacker)
+		return
+
+	current_health -= amount
+
+	if current_health < 0:
+		current_health = 0
+
+	if stats != null:
+		stats.update_health(current_health)
+
+	for mutation in base_mutations:
+		if mutation != null:
+			mutation.on_damaged(self, attacker, amount)
+
 	for mutation in additional_mutations:
 		if mutation != null:
 			mutation.on_damaged(self, attacker, amount)
