@@ -26,6 +26,8 @@
 [ext_resource type="Script" uid="uid://2atv8mfbeu07" path="res://BoardManager.gd" id="20_jgxe7"]
 [ext_resource type="PackedScene" uid="uid://l28s3hnlv4iy" path="res://Cards/NewCard.tscn" id="21_nxiui"]
 [ext_resource type="Script" uid="uid://ccnjnfxdpodn8" path="res://CombatManager.gd" id="22_v2l0b"]
+[ext_resource type="Texture2D" uid="uid://it6pftgf2ru4" path="res://References/Screenshot 2026-05-07 at 4.48.53 PM.png" id="27_ebn5f"]
+[ext_resource type="Texture2D" uid="uid://bkafxhbg4kvug" path="res://Sprites/CardSlot.png" id="28_e2c01"]
 
 [node name="NewMuliplayer_Room" type="Node" unique_id=462638439]
 
@@ -98,6 +100,7 @@ metadata/_edit_lock_ = true
 wait_time = 2.0
 
 [node name="Background Darken" type="CanvasLayer" parent="Labels/AttackingFirstLabel" unique_id=718699754]
+visible = false
 
 [node name="ColorRect" type="ColorRect" parent="Labels/AttackingFirstLabel/Background Darken" unique_id=382273033]
 z_index = 1
@@ -304,3 +307,15 @@ visible = false
 position = Vector2(960.0001, 527.99994)
 scale = Vector2(1.5, 1.4666666)
 texture = ExtResource("6_cpbwq")
+
+[node name="HandRef" type="Sprite2D" parent="Ref" unique_id=185652076]
+position = Vector2(966, 957)
+texture = ExtResource("27_ebn5f")
+
+[node name="JokerRef" type="Sprite2D" parent="Ref" unique_id=290771361]
+position = Vector2(380, 608)
+texture = ExtResource("28_e2c01")
+
+[node name="JokerRef2" type="Sprite2D" parent="Ref" unique_id=1563058551]
+position = Vector2(380, 288)
+texture = ExtResource("28_e2c01")
