@@ -29,6 +29,7 @@
 [ext_resource type="Script" uid="uid://ccnjnfxdpodn8" path="res://CombatManager.gd" id="22_v2l0b"]
 [ext_resource type="Texture2D" uid="uid://it6pftgf2ru4" path="res://References/Screenshot 2026-05-07 at 4.48.53 PM.png" id="27_ebn5f"]
 [ext_resource type="Texture2D" uid="uid://bkafxhbg4kvug" path="res://Sprites/CardSlot.png" id="28_e2c01"]
+[ext_resource type="PackedScene" uid="uid://52uj0s5wxoub" path="res://Buff_Pile.tscn" id="30_x7w1o"]
 
 [node name="NewMuliplayer_Room" type="Node" unique_id=462638439]
 
@@ -354,3 +355,8 @@ texture = ExtResource("28_e2c01")
 visible = false
 position = Vector2(380, 288)
 texture = ExtResource("28_e2c01")
+
+[node name="BuffPile" parent="." unique_id=1953419234 instance=ExtResource("30_x7w1o")]
+offset_top = 156.0
+offset_right = 320.0
+offset_bottom = 507.0

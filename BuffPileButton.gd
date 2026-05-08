@@ -1,32 +1,39 @@
 extends Button
-class_name BuffPileButton
+class_name BuffPile
 
-@export var spawned_button_scene: PackedScene
+@export var mutation_scene: PackedScene
 @export var spawn_anchor: Node2D
 
-var spawned_button: Button = null
+var buff_database: BuffDatabase = null
+
+func _ready() -> void:
+	buff_database = get_node_or_null("BuffDatabase") as BuffDatabase
 
 func _pressed() -> void:
-	if spawned_button != null:
+	if buff_database == null:
+		print("buff pile blocked: buff_database is null")
 		return
 
-	if spawned_button_scene == null:
-		print("buff pile blocked: spawned_button_scene is null")
+	if mutation_scene == null:
+		print("buff pile blocked: mutation_scene is null")
 		return
 
 	if spawn_anchor == null:
 		print("buff pile blocked: spawn_anchor is null")
 		return
 
-	spawned_button = spawned_button_scene.instantiate() as Button
+	var mutation := buff_database.get_random_mutation()
 
-	if spawned_button == null:
-		print("buff pile blocked: spawned scene is not a Button")
+	if mutation == null:
+		print("buff pile blocked: no mutations")
 		return
 
-	get_tree().current_scene.add_child(spawned_button)
-	spawned_button.global_position = spawn_anchor.global_position
-	spawned_button.pressed.connect(_on_spawned_button_pressed)
+	var instance := mutation_scene.instantiate()
 
-func _on_spawned_button_pressed() -> void:
-	print("yay")
+	get_tree().current_scene.add_child(instance)
+
+	if instance is Node2D:
+		instance.global_position = spawn_anchor.global_position
+
+	if instance.has_method("setup_mutation"):
+		instance.setup_mutation(mutation)
