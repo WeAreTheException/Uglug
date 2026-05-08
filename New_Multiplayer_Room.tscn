@@ -29,6 +29,7 @@
 [ext_resource type="Script" uid="uid://ccnjnfxdpodn8" path="res://CombatManager.gd" id="22_v2l0b"]
 [ext_resource type="Texture2D" uid="uid://it6pftgf2ru4" path="res://References/Screenshot 2026-05-07 at 4.48.53 PM.png" id="27_ebn5f"]
 [ext_resource type="Texture2D" uid="uid://bkafxhbg4kvug" path="res://Sprites/CardSlot.png" id="28_e2c01"]
+[ext_resource type="PackedScene" uid="uid://bb6d0vmntt6xo" path="res://Scissor.tscn" id="30_x7w1o"]
 
 [node name="NewMuliplayer_Room" type="Node" unique_id=462638439]
 
@@ -341,7 +342,6 @@ scale = Vector2(1.5, 1.4666666)
 texture = ExtResource("6_cpbwq")
 
 [node name="HandRef" type="Sprite2D" parent="Ref" unique_id=185652076]
-visible = false
 position = Vector2(966, 957)
 texture = ExtResource("27_ebn5f")
 
@@ -354,3 +354,6 @@ texture = ExtResource("28_e2c01")
 visible = false
 position = Vector2(380, 288)
 texture = ExtResource("28_e2c01")
+
+[node name="Scissor" parent="." unique_id=1763799064 instance=ExtResource("30_x7w1o")]
+position = Vector2(946, 788)
