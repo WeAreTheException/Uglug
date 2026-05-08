@@ -27,9 +27,9 @@ size = Vector2(176, 270)
 script = ExtResource("1_ch35y")
 input_listener = NodePath("InputListener")
 stats = NodePath("Stats")
-sigil_sprite = NodePath("SigilSprite")
+sigil_sprite = NodePath("1BMutationSprt")
 
-[node name="SigilSprite" type="Sprite2D" parent="." unique_id=755891900]
+[node name="1BMutationSprt" type="Sprite2D" parent="." unique_id=755891900]
 z_index = 1
 position = Vector2(-0.3750138, 96.624985)
 scale = Vector2(0.028686536, 0.028686536)
