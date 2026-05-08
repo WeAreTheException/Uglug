@@ -26,20 +26,12 @@ config/name="Uglug"
 run/main_scene="uid://c14yrjk60cmg1"
 config/features=PackedStringArray("4.6", "Forward Plus")
 
-[autoload]
-
-GDSync="*uid://cdj63usxdvfrj"
-
 [display]
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/stretch/mode="viewport"
 window/vsync/vsync_mode=0
-
-[editor_plugins]
-
-enabled=PackedStringArray("res://addons/GD-Sync/plugin.cfg")
 
 [rendering]
 
