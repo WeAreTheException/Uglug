@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://dpx20viu4na86"]
 
 [ext_resource type="Script" uid="uid://bxbqihkit6rgo" path="res://Managers/Phasemanager.gd" id="1_hco1x"]
+[ext_resource type="Script" uid="uid://cnivviyt7i5qu" path="res://PlayerNameSizing.gd" id="1_npv2n"]
 [ext_resource type="PackedScene" uid="uid://c8mekq0tyuadn" path="res://Slots/NewSlots.tscn" id="1_phlo6"]
 [ext_resource type="Script" uid="uid://cwireilh2n5g3" path="res://TurnOrderLabel.gd" id="1_vaqi8"]
 [ext_resource type="Script" uid="uid://ukqcaw2u1h1i" path="res://MultiplayerManager.gd" id="2_gdibd"]
@@ -36,52 +37,32 @@
 [node name="Labels" type="Node" parent="." unique_id=1220800706]
 
 [node name="PlayerLabels" type="Node2D" parent="Labels" unique_id=1533272939]
-metadata/_edit_lock_ = true
 
 [node name="PlayerName" type="Label" parent="Labels/PlayerLabels" unique_id=1890505661]
-offset_left = 1024.0
+offset_left = 1008.0
 offset_top = 32.0
-offset_right = 1184.0
+offset_right = 1104.0
 offset_bottom = 82.0
 theme_override_font_sizes/font_size = 24
 text = "Trex"
-vertical_alignment = 1
-metadata/_edit_lock_ = true
-
-[node name="PlayerTime" type="Label" parent="Labels/PlayerLabels" unique_id=2057396889]
-visible = false
-offset_left = 64.0
-offset_top = 957.0
-offset_right = 256.0
-offset_bottom = 1024.0
-theme_override_font_sizes/font_size = 48
-text = "1:00"
 horizontal_alignment = 1
 vertical_alignment = 1
+clip_text = true
+text_overrun_behavior = 3
+script = ExtResource("1_npv2n")
 
 [node name="EnemyLabels" type="Node2D" parent="Labels" unique_id=1690967513]
-metadata/_edit_lock_ = true
 
 [node name="EnemyName" type="Label" parent="Labels/EnemyLabels" unique_id=33840969]
-offset_left = 704.0
+offset_left = 784.0
 offset_top = 32.0
-offset_right = 864.0
+offset_right = 880.0
 offset_bottom = 82.0
 theme_override_font_sizes/font_size = 24
 text = "Sergio"
-horizontal_alignment = 2
-vertical_alignment = 1
-
-[node name="PlayerTime2" type="Label" parent="Labels/EnemyLabels" unique_id=1772899700]
-visible = false
-offset_left = 64.0
-offset_top = 64.0
-offset_right = 256.0
-offset_bottom = 131.0
-theme_override_font_sizes/font_size = 48
-text = "1:00"
 horizontal_alignment = 1
 vertical_alignment = 1
+script = ExtResource("1_npv2n")
 
 [node name="AttackingFirstLabel" type="Label" parent="Labels" unique_id=1158761306 node_paths=PackedStringArray("turn_manager", "visibility_timer")]
 z_index = 2
@@ -110,9 +91,9 @@ offset_bottom = 1080.0
 color = Color(0, 0, 0, 0.49803922)
 
 [node name="PhaseLabel" type="Label" parent="Labels" unique_id=229779506 node_paths=PackedStringArray("phase_manager")]
-offset_left = 864.0
+offset_left = 880.0
 offset_top = 32.0
-offset_right = 1024.0
+offset_right = 1008.0
 offset_bottom = 82.0
 theme_override_font_sizes/font_size = 36
 text = "Attack"
@@ -214,45 +195,45 @@ metadata/_custom_type_script = "uid://dsifsjjn64ofo"
 [node name="P1_Tugga_Empty" type="Sprite2D" parent="Managers/Handlers/TuggaHandler/TuggaUI" unique_id=1304617037]
 
 [node name="P1TuggaEmptyl" type="Sprite2D" parent="Managers/Handlers/TuggaHandler/TuggaUI/P1_Tugga_Empty" unique_id=350829909]
-position = Vector2(768, 64)
+position = Vector2(752.5, 56.5)
 texture = ExtResource("19_7p785")
 
 [node name="P1TuggaEmptyl2" type="Sprite2D" parent="Managers/Handlers/TuggaHandler/TuggaUI/P1_Tugga_Empty" unique_id=1400993970]
-position = Vector2(736, 64)
+position = Vector2(720.5, 56.5)
 texture = ExtResource("19_7p785")
 
 [node name="P1TuggaEmptyl3" type="Sprite2D" parent="Managers/Handlers/TuggaHandler/TuggaUI/P1_Tugga_Empty" unique_id=1044010213]
-position = Vector2(704, 64)
+position = Vector2(688.5, 56.5)
 texture = ExtResource("19_7p785")
 
 [node name="P1TuggaEmptyl4" type="Sprite2D" parent="Managers/Handlers/TuggaHandler/TuggaUI/P1_Tugga_Empty" unique_id=1985321469]
-position = Vector2(672, 64)
+position = Vector2(656.5, 56.5)
 texture = ExtResource("19_7p785")
 
 [node name="P1TuggaEmptyl5" type="Sprite2D" parent="Managers/Handlers/TuggaHandler/TuggaUI/P1_Tugga_Empty" unique_id=2045553300]
-position = Vector2(640, 64)
+position = Vector2(624.5, 56.5)
 texture = ExtResource("19_7p785")
 
 [node name="P2_TuggaEmpty" type="Sprite2D" parent="Managers/Handlers/TuggaHandler/TuggaUI" unique_id=58710751]
 
 [node name="P2TuggaEmptypng" type="Sprite2D" parent="Managers/Handlers/TuggaHandler/TuggaUI/P2_TuggaEmpty" unique_id=1524984392]
-position = Vector2(1120, 64)
+position = Vector2(1136.5, 56.5)
 texture = ExtResource("20_7p785")
 
 [node name="P2TuggaEmptypng2" type="Sprite2D" parent="Managers/Handlers/TuggaHandler/TuggaUI/P2_TuggaEmpty" unique_id=692001682]
-position = Vector2(1152, 64)
+position = Vector2(1168.5, 56.5)
 texture = ExtResource("20_7p785")
 
 [node name="P2TuggaEmptypng3" type="Sprite2D" parent="Managers/Handlers/TuggaHandler/TuggaUI/P2_TuggaEmpty" unique_id=1290717767]
-position = Vector2(1184, 64)
+position = Vector2(1200.5, 56.5)
 texture = ExtResource("20_7p785")
 
 [node name="P2TuggaEmptypng4" type="Sprite2D" parent="Managers/Handlers/TuggaHandler/TuggaUI/P2_TuggaEmpty" unique_id=920409487]
-position = Vector2(1216, 64)
+position = Vector2(1232.5, 56.5)
 texture = ExtResource("20_7p785")
 
 [node name="P2TuggaEmptypng5" type="Sprite2D" parent="Managers/Handlers/TuggaHandler/TuggaUI/P2_TuggaEmpty" unique_id=1305404982]
-position = Vector2(1248, 64)
+position = Vector2(1264.5, 56.5)
 texture = ExtResource("20_7p785")
 
 [node name="AttackOrderSpriteHandler" type="Node" parent="Managers/Handlers" unique_id=345904283 node_paths=PackedStringArray("turn_manager", "player_one_sprite", "player_two_sprite")]
