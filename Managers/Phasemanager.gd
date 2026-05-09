@@ -22,7 +22,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 			KEY_2:
 				if turn_manager != null:
-					turn_manager.request_step(Phase.PLACE)
+					turn_manager.request_start_place_phase()
 
 			KEY_3:
 				if turn_manager != null:
@@ -31,6 +31,10 @@ func _unhandled_input(event: InputEvent) -> void:
 			KEY_4:
 				if turn_manager != null:
 					turn_manager.request_flip_attacking_first()
+
+			KEY_SPACE:
+				if turn_manager != null:
+					turn_manager.request_done_placing()
 
 func set_phase(new_phase: Phase) -> void:
 	current_phase = new_phase
@@ -41,10 +45,8 @@ func get_phase_name() -> String:
 	match current_phase:
 		Phase.DRAW:
 			return "Draw"
-
 		Phase.PLACE:
 			return "Place"
-
 		Phase.ATTACK:
 			return "Attack"
 
