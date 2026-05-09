@@ -209,6 +209,13 @@ func kill() -> void:
 
 	queue_free()
 
+func discard() -> void:
+	if current_slot != null:
+		current_slot.clear_card()
+		current_slot = null
+
+	queue_free()
+
 func _on_hovered(_listener) -> void:
 	is_hovered = true
 

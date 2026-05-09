@@ -7,8 +7,12 @@ class_name BoardManager
 
 func _ready() -> void:
 	GDSync.expose_node(self)
+
 	GDSync.expose_func(request_place_card_from_client)
 	GDSync.expose_func(commit_place_card)
+
+	GDSync.expose_func(request_discard_card_from_client)
+	GDSync.expose_func(commit_discard_card)
 
 	print("BoardManager ready / GDSync host = ", GDSync.is_host())
 
@@ -83,7 +87,6 @@ func host_resolve_place_card(snapshot: Dictionary) -> void:
 
 func commit_place_card(snapshot: Dictionary) -> void:
 	print("BOARD commit_place_card received: ", snapshot)
-
 	apply_place_card(snapshot)
 
 func apply_place_card(snapshot: Dictionary) -> void:
@@ -118,6 +121,63 @@ func apply_place_card(snapshot: Dictionary) -> void:
 	print("BOARD placing card ", card.card_name, " into lane ", lane_id)
 
 	card.place_into_slot(target_slot)
+
+func request_discard_card(card: Card) -> void:
+	if card == null:
+		print("discard blocked: card is null")
+		return
+
+	if card.current_slot == null:
+		print("discard blocked: card is not in slot")
+		return
+
+	if card.card_owner != Card.Owner.PLAYER:
+		print("discard blocked: not your card")
+		return
+
+	var snapshot := {
+		"card_id": card.multiplayer_card_id,
+		"owner_peer_id": card.owning_peer_id
+	}
+
+	if GDSync.is_host():
+		host_resolve_discard_card(snapshot)
+	else:
+		GDSync.call_func(request_discard_card_from_client, snapshot)
+
+func request_discard_card_from_client(snapshot: Dictionary) -> void:
+	if not GDSync.is_host():
+		return
+
+	host_resolve_discard_card(snapshot)
+
+func host_resolve_discard_card(snapshot: Dictionary) -> void:
+	var card_id: int = int(snapshot["card_id"])
+	var owner_peer_id: int = int(snapshot["owner_peer_id"])
+
+	var card := find_card_by_multiplayer_data(card_id, owner_peer_id)
+
+	if card == null:
+		print("host discard blocked: card not found")
+		return
+
+	if card.current_slot == null:
+		print("host discard blocked: card not in slot")
+		return
+
+	GDSync.call_func_all(commit_discard_card, snapshot)
+
+func commit_discard_card(snapshot: Dictionary) -> void:
+	var card_id: int = int(snapshot["card_id"])
+	var owner_peer_id: int = int(snapshot["owner_peer_id"])
+
+	var card := find_card_by_multiplayer_data(card_id, owner_peer_id)
+
+	if card == null:
+		print("commit discard: card not found")
+		return
+
+	card.discard()
 
 func make_card_snapshot(card: Card, lane_id: int) -> Dictionary:
 	return {
