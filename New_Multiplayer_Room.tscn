@@ -102,8 +102,6 @@ vertical_alignment = 2
 script = ExtResource("2_yxvsl")
 phase_manager = NodePath("../../Managers/PhaseManager")
 
-[node name="PlaceTimer" type="Timer" parent="Labels/PhaseLabel" unique_id=523465007]
-
 [node name="Timer" type="Label" parent="Labels" unique_id=181246000]
 offset_left = 896.0
 offset_top = 82.0
@@ -149,7 +147,7 @@ vertical_alignment = 1
 [node name="PhaseManager" type="Node" parent="Managers" unique_id=822521768 node_paths=PackedStringArray("turn_manager", "place_timer", "place_timer_label")]
 script = ExtResource("1_hco1x")
 turn_manager = NodePath("../TurnManager")
-place_timer = NodePath("../../Labels/PhaseLabel/PlaceTimer")
+place_timer = NodePath("../../Labels/Timer/PlaceTimer")
 place_timer_label = NodePath("../../Labels/Timer")
 
 [node name="TurnManager" type="Node" parent="Managers" unique_id=1986901783 node_paths=PackedStringArray("phase_manager", "combat_manager")]
