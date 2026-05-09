@@ -107,6 +107,15 @@ func request_done_placing_from_client(client_id: int) -> void:
 
 	done_placing(client_id)
 
+func force_done_current_placing_player() -> void:
+	if not GDSync.is_host():
+		return
+
+	if current_placing_player_id == -1:
+		return
+
+	done_placing(current_placing_player_id)
+
 func done_placing(client_id: int) -> void:
 	if phase_manager == null:
 		return
@@ -132,6 +141,16 @@ func apply_placing_player(client_id: int) -> void:
 	turn_player_changed.emit(client_id, "Place")
 
 	print("CURRENT PLACING PLAYER: ", current_placing_player_id)
+
+	if phase_manager == null:
+		return
+
+	if current_placing_player_id == -1:
+		phase_manager.stop_place_timer()
+		return
+
+	var is_player_one_turn := current_placing_player_id == current_first_id
+	phase_manager.start_place_timer(is_player_one_turn)
 
 func can_local_player_place() -> bool:
 	if phase_manager == null:
