@@ -113,7 +113,13 @@ horizontal_alignment = 1
 vertical_alignment = 2
 
 [node name="PlaceTimer" type="Timer" parent="Labels/Timer" unique_id=866131047]
+wait_time = 45.0
+
+[node name="DrawTimer" type="Timer" parent="Labels/Timer" unique_id=1272379719]
 wait_time = 10.0
+
+[node name="AttackTimer" type="Timer" parent="Labels/Timer" unique_id=1988065957]
+wait_time = 2.0
 
 [node name="AttackFirstSlotLabels" type="Node" parent="Labels" unique_id=1548268673 node_paths=PackedStringArray("player_one_label", "player_two_label")]
 script = ExtResource("2_ykjx8")
@@ -144,11 +150,13 @@ vertical_alignment = 1
 
 [node name="Managers" type="Node" parent="." unique_id=5384537]
 
-[node name="PhaseManager" type="Node" parent="Managers" unique_id=822521768 node_paths=PackedStringArray("turn_manager", "place_timer", "place_timer_label")]
+[node name="PhaseManager" type="Node" parent="Managers" unique_id=822521768 node_paths=PackedStringArray("turn_manager", "draw_timer", "place_timer", "attack_timer", "timer_label")]
 script = ExtResource("1_hco1x")
 turn_manager = NodePath("../TurnManager")
+draw_timer = NodePath("../../Labels/Timer/DrawTimer")
 place_timer = NodePath("../../Labels/Timer/PlaceTimer")
-place_timer_label = NodePath("../../Labels/Timer")
+attack_timer = NodePath("../../Labels/Timer/AttackTimer")
+timer_label = NodePath("../../Labels/Timer")
 
 [node name="TurnManager" type="Node" parent="Managers" unique_id=1986901783 node_paths=PackedStringArray("phase_manager", "combat_manager")]
 script = ExtResource("3_npu2i")

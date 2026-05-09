@@ -14,6 +14,7 @@ var current_first_id: int = -1
 var current_second_id: int = -1
 
 var current_placing_player_id: int = -1
+var attack_flow_running: bool = false
 
 func _ready() -> void:
 	GDSync.expose_node(self)
@@ -190,14 +191,40 @@ func run_step(phase: PhaseManager.Phase, active_player_id: int) -> void:
 	if phase != PhaseManager.Phase.ATTACK:
 		return
 
-	if combat_manager == null:
+	if not GDSync.is_host():
 		return
 
-	if combat_manager.attack_round_running:
+	start_attack_flow()
+
+func start_attack_flow() -> void:
+	if attack_flow_running:
 		return
 
-	if GDSync.is_host():
-		combat_manager.start_attack_round()
+	attack_flow_running = true
+	_run_attack_flow()
+
+func _run_attack_flow() -> void:
+	if combat_manager != null:
+		if not combat_manager.attack_round_running:
+			combat_manager.start_attack_round()
+
+		while combat_manager.attack_round_running:
+			await get_tree().process_frame
+
+	if phase_manager != null:
+		await phase_manager.wait_attack_timer()
+
+	attack_flow_running = false
+
+	flip_attack_order_after_round()
+	run_step(PhaseManager.Phase.DRAW, current_first_id)
+
+func flip_attack_order_after_round() -> void:
+	var old_first := current_first_id
+	current_first_id = current_second_id
+	current_second_id = old_first
+
+	GDSync.call_func_all(receive_round_start, current_first_id)
 
 func apply_step(phase: PhaseManager.Phase, active_player_id: int) -> void:
 	if phase_manager == null:
