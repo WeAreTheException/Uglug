@@ -21,11 +21,9 @@ func die() -> void:
 	if card.stats != null:
 		card.stats.update_health(card.current_health)
 
-	for mutation in card.base_mutations:
-		if mutation != null:
-			mutation.on_death(card)
+	var mutations := card.get_all_mutations()
 
-	for mutation in card.additional_mutations:
+	for mutation in mutations:
 		if mutation != null:
 			mutation.on_death(card)
 
