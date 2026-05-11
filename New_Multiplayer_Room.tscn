@@ -18,7 +18,7 @@
 [ext_resource type="Script" uid="uid://jv8gks4tscbj" path="res://SacrificeAnimation.gd" id="12_rvenm"]
 [ext_resource type="PackedScene" uid="uid://bxghpl6h2pl6u" path="res://Deck/WorkerDeck.tscn" id="13_27s8c"]
 [ext_resource type="Script" uid="uid://clgbwnniuqm7g" path="res://Code/Handlers/SelectHandler.gd" id="14_f7lcf"]
-[ext_resource type="Script" uid="uid://b730hf2p1uwqw" path="res://TuggaManager.gd" id="14_oiy75"]
+[ext_resource type="Script" path="res://TuggaManager.gd" id="14_oiy75"]
 [ext_resource type="Script" uid="uid://bqtoohcvy57vk" path="res://SacrificeHandler.gd" id="15_27s8c"]
 [ext_resource type="Texture2D" uid="uid://b0lmg14eavi20" path="res://Art/Tugga/P2_Tugga_Full.png" id="16_mo65u"]
 [ext_resource type="Texture2D" uid="uid://dydn83tce2knf" path="res://Art/Tugga/P1_Tugga_Fulll.png" id="17_jgxe7"]
