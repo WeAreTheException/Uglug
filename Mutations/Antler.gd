@@ -4,6 +4,7 @@ class_name Antler
 var empty_adjacent_attack_count: int = 0
 var empty_adjacent_slots: Array[NewSlots] = []
 
+
 func get_attack_targets(card: Card, _current_targets: Array[Card]) -> Array[Card]:
 	var targets: Array[Card] = []
 	empty_adjacent_attack_count = 0
@@ -15,23 +16,27 @@ func get_attack_targets(card: Card, _current_targets: Array[Card]) -> Array[Card
 	if card.current_slot == null:
 		return targets
 
-	var front_slot = card.current_slot.opposing_slot
+	var front_slot := card.current_slot.opposing_slot
 
 	if front_slot == null:
 		return targets
 
-	var left_lane: int = front_slot.lane_id - 1
-	var right_lane: int = front_slot.lane_id + 0
+	var root := _get_slots_root(card)
 
-	var left_slot = _find_slot_by_lane(card, left_lane, front_slot.slot_owner)
-	var right_slot = _find_slot_by_lane(card, right_lane, front_slot.slot_owner)
+	if root == null:
+		return targets
+
+	var enemy_slots := _get_slots_for_owner(root, front_slot.slot_owner)
+
+	var left_slot := _find_closest_slot_left_of(front_slot, enemy_slots)
+	var right_slot := _find_closest_slot_right_of(front_slot, enemy_slots)
 
 	_add_slot_or_direct(targets, left_slot)
 	_add_slot_or_direct(targets, right_slot)
 
-	print("ANTLER front lane=", front_slot.lane_id)
-	print("ANTLER left slot=", left_slot)
-	print("ANTLER right slot=", right_slot)
+	print("ANTLER front slot=", front_slot, " x=", front_slot.global_position.x)
+	print("ANTLER left slot=", left_slot, " x=", left_slot.global_position.x if left_slot != null else "null")
+	print("ANTLER right slot=", right_slot, " x=", right_slot.global_position.x if right_slot != null else "null")
 	print("ANTLER target count=", targets.size())
 	print("ANTLER empty direct count=", empty_adjacent_attack_count)
 
@@ -50,30 +55,81 @@ func _add_slot_or_direct(targets: Array[Card], slot: NewSlots) -> void:
 	targets.append(slot.current_card)
 
 
-func _find_slot_by_lane(card: Card, lane_id: int, slot_owner: int) -> NewSlots:
-	var root := card.get_tree().current_scene
+func _get_slots_root(card: Card) -> Node:
+	if card.combat_manager != null:
+		if card.combat_manager.slots_root != null:
+			return card.combat_manager.slots_root
 
-	if root == null:
-		return null
-
-	var slots := _get_all_slots(root)
-
-	for slot in slots:
-		if slot.lane_id == lane_id and slot.slot_owner == slot_owner:
-			return slot
-
-	return null
+	return card.get_tree().current_scene
 
 
-func _get_all_slots(root: Node) -> Array[NewSlots]:
-	var found: Array[NewSlots] = []
-	_collect_slots(root, found)
-	return found
+func _get_slots_for_owner(root: Node, wanted_owner: NewSlots.SlotOwner) -> Array[NewSlots]:
+	var slots: Array[NewSlots] = []
+	_collect_slots_for_owner(root, wanted_owner, slots)
+	return slots
 
 
-func _collect_slots(node: Node, found: Array[NewSlots]) -> void:
-	if node is NewSlots:
-		found.append(node)
+func _collect_slots_for_owner(node: Node, wanted_owner: NewSlots.SlotOwner, found: Array[NewSlots]) -> void:
+	if node == null:
+		return
+
+	var slot := node as NewSlots
+
+	if slot != null:
+		if slot.slot_owner == wanted_owner:
+			found.append(slot)
 
 	for child in node.get_children():
-		_collect_slots(child, found)
+		_collect_slots_for_owner(child, wanted_owner, found)
+
+
+func _find_closest_slot_left_of(center_slot: NewSlots, slots: Array[NewSlots]) -> NewSlots:
+	var closest: NewSlots = null
+	var closest_distance: float = INF
+	var center_x: float = center_slot.global_position.x
+
+	for slot in slots:
+		if slot == null:
+			continue
+
+		if slot == center_slot:
+			continue
+
+		var slot_x: float = slot.global_position.x
+
+		if slot_x >= center_x:
+			continue
+
+		var distance: float = abs(center_x - slot_x)
+
+		if distance < closest_distance:
+			closest_distance = distance
+			closest = slot
+
+	return closest
+
+
+func _find_closest_slot_right_of(center_slot: NewSlots, slots: Array[NewSlots]) -> NewSlots:
+	var closest: NewSlots = null
+	var closest_distance: float = INF
+	var center_x: float = center_slot.global_position.x
+
+	for slot in slots:
+		if slot == null:
+			continue
+
+		if slot == center_slot:
+			continue
+
+		var slot_x: float = slot.global_position.x
+
+		if slot_x <= center_x:
+			continue
+
+		var distance: float = abs(center_x - slot_x)
+
+		if distance < closest_distance:
+			closest_distance = distance
+			closest = slot
+
+	return closest
