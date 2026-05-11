@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://dqwpv431wfdfc"]
+
+[ext_resource type="PackedScene" uid="uid://c8mekq0tyuadn" path="res://Slots/NewSlots.tscn" id="1_lb25l"]
+
+[node name="SlotTesting" type="Node2D" unique_id=21666499]
+
+[node name="SlotPair" parent="." unique_id=1783533892 instance=ExtResource("1_lb25l")]
+position = Vector2(96, 320)
+
+[node name="SlotPair2" parent="." unique_id=1990073347 instance=ExtResource("1_lb25l")]
+position = Vector2(672, 320)
+
+[node name="SlotPair3" parent="." unique_id=324818022 instance=ExtResource("1_lb25l")]
+position = Vector2(480, 320)
+
+[node name="SlotPair4" parent="." unique_id=1008325378 instance=ExtResource("1_lb25l")]
+position = Vector2(288, 320)
