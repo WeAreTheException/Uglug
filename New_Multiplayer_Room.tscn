@@ -31,32 +31,11 @@
 [ext_resource type="Texture2D" uid="uid://it6pftgf2ru4" path="res://References/Screenshot 2026-05-07 at 4.48.53 PM.png" id="27_ebn5f"]
 [ext_resource type="Texture2D" uid="uid://bkafxhbg4kvug" path="res://Sprites/CardSlot.png" id="28_e2c01"]
 [ext_resource type="PackedScene" uid="uid://bb6d0vmntt6xo" path="res://Scissor.tscn" id="30_x7w1o"]
-[ext_resource type="Shader" uid="uid://coh1b7wxrmi28" path="res://VHSOverlay.gdshader" id="32_axksp"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_axksp"]
-shader = ExtResource("32_axksp")
-shader_parameter/spin_rotation_speed = 0.2
-shader_parameter/move_speed = 7.0
-shader_parameter/offset = Vector2(0, 0)
-shader_parameter/colour_1 = Color(0.4975357, 0.0012667051, 0.6688576, 1)
-shader_parameter/colour_2 = Color(0.5768312, 0.6850362, 1.1551381e-06, 1)
-shader_parameter/colour_3 = Color(0.086, 0.137, 0.145, 1)
-shader_parameter/contrast = 4.0
-shader_parameter/lighting = 0.7
-shader_parameter/spin_amount = 0.5
-shader_parameter/pixel_filter = 1920.0
-shader_parameter/is_rotating = true
 
 [node name="NewMuliplayer_Room" type="Node" unique_id=462638439]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=698829700]
 layer = 100
-
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=1854645017]
-visible = false
-material = SubResource("ShaderMaterial_axksp")
-offset_right = 1920.0
-offset_bottom = 1088.0
 
 [node name="Labels" type="Node" parent="." unique_id=1220800706]
 
