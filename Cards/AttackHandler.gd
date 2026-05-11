@@ -49,7 +49,11 @@ func attack() -> void:
 
 	targets = _clean_targets(targets)
 
-	var direct_attack_count := _get_direct_attack_count_from_mutations()
+	var direct_attack_slots := _get_direct_attack_slots_from_mutations()
+	var direct_attack_count := direct_attack_slots.size()
+
+	if direct_attack_count <= 0:
+		direct_attack_count = _get_direct_attack_count_from_mutations()
 
 	if targets.is_empty() and direct_attack_count <= 0:
 		direct_attack_count = 1
@@ -60,6 +64,15 @@ func attack() -> void:
 
 		var direct_damage := card.current_attack
 		print(card.card_name, " direct damage: ", direct_damage)
+
+		var slot_to_flash: Node = null
+
+		if i < direct_attack_slots.size():
+			slot_to_flash = direct_attack_slots[i]
+		else:
+			slot_to_flash = card.current_slot.opposing_slot
+
+		_flash_slot(slot_to_flash)
 
 		if card.battle_scale != null:
 			card.battle_scale.add_direct_damage(direct_damage, card.card_owner)
@@ -85,7 +98,48 @@ func attack() -> void:
 				damage = mutation.modify_damage(card, target, damage)
 
 		print(card.card_name, " -> ", target.card_name, " (", damage, " dmg)")
+
+		_flash_slot(target.current_slot)
+
 		target.take_damage(damage, card)
+
+
+func _flash_slot(slot: Node) -> void:
+	print("TRY FLASH SLOT: ", slot)
+
+	if slot == null:
+		print("flash blocked: slot is null")
+		return
+
+	if not slot.has_method("flash_damage"):
+		print("flash blocked: slot has no flash_damage method: ", slot.name)
+		return
+
+	slot.flash_damage()
+
+
+func _get_direct_attack_slots_from_mutations() -> Array[NewSlots]:
+	var slots: Array[NewSlots] = []
+
+	for mutation in card.base_mutations:
+		if mutation == null:
+			continue
+
+		if "empty_adjacent_slots" in mutation:
+			for slot in mutation.empty_adjacent_slots:
+				if slot != null:
+					slots.append(slot)
+
+	for mutation in card.additional_mutations:
+		if mutation == null:
+			continue
+
+		if "empty_adjacent_slots" in mutation:
+			for slot in mutation.empty_adjacent_slots:
+				if slot != null:
+					slots.append(slot)
+
+	return slots
 
 
 func _get_direct_attack_count_from_mutations() -> int:

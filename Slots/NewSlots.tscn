@@ -13,26 +13,28 @@ player_slot = NodePath("Player1")
 opponent_slot = NodePath("Player2")
 metadata/_edit_lock_ = true
 
-[node name="Player1" type="Area2D" parent="." unique_id=225223713 node_paths=PackedStringArray("opposing_slot")]
+[node name="Player1" type="Area2D" parent="." unique_id=225223713 node_paths=PackedStringArray("opposing_slot", "slot_visual")]
 position = Vector2(0, 128)
 script = ExtResource("1_0x5xu")
 opposing_slot = NodePath("../Player2")
+slot_visual = NodePath("SlotVisual")
 
 [node name="MySlotCollider" type="CollisionShape2D" parent="Player1" unique_id=112184198]
 shape = SubResource("RectangleShape2D_pqsda")
 
-[node name="MySlotImage" type="Sprite2D" parent="Player1" unique_id=1462752532]
+[node name="SlotVisual" type="Sprite2D" parent="Player1" unique_id=1462752532]
 texture = ExtResource("1_xbaqm")
 
-[node name="Player2" type="Area2D" parent="." unique_id=814552453 node_paths=PackedStringArray("opposing_slot")]
+[node name="Player2" type="Area2D" parent="." unique_id=814552453 node_paths=PackedStringArray("opposing_slot", "slot_visual")]
 position = Vector2(0, -192)
 script = ExtResource("1_0x5xu")
 slot_owner = 1
 opposing_slot = NodePath("../Player1")
+slot_visual = NodePath("SlotVisual")
 
 [node name="MySlotCollider" type="CollisionShape2D" parent="Player2" unique_id=1844777578]
 position = Vector2(0, 0.5)
 shape = SubResource("RectangleShape2D_pqsda")
 
-[node name="MySlotImage" type="Sprite2D" parent="Player2" unique_id=666686459]
+[node name="SlotVisual" type="Sprite2D" parent="Player2" unique_id=666686459]
 texture = ExtResource("1_xbaqm")
