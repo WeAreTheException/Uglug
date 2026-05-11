@@ -26,38 +26,90 @@ func attack() -> void:
 	if opposing_slot != null:
 		opposing_card = opposing_slot.current_card
 
-	var final_target: Card = opposing_card
+	var targets: Array[Card] = [opposing_card]
 
 	for mutation in card.base_mutations:
-		if mutation != null:
-			final_target = mutation.get_attack_target(card, final_target)
+		if mutation == null:
+			continue
+
+		if mutation.has_method("get_attack_targets"):
+			targets = mutation.get_attack_targets(card, targets)
+		else:
+			targets = _apply_single_target_mutation(mutation, targets)
 
 	for mutation in card.additional_mutations:
-		if mutation != null:
-			final_target = mutation.get_attack_target(card, final_target)
+		if mutation == null:
+			continue
 
-	if attack_anim != null and attack_anim.has_method("play_attack"):
-		attack_anim.play_attack(final_target)
+		if mutation.has_method("get_attack_targets"):
+			targets = mutation.get_attack_targets(card, targets)
+		else:
+			targets = _apply_single_target_mutation(mutation, targets)
 
-	if final_target != null:
-		var damage := card.current_attack
+	targets = _clean_targets(targets)
 
-		for mutation in card.base_mutations:
-			if mutation != null:
-				damage = mutation.modify_damage(card, final_target, damage)
+	if targets.is_empty():
+		if attack_anim != null and attack_anim.has_method("play_attack"):
+			attack_anim.play_attack(null)
 
-		for mutation in card.additional_mutations:
-			if mutation != null:
-				damage = mutation.modify_damage(card, final_target, damage)
-
-		print(card.card_name, " -> ", final_target.card_name, " (", damage, " dmg)")
-		final_target.take_damage(damage, card)
-	else:
 		var direct_damage := card.current_attack
 		print(card.card_name, " direct damage: ", direct_damage)
 
 		if card.battle_scale != null:
 			card.battle_scale.add_direct_damage(direct_damage, card.card_owner)
+
+		return
+
+	for target in targets:
+		if target == null:
+			continue
+
+		if attack_anim != null and attack_anim.has_method("play_attack"):
+			attack_anim.play_attack(target)
+
+		var damage := card.current_attack
+
+		for mutation in card.base_mutations:
+			if mutation != null:
+				damage = mutation.modify_damage(card, target, damage)
+
+		for mutation in card.additional_mutations:
+			if mutation != null:
+				damage = mutation.modify_damage(card, target, damage)
+
+		print(card.card_name, " -> ", target.card_name, " (", damage, " dmg)")
+		target.take_damage(damage, card)
+
+
+func _apply_single_target_mutation(mutation: Mutation, targets: Array[Card]) -> Array[Card]:
+	if targets.is_empty():
+		return targets
+
+	var changed_targets: Array[Card] = []
+
+	for target in targets:
+		var new_target: Card = mutation.get_attack_target(card, target)
+
+		if new_target != null:
+			changed_targets.append(new_target)
+
+	return changed_targets
+
+
+func _clean_targets(targets: Array[Card]) -> Array[Card]:
+	var cleaned: Array[Card] = []
+
+	for target in targets:
+		if target == null:
+			continue
+
+		if cleaned.has(target):
+			continue
+
+		cleaned.append(target)
+
+	return cleaned
+
 
 func _find_card_parent() -> Card:
 	var current := get_parent()
