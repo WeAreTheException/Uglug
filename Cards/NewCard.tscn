@@ -19,7 +19,6 @@
 [ext_resource type="Script" uid="uid://dtoyyse7bnjuv" path="res://Code/States/CardInputListener.gd" id="10_koaue"]
 [ext_resource type="Script" uid="uid://d0qu3q360kdsl" path="res://Code/States/CardInputReciever.gd" id="11_2w08q"]
 [ext_resource type="Script" uid="uid://ro02870urhpb" path="res://Code/States/CardStateMachine.gd" id="12_lsojp"]
-[ext_resource type="Texture2D" uid="uid://bvc74ci321o8a" path="res://Art/Quirks/FlyingSigil.PNG" id="19_fuvn1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
 size = Vector2(176, 270)
@@ -29,14 +28,14 @@ script = ExtResource("1_ch35y")
 input_listener = NodePath("InputListener")
 stats = NodePath("Stats")
 base_sigil_container = NodePath("1BMutationSprt")
-additional_sigil_container = NodePath("buffs")
+additional_sigil_container = NodePath("")
 
 [node name="1BMutationSprt" type="Node2D" parent="." unique_id=856620296]
 z_index = 1
+position = Vector2(0, 96)
 scale = Vector2(0.028686536, 0.028686536)
 
 [node name="Sprite2D" type="Sprite2D" parent="1BMutationSprt" unique_id=354731525]
-position = Vector2(0, -6693.035)
 texture = ExtResource("2_sphwu")
 
 [node name="CardStateMachine" type="Node" parent="." unique_id=1069228844]
@@ -136,12 +135,3 @@ script = ExtResource("11_2w08q")
 card_state_machine = NodePath("../CardStateMachine")
 card_input_listener = NodePath("../InputListener")
 card_root = NodePath("..")
-
-[node name="buffs" type="Node2D" parent="." unique_id=1402965791]
-z_index = 50
-
-[node name="Sprite2D" type="Sprite2D" parent="buffs" unique_id=1099877928]
-top_level = true
-position = Vector2(-128, -75)
-scale = Vector2(0.031250007, 0.031249998)
-texture = ExtResource("19_fuvn1")
