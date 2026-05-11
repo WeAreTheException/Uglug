@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dlqdhwxcfkoby"
-path="res://.godot/imported/PregnAntSigil.PNG-6f50e07f9e7bf252844d36d6394ad7f6.ctex"
+uid="uid://4ke0ic3q6kg"
+path="res://.godot/imported/Deterrant_Sigil.PNG-9dfadf67a7a83626612bee2b66a432af.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Art/Quirks/PregnAntSigil.PNG"
-dest_files=["res://.godot/imported/PregnAntSigil.PNG-6f50e07f9e7bf252844d36d6394ad7f6.ctex"]
+source_file="res://Art/Mutations/Deterrant_Sigil.PNG"
+dest_files=["res://.godot/imported/Deterrant_Sigil.PNG-9dfadf67a7a83626612bee2b66a432af.ctex"]
 
 [params]
 

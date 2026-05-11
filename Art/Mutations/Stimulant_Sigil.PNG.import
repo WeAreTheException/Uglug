@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://mxu53s4pbfyg"
-path="res://.godot/imported/TouchOfDeathSigil.PNG-462d9ccd451993c3c9eac273153b63bb.ctex"
+uid="uid://bt0xtipyrfrr1"
+path="res://.godot/imported/Stimulant_Sigil.PNG-a975f5ab31b7bd84bffedf5478f4e1a1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Art/Quirks/TouchOfDeathSigil.PNG"
-dest_files=["res://.godot/imported/TouchOfDeathSigil.PNG-462d9ccd451993c3c9eac273153b63bb.ctex"]
+source_file="res://Art/Mutations/Stimulant_Sigil.PNG"
+dest_files=["res://.godot/imported/Stimulant_Sigil.PNG-a975f5ab31b7bd84bffedf5478f4e1a1.ctex"]
 
 [params]
 
