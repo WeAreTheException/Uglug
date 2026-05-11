@@ -56,6 +56,9 @@ func _ready() -> void:
 	add_to_group("cards")
 
 	cache_sigil_nodes()
+	if additional_sigil_sprite != null:
+		additional_sigil_sprite.visible = false
+		additional_sigil_sprite.z_index = 50
 
 	state_machine = get_node_or_null("CardStateMachine") as CardStateMachine
 	attack_handler = get_node_or_null("CardStateMachine/Attack") as AttackHandler
@@ -167,19 +170,20 @@ func update_additional_sigil() -> void:
 		return
 
 	if additional_mutations.size() <= 0:
+		additional_sigil_sprite.visible = false
 		return
 
 	var mutation := additional_mutations[additional_mutations.size() - 1]
 
 	if mutation == null:
+		additional_sigil_sprite.visible = false
 		return
 
-	if mutation.sigil_texture == null:
-		return
-
-	additional_sigil_sprite.texture = mutation.sigil_texture
 	additional_sigil_sprite.visible = true
 	additional_sigil_sprite.z_index = 50
+
+	if mutation.sigil_texture != null:
+		additional_sigil_sprite.texture = mutation.sigil_texture
 
 func get_main_sprite() -> Sprite2D:
 	var found := find_children("*", "Sprite2D", true, false)

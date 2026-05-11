@@ -28,7 +28,7 @@ script = ExtResource("1_ch35y")
 input_listener = NodePath("InputListener")
 stats = NodePath("Stats")
 base_sigil_container = NodePath("1BMutationSprt")
-additional_sigil_container = NodePath("")
+additional_sigil_container = NodePath("AdditonalMutation")
 
 [node name="1BMutationSprt" type="Node2D" parent="." unique_id=856620296]
 z_index = 1
@@ -135,3 +135,11 @@ script = ExtResource("11_2w08q")
 card_state_machine = NodePath("../CardStateMachine")
 card_input_listener = NodePath("../InputListener")
 card_root = NodePath("..")
+
+[node name="AdditonalMutation" type="Node2D" parent="." unique_id=1488082497]
+
+[node name="Sprite2D2" type="Sprite2D" parent="AdditonalMutation" unique_id=745495785]
+visible = false
+position = Vector2(-48, -72)
+scale = Vector2(0.028686536, 0.028686536)
+texture = ExtResource("2_sphwu")
