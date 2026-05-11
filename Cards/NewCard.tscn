@@ -19,6 +19,7 @@
 [ext_resource type="Script" uid="uid://dtoyyse7bnjuv" path="res://Code/States/CardInputListener.gd" id="10_koaue"]
 [ext_resource type="Script" uid="uid://d0qu3q360kdsl" path="res://Code/States/CardInputReciever.gd" id="11_2w08q"]
 [ext_resource type="Script" uid="uid://ro02870urhpb" path="res://Code/States/CardStateMachine.gd" id="12_lsojp"]
+[ext_resource type="Texture2D" uid="uid://cgs5k6p3mggyf" path="res://Art/Ants/AntSprite.png" id="18_dm30q"]
 [ext_resource type="Texture2D" uid="uid://du7il46khf3s6" path="res://Art/Scissor.png" id="20_sphwu"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
@@ -122,7 +123,7 @@ theme_override_colors/default_color = Color(0.16206557, 0.1620656, 0.16206557, 1
 
 [node name="CardImage" type="Sprite2D" parent="." unique_id=1482464689]
 scale = Vector2(0.14520307, 0.14520307)
-metadata/_edit_lock_ = true
+texture = ExtResource("18_dm30q")
 
 [node name="InputListener" type="Area2D" parent="." unique_id=1220273102]
 script = ExtResource("10_koaue")
@@ -142,6 +143,16 @@ card_root = NodePath("..")
 position = Vector2(-64, -80)
 
 [node name="Sprite2D" type="Sprite2D" parent="AdditonalMutation" unique_id=1157808449]
-position = Vector2(1.9073486e-06, -9.536743e-07)
+position = Vector2(8.000002, 7.999999)
+scale = Vector2(0.02442748, 0.024464834)
+texture = ExtResource("20_sphwu")
+
+[node name="Sprite2D2" type="Sprite2D" parent="AdditonalMutation" unique_id=1823366714]
+position = Vector2(122, 64)
+scale = Vector2(0.02442748, 0.024464834)
+texture = ExtResource("20_sphwu")
+
+[node name="Sprite2D3" type="Sprite2D" parent="AdditonalMutation" unique_id=1025645055]
+position = Vector2(16.000002, 112)
 scale = Vector2(0.02442748, 0.024464834)
 texture = ExtResource("20_sphwu")
