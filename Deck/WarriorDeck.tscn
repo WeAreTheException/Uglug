@@ -35,7 +35,7 @@ name = "Antler"
 attack = 1
 cost = 1
 sprite = ExtResource("8_w60k8")
-deck_amount = 2
+deck_amount = 10
 base_mutations = Array[ExtResource("7_eu8gw")]([SubResource("Resource_w60k8")])
 metadata/_custom_type_script = "uid://duslcpxrhurv8"
 

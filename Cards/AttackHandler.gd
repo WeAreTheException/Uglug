@@ -8,6 +8,7 @@ var card: Card = null
 func _ready() -> void:
 	card = _find_card_parent()
 
+
 func attack() -> void:
 	if card == null:
 		return
@@ -48,7 +49,12 @@ func attack() -> void:
 
 	targets = _clean_targets(targets)
 
-	if targets.is_empty():
+	var direct_attack_count := _get_direct_attack_count_from_mutations()
+
+	if targets.is_empty() and direct_attack_count <= 0:
+		direct_attack_count = 1
+
+	for i in direct_attack_count:
 		if attack_anim != null and attack_anim.has_method("play_attack"):
 			attack_anim.play_attack(null)
 
@@ -58,6 +64,7 @@ func attack() -> void:
 		if card.battle_scale != null:
 			card.battle_scale.add_direct_damage(direct_damage, card.card_owner)
 
+	if targets.is_empty():
 		return
 
 	for target in targets:
@@ -79,6 +86,26 @@ func attack() -> void:
 
 		print(card.card_name, " -> ", target.card_name, " (", damage, " dmg)")
 		target.take_damage(damage, card)
+
+
+func _get_direct_attack_count_from_mutations() -> int:
+	var count := 0
+
+	for mutation in card.base_mutations:
+		if mutation == null:
+			continue
+
+		if "empty_adjacent_attack_count" in mutation:
+			count += mutation.empty_adjacent_attack_count
+
+	for mutation in card.additional_mutations:
+		if mutation == null:
+			continue
+
+		if "empty_adjacent_attack_count" in mutation:
+			count += mutation.empty_adjacent_attack_count
+
+	return count
 
 
 func _apply_single_target_mutation(mutation: Mutation, targets: Array[Card]) -> Array[Card]:

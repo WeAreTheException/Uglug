@@ -1,8 +1,11 @@
 extends Mutation
 class_name Antler
 
-func get_attack_targets(card: Card, current_targets: Array[Card]) -> Array[Card]:
+var empty_adjacent_attack_count: int = 0
+
+func get_attack_targets(card: Card, _current_targets: Array[Card]) -> Array[Card]:
 	var targets: Array[Card] = []
+	empty_adjacent_attack_count = 0
 
 	if card == null:
 		return targets
@@ -18,21 +21,18 @@ func get_attack_targets(card: Card, current_targets: Array[Card]) -> Array[Card]
 	var left_slot = _find_slot_by_lane(card, front_slot.lane_id - 1, front_slot.slot_owner)
 	var right_slot = _find_slot_by_lane(card, front_slot.lane_id + 1, front_slot.slot_owner)
 
-	if _is_left_to_right(card):
-		_add_slot_card(targets, left_slot)
-		_add_slot_card(targets, right_slot)
-	else:
-		_add_slot_card(targets, right_slot)
-		_add_slot_card(targets, left_slot)
+	_add_slot_or_direct(targets, left_slot)
+	_add_slot_or_direct(targets, right_slot)
 
 	return targets
 
 
-func _add_slot_card(targets: Array[Card], slot: Node) -> void:
+func _add_slot_or_direct(targets: Array[Card], slot: Node) -> void:
 	if slot == null:
 		return
 
 	if slot.current_card == null:
+		empty_adjacent_attack_count += 1
 		return
 
 	targets.append(slot.current_card)
@@ -65,14 +65,3 @@ func _collect_slots(node: Node, found: Array[Node]) -> void:
 
 	for child in node.get_children():
 		_collect_slots(child, found)
-
-
-func _is_left_to_right(card: Card) -> bool:
-	if card.combat_manager != null:
-		if card.combat_manager.has_method("is_current_attack_left_to_right"):
-			return card.combat_manager.is_current_attack_left_to_right()
-
-		if "attack_left_to_right" in card.combat_manager:
-			return card.combat_manager.attack_left_to_right
-
-	return true
