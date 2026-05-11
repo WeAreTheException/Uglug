@@ -234,3 +234,39 @@ func pick_card_data() -> CardData:
 		return null
 
 	return card_database.cards[randi() % card_database.cards.size()]
+
+func spawn_effect_card_to_hand(
+	owner_peer_id: int,
+	card_name: String,
+	card_id: int,
+	inherited_mutation_paths: Array[String] = []
+) -> void:
+	var spawned := _commit_draw_local(owner_peer_id, card_name, card_id)
+
+	if not spawned:
+		return
+
+	var target_hand: Node2D = player_hand
+
+	if int(GDSync.get_client_id()) != owner_peer_id:
+		target_hand = opponent_hand
+
+	if target_hand == null:
+		return
+
+	for child in target_hand.get_children():
+		var card := child as Card
+
+		if card == null:
+			continue
+
+		if card.multiplayer_card_id != card_id:
+			continue
+
+		for path in inherited_mutation_paths:
+			var mutation := load(path) as Mutation
+
+			if mutation != null:
+				card.add_additional_mutation(mutation)
+
+		return
