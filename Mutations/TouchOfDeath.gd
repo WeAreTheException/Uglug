@@ -1,4 +1,4 @@
-extends CardQuirk
+extends Mutation
 class_name TouchOfDeath
 
 func modify_damage(attacker: Card, defender: Card, base_damage: int) -> int:

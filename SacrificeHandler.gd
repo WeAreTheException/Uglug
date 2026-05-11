@@ -122,7 +122,7 @@ func resolve_sacrifice_payment(pending_play_card: Card) -> void:
 		})
 
 		remove_card_from_player_hand(sacrifice)
-		sacrifice.kill()
+		discard_card(sacrifice)
 
 	selected_sacrifices.clear()
 
@@ -143,7 +143,25 @@ func replicate_sacrifice(sacrificed_data: Array) -> void:
 			print("replicate_sacrifice failed: card not found for id ", card_id)
 			continue
 
-		card.kill()
+		discard_card(card)
+
+func discard_card(card: Card) -> void:
+	if card == null:
+		return
+
+	if card.current_slot != null:
+		card.current_slot.clear_card()
+
+	card.current_slot = null
+	card.overlapping_slot = null
+
+	if card.has_method("set_selected"):
+		card.set_selected(false)
+
+	if card.has_method("stop_sacrifice_hint"):
+		card.stop_sacrifice_hint()
+
+	card.queue_free()
 
 func find_card_by_multiplayer_data(card_id: int, owner_peer_id: int) -> Card:
 	var scene := get_tree().current_scene

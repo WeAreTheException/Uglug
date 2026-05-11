@@ -26,7 +26,20 @@ func _ready() -> void:
 	GDSync.expose_func(request_draw_from_host)
 	GDSync.expose_func(commit_draw_remote)
 
-	print("DeckDrawHandler ready / GDSync host = ", GDSync.is_host())
+	if deck_type == DeckType.WORKER:
+		GDSync.expose_func(pregnant_request_spawn_workers_from_host)
+		GDSync.expose_func(pregnant_commit_spawn_worker_card)
+
+	print("DeckDrawHandler ready / deck_type = ", get_deck_type_name(), " / GDSync host = ", GDSync.is_host())
+
+func get_deck_type_name() -> String:
+	if deck_type == DeckType.WORKER:
+		return "WORKER"
+
+	if deck_type == DeckType.WARRIOR:
+		return "WARRIOR"
+
+	return "UNKNOWN"
 
 func draw_player_card() -> void:
 	if phase_manager == null:
@@ -61,6 +74,53 @@ func _host_resolve_draw(drawer_peer_id: int) -> void:
 func commit_draw_remote(drawer_peer_id: int, card_name: String, card_id: int) -> void:
 	_commit_draw_local(drawer_peer_id, card_name, card_id)
 
+func spawn_cards_from_effect(owner_peer_id: int, amount: int) -> void:
+	if deck_type != DeckType.WORKER:
+		print("PregnAnt blocked: this handler is not WORKER, it is ", get_deck_type_name())
+		return
+
+	if amount <= 0:
+		return
+
+	print("PregnAnt spawning workers through ", get_deck_type_name(), " deck")
+
+	if GDSync.is_host():
+		_pregnant_host_spawn_workers(owner_peer_id, amount)
+	else:
+		GDSync.call_func(pregnant_request_spawn_workers_from_host, owner_peer_id, amount)
+
+func pregnant_request_spawn_workers_from_host(owner_peer_id: int, amount: int) -> void:
+	if not GDSync.is_host():
+		return
+
+	if deck_type != DeckType.WORKER:
+		return
+
+	_pregnant_host_spawn_workers(owner_peer_id, amount)
+
+func _pregnant_host_spawn_workers(owner_peer_id: int, amount: int) -> void:
+	if deck_type != DeckType.WORKER:
+		return
+
+	for i in range(amount):
+		var data := pick_card_data()
+		if data == null:
+			print("PregnAnt blocked: worker card data missing")
+			continue
+
+		var card_id := DeckDrawHandler.next_card_id
+		DeckDrawHandler.next_card_id += 1
+
+		print("PregnAnt picked worker card: ", data.name)
+
+		GDSync.call_func_all(pregnant_commit_spawn_worker_card, owner_peer_id, data.name, card_id)
+
+func pregnant_commit_spawn_worker_card(owner_peer_id: int, card_name: String, card_id: int) -> void:
+	if deck_type != DeckType.WORKER:
+		return
+
+	_commit_draw_local(owner_peer_id, card_name, card_id)
+
 func _commit_draw_local(drawer_peer_id: int, card_name: String, card_id: int) -> bool:
 	var target_hand: Node2D = player_hand
 	var new_card_owner: int = Card.Owner.PLAYER
@@ -85,34 +145,43 @@ func draw_specific_card_to_hand(
 	owning_peer_id: int
 ) -> bool:
 	if deck == null:
+		print("draw blocked: deck is null on ", get_deck_type_name())
 		return false
 
 	if target_hand == null:
+		print("draw blocked: target_hand is null on ", get_deck_type_name())
 		return false
 
 	if card_database == null:
+		print("draw blocked: card_database is null on ", get_deck_type_name())
 		return false
 
 	if deck.card_scene == null:
+		print("draw blocked: deck.card_scene is null on ", get_deck_type_name())
 		return false
 
 	if not target_hand.has_method("add_card_to_hand"):
+		print("draw blocked: target_hand has no add_card_to_hand")
 		return false
 
 	if target_hand.has_method("is_hand_full") and target_hand.is_hand_full():
+		print("draw blocked: hand is full")
 		return false
 
 	var data := get_card_data_by_name(card_name)
 
 	if data == null:
+		print("draw blocked: card data not found for ", card_name, " on ", get_deck_type_name())
 		return false
 
 	if not deck.consume_card():
+		print("draw blocked: deck is empty on ", get_deck_type_name())
 		return false
 
 	var new_card := deck.card_scene.instantiate() as Card
 
 	if new_card == null:
+		print("draw blocked: card_scene did not instantiate Card")
 		return false
 
 	new_card.multiplayer_card_id = card_id
@@ -140,16 +209,7 @@ func draw_specific_card_to_hand(
 	if new_card.has_node("AnimationPlayer"):
 		new_card.get_node("AnimationPlayer").play("card_flip")
 
-	print(
-		"drew card: ",
-		new_card.card_name,
-		" card_id=",
-		card_id,
-		" owning_peer_id=",
-		owning_peer_id,
-		" local_client_id=",
-		int(GDSync.get_client_id())
-	)
+	print("spawned from ", get_deck_type_name(), " deck: ", new_card.card_name)
 
 	return true
 

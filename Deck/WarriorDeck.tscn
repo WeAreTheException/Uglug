@@ -16,6 +16,7 @@
 [ext_resource type="Texture2D" uid="uid://dnffnc1xuveq5" path="res://Art/Ants/Growant.png" id="12_06fvk"]
 [ext_resource type="Texture2D" uid="uid://cpgvdfdrt7v4o" path="res://Art/Ants/Pregnant.png" id="13_0knip"]
 [ext_resource type="Texture2D" uid="uid://b55jkuhdyk7wl" path="res://Art/Ants/QueenAnt.png" id="14_r8s31"]
+[ext_resource type="Script" uid="uid://ba3decuns1cvn" path="res://Mutations/PregnAnt.gd" id="15_gy366"]
 [ext_resource type="Script" uid="uid://c8owoh3gv45g4" path="res://Deck/DeckView.gd" id="15_iie84"]
 [ext_resource type="Script" uid="uid://chw242mi2nxl4" path="res://Deck/DeckInputListener.gd" id="16_4kasc"]
 [ext_resource type="Texture2D" uid="uid://dgceyq4phwwts" path="res://Art/AntBack/WarriorDeck.png" id="26_i1d6c"]
@@ -81,12 +82,17 @@ cost = 1
 sprite = ExtResource("12_06fvk")
 metadata/_custom_type_script = "uid://duslcpxrhurv8"
 
+[sub_resource type="Resource" id="Resource_rw1me"]
+script = ExtResource("15_gy366")
+metadata/_custom_type_script = "uid://ba3decuns1cvn"
+
 [sub_resource type="Resource" id="Resource_3v71i"]
 script = ExtResource("6_00oes")
 name = "Pregnant"
 health = 2
 cost = 1
 sprite = ExtResource("13_0knip")
+base_mutations = Array[ExtResource("7_eu8gw")]([SubResource("Resource_rw1me")])
 metadata/_custom_type_script = "uid://duslcpxrhurv8"
 
 [sub_resource type="Resource" id="Resource_0ckc6"]
@@ -112,6 +118,7 @@ card_scene = ExtResource("3_7lkv5")
 [node name="DeckDrawHandler" type="Node" parent="." unique_id=1995550717 node_paths=PackedStringArray("card_database")]
 script = ExtResource("4_gy366")
 card_database = NodePath("../CardDatabase")
+deck_type = 1
 
 [node name="CardDatabase" type="Node" parent="." unique_id=1978405134]
 script = ExtResource("5_rw1me")
