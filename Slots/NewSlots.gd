@@ -35,7 +35,14 @@ func assign_card(card: Node2D) -> bool:
 		return false
 
 	current_card = card
+
+	if not card.is_in_group("cuttable_cards"):
+		card.add_to_group("cuttable_cards")
+
 	return true
 
 func clear_card() -> void:
+	if current_card != null:
+		current_card.remove_from_group("cuttable_cards")
+
 	current_card = null

@@ -26,8 +26,11 @@ func take_damage(amount: int, attacker: Card = null) -> void:
 	if hurt_anim != null and hurt_anim.has_method("play_hurt"):
 		hurt_anim.play_hurt()
 
-	if card.quirk != null:
-		card.quirk.on_damaged(card, attacker, amount)
+	var mutations := card.get_all_mutations()
+
+	for mutation in mutations:
+		if mutation != null:
+			mutation.on_damaged(card, attacker, amount)
 
 	if card.current_health <= 0:
 		if card.die_handler != null:
@@ -41,6 +44,7 @@ func _find_card_parent() -> Card:
 	while current != null:
 		if current is Card:
 			return current as Card
+
 		current = current.get_parent()
 
 	return null

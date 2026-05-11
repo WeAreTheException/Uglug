@@ -14,6 +14,7 @@ enum Owner {
 @export var base_sigil_container: Node2D
 @export var additional_sigil_container: Node2D
 @export var combat_manager: CombatManager
+@export var worker_deck_draw_handler: DeckDrawHandler
 
 var additional_sigil_sprite: Sprite2D = null
 
@@ -254,6 +255,13 @@ func kill() -> void:
 
 	queue_free()
 
+func discard() -> void:
+	if current_slot != null:
+		current_slot.clear_card()
+		current_slot = null
+
+	queue_free()
+
 func _on_hovered(_listener) -> void:
 	is_hovered = true
 
@@ -340,3 +348,36 @@ func update_sacrifice_hint(delta: float) -> void:
 
 	sacrifice_hint_time += delta
 	rotation = sin(sacrifice_hint_time * 8.0) * deg_to_rad(3.0)
+
+func draw_worker_cards(amount: int) -> void:
+	var worker_draw_handler := find_worker_deck_draw_handler()
+
+	if worker_draw_handler == null:
+		print("draw worker blocked: could not find worker DeckDrawHandler")
+		return
+
+	for i in range(amount):
+		worker_draw_handler.draw_player_card()
+
+func find_worker_deck_draw_handler() -> DeckDrawHandler:
+	var scene := get_tree().current_scene
+
+	if scene == null:
+		return null
+
+	return find_worker_deck_draw_handler_recursive(scene)
+
+func find_worker_deck_draw_handler_recursive(node: Node) -> DeckDrawHandler:
+	var handler := node as DeckDrawHandler
+
+	if handler != null:
+		if handler.deck_type == DeckDrawHandler.DeckType.WORKER:
+			return handler
+
+	for child in node.get_children():
+		var found := find_worker_deck_draw_handler_recursive(child)
+
+		if found != null:
+			return found
+
+	return null

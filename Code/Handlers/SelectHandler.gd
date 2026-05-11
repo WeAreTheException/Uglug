@@ -46,11 +46,17 @@ func can_use_place_logic() -> bool:
 	if phase_manager == null:
 		return true
 
-	return phase_manager.is_place_phase()
+	if not phase_manager.is_place_phase():
+		return false
+
+	if phase_manager.turn_manager != null:
+		return phase_manager.turn_manager.can_local_player_place()
+
+	return true
 
 func select_card(card: Card) -> void:
 	if not can_use_place_logic():
-		print("select_card blocked: not place phase")
+		print("select_card blocked: not your placement turn")
 		return
 
 	if card == null:
@@ -74,7 +80,7 @@ func select_card(card: Card) -> void:
 
 func try_select_hand_card(card: Card) -> void:
 	if not can_use_place_logic():
-		print("try_select_hand_card blocked: not place phase")
+		print("try_select_hand_card blocked: not your placement turn")
 		return
 
 	if card == null:
@@ -118,7 +124,7 @@ func try_select_hand_card(card: Card) -> void:
 
 func try_place_into_slot_under_mouse() -> void:
 	if not can_use_place_logic():
-		print("place blocked: not place phase")
+		print("place blocked: not your placement turn")
 		return
 
 	if pending_play_card == null:
@@ -159,7 +165,7 @@ func try_place_into_slot_under_mouse() -> void:
 
 func resolve_pending_play(slot: NewSlots) -> void:
 	if not can_use_place_logic():
-		print("resolve blocked: not place phase")
+		print("resolve blocked: not your placement turn")
 		return
 
 	if pending_play_card == null:

@@ -1,4 +1,4 @@
-extends CardQuirk
+extends Mutation
 class_name SpikyArmor
 
 @export var return_damage: int = 1

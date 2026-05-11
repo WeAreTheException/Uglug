@@ -14,16 +14,14 @@ opponent_slot = NodePath("Player2")
 metadata/_edit_lock_ = true
 
 [node name="Player1" type="Area2D" parent="." unique_id=225223713 node_paths=PackedStringArray("opposing_slot")]
-position = Vector2(0, 192)
+position = Vector2(0, 128)
 script = ExtResource("1_0x5xu")
 opposing_slot = NodePath("../Player2")
 
 [node name="MySlotCollider" type="CollisionShape2D" parent="Player1" unique_id=112184198]
-position = Vector2(0, -64)
 shape = SubResource("RectangleShape2D_pqsda")
 
 [node name="MySlotImage" type="Sprite2D" parent="Player1" unique_id=1462752532]
-position = Vector2(0, -64)
 texture = ExtResource("1_xbaqm")
 
 [node name="Player2" type="Area2D" parent="." unique_id=814552453 node_paths=PackedStringArray("opposing_slot")]
