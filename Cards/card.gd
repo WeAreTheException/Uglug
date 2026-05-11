@@ -15,7 +15,7 @@ enum Owner {
 @export var additional_sigil_container: Node2D
 @export var combat_manager: CombatManager
 
-var additional_sigil_sprite: Sprite2D = null
+var additional_sigil_sprites: Array[Sprite2D] = []
 
 var card_owner: Owner = Owner.PLAYER
 
@@ -77,25 +77,30 @@ func _process(delta: float) -> void:
 	update_sacrifice_hint(delta)
 
 func cache_sigil_nodes() -> void:
+	additional_sigil_sprites.clear()
+
 	if additional_sigil_container == null:
 		print("additional_sigil_container is null on ", card_name)
-		additional_sigil_sprite = null
 		return
 
-	additional_sigil_sprite = additional_sigil_container.get_node_or_null("Sprite2D") as Sprite2D
+	var found := additional_sigil_container.find_children("*", "Sprite2D", true, false)
 
-	if additional_sigil_sprite == null:
-		print("could not find Sprite2D under AdditionalMutation on ", card_name)
+	for node in found:
+		var sprite := node as Sprite2D
+
+		if sprite != null:
+			additional_sigil_sprites.append(sprite)
+
+	print("cached ", additional_sigil_sprites.size(), " additional sigil sprites on ", card_name)
 
 func hide_additional_sigil() -> void:
 	if additional_sigil_container != null:
 		additional_sigil_container.visible = true
 
-	if additional_sigil_sprite == null:
-		return
-
-	additional_sigil_sprite.visible = false
-	additional_sigil_sprite.z_index = 50
+	for sprite in additional_sigil_sprites:
+		if sprite != null:
+			sprite.visible = false
+			sprite.z_index = 100
 
 func setup_card(data: CardData) -> void:
 	if data == null:
@@ -183,31 +188,36 @@ func update_additional_sigil() -> void:
 
 	additional_sigil_container.visible = true
 
-	if additional_sigil_sprite == null:
-		print("additional sigil sprite missing on ", card_name)
+	if additional_sigil_sprites.size() <= 0:
+		print("no additional sigil sprites found on ", card_name)
 		return
 
-	if additional_mutations.size() <= 0:
-		hide_additional_sigil()
-		return
+	for sprite in additional_sigil_sprites:
+		if sprite != null:
+			sprite.visible = false
 
-	var mutation := additional_mutations[additional_mutations.size() - 1]
+	var max_count: int = min(additional_mutations.size(), additional_sigil_sprites.size())
 
-	if mutation == null:
-		print("latest additional mutation is null on ", card_name)
-		hide_additional_sigil()
-		return
+	for i in range(max_count):
+		var mutation := additional_mutations[i]
 
-	if mutation.sigil_texture == null:
-		print("mutation has no sigil_texture on ", card_name)
-		hide_additional_sigil()
-		return
+		if mutation == null:
+			continue
 
-	additional_sigil_sprite.texture = mutation.sigil_texture
-	additional_sigil_sprite.visible = true
-	additional_sigil_sprite.z_index = 100
+		if mutation.sigil_texture == null:
+			continue
 
-	print("showing additional sigil on ", card_name)
+		var sprite := additional_sigil_sprites[i]
+
+		if sprite == null:
+			continue
+
+		sprite.texture = mutation.sigil_texture
+		sprite.visible = true
+		sprite.z_index = 100
+
+	if additional_mutations.size() > additional_sigil_sprites.size():
+		print(card_name, " has more additional mutations than sprite slots")
 
 func get_main_sprite() -> Sprite2D:
 	var found := find_children("*", "Sprite2D", true, false)
