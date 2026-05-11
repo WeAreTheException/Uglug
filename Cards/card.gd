@@ -11,9 +11,11 @@ enum Owner {
 @export var stats: Stats
 @export var test_data: CardData
 @export var battle_scale: BattleScale
-@export var sigil_container: Node2D
+@export var base_sigil_container: Node2D
+@export var additional_sigil_container: Node2D
 @export var combat_manager: CombatManager
-@export var worker_deck_draw_handler: DeckDrawHandler
+
+var additional_sigil_sprite: Sprite2D = null
 
 var card_owner: Owner = Owner.PLAYER
 
@@ -53,6 +55,9 @@ var die_handler: DieHandler = null
 func _ready() -> void:
 	add_to_group("cards")
 
+	cache_sigil_nodes()
+	hide_additional_sigil()
+
 	state_machine = get_node_or_null("CardStateMachine") as CardStateMachine
 	attack_handler = get_node_or_null("CardStateMachine/Attack") as AttackHandler
 	hurt_handler = get_node_or_null("CardStateMachine/Hurt") as HurtHandler
@@ -71,9 +76,32 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	update_sacrifice_hint(delta)
 
+func cache_sigil_nodes() -> void:
+	if additional_sigil_container == null:
+		print("additional_sigil_container is null on ", card_name)
+		additional_sigil_sprite = null
+		return
+
+	additional_sigil_sprite = additional_sigil_container.get_node_or_null("Sprite2D") as Sprite2D
+
+	if additional_sigil_sprite == null:
+		print("could not find Sprite2D under AdditionalMutation on ", card_name)
+
+func hide_additional_sigil() -> void:
+	if additional_sigil_container != null:
+		additional_sigil_container.visible = true
+
+	if additional_sigil_sprite == null:
+		return
+
+	additional_sigil_sprite.visible = false
+	additional_sigil_sprite.z_index = 50
+
 func setup_card(data: CardData) -> void:
 	if data == null:
 		return
+
+	cache_sigil_nodes()
 
 	card_name = data.name
 	current_attack = data.attack
@@ -94,7 +122,10 @@ func add_additional_mutation(mutation: Mutation) -> void:
 		return
 
 	additional_mutations.append(mutation)
+
 	update_sigils()
+
+	print(card_name, " gained mutation")
 
 func get_all_mutations() -> Array[Mutation]:
 	var combined: Array[Mutation] = []
@@ -110,36 +141,73 @@ func get_all_mutations() -> Array[Mutation]:
 	return combined
 
 func update_sigils() -> void:
-	if sigil_container == null:
-		print("sigil blocked: sigil_container is null on ", card_name)
+	update_base_sigils()
+	update_additional_sigil()
+
+func update_base_sigils() -> void:
+	if base_sigil_container == null:
 		return
 
-	for child in sigil_container.get_children():
+	for child in base_sigil_container.get_children():
 		child.queue_free()
 
-	var all_mutations := get_all_mutations()
-
-	if all_mutations.size() <= 0:
+	if base_mutations.size() <= 0:
 		return
 
 	var spacing := 36.0
-	var start_x := -((all_mutations.size() - 1) * spacing) / 2.0
+	var start_x := -((base_mutations.size() - 1) * spacing) / 2.0
 
-	for i in range(all_mutations.size()):
-		var mutation := all_mutations[i]
+	for i in range(base_mutations.size()):
+		var mutation := base_mutations[i]
 
 		if mutation == null:
 			continue
 
 		if mutation.sigil_texture == null:
-			print("sigil blocked: mutation has no sigil_texture on ", card_name)
 			continue
 
 		var sigil := Sprite2D.new()
+
 		sigil.texture = mutation.sigil_texture
 		sigil.position = Vector2(start_x + (i * spacing), 0)
+		sigil.z_index = 50
 
-		sigil_container.add_child(sigil)
+		base_sigil_container.add_child(sigil)
+
+func update_additional_sigil() -> void:
+	cache_sigil_nodes()
+
+	if additional_sigil_container == null:
+		print("additional_sigil_container missing on ", card_name)
+		return
+
+	additional_sigil_container.visible = true
+
+	if additional_sigil_sprite == null:
+		print("additional sigil sprite missing on ", card_name)
+		return
+
+	if additional_mutations.size() <= 0:
+		hide_additional_sigil()
+		return
+
+	var mutation := additional_mutations[additional_mutations.size() - 1]
+
+	if mutation == null:
+		print("latest additional mutation is null on ", card_name)
+		hide_additional_sigil()
+		return
+
+	if mutation.sigil_texture == null:
+		print("mutation has no sigil_texture on ", card_name)
+		hide_additional_sigil()
+		return
+
+	additional_sigil_sprite.texture = mutation.sigil_texture
+	additional_sigil_sprite.visible = true
+	additional_sigil_sprite.z_index = 100
+
+	print("showing additional sigil on ", card_name)
 
 func get_main_sprite() -> Sprite2D:
 	var found := find_children("*", "Sprite2D", true, false)
@@ -204,13 +272,6 @@ func kill() -> void:
 		if mutation != null:
 			mutation.on_death(self)
 
-	if current_slot != null:
-		current_slot.clear_card()
-		current_slot = null
-
-	queue_free()
-
-func discard() -> void:
 	if current_slot != null:
 		current_slot.clear_card()
 		current_slot = null
@@ -303,36 +364,3 @@ func update_sacrifice_hint(delta: float) -> void:
 
 	sacrifice_hint_time += delta
 	rotation = sin(sacrifice_hint_time * 8.0) * deg_to_rad(3.0)
-
-func draw_worker_cards(amount: int) -> void:
-	var worker_draw_handler := find_worker_deck_draw_handler()
-
-	if worker_draw_handler == null:
-		print("draw worker blocked: could not find worker DeckDrawHandler")
-		return
-
-	for i in range(amount):
-		worker_draw_handler.draw_player_card()
-
-func find_worker_deck_draw_handler() -> DeckDrawHandler:
-	var scene := get_tree().current_scene
-
-	if scene == null:
-		return null
-
-	return find_worker_deck_draw_handler_recursive(scene)
-
-func find_worker_deck_draw_handler_recursive(node: Node) -> DeckDrawHandler:
-	var handler := node as DeckDrawHandler
-
-	if handler != null:
-		if handler.deck_type == DeckDrawHandler.DeckType.WORKER:
-			return handler
-
-	for child in node.get_children():
-		var found := find_worker_deck_draw_handler_recursive(child)
-
-		if found != null:
-			return found
-
-	return null
