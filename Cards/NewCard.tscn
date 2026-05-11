@@ -19,6 +19,7 @@
 [ext_resource type="Script" uid="uid://dtoyyse7bnjuv" path="res://Code/States/CardInputListener.gd" id="10_koaue"]
 [ext_resource type="Script" uid="uid://d0qu3q360kdsl" path="res://Code/States/CardInputReciever.gd" id="11_2w08q"]
 [ext_resource type="Script" uid="uid://ro02870urhpb" path="res://Code/States/CardStateMachine.gd" id="12_lsojp"]
+[ext_resource type="Texture2D" uid="uid://du7il46khf3s6" path="res://Art/Scissor.png" id="20_sphwu"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
 size = Vector2(176, 270)
@@ -27,15 +28,15 @@ size = Vector2(176, 270)
 script = ExtResource("1_ch35y")
 input_listener = NodePath("InputListener")
 stats = NodePath("Stats")
-base_sigil_container = NodePath("1BMutationSprt")
+base_sigil_container = NodePath("BaseMutation")
 additional_sigil_container = NodePath("AdditonalMutation")
 
-[node name="1BMutationSprt" type="Node2D" parent="." unique_id=856620296]
+[node name="BaseMutation" type="Node2D" parent="." unique_id=856620296]
 z_index = 1
 position = Vector2(0, 96)
 scale = Vector2(0.028686536, 0.028686536)
 
-[node name="Sprite2D" type="Sprite2D" parent="1BMutationSprt" unique_id=354731525]
+[node name="Sprite2D" type="Sprite2D" parent="BaseMutation" unique_id=354731525]
 texture = ExtResource("2_sphwu")
 
 [node name="CardStateMachine" type="Node" parent="." unique_id=1069228844]
@@ -137,9 +138,9 @@ card_input_listener = NodePath("../InputListener")
 card_root = NodePath("..")
 
 [node name="AdditonalMutation" type="Node2D" parent="." unique_id=1488082497]
+position = Vector2(-64, -80)
 
-[node name="Sprite2D2" type="Sprite2D" parent="AdditonalMutation" unique_id=745495785]
-visible = false
-position = Vector2(-48, -72)
-scale = Vector2(0.028686536, 0.028686536)
-texture = ExtResource("2_sphwu")
+[node name="Sprite2D" type="Sprite2D" parent="AdditonalMutation" unique_id=1157808449]
+position = Vector2(0, -3.0517578e-05)
+scale = Vector2(0.109160304, 0.10856269)
+texture = ExtResource("20_sphwu")
