@@ -130,6 +130,7 @@ script = ExtResource("10_koaue")
 [node name="CardCollision" type="CollisionShape2D" parent="InputListener" unique_id=2061957776]
 position = Vector2(-3.0517578e-05, -7.6293945e-06)
 shape = SubResource("RectangleShape2D_rjlel")
+metadata/_edit_lock_ = true
 
 [node name="InputReciver" type="Node" parent="." unique_id=213661670 node_paths=PackedStringArray("card_state_machine", "card_input_listener", "card_root")]
 script = ExtResource("11_2w08q")
@@ -141,6 +142,6 @@ card_root = NodePath("..")
 position = Vector2(-64, -80)
 
 [node name="Sprite2D" type="Sprite2D" parent="AdditonalMutation" unique_id=1157808449]
-position = Vector2(0, -3.0517578e-05)
-scale = Vector2(0.109160304, 0.10856269)
+position = Vector2(1.9073486e-06, -9.536743e-07)
+scale = Vector2(0.02442748, 0.024464834)
 texture = ExtResource("20_sphwu")
