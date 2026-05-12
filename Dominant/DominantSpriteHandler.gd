@@ -1,7 +1,6 @@
 extends Node2D
 class_name DominantSpriteHandler
 
-@export var dominant: Dominant
 @export var disabled_texture: Texture2D
 
 @export_range(0.0, 1.0)
@@ -9,6 +8,8 @@ var inactive_opacity: float = 0.35
 
 @onready var state_handler: DominantStateHandler = get_parent().get_node_or_null("DominantStateHandler")
 @onready var sprite: Sprite2D = get_node_or_null("Sprite")
+
+var dominant: Dominant = null
 
 func _ready() -> void:
 	if state_handler == null:
@@ -24,6 +25,9 @@ func _ready() -> void:
 
 	_on_state_changed(state_handler.current_state)
 
+func set_dominant(value: Dominant) -> void:
+	dominant = value
+	_on_state_changed(state_handler.current_state)
 
 func _on_state_changed(new_state: DominantStateHandler.DominantState) -> void:
 	if sprite == null:

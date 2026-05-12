@@ -11,12 +11,18 @@ class_name DominantRoot
 @export var worker_deck: Node
 
 @onready var state_handler: DominantStateHandler = get_node_or_null("DominantStateHandler")
+@onready var sprite_handler: DominantSpriteHandler = get_node_or_null("DominantSpriteHandler")
 
 var dominant: Dominant = null
 var has_triggered_round_2_draw := false
 
+var worker_union_buff_handler: WorkerUnionBuffHandler = null
+
 func _ready() -> void:
 	dominant = _get_dominant_from_database()
+
+	if sprite_handler != null:
+		sprite_handler.set_dominant(dominant)
 
 	if round_manager == null:
 		round_manager = _find_round_manager_recursive(get_tree().current_scene)
@@ -36,6 +42,11 @@ func _ready() -> void:
 		print("DominantRoot blocked: PhaseManager not found")
 		return
 
+	_find_worker_union_handler()
+
+	if not state_handler.state_changed.is_connected(_on_dominant_state_changed):
+		state_handler.state_changed.connect(_on_dominant_state_changed)
+
 	if not round_manager.round_changed.is_connected(_on_round_changed):
 		round_manager.round_changed.connect(_on_round_changed)
 
@@ -43,6 +54,9 @@ func _ready() -> void:
 		phase_manager.phase_changed.connect(_on_phase_changed)
 
 	_apply_round_state(round_manager.current_round)
+
+func _on_dominant_state_changed(_new_state: DominantStateHandler.DominantState) -> void:
+	_update_worker_union_state()
 
 func _on_round_changed(round_number: int) -> void:
 	_apply_round_state(round_number)
@@ -73,6 +87,39 @@ func _apply_round_state(round_number: int) -> void:
 		state_handler.set_state(DominantStateHandler.DominantState.DISABLED)
 	else:
 		state_handler.set_state(DominantStateHandler.DominantState.ACTIVE)
+
+	_update_worker_union_state()
+
+func _update_worker_union_state() -> void:
+	if worker_union_buff_handler == null:
+		return
+
+	var active := false
+
+	if dominant is WorkerUnionDominant:
+		if state_handler.current_state == DominantStateHandler.DominantState.ACTIVE:
+			active = true
+
+	worker_union_buff_handler.set_worker_union_active(active)
+
+func _find_worker_union_handler() -> void:
+	if worker_deck == null:
+		print("WorkerUnion blocked: worker_deck not assigned")
+		return
+
+	var draw_handler := _find_draw_handler_recursive(worker_deck)
+
+	if draw_handler == null:
+		print("WorkerUnion blocked: DeckDrawHandler not found in worker_deck")
+		return
+
+	worker_union_buff_handler = draw_handler.get_node_or_null("WorkerUnionBuffHandler") as WorkerUnionBuffHandler
+
+	if worker_union_buff_handler == null:
+		print("WorkerUnion blocked: WorkerUnionBuffHandler missing under DeckDrawHandler")
+		return
+
+	print("WorkerUnionBuffHandler linked")
 
 func draw_worker_cards_from_dominant(amount: int) -> void:
 	if amount <= 0:
