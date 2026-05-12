@@ -1,6 +1,8 @@
 extends Node
 class_name RoundManager
 
+signal round_changed(round_number: int)
+
 @export var turn_manager: TurnManager
 
 var current_round: int = 1
@@ -15,21 +17,27 @@ func _ready() -> void:
 			turn_manager.turn_player_changed.connect(_on_turn_player_changed)
 
 	print("ROUND STARTED: ", current_round)
+	round_changed.emit(current_round)
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo:
+		if event.keycode == KEY_P:
+			advance_round()
 
 func _on_turn_player_changed(_client_id: int, phase_name: String) -> void:
 	if phase_name == "Draw":
 		if not last_seen_draw_phase:
-			_print_round_changed()
+			print("ROUND DRAW PHASE SEEN: ", current_round)
 		last_seen_draw_phase = true
 	else:
 		last_seen_draw_phase = false
 
-func _print_round_changed() -> void:
-	print("ROUND CHANGED TO: ", current_round)
-
 func advance_round() -> void:
 	current_round += 1
+
 	print("ROUND CHANGED TO: ", current_round)
+
+	round_changed.emit(current_round)
 
 func _find_turn_manager() -> TurnManager:
 	var found := get_tree().get_first_node_in_group("turn_manager")

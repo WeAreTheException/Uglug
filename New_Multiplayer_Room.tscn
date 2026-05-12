@@ -28,7 +28,8 @@
 [ext_resource type="Script" path="res://BoardManager.gd" id="20_jgxe7"]
 [ext_resource type="PackedScene" uid="uid://l28s3hnlv4iy" path="res://Cards/NewCard.tscn" id="21_nxiui"]
 [ext_resource type="Script" path="res://CombatManager.gd" id="22_v2l0b"]
-[ext_resource type="Script" path="res://RoundManager.gd" id="24_s2s56"]
+[ext_resource type="Script" uid="uid://b4y3ff1x1rnm7" path="res://RoundManager.gd" id="24_s2s56"]
+[ext_resource type="PackedScene" uid="uid://dacxspbhp804b" path="res://Dominant/Dominant.tscn" id="25_2p7eh"]
 [ext_resource type="Texture2D" uid="uid://it6pftgf2ru4" path="res://References/Screenshot 2026-05-07 at 4.48.53 PM.png" id="27_ebn5f"]
 [ext_resource type="Texture2D" uid="uid://bkafxhbg4kvug" path="res://Sprites/CardSlot.png" id="28_e2c01"]
 [ext_resource type="PackedScene" path="res://Scissor.tscn" id="30_x7w1o"]
@@ -291,6 +292,10 @@ delay_between_sides = 0.5
 [node name="RoundManager" type="Node" parent="Managers" unique_id=716057623 node_paths=PackedStringArray("turn_manager")]
 script = ExtResource("24_s2s56")
 turn_manager = NodePath("../TurnManager")
+
+[node name="Dominant" parent="Managers" unique_id=455315921 node_paths=PackedStringArray("round_manager") instance=ExtResource("25_2p7eh")]
+position = Vector2(192, 512)
+round_manager = NodePath("../RoundManager")
 
 [node name="Hand&Deck" type="Node" parent="." unique_id=473256067]
 

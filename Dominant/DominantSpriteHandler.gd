@@ -1,30 +1,41 @@
-extends Node
+extends Node2D
 class_name DominantSpriteHandler
 
-@export var state_handler: DominantStateHandler
 @export var dominant: Dominant
 @export var disabled_texture: Texture2D
 
 @export_range(0.0, 1.0)
 var inactive_opacity: float = 0.35
 
-var sprite: Sprite2D = null
+@onready var state_handler: DominantStateHandler = get_parent().get_node_or_null("DominantStateHandler")
+
+@onready var disabled_sprite: Sprite2D = get_node_or_null("Disabled")
+@onready var active_sprite: Sprite2D = get_node_or_null("Active")
+@onready var inactive_sprite: Sprite2D = get_node_or_null("Inactive")
 
 func _ready() -> void:
-	sprite = _find_sprite_recursive(self)
-
-	if sprite == null:
-		print("DominantSpriteHandler blocked: Sprite2D not found under: ", name)
-		return
-
-	print("DominantSpriteHandler using sprite: ", sprite.name)
-
-	if state_handler == null:
-		state_handler = _find_state_handler_recursive(self)
-
 	if state_handler == null:
 		print("DominantSpriteHandler blocked: DominantStateHandler not found")
 		return
+
+	if disabled_sprite == null:
+		print("DominantSpriteHandler blocked: Disabled sprite not found")
+		return
+
+	if active_sprite == null:
+		print("DominantSpriteHandler blocked: Active sprite not found")
+		return
+
+	if inactive_sprite == null:
+		print("DominantSpriteHandler blocked: Inactive sprite not found")
+		return
+
+	if disabled_texture != null:
+		disabled_sprite.texture = disabled_texture
+
+	if dominant != null and dominant.active_texture != null:
+		active_sprite.texture = dominant.active_texture
+		inactive_sprite.texture = dominant.active_texture
 
 	if not state_handler.state_changed.is_connected(_on_state_changed):
 		state_handler.state_changed.connect(_on_state_changed)
@@ -32,51 +43,21 @@ func _ready() -> void:
 	_on_state_changed(state_handler.current_state)
 
 func _on_state_changed(new_state: DominantStateHandler.DominantState) -> void:
-	if sprite == null:
-		return
+	disabled_sprite.visible = false
+	active_sprite.visible = false
+	inactive_sprite.visible = false
 
 	match new_state:
 		DominantStateHandler.DominantState.DISABLED:
-			sprite.visible = true
-			sprite.modulate.a = 1.0
-
-			if disabled_texture != null:
-				sprite.texture = disabled_texture
+			disabled_sprite.visible = true
+			disabled_sprite.modulate.a = 1.0
 
 		DominantStateHandler.DominantState.ACTIVE:
-			sprite.visible = true
-			sprite.modulate.a = 1.0
-
-			if dominant != null and dominant.active_texture != null:
-				sprite.texture = dominant.active_texture
+			active_sprite.visible = true
+			active_sprite.modulate.a = 1.0
 
 		DominantStateHandler.DominantState.INACTIVE:
-			sprite.visible = true
-			sprite.modulate.a = inactive_opacity
-
-			if dominant != null and dominant.active_texture != null:
-				sprite.texture = dominant.active_texture
+			inactive_sprite.visible = true
+			inactive_sprite.modulate.a = inactive_opacity
 
 	print("DOMINANT SPRITE UPDATED")
-
-func _find_sprite_recursive(node: Node) -> Sprite2D:
-	if node is Sprite2D:
-		return node
-
-	for child in node.get_children():
-		var found := _find_sprite_recursive(child)
-		if found != null:
-			return found
-
-	return null
-
-func _find_state_handler_recursive(node: Node) -> DominantStateHandler:
-	if node is DominantStateHandler:
-		return node
-
-	for child in node.get_children():
-		var found := _find_state_handler_recursive(child)
-		if found != null:
-			return found
-
-	return null
