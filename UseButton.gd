@@ -8,10 +8,10 @@ var mutation_instance: MutationInstance = null
 
 func _ready() -> void:
 	mutation_instance = get_parent() as MutationInstance
-	set_usable(false)
+	set_usable(true)
 
 func _process(_delta: float) -> void:
-	set_usable(SelectHandler.selected_card != null)
+	set_usable(true)
 
 func set_usable(value: bool) -> void:
 	disabled = not value
@@ -25,22 +25,42 @@ func _pressed() -> void:
 		print("use button blocked: mutation_instance is null")
 		return
 
+	if mutation_instance.used:
+		return
+
 	if mutation_instance.mutation == null:
 		print("use button blocked: mutation is null")
 		return
 
-	var selected_card := SelectHandler.selected_card
+	var target_card := get_target_card()
 
-	if selected_card == null:
-		print("use button blocked: selected_card is null")
+	if target_card == null:
+		print("use button blocked: no selected card and no cards in hand")
 		return
+
+	mutation_instance.used = true
 
 	var board_manager := get_tree().current_scene.find_child("BoardManager", true, false) as BoardManager
 
 	if board_manager != null:
-		board_manager.request_add_mutation_to_card(selected_card, mutation_instance.mutation)
+		board_manager.request_add_mutation_to_card(target_card, mutation_instance.mutation)
 	else:
 		print("use button warning: BoardManager not found, applying mutation locally")
-		selected_card.add_additional_mutation(mutation_instance.mutation)
+		target_card.add_additional_mutation(mutation_instance.mutation)
 
 	mutation_instance.queue_free()
+
+func get_target_card() -> Card:
+	var selected_card := SelectHandler.selected_card
+
+	if selected_card != null:
+		return selected_card
+
+	if mutation_instance == null:
+		return null
+
+	if mutation_instance.target_hand == null:
+		print("use button blocked: target_hand is null")
+		return null
+
+	return mutation_instance.target_hand.get_random_card()

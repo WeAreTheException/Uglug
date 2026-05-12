@@ -4,8 +4,9 @@
 [ext_resource type="Script" uid="uid://cuhu2a3qwu5nv" path="res://MutationInstance.gd" id="1_75087"]
 [ext_resource type="Texture2D" uid="uid://b1soqhrvsu86i" path="res://Art/Ants/Aviant.png" id="3_h2fld"]
 
-[node name="MutationInstance" type="Node2D" unique_id=1349463859]
+[node name="MutationInstance" type="Node2D" unique_id=1349463859 node_paths=PackedStringArray("sprite")]
 script = ExtResource("1_75087")
+sprite = NodePath("Sprite2D")
 
 [node name="UseButton" type="Button" parent="." unique_id=1790421165]
 offset_left = 64.0

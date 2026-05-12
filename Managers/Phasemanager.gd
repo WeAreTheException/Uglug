@@ -5,6 +5,7 @@ signal phase_changed(phase_name: String)
 
 enum Phase {
 	DRAW,
+	BUFF,
 	PLACE,
 	ATTACK
 }
@@ -12,12 +13,14 @@ enum Phase {
 @export var turn_manager: TurnManager
 
 @export var draw_timer: Timer
+@export var buff_timer: Timer
 @export var place_timer: Timer
 @export var attack_timer: Timer
 
 @export var timer_label: Label
 
 @export var draw_timer_color: Color = Color.WHITE
+@export var buff_timer_color: Color = Color.YELLOW
 @export var player_one_place_color: Color = Color.WHITE
 @export var player_two_place_color: Color = Color.RED
 
@@ -27,6 +30,10 @@ func _ready() -> void:
 	if draw_timer != null:
 		draw_timer.one_shot = true
 		draw_timer.timeout.connect(_on_draw_timer_timeout)
+
+	if buff_timer != null:
+		buff_timer.one_shot = true
+		buff_timer.timeout.connect(_on_buff_timer_timeout)
 
 	if place_timer != null:
 		place_timer.one_shot = true
@@ -50,13 +57,17 @@ func _unhandled_input(event: InputEvent) -> void:
 
 			KEY_2:
 				if turn_manager != null:
-					turn_manager.request_start_place_phase()
+					turn_manager.request_step(Phase.BUFF)
 
 			KEY_3:
 				if turn_manager != null:
-					turn_manager.request_step(Phase.ATTACK)
+					turn_manager.request_start_place_phase()
 
 			KEY_4:
+				if turn_manager != null:
+					turn_manager.request_step(Phase.ATTACK)
+
+			KEY_5:
 				if turn_manager != null:
 					turn_manager.request_flip_attacking_first()
 
@@ -71,6 +82,8 @@ func set_phase(new_phase: Phase) -> void:
 
 	if current_phase == Phase.DRAW:
 		start_draw_timer()
+	elif current_phase == Phase.BUFF:
+		start_buff_timer()
 	elif current_phase != Phase.PLACE:
 		stop_visible_timers()
 
@@ -85,6 +98,20 @@ func start_draw_timer() -> void:
 	if timer_label != null:
 		timer_label.visible = true
 		timer_label.add_theme_color_override("font_color", draw_timer_color)
+
+	update_timer_label()
+
+func start_buff_timer() -> void:
+	stop_visible_timers()
+
+	if buff_timer == null:
+		return
+
+	buff_timer.start(buff_timer.wait_time)
+
+	if timer_label != null:
+		timer_label.visible = true
+		timer_label.add_theme_color_override("font_color", buff_timer_color)
 
 	update_timer_label()
 
@@ -116,6 +143,9 @@ func stop_place_timer() -> void:
 func stop_visible_timers() -> void:
 	if draw_timer != null:
 		draw_timer.stop()
+
+	if buff_timer != null:
+		buff_timer.stop()
 
 	if place_timer != null:
 		place_timer.stop()
@@ -159,12 +189,24 @@ func get_active_visible_timer() -> Timer:
 	if draw_timer != null and not draw_timer.is_stopped():
 		return draw_timer
 
+	if buff_timer != null and not buff_timer.is_stopped():
+		return buff_timer
+
 	if place_timer != null and not place_timer.is_stopped():
 		return place_timer
 
 	return null
 
 func _on_draw_timer_timeout() -> void:
+	if turn_manager == null:
+		return
+
+	if not GDSync.is_host():
+		return
+
+	turn_manager.request_step(Phase.BUFF)
+
+func _on_buff_timer_timeout() -> void:
 	if turn_manager == null:
 		return
 
@@ -186,6 +228,8 @@ func get_phase_name() -> String:
 	match current_phase:
 		Phase.DRAW:
 			return "Draw"
+		Phase.BUFF:
+			return "Buff"
 		Phase.PLACE:
 			return "Place"
 		Phase.ATTACK:
@@ -195,6 +239,9 @@ func get_phase_name() -> String:
 
 func is_draw_phase() -> bool:
 	return current_phase == Phase.DRAW
+
+func is_buff_phase() -> bool:
+	return current_phase == Phase.BUFF
 
 func is_place_phase() -> bool:
 	return current_phase == Phase.PLACE

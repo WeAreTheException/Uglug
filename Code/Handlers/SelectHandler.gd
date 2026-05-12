@@ -42,6 +42,21 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		try_place_into_slot_under_mouse()
 
+func can_select_hand_cards() -> bool:
+	if phase_manager == null:
+		return true
+
+	if phase_manager.is_buff_phase():
+		return true
+
+	if not phase_manager.is_place_phase():
+		return false
+
+	if phase_manager.turn_manager != null:
+		return phase_manager.turn_manager.can_local_player_place()
+
+	return true
+
 func can_use_place_logic() -> bool:
 	if phase_manager == null:
 		return true
@@ -55,8 +70,8 @@ func can_use_place_logic() -> bool:
 	return true
 
 func select_card(card: Card) -> void:
-	if not can_use_place_logic():
-		print("select_card blocked: not your placement turn")
+	if not can_select_hand_cards():
+		print("select_card blocked: not buff phase or your placement turn")
 		return
 
 	if card == null:
@@ -70,6 +85,10 @@ func select_card(card: Card) -> void:
 		print("select_card blocked: card is already on board")
 		return
 
+	if phase_manager != null and phase_manager.is_buff_phase():
+		try_select_hand_card_for_buff(card)
+		return
+
 	if pending_play_card != null and pending_play_card != card:
 		if sacrifice_handler != null:
 			if not sacrifice_handler.payment_completed and pending_play_card.current_cost > 0:
@@ -77,6 +96,33 @@ func select_card(card: Card) -> void:
 				return
 
 	try_select_hand_card(card)
+
+func try_select_hand_card_for_buff(card: Card) -> void:
+	if card == null:
+		return
+
+	if card.current_slot != null:
+		print("buff select blocked: card already in slot")
+		return
+
+	if pending_play_card == card:
+		clear_current_selection_visuals()
+		pending_play_card = null
+		SelectHandler.selected_card = null
+		print("buff selected card cleared")
+		return
+
+	clear_current_selection_visuals()
+
+	pending_play_card = card
+	SelectHandler.selected_card = card
+
+	if animation_handler != null:
+		animation_handler.show_card_selected(card)
+	else:
+		card.set_selected(true)
+
+	print("buff selected_card = ", card.card_name)
 
 func try_select_hand_card(card: Card) -> void:
 	if not can_use_place_logic():

@@ -47,3 +47,19 @@ func update_hand_positions(speed := -1.0) -> void:
 			card.hand_position = new_position
 
 		draw_animation.animate_card_to_position(card, new_position, speed)
+
+func get_random_card() -> Card:
+	var valid_cards: Array[Card] = []
+
+	for item in player_hand:
+		var card := item as Card
+
+		if card == null:
+			continue
+
+		valid_cards.append(card)
+
+	if valid_cards.is_empty():
+		return null
+
+	return valid_cards.pick_random()
