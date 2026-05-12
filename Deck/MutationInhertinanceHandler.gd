@@ -10,6 +10,7 @@ func _ready() -> void:
 	GDSync.expose_func(request_spawn_workers_from_host)
 	GDSync.expose_func(commit_spawn_worker_card)
 
+
 func spawn_workers_with_mutations(
 	owner_peer_id: int,
 	amount: int,
@@ -36,6 +37,7 @@ func spawn_workers_with_mutations(
 			inherited_mutation_paths
 		)
 
+
 func request_spawn_workers_from_host(
 	owner_peer_id: int,
 	amount: int,
@@ -46,6 +48,7 @@ func request_spawn_workers_from_host(
 
 	_host_spawn_workers(owner_peer_id, amount, inherited_mutation_paths)
 
+
 func _host_spawn_workers(
 	owner_peer_id: int,
 	amount: int,
@@ -54,11 +57,15 @@ func _host_spawn_workers(
 	if draw_handler == null:
 		return
 
+	if draw_handler.deck == null:
+		print("MutationInhertitanceHandler blocked: draw_handler.deck is null")
+		return
+
 	for i in range(amount):
-		var data := draw_handler.pick_card_data()
+		var data: CardData = draw_handler.deck.draw_card_data()
 
 		if data == null:
-			print("MutationInhertitanceHandler blocked: worker card data missing")
+			print("MutationInhertitanceHandler blocked: worker real deck empty")
 			continue
 
 		var card_id: int = DeckDrawHandler.next_card_id
@@ -71,6 +78,7 @@ func _host_spawn_workers(
 			card_id,
 			inherited_mutation_paths
 		)
+
 
 func commit_spawn_worker_card(
 	owner_peer_id: int,

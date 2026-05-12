@@ -13,8 +13,14 @@ class_name DeckRoot
 @onready var deck: DeckCount = $DeckCount
 @onready var deck_view: DeckView = $DeckView
 @onready var draw_handler: DeckDrawHandler = $DeckDrawHandler
+@onready var card_database: CardDatabase = $CardDatabase
+
 
 func _ready() -> void:
+	if deck != null:
+		deck.card_database = card_database
+		deck.build_real_deck()
+
 	if input_listener != null:
 		input_listener.draw_handler = draw_handler
 
@@ -25,6 +31,7 @@ func _ready() -> void:
 
 	if draw_handler != null:
 		draw_handler.deck = deck
+		draw_handler.card_database = card_database
 		draw_handler.player_hand = player_hand
 		draw_handler.opponent_hand = opponent_hand
 		draw_handler.phase_manager = phase_manager

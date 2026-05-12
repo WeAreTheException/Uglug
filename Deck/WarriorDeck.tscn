@@ -31,7 +31,7 @@ name = "Antler"
 attack = 1
 cost = 1
 sprite = ExtResource("8_w60k8")
-deck_amount = 10
+deck_amount = 5
 base_mutations = Array[ExtResource("7_eu8gw")]([SubResource("Resource_w60k8")])
 metadata/_custom_type_script = "uid://duslcpxrhurv8"
 
@@ -46,6 +46,7 @@ name = "Pregnant"
 health = 2
 cost = 1
 sprite = ExtResource("13_0knip")
+deck_amount = 5
 base_mutations = Array[ExtResource("7_eu8gw")]([SubResource("Resource_rw1me")])
 metadata/_custom_type_script = "uid://duslcpxrhurv8"
 
@@ -61,7 +62,7 @@ attack = 1
 health = 2
 cost = 1
 sprite = ExtResource("14_x7m7j")
-deck_amount = 10
+deck_amount = 5
 base_mutations = Array[ExtResource("7_eu8gw")]([SubResource("Resource_00oes")])
 metadata/_custom_type_script = "uid://duslcpxrhurv8"
 
@@ -71,9 +72,9 @@ size = Vector2(174, 266)
 [node name="WarriorDeck" type="Node2D" unique_id=1069789393]
 script = ExtResource("1_x7m7j")
 
-[node name="DeckCount" type="Node" parent="." unique_id=58160234]
+[node name="DeckCount" type="Node" parent="." unique_id=58160234 node_paths=PackedStringArray("card_database")]
 script = ExtResource("2_n0yp5")
-total_cards = 10
+card_database = NodePath("../CardDatabase")
 card_scene = ExtResource("3_7lkv5")
 
 [node name="DeckDrawHandler" type="Node" parent="." unique_id=1995550717 node_paths=PackedStringArray("card_database")]
