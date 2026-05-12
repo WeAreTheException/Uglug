@@ -15,8 +15,6 @@ enum Owner {
 @export var additional_sigil_container: Node2D
 @export var combat_manager: CombatManager
 
-var additional_sigil_sprites: Array[Sprite2D] = []
-
 var card_owner: Owner = Owner.PLAYER
 
 var player_hand: Node = null
@@ -51,12 +49,12 @@ var state_machine: CardStateMachine = null
 var attack_handler: AttackHandler = null
 var hurt_handler: HurtHandler = null
 var die_handler: DieHandler = null
+var mutation_handler: MutationHandler = null
 
 func _ready() -> void:
 	add_to_group("cards")
 
-	cache_sigil_nodes()
-	hide_additional_sigil()
+	mutation_handler = get_node_or_null("MutationHandler") as MutationHandler
 
 	state_machine = get_node_or_null("CardStateMachine") as CardStateMachine
 	attack_handler = get_node_or_null("CardStateMachine/Attack") as AttackHandler
@@ -76,37 +74,9 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	update_sacrifice_hint(delta)
 
-func cache_sigil_nodes() -> void:
-	additional_sigil_sprites.clear()
-
-	if additional_sigil_container == null:
-		print("additional_sigil_container is null on ", card_name)
-		return
-
-	var found := additional_sigil_container.find_children("*", "Sprite2D", true, false)
-
-	for node in found:
-		var sprite := node as Sprite2D
-
-		if sprite != null:
-			additional_sigil_sprites.append(sprite)
-
-	print("cached ", additional_sigil_sprites.size(), " additional sigil sprites on ", card_name)
-
-func hide_additional_sigil() -> void:
-	if additional_sigil_container != null:
-		additional_sigil_container.visible = true
-
-	for sprite in additional_sigil_sprites:
-		if sprite != null:
-			sprite.visible = false
-			sprite.z_index = 100
-
 func setup_card(data: CardData) -> void:
 	if data == null:
 		return
-
-	cache_sigil_nodes()
 
 	card_name = data.name
 	current_attack = data.attack
@@ -114,25 +84,63 @@ func setup_card(data: CardData) -> void:
 	current_cost = data.cost
 	current_worth = data.worth
 
-	base_mutations = data.base_mutations.duplicate()
-	additional_mutations = []
-
-	update_sigils()
+	if mutation_handler != null:
+		mutation_handler.setup_from_card_data(data)
+	else:
+		base_mutations = data.base_mutations.duplicate()
+		additional_mutations = []
 
 	if stats != null:
 		stats.setup_from_card_data(data)
 
 func add_additional_mutation(mutation: Mutation) -> void:
+	if mutation_handler != null:
+		mutation_handler.add_additional_mutation(mutation)
+		return
+
 	if mutation == null:
 		return
 
 	additional_mutations.append(mutation)
-
-	update_sigils()
-
 	print(card_name, " gained mutation")
 
+func add_additional_mutation_from_path(mutation_path: String) -> void:
+	if mutation_handler != null:
+		mutation_handler.add_additional_mutation_from_path(mutation_path)
+		return
+
+	if mutation_path == "":
+		return
+
+	var mutation := load(mutation_path) as Mutation
+
+	if mutation == null:
+		print("add mutation blocked: could not load ", mutation_path)
+		return
+
+	add_additional_mutation(mutation)
+
+func get_additional_mutation_paths() -> Array[String]:
+	if mutation_handler != null:
+		return mutation_handler.get_additional_mutation_paths()
+
+	var paths: Array[String] = []
+
+	for mutation in additional_mutations:
+		if mutation == null:
+			continue
+
+		if mutation.resource_path == "":
+			continue
+
+		paths.append(mutation.resource_path)
+
+	return paths
+
 func get_all_mutations() -> Array[Mutation]:
+	if mutation_handler != null:
+		return mutation_handler.get_all_mutations()
+
 	var combined: Array[Mutation] = []
 
 	for mutation in base_mutations:
@@ -146,78 +154,8 @@ func get_all_mutations() -> Array[Mutation]:
 	return combined
 
 func update_sigils() -> void:
-	update_base_sigils()
-	update_additional_sigil()
-
-func update_base_sigils() -> void:
-	if base_sigil_container == null:
-		return
-
-	for child in base_sigil_container.get_children():
-		child.queue_free()
-
-	if base_mutations.size() <= 0:
-		return
-
-	var spacing := 36.0
-	var start_x := -((base_mutations.size() - 1) * spacing) / 2.0
-
-	for i in range(base_mutations.size()):
-		var mutation := base_mutations[i]
-
-		if mutation == null:
-			continue
-
-		if mutation.sigil_texture == null:
-			continue
-
-		var sigil := Sprite2D.new()
-
-		sigil.texture = mutation.sigil_texture
-		sigil.position = Vector2(start_x + (i * spacing), 0)
-		sigil.z_index = 50
-
-		base_sigil_container.add_child(sigil)
-
-func update_additional_sigil() -> void:
-	cache_sigil_nodes()
-
-	if additional_sigil_container == null:
-		print("additional_sigil_container missing on ", card_name)
-		return
-
-	additional_sigil_container.visible = true
-
-	if additional_sigil_sprites.size() <= 0:
-		print("no additional sigil sprites found on ", card_name)
-		return
-
-	for sprite in additional_sigil_sprites:
-		if sprite != null:
-			sprite.visible = false
-
-	var max_count: int = min(additional_mutations.size(), additional_sigil_sprites.size())
-
-	for i in range(max_count):
-		var mutation := additional_mutations[i]
-
-		if mutation == null:
-			continue
-
-		if mutation.sigil_texture == null:
-			continue
-
-		var sprite := additional_sigil_sprites[i]
-
-		if sprite == null:
-			continue
-
-		sprite.texture = mutation.sigil_texture
-		sprite.visible = true
-		sprite.z_index = 100
-
-	if additional_mutations.size() > additional_sigil_sprites.size():
-		print(card_name, " has more additional mutations than sprite slots")
+	if mutation_handler != null:
+		mutation_handler.update_sigils()
 
 func get_main_sprite() -> Sprite2D:
 	var found := find_children("*", "Sprite2D", true, false)
@@ -249,11 +187,7 @@ func take_damage(amount: int, attacker: Card = null) -> void:
 	if stats != null:
 		stats.update_health(current_health)
 
-	for mutation in base_mutations:
-		if mutation != null:
-			mutation.on_damaged(self, attacker, amount)
-
-	for mutation in additional_mutations:
+	for mutation in get_all_mutations():
 		if mutation != null:
 			mutation.on_damaged(self, attacker, amount)
 
@@ -274,11 +208,7 @@ func kill() -> void:
 	if stats != null:
 		stats.update_health(current_health)
 
-	for mutation in base_mutations:
-		if mutation != null:
-			mutation.on_death(self)
-
-	for mutation in additional_mutations:
+	for mutation in get_all_mutations():
 		if mutation != null:
 			mutation.on_death(self)
 
