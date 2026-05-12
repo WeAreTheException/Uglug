@@ -194,6 +194,13 @@ func take_damage(amount: int, attacker: Card = null) -> void:
 	if current_health <= 0:
 		kill()
 
+func discard() -> void:
+	if current_slot != null:
+		current_slot.clear_card()
+		current_slot = null
+
+	queue_free()
+	
 func kill() -> void:
 	if die_handler != null:
 		die_handler.die()
