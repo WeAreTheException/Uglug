@@ -6,6 +6,7 @@ signal turn_player_changed(client_id: int, phase_name: String)
 
 @export var phase_manager: PhaseManager
 @export var combat_manager: CombatManager
+@export var round_manager: RoundManager
 
 var player_one_id: int = -1
 var player_two_id: int = -1
@@ -218,6 +219,9 @@ func _run_attack_flow() -> void:
 	attack_flow_running = false
 
 	flip_attack_order_after_round()
+
+	if round_manager != null:
+		round_manager.advance_round()
 
 	run_step(PhaseManager.Phase.DRAW, current_first_id)
 
