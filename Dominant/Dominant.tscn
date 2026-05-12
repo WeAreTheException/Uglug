@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://dacxspbhp804b"]
+
+[ext_resource type="Script" uid="uid://tomj54iy85iv" path="res://Dominant/DominantStateHandler.gd" id="1_qr2b7"]
+[ext_resource type="Script" uid="uid://bxtji084nknhf" path="res://Dominant/DominantSpriteHandler.gd" id="2_1vp2a"]
+[ext_resource type="Texture2D" uid="uid://calki5jjktjaf" path="res://Art/Sergio.jpg" id="3_1vp2a"]
+[ext_resource type="Texture2D" uid="uid://brw577e6u1rp8" path="res://Art/Untitled-1.png" id="4_axtrk"]
+[ext_resource type="Texture2D" uid="uid://d1ypj3toan6r1" path="res://Art/Blood.png" id="5_evcwt"]
+
+[node name="Dominant" type="Node2D" unique_id=455315921]
+
+[node name="DominantStateHandler" type="Node" parent="." unique_id=166241586]
+script = ExtResource("1_qr2b7")
+
+[node name="DominantSpriteHandler" type="Node" parent="." unique_id=1824598922 node_paths=PackedStringArray("state_handler")]
+script = ExtResource("2_1vp2a")
+state_handler = NodePath("../DominantStateHandler")
+
+[node name="Disabled" type="Sprite2D" parent="DominantSpriteHandler" unique_id=1209735746]
+visible = false
+position = Vector2(128, 128.00006)
+scale = Vector2(0.11851852, 0.08888884)
+texture = ExtResource("3_1vp2a")
+metadata/_edit_lock_ = true
+
+[node name="Active" type="Sprite2D" parent="DominantSpriteHandler" unique_id=1848431372]
+position = Vector2(128.00003, 128)
+scale = Vector2(0.13333334, 0.23703703)
+texture = ExtResource("4_axtrk")
+metadata/_edit_lock_ = true
+
+[node name="Inactive" type="Sprite2D" parent="DominantSpriteHandler" unique_id=1423353870]
+position = Vector2(127.99999, 127.99999)
+scale = Vector2(1.9104477, 1.7297298)
+texture = ExtResource("5_evcwt")
+metadata/_edit_lock_ = true
