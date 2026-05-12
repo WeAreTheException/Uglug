@@ -21,6 +21,7 @@
 [ext_resource type="Script" uid="uid://d0qu3q360kdsl" path="res://Code/States/CardInputReciever.gd" id="11_2w08q"]
 [ext_resource type="Script" uid="uid://ro02870urhpb" path="res://Code/States/CardStateMachine.gd" id="12_lsojp"]
 [ext_resource type="Texture2D" uid="uid://cgs5k6p3mggyf" path="res://Art/Ants/AntSprite.png" id="18_dm30q"]
+[ext_resource type="Script" uid="uid://cfvsqn441hgwq" path="res://Cards/CardStats.gd" id="22_koaue"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
 size = Vector2(176, 270)
@@ -162,3 +163,7 @@ texture = ExtResource("2_sphwu")
 position = Vector2(-64, 32)
 scale = Vector2(0.128, 0.12799999)
 texture = ExtResource("2_sphwu")
+
+[node name="CardStats" type="Node" parent="." unique_id=1956418628 node_paths=PackedStringArray("stats_visual")]
+script = ExtResource("22_koaue")
+stats_visual = NodePath("../Stats")

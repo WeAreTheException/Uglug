@@ -8,15 +8,42 @@ enum Owner {
 
 @export var input_listener: CardInputListener
 @export var select_handler: SelectHandler
-@export var stats: Stats
+@export var card_stats: CardStats
 @export var test_data: CardData
 @export var battle_scale: BattleScale
 @export var base_sigil_container: Node2D
 @export var additional_sigil_container: Node2D
 @export var combat_manager: CombatManager
 
-var card_owner: Owner = Owner.PLAYER
+var current_attack: int:
+	get:
+		return card_stats.current_attack if card_stats != null else 0
+	set(value):
+		if card_stats != null:
+			card_stats.set_attack(value)
 
+var current_health: int:
+	get:
+		return card_stats.current_health if card_stats != null else 0
+	set(value):
+		if card_stats != null:
+			card_stats.set_health(value)
+
+var current_cost: int:
+	get:
+		return card_stats.current_cost if card_stats != null else 0
+	set(value):
+		if card_stats != null:
+			card_stats.set_cost(value)
+
+var current_worth: int:
+	get:
+		return card_stats.current_worth if card_stats != null else 0
+	set(value):
+		if card_stats != null:
+			card_stats.set_worth(value)
+
+var card_owner: Owner = Owner.PLAYER
 var player_hand: Node = null
 var current_slot: NewSlots = null
 var overlapping_slot: NewSlots = null
@@ -28,11 +55,6 @@ var owning_peer_id: int = 0
 
 var is_hovered: bool = false
 var is_selected: bool = false
-
-var current_attack: int = 0
-var current_health: int = 0
-var current_cost: int = 0
-var current_worth: int = 0
 
 var base_mutations: Array[Mutation] = []
 var additional_mutations: Array[Mutation] = []
@@ -53,6 +75,9 @@ var mutation_handler: MutationHandler = null
 
 func _ready() -> void:
 	add_to_group("cards")
+
+	if card_stats == null:
+		card_stats = get_node_or_null("CardStats") as CardStats
 
 	mutation_handler = get_node_or_null("MutationHandler") as MutationHandler
 
@@ -79,19 +104,15 @@ func setup_card(data: CardData) -> void:
 		return
 
 	card_name = data.name
-	current_attack = data.attack
-	current_health = data.health
-	current_cost = data.cost
-	current_worth = data.worth
+
+	if card_stats != null:
+		card_stats.setup_from_card_data(data)
 
 	if mutation_handler != null:
 		mutation_handler.setup_from_card_data(data)
 	else:
 		base_mutations = data.base_mutations.duplicate()
 		additional_mutations = []
-
-	if stats != null:
-		stats.setup_from_card_data(data)
 
 func add_additional_mutation(mutation: Mutation) -> void:
 	if mutation_handler != null:
@@ -179,13 +200,8 @@ func take_damage(amount: int, attacker: Card = null) -> void:
 		hurt_handler.take_damage(amount, attacker)
 		return
 
-	current_health -= amount
-
-	if current_health < 0:
-		current_health = 0
-
-	if stats != null:
-		stats.update_health(current_health)
+	if card_stats != null:
+		card_stats.take_damage(amount)
 
 	for mutation in get_all_mutations():
 		if mutation != null:
@@ -200,7 +216,7 @@ func discard() -> void:
 		current_slot = null
 
 	queue_free()
-	
+
 func kill() -> void:
 	if die_handler != null:
 		die_handler.die()
@@ -211,9 +227,6 @@ func kill() -> void:
 
 	death_processed = true
 	current_health = 0
-
-	if stats != null:
-		stats.update_health(current_health)
 
 	for mutation in get_all_mutations():
 		if mutation != null:
