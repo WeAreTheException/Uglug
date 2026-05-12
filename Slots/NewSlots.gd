@@ -1,6 +1,8 @@
 extends Area2D
 class_name NewSlots
 
+signal slot_clicked(slot: NewSlots)
+
 enum SlotOwner {
 	PLAYER,
 	OPPONENT
@@ -24,6 +26,9 @@ var _flash_tween: Tween = null
 
 
 func _ready() -> void:
+	add_to_group("slots")
+	input_pickable = true
+
 	if slot_visual == null:
 		slot_visual = get_node_or_null("SlotVisual") as CanvasItem
 
@@ -32,6 +37,12 @@ func _ready() -> void:
 		_base_scale = slot_visual.scale
 	else:
 		print("NewSlots warning: SlotVisual missing on ", name)
+
+
+func _input_event(viewport, event, shape_idx) -> void:
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+			slot_clicked.emit(self)
 
 
 func is_empty() -> bool:
