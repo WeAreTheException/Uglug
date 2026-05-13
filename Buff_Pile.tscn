@@ -2,13 +2,21 @@
 
 [ext_resource type="Script" uid="uid://cbd4f43ddcg3k" path="res://BuffPileButton.gd" id="1_g5o64"]
 [ext_resource type="PackedScene" uid="uid://cqf5jbfh1y1ul" path="res://Mutation_Instance.tscn" id="2_gg26q"]
+[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Mutations/Mutation.gd" id="3_31rnl"]
+[ext_resource type="Script" uid="uid://djtnl5koe1f0x" path="res://BuffDatabase.gd" id="3_f8g5j"]
+[ext_resource type="Resource" uid="uid://bvjhx37xius1c" path="res://Mutations/PregnAnt.tres" id="6_nvumm"]
+[ext_resource type="Resource" uid="uid://cd6q56i51qkgo" path="res://Mutations/Flying.tres" id="7_qsuhv"]
 
 [node name="BuffPile" type="Button" unique_id=1953419234 node_paths=PackedStringArray("spawn_anchor")]
 offset_right = 512.0
 offset_bottom = 512.0
 script = ExtResource("1_g5o64")
-spawned_button_scene = ExtResource("2_gg26q")
-spawn_anchor = NodePath("BuffSpawnAnchor")
+mutation_scene = ExtResource("2_gg26q")
+spawn_anchor = NodePath("BuffInstanceSpawnAnchor")
 
-[node name="BuffSpawnAnchor" type="Node2D" parent="." unique_id=346133918]
-position = Vector2(768, 512)
+[node name="BuffDatabase" type="Node" parent="." unique_id=1891519461]
+script = ExtResource("3_f8g5j")
+starting_mutations = Array[ExtResource("3_31rnl")]([ExtResource("7_qsuhv"), ExtResource("6_nvumm"), ExtResource("7_qsuhv")])
+
+[node name="BuffInstanceSpawnAnchor" type="Node2D" parent="." unique_id=346133918]
+position = Vector2(1024, 256)

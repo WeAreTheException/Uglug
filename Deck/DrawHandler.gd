@@ -62,7 +62,7 @@ func request_draw_from_host(requesting_peer_id: int) -> void:
 	_host_resolve_draw(requesting_peer_id)
 
 func _host_resolve_draw(drawer_peer_id: int) -> void:
-	var data := pick_card_data()
+	var data := deck.draw_card_data()
 	if data == null:
 		return
 
@@ -103,7 +103,7 @@ func _pregnant_host_spawn_workers(owner_peer_id: int, amount: int) -> void:
 		return
 
 	for i in range(amount):
-		var data := pick_card_data()
+		var data := deck.draw_card_data()
 		if data == null:
 			print("PregnAnt blocked: worker card data missing")
 			continue
@@ -174,10 +174,6 @@ func draw_specific_card_to_hand(
 		print("draw blocked: card data not found for ", card_name, " on ", get_deck_type_name())
 		return false
 
-	if not deck.consume_card():
-		print("draw blocked: deck is empty on ", get_deck_type_name())
-		return false
-
 	var new_card := deck.card_scene.instantiate() as Card
 
 	if new_card == null:
@@ -226,11 +222,38 @@ func get_card_data_by_name(card_name: String) -> CardData:
 
 	return null
 
-func pick_card_data() -> CardData:
-	if card_database == null:
-		return null
+func spawn_effect_card_to_hand(
+	owner_peer_id: int,
+	card_name: String,
+	card_id: int,
+	inherited_mutation_paths: Array[String] = []
+) -> void:
+	var spawned := _commit_draw_local(owner_peer_id, card_name, card_id)
 
-	if card_database.cards.is_empty():
-		return null
+	if not spawned:
+		return
 
-	return card_database.cards[randi() % card_database.cards.size()]
+	var target_hand: Node2D = player_hand
+
+	if int(GDSync.get_client_id()) != owner_peer_id:
+		target_hand = opponent_hand
+
+	if target_hand == null:
+		return
+
+	for child in target_hand.get_children():
+		var card := child as Card
+
+		if card == null:
+			continue
+
+		if card.multiplayer_card_id != card_id:
+			continue
+
+		for path in inherited_mutation_paths:
+			var mutation := load(path) as Mutation
+
+			if mutation != null:
+				card.add_additional_mutation(mutation)
+
+		return

@@ -11,9 +11,9 @@ enum Owner {
 @export var stats: Stats
 @export var test_data: CardData
 @export var battle_scale: BattleScale
-@export var sigil_container: Node2D
+@export var base_sigil_container: Node2D
+@export var additional_sigil_container: Node2D
 @export var combat_manager: CombatManager
-@export var worker_deck_draw_handler: DeckDrawHandler
 
 var card_owner: Owner = Owner.PLAYER
 
@@ -49,9 +49,12 @@ var state_machine: CardStateMachine = null
 var attack_handler: AttackHandler = null
 var hurt_handler: HurtHandler = null
 var die_handler: DieHandler = null
+var mutation_handler: MutationHandler = null
 
 func _ready() -> void:
 	add_to_group("cards")
+
+	mutation_handler = get_node_or_null("MutationHandler") as MutationHandler
 
 	state_machine = get_node_or_null("CardStateMachine") as CardStateMachine
 	attack_handler = get_node_or_null("CardStateMachine/Attack") as AttackHandler
@@ -81,22 +84,63 @@ func setup_card(data: CardData) -> void:
 	current_cost = data.cost
 	current_worth = data.worth
 
-	base_mutations = data.base_mutations.duplicate()
-	additional_mutations = []
-
-	update_sigils()
+	if mutation_handler != null:
+		mutation_handler.setup_from_card_data(data)
+	else:
+		base_mutations = data.base_mutations.duplicate()
+		additional_mutations = []
 
 	if stats != null:
 		stats.setup_from_card_data(data)
 
 func add_additional_mutation(mutation: Mutation) -> void:
+	if mutation_handler != null:
+		mutation_handler.add_additional_mutation(mutation)
+		return
+
 	if mutation == null:
 		return
 
 	additional_mutations.append(mutation)
-	update_sigils()
+	print(card_name, " gained mutation")
+
+func add_additional_mutation_from_path(mutation_path: String) -> void:
+	if mutation_handler != null:
+		mutation_handler.add_additional_mutation_from_path(mutation_path)
+		return
+
+	if mutation_path == "":
+		return
+
+	var mutation := load(mutation_path) as Mutation
+
+	if mutation == null:
+		print("add mutation blocked: could not load ", mutation_path)
+		return
+
+	add_additional_mutation(mutation)
+
+func get_additional_mutation_paths() -> Array[String]:
+	if mutation_handler != null:
+		return mutation_handler.get_additional_mutation_paths()
+
+	var paths: Array[String] = []
+
+	for mutation in additional_mutations:
+		if mutation == null:
+			continue
+
+		if mutation.resource_path == "":
+			continue
+
+		paths.append(mutation.resource_path)
+
+	return paths
 
 func get_all_mutations() -> Array[Mutation]:
+	if mutation_handler != null:
+		return mutation_handler.get_all_mutations()
+
 	var combined: Array[Mutation] = []
 
 	for mutation in base_mutations:
@@ -110,36 +154,8 @@ func get_all_mutations() -> Array[Mutation]:
 	return combined
 
 func update_sigils() -> void:
-	if sigil_container == null:
-		print("sigil blocked: sigil_container is null on ", card_name)
-		return
-
-	for child in sigil_container.get_children():
-		child.queue_free()
-
-	var all_mutations := get_all_mutations()
-
-	if all_mutations.size() <= 0:
-		return
-
-	var spacing := 36.0
-	var start_x := -((all_mutations.size() - 1) * spacing) / 2.0
-
-	for i in range(all_mutations.size()):
-		var mutation := all_mutations[i]
-
-		if mutation == null:
-			continue
-
-		if mutation.sigil_texture == null:
-			print("sigil blocked: mutation has no sigil_texture on ", card_name)
-			continue
-
-		var sigil := Sprite2D.new()
-		sigil.texture = mutation.sigil_texture
-		sigil.position = Vector2(start_x + (i * spacing), 0)
-
-		sigil_container.add_child(sigil)
+	if mutation_handler != null:
+		mutation_handler.update_sigils()
 
 func get_main_sprite() -> Sprite2D:
 	var found := find_children("*", "Sprite2D", true, false)
@@ -171,17 +187,20 @@ func take_damage(amount: int, attacker: Card = null) -> void:
 	if stats != null:
 		stats.update_health(current_health)
 
-	for mutation in base_mutations:
-		if mutation != null:
-			mutation.on_damaged(self, attacker, amount)
-
-	for mutation in additional_mutations:
+	for mutation in get_all_mutations():
 		if mutation != null:
 			mutation.on_damaged(self, attacker, amount)
 
 	if current_health <= 0:
 		kill()
 
+func discard() -> void:
+	if current_slot != null:
+		current_slot.clear_card()
+		current_slot = null
+
+	queue_free()
+	
 func kill() -> void:
 	if die_handler != null:
 		die_handler.die()
@@ -196,21 +215,10 @@ func kill() -> void:
 	if stats != null:
 		stats.update_health(current_health)
 
-	for mutation in base_mutations:
+	for mutation in get_all_mutations():
 		if mutation != null:
 			mutation.on_death(self)
 
-	for mutation in additional_mutations:
-		if mutation != null:
-			mutation.on_death(self)
-
-	if current_slot != null:
-		current_slot.clear_card()
-		current_slot = null
-
-	queue_free()
-
-func discard() -> void:
 	if current_slot != null:
 		current_slot.clear_card()
 		current_slot = null
@@ -303,36 +311,3 @@ func update_sacrifice_hint(delta: float) -> void:
 
 	sacrifice_hint_time += delta
 	rotation = sin(sacrifice_hint_time * 8.0) * deg_to_rad(3.0)
-
-func draw_worker_cards(amount: int) -> void:
-	var worker_draw_handler := find_worker_deck_draw_handler()
-
-	if worker_draw_handler == null:
-		print("draw worker blocked: could not find worker DeckDrawHandler")
-		return
-
-	for i in range(amount):
-		worker_draw_handler.draw_player_card()
-
-func find_worker_deck_draw_handler() -> DeckDrawHandler:
-	var scene := get_tree().current_scene
-
-	if scene == null:
-		return null
-
-	return find_worker_deck_draw_handler_recursive(scene)
-
-func find_worker_deck_draw_handler_recursive(node: Node) -> DeckDrawHandler:
-	var handler := node as DeckDrawHandler
-
-	if handler != null:
-		if handler.deck_type == DeckDrawHandler.DeckType.WORKER:
-			return handler
-
-	for child in node.get_children():
-		var found := find_worker_deck_draw_handler_recursive(child)
-
-		if found != null:
-			return found
-
-	return null

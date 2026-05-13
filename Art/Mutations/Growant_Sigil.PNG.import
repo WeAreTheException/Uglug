@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dn6576awctsek"
-path="res://.godot/imported/SpikyArmorSigil.PNG-b4749d99cc233c07fa8a70649141618f.ctex"
+uid="uid://daqg7iunk8c6t"
+path="res://.godot/imported/Growant_Sigil.PNG-1b201fe9b6324d5d66556fe62b8402ca.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Art/Quirks/SpikyArmorSigil.PNG"
-dest_files=["res://.godot/imported/SpikyArmorSigil.PNG-b4749d99cc233c07fa8a70649141618f.ctex"]
+source_file="res://Art/Mutations/Growant_Sigil.PNG"
+dest_files=["res://.godot/imported/Growant_Sigil.PNG-1b201fe9b6324d5d66556fe62b8402ca.ctex"]
 
 [params]
 

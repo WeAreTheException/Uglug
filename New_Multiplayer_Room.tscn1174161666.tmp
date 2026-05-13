@@ -1,0 +1,354 @@
+[gd_scene format=3 uid="uid://dpx20viu4na86"]
+
+[ext_resource type="Script" uid="uid://bxbqihkit6rgo" path="res://Managers/Phasemanager.gd" id="1_hco1x"]
+[ext_resource type="Script" path="res://PlayerNameSizing.gd" id="1_npv2n"]
+[ext_resource type="PackedScene" uid="uid://c8mekq0tyuadn" path="res://Slots/NewSlots.tscn" id="1_phlo6"]
+[ext_resource type="Script" uid="uid://cwireilh2n5g3" path="res://TurnOrderLabel.gd" id="1_vaqi8"]
+[ext_resource type="Script" uid="uid://ukqcaw2u1h1i" path="res://MultiplayerManager.gd" id="2_gdibd"]
+[ext_resource type="Texture2D" uid="uid://kwpbjydk33rh" path="res://Art/P1_AttackOrder.png" id="2_m7shj"]
+[ext_resource type="Script" uid="uid://dgiphjbgc46k0" path="res://Phase/AttackFirstSlotLabel.gd" id="2_ykjx8"]
+[ext_resource type="Script" uid="uid://bfxl8a4iwbxde" path="res://PhaseLabel.gd" id="2_yxvsl"]
+[ext_resource type="Script" uid="uid://bneanu1h8dlxb" path="res://TurnOrderManager.gd" id="3_npu2i"]
+[ext_resource type="Texture2D" uid="uid://bqvhbvonl6m57" path="res://References/maxresdefault.jpg" id="6_cpbwq"]
+[ext_resource type="Script" uid="uid://bg4foc8mrsyhd" path="res://Phase/AttackOrderSpriteHandler.gd" id="8_cymfb"]
+[ext_resource type="Texture2D" uid="uid://brsmr8tj8tbtg" path="res://Art/P2_AttackOrder.png" id="10_r8uo6"]
+[ext_resource type="Script" uid="uid://cftnkry62jh5d" path="res://SelectAnimation.gd" id="10_rs0lp"]
+[ext_resource type="PackedScene" uid="uid://bif5q1mjmf8e5" path="res://PlayerHand/PlayerHand.tscn" id="11_hkqe4"]
+[ext_resource type="PackedScene" uid="uid://ctp48eusxy1qn" path="res://Deck/WarriorDeck.tscn" id="12_f7lcf"]
+[ext_resource type="Script" uid="uid://jv8gks4tscbj" path="res://SacrificeAnimation.gd" id="12_rvenm"]
+[ext_resource type="PackedScene" uid="uid://bxghpl6h2pl6u" path="res://Deck/WorkerDeck.tscn" id="13_27s8c"]
+[ext_resource type="Script" uid="uid://clgbwnniuqm7g" path="res://Code/Handlers/SelectHandler.gd" id="14_f7lcf"]
+[ext_resource type="Script" uid="uid://b730hf2p1uwqw" path="res://TuggaManager.gd" id="14_oiy75"]
+[ext_resource type="Script" uid="uid://bqtoohcvy57vk" path="res://SacrificeHandler.gd" id="15_27s8c"]
+[ext_resource type="Texture2D" uid="uid://b0lmg14eavi20" path="res://Art/Tugga/P2_Tugga_Full.png" id="16_mo65u"]
+[ext_resource type="Texture2D" uid="uid://dydn83tce2knf" path="res://Art/Tugga/P1_Tugga_Fulll.png" id="17_jgxe7"]
+[ext_resource type="Script" uid="uid://dsifsjjn64ofo" path="res://Multiplayer/TuggaManager.gd" id="18_ebxid"]
+[ext_resource type="Texture2D" uid="uid://2pljvs41hqvt" path="res://Art/Tugga/P1_Tugga_Emptyl.png" id="19_7p785"]
+[ext_resource type="Texture2D" uid="uid://c3bh4b5ajh8a1" path="res://Art/Tugga/P2_Tugga_Emptypng.png" id="20_7p785"]
+[ext_resource type="Script" uid="uid://2atv8mfbeu07" path="res://BoardManager.gd" id="20_jgxe7"]
+[ext_resource type="PackedScene" uid="uid://l28s3hnlv4iy" path="res://Cards/NewCard.tscn" id="21_nxiui"]
+[ext_resource type="Script" uid="uid://ccnjnfxdpodn8" path="res://CombatManager.gd" id="22_v2l0b"]
+[ext_resource type="Texture2D" uid="uid://it6pftgf2ru4" path="res://References/Screenshot 2026-05-07 at 4.48.53 PM.png" id="27_ebn5f"]
+[ext_resource type="Texture2D" uid="uid://bkafxhbg4kvug" path="res://Sprites/CardSlot.png" id="28_e2c01"]
+[ext_resource type="PackedScene" path="res://Scissor.tscn" id="30_x7w1o"]
+
+[node name="NewMuliplayer_Room" type="Node" unique_id=462638439]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=698829700]
+layer = 100
+
+[node name="Labels" type="Node" parent="." unique_id=1220800706]
+
+[node name="PlayerLabels" type="Node2D" parent="Labels" unique_id=1533272939]
+
+[node name="PlayerName" type="Label" parent="Labels/PlayerLabels" unique_id=1890505661]
+offset_left = 1008.0
+offset_top = 32.0
+offset_right = 1104.0
+offset_bottom = 82.0
+theme_override_font_sizes/font_size = 24
+text = "Trex"
+horizontal_alignment = 1
+vertical_alignment = 1
+clip_text = true
+text_overrun_behavior = 3
+script = ExtResource("1_npv2n")
+
+[node name="EnemyLabels" type="Node2D" parent="Labels" unique_id=1690967513]
+
+[node name="EnemyName" type="Label" parent="Labels/EnemyLabels" unique_id=33840969]
+offset_left = 784.0
+offset_top = 32.0
+offset_right = 880.0
+offset_bottom = 82.0
+theme_override_font_sizes/font_size = 24
+text = "Sergio"
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("1_npv2n")
+
+[node name="AttackingFirstLabel" type="Label" parent="Labels" unique_id=1158761306 node_paths=PackedStringArray("turn_manager", "visibility_timer")]
+z_index = 2
+offset_left = 416.0
+offset_top = 256.0
+offset_right = 1440.0
+offset_bottom = 832.0
+theme_override_font_sizes/font_size = 120
+text = "Mao Goes First"
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("1_vaqi8")
+turn_manager = NodePath("../../Managers/TurnManager")
+visibility_timer = NodePath("AttackFirstLabelTimer")
+
+[node name="AttackFirstLabelTimer" type="Timer" parent="Labels/AttackingFirstLabel" unique_id=250586227]
+wait_time = 2.0
+
+[node name="Background Darken" type="CanvasLayer" parent="Labels/AttackingFirstLabel" unique_id=718699754]
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="Labels/AttackingFirstLabel/Background Darken" unique_id=382273033]
+z_index = 1
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0, 0, 0, 0.49803922)
+
+[node name="PhaseLabel" type="Label" parent="Labels" unique_id=229779506 node_paths=PackedStringArray("phase_manager")]
+offset_left = 880.0
+offset_top = 32.0
+offset_right = 1008.0
+offset_bottom = 82.0
+theme_override_font_sizes/font_size = 36
+text = "Attack"
+horizontal_alignment = 1
+vertical_alignment = 2
+script = ExtResource("2_yxvsl")
+phase_manager = NodePath("../../Managers/PhaseManager")
+
+[node name="Timer" type="Label" parent="Labels" unique_id=181246000]
+offset_left = 896.0
+offset_top = 82.0
+offset_right = 992.0
+offset_bottom = 121.0
+theme_override_font_sizes/font_size = 28
+text = "1:00"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="PlaceTimer" type="Timer" parent="Labels/Timer" unique_id=866131047]
+wait_time = 45.0
+
+[node name="DrawTimer" type="Timer" parent="Labels/Timer" unique_id=1272379719]
+wait_time = 10.0
+
+[node name="AttackTimer" type="Timer" parent="Labels/Timer" unique_id=1988065957]
+wait_time = 2.0
+
+[node name="AttackFirstSlotLabels" type="Node" parent="Labels" unique_id=1548268673 node_paths=PackedStringArray("player_one_label", "player_two_label")]
+script = ExtResource("2_ykjx8")
+player_one_label = NodePath("P1Label")
+player_two_label = NodePath("P2Label")
+
+[node name="P1Label" type="Label" parent="Labels/AttackFirstSlotLabels" unique_id=1072540119]
+offset_left = 1370.0
+offset_top = 594.0
+offset_right = 1612.0
+offset_bottom = 735.0
+theme_override_font_sizes/font_size = 50
+text = "Attacking 
+First"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="P2Label" type="Label" parent="Labels/AttackFirstSlotLabels" unique_id=1582942877]
+offset_left = 1370.0
+offset_top = 156.0
+offset_right = 1612.0
+offset_bottom = 297.0
+theme_override_font_sizes/font_size = 50
+text = "Attacking 
+First"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Managers" type="Node" parent="." unique_id=5384537]
+
+[node name="PhaseManager" type="Node" parent="Managers" unique_id=822521768 node_paths=PackedStringArray("turn_manager", "draw_timer", "place_timer", "attack_timer", "timer_label")]
+script = ExtResource("1_hco1x")
+turn_manager = NodePath("../TurnManager")
+draw_timer = NodePath("../../Labels/Timer/DrawTimer")
+place_timer = NodePath("../../Labels/Timer/PlaceTimer")
+attack_timer = NodePath("../../Labels/Timer/AttackTimer")
+timer_label = NodePath("../../Labels/Timer")
+
+[node name="TurnManager" type="Node" parent="Managers" unique_id=1986901783 node_paths=PackedStringArray("phase_manager", "combat_manager")]
+script = ExtResource("3_npu2i")
+phase_manager = NodePath("../PhaseManager")
+combat_manager = NodePath("../CombatManager")
+
+[node name="MultiplayerManager" type="Node" parent="Managers" unique_id=2113897365 node_paths=PackedStringArray("player_name_label", "enemy_name_label")]
+script = ExtResource("2_gdibd")
+player_name_label = NodePath("../../Labels/PlayerLabels/PlayerName")
+enemy_name_label = NodePath("../../Labels/EnemyLabels/EnemyName")
+
+[node name="BoardManager" type="Node" parent="Managers" unique_id=755916807 node_paths=PackedStringArray("slots_root", "phase_manager")]
+script = ExtResource("20_jgxe7")
+slots_root = NodePath("../../Slots")
+card_scene = ExtResource("21_nxiui")
+phase_manager = NodePath("../PhaseManager")
+
+[node name="CombatManager" type="Node" parent="Managers" unique_id=1319232202 node_paths=PackedStringArray("slots_root", "turn_manager")]
+script = ExtResource("22_v2l0b")
+slots_root = NodePath("../../Slots")
+turn_manager = NodePath("../TurnManager")
+delay_between_attacks = 0.5
+delay_between_sides = 0.5
+
+[node name="Handlers" type="Node" parent="Managers" unique_id=616662030]
+
+[node name="TuggaHandler" type="Node" parent="Managers/Handlers" unique_id=1116993693]
+script = ExtResource("14_oiy75")
+
+[node name="TuggaUI" type="Sprite2D" parent="Managers/Handlers/TuggaHandler" unique_id=646403484 node_paths=PackedStringArray("tugga_handler", "player_one_slot_1", "player_one_slot_2", "player_one_slot_3", "player_one_slot_4", "player_one_slot_5", "player_two_slot_1", "player_two_slot_2", "player_two_slot_3", "player_two_slot_4", "player_two_slot_5")]
+script = ExtResource("18_ebxid")
+tugga_handler = NodePath("..")
+player_one_full_texture = ExtResource("16_mo65u")
+player_two_full_texture = ExtResource("17_jgxe7")
+player_one_slot_1 = NodePath("P1_Tugga_Empty/P1TuggaEmptyl")
+player_one_slot_2 = NodePath("P1_Tugga_Empty/P1TuggaEmptyl2")
+player_one_slot_3 = NodePath("P1_Tugga_Empty/P1TuggaEmptyl3")
+player_one_slot_4 = NodePath("P1_Tugga_Empty/P1TuggaEmptyl4")
+player_one_slot_5 = NodePath("P1_Tugga_Empty/P1TuggaEmptyl5")
+player_two_slot_1 = NodePath("P2_TuggaEmpty/P2TuggaEmptypng")
+player_two_slot_2 = NodePath("P2_TuggaEmpty/P2TuggaEmptypng2")
+player_two_slot_3 = NodePath("P2_TuggaEmpty/P2TuggaEmptypng3")
+player_two_slot_4 = NodePath("P2_TuggaEmpty/P2TuggaEmptypng4")
+player_two_slot_5 = NodePath("P2_TuggaEmpty/P2TuggaEmptypng5")
+metadata/_custom_type_script = "uid://dsifsjjn64ofo"
+
+[node name="P1_Tugga_Empty" type="Sprite2D" parent="Managers/Handlers/TuggaHandler/TuggaUI" unique_id=1304617037]
+
+[node name="P1TuggaEmptyl" type="Sprite2D" parent="Managers/Handlers/TuggaHandler/TuggaUI/P1_Tugga_Empty" unique_id=350829909]
+position = Vector2(752.5, 56.5)
+texture = ExtResource("19_7p785")
+
+[node name="P1TuggaEmptyl2" type="Sprite2D" parent="Managers/Handlers/TuggaHandler/TuggaUI/P1_Tugga_Empty" unique_id=1400993970]
+position = Vector2(720.5, 56.5)
+texture = ExtResource("19_7p785")
+
+[node name="P1TuggaEmptyl3" type="Sprite2D" parent="Managers/Handlers/TuggaHandler/TuggaUI/P1_Tugga_Empty" unique_id=1044010213]
+position = Vector2(688.5, 56.5)
+texture = ExtResource("19_7p785")
+
+[node name="P1TuggaEmptyl4" type="Sprite2D" parent="Managers/Handlers/TuggaHandler/TuggaUI/P1_Tugga_Empty" unique_id=1985321469]
+position = Vector2(656.5, 56.5)
+texture = ExtResource("19_7p785")
+
+[node name="P1TuggaEmptyl5" type="Sprite2D" parent="Managers/Handlers/TuggaHandler/TuggaUI/P1_Tugga_Empty" unique_id=2045553300]
+position = Vector2(624.5, 56.5)
+texture = ExtResource("19_7p785")
+
+[node name="P2_TuggaEmpty" type="Sprite2D" parent="Managers/Handlers/TuggaHandler/TuggaUI" unique_id=58710751]
+
+[node name="P2TuggaEmptypng" type="Sprite2D" parent="Managers/Handlers/TuggaHandler/TuggaUI/P2_TuggaEmpty" unique_id=1524984392]
+position = Vector2(1136.5, 56.5)
+texture = ExtResource("20_7p785")
+
+[node name="P2TuggaEmptypng2" type="Sprite2D" parent="Managers/Handlers/TuggaHandler/TuggaUI/P2_TuggaEmpty" unique_id=692001682]
+position = Vector2(1168.5, 56.5)
+texture = ExtResource("20_7p785")
+
+[node name="P2TuggaEmptypng3" type="Sprite2D" parent="Managers/Handlers/TuggaHandler/TuggaUI/P2_TuggaEmpty" unique_id=1290717767]
+position = Vector2(1200.5, 56.5)
+texture = ExtResource("20_7p785")
+
+[node name="P2TuggaEmptypng4" type="Sprite2D" parent="Managers/Handlers/TuggaHandler/TuggaUI/P2_TuggaEmpty" unique_id=920409487]
+position = Vector2(1232.5, 56.5)
+texture = ExtResource("20_7p785")
+
+[node name="P2TuggaEmptypng5" type="Sprite2D" parent="Managers/Handlers/TuggaHandler/TuggaUI/P2_TuggaEmpty" unique_id=1305404982]
+position = Vector2(1264.5, 56.5)
+texture = ExtResource("20_7p785")
+
+[node name="AttackOrderSpriteHandler" type="Node" parent="Managers/Handlers" unique_id=345904283 node_paths=PackedStringArray("turn_manager", "player_one_sprite", "player_two_sprite")]
+script = ExtResource("8_cymfb")
+turn_manager = NodePath("../../TurnManager")
+player_one_sprite = NodePath("P1AttackOrder")
+player_two_sprite = NodePath("P2AttackOrder")
+
+[node name="P2AttackOrder" type="Sprite2D" parent="Managers/Handlers/AttackOrderSpriteHandler" unique_id=1399297561]
+position = Vector2(960, 448)
+texture = ExtResource("10_r8uo6")
+
+[node name="P1AttackOrder" type="Sprite2D" parent="Managers/Handlers/AttackOrderSpriteHandler" unique_id=741321835]
+position = Vector2(960, 448)
+texture = ExtResource("2_m7shj")
+
+[node name="SelectHandler" type="Node" parent="Managers/Handlers" unique_id=1360695726 node_paths=PackedStringArray("slots_root", "sacrifice_handler", "phase_manager", "animation_handler", "board_manager")]
+script = ExtResource("14_f7lcf")
+slots_root = NodePath("../../../Slots")
+sacrifice_handler = NodePath("../SacrificeHandler")
+phase_manager = NodePath("../../PhaseManager")
+animation_handler = NodePath("SelectAnimation")
+board_manager = NodePath("../../BoardManager")
+
+[node name="SelectAnimation" type="Node" parent="Managers/Handlers/SelectHandler" unique_id=1915039610]
+script = ExtResource("10_rs0lp")
+
+[node name="SacrificeHandler" type="Node" parent="Managers/Handlers" unique_id=776371688 node_paths=PackedStringArray("player_hand", "phase_manager")]
+script = ExtResource("15_27s8c")
+player_hand = NodePath("../../../Hand&Deck/PlayerHand")
+phase_manager = NodePath("../../PhaseManager")
+metadata/_custom_type_script = "uid://bqtoohcvy57vk"
+
+[node name="SacrificeAnimation" type="Node" parent="Managers/Handlers/SacrificeHandler" unique_id=1154187561]
+script = ExtResource("12_rvenm")
+
+[node name="Hand&Deck" type="Node" parent="." unique_id=473256067]
+
+[node name="PlayerHand" parent="Hand&Deck" unique_id=2142011949 instance=ExtResource("11_hkqe4")]
+position = Vector2(922, 960)
+
+[node name="OpponentHand" parent="Hand&Deck" unique_id=269402124 instance=ExtResource("11_hkqe4")]
+position = Vector2(928, -96)
+
+[node name="WarriorDeck" parent="Hand&Deck" unique_id=1069789393 node_paths=PackedStringArray("player_hand", "opponent_hand", "phase_manager", "select_handler", "combat_manager") instance=ExtResource("12_f7lcf")]
+position = Vector2(1696, 352)
+player_hand = NodePath("../PlayerHand")
+opponent_hand = NodePath("../OpponentHand")
+phase_manager = NodePath("../../Managers/PhaseManager")
+select_handler = NodePath("../../Managers/Handlers/SelectHandler")
+combat_manager = NodePath("../../Managers/CombatManager")
+
+[node name="WorkerDeck" parent="Hand&Deck" unique_id=429916346 node_paths=PackedStringArray("player_hand", "opponent_hand", "phase_manager", "select_handler", "combat_manager") instance=ExtResource("13_27s8c")]
+position = Vector2(1696, 640)
+player_hand = NodePath("../PlayerHand")
+opponent_hand = NodePath("../OpponentHand")
+phase_manager = NodePath("../../Managers/PhaseManager")
+select_handler = NodePath("../../Managers/Handlers/SelectHandler")
+combat_manager = NodePath("../../Managers/CombatManager")
+
+[node name="Ref" type="Node" parent="." unique_id=2030852127]
+
+[node name="Overwtach" type="Sprite2D" parent="Ref" unique_id=2129313480]
+visible = false
+position = Vector2(960.0001, 527.99994)
+scale = Vector2(1.5, 1.4666666)
+texture = ExtResource("6_cpbwq")
+
+[node name="HandRef" type="Sprite2D" parent="Ref" unique_id=185652076]
+visible = false
+position = Vector2(966, 957)
+texture = ExtResource("27_ebn5f")
+
+[node name="JokerRef" type="Sprite2D" parent="Ref" unique_id=290771361]
+visible = false
+position = Vector2(380, 608)
+texture = ExtResource("28_e2c01")
+
+[node name="JokerRef2" type="Sprite2D" parent="Ref" unique_id=1563058551]
+visible = false
+position = Vector2(380, 288)
+texture = ExtResource("28_e2c01")
+
+[node name="Slots" type="Node2D" parent="." unique_id=1282402441]
+
+[node name="Lane4" parent="Slots" unique_id=1783533892 instance=ExtResource("1_phlo6")]
+position = Vector2(1280, 480)
+lane_id = 4
+
+[node name="Lane3" parent="Slots" unique_id=120099331 instance=ExtResource("1_phlo6")]
+position = Vector2(832, 480)
+lane_id = 3
+
+[node name="Lane2" parent="Slots" unique_id=918336549 instance=ExtResource("1_phlo6")]
+position = Vector2(1056, 480)
+lane_id = 2
+
+[node name="Lane1" parent="Slots" unique_id=1932373052 instance=ExtResource("1_phlo6")]
+position = Vector2(608, 480)
+lane_id = 1
+
+[node name="Scissor" parent="." unique_id=1763799064 node_paths=PackedStringArray("board_manager") instance=ExtResource("30_x7w1o")]
+position = Vector2(946, 788)
+board_manager = NodePath("../Managers/BoardManager")

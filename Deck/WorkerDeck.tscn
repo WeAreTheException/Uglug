@@ -6,14 +6,17 @@
 [ext_resource type="Script" uid="uid://chw242mi2nxl4" path="res://Deck/DeckInputListener.gd" id="3_6omjd"]
 [ext_resource type="Script" uid="uid://chcqvu28271sh" path="res://Deck/DrawHandler.gd" id="4_4nk3w"]
 [ext_resource type="Script" uid="uid://blq43rpyvye6c" path="res://Data/CardDatabase.gd" id="4_xceh1"]
+[ext_resource type="Script" uid="uid://dgeu721gn1kmj" path="res://Deck/MutationInhertinanceHandler.gd" id="5_jiq85"]
 [ext_resource type="Script" uid="uid://c8owoh3gv45g4" path="res://Deck/DeckView.gd" id="5_wj4mp"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="6_efqef"]
 [ext_resource type="Texture2D" uid="uid://cgs5k6p3mggyf" path="res://Art/Ants/AntSprite.png" id="7_hsdj0"]
+[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Mutations/Mutation.gd" id="8_fboto"]
 
 [sub_resource type="Resource" id="Resource_hsdj0"]
 script = ExtResource("6_efqef")
 name = "Ant"
 sprite = ExtResource("7_hsdj0")
+deck_amount = 100
 metadata/_custom_type_script = "uid://duslcpxrhurv8"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4nk3w"]
@@ -22,14 +25,18 @@ size = Vector2(174, 270)
 [node name="WorkerDeck" type="Node2D" unique_id=1069789393]
 script = ExtResource("1_2sl2c")
 
-[node name="DeckCount" type="Node" parent="." unique_id=58160234]
+[node name="DeckCount" type="Node" parent="." unique_id=58160234 node_paths=PackedStringArray("card_database")]
 script = ExtResource("2_wj4mp")
-total_cards = 10
+card_database = NodePath("../CardDatabase")
 card_scene = ExtResource("3_5cebq")
 
 [node name="DeckDrawHandler" type="Node" parent="." unique_id=1995550717 node_paths=PackedStringArray("card_database")]
 script = ExtResource("4_4nk3w")
 card_database = NodePath("../CardDatabase")
+
+[node name="MutationInhertitanceHandler" type="Node" parent="DeckDrawHandler" unique_id=161332538]
+script = ExtResource("5_jiq85")
+metadata/_custom_type_script = "uid://dgeu721gn1kmj"
 
 [node name="CardDatabase" type="Node" parent="." unique_id=1978405134]
 script = ExtResource("4_xceh1")

@@ -277,3 +277,56 @@ func find_card_by_multiplayer_data_recursive(
 			return found
 
 	return null
+
+func request_add_mutation_to_card(card: Card, mutation: Mutation) -> void:
+	if card == null:
+		return
+
+	if mutation == null:
+		return
+
+	if mutation.resource_path == "":
+		print("mutation sync blocked: mutation resource_path is empty")
+		return
+
+	var snapshot := {
+		"card_id": card.multiplayer_card_id,
+		"owner_peer_id": card.owning_peer_id,
+		"mutation_path": mutation.resource_path
+	}
+
+	if GDSync.is_host():
+		host_resolve_add_mutation(snapshot)
+	else:
+		GDSync.call_func(request_add_mutation_from_client, snapshot)
+
+func request_add_mutation_from_client(snapshot: Dictionary) -> void:
+	if not GDSync.is_host():
+		return
+
+	host_resolve_add_mutation(snapshot)
+
+func host_resolve_add_mutation(snapshot: Dictionary) -> void:
+	var card_id: int = int(snapshot["card_id"])
+	var owner_peer_id: int = int(snapshot["owner_peer_id"])
+
+	var card := find_card_by_multiplayer_data(card_id, owner_peer_id)
+
+	if card == null:
+		print("host mutation sync blocked: card not found")
+		return
+
+	GDSync.call_func_all(commit_add_mutation_to_card, snapshot)
+
+func commit_add_mutation_to_card(snapshot: Dictionary) -> void:
+	var card_id: int = int(snapshot["card_id"])
+	var owner_peer_id: int = int(snapshot["owner_peer_id"])
+	var mutation_path: String = str(snapshot["mutation_path"])
+
+	var card := find_card_by_multiplayer_data(card_id, owner_peer_id)
+
+	if card == null:
+		print("commit mutation sync blocked: card not found")
+		return
+
+	card.add_additional_mutation_from_path(mutation_path)

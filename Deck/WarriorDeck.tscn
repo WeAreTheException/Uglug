@@ -7,19 +7,23 @@
 [ext_resource type="Script" uid="uid://blq43rpyvye6c" path="res://Data/CardDatabase.gd" id="5_rw1me"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="6_00oes"]
 [ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Mutations/Mutation.gd" id="7_eu8gw"]
+[ext_resource type="Texture2D" uid="uid://cxfrhckwspi6a" path="res://Art/Mutations/Antlers_Sigil.PNG" id="8_00oes"]
+[ext_resource type="Script" uid="uid://cm2da67ckyqv6" path="res://Mutations/Antler.gd" id="8_mmvm6"]
 [ext_resource type="Texture2D" uid="uid://di66ndoe6cgnp" path="res://Art/Ants/Antler.png" id="8_w60k8"]
-[ext_resource type="Texture2D" uid="uid://b1soqhrvsu86i" path="res://Art/Ants/Aviant.png" id="9_ujcl4"]
-[ext_resource type="Texture2D" uid="uid://wpq5780kx6ao" path="res://Art/Ants/Distant.png" id="10_7lkv5"]
-[ext_resource type="Texture2D" uid="uid://bd3n84cq63rtf" path="res://Art/Ants/Eliminant.png" id="10_i1d6c"]
-[ext_resource type="Texture2D" uid="uid://dqynxdcij0qpn" path="res://Art/Ants/Giant.png" id="11_eu8gw"]
-[ext_resource type="Texture2D" uid="uid://mdhe2loswtvl" path="res://Art/Ants/Duriant.png" id="11_rw1me"]
-[ext_resource type="Texture2D" uid="uid://dnffnc1xuveq5" path="res://Art/Ants/Growant.png" id="12_06fvk"]
 [ext_resource type="Texture2D" uid="uid://cpgvdfdrt7v4o" path="res://Art/Ants/Pregnant.png" id="13_0knip"]
-[ext_resource type="Texture2D" uid="uid://b55jkuhdyk7wl" path="res://Art/Ants/QueenAnt.png" id="14_r8s31"]
+[ext_resource type="Script" uid="uid://bwweclqiu0d44" path="res://Mutations/Distant.gd" id="14_7lkv5"]
+[ext_resource type="Texture2D" uid="uid://wpq5780kx6ao" path="res://Art/Ants/Distant.png" id="14_x7m7j"]
 [ext_resource type="Script" uid="uid://ba3decuns1cvn" path="res://Mutations/PregnAnt.gd" id="15_gy366"]
 [ext_resource type="Script" uid="uid://c8owoh3gv45g4" path="res://Deck/DeckView.gd" id="15_iie84"]
+[ext_resource type="Texture2D" uid="uid://ckccjrccgd7mh" path="res://Art/Mutations/Distant_Sigil.PNG" id="15_rw1me"]
 [ext_resource type="Script" uid="uid://chw242mi2nxl4" path="res://Deck/DeckInputListener.gd" id="16_4kasc"]
+[ext_resource type="Texture2D" uid="uid://dlcpnx25sjojv" path="res://Art/Mutations/Pregnant_Sigil.PNG" id="17_mmvm6"]
 [ext_resource type="Texture2D" uid="uid://dgceyq4phwwts" path="res://Art/AntBack/WarriorDeck.png" id="26_i1d6c"]
+
+[sub_resource type="Resource" id="Resource_w60k8"]
+script = ExtResource("8_mmvm6")
+sigil_texture = ExtResource("8_00oes")
+metadata/_custom_type_script = "uid://cm2da67ckyqv6"
 
 [sub_resource type="Resource" id="Resource_mp65t"]
 script = ExtResource("6_00oes")
@@ -27,63 +31,13 @@ name = "Antler"
 attack = 1
 cost = 1
 sprite = ExtResource("8_w60k8")
-base_mutations = Array[ExtResource("7_eu8gw")]([null])
-metadata/_custom_type_script = "uid://duslcpxrhurv8"
-
-[sub_resource type="Resource" id="Resource_vx53f"]
-script = ExtResource("6_00oes")
-name = "Aviant"
-attack = 2
-cost = 1
-sprite = ExtResource("9_ujcl4")
-base_mutations = Array[ExtResource("7_eu8gw")]([null])
-metadata/_custom_type_script = "uid://duslcpxrhurv8"
-
-[sub_resource type="Resource" id="Resource_buwnv"]
-script = ExtResource("6_00oes")
-name = "Distant"
-attack = 1
-health = 2
-cost = 1
-sprite = ExtResource("10_7lkv5")
-metadata/_custom_type_script = "uid://duslcpxrhurv8"
-
-[sub_resource type="Resource" id="Resource_00oes"]
-script = ExtResource("6_00oes")
-name = "Duriant"
-attack = 1
-health = 2
-cost = 1
-sprite = ExtResource("11_rw1me")
-metadata/_custom_type_script = "uid://duslcpxrhurv8"
-
-[sub_resource type="Resource" id="Resource_334mj"]
-script = ExtResource("6_00oes")
-name = "Eliminant"
-attack = 1
-cost = 2
-sprite = ExtResource("10_i1d6c")
-metadata/_custom_type_script = "uid://duslcpxrhurv8"
-
-[sub_resource type="Resource" id="Resource_rpdxx"]
-script = ExtResource("6_00oes")
-name = "Giant"
-attack = 4
-health = 6
-cost = 4
-sprite = ExtResource("11_eu8gw")
-metadata/_custom_type_script = "uid://duslcpxrhurv8"
-
-[sub_resource type="Resource" id="Resource_1oh5c"]
-script = ExtResource("6_00oes")
-name = "Growant"
-attack = 1
-cost = 1
-sprite = ExtResource("12_06fvk")
+deck_amount = 5
+base_mutations = Array[ExtResource("7_eu8gw")]([SubResource("Resource_w60k8")])
 metadata/_custom_type_script = "uid://duslcpxrhurv8"
 
 [sub_resource type="Resource" id="Resource_rw1me"]
 script = ExtResource("15_gy366")
+sigil_texture = ExtResource("17_mmvm6")
 metadata/_custom_type_script = "uid://ba3decuns1cvn"
 
 [sub_resource type="Resource" id="Resource_3v71i"]
@@ -92,16 +46,24 @@ name = "Pregnant"
 health = 2
 cost = 1
 sprite = ExtResource("13_0knip")
+deck_amount = 5
 base_mutations = Array[ExtResource("7_eu8gw")]([SubResource("Resource_rw1me")])
 metadata/_custom_type_script = "uid://duslcpxrhurv8"
 
-[sub_resource type="Resource" id="Resource_0ckc6"]
+[sub_resource type="Resource" id="Resource_00oes"]
+script = ExtResource("14_7lkv5")
+sigil_texture = ExtResource("15_rw1me")
+metadata/_custom_type_script = "uid://bwweclqiu0d44"
+
+[sub_resource type="Resource" id="Resource_n0yp5"]
 script = ExtResource("6_00oes")
-name = "QueenAnt"
-attack = 2
-health = 4
-cost = 3
-sprite = ExtResource("14_r8s31")
+name = "Distant"
+attack = 1
+health = 2
+cost = 1
+sprite = ExtResource("14_x7m7j")
+deck_amount = 5
+base_mutations = Array[ExtResource("7_eu8gw")]([SubResource("Resource_00oes")])
 metadata/_custom_type_script = "uid://duslcpxrhurv8"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4nk3w"]
@@ -110,9 +72,9 @@ size = Vector2(174, 266)
 [node name="WarriorDeck" type="Node2D" unique_id=1069789393]
 script = ExtResource("1_x7m7j")
 
-[node name="DeckCount" type="Node" parent="." unique_id=58160234]
+[node name="DeckCount" type="Node" parent="." unique_id=58160234 node_paths=PackedStringArray("card_database")]
 script = ExtResource("2_n0yp5")
-total_cards = 10
+card_database = NodePath("../CardDatabase")
 card_scene = ExtResource("3_7lkv5")
 
 [node name="DeckDrawHandler" type="Node" parent="." unique_id=1995550717 node_paths=PackedStringArray("card_database")]
@@ -122,7 +84,7 @@ deck_type = 1
 
 [node name="CardDatabase" type="Node" parent="." unique_id=1978405134]
 script = ExtResource("5_rw1me")
-cards = Array[ExtResource("6_00oes")]([SubResource("Resource_mp65t"), SubResource("Resource_vx53f"), SubResource("Resource_buwnv"), SubResource("Resource_00oes"), SubResource("Resource_334mj"), SubResource("Resource_rpdxx"), SubResource("Resource_1oh5c"), SubResource("Resource_3v71i"), SubResource("Resource_0ckc6")])
+cards = Array[ExtResource("6_00oes")]([SubResource("Resource_mp65t"), SubResource("Resource_3v71i"), SubResource("Resource_n0yp5")])
 
 [node name="DeckView" type="Node" parent="." unique_id=696320865]
 script = ExtResource("15_iie84")

@@ -135,6 +135,7 @@ func done_placing(client_id: int) -> void:
 
 	current_placing_player_id = -1
 	GDSync.call_func_all(apply_placing_player, current_placing_player_id)
+
 	run_step(PhaseManager.Phase.ATTACK, current_first_id)
 
 func apply_placing_player(client_id: int) -> void:
@@ -217,6 +218,7 @@ func _run_attack_flow() -> void:
 	attack_flow_running = false
 
 	flip_attack_order_after_round()
+
 	run_step(PhaseManager.Phase.DRAW, current_first_id)
 
 func flip_attack_order_after_round() -> void:

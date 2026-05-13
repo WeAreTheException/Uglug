@@ -31,32 +31,12 @@
 [ext_resource type="Texture2D" uid="uid://it6pftgf2ru4" path="res://References/Screenshot 2026-05-07 at 4.48.53 PM.png" id="27_ebn5f"]
 [ext_resource type="Texture2D" uid="uid://bkafxhbg4kvug" path="res://Sprites/CardSlot.png" id="28_e2c01"]
 [ext_resource type="PackedScene" uid="uid://bb6d0vmntt6xo" path="res://Scissor.tscn" id="30_x7w1o"]
-[ext_resource type="Shader" uid="uid://coh1b7wxrmi28" path="res://VHSOverlay.gdshader" id="32_axksp"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_axksp"]
-shader = ExtResource("32_axksp")
-shader_parameter/spin_rotation_speed = 0.2
-shader_parameter/move_speed = 7.0
-shader_parameter/offset = Vector2(0, 0)
-shader_parameter/colour_1 = Color(0.4975357, 0.0012667051, 0.6688576, 1)
-shader_parameter/colour_2 = Color(0.5768312, 0.6850362, 1.1551381e-06, 1)
-shader_parameter/colour_3 = Color(0.086, 0.137, 0.145, 1)
-shader_parameter/contrast = 4.0
-shader_parameter/lighting = 0.7
-shader_parameter/spin_amount = 0.5
-shader_parameter/pixel_filter = 1920.0
-shader_parameter/is_rotating = true
+[ext_resource type="PackedScene" uid="uid://52uj0s5wxoub" path="res://Buff_Pile.tscn" id="32_axksp"]
 
 [node name="NewMuliplayer_Room" type="Node" unique_id=462638439]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=698829700]
 layer = 100
-
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=1854645017]
-visible = false
-material = SubResource("ShaderMaterial_axksp")
-offset_right = 1920.0
-offset_bottom = 1088.0
 
 [node name="Labels" type="Node" parent="." unique_id=1220800706]
 
@@ -136,15 +116,6 @@ text = "1:00"
 horizontal_alignment = 1
 vertical_alignment = 2
 
-[node name="PlaceTimer" type="Timer" parent="Labels/Timer" unique_id=866131047]
-wait_time = 45.0
-
-[node name="DrawTimer" type="Timer" parent="Labels/Timer" unique_id=1272379719]
-wait_time = 10.0
-
-[node name="AttackTimer" type="Timer" parent="Labels/Timer" unique_id=1988065957]
-wait_time = 2.0
-
 [node name="AttackFirstSlotLabels" type="Node" parent="Labels" unique_id=1548268673 node_paths=PackedStringArray("player_one_label", "player_two_label")]
 script = ExtResource("2_ykjx8")
 player_one_label = NodePath("P1Label")
@@ -174,13 +145,26 @@ vertical_alignment = 1
 
 [node name="Managers" type="Node" parent="." unique_id=5384537]
 
-[node name="PhaseManager" type="Node" parent="Managers" unique_id=822521768 node_paths=PackedStringArray("turn_manager", "draw_timer", "place_timer", "attack_timer", "timer_label")]
+[node name="PhaseManager" type="Node" parent="Managers" unique_id=822521768 node_paths=PackedStringArray("turn_manager", "draw_timer", "buff_timer", "place_timer", "attack_timer", "timer_label")]
 script = ExtResource("1_hco1x")
 turn_manager = NodePath("../TurnManager")
-draw_timer = NodePath("../../Labels/Timer/DrawTimer")
-place_timer = NodePath("../../Labels/Timer/PlaceTimer")
-attack_timer = NodePath("../../Labels/Timer/AttackTimer")
+draw_timer = NodePath("DrawTimer")
+buff_timer = NodePath("BuffTimer")
+place_timer = NodePath("PlaceTimer")
+attack_timer = NodePath("AttackTimer")
 timer_label = NodePath("../../Labels/Timer")
+
+[node name="PlaceTimer" type="Timer" parent="Managers/PhaseManager" unique_id=866131047]
+wait_time = 45.0
+
+[node name="DrawTimer" type="Timer" parent="Managers/PhaseManager" unique_id=1272379719]
+wait_time = 10.0
+
+[node name="AttackTimer" type="Timer" parent="Managers/PhaseManager" unique_id=1988065957]
+wait_time = 2.0
+
+[node name="BuffTimer" type="Timer" parent="Managers/PhaseManager" unique_id=722981550]
+wait_time = 5.0
 
 [node name="TurnManager" type="Node" parent="Managers" unique_id=1986901783 node_paths=PackedStringArray("phase_manager", "combat_manager")]
 script = ExtResource("3_npu2i")
@@ -373,3 +357,7 @@ lane_id = 1
 [node name="Scissor" parent="." unique_id=1763799064 node_paths=PackedStringArray("board_manager") instance=ExtResource("30_x7w1o")]
 position = Vector2(946, 788)
 board_manager = NodePath("../Managers/BoardManager")
+
+[node name="BuffPile" parent="." unique_id=1953419234 node_paths=PackedStringArray("player_hand", "phase_manager") instance=ExtResource("32_axksp")]
+player_hand = NodePath("../Hand&Deck/PlayerHand")
+phase_manager = NodePath("../Managers/PhaseManager")

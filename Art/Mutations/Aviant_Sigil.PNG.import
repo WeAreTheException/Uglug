@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bvc74ci321o8a"
-path="res://.godot/imported/FlyingAntSigil.PNG-42caf0493f40c8ca0bbc545adbecfacc.ctex"
+uid="uid://b4u7x4egbnlae"
+path="res://.godot/imported/Aviant_Sigil.PNG-9f42d4eeeeb1a7dbf8823c81c50847d9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Art/Quirks/FlyingAntSigil.PNG"
-dest_files=["res://.godot/imported/FlyingAntSigil.PNG-42caf0493f40c8ca0bbc545adbecfacc.ctex"]
+source_file="res://Art/Mutations/Aviant_Sigil.PNG"
+dest_files=["res://.godot/imported/Aviant_Sigil.PNG-9f42d4eeeeb1a7dbf8823c81c50847d9.ctex"]
 
 [params]
 

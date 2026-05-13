@@ -9,8 +9,10 @@ func _process(_delta: float) -> void:
 	if deck == null:
 		return
 
+	var amount_left := deck.cards_left()
+
 	if counter != null:
-		counter.text = str(deck.total_cards)
+		counter.text = str(amount_left)
 
 	if deck_sprite != null:
-		deck_sprite.visible = deck.total_cards > 0
+		deck_sprite.visible = amount_left > 0
