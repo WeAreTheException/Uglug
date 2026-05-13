@@ -4,18 +4,21 @@
 [ext_resource type="Script" uid="uid://co5ru43ce4tkq" path="res://Slots/NewSlots.gd" id="1_0x5xu"]
 [ext_resource type="Texture2D" uid="uid://bkafxhbg4kvug" path="res://Sprites/CardSlot.png" id="1_xbaqm"]
 [ext_resource type="Shader" uid="uid://c25dllx0xevi6" path="res://Slots/SlotShader.gdshader" id="3_gbtd5"]
+[ext_resource type="Texture2D" uid="uid://x4xb7jaspdws" path="res://Sprites/CardSlotOG.png" id="5_c2mw2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pqsda"]
 size = Vector2(180, 265)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_c2mw2"]
 shader = ExtResource("3_gbtd5")
-shader_parameter/color = Color(0.035699997, 0.15433165, 0.17, 1)
-shader_parameter/inner_stroke_thickness = 2.0
-shader_parameter/inner_stroke_opacity = 3.0
+shader_parameter/color = Color(0.91, 0.5278001, 0.56602, 1)
+shader_parameter/inner_stroke_thickness = 5.0
+shader_parameter/inner_stroke_opacity = 1.0
 shader_parameter/inside_opacity = 0.0
-shader_parameter/frequency = 15.0
-shader_parameter/phase_speed = 2.0
+shader_parameter/frequency = 16.0
+shader_parameter/phase_speed = 2.2
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gbtd5"]
 
 [node name="SlotPair" type="Node2D" unique_id=1783533892 node_paths=PackedStringArray("player_slot", "opponent_slot")]
 script = ExtResource("1_0jlde")
@@ -46,4 +49,5 @@ position = Vector2(0, 0.5)
 shape = SubResource("RectangleShape2D_pqsda")
 
 [node name="MySlotImage" type="Sprite2D" parent="Player2" unique_id=666686459]
-texture = ExtResource("1_xbaqm")
+material = SubResource("ShaderMaterial_gbtd5")
+texture = ExtResource("5_c2mw2")
