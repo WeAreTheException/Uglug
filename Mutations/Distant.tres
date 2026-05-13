@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Distant" format=3 uid="uid://dx5hwr1gojp7k"]
+
+[ext_resource type="Script" uid="uid://bwweclqiu0d44" path="res://Mutations/Scripts/Distant.gd" id="1_f7k7l"]
+[ext_resource type="Texture2D" uid="uid://ckccjrccgd7mh" path="res://Art/Mutations/Distant_Sigil.PNG" id="2_cdogy"]
+
+[resource]
+script = ExtResource("1_f7k7l")
+mutation_name = "Distant"
+mutation_description = "Attack any slot"
+sigil_texture = ExtResource("2_cdogy")

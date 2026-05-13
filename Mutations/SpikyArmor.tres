@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="SpikyArmor" format=3 uid="uid://x7aj76vgo8mk"]
+
+[ext_resource type="Script" uid="uid://dvg4r4x5ffbcs" path="res://Mutations/Scripts/SpikyArmor.gd" id="1_g3mkb"]
+
+[resource]
+script = ExtResource("1_g3mkb")
+mutation_name = "Spiky"
+mutation_description = "Deals 1DMG to any card that attacks it"

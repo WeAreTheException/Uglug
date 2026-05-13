@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://d4lwi1f8i5uat"]
+
+[ext_resource type="Script" uid="uid://de64ge4akihco" path="res://Mutations/ToolTip/MutationToolTipHandler.gd" id="1_uav2e"]
+
+[node name="MutationToolTipHandler" type="Node2D" unique_id=597223180 node_paths=PackedStringArray("tooltip_root", "name_label", "description_label")]
+script = ExtResource("1_uav2e")
+tooltip_root = NodePath("Panel")
+name_label = NodePath("Panel/NameLabel")
+description_label = NodePath("Panel/DescriptionLabel")
+
+[node name="Panel" type="Panel" parent="." unique_id=813297980]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="NameLabel" type="Label" parent="Panel" unique_id=619334868]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="DescriptionLabel" type="Label" parent="Panel" unique_id=111636862]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
