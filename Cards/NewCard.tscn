@@ -4,32 +4,32 @@
 [ext_resource type="Script" uid="uid://dbemrm25gvek6" path="res://Cards/Stats.gd" id="2_52a3h"]
 [ext_resource type="Texture2D" uid="uid://dqtxvu584lxsj" path="res://Art/Mutations/Ant_Hill_Sigil.PNG" id="2_sphwu"]
 [ext_resource type="Texture2D" uid="uid://bdi7eyt5cmur0" path="res://Art/Numbers/1.png" id="3_5yjln"]
-[ext_resource type="Script" path="res://Cards/AttackHandler.gd" id="4_52a3h"]
-[ext_resource type="Script" path="res://Cards/MutationHandler.gd" id="4_dm30q"]
+[ext_resource type="Script" uid="uid://d35vj6r6tt0ty" path="res://Cards/AttackHandler.gd" id="4_52a3h"]
+[ext_resource type="Script" uid="uid://hkeygquk7osj" path="res://Cards/MutationHandler.gd" id="4_dm30q"]
 [ext_resource type="Texture2D" uid="uid://clk0ori80b5gg" path="res://Art/Numbers/2.png" id="4_krn1d"]
-[ext_resource type="Script" path="res://Cards/HurtHandler.gd" id="5_5yjln"]
-[ext_resource type="Script" path="res://Cards/AttackAnim.gd" id="5_r4p8t"]
+[ext_resource type="Script" uid="uid://ccv156o7qykgy" path="res://Cards/HurtHandler.gd" id="5_5yjln"]
+[ext_resource type="Script" uid="uid://bdusbw1xmopfs" path="res://Cards/AttackAnim.gd" id="5_r4p8t"]
 [ext_resource type="Texture2D" uid="uid://bnj2kyvgakfq3" path="res://Art/Numbers/3.png" id="5_s0kml"]
-[ext_resource type="Script" path="res://Cards/DieHandler.gd" id="6_krn1d"]
+[ext_resource type="Script" uid="uid://bq2dj2n38w2bi" path="res://Cards/DieHandler.gd" id="6_krn1d"]
 [ext_resource type="Texture2D" uid="uid://4f3gn63utyru" path="res://Art/Numbers/4.png" id="6_r4p8t"]
 [ext_resource type="Texture2D" uid="uid://c1fev2dw4ehne" path="res://Art/Numbers/5.png" id="7_fuvn1"]
-[ext_resource type="Script" path="res://Cards/HurtAnim.gd" id="7_r4p8t"]
+[ext_resource type="Script" uid="uid://ceg0uirr80hi2" path="res://Cards/HurtAnim.gd" id="7_r4p8t"]
 [ext_resource type="Texture2D" uid="uid://bq8esv4xpuv68" path="res://Art/Numbers/6.png" id="8_sphwu"]
 [ext_resource type="Texture2D" uid="uid://d1ypj3toan6r1" path="res://Art/Blood.png" id="9_dm30q"]
-[ext_resource type="Script" path="res://Cards/DeathAnim.gd" id="9_fuvn1"]
+[ext_resource type="Script" uid="uid://d4a12kjlckce0" path="res://Cards/DeathAnim.gd" id="9_fuvn1"]
 [ext_resource type="Script" uid="uid://dtoyyse7bnjuv" path="res://Code/States/CardInputListener.gd" id="10_koaue"]
 [ext_resource type="Script" uid="uid://d0qu3q360kdsl" path="res://Code/States/CardInputReciever.gd" id="11_2w08q"]
 [ext_resource type="Script" uid="uid://ro02870urhpb" path="res://Code/States/CardStateMachine.gd" id="12_lsojp"]
 [ext_resource type="Texture2D" uid="uid://cgs5k6p3mggyf" path="res://Art/Ants/AntSprite.png" id="18_dm30q"]
-[ext_resource type="Script" uid="uid://cfvsqn441hgwq" path="res://Cards/CardStats.gd" id="22_koaue"]
+[ext_resource type="Script" path="res://Cards/CardStats.gd" id="22_koaue"]
+[ext_resource type="PackedScene" uid="uid://d4lwi1f8i5uat" path="res://Mutations/ToolTip/MutationToolTip.tscn" id="23_2w08q"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
 size = Vector2(176, 270)
 
-[node name="Card" type="Node2D" unique_id=1703534497 node_paths=PackedStringArray("input_listener", "stats")]
+[node name="Card" type="Node2D" unique_id=1703534497 node_paths=PackedStringArray("input_listener")]
 script = ExtResource("1_ch35y")
 input_listener = NodePath("InputListener")
-stats = NodePath("Stats")
 
 [node name="InputListener" type="Area2D" parent="." unique_id=1220273102]
 script = ExtResource("10_koaue")
@@ -167,3 +167,5 @@ texture = ExtResource("2_sphwu")
 [node name="CardStats" type="Node" parent="." unique_id=1956418628 node_paths=PackedStringArray("stats_visual")]
 script = ExtResource("22_koaue")
 stats_visual = NodePath("../Stats")
+
+[node name="MutationToolTipHandler" parent="." unique_id=597223180 instance=ExtResource("23_2w08q")]
