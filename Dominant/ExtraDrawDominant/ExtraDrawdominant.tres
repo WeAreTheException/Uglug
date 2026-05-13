@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ExtraDrawDominant" format=3 uid="uid://bjclspe3tg063"]
+
+[ext_resource type="Texture2D" uid="uid://brw577e6u1rp8" path="res://Art/Untitled-1.png" id="1_qo45g"]
+[ext_resource type="Script" uid="uid://u5se3mev8flf" path="res://Dominant/ExtraDrawDominant/ExtraWorkerDominant.gd" id="2_fkq3v"]
+
+[resource]
+script = ExtResource("2_fkq3v")
+dominant_name = "Extra Draw"
+active_texture = ExtResource("1_qo45g")
+metadata/_custom_type_script = "uid://u5se3mev8flf"

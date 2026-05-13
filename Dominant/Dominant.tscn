@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://dacxspbhp804b"]
+
+[ext_resource type="Script" uid="uid://cc6u5rfshsuyh" path="res://Dominant/DominantRoot.gd" id="1_axtrk"]
+[ext_resource type="Script" uid="uid://tomj54iy85iv" path="res://Dominant/DominantStateHandler.gd" id="1_qr2b7"]
+[ext_resource type="Script" uid="uid://bxtji084nknhf" path="res://Dominant/DominantSpriteHandler.gd" id="2_1vp2a"]
+[ext_resource type="Script" uid="uid://c2n453qq0ro57" path="res://Dominant/DominantDatabase.gd" id="2_evcwt"]
+[ext_resource type="Script" uid="uid://ddhd8unojc38h" path="res://Dominant/Dominant.gd" id="2_onf4k"]
+[ext_resource type="Texture2D" uid="uid://calki5jjktjaf" path="res://Art/Sergio.jpg" id="3_1vp2a"]
+[ext_resource type="Resource" uid="uid://b0tt4xuakywgm" path="res://Dominant/WorkerUnionDominant/WorkerUnionDominant.tres" id="4_a2ylc"]
+
+[sub_resource type="Resource" id="Resource_a2ylc"]
+script = ExtResource("2_evcwt")
+dominants = Array[ExtResource("2_onf4k")]([ExtResource("4_a2ylc")])
+metadata/_custom_type_script = "uid://c2n453qq0ro57"
+
+[node name="Dominant" type="Node2D" unique_id=455315921]
+script = ExtResource("1_axtrk")
+dominant_database = SubResource("Resource_a2ylc")
+
+[node name="DominantStateHandler" type="Node" parent="." unique_id=166241586]
+script = ExtResource("1_qr2b7")
+
+[node name="DominantSpriteHandler" type="Node2D" parent="." unique_id=358729344]
+script = ExtResource("2_1vp2a")
+
+[node name="Sprite" type="Sprite2D" parent="DominantSpriteHandler" unique_id=1209735746]
+visible = false
+position = Vector2(128, 128.00006)
+scale = Vector2(0.11851852, 0.08888884)
+texture = ExtResource("3_1vp2a")
