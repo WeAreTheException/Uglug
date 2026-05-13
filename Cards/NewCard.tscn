@@ -4,32 +4,65 @@
 [ext_resource type="Script" uid="uid://dbemrm25gvek6" path="res://Cards/Stats.gd" id="2_52a3h"]
 [ext_resource type="Texture2D" uid="uid://dqtxvu584lxsj" path="res://Art/Mutations/Ant_Hill_Sigil.PNG" id="2_sphwu"]
 [ext_resource type="Texture2D" uid="uid://bdi7eyt5cmur0" path="res://Art/Numbers/1.png" id="3_5yjln"]
-[ext_resource type="Script" path="res://Cards/AttackHandler.gd" id="4_52a3h"]
+[ext_resource type="Script" uid="uid://d35vj6r6tt0ty" path="res://Cards/AttackHandler.gd" id="4_52a3h"]
 [ext_resource type="Script" path="res://Cards/MutationHandler.gd" id="4_dm30q"]
 [ext_resource type="Texture2D" uid="uid://clk0ori80b5gg" path="res://Art/Numbers/2.png" id="4_krn1d"]
-[ext_resource type="Script" path="res://Cards/HurtHandler.gd" id="5_5yjln"]
-[ext_resource type="Script" path="res://Cards/AttackAnim.gd" id="5_r4p8t"]
+[ext_resource type="Script" uid="uid://ccv156o7qykgy" path="res://Cards/HurtHandler.gd" id="5_5yjln"]
+[ext_resource type="Script" uid="uid://bdusbw1xmopfs" path="res://Cards/AttackAnim.gd" id="5_r4p8t"]
 [ext_resource type="Texture2D" uid="uid://bnj2kyvgakfq3" path="res://Art/Numbers/3.png" id="5_s0kml"]
-[ext_resource type="Script" path="res://Cards/DieHandler.gd" id="6_krn1d"]
+[ext_resource type="Script" uid="uid://bq2dj2n38w2bi" path="res://Cards/DieHandler.gd" id="6_krn1d"]
 [ext_resource type="Texture2D" uid="uid://4f3gn63utyru" path="res://Art/Numbers/4.png" id="6_r4p8t"]
 [ext_resource type="Texture2D" uid="uid://c1fev2dw4ehne" path="res://Art/Numbers/5.png" id="7_fuvn1"]
-[ext_resource type="Script" path="res://Cards/HurtAnim.gd" id="7_r4p8t"]
+[ext_resource type="Script" uid="uid://ceg0uirr80hi2" path="res://Cards/HurtAnim.gd" id="7_r4p8t"]
 [ext_resource type="Texture2D" uid="uid://bq8esv4xpuv68" path="res://Art/Numbers/6.png" id="8_sphwu"]
 [ext_resource type="Texture2D" uid="uid://d1ypj3toan6r1" path="res://Art/Blood.png" id="9_dm30q"]
-[ext_resource type="Script" path="res://Cards/DeathAnim.gd" id="9_fuvn1"]
+[ext_resource type="Script" uid="uid://d4a12kjlckce0" path="res://Cards/DeathAnim.gd" id="9_fuvn1"]
 [ext_resource type="Script" uid="uid://dtoyyse7bnjuv" path="res://Code/States/CardInputListener.gd" id="10_koaue"]
 [ext_resource type="Script" uid="uid://d0qu3q360kdsl" path="res://Code/States/CardInputReciever.gd" id="11_2w08q"]
 [ext_resource type="Script" uid="uid://ro02870urhpb" path="res://Code/States/CardStateMachine.gd" id="12_lsojp"]
-[ext_resource type="Texture2D" uid="uid://cgs5k6p3mggyf" path="res://Art/Ants/AntSprite.png" id="18_dm30q"]
+[ext_resource type="Shader" uid="uid://ea3sh03boa0h" path="res://Cards/IdleSwayTest.gdshader" id="20_4ukko"]
+[ext_resource type="Texture2D" uid="uid://b12oqm2wxq1gn" path="res://Art/Ants/AntSwayTest.png" id="21_aqnhy"]
+[ext_resource type="Shader" uid="uid://b7eecjv2v11ux" path="res://Cards/OutlineSigil.gdshader" id="22_aqnhy"]
 [ext_resource type="Script" uid="uid://cfvsqn441hgwq" path="res://Cards/CardStats.gd" id="22_koaue"]
+[ext_resource type="Texture2D" uid="uid://c8kf7vqpx34gh" path="res://Art/Mutations/Duriant_Sigil.PNG" id="22_vartc"]
+[ext_resource type="Texture2D" uid="uid://dlcpnx25sjojv" path="res://Art/Mutations/Pregnant_Sigil.PNG" id="25_esvva"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
 size = Vector2(176, 270)
 
-[node name="Card" type="Node2D" unique_id=1703534497 node_paths=PackedStringArray("input_listener", "stats")]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_x1h4b"]
+shader = ExtResource("20_4ukko")
+shader_parameter/waveAmplitude = 0.0330000015675
+shader_parameter/correctVertex = true
+shader_parameter/waveFrequency = 0.0
+shader_parameter/verticalWave = true
+shader_parameter/keepTransparency = true
+shader_parameter/useTime = true
+shader_parameter/waveSpeed = 1.0
+shader_parameter/progress = 0.0
+shader_parameter/firstHalf = 0.5
+shader_parameter/secondHalf = 0.5
+shader_parameter/freezeFirstHalf = false
+shader_parameter/freezeSecondHalf = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_esvva"]
+shader = ExtResource("22_aqnhy")
+shader_parameter/line_color = Color(0.2, 0.17, 0.15, 1)
+shader_parameter/line_thickness = 10.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rn1hg"]
+shader = ExtResource("22_aqnhy")
+shader_parameter/line_color = Color(0.2, 0.16862746, 0.14901961, 1)
+shader_parameter/line_thickness = 10.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_el32v"]
+shader = ExtResource("22_aqnhy")
+shader_parameter/line_color = Color(0.2, 0.16862746, 0.14901961, 1)
+shader_parameter/line_thickness = 10.0
+
+[node name="Card" type="Node2D" unique_id=1703534497 node_paths=PackedStringArray("input_listener")]
 script = ExtResource("1_ch35y")
 input_listener = NodePath("InputListener")
-stats = NodePath("Stats")
 
 [node name="InputListener" type="Area2D" parent="." unique_id=1220273102]
 script = ExtResource("10_koaue")
@@ -86,34 +119,34 @@ health_textures = Array[Texture2D]([ExtResource("3_5yjln"), ExtResource("4_krn1d
 metadata/_edit_lock_ = true
 
 [node name="Attack" type="Sprite2D" parent="Stats" unique_id=1488390869]
-position = Vector2(-69.4375, 89)
+position = Vector2(-68.4375, 89)
 scale = Vector2(0.14727725, 0.14345993)
 
 [node name="Health" type="Sprite2D" parent="Stats" unique_id=1034605430]
-position = Vector2(66, 111.00001)
+position = Vector2(67, 111.00001)
 scale = Vector2(0.14727725, 0.14345993)
 
 [node name="Blood" type="Sprite2D" parent="Stats" unique_id=1555982944]
 z_index = 100
-position = Vector2(71, -83)
+position = Vector2(72, -83)
 scale = Vector2(0.157, 0.144)
 texture = ExtResource("9_dm30q")
 
 [node name="Blood2" type="Sprite2D" parent="Stats" unique_id=1630070528]
 z_index = 100
-position = Vector2(55, -83)
+position = Vector2(56, -83)
 scale = Vector2(0.157, 0.144)
 texture = ExtResource("9_dm30q")
 
 [node name="Blood3" type="Sprite2D" parent="Stats" unique_id=1751345964]
 z_index = 100
-position = Vector2(63, -64)
+position = Vector2(64, -64)
 scale = Vector2(0.157, 0.144)
 texture = ExtResource("9_dm30q")
 
 [node name="Blood4" type="Sprite2D" parent="Stats" unique_id=221770338]
 z_index = 100
-position = Vector2(47, -64)
+position = Vector2(48, -64)
 scale = Vector2(0.157, 0.144)
 texture = ExtResource("9_dm30q")
 
@@ -123,22 +156,24 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -78.0
+offset_left = -77.0
 offset_top = -128.0
-offset_right = 78.0
+offset_right = 79.0
 offset_bottom = -103.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/default_color = Color(0.16206557, 0.1620656, 0.16206557, 1)
+metadata/_edit_use_anchors_ = true
 
 [node name="CardImage" type="Sprite2D" parent="." unique_id=1482464689]
+material = SubResource("ShaderMaterial_x1h4b")
 scale = Vector2(0.14520307, 0.14520307)
-texture = ExtResource("18_dm30q")
+texture = ExtResource("21_aqnhy")
 metadata/_edit_lock_ = true
 
 [node name="BaseMutation" type="Node2D" parent="." unique_id=856620296]
 z_index = 1
-position = Vector2(0, 96)
+position = Vector2(1, 96)
 scale = Vector2(0.028686536, 0.028686536)
 
 [node name="Sprite2D" type="Sprite2D" parent="BaseMutation" unique_id=354731525]
@@ -148,21 +183,25 @@ scale = Vector2(4.4620237, 4.4620233)
 texture = ExtResource("2_sphwu")
 
 [node name="AdditonalMutation" type="Node2D" parent="." unique_id=1488082497]
+position = Vector2(1, 0)
 
 [node name="Sprite2D2" type="Sprite2D" parent="AdditonalMutation" unique_id=67915591]
+material = SubResource("ShaderMaterial_esvva")
 position = Vector2(-64, -75)
 scale = Vector2(0.128, 0.12799999)
-texture = ExtResource("2_sphwu")
+texture = ExtResource("22_vartc")
 
 [node name="Sprite2D3" type="Sprite2D" parent="AdditonalMutation" unique_id=2081525418]
+material = SubResource("ShaderMaterial_rn1hg")
 position = Vector2(58, 0)
 scale = Vector2(0.128, 0.12799999)
 texture = ExtResource("2_sphwu")
 
 [node name="Sprite2D4" type="Sprite2D" parent="AdditonalMutation" unique_id=535450100]
+material = SubResource("ShaderMaterial_el32v")
 position = Vector2(-64, 32)
 scale = Vector2(0.128, 0.12799999)
-texture = ExtResource("2_sphwu")
+texture = ExtResource("25_esvva")
 
 [node name="CardStats" type="Node" parent="." unique_id=1956418628 node_paths=PackedStringArray("stats_visual")]
 script = ExtResource("22_koaue")

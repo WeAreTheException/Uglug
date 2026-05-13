@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://2onlt7b8yfr7"
-path="res://.godot/imported/Anthrax_Sigil.png-49dd6b588f9c09532080dd6bfd929b01.ctex"
+uid="uid://b12oqm2wxq1gn"
+path="res://.godot/imported/AntSwayTest.png-8a5724cc7c59e96aeada87c51eb69685.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Art/Mutations/Anthrax_Sigil.png"
-dest_files=["res://.godot/imported/Anthrax_Sigil.png-49dd6b588f9c09532080dd6bfd929b01.ctex"]
+source_file="res://Art/Ants/AntSwayTest.png"
+dest_files=["res://.godot/imported/AntSwayTest.png-8a5724cc7c59e96aeada87c51eb69685.ctex"]
 
 [params]
 
