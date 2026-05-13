@@ -11,8 +11,11 @@
 [ext_resource type="Script" uid="uid://cm2da67ckyqv6" path="res://Mutations/Antler.gd" id="8_mmvm6"]
 [ext_resource type="Texture2D" uid="uid://di66ndoe6cgnp" path="res://Art/Ants/Antler.png" id="8_w60k8"]
 [ext_resource type="Texture2D" uid="uid://cpgvdfdrt7v4o" path="res://Art/Ants/Pregnant.png" id="13_0knip"]
+[ext_resource type="Script" uid="uid://bwweclqiu0d44" path="res://Mutations/Distant.gd" id="14_7lkv5"]
+[ext_resource type="Texture2D" uid="uid://wpq5780kx6ao" path="res://Art/Ants/Distant.png" id="14_x7m7j"]
 [ext_resource type="Script" uid="uid://ba3decuns1cvn" path="res://Mutations/PregnAnt.gd" id="15_gy366"]
 [ext_resource type="Script" uid="uid://c8owoh3gv45g4" path="res://Deck/DeckView.gd" id="15_iie84"]
+[ext_resource type="Texture2D" uid="uid://ckccjrccgd7mh" path="res://Art/Mutations/Distant_Sigil.PNG" id="15_rw1me"]
 [ext_resource type="Script" uid="uid://chw242mi2nxl4" path="res://Deck/DeckInputListener.gd" id="16_4kasc"]
 [ext_resource type="Texture2D" uid="uid://dlcpnx25sjojv" path="res://Art/Mutations/Pregnant_Sigil.PNG" id="17_mmvm6"]
 [ext_resource type="Texture2D" uid="uid://dgceyq4phwwts" path="res://Art/AntBack/WarriorDeck.png" id="26_i1d6c"]
@@ -28,7 +31,7 @@ name = "Antler"
 attack = 1
 cost = 1
 sprite = ExtResource("8_w60k8")
-deck_amount = 10
+deck_amount = 5
 base_mutations = Array[ExtResource("7_eu8gw")]([SubResource("Resource_w60k8")])
 metadata/_custom_type_script = "uid://duslcpxrhurv8"
 
@@ -43,7 +46,24 @@ name = "Pregnant"
 health = 2
 cost = 1
 sprite = ExtResource("13_0knip")
+deck_amount = 5
 base_mutations = Array[ExtResource("7_eu8gw")]([SubResource("Resource_rw1me")])
+metadata/_custom_type_script = "uid://duslcpxrhurv8"
+
+[sub_resource type="Resource" id="Resource_00oes"]
+script = ExtResource("14_7lkv5")
+sigil_texture = ExtResource("15_rw1me")
+metadata/_custom_type_script = "uid://bwweclqiu0d44"
+
+[sub_resource type="Resource" id="Resource_n0yp5"]
+script = ExtResource("6_00oes")
+name = "Distant"
+attack = 1
+health = 2
+cost = 1
+sprite = ExtResource("14_x7m7j")
+deck_amount = 5
+base_mutations = Array[ExtResource("7_eu8gw")]([SubResource("Resource_00oes")])
 metadata/_custom_type_script = "uid://duslcpxrhurv8"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4nk3w"]
@@ -52,9 +72,9 @@ size = Vector2(174, 266)
 [node name="WarriorDeck" type="Node2D" unique_id=1069789393]
 script = ExtResource("1_x7m7j")
 
-[node name="DeckCount" type="Node" parent="." unique_id=58160234]
+[node name="DeckCount" type="Node" parent="." unique_id=58160234 node_paths=PackedStringArray("card_database")]
 script = ExtResource("2_n0yp5")
-total_cards = 10
+card_database = NodePath("../CardDatabase")
 card_scene = ExtResource("3_7lkv5")
 
 [node name="DeckDrawHandler" type="Node" parent="." unique_id=1995550717 node_paths=PackedStringArray("card_database")]
@@ -64,7 +84,7 @@ deck_type = 1
 
 [node name="CardDatabase" type="Node" parent="." unique_id=1978405134]
 script = ExtResource("5_rw1me")
-cards = Array[ExtResource("6_00oes")]([SubResource("Resource_mp65t"), SubResource("Resource_3v71i")])
+cards = Array[ExtResource("6_00oes")]([SubResource("Resource_mp65t"), SubResource("Resource_3v71i"), SubResource("Resource_n0yp5")])
 
 [node name="DeckView" type="Node" parent="." unique_id=696320865]
 script = ExtResource("15_iie84")
