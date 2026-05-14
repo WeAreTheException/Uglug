@@ -3,37 +3,86 @@
 [ext_resource type="Script" uid="uid://ga6f6537weuu" path="res://Tugga/BattleScale.gd" id="1_m5din"]
 [ext_resource type="PackedScene" uid="uid://l28s3hnlv4iy" path="res://Cards/NewCard.tscn" id="1_vrh5a"]
 [ext_resource type="PackedScene" uid="uid://c8mekq0tyuadn" path="res://Slots/NewSlots.tscn" id="2_8m5fa"]
-[ext_resource type="Resource" uid="uid://co2ltt7oof6h1" path="res://Cards/Prefabs/QueenAnt.tres" id="2_jxqb7"]
-[ext_resource type="Resource" uid="uid://ct70e1p70euk5" path="res://Cards/Prefabs/Antler.tres" id="4_m5din"]
+[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Mutations/Scripts/Mutation.gd" id="3_icq5b"]
+[ext_resource type="Resource" uid="uid://ceeskmu01vy5g" path="res://Mutations/Antler.tres" id="4_icq5b"]
 [ext_resource type="Script" uid="uid://cqj622citfc1y" path="res://Cards/Dummy.gd" id="4_ydv2a"]
-[ext_resource type="Resource" uid="uid://c3i7oef51wu84" path="res://Cards/Prefabs/Ant.tres" id="7_mxbme"]
+[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="5_nw7tq"]
+[ext_resource type="Script" uid="uid://cftnkry62jh5d" path="res://SelectAnimation.gd" id="6_eyros"]
+[ext_resource type="Script" uid="uid://bqtoohcvy57vk" path="res://SacrificeHandler.gd" id="7_5n6h6"]
+[ext_resource type="Script" uid="uid://jv8gks4tscbj" path="res://SacrificeAnimation.gd" id="8_824c0"]
 [ext_resource type="Script" uid="uid://clgbwnniuqm7g" path="res://Code/Handlers/SelectHandler.gd" id="8_eyros"]
+[ext_resource type="Script" uid="uid://2atv8mfbeu07" path="res://BoardManager.gd" id="9_5n6h6"]
+
+[sub_resource type="Resource" id="Resource_nc5d1"]
+metadata/__load_path__ = "res://Cards/Prefabs/QueenAnt.tres"
+
+[sub_resource type="Resource" id="Resource_1c35h"]
+script = ExtResource("5_nw7tq")
+name = "Antler"
+attack = 1
+health = 2
+base_mutations = Array[ExtResource("3_icq5b")]([ExtResource("4_icq5b")])
+metadata/_custom_type_script = "uid://duslcpxrhurv8"
+
+[sub_resource type="Resource" id="Resource_onml5"]
+metadata/__load_path__ = "res://Cards/Prefabs/Ant.tres"
 
 [node name="StateTest" type="Node2D" unique_id=590443076]
 script = ExtResource("1_m5din")
 
 [node name="Card" parent="." unique_id=1703534497 node_paths=PackedStringArray("battle_scale") instance=ExtResource("1_vrh5a")]
 visible = false
-position = Vector2(576, 384)
-test_data = ExtResource("2_jxqb7")
+position = Vector2(364, 161)
+test_data = SubResource("Resource_nc5d1")
 battle_scale = NodePath("..")
 
-[node name="Antler" parent="." unique_id=840545449 node_paths=PackedStringArray("select_handler", "battle_scale") instance=ExtResource("1_vrh5a")]
-position = Vector2(1408, 384)
-select_handler = NodePath("../SelectHandler")
-test_data = ExtResource("4_m5din")
+[node name="Antler" parent="." unique_id=840545449 node_paths=PackedStringArray("battle_scale") instance=ExtResource("1_vrh5a")]
+position = Vector2(1532, 440)
+test_data = SubResource("Resource_1c35h")
 battle_scale = NodePath("..")
-
-[node name="NewSlots" parent="." unique_id=1783533892 instance=ExtResource("2_8m5fa")]
-position = Vector2(960, 384)
 
 [node name="Dummy" type="Node2D" parent="." unique_id=1618062051]
 script = ExtResource("4_ydv2a")
 
-[node name="Card2" parent="." unique_id=169545017 node_paths=PackedStringArray("select_handler") instance=ExtResource("1_vrh5a")]
-position = Vector2(575, 325)
-select_handler = NodePath("../SelectHandler")
-test_data = ExtResource("7_mxbme")
+[node name="Card2" parent="." unique_id=169545017 instance=ExtResource("1_vrh5a")]
+position = Vector2(309, 458)
+test_data = SubResource("Resource_onml5")
 
-[node name="SelectHandler" type="Node2D" parent="." unique_id=229367593]
+[node name="SelectHandler2" type="Node" parent="." unique_id=605873658 node_paths=PackedStringArray("slots_root", "sacrifice_handler", "animation_handler")]
 script = ExtResource("8_eyros")
+slots_root = NodePath("../Slots")
+sacrifice_handler = NodePath("../SacrificeHandler")
+animation_handler = NodePath("SelectAnimation")
+
+[node name="SelectAnimation" type="Node" parent="SelectHandler2" unique_id=452090061]
+script = ExtResource("6_eyros")
+
+[node name="SacrificeHandler" type="Node" parent="." unique_id=356838895]
+script = ExtResource("7_5n6h6")
+metadata/_custom_type_script = "uid://bqtoohcvy57vk"
+
+[node name="SacrificeAnimation" type="Node" parent="SacrificeHandler" unique_id=1826696646]
+script = ExtResource("8_824c0")
+
+[node name="Slots" type="Node2D" parent="." unique_id=736590499]
+
+[node name="Lane4" parent="Slots" unique_id=1639028070 instance=ExtResource("2_8m5fa")]
+position = Vector2(1280, 480)
+lane_id = 4
+
+[node name="Lane3" parent="Slots" unique_id=1992048166 instance=ExtResource("2_8m5fa")]
+position = Vector2(832, 480)
+lane_id = 3
+
+[node name="Lane2" parent="Slots" unique_id=302947501 instance=ExtResource("2_8m5fa")]
+position = Vector2(1056, 480)
+lane_id = 2
+
+[node name="Lane1" parent="Slots" unique_id=1743192235 instance=ExtResource("2_8m5fa")]
+position = Vector2(608, 480)
+lane_id = 1
+
+[node name="BoardManager" type="Node" parent="." unique_id=2021255415 node_paths=PackedStringArray("slots_root")]
+script = ExtResource("9_5n6h6")
+slots_root = NodePath("../Slots")
+card_scene = ExtResource("1_vrh5a")
