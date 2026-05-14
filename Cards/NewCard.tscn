@@ -21,7 +21,7 @@
 [ext_resource type="Script" uid="uid://ro02870urhpb" path="res://Code/States/CardStateMachine.gd" id="12_lsojp"]
 [ext_resource type="Texture2D" uid="uid://cxfrhckwspi6a" path="res://Art/Mutations/Antlers_Sigil.PNG" id="20_lsojp"]
 [ext_resource type="Texture2D" uid="uid://di66ndoe6cgnp" path="res://Art/Ants/Antler.png" id="20_vartc"]
-[ext_resource type="Script" uid="uid://dk46foimm0lo4" path="res://Cards/BaseSigilCollision.gd" id="21_lsojp"]
+[ext_resource type="Script" uid="uid://dk46foimm0lo4" path="res://Cards/SigilCollision.gd" id="21_lsojp"]
 [ext_resource type="Script" path="res://Cards/CardStats.gd" id="22_koaue"]
 [ext_resource type="PackedScene" uid="uid://d4lwi1f8i5uat" path="res://Mutations/ToolTip/MutationToolTip.tscn" id="23_2w08q"]
 [ext_resource type="Script" uid="uid://de64ge4akihco" path="res://Mutations/ToolTip/MutationToolTipHandler.gd" id="23_lsojp"]
@@ -30,7 +30,7 @@
 size = Vector2(176, 270)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2w08q"]
-size = Vector2(1220.0845, 1568.6802)
+size = Vector2(460.93753, 296.875)
 
 [node name="Card" type="Node2D" unique_id=1703534497 node_paths=PackedStringArray("input_listener")]
 script = ExtResource("1_ch35y")
@@ -161,16 +161,42 @@ shape = SubResource("RectangleShape2D_2w08q")
 [node name="AdditonalMutation" type="Node2D" parent="." unique_id=1488082497]
 
 [node name="Additonal1" type="Sprite2D" parent="AdditonalMutation" unique_id=67915591]
-position = Vector2(-64, -75)
+position = Vector2(-202, -39.000008)
 scale = Vector2(0.128, 0.12799999)
+texture = ExtResource("20_lsojp")
+offset = Vector2(1200, -281.25)
+
+[node name="Area2D" type="Area2D" parent="AdditonalMutation/Additonal1" unique_id=840579975]
+script = ExtResource("21_lsojp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AdditonalMutation/Additonal1/Area2D" unique_id=417413426]
+position = Vector2(1199.218, -296.87497)
+shape = SubResource("RectangleShape2D_2w08q")
 
 [node name="Additonal2" type="Sprite2D" parent="AdditonalMutation" unique_id=2081525418]
 position = Vector2(58, 0)
 scale = Vector2(0.128, 0.12799999)
+texture = ExtResource("20_lsojp")
+
+[node name="Area2D" type="Area2D" parent="AdditonalMutation/Additonal2" unique_id=1691563284]
+script = ExtResource("21_lsojp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AdditonalMutation/Additonal2/Area2D" unique_id=468872777]
+position = Vector2(-3.8146973e-06, -15.625002)
+shape = SubResource("RectangleShape2D_2w08q")
 
 [node name="Additonal3" type="Sprite2D" parent="AdditonalMutation" unique_id=535450100]
 position = Vector2(-64, 32)
 scale = Vector2(0.128, 0.12799999)
+texture = ExtResource("20_lsojp")
+offset = Vector2(100, 0)
+
+[node name="Area2D" type="Area2D" parent="AdditonalMutation/Additonal3" unique_id=2017395128]
+script = ExtResource("21_lsojp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AdditonalMutation/Additonal3/Area2D" unique_id=163344432]
+position = Vector2(101.5625, -15.624999)
+shape = SubResource("RectangleShape2D_2w08q")
 
 [node name="CardStats" type="Node" parent="." unique_id=1956418628 node_paths=PackedStringArray("stats_visual")]
 script = ExtResource("22_koaue")
@@ -186,3 +212,9 @@ tooltip_gap = 100.0
 
 [connection signal="mouse_entered" from="BaseMutation/Area2D" to="BaseMutation/Area2D" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="BaseMutation/Area2D" to="BaseMutation/Area2D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="AdditonalMutation/Additonal1/Area2D" to="AdditonalMutation/Additonal1/Area2D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="AdditonalMutation/Additonal1/Area2D" to="AdditonalMutation/Additonal1/Area2D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="AdditonalMutation/Additonal2/Area2D" to="AdditonalMutation/Additonal2/Area2D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="AdditonalMutation/Additonal2/Area2D" to="AdditonalMutation/Additonal2/Area2D" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="AdditonalMutation/Additonal3/Area2D" to="AdditonalMutation/Additonal3/Area2D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="AdditonalMutation/Additonal3/Area2D" to="AdditonalMutation/Additonal3/Area2D" method="_on_mouse_exited"]
