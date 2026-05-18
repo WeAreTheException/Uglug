@@ -6,9 +6,10 @@ class_name MutationTooltipHandler
 @export var base_sigil_sprites: Array[Sprite2D]
 @export var additional_sigil_sprites: Array[Sprite2D]
 
-@export var card_top_offset: Vector2 = Vector2(60, -140)
-@export var tooltip_gap: float = 12.0
+@export var card_top_offset: Vector2 = Vector2(-87, -240)
+@export var tooltip_gap: float = 0
 
+var last_hovered_mutation: Mutation = null
 var tooltip_instance: Control = null
 var tooltip_root: Control = null
 var name_label: Label = null
@@ -19,13 +20,14 @@ var card: Card = null
 
 func _ready() -> void:
 	card = _find_card_parent()
-
 	_create_tooltip()
 	_hide_tooltip()
 
 
 func _exit_tree() -> void:
-	if tooltip_instance != null:
+	set_process(false)
+
+	if is_instance_valid(tooltip_instance):
 		tooltip_instance.queue_free()
 
 
@@ -33,8 +35,17 @@ func _process(_delta: float) -> void:
 	var mutation := _get_hovered_mutation()
 
 	if mutation == null:
+		if last_hovered_mutation != null:
+			print("HIDE TOOLTIP")
+
+		last_hovered_mutation = null
 		_hide_tooltip()
 		return
+
+	if mutation != last_hovered_mutation:
+		print("SHOW TOOLTIP: ", mutation.get_tooltip_name())
+
+	last_hovered_mutation = mutation
 
 	_show_tooltip(mutation)
 
@@ -67,13 +78,13 @@ func _create_tooltip() -> void:
 
 
 func _show_tooltip(mutation: Mutation) -> void:
-	if tooltip_instance == null:
+	if not is_instance_valid(tooltip_instance):
 		return
 
-	if tooltip_root == null:
+	if not is_instance_valid(tooltip_root):
 		return
 
-	if card == null:
+	if not is_instance_valid(card):
 		return
 
 	tooltip_instance.visible = true
@@ -87,6 +98,12 @@ func _show_tooltip(mutation: Mutation) -> void:
 
 	await get_tree().process_frame
 
+	if not is_instance_valid(tooltip_root):
+		return
+
+	if not is_instance_valid(card):
+		return
+
 	var card_screen_pos := card.get_global_transform_with_canvas().origin
 	card_screen_pos += card_top_offset
 
@@ -99,36 +116,33 @@ func _show_tooltip(mutation: Mutation) -> void:
 
 
 func _hide_tooltip() -> void:
-	if tooltip_instance != null:
+	if is_instance_valid(tooltip_instance):
 		tooltip_instance.visible = false
 
-	if tooltip_root != null:
+	if is_instance_valid(tooltip_root):
 		tooltip_root.visible = false
 
 
 func _get_hovered_mutation() -> Mutation:
-	if card == null:
-		card = _find_card_parent()
-
-	if card == null:
+	if not is_instance_valid(card):
 		return null
 
-	for i in base_sigil_sprites.size():
-		if i >= card.base_mutations.size():
+	var mutations := card.get_all_mutations()
+
+	var sprites: Array = []
+
+	for sprite in base_sigil_sprites:
+		sprites.append(sprite)
+
+	for sprite in additional_sigil_sprites:
+		sprites.append(sprite)
+
+	for i in sprites.size():
+		if i >= mutations.size():
 			continue
 
-		var sprite := base_sigil_sprites[i]
-		var mutation: Mutation = card.base_mutations[i]
-
-		if mutation != null and _is_mouse_over_sprite(sprite):
-			return mutation
-
-	for i in additional_sigil_sprites.size():
-		if i >= card.additional_mutations.size():
-			continue
-
-		var sprite := additional_sigil_sprites[i]
-		var mutation: Mutation = card.additional_mutations[i]
+		var sprite = sprites[i]
+		var mutation: Mutation = mutations[i]
 
 		if mutation != null and _is_mouse_over_sprite(sprite):
 			return mutation
@@ -136,7 +150,12 @@ func _get_hovered_mutation() -> Mutation:
 	return null
 
 
-func _is_mouse_over_sprite(sprite: Sprite2D) -> bool:
+func _is_mouse_over_sprite(sprite_obj) -> bool:
+	if not is_instance_valid(sprite_obj):
+		return false
+
+	var sprite := sprite_obj as Sprite2D
+
 	if sprite == null:
 		return false
 

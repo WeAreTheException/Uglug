@@ -22,6 +22,8 @@
 [ext_resource type="Script" uid="uid://ro02870urhpb" path="res://Code/States/CardStateMachine.gd" id="12_lsojp"]
 [ext_resource type="Texture2D" uid="uid://cgs5k6p3mggyf" path="res://Art/Ants/AntSprite.png" id="18_dm30q"]
 [ext_resource type="Script" uid="uid://cfvsqn441hgwq" path="res://Cards/CardStats.gd" id="22_koaue"]
+[ext_resource type="Script" uid="uid://de64ge4akihco" path="res://Mutations/ToolTip/MutationToolTipHandler.gd" id="23_2w08q"]
+[ext_resource type="PackedScene" uid="uid://d4lwi1f8i5uat" path="res://Mutations/ToolTip/MutationToolTip.tscn" id="24_lsojp"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
 size = Vector2(176, 270)
@@ -143,24 +145,24 @@ z_index = 1
 position = Vector2(0, 96)
 scale = Vector2(0.028686536, 0.028686536)
 
-[node name="Sprite2D" type="Sprite2D" parent="BaseMutation" unique_id=354731525]
+[node name="BaseSprite" type="Sprite2D" parent="BaseMutation" unique_id=354731525]
 position = Vector2(0.00012207031, 3.0517578e-05)
 scale = Vector2(4.4620237, 4.4620233)
 texture = ExtResource("2_sphwu")
 
 [node name="AdditonalMutation" type="Node2D" parent="." unique_id=1488082497]
 
-[node name="Sprite2D2" type="Sprite2D" parent="AdditonalMutation" unique_id=67915591]
+[node name="Additional1" type="Sprite2D" parent="AdditonalMutation" unique_id=67915591]
 position = Vector2(-64, -75)
 scale = Vector2(0.128, 0.12799999)
 texture = ExtResource("2_sphwu")
 
-[node name="Sprite2D3" type="Sprite2D" parent="AdditonalMutation" unique_id=2081525418]
+[node name="Additional2" type="Sprite2D" parent="AdditonalMutation" unique_id=2081525418]
 position = Vector2(58, 0)
 scale = Vector2(0.128, 0.12799999)
 texture = ExtResource("2_sphwu")
 
-[node name="Sprite2D4" type="Sprite2D" parent="AdditonalMutation" unique_id=535450100]
+[node name="Additional3" type="Sprite2D" parent="AdditonalMutation" unique_id=535450100]
 position = Vector2(-64, 32)
 scale = Vector2(0.128, 0.12799999)
 texture = ExtResource("2_sphwu")
@@ -168,3 +170,11 @@ texture = ExtResource("2_sphwu")
 [node name="CardStats" type="Node" parent="." unique_id=1956418628 node_paths=PackedStringArray("stats_visual")]
 script = ExtResource("22_koaue")
 stats_visual = NodePath("../Stats")
+
+[node name="MutationToolTipHandler" type="Node2D" parent="." unique_id=2060041199 node_paths=PackedStringArray("base_sigil_sprites", "additional_sigil_sprites")]
+script = ExtResource("23_2w08q")
+tooltip_scene = ExtResource("24_lsojp")
+base_sigil_sprites = [NodePath("../BaseMutation/BaseSprite")]
+additional_sigil_sprites = [NodePath("../AdditonalMutation/Additional1"), NodePath("../AdditonalMutation/Additional2"), NodePath("../AdditonalMutation/Additional3")]
+card_top_offset = Vector2(-87, -240)
+tooltip_gap = 0.0

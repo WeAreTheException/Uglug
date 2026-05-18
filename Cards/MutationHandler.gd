@@ -2,7 +2,9 @@ extends Node
 class_name MutationHandler
 
 var card: Card = null
+var base_sigil_sprites: Array[Sprite2D] = []
 var additional_sigil_sprites: Array[Sprite2D] = []
+
 
 func _ready() -> void:
 	card = get_parent() as Card
@@ -12,9 +14,13 @@ func _ready() -> void:
 		return
 
 	cache_sigil_nodes()
-	hide_additional_sigils()
+	hide_all_sigils()
+
 
 func setup_from_card_data(data: CardData) -> void:
+	if card == null:
+		card = get_parent() as Card
+
 	if card == null:
 		return
 
@@ -24,37 +30,51 @@ func setup_from_card_data(data: CardData) -> void:
 	card.base_mutations = data.base_mutations.duplicate()
 	card.additional_mutations = []
 
-	update_sigils()
+	print("=== MUTATION SETUP FOR ", data.name, " ===")
+	print("base mutations: ", card.base_mutations.size())
+
+	call_deferred("update_sigils")
+
 
 func cache_sigil_nodes() -> void:
+	base_sigil_sprites.clear()
 	additional_sigil_sprites.clear()
 
 	if card == null:
 		return
 
+	if card.base_sigil_container == null:
+		print("base_sigil_container is null on ", card.card_name)
+	else:
+		var found_base := card.base_sigil_container.find_children("*", "Sprite2D", true, false)
+
+		for node in found_base:
+			var sprite := node as Sprite2D
+			if sprite != null:
+				base_sigil_sprites.append(sprite)
+
 	if card.additional_sigil_container == null:
 		print("additional_sigil_container is null on ", card.card_name)
-		return
+	else:
+		var found_additional := card.additional_sigil_container.find_children("*", "Sprite2D", true, false)
 
-	var found := card.additional_sigil_container.find_children("*", "Sprite2D", true, false)
+		for node in found_additional:
+			var sprite := node as Sprite2D
+			if sprite != null:
+				additional_sigil_sprites.append(sprite)
 
-	for node in found:
-		var sprite := node as Sprite2D
+	print("cached base sigil sprites: ", base_sigil_sprites.size())
+	print("cached additional sigil sprites: ", additional_sigil_sprites.size())
 
-		if sprite != null:
-			additional_sigil_sprites.append(sprite)
-
-func hide_additional_sigils() -> void:
-	if card == null:
-		return
-
-	if card.additional_sigil_container != null:
-		card.additional_sigil_container.visible = true
+func hide_all_sigils() -> void:
+	for sprite in base_sigil_sprites:
+		if is_instance_valid(sprite):
+			sprite.visible = false
 
 	for sprite in additional_sigil_sprites:
-		if sprite != null:
+		if is_instance_valid(sprite):
 			sprite.visible = false
-			sprite.z_index = 100
+
 
 func add_additional_mutation(mutation: Mutation) -> void:
 	if card == null:
@@ -68,6 +88,7 @@ func add_additional_mutation(mutation: Mutation) -> void:
 
 	print(card.card_name, " gained mutation")
 
+
 func add_additional_mutation_from_path(mutation_path: String) -> void:
 	if mutation_path == "":
 		return
@@ -79,6 +100,7 @@ func add_additional_mutation_from_path(mutation_path: String) -> void:
 		return
 
 	add_additional_mutation(mutation)
+
 
 func get_additional_mutation_paths() -> Array[String]:
 	var paths: Array[String] = []
@@ -97,6 +119,7 @@ func get_additional_mutation_paths() -> Array[String]:
 
 	return paths
 
+
 func get_all_mutations() -> Array[Mutation]:
 	var combined: Array[Mutation] = []
 
@@ -113,81 +136,85 @@ func get_all_mutations() -> Array[Mutation]:
 
 	return combined
 
+
 func update_sigils() -> void:
+	if card == null:
+		card = get_parent() as Card
+
+	if card == null:
+		return
+
+	cache_sigil_nodes()
+
+	print("=== UPDATE SIGILS FOR ", card.card_name, " ===")
+	print("base mutations: ", card.base_mutations.size())
+	print("base slots: ", base_sigil_sprites.size())
+	print("additional mutations: ", card.additional_mutations.size())
+	print("additional slots: ", additional_sigil_sprites.size())
+
 	update_base_sigils()
 	update_additional_sigils()
 
+
 func update_base_sigils() -> void:
-	if card == null:
-		return
-
-	if card.base_sigil_container == null:
-		return
-
-	for child in card.base_sigil_container.get_children():
-		child.queue_free()
-
-	if card.base_mutations.size() <= 0:
-		return
-
-	var spacing := 36.0
-	var start_x := -((card.base_mutations.size() - 1) * spacing) / 2.0
-
-	for i in range(card.base_mutations.size()):
-		var mutation := card.base_mutations[i]
-
-		if mutation == null:
-			continue
-
-		if mutation.sigil_texture == null:
-			continue
-
-		var sigil := Sprite2D.new()
-		sigil.texture = mutation.sigil_texture
-		sigil.position = Vector2(start_x + (i * spacing), 0)
-		sigil.z_index = 50
-
-		card.base_sigil_container.add_child(sigil)
-
-func update_additional_sigils() -> void:
-	cache_sigil_nodes()
-
-	if card == null:
-		return
-
-	if card.additional_sigil_container == null:
-		print("additional_sigil_container missing on ", card.card_name)
-		return
-
-	card.additional_sigil_container.visible = true
-
-	if additional_sigil_sprites.size() <= 0:
-		print("no additional sigil sprites found on ", card.card_name)
-		return
-
-	for sprite in additional_sigil_sprites:
-		if sprite != null:
+	for sprite in base_sigil_sprites:
+		if is_instance_valid(sprite):
 			sprite.visible = false
 
-	var max_count: int = min(card.additional_mutations.size(), additional_sigil_sprites.size())
+	var max_count: int = min(card.base_mutations.size(), base_sigil_sprites.size())
 
 	for i in range(max_count):
-		var mutation := card.additional_mutations[i]
+		var mutation := card.base_mutations[i]
+		var sprite := base_sigil_sprites[i]
 
 		if mutation == null:
+			print("base sigil blocked: mutation null at ", i)
 			continue
+
+		if not is_instance_valid(sprite):
+			print("base sigil blocked: sprite invalid at ", i)
+			continue
+
+		print("base sigil ", i, " mutation=", mutation.get_tooltip_name(), " texture=", mutation.sigil_texture)
 
 		if mutation.sigil_texture == null:
-			continue
-
-		var sprite := additional_sigil_sprites[i]
-
-		if sprite == null:
+			print("base sigil blocked: texture null at ", i)
 			continue
 
 		sprite.texture = mutation.sigil_texture
 		sprite.visible = true
 		sprite.z_index = 100
 
-	if card.additional_mutations.size() > additional_sigil_sprites.size():
-		print(card.card_name, " has more additional mutations than sprite slots")
+		print("base sigil applied texture: ", sprite.texture)
+
+
+func update_additional_sigils() -> void:
+	for sprite in additional_sigil_sprites:
+		if is_instance_valid(sprite):
+			sprite.visible = false
+
+	var max_count: int = min(card.additional_mutations.size(), additional_sigil_sprites.size())
+
+	for i in range(max_count):
+		var mutation := card.additional_mutations[i]
+		var sprite := additional_sigil_sprites[i]
+
+		if mutation == null:
+			print("additional sigil blocked: mutation null at ", i)
+			continue
+
+		if not is_instance_valid(sprite):
+			print("additional sigil blocked: sprite invalid at ", i)
+			continue
+
+		print("additional sigil ", i, " mutation=", mutation.get_tooltip_name(), " texture=", mutation.sigil_texture)
+
+		if mutation.sigil_texture == null:
+			print("additional sigil blocked: texture null at ", i)
+			continue
+
+		sprite.texture = mutation.sigil_texture
+		sprite.visible = true
+		sprite.z_index = 100
+
+		print("additional sigil applied texture: ", sprite.texture)

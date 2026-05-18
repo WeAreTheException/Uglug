@@ -1,8 +1,10 @@
 [gd_resource type="Resource" script_class="TouchOfDeath" format=3 uid="uid://croxvpub0fg6"]
 
 [ext_resource type="Script" uid="uid://dvdfwl2ud70ua" path="res://Mutations/Scripts/TouchOfDeath.gd" id="1_sp15y"]
+[ext_resource type="Texture2D" uid="uid://d3ggild10ajom" path="res://Art/Mutations/Eliminant_Sigil.PNG" id="2_trn8e"]
 
 [resource]
 script = ExtResource("1_sp15y")
 mutation_name = "Touch of Death"
 mutation_description = "Kills any card it damages"
+sigil_texture = ExtResource("2_trn8e")
