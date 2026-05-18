@@ -21,6 +21,7 @@
 [ext_resource type="Script" uid="uid://b730hf2p1uwqw" path="res://TuggaManager.gd" id="14_oiy75"]
 [ext_resource type="Script" uid="uid://bqtoohcvy57vk" path="res://SacrificeHandler.gd" id="15_27s8c"]
 [ext_resource type="Texture2D" uid="uid://b0lmg14eavi20" path="res://Art/Tugga/P2_Tugga_Full.png" id="16_mo65u"]
+[ext_resource type="Script" uid="uid://dssf8rptp70gh" path="res://BuffPhaseAnimationHandler.gd" id="16_nh7p2"]
 [ext_resource type="Texture2D" uid="uid://dydn83tce2knf" path="res://Art/Tugga/P1_Tugga_Fulll.png" id="17_jgxe7"]
 [ext_resource type="Script" uid="uid://dsifsjjn64ofo" path="res://Multiplayer/TuggaManager.gd" id="18_ebxid"]
 [ext_resource type="Texture2D" uid="uid://2pljvs41hqvt" path="res://Art/Tugga/P1_Tugga_Emptyl.png" id="19_7p785"]
@@ -241,6 +242,11 @@ metadata/_custom_type_script = "uid://bqtoohcvy57vk"
 
 [node name="SacrificeAnimation" type="Node" parent="Handlers/SacrificeHandler" unique_id=1154187561]
 script = ExtResource("12_rvenm")
+
+[node name="BuffPhaseAnimationHandler" type="Node" parent="Handlers" unique_id=940939912 node_paths=PackedStringArray("phase_manager", "player_hand")]
+script = ExtResource("16_nh7p2")
+phase_manager = NodePath("../../Managers/PhaseManager")
+player_hand = NodePath("../../Hand&Deck/PlayerHand")
 
 [node name="Managers" type="Node" parent="." unique_id=5384537]
 
