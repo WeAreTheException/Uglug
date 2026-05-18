@@ -48,6 +48,16 @@ func stop_wiggle() -> void:
 
 	currently_wiggling.clear()
 
+	var select_handler := get_tree().current_scene.find_child("SelectHandler", true, false) as SelectHandler
+
+	if select_handler != null:
+		select_handler.clear_buff_selection()
+	else:
+		if SelectHandler.selected_card != null:
+			SelectHandler.selected_card.set_selected(false)
+
+		SelectHandler.selected_card = null
+
 
 func update_wiggles() -> void:
 	var selected_card := SelectHandler.selected_card

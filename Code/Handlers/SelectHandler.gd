@@ -11,12 +11,15 @@ static var selected_card: Card = null
 
 var slots: Array[NewSlots] = []
 var pending_play_card: Card = null
+var pending_buff_card: Card = null
+
 
 func _ready() -> void:
 	cache_slots()
 
 	if sacrifice_handler != null:
 		sacrifice_handler.phase_manager = phase_manager
+
 
 func cache_slots() -> void:
 	slots.clear()
@@ -27,6 +30,7 @@ func cache_slots() -> void:
 
 	_collect_player_slots_recursive(slots_root)
 
+
 func _collect_player_slots_recursive(node: Node) -> void:
 	for child in node.get_children():
 		var slot := child as NewSlots
@@ -35,12 +39,14 @@ func _collect_player_slots_recursive(node: Node) -> void:
 
 		_collect_player_slots_recursive(child)
 
+
 func _unhandled_input(event: InputEvent) -> void:
 	if not can_use_place_logic():
 		return
 
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		try_place_into_slot_under_mouse()
+
 
 func can_select_hand_cards() -> bool:
 	if phase_manager == null:
@@ -57,6 +63,7 @@ func can_select_hand_cards() -> bool:
 
 	return true
 
+
 func can_use_place_logic() -> bool:
 	if phase_manager == null:
 		return true
@@ -68,6 +75,7 @@ func can_use_place_logic() -> bool:
 		return phase_manager.turn_manager.can_local_player_place()
 
 	return true
+
 
 func select_card(card: Card) -> void:
 	if not can_select_hand_cards():
@@ -97,6 +105,7 @@ func select_card(card: Card) -> void:
 
 	try_select_hand_card(card)
 
+
 func try_select_hand_card_for_buff(card: Card) -> void:
 	if card == null:
 		return
@@ -105,16 +114,14 @@ func try_select_hand_card_for_buff(card: Card) -> void:
 		print("buff select blocked: card already in slot")
 		return
 
-	if pending_play_card == card:
-		clear_current_selection_visuals()
-		pending_play_card = null
-		SelectHandler.selected_card = null
+	if pending_buff_card == card:
+		clear_buff_selection()
 		print("buff selected card cleared")
 		return
 
-	clear_current_selection_visuals()
+	clear_buff_selection()
 
-	pending_play_card = card
+	pending_buff_card = card
 	SelectHandler.selected_card = card
 
 	if animation_handler != null:
@@ -123,6 +130,19 @@ func try_select_hand_card_for_buff(card: Card) -> void:
 		card.set_selected(true)
 
 	print("buff selected_card = ", card.card_name)
+
+
+func clear_buff_selection() -> void:
+	if pending_buff_card != null and is_instance_valid(pending_buff_card):
+		pending_buff_card.set_selected(false)
+
+	pending_buff_card = null
+
+	if SelectHandler.selected_card != null:
+		SelectHandler.selected_card.set_selected(false)
+
+	SelectHandler.selected_card = null
+
 
 func try_select_hand_card(card: Card) -> void:
 	if not can_use_place_logic():
@@ -168,6 +188,7 @@ func try_select_hand_card(card: Card) -> void:
 
 	print("pending_play_card = ", pending_play_card.card_name)
 
+
 func try_place_into_slot_under_mouse() -> void:
 	if not can_use_place_logic():
 		print("place blocked: not your placement turn")
@@ -209,6 +230,7 @@ func try_place_into_slot_under_mouse() -> void:
 			resolve_pending_play(slot)
 			return
 
+
 func resolve_pending_play(slot: NewSlots) -> void:
 	if not can_use_place_logic():
 		print("resolve blocked: not your placement turn")
@@ -244,6 +266,7 @@ func resolve_pending_play(slot: NewSlots) -> void:
 
 	SelectHandler.selected_card = null
 
+
 func cancel_pending_play() -> void:
 	if sacrifice_handler != null and sacrifice_handler.payment_completed:
 		print("cancel_pending_play blocked: payment already completed")
@@ -263,6 +286,7 @@ func cancel_pending_play() -> void:
 
 	print("pending play cancelled")
 
+
 func clear_current_selection_visuals() -> void:
 	if animation_handler != null:
 		animation_handler.clear_pending_visual(pending_play_card)
@@ -275,5 +299,7 @@ func clear_current_selection_visuals() -> void:
 	if sacrifice_handler != null:
 		sacrifice_handler.clear_selected_sacrifice_visuals()
 
+
 func unselect_current_card() -> void:
 	cancel_pending_play()
+	clear_buff_selection()
