@@ -36,6 +36,7 @@ func _ready() -> void:
 
 	print("DeckDrawHandler ready / deck_type = ", get_deck_type_name(), " / GDSync host = ", GDSync.is_host())
 
+
 func get_deck_type_name() -> String:
 	if deck_type == DeckType.WORKER:
 		return "WORKER"
@@ -44,6 +45,7 @@ func get_deck_type_name() -> String:
 		return "WARRIOR"
 
 	return "UNKNOWN"
+
 
 func draw_player_card() -> void:
 	if phase_manager == null:
@@ -59,11 +61,13 @@ func draw_player_card() -> void:
 	else:
 		GDSync.call_func(request_draw_from_host, my_peer_id)
 
+
 func request_draw_from_host(requesting_peer_id: int) -> void:
 	if not GDSync.is_host():
 		return
 
 	_host_resolve_draw(requesting_peer_id)
+
 
 func _host_resolve_draw(drawer_peer_id: int) -> void:
 	var data := pick_card_data()
@@ -81,12 +85,14 @@ func _host_resolve_draw(drawer_peer_id: int) -> void:
 		card_id
 	)
 
+
 func commit_draw_remote(
 	drawer_peer_id: int,
 	card_name: String,
 	card_id: int
 ) -> void:
 	_commit_draw_local(drawer_peer_id, card_name, card_id)
+
 
 func spawn_cards_from_effect(owner_peer_id: int, amount: int) -> void:
 	if deck_type != DeckType.WORKER:
@@ -105,6 +111,7 @@ func spawn_cards_from_effect(owner_peer_id: int, amount: int) -> void:
 			amount
 		)
 
+
 func pregnant_request_spawn_workers_from_host(
 	owner_peer_id: int,
 	amount: int
@@ -116,6 +123,7 @@ func pregnant_request_spawn_workers_from_host(
 		return
 
 	_pregnant_host_spawn_workers(owner_peer_id, amount)
+
 
 func _pregnant_host_spawn_workers(
 	owner_peer_id: int,
@@ -140,6 +148,7 @@ func _pregnant_host_spawn_workers(
 			card_id
 		)
 
+
 func pregnant_commit_spawn_worker_card(
 	owner_peer_id: int,
 	card_name: String,
@@ -149,6 +158,7 @@ func pregnant_commit_spawn_worker_card(
 		return
 
 	_commit_draw_local(owner_peer_id, card_name, card_id)
+
 
 func _commit_draw_local(
 	drawer_peer_id: int,
@@ -170,6 +180,7 @@ func _commit_draw_local(
 		drawer_peer_id
 	)
 
+
 func draw_specific_card_to_hand(
 	target_hand: Node2D,
 	new_card_owner: int,
@@ -178,34 +189,39 @@ func draw_specific_card_to_hand(
 	owning_peer_id: int
 ) -> bool:
 	if deck == null:
+		print("draw blocked: deck is null")
 		return false
 
 	if target_hand == null:
+		print("draw blocked: target_hand is null")
 		return false
 
 	if card_database == null:
+		print("draw blocked: card_database is null")
 		return false
 
 	if deck.card_scene == null:
+		print("draw blocked: deck.card_scene is null")
 		return false
 
 	if not target_hand.has_method("add_card_to_hand"):
+		print("draw blocked: target_hand missing add_card_to_hand")
 		return false
 
 	if target_hand.has_method("is_hand_full") and target_hand.is_hand_full():
+		print("draw blocked: hand is full")
 		return false
 
 	var data := get_card_data_by_name(card_name)
 
 	if data == null:
-		return false
-
-	if not deck.consume_card():
+		print("draw blocked: could not find card data named ", card_name)
 		return false
 
 	var new_card := deck.card_scene.instantiate() as Card
 
 	if new_card == null:
+		print("draw blocked: card_scene did not instantiate Card")
 		return false
 
 	new_card.multiplayer_card_id = card_id
@@ -241,6 +257,7 @@ func draw_specific_card_to_hand(
 
 	return true
 
+
 func get_card_data_by_name(card_name: String) -> CardData:
 	if card_database == null:
 		return null
@@ -254,11 +271,14 @@ func get_card_data_by_name(card_name: String) -> CardData:
 
 	return null
 
+
 func pick_card_data() -> CardData:
-	if card_database == null:
+	if deck == null:
+		print("pick_card_data blocked: deck is null")
 		return null
 
-	if card_database.cards.is_empty():
+	if not deck.has_cards():
+		print("pick_card_data blocked: deck is empty")
 		return null
 
-	return card_database.cards[randi() % card_database.cards.size()]
+	return deck.draw_card_data()

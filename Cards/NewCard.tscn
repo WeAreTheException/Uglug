@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bgw4gcc8buxly" path="res://Cards/card.gd" id="1_ch35y"]
 [ext_resource type="Script" uid="uid://dbemrm25gvek6" path="res://Cards/Stats.gd" id="2_52a3h"]
+[ext_resource type="Texture2D" uid="uid://dqtxvu584lxsj" path="res://Art/Mutations/Ant_Hill_Sigil.PNG" id="2_sphwu"]
 [ext_resource type="Texture2D" uid="uid://bdi7eyt5cmur0" path="res://Art/Numbers/1.png" id="3_5yjln"]
 [ext_resource type="Script" uid="uid://d35vj6r6tt0ty" path="res://Cards/AttackHandler.gd" id="4_52a3h"]
 [ext_resource type="Script" uid="uid://hkeygquk7osj" path="res://Cards/MutationHandler.gd" id="4_dm30q"]
@@ -19,22 +20,18 @@
 [ext_resource type="Script" uid="uid://dtoyyse7bnjuv" path="res://Code/States/CardInputListener.gd" id="10_koaue"]
 [ext_resource type="Script" uid="uid://d0qu3q360kdsl" path="res://Code/States/CardInputReciever.gd" id="11_2w08q"]
 [ext_resource type="Script" uid="uid://ro02870urhpb" path="res://Code/States/CardStateMachine.gd" id="12_lsojp"]
-[ext_resource type="Texture2D" uid="uid://cxfrhckwspi6a" path="res://Art/Mutations/Antlers_Sigil.PNG" id="20_lsojp"]
-[ext_resource type="Texture2D" uid="uid://di66ndoe6cgnp" path="res://Art/Ants/Antler.png" id="20_vartc"]
-[ext_resource type="Script" uid="uid://dk46foimm0lo4" path="res://Cards/SigilCollision.gd" id="21_lsojp"]
-[ext_resource type="Script" path="res://Cards/CardStats.gd" id="22_koaue"]
-[ext_resource type="PackedScene" uid="uid://d4lwi1f8i5uat" path="res://Mutations/ToolTip/MutationToolTip.tscn" id="23_2w08q"]
-[ext_resource type="Script" uid="uid://de64ge4akihco" path="res://Mutations/ToolTip/MutationToolTipHandler.gd" id="23_lsojp"]
+[ext_resource type="Texture2D" uid="uid://cgs5k6p3mggyf" path="res://Art/Ants/AntSprite.png" id="18_dm30q"]
+[ext_resource type="Script" uid="uid://cfvsqn441hgwq" path="res://Cards/CardStats.gd" id="22_koaue"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
 size = Vector2(176, 270)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_2w08q"]
-size = Vector2(460.93753, 296.875)
-
-[node name="Card" type="Node2D" unique_id=1703534497 node_paths=PackedStringArray("input_listener")]
+[node name="Card" type="Node2D" unique_id=1703534497 node_paths=PackedStringArray("input_listener", "card_stats", "base_sigil_container", "additional_sigil_container")]
 script = ExtResource("1_ch35y")
 input_listener = NodePath("InputListener")
+card_stats = NodePath("CardStats")
+base_sigil_container = NodePath("BaseMutation")
+additional_sigil_container = NodePath("AdditonalMutation")
 
 [node name="InputListener" type="Area2D" parent="." unique_id=1220273102]
 script = ExtResource("10_koaue")
@@ -138,7 +135,7 @@ theme_override_colors/default_color = Color(0.16206557, 0.1620656, 0.16206557, 1
 
 [node name="CardImage" type="Sprite2D" parent="." unique_id=1482464689]
 scale = Vector2(0.14520307, 0.14520307)
-texture = ExtResource("20_vartc")
+texture = ExtResource("18_dm30q")
 metadata/_edit_lock_ = true
 
 [node name="BaseMutation" type="Node2D" parent="." unique_id=856620296]
@@ -146,75 +143,28 @@ z_index = 1
 position = Vector2(0, 96)
 scale = Vector2(0.028686536, 0.028686536)
 
-[node name="Base" type="Sprite2D" parent="BaseMutation" unique_id=354731525]
+[node name="Sprite2D" type="Sprite2D" parent="BaseMutation" unique_id=354731525]
 position = Vector2(0.00012207031, 3.0517578e-05)
 scale = Vector2(4.4620237, 4.4620233)
-texture = ExtResource("20_lsojp")
-
-[node name="Area2D" type="Area2D" parent="BaseMutation" unique_id=1527541253]
-script = ExtResource("21_lsojp")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BaseMutation/Area2D" unique_id=926169597]
-position = Vector2(-52.289337, 52.289307)
-shape = SubResource("RectangleShape2D_2w08q")
+texture = ExtResource("2_sphwu")
 
 [node name="AdditonalMutation" type="Node2D" parent="." unique_id=1488082497]
 
-[node name="Additonal1" type="Sprite2D" parent="AdditonalMutation" unique_id=67915591]
-position = Vector2(-202, -39.000008)
+[node name="Sprite2D2" type="Sprite2D" parent="AdditonalMutation" unique_id=67915591]
+position = Vector2(-64, -75)
 scale = Vector2(0.128, 0.12799999)
-texture = ExtResource("20_lsojp")
-offset = Vector2(1200, -281.25)
+texture = ExtResource("2_sphwu")
 
-[node name="Area2D" type="Area2D" parent="AdditonalMutation/Additonal1" unique_id=840579975]
-script = ExtResource("21_lsojp")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="AdditonalMutation/Additonal1/Area2D" unique_id=417413426]
-position = Vector2(1199.218, -296.87497)
-shape = SubResource("RectangleShape2D_2w08q")
-
-[node name="Additonal2" type="Sprite2D" parent="AdditonalMutation" unique_id=2081525418]
+[node name="Sprite2D3" type="Sprite2D" parent="AdditonalMutation" unique_id=2081525418]
 position = Vector2(58, 0)
 scale = Vector2(0.128, 0.12799999)
-texture = ExtResource("20_lsojp")
+texture = ExtResource("2_sphwu")
 
-[node name="Area2D" type="Area2D" parent="AdditonalMutation/Additonal2" unique_id=1691563284]
-script = ExtResource("21_lsojp")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="AdditonalMutation/Additonal2/Area2D" unique_id=468872777]
-position = Vector2(-3.8146973e-06, -15.625002)
-shape = SubResource("RectangleShape2D_2w08q")
-
-[node name="Additonal3" type="Sprite2D" parent="AdditonalMutation" unique_id=535450100]
+[node name="Sprite2D4" type="Sprite2D" parent="AdditonalMutation" unique_id=535450100]
 position = Vector2(-64, 32)
 scale = Vector2(0.128, 0.12799999)
-texture = ExtResource("20_lsojp")
-offset = Vector2(100, 0)
-
-[node name="Area2D" type="Area2D" parent="AdditonalMutation/Additonal3" unique_id=2017395128]
-script = ExtResource("21_lsojp")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="AdditonalMutation/Additonal3/Area2D" unique_id=163344432]
-position = Vector2(101.5625, -15.624999)
-shape = SubResource("RectangleShape2D_2w08q")
+texture = ExtResource("2_sphwu")
 
 [node name="CardStats" type="Node" parent="." unique_id=1956418628 node_paths=PackedStringArray("stats_visual")]
 script = ExtResource("22_koaue")
 stats_visual = NodePath("../Stats")
-
-[node name="MutationToolTipHandler" type="Node2D" parent="." unique_id=1985232780 node_paths=PackedStringArray("base_sigil_sprites", "additional_sigil_sprites")]
-script = ExtResource("23_lsojp")
-tooltip_scene = ExtResource("23_2w08q")
-base_sigil_sprites = [NodePath("../BaseMutation/Base")]
-additional_sigil_sprites = [NodePath("../AdditonalMutation/Additonal1"), NodePath("../AdditonalMutation/Additonal2"), NodePath("../AdditonalMutation/Additonal3")]
-card_top_offset = Vector2(-87, -140)
-tooltip_gap = 100.0
-
-[connection signal="mouse_entered" from="BaseMutation/Area2D" to="BaseMutation/Area2D" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="BaseMutation/Area2D" to="BaseMutation/Area2D" method="_on_mouse_exited"]
-[connection signal="mouse_entered" from="AdditonalMutation/Additonal1/Area2D" to="AdditonalMutation/Additonal1/Area2D" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="AdditonalMutation/Additonal1/Area2D" to="AdditonalMutation/Additonal1/Area2D" method="_on_mouse_exited"]
-[connection signal="mouse_entered" from="AdditonalMutation/Additonal2/Area2D" to="AdditonalMutation/Additonal2/Area2D" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="AdditonalMutation/Additonal2/Area2D" to="AdditonalMutation/Additonal2/Area2D" method="_on_mouse_exited"]
-[connection signal="mouse_entered" from="AdditonalMutation/Additonal3/Area2D" to="AdditonalMutation/Additonal3/Area2D" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="AdditonalMutation/Additonal3/Area2D" to="AdditonalMutation/Additonal3/Area2D" method="_on_mouse_exited"]

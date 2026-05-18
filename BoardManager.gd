@@ -222,8 +222,6 @@ func apply_snapshot_to_card(card: Card, snapshot: Dictionary) -> void:
 	else:
 		card.card_owner = Card.Owner.OPPONENT
 
-	if card.stats != null:
-		card.stats.update_health(card.current_health)
 
 func find_visual_slot_for_owner(owner_peer_id: int, lane_id: int) -> NewSlots:
 	var wanted_owner := NewSlots.SlotOwner.OPPONENT

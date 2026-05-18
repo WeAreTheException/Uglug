@@ -17,7 +17,10 @@ func setup_from_card_data(data: CardData) -> void:
 	current_cost = data.cost
 	current_worth = data.worth
 
-	update_visuals()
+	if stats_visual != null:
+		stats_visual.setup_from_card_data(data)
+	else:
+		update_visuals()
 
 func apply_stat_bonus(attack_bonus: int, health_bonus: int) -> void:
 	current_attack += attack_bonus
