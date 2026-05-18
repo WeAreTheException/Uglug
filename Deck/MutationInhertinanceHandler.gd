@@ -3,6 +3,7 @@ class_name MutationInhertitanceHandler
 
 var draw_handler: DeckDrawHandler = null
 
+
 func _ready() -> void:
 	draw_handler = get_parent() as DeckDrawHandler
 
@@ -89,9 +90,43 @@ func commit_spawn_worker_card(
 	if draw_handler == null:
 		return
 
-	draw_handler.spawn_effect_card_to_hand(
-		owner_peer_id,
+	var target_hand: Node2D = draw_handler.player_hand
+	var new_card_owner: int = Card.Owner.PLAYER
+
+	if int(GDSync.get_client_id()) != owner_peer_id:
+		target_hand = draw_handler.opponent_hand
+		new_card_owner = Card.Owner.OPPONENT
+
+	var success := draw_handler.draw_specific_card_to_hand(
+		target_hand,
+		new_card_owner,
 		card_name,
 		card_id,
-		inherited_mutation_paths
+		owner_peer_id
 	)
+
+	if not success:
+		return
+
+	var spawned_card: Card = null
+
+	for child in target_hand.get_children():
+		if child is Card:
+			var card := child as Card
+
+			if card.multiplayer_card_id == card_id:
+				spawned_card = card
+				break
+
+	if spawned_card == null:
+		print("MutationInhertitanceHandler blocked: could not find spawned card")
+		return
+
+	for mutation_path in inherited_mutation_paths:
+		var inherited_mutation := load(mutation_path) as Mutation
+
+		if inherited_mutation == null:
+			print("MutationInhertitanceHandler skipped invalid mutation path: ", mutation_path)
+			continue
+
+		spawned_card.add_additional_mutation(inherited_mutation)

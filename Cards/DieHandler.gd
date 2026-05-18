@@ -5,8 +5,10 @@ class_name DieHandler
 
 var card: Card = null
 
+
 func _ready() -> void:
 	card = _find_card_parent()
+
 
 func die() -> void:
 	if card == null:
@@ -18,8 +20,10 @@ func die() -> void:
 	card.death_processed = true
 	card.current_health = 0
 
-	if card.stats != null:
-		card.stats.update_health(card.current_health)
+	var stats := card.find_child("Stats", true, false)
+
+	if stats != null and stats.has_method("update_health"):
+		stats.update_health(card.current_health)
 
 	var mutations := card.get_all_mutations()
 
@@ -35,6 +39,7 @@ func die() -> void:
 		card.current_slot = null
 
 	card.queue_free()
+
 
 func _find_card_parent() -> Card:
 	var current := get_parent()
