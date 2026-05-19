@@ -86,6 +86,8 @@ stats_visual = NodePath("../Stats")
 [node name="DistantTargetPicker" type="Node" parent="." unique_id=375972492]
 script = ExtResource("13_vartc")
 
+[node name="DistantReadyVisual" type="Label" parent="DistantTargetPicker" unique_id=414593817]
+
 [node name="Stats" type="Node2D" parent="." unique_id=1314998697 node_paths=PackedStringArray("card_sprite", "attack", "health", "cost", "name_label")]
 script = ExtResource("2_52a3h")
 card_sprite = NodePath("../CardImage")
