@@ -83,10 +83,24 @@ script = ExtResource("9_fuvn1")
 script = ExtResource("22_koaue")
 stats_visual = NodePath("../Stats")
 
-[node name="DistantTargetPicker" type="Node" parent="." unique_id=375972492]
+[node name="DistantTargetPicker" type="Node" parent="." unique_id=375972492 node_paths=PackedStringArray("ready_visual")]
 script = ExtResource("13_vartc")
+ready_visual = NodePath("../DistantReadyVisual")
 
-[node name="DistantReadyVisual" type="Label" parent="DistantTargetPicker" unique_id=414593817]
+[node name="DistantReadyVisual" type="Panel" parent="." unique_id=1887081021]
+offset_left = -86.0
+offset_top = -155.0
+offset_right = 86.0
+offset_bottom = -134.0
+
+[node name="Label" type="Label" parent="DistantReadyVisual" unique_id=414593817]
+z_index = 5
+layout_mode = 0
+offset_left = 4.0
+offset_top = -2.0
+offset_right = 169.0
+offset_bottom = 21.0
+text = "Choose Slot to Attack"
 
 [node name="Stats" type="Node2D" parent="." unique_id=1314998697 node_paths=PackedStringArray("card_sprite", "attack", "health", "cost", "name_label")]
 script = ExtResource("2_52a3h")

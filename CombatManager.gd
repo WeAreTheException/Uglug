@@ -8,7 +8,7 @@ class_name CombatManager
 
 # Temporary Distant fix:
 # This gives the attacking player time to pick slots before the next card starts attacking.
-@export var distant_pick_time_per_target: float = 4.0
+@export var distant_pick_time_per_target: float = 4
 
 var attack_round_running: bool = false
 
