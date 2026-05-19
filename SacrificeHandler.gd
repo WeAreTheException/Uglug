@@ -10,11 +10,13 @@ var selected_sacrifices: Array[Card] = []
 var paid_sacrifice_worth: int = 0
 var payment_completed: bool = false
 
+
 func _ready() -> void:
 	sacrifice_animation = find_child("SacrificeAnimation", false, false) as SacrificeAnimation
 
 	if sacrifice_animation == null:
 		print("SacrificeHandler could not find child SacrificeAnimation")
+
 
 func reset_state() -> void:
 	clear_sacrifice_hints()
@@ -23,11 +25,13 @@ func reset_state() -> void:
 	paid_sacrifice_worth = 0
 	payment_completed = false
 
+
 func can_use_sacrifice_logic() -> bool:
 	if phase_manager == null:
 		return true
 
 	return phase_manager.is_place_phase()
+
 
 func can_afford_card(card: Card) -> bool:
 	if not can_use_sacrifice_logic():
@@ -39,7 +43,8 @@ func can_afford_card(card: Card) -> bool:
 	if card.current_cost <= 0:
 		return true
 
-	return get_total_player_hand_worth(card) >= card.current_cost
+	return get_total_player_sacrifice_worth(card) >= card.current_cost
+
 
 func try_select_sacrifice(card: Card, pending_play_card: Card) -> void:
 	if not can_use_sacrifice_logic():
@@ -65,10 +70,6 @@ func try_select_sacrifice(card: Card, pending_play_card: Card) -> void:
 		print("sacrifice blocked: cannot sacrifice the card being played")
 		return
 
-	if card.current_slot != null:
-		print("sacrifice blocked: card is on board")
-		return
-
 	if card.card_owner != Card.Owner.PLAYER:
 		print("sacrifice blocked: not player card")
 		return
@@ -84,13 +85,26 @@ func try_select_sacrifice(card: Card, pending_play_card: Card) -> void:
 	else:
 		card.set_selected(true)
 
+	var source := "board"
+	if card.current_slot == null:
+		source = "hand"
+
 	var total := get_selected_sacrifice_worth()
-	print("added hand sacrifice: ", card.card_name, " / total worth = ", total)
+
+	print(
+		"added ",
+		source,
+		" sacrifice: ",
+		card.card_name,
+		" / total worth = ",
+		total
+	)
 
 	refresh_sacrifice_hints(pending_play_card)
 
 	if total >= pending_play_card.current_cost:
 		resolve_sacrifice_payment(pending_play_card)
+
 
 func resolve_sacrifice_payment(pending_play_card: Card) -> void:
 	if not can_use_sacrifice_logic():
@@ -131,6 +145,7 @@ func resolve_sacrifice_payment(pending_play_card: Card) -> void:
 	if multiplayer.multiplayer_peer != null:
 		rpc("replicate_sacrifice", sacrificed_data)
 
+
 @rpc("any_peer", "call_remote", "reliable")
 func replicate_sacrifice(sacrificed_data: Array) -> void:
 	for data in sacrificed_data:
@@ -144,6 +159,7 @@ func replicate_sacrifice(sacrificed_data: Array) -> void:
 			continue
 
 		discard_card(card)
+
 
 func discard_card(card: Card) -> void:
 	if card == null:
@@ -163,6 +179,7 @@ func discard_card(card: Card) -> void:
 
 	card.queue_free()
 
+
 func find_card_by_multiplayer_data(card_id: int, owner_peer_id: int) -> Card:
 	var scene := get_tree().current_scene
 
@@ -170,6 +187,7 @@ func find_card_by_multiplayer_data(card_id: int, owner_peer_id: int) -> Card:
 		return null
 
 	return find_card_by_multiplayer_data_recursive(scene, card_id, owner_peer_id)
+
 
 func find_card_by_multiplayer_data_recursive(
 	node: Node,
@@ -197,22 +215,25 @@ func find_card_by_multiplayer_data_recursive(
 
 	return null
 
-func get_total_player_hand_worth(pending_play_card: Card = null) -> int:
+
+func get_total_player_sacrifice_worth(pending_play_card: Card = null) -> int:
 	var total := 0
 
-	for card in get_player_hand_cards():
+	for card in get_all_player_sacrifice_cards():
 		if card == null:
 			continue
 
 		if card == pending_play_card:
 			continue
 
-		if card.current_slot != null:
-			continue
-
 		total += card.current_worth
 
 	return total
+
+
+func get_total_player_hand_worth(pending_play_card: Card = null) -> int:
+	return get_total_player_sacrifice_worth(pending_play_card)
+
 
 func get_selected_sacrifice_worth() -> int:
 	var total := 0
@@ -224,6 +245,7 @@ func get_selected_sacrifice_worth() -> int:
 		total += card.current_worth
 
 	return total
+
 
 func refresh_sacrifice_hints(pending_play_card: Card) -> void:
 	clear_sacrifice_hints()
@@ -240,14 +262,11 @@ func refresh_sacrifice_hints(pending_play_card: Card) -> void:
 	if pending_play_card.current_cost <= 0:
 		return
 
-	for card in get_player_hand_cards():
+	for card in get_all_player_sacrifice_cards():
 		if card == null:
 			continue
 
 		if card == pending_play_card:
-			continue
-
-		if card.current_slot != null:
 			continue
 
 		if card.card_owner != Card.Owner.PLAYER:
@@ -261,8 +280,9 @@ func refresh_sacrifice_hints(pending_play_card: Card) -> void:
 		else:
 			card.start_sacrifice_hint()
 
+
 func clear_sacrifice_hints() -> void:
-	for card in get_player_hand_cards():
+	for card in get_all_player_sacrifice_cards():
 		if card == null:
 			continue
 
@@ -270,6 +290,7 @@ func clear_sacrifice_hints() -> void:
 			sacrifice_animation.hide_sacrifice_hint(card)
 		else:
 			card.stop_sacrifice_hint()
+
 
 func clear_selected_sacrifice_visuals() -> void:
 	for card in selected_sacrifices:
@@ -280,6 +301,37 @@ func clear_selected_sacrifice_visuals() -> void:
 			sacrifice_animation.show_sacrifice_unselected(card)
 		else:
 			card.set_selected(false)
+
+
+func get_all_player_sacrifice_cards() -> Array[Card]:
+	var cards: Array[Card] = []
+
+	for card in get_player_hand_cards():
+		if card != null and not cards.has(card):
+			cards.append(card)
+
+	var scene := get_tree().current_scene
+
+	if scene != null:
+		_collect_board_cards_recursive(scene, cards)
+
+	return cards
+
+
+func _collect_board_cards_recursive(node: Node, cards: Array[Card]) -> void:
+	var card := node as Card
+
+	if card != null:
+		if (
+			card.card_owner == Card.Owner.PLAYER
+			and card.current_slot != null
+			and not cards.has(card)
+		):
+			cards.append(card)
+
+	for child in node.get_children():
+		_collect_board_cards_recursive(child, cards)
+
 
 func get_player_hand_cards() -> Array[Card]:
 	var cards: Array[Card] = []
@@ -302,6 +354,7 @@ func get_player_hand_cards() -> Array[Card]:
 				cards.append(card)
 
 	return cards
+
 
 func remove_card_from_player_hand(card: Card) -> void:
 	if card == null:
