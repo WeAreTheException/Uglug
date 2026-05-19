@@ -18,12 +18,12 @@
 [ext_resource type="Script" uid="uid://jv8gks4tscbj" path="res://SacrificeAnimation.gd" id="12_rvenm"]
 [ext_resource type="PackedScene" uid="uid://bxghpl6h2pl6u" path="res://Deck/WorkerDeck.tscn" id="13_27s8c"]
 [ext_resource type="Script" uid="uid://clgbwnniuqm7g" path="res://Code/Handlers/SelectHandler.gd" id="14_f7lcf"]
-[ext_resource type="Script" uid="uid://b730hf2p1uwqw" path="res://TuggaManager.gd" id="14_oiy75"]
+[ext_resource type="Script" uid="uid://b730hf2p1uwqw" path="res://TuggaHandler.gd" id="14_oiy75"]
 [ext_resource type="Script" uid="uid://bqtoohcvy57vk" path="res://SacrificeHandler.gd" id="15_27s8c"]
 [ext_resource type="Texture2D" uid="uid://b0lmg14eavi20" path="res://Art/Tugga/P2_Tugga_Full.png" id="16_mo65u"]
 [ext_resource type="Script" uid="uid://dssf8rptp70gh" path="res://BuffPhaseAnimationHandler.gd" id="16_nh7p2"]
 [ext_resource type="Texture2D" uid="uid://dydn83tce2knf" path="res://Art/Tugga/P1_Tugga_Fulll.png" id="17_jgxe7"]
-[ext_resource type="Script" uid="uid://dsifsjjn64ofo" path="res://Multiplayer/TuggaManager.gd" id="18_ebxid"]
+[ext_resource type="Script" uid="uid://dsifsjjn64ofo" path="res://Multiplayer/TuggaUIManager.gd" id="18_ebxid"]
 [ext_resource type="Texture2D" uid="uid://2pljvs41hqvt" path="res://Art/Tugga/P1_Tugga_Emptyl.png" id="19_7p785"]
 [ext_resource type="Script" uid="uid://yewsi0ihyspk" path="res://GameStartDrawHandler.gd" id="19_tr2pb"]
 [ext_resource type="Texture2D" uid="uid://c3bh4b5ajh8a1" path="res://Art/Tugga/P2_Tugga_Emptypng.png" id="20_7p785"]
@@ -154,12 +154,12 @@ script = ExtResource("18_ebxid")
 tugga_handler = NodePath("..")
 player_one_full_texture = ExtResource("16_mo65u")
 player_two_full_texture = ExtResource("17_jgxe7")
-player_one_slot_1 = NodePath("P1_Tugga_Empty/P1TuggaEmptyl")
+player_one_slot_1 = NodePath("P1_Tugga_Empty/P1TuggaEmpty1")
 player_one_slot_2 = NodePath("P1_Tugga_Empty/P1TuggaEmptyl2")
 player_one_slot_3 = NodePath("P1_Tugga_Empty/P1TuggaEmptyl3")
 player_one_slot_4 = NodePath("P1_Tugga_Empty/P1TuggaEmptyl4")
 player_one_slot_5 = NodePath("P1_Tugga_Empty/P1TuggaEmptyl5")
-player_two_slot_1 = NodePath("P2_TuggaEmpty/P2TuggaEmptypng")
+player_two_slot_1 = NodePath("P2_TuggaEmpty/P2TuggaEmptypng1")
 player_two_slot_2 = NodePath("P2_TuggaEmpty/P2TuggaEmptypng2")
 player_two_slot_3 = NodePath("P2_TuggaEmpty/P2TuggaEmptypng3")
 player_two_slot_4 = NodePath("P2_TuggaEmpty/P2TuggaEmptypng4")
@@ -168,7 +168,7 @@ metadata/_custom_type_script = "uid://dsifsjjn64ofo"
 
 [node name="P1_Tugga_Empty" type="Sprite2D" parent="Handlers/TuggaHandler/TuggaUI" unique_id=1304617037]
 
-[node name="P1TuggaEmptyl" type="Sprite2D" parent="Handlers/TuggaHandler/TuggaUI/P1_Tugga_Empty" unique_id=350829909]
+[node name="P1TuggaEmpty1" type="Sprite2D" parent="Handlers/TuggaHandler/TuggaUI/P1_Tugga_Empty" unique_id=350829909]
 position = Vector2(752.5, 56.5)
 texture = ExtResource("19_7p785")
 
@@ -190,7 +190,7 @@ texture = ExtResource("19_7p785")
 
 [node name="P2_TuggaEmpty" type="Sprite2D" parent="Handlers/TuggaHandler/TuggaUI" unique_id=58710751]
 
-[node name="P2TuggaEmptypng" type="Sprite2D" parent="Handlers/TuggaHandler/TuggaUI/P2_TuggaEmpty" unique_id=1524984392]
+[node name="P2TuggaEmptypng1" type="Sprite2D" parent="Handlers/TuggaHandler/TuggaUI/P2_TuggaEmpty" unique_id=1524984392]
 position = Vector2(1136.5, 56.5)
 texture = ExtResource("20_7p785")
 

@@ -8,7 +8,7 @@
 [ext_resource type="Script" uid="uid://ga6f6537weuu" path="res://Tugga/BattleScale.gd" id="9_fbrwd"]
 [ext_resource type="Script" uid="uid://bqtoohcvy57vk" path="res://SacrificeHandler.gd" id="10_7w5cs"]
 [ext_resource type="Script" uid="uid://clgbwnniuqm7g" path="res://Code/Handlers/SelectHandler.gd" id="10_qfr8t"]
-[ext_resource type="Script" path="res://Multiplayer/TuggaManager.gd" id="12_8whpw"]
+[ext_resource type="Script" uid="uid://dsifsjjn64ofo" path="res://Multiplayer/TuggaUIManager.gd" id="12_8whpw"]
 
 [node name="Playground" type="Node2D" unique_id=1073653813]
 

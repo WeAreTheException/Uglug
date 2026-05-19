@@ -7,17 +7,23 @@ signal scale_changed(value: int)
 
 var current_value: int = 0
 
+
 func _ready() -> void:
+	add_to_group("tugga")
 	scale_changed.emit(current_value)
 
-func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventKey and event.pressed and not event.echo:
-		match event.keycode:
-			KEY_EQUAL, KEY_KP_ADD:
-				add_to_player_one(1)
 
-			KEY_MINUS, KEY_KP_SUBTRACT:
-				add_to_player_two(1)
+func take_direct_damage(attacker_peer_id: int, amount: int) -> void:
+	if amount <= 0:
+		return
+
+	var player_one_id := _get_player_one_id()
+
+	if attacker_peer_id == player_one_id:
+		add_to_player_one(amount)
+	else:
+		add_to_player_two(amount)
+
 
 func add_to_player_one(amount: int) -> void:
 	current_value += amount
@@ -27,6 +33,7 @@ func add_to_player_one(amount: int) -> void:
 
 	scale_changed.emit(current_value)
 
+
 func add_to_player_two(amount: int) -> void:
 	current_value -= amount
 	current_value = clamp(current_value, -max_value, max_value)
@@ -34,3 +41,13 @@ func add_to_player_two(amount: int) -> void:
 	print("tugga: ", current_value)
 
 	scale_changed.emit(current_value)
+
+
+func _get_player_one_id() -> int:
+	var turn_manager := get_tree().get_first_node_in_group("turn_manager") as TurnManager
+
+	if turn_manager == null:
+		print("tugga warning: turn_manager not found, using local client as player one")
+		return int(GDSync.get_client_id())
+
+	return turn_manager.player_one_id
