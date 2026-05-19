@@ -17,12 +17,10 @@ func get_attack_targets(card: Card, _current_targets: Array[Card]) -> Array[Card
 		return targets
 
 	var front_slot := card.current_slot.opposing_slot
-
 	if front_slot == null:
 		return targets
 
 	var root := _get_slots_root(card)
-
 	if root == null:
 		return targets
 
@@ -31,8 +29,12 @@ func get_attack_targets(card: Card, _current_targets: Array[Card]) -> Array[Card
 	var left_slot := _find_closest_slot_left_of(front_slot, enemy_slots)
 	var right_slot := _find_closest_slot_right_of(front_slot, enemy_slots)
 
-	_add_slot_or_direct(targets, left_slot)
-	_add_slot_or_direct(targets, right_slot)
+	if _card_attacks_left_to_right(card):
+		_add_slot_or_direct(targets, left_slot)
+		_add_slot_or_direct(targets, right_slot)
+	else:
+		_add_slot_or_direct(targets, right_slot)
+		_add_slot_or_direct(targets, left_slot)
 
 	print("ANTLER front slot=", front_slot, " x=", front_slot.global_position.x)
 	print("ANTLER left slot=", left_slot, " x=", left_slot.global_position.x if left_slot != null else "null")
@@ -53,6 +55,19 @@ func _add_slot_or_direct(targets: Array[Card], slot: NewSlots) -> void:
 		return
 
 	targets.append(slot.current_card)
+
+
+func _card_attacks_left_to_right(card: Card) -> bool:
+	if card == null:
+		return true
+
+	if card.current_slot == null:
+		return true
+
+	# Usually player one slots visually attack left -> right.
+	# Player two slots attack right -> left.
+	# If your enum names are different, adjust this line.
+	return card.current_slot.slot_owner == NewSlots.SlotOwner.PLAYER_ONE
 
 
 func _get_slots_root(card: Card) -> Node:
