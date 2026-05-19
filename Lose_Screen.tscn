@@ -4,8 +4,6 @@
 
 [node name="LoseScreen" type="Node2D" unique_id=456906499]
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2076706872]
-
 [node name="LosingScreen" type="Sprite2D" parent="." unique_id=1021426056]
 position = Vector2(959.99994, 704)
 scale = Vector2(2.5534759, 3.0936556)

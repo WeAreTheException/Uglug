@@ -1,5 +1,5 @@
 extends Node2D
-class_name TuggaUI
+class_name TuggaUIManager
 
 @export var tugga_handler: TuggaHandler
 
