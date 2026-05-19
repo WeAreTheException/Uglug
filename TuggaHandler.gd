@@ -17,7 +17,6 @@ func _ready() -> void:
 
 	GDSync.expose_node(self)
 	GDSync.expose_func(commit_tugga_value)
-	GDSync.expose_func(commit_game_end)
 
 	scale_changed.emit(current_value)
 
@@ -45,8 +44,6 @@ func take_direct_damage(attacker_peer_id: int, amount: int) -> void:
 
 	GDSync.call_func_all(commit_tugga_value, current_value)
 
-	_check_for_game_end()
-
 
 func commit_tugga_value(value: int) -> void:
 	if game_is_over:
@@ -57,35 +54,36 @@ func commit_tugga_value(value: int) -> void:
 	print("tugga synced value: ", current_value)
 
 	scale_changed.emit(current_value)
+	_check_for_game_end_locally()
 
 
-func _check_for_game_end() -> void:
+func _check_for_game_end_locally() -> void:
 	if game_is_over:
 		return
 
 	if current_value >= max_value:
-		GDSync.call_func_all(commit_game_end, _get_player_one_id())
+		_end_game_locally(_get_player_one_id())
 
 	elif current_value <= -max_value:
-		GDSync.call_func_all(commit_game_end, _get_player_two_id())
+		_end_game_locally(_get_player_two_id())
 
 
-func commit_game_end(winning_peer_id: int) -> void:
+func _end_game_locally(winning_peer_id: int) -> void:
 	if game_is_over:
 		return
 
 	game_is_over = true
 
-	print("GAME ENDED. WINNER: ", winning_peer_id)
+	print("GAME ENDED LOCALLY. WINNER: ", winning_peer_id)
 
 	game_ended.emit(winning_peer_id)
 
 	var my_peer_id := int(GDSync.get_client_id())
 
 	if my_peer_id == winning_peer_id:
-		_change_to_screen(win_screen_scene)
+		_change_to_screen.call_deferred(win_screen_scene)
 	else:
-		_change_to_screen(lose_screen_scene)
+		_change_to_screen.call_deferred(lose_screen_scene)
 
 
 func _change_to_screen(screen_scene: PackedScene) -> void:
@@ -93,11 +91,21 @@ func _change_to_screen(screen_scene: PackedScene) -> void:
 		print("end screen blocked: scene is null")
 		return
 
-	get_tree().change_scene_to_packed(screen_scene)
+	var tree := get_tree()
+
+	if tree == null:
+		return
+
+	tree.change_scene_to_packed(screen_scene)
 
 
 func _get_player_one_id() -> int:
-	var turn_manager := get_tree().get_first_node_in_group("turn_manager") as TurnManager
+	var tree := get_tree()
+
+	if tree == null:
+		return int(GDSync.get_client_id())
+
+	var turn_manager := tree.get_first_node_in_group("turn_manager") as TurnManager
 
 	if turn_manager == null:
 		print("tugga warning: turn_manager not found, using local client as player one")
@@ -107,7 +115,12 @@ func _get_player_one_id() -> int:
 
 
 func _get_player_two_id() -> int:
-	var turn_manager := get_tree().get_first_node_in_group("turn_manager") as TurnManager
+	var tree := get_tree()
+
+	if tree == null:
+		return int(GDSync.get_client_id())
+
+	var turn_manager := tree.get_first_node_in_group("turn_manager") as TurnManager
 
 	if turn_manager == null:
 		print("tugga warning: turn_manager not found, using local client as player two")
