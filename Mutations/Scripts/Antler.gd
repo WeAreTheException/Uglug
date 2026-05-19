@@ -3,12 +3,15 @@ class_name Antler
 
 var empty_adjacent_attack_count: int = 0
 var empty_adjacent_slots: Array[NewSlots] = []
+var ordered_adjacent_slots: Array[NewSlots] = []
 
 
 func get_attack_targets(card: Card, _current_targets: Array[Card]) -> Array[Card]:
 	var targets: Array[Card] = []
+
 	empty_adjacent_attack_count = 0
 	empty_adjacent_slots.clear()
+	ordered_adjacent_slots.clear()
 
 	if card == null:
 		return targets
@@ -30,19 +33,30 @@ func get_attack_targets(card: Card, _current_targets: Array[Card]) -> Array[Card
 	var right_slot := _find_closest_slot_right_of(front_slot, enemy_slots)
 
 	if _card_attacks_left_to_right(card):
-		_add_slot_or_direct(targets, left_slot)
-		_add_slot_or_direct(targets, right_slot)
+		_add_ordered_slot(left_slot)
+		_add_ordered_slot(right_slot)
 	else:
-		_add_slot_or_direct(targets, right_slot)
-		_add_slot_or_direct(targets, left_slot)
+		_add_ordered_slot(right_slot)
+		_add_ordered_slot(left_slot)
+
+	for slot in ordered_adjacent_slots:
+		_add_slot_or_direct(targets, slot)
 
 	print("ANTLER front slot=", front_slot, " x=", front_slot.global_position.x)
 	print("ANTLER left slot=", left_slot, " x=", left_slot.global_position.x if left_slot != null else "null")
 	print("ANTLER right slot=", right_slot, " x=", right_slot.global_position.x if right_slot != null else "null")
+	print("ANTLER ordered slots=", ordered_adjacent_slots)
 	print("ANTLER target count=", targets.size())
 	print("ANTLER empty direct count=", empty_adjacent_attack_count)
 
 	return targets
+
+
+func _add_ordered_slot(slot: NewSlots) -> void:
+	if slot == null:
+		return
+
+	ordered_adjacent_slots.append(slot)
 
 
 func _add_slot_or_direct(targets: Array[Card], slot: NewSlots) -> void:
@@ -55,6 +69,7 @@ func _add_slot_or_direct(targets: Array[Card], slot: NewSlots) -> void:
 		return
 
 	var target_card := slot.current_card as Card
+
 	if target_card != null:
 		targets.append(target_card)
 

@@ -3,6 +3,7 @@ class_name AttackHandler
 
 @export var attack_anim: Node
 @export var distant_target_picker: DistantTargetPicker
+@export var delay_between_multi_attacks: float = 0.25
 
 var card: Card = null
 
@@ -42,15 +43,19 @@ func attack() -> void:
 				print("Distant attack cancelled: no slot picked")
 				continue
 
-			_resolve_attack_from_slot(picked_slot)
+			await _resolve_attack_from_slot(picked_slot)
 
 		return
 
 	var starting_slot: NewSlots = card.current_slot.opposing_slot
-	_resolve_attack_from_slot(starting_slot)
+	await _resolve_attack_from_slot(starting_slot)
 
 
 func _resolve_attack_from_slot(starting_slot: NewSlots) -> void:
+	if _has_antler_ordered_slots():
+		await _resolve_antler_ordered_attack()
+		return
+
 	var opposing_card: Card = null
 
 	if starting_slot != null:
@@ -81,73 +86,108 @@ func _resolve_attack_from_slot(starting_slot: NewSlots) -> void:
 
 	targets = _clean_targets(targets)
 
-	var direct_attack_slots := _get_direct_attack_slots_from_mutations()
-
-	if targets.is_empty() and starting_slot != null:
-		if not direct_attack_slots.has(starting_slot):
-			direct_attack_slots.append(starting_slot)
-
-	var direct_attack_count := direct_attack_slots.size()
-
-	if direct_attack_count <= 0:
-		direct_attack_count = _get_direct_attack_count_from_mutations()
-
-	if targets.is_empty() and direct_attack_count <= 0:
-		direct_attack_count = 1
-
-	for i in range(direct_attack_count):
-		if attack_anim != null and attack_anim.has_method("play_attack"):
-			attack_anim.play_attack(null)
-
-		var direct_damage := card.current_attack
-		print(card.card_name, " direct damage: ", direct_damage)
-
-		var slot_to_flash: Node = null
-
-		if i < direct_attack_slots.size():
-			slot_to_flash = direct_attack_slots[i]
-		else:
-			slot_to_flash = starting_slot
-
-		_flash_slot(slot_to_flash)
-
-		var tree := get_tree()
-
-		if tree == null:
-			return
-
-		var tugga := tree.get_first_node_in_group("tugga")
-
-		if tugga != null and tugga.has_method("take_direct_damage"):
-			tugga.take_direct_damage(card.owning_peer_id, direct_damage)
-		else:
-			print("direct damage blocked: tugga not found")
+	if _has_antler_ordered_slots():
+		await _resolve_antler_ordered_attack()
+		return
 
 	if targets.is_empty():
+		await _resolve_direct_attack(starting_slot)
 		return
 
 	for target in targets:
-		if target == null:
+		await _resolve_card_attack(target)
+
+
+func _resolve_antler_ordered_attack() -> void:
+	var slots := _get_antler_ordered_slots()
+
+	for slot in slots:
+		if slot == null:
 			continue
 
-		if attack_anim != null and attack_anim.has_method("play_attack"):
-			attack_anim.play_attack(target)
+		var target := slot.current_card as Card
 
-		var damage := card.current_attack
+		if target != null:
+			await _resolve_card_attack(target)
+		else:
+			await _resolve_direct_attack(slot)
 
-		for mutation in card.base_mutations:
-			if mutation != null:
-				damage = mutation.modify_damage(card, target, damage)
+		if delay_between_multi_attacks > 0.0:
+			await get_tree().create_timer(delay_between_multi_attacks).timeout
 
-		for mutation in card.additional_mutations:
-			if mutation != null:
-				damage = mutation.modify_damage(card, target, damage)
 
-		print(card.card_name, " -> ", target.card_name, " (", damage, " dmg)")
+func _resolve_card_attack(target: Card) -> void:
+	if target == null:
+		return
 
-		_flash_slot(target.current_slot)
+	if attack_anim != null and attack_anim.has_method("play_attack"):
+		attack_anim.play_attack(target)
 
-		target.take_damage(damage, card)
+	var damage := card.current_attack
+
+	for mutation in card.base_mutations:
+		if mutation != null:
+			damage = mutation.modify_damage(card, target, damage)
+
+	for mutation in card.additional_mutations:
+		if mutation != null:
+			damage = mutation.modify_damage(card, target, damage)
+
+	print(card.card_name, " -> ", target.card_name, " (", damage, " dmg)")
+
+	_flash_slot(target.current_slot)
+
+	target.take_damage(damage, card)
+
+
+func _resolve_direct_attack(slot: NewSlots) -> void:
+	if attack_anim != null and attack_anim.has_method("play_attack"):
+		attack_anim.play_attack(null)
+
+	var direct_damage := card.current_attack
+	print(card.card_name, " direct damage: ", direct_damage)
+
+	_flash_slot(slot)
+
+	var tree := get_tree()
+
+	if tree == null:
+		return
+
+	var tugga := tree.get_first_node_in_group("tugga")
+
+	if tugga != null and tugga.has_method("take_direct_damage"):
+		tugga.take_direct_damage(card.owning_peer_id, direct_damage)
+	else:
+		print("direct damage blocked: tugga not found")
+
+
+func _has_antler_ordered_slots() -> bool:
+	return not _get_antler_ordered_slots().is_empty()
+
+
+func _get_antler_ordered_slots() -> Array[NewSlots]:
+	var slots: Array[NewSlots] = []
+
+	for mutation in card.base_mutations:
+		if mutation == null:
+			continue
+
+		if "ordered_adjacent_slots" in mutation:
+			for slot in mutation.ordered_adjacent_slots:
+				if slot != null and not slots.has(slot):
+					slots.append(slot)
+
+	for mutation in card.additional_mutations:
+		if mutation == null:
+			continue
+
+		if "ordered_adjacent_slots" in mutation:
+			for slot in mutation.ordered_adjacent_slots:
+				if slot != null and not slots.has(slot):
+					slots.append(slot)
+
+	return slots
 
 
 func _get_distant_count() -> int:
@@ -163,6 +203,7 @@ func _get_distant_count() -> int:
 
 	return count
 
+
 func _flash_slot(slot: Node) -> void:
 	print("TRY FLASH SLOT: ", slot)
 
@@ -175,50 +216,6 @@ func _flash_slot(slot: Node) -> void:
 		return
 
 	slot.flash_damage()
-
-
-func _get_direct_attack_slots_from_mutations() -> Array[NewSlots]:
-	var slots: Array[NewSlots] = []
-
-	for mutation in card.base_mutations:
-		if mutation == null:
-			continue
-
-		if "empty_adjacent_slots" in mutation:
-			for slot in mutation.empty_adjacent_slots:
-				if slot != null:
-					slots.append(slot)
-
-	for mutation in card.additional_mutations:
-		if mutation == null:
-			continue
-
-		if "empty_adjacent_slots" in mutation:
-			for slot in mutation.empty_adjacent_slots:
-				if slot != null:
-					slots.append(slot)
-
-	return slots
-
-
-func _get_direct_attack_count_from_mutations() -> int:
-	var count := 0
-
-	for mutation in card.base_mutations:
-		if mutation == null:
-			continue
-
-		if "empty_adjacent_attack_count" in mutation:
-			count += mutation.empty_adjacent_attack_count
-
-	for mutation in card.additional_mutations:
-		if mutation == null:
-			continue
-
-		if "empty_adjacent_attack_count" in mutation:
-			count += mutation.empty_adjacent_attack_count
-
-	return count
 
 
 func _apply_single_target_mutation(mutation: Mutation, targets: Array[Card]) -> Array[Card]:
@@ -261,6 +258,7 @@ func _find_card_parent() -> Card:
 		current = current.get_parent()
 
 	return null
+
 
 func _find_distant_target_picker() -> DistantTargetPicker:
 	if card == null:
