@@ -62,10 +62,10 @@ func receive_starting_players(p1: int, p2: int) -> void:
 		await get_tree().process_frame
 		await get_tree().process_frame
 
-	if game_start_draw_handler != null:
-		game_start_draw_handler.give_starting_cards(player_one_id, player_two_id)
-	else:
-		print("TurnManager blocked: game_start_draw_handler is null")
+		if game_start_draw_handler != null:
+			await game_start_draw_handler.give_starting_cards(player_one_id, player_two_id)
+		else:
+			print("TurnManager blocked: game_start_draw_handler is null")
 
 		start_place_phase()
 
