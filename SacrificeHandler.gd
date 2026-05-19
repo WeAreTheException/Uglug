@@ -17,6 +17,10 @@ func _ready() -> void:
 	if sacrifice_animation == null:
 		print("SacrificeHandler could not find child SacrificeAnimation")
 
+	GDSync.expose_node(self)
+	GDSync.expose_func(request_sacrifice_from_host)
+	GDSync.expose_func(commit_sacrifice)
+
 
 func reset_state() -> void:
 	clear_sacrifice_hints()
@@ -91,14 +95,7 @@ func try_select_sacrifice(card: Card, pending_play_card: Card) -> void:
 
 	var total := get_selected_sacrifice_worth()
 
-	print(
-		"added ",
-		source,
-		" sacrifice: ",
-		card.card_name,
-		" / total worth = ",
-		total
-	)
+	print("added ", source, " sacrifice: ", card.card_name, " / total worth = ", total)
 
 	refresh_sacrifice_hints(pending_play_card)
 
@@ -135,19 +132,24 @@ func resolve_sacrifice_payment(pending_play_card: Card) -> void:
 			"owner_peer_id": sacrifice.owning_peer_id
 		})
 
-		remove_card_from_player_hand(sacrifice)
-		discard_card(sacrifice)
-
 	selected_sacrifices.clear()
 
 	print("payment complete for ", pending_play_card.card_name, " / paid worth = ", paid_sacrifice_worth)
 
-	if multiplayer.multiplayer_peer != null:
-		rpc("replicate_sacrifice", sacrificed_data)
+	if GDSync.is_host():
+		GDSync.call_func_all(commit_sacrifice, [sacrificed_data])
+	else:
+		GDSync.call_func(request_sacrifice_from_host, [sacrificed_data])
 
 
-@rpc("any_peer", "call_remote", "reliable")
-func replicate_sacrifice(sacrificed_data: Array) -> void:
+func request_sacrifice_from_host(sacrificed_data: Array) -> void:
+	if not GDSync.is_host():
+		return
+
+	GDSync.call_func_all(commit_sacrifice, [sacrificed_data])
+
+
+func commit_sacrifice(sacrificed_data: Array) -> void:
 	for data in sacrificed_data:
 		var card_id: int = data["card_id"]
 		var owner_peer_id: int = data["owner_peer_id"]
@@ -155,9 +157,10 @@ func replicate_sacrifice(sacrificed_data: Array) -> void:
 		var card := find_card_by_multiplayer_data(card_id, owner_peer_id)
 
 		if card == null:
-			print("replicate_sacrifice failed: card not found for id ", card_id)
+			print("commit_sacrifice failed: card not found for id ", card_id)
 			continue
 
+		remove_card_from_player_hand(card)
 		discard_card(card)
 
 
@@ -197,18 +200,11 @@ func find_card_by_multiplayer_data_recursive(
 	var card := node as Card
 
 	if card != null:
-		if (
-			card.multiplayer_card_id == card_id
-			and card.owning_peer_id == owner_peer_id
-		):
+		if card.multiplayer_card_id == card_id and card.owning_peer_id == owner_peer_id:
 			return card
 
 	for child in node.get_children():
-		var found := find_card_by_multiplayer_data_recursive(
-			child,
-			card_id,
-			owner_peer_id
-		)
+		var found := find_card_by_multiplayer_data_recursive(child, card_id, owner_peer_id)
 
 		if found != null:
 			return found
@@ -322,11 +318,7 @@ func _collect_board_cards_recursive(node: Node, cards: Array[Card]) -> void:
 	var card := node as Card
 
 	if card != null:
-		if (
-			card.card_owner == Card.Owner.PLAYER
-			and card.current_slot != null
-			and not cards.has(card)
-		):
+		if card.card_owner == Card.Owner.PLAYER and card.current_slot != null and not cards.has(card):
 			cards.append(card)
 
 	for child in node.get_children():
