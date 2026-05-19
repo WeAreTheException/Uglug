@@ -137,7 +137,13 @@ func _wait_for_distant_slot() -> NewSlots:
 	waiting_for_distant_slot = true
 	chosen_distant_slot = null
 
-	var slots := get_tree().get_nodes_in_group("slots")
+	var tree := get_tree()
+
+	if tree == null:
+		waiting_for_distant_slot = false
+		return null
+
+	var slots := tree.get_nodes_in_group("slots")
 
 	for slot in slots:
 		var new_slot := slot as NewSlots
@@ -149,7 +155,13 @@ func _wait_for_distant_slot() -> NewSlots:
 			new_slot.slot_clicked.connect(_on_distant_slot_clicked)
 
 	while waiting_for_distant_slot:
-		await get_tree().process_frame
+		tree = get_tree()
+
+		if tree == null:
+			waiting_for_distant_slot = false
+			return null
+
+		await tree.process_frame
 
 	_disconnect_distant_slots()
 
@@ -180,7 +192,12 @@ func _on_distant_slot_clicked(slot: NewSlots) -> void:
 
 
 func _disconnect_distant_slots() -> void:
-	var slots := get_tree().get_nodes_in_group("slots")
+	var tree := get_tree()
+
+	if tree == null:
+		return
+
+	var slots := tree.get_nodes_in_group("slots")
 
 	for slot in slots:
 		var new_slot := slot as NewSlots
