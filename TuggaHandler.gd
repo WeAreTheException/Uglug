@@ -14,6 +14,11 @@ var game_is_over: bool = false
 
 func _ready() -> void:
 	add_to_group("tugga")
+
+	GDSync.expose_node(self)
+	GDSync.expose_func(commit_tugga_value)
+	GDSync.expose_func(commit_game_end)
+
 	scale_changed.emit(current_value)
 
 
@@ -24,38 +29,34 @@ func take_direct_damage(attacker_peer_id: int, amount: int) -> void:
 	if amount <= 0:
 		return
 
+	if not GDSync.is_host():
+		return
+
 	var player_one_id := _get_player_one_id()
 
 	if attacker_peer_id == player_one_id:
-		add_to_player_one(amount)
+		current_value += amount
 	else:
-		add_to_player_two(amount)
+		current_value -= amount
 
-
-func add_to_player_one(amount: int) -> void:
-	if game_is_over:
-		return
-
-	current_value += amount
 	current_value = clamp(current_value, -max_value, max_value)
 
-	print("tugga: ", current_value)
+	print("tugga host value: ", current_value)
 
-	scale_changed.emit(current_value)
+	GDSync.call_func_all(commit_tugga_value, current_value)
+
 	_check_for_game_end()
 
 
-func add_to_player_two(amount: int) -> void:
+func commit_tugga_value(value: int) -> void:
 	if game_is_over:
 		return
 
-	current_value -= amount
-	current_value = clamp(current_value, -max_value, max_value)
+	current_value = clamp(value, -max_value, max_value)
 
-	print("tugga: ", current_value)
+	print("tugga synced value: ", current_value)
 
 	scale_changed.emit(current_value)
-	_check_for_game_end()
 
 
 func _check_for_game_end() -> void:
@@ -63,13 +64,16 @@ func _check_for_game_end() -> void:
 		return
 
 	if current_value >= max_value:
-		_end_game(_get_player_one_id())
+		GDSync.call_func_all(commit_game_end, _get_player_one_id())
 
 	elif current_value <= -max_value:
-		_end_game(_get_player_two_id())
+		GDSync.call_func_all(commit_game_end, _get_player_two_id())
 
 
-func _end_game(winning_peer_id: int) -> void:
+func commit_game_end(winning_peer_id: int) -> void:
+	if game_is_over:
+		return
+
 	game_is_over = true
 
 	print("GAME ENDED. WINNER: ", winning_peer_id)
@@ -79,12 +83,12 @@ func _end_game(winning_peer_id: int) -> void:
 	var my_peer_id := int(GDSync.get_client_id())
 
 	if my_peer_id == winning_peer_id:
-		_show_screen(win_screen_scene)
+		_change_to_screen(win_screen_scene)
 	else:
-		_show_screen(lose_screen_scene)
+		_change_to_screen(lose_screen_scene)
 
 
-func _show_screen(screen_scene: PackedScene) -> void:
+func _change_to_screen(screen_scene: PackedScene) -> void:
 	if screen_scene == null:
 		print("end screen blocked: scene is null")
 		return
