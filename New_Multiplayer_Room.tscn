@@ -249,8 +249,10 @@ script = ExtResource("16_nh7p2")
 phase_manager = NodePath("../../Managers/PhaseManager")
 player_hand = NodePath("../../Hand&Deck/PlayerHand")
 
-[node name="GameStartDrawHandler" type="Node" parent="Handlers" unique_id=292297102]
+[node name="GameStartDrawHandler" type="Node" parent="Handlers" unique_id=292297102 node_paths=PackedStringArray("worker_deck_root", "warrior_deck_root")]
 script = ExtResource("19_tr2pb")
+worker_deck_root = NodePath("../../Hand&Deck/WorkerDeck")
+warrior_deck_root = NodePath("../../Hand&Deck/WarriorDeck")
 
 [node name="Managers" type="Node" parent="." unique_id=5384537]
 
