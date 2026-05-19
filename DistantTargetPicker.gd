@@ -14,15 +14,26 @@ func pick_slot() -> NewSlots:
 	waiting = true
 	chosen_slot = null
 
+	if card == null:
+		card = _find_card_parent()
+
 	var tree := get_tree()
+
 	if tree == null:
 		waiting = false
 		return null
 
-	for slot in tree.get_nodes_in_group("slots"):
+	var slots := tree.get_nodes_in_group("slots")
+	print("Distant picker found slots: ", slots.size())
+
+	for slot in slots:
 		var new_slot := slot as NewSlots
+
 		if new_slot == null:
+			print("Distant picker skipped non-NewSlots: ", slot)
 			continue
+
+		print("Distant picker connecting to slot: ", new_slot.name)
 
 		if not new_slot.slot_clicked.is_connected(_on_slot_clicked):
 			new_slot.slot_clicked.connect(_on_slot_clicked)
@@ -42,19 +53,26 @@ func pick_slot() -> NewSlots:
 
 
 func _on_slot_clicked(slot: NewSlots) -> void:
+	print("Distant picker received slot click: ", slot)
+
 	if not waiting:
+		print("Distant click blocked: not waiting")
 		return
 
 	if card == null:
+		print("Distant click blocked: card null")
 		return
 
 	if card.current_slot == null:
+		print("Distant click blocked: card has no current slot")
 		return
 
 	if slot == null:
+		print("Distant click blocked: slot null")
 		return
 
 	if card.owning_peer_id != multiplayer.get_unique_id():
+		print("Distant click blocked: wrong player. card owner=", card.owning_peer_id, " local=", multiplayer.get_unique_id())
 		return
 
 	if slot.slot_owner == card.current_slot.slot_owner:
@@ -69,11 +87,13 @@ func _on_slot_clicked(slot: NewSlots) -> void:
 
 func _disconnect_slots() -> void:
 	var tree := get_tree()
+
 	if tree == null:
 		return
 
 	for slot in tree.get_nodes_in_group("slots"):
 		var new_slot := slot as NewSlots
+
 		if new_slot == null:
 			continue
 
