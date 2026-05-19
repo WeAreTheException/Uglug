@@ -359,12 +359,12 @@ texture = ExtResource("28_e2c01")
 position = Vector2(1280, 480)
 lane_id = 4
 
-[node name="Lane3" parent="Slots" unique_id=120099331 instance=ExtResource("1_phlo6")]
-position = Vector2(832, 480)
+[node name="Lane3" parent="Slots" unique_id=918336549 instance=ExtResource("1_phlo6")]
+position = Vector2(1056, 480)
 lane_id = 3
 
-[node name="Lane2" parent="Slots" unique_id=918336549 instance=ExtResource("1_phlo6")]
-position = Vector2(1056, 480)
+[node name="Lane2" parent="Slots" unique_id=120099331 instance=ExtResource("1_phlo6")]
+position = Vector2(832, 480)
 lane_id = 2
 
 [node name="Lane1" parent="Slots" unique_id=1932373052 instance=ExtResource("1_phlo6")]
