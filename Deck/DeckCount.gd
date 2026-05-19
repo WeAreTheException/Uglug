@@ -50,3 +50,17 @@ func draw_card_data() -> CardData:
 		return null
 
 	return real_deck.pop_back()
+
+func remove_card_by_name(card_name: String) -> bool:
+	for i in range(real_deck.size()):
+		var data := real_deck[i]
+
+		if data == null:
+			continue
+
+		if data.name == card_name:
+			real_deck.remove_at(i)
+			return true
+
+	print("DeckCount remove blocked: could not find card named ", card_name)
+	return false

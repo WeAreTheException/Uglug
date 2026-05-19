@@ -76,7 +76,15 @@ func _host_resolve_draw(drawer_peer_id: int) -> void:
 	_host_spawn_cards(drawer_peer_id, 1, commit_draw_remote)
 
 
-func commit_draw_remote(drawer_peer_id: int, card_name: String, card_id: int) -> void:
+func commit_draw_remote(
+	drawer_peer_id: int,
+	card_name: String,
+	card_id: int
+) -> void:
+	if not GDSync.is_host():
+		if deck != null:
+			deck.remove_card_by_name(card_name)
+
 	_commit_draw_local(drawer_peer_id, card_name, card_id)
 
 
@@ -120,7 +128,15 @@ func _host_spawn_cards(owner_peer_id: int, amount: int, commit_func: Callable) -
 		)
 
 
-func commit_spawn_card_from_effect(owner_peer_id: int, card_name: String, card_id: int) -> void:
+func commit_spawn_card_from_effect(
+	owner_peer_id: int,
+	card_name: String,
+	card_id: int
+) -> void:
+	if not GDSync.is_host():
+		if deck != null:
+			deck.remove_card_by_name(card_name)
+
 	_commit_draw_local(owner_peer_id, card_name, card_id)
 
 
