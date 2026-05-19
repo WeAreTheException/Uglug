@@ -71,8 +71,8 @@ func _on_slot_clicked(slot: NewSlots) -> void:
 		print("Distant click blocked: slot null")
 		return
 
-	if card.owning_peer_id != multiplayer.get_unique_id():
-		print("Distant click blocked: wrong player. card owner=", card.owning_peer_id, " local=", multiplayer.get_unique_id())
+	if GDSync.get_client_id() != card.owning_peer_id:
+		print("Distant click blocked: wrong player. card owner=", card.owning_peer_id, " local=", GDSync.get_client_id())
 		return
 
 	if slot.slot_owner == card.current_slot.slot_owner:
