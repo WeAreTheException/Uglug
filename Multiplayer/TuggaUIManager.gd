@@ -31,7 +31,6 @@ func _ready() -> void:
 	if tugga_handler != null and not tugga_handler.scale_changed.is_connected(_on_scale_changed):
 		tugga_handler.scale_changed.connect(_on_scale_changed)
 
-	setup_player_labels()
 	update_ui()
 
 
@@ -62,20 +61,8 @@ func setup_player_labels() -> void:
 		print("tugga ui: player_two_name_label missing")
 		return
 
-	var turn_manager := get_tree().get_first_node_in_group("turn_manager") as TurnManager
-
-	if turn_manager == null:
-		print("tugga ui: turn_manager missing")
-		return
-
-	var my_peer_id := int(GDSync.get_client_id())
-
-	if my_peer_id == turn_manager.player_one_id:
-		player_one_name_label.text = "P1"
-		player_two_name_label.text = "P2"
-	else:
-		player_one_name_label.text = "P2"
-		player_two_name_label.text = "P1"
+	player_one_name_label.text = "P1"
+	player_two_name_label.text = "P2"
 
 
 func _on_scale_changed(_value: int) -> void:
