@@ -154,6 +154,12 @@ func _resolve_direct_attack(slot: NewSlots) -> void:
 	if tree == null:
 		return
 
+	var my_peer_id := int(GDSync.get_client_id())
+
+	if my_peer_id != card.owning_peer_id:
+		print("direct damage skipped on non-owner peer")
+		return
+
 	var tugga := tree.get_first_node_in_group("tugga")
 
 	if tugga != null and tugga.has_method("request_direct_damage"):
@@ -162,6 +168,7 @@ func _resolve_direct_attack(slot: NewSlots) -> void:
 		tugga.take_direct_damage(card.owning_peer_id, direct_damage)
 	else:
 		print("direct damage blocked: tugga not found")
+
 
 func _has_antler_ordered_slots() -> bool:
 	return not _get_antler_ordered_slots().is_empty()
