@@ -1,43 +1,29 @@
-[gd_scene format=3 uid="uid://d4lwi1f8i5uat"]
+[gd_scene format=3 uid="uid://mutationtooltipfixed"]
 
-[ext_resource type="PackedScene" uid="uid://l28s3hnlv4iy" path="res://Cards/NewCard.tscn" id="1_h2fkp"]
-[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Mutations/Scripts/Mutation.gd" id="2_k5dq5"]
-[ext_resource type="Resource" uid="uid://ceeskmu01vy5g" path="res://Mutations/Antler.tres" id="3_1e3jf"]
-[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="4_nc8i5"]
-
-[sub_resource type="Resource" id="Resource_afhqn"]
-script = ExtResource("4_nc8i5")
-name = "MAo"
-attack = 1
-health = 2
-base_mutations = Array[ExtResource("2_k5dq5")]([ExtResource("3_1e3jf")])
-metadata/_custom_type_script = "uid://duslcpxrhurv8"
-
-[node name="Panel" type="Panel" unique_id=1004289912]
+[node name="MutationToolTip" type="Control"]
+offset_right = 260.0
+offset_bottom = 120.0
 mouse_filter = 2
 
-[node name="Panel" type="Panel" parent="." unique_id=2078800514]
-layout_mode = 0
-offset_right = 174.0
-offset_bottom = 104.0
+[node name="Panel" type="Panel" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 
-[node name="NameLabel" type="Label" parent="." unique_id=619334868]
-layout_mode = 0
-offset_right = 174.0
-offset_bottom = 28.0
-theme_override_font_sizes/font_size = 20
-text = "Mutation Name"
-horizontal_alignment = 1
+[node name="NameLabel" type="Label" parent="Panel"]
+offset_left = 10.0
+offset_top = 8.0
+offset_right = 250.0
+offset_bottom = 34.0
+mouse_filter = 2
 
-[node name="DescriptionLabel" type="Label" parent="." unique_id=111636862]
-layout_mode = 0
-offset_top = 28.0
-offset_right = 174.0
-offset_bottom = 103.0
-text = "Mutation Description mao mao mao mao mao mao mao mao"
-horizontal_alignment = 1
+[node name="DescriptionLabel" type="Label" parent="Panel"]
+offset_left = 10.0
+offset_top = 40.0
+offset_right = 250.0
+offset_bottom = 110.0
+mouse_filter = 2
 autowrap_mode = 3
-
-[node name="Antler" parent="." unique_id=1703534497 instance=ExtResource("1_h2fkp")]
-position = Vector2(87, 239)
-test_data = SubResource("Resource_afhqn")
