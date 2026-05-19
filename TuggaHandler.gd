@@ -62,10 +62,10 @@ func _check_for_game_end_locally() -> void:
 		return
 
 	if current_value >= max_value:
-		_end_game_locally(_get_player_one_id())
+		_end_game_locally(_get_player_two_id())
 
 	elif current_value <= -max_value:
-		_end_game_locally(_get_player_two_id())
+		_end_game_locally(_get_player_one_id())
 
 
 func _end_game_locally(winning_peer_id: int) -> void:
