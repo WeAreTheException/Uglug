@@ -34,9 +34,9 @@ func take_direct_damage(attacker_peer_id: int, amount: int) -> void:
 	var player_one_id := _get_player_one_id()
 
 	if attacker_peer_id == player_one_id:
-		current_value += amount
-	else:
 		current_value -= amount
+	else:
+		current_value += amount
 
 	current_value = clamp(current_value, -max_value, max_value)
 
