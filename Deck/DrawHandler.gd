@@ -28,9 +28,8 @@ func _ready() -> void:
 	GDSync.expose_func(request_draw_from_host)
 	GDSync.expose_func(commit_draw_remote)
 
-	if deck_type == DeckType.WORKER:
-		GDSync.expose_func(pregnant_request_spawn_workers_from_host)
-		GDSync.expose_func(pregnant_commit_spawn_worker_card)
+	GDSync.expose_func(request_spawn_cards_from_host)
+	GDSync.expose_func(commit_spawn_card_from_effect)
 
 	worker_union_buff_handler = get_node_or_null("WorkerUnionBuffHandler") as WorkerUnionBuffHandler
 
@@ -95,43 +94,27 @@ func commit_draw_remote(
 
 
 func spawn_cards_from_effect(owner_peer_id: int, amount: int) -> void:
-	if deck_type != DeckType.WORKER:
-		print("PregnAnt blocked: this handler is not WORKER")
-		return
-
 	if amount <= 0:
 		return
 
 	if GDSync.is_host():
-		_pregnant_host_spawn_workers(owner_peer_id, amount)
+		_host_spawn_cards_from_effect(owner_peer_id, amount)
 	else:
 		GDSync.call_func(
-			pregnant_request_spawn_workers_from_host,
+			request_spawn_cards_from_host,
 			owner_peer_id,
 			amount
 		)
 
 
-func pregnant_request_spawn_workers_from_host(
-	owner_peer_id: int,
-	amount: int
-) -> void:
+func request_spawn_cards_from_host(owner_peer_id: int, amount: int) -> void:
 	if not GDSync.is_host():
 		return
 
-	if deck_type != DeckType.WORKER:
-		return
-
-	_pregnant_host_spawn_workers(owner_peer_id, amount)
+	_host_spawn_cards_from_effect(owner_peer_id, amount)
 
 
-func _pregnant_host_spawn_workers(
-	owner_peer_id: int,
-	amount: int
-) -> void:
-	if deck_type != DeckType.WORKER:
-		return
-
+func _host_spawn_cards_from_effect(owner_peer_id: int, amount: int) -> void:
 	for i in range(amount):
 		var data := pick_card_data()
 
@@ -142,21 +125,18 @@ func _pregnant_host_spawn_workers(
 		DeckDrawHandler.next_card_id += 1
 
 		GDSync.call_func_all(
-			pregnant_commit_spawn_worker_card,
+			commit_spawn_card_from_effect,
 			owner_peer_id,
 			data.name,
 			card_id
 		)
 
 
-func pregnant_commit_spawn_worker_card(
+func commit_spawn_card_from_effect(
 	owner_peer_id: int,
 	card_name: String,
 	card_id: int
 ) -> void:
-	if deck_type != DeckType.WORKER:
-		return
-
 	_commit_draw_local(owner_peer_id, card_name, card_id)
 
 

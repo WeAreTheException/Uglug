@@ -25,6 +25,7 @@
 [ext_resource type="Texture2D" uid="uid://dydn83tce2knf" path="res://Art/Tugga/P1_Tugga_Fulll.png" id="17_jgxe7"]
 [ext_resource type="Script" uid="uid://dsifsjjn64ofo" path="res://Multiplayer/TuggaManager.gd" id="18_ebxid"]
 [ext_resource type="Texture2D" uid="uid://2pljvs41hqvt" path="res://Art/Tugga/P1_Tugga_Emptyl.png" id="19_7p785"]
+[ext_resource type="Script" uid="uid://yewsi0ihyspk" path="res://GameStartDrawHandler.gd" id="19_tr2pb"]
 [ext_resource type="Texture2D" uid="uid://c3bh4b5ajh8a1" path="res://Art/Tugga/P2_Tugga_Emptypng.png" id="20_7p785"]
 [ext_resource type="Script" uid="uid://2atv8mfbeu07" path="res://BoardManager.gd" id="20_jgxe7"]
 [ext_resource type="PackedScene" uid="uid://l28s3hnlv4iy" path="res://Cards/NewCard.tscn" id="21_nxiui"]
@@ -247,6 +248,11 @@ script = ExtResource("12_rvenm")
 script = ExtResource("16_nh7p2")
 phase_manager = NodePath("../../Managers/PhaseManager")
 player_hand = NodePath("../../Hand&Deck/PlayerHand")
+
+[node name="GameStartDrawHandler" type="Node" parent="Handlers" unique_id=292297102]
+script = ExtResource("19_tr2pb")
+worker_deck_path = NodePath("../../Hand&Deck/WorkerDeck")
+warrior_deck_path = NodePath("../../Hand&Deck/WarriorDeck")
 
 [node name="Managers" type="Node" parent="." unique_id=5384537]
 
