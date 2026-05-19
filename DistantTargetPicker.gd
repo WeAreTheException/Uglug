@@ -3,6 +3,7 @@ class_name DistantTargetPicker
 
 var card: Card = null
 var waiting := false
+var accepting_clicks := false
 var chosen_slot: NewSlots = null
 
 
@@ -12,6 +13,7 @@ func _ready() -> void:
 
 func pick_slot() -> NewSlots:
 	waiting = true
+	accepting_clicks = false
 	chosen_slot = null
 
 	if card == null:
@@ -30,7 +32,6 @@ func pick_slot() -> NewSlots:
 		var new_slot := slot as NewSlots
 
 		if new_slot == null:
-			print("Distant picker skipped non-NewSlots: ", slot)
 			continue
 
 		print("Distant picker connecting to slot: ", new_slot.name)
@@ -38,26 +39,35 @@ func pick_slot() -> NewSlots:
 		if not new_slot.slot_clicked.is_connected(_on_slot_clicked):
 			new_slot.slot_clicked.connect(_on_slot_clicked)
 
+	# Prevent the same click from being reused by the next Distant pick.
+	await tree.process_frame
+	accepting_clicks = true
+
 	while waiting:
 		tree = get_tree()
 
 		if tree == null:
 			waiting = false
+			accepting_clicks = false
 			_disconnect_slots()
 			return null
 
 		await tree.process_frame
 
+	accepting_clicks = false
 	_disconnect_slots()
+
 	return chosen_slot
 
 
 func _on_slot_clicked(slot: NewSlots) -> void:
-	print("Distant picker received slot click: ", slot)
-
 	if not waiting:
-		print("Distant click blocked: not waiting")
 		return
+
+	if not accepting_clicks:
+		return
+
+	print("Distant picker received slot click: ", slot)
 
 	if card == null:
 		print("Distant click blocked: card null")
