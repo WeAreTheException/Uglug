@@ -153,11 +153,9 @@ script = ExtResource("14_oiy75")
 win_screen_scene = ExtResource("6_xplwh")
 lose_screen_scene = ExtResource("7_husai")
 
-[node name="TuggaUI" type="Sprite2D" parent="Handlers/TuggaHandler" unique_id=646403484 node_paths=PackedStringArray("tugga_handler", "player_one_name_label", "player_two_name_label", "player_one_slot_1", "player_one_slot_2", "player_one_slot_3", "player_one_slot_4", "player_one_slot_5", "player_two_slot_1", "player_two_slot_2", "player_two_slot_3", "player_two_slot_4", "player_two_slot_5")]
+[node name="TuggaUI" type="Sprite2D" parent="Handlers/TuggaHandler" unique_id=646403484 node_paths=PackedStringArray("tugga_handler", "player_one_slot_1", "player_one_slot_2", "player_one_slot_3", "player_one_slot_4", "player_one_slot_5", "player_two_slot_1", "player_two_slot_2", "player_two_slot_3", "player_two_slot_4", "player_two_slot_5")]
 script = ExtResource("18_ebxid")
 tugga_handler = NodePath("..")
-player_one_name_label = NodePath("../../../Labels/PlayerLabels/PlayerName")
-player_two_name_label = NodePath("../../../Labels/EnemyLabels/EnemyName")
 player_one_full_texture = ExtResource("16_mo65u")
 player_two_full_texture = ExtResource("17_jgxe7")
 player_one_slot_1 = NodePath("P1_Tugga_Empty/P1TuggaEmpty1")
