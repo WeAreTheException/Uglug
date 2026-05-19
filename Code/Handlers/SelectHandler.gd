@@ -89,6 +89,12 @@ func select_card(card: Card) -> void:
 		print("select_card blocked: not player-owned card")
 		return
 
+	if pending_play_card != null and pending_play_card != card:
+		if sacrifice_handler != null:
+			if not sacrifice_handler.payment_completed and pending_play_card.current_cost > 0:
+				sacrifice_handler.try_select_sacrifice(card, pending_play_card)
+				return
+
 	if card.current_slot != null:
 		print("select_card blocked: card is already on board")
 		return
@@ -96,12 +102,6 @@ func select_card(card: Card) -> void:
 	if phase_manager != null and phase_manager.is_buff_phase():
 		try_select_hand_card_for_buff(card)
 		return
-
-	if pending_play_card != null and pending_play_card != card:
-		if sacrifice_handler != null:
-			if not sacrifice_handler.payment_completed and pending_play_card.current_cost > 0:
-				sacrifice_handler.try_select_sacrifice(card, pending_play_card)
-				return
 
 	try_select_hand_card(card)
 
@@ -166,7 +166,7 @@ func try_select_hand_card(card: Card) -> void:
 			return
 
 		if card.current_cost > 0 and not sacrifice_handler.can_afford_card(card):
-			print("select_card blocked: not enough hand sacrifice value for ", card.card_name)
+			print("select_card blocked: not enough sacrifice value for ", card.card_name)
 			return
 
 	if pending_play_card == card:
