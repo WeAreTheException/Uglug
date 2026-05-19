@@ -13,6 +13,9 @@ static var next_card_id: int = 1
 @export var card_database: CardDatabase
 @export var deck_type: DeckType = DeckType.WORKER
 
+@export var normal_draw_limit: int = 2
+@export var empty_hand_draw_limit: int = 3
+
 var combat_manager: CombatManager = null
 
 var deck: DeckCount = null
@@ -23,10 +26,14 @@ var select_handler: SelectHandler = null
 
 var worker_union_buff_handler: WorkerUnionBuffHandler = null
 
+var draws_used_this_turn: int = 0
+var draw_limit_this_turn: int = 2
+var was_in_draw_phase := false
+
 
 func _ready() -> void:
 	add_to_group("deck_draw_handlers")
-	
+
 	GDSync.expose_node(self)
 	GDSync.expose_func(request_draw_from_host)
 	GDSync.expose_func(commit_draw_remote)
@@ -36,6 +43,10 @@ func _ready() -> void:
 	worker_union_buff_handler = get_node_or_null("WorkerUnionBuffHandler") as WorkerUnionBuffHandler
 
 	print("DeckDrawHandler ready / deck_type = ", get_deck_type_name(), " / GDSync host = ", GDSync.is_host())
+
+
+func _process(_delta: float) -> void:
+	_check_draw_phase_reset()
 
 
 func get_deck_type_name() -> String:
@@ -57,36 +68,54 @@ func draw_player_card() -> void:
 		print("draw blocked: not draw phase")
 		return
 
-	if player_hand == null:
-		print("draw blocked: player_hand is null")
-		return
+	_check_draw_phase_reset()
 
-	var amount := 1
-
-	if player_hand.has_method("get_required_draw_amount"):
-		amount = int(player_hand.get_required_draw_amount())
-
-	if amount <= 0:
-		print("draw blocked: amount <= 0")
+	if draws_used_this_turn >= draw_limit_this_turn:
+		print("draw blocked: max draws this turn")
 		return
 
 	var my_peer_id := int(GDSync.get_client_id())
 
+	draws_used_this_turn += 1
+	print("draw used: ", draws_used_this_turn, "/", draw_limit_this_turn)
+
 	if GDSync.is_host():
-		_host_resolve_draw(my_peer_id, amount)
+		_host_resolve_draw(my_peer_id)
 	else:
-		GDSync.call_func(request_draw_from_host, my_peer_id, amount)
+		GDSync.call_func(request_draw_from_host, my_peer_id)
 
 
-func request_draw_from_host(requesting_peer_id: int, amount: int) -> void:
+func _check_draw_phase_reset() -> void:
+	if phase_manager == null:
+		return
+
+	if phase_manager.is_draw_phase() and not was_in_draw_phase:
+		was_in_draw_phase = true
+		draws_used_this_turn = 0
+
+		if player_hand != null and player_hand.has_method("get_hand_size"):
+			if int(player_hand.get_hand_size()) == 0:
+				draw_limit_this_turn = empty_hand_draw_limit
+			else:
+				draw_limit_this_turn = normal_draw_limit
+		else:
+			draw_limit_this_turn = normal_draw_limit
+
+		print(get_deck_type_name(), " draw limit this turn: ", draw_limit_this_turn)
+
+	elif not phase_manager.is_draw_phase():
+		was_in_draw_phase = false
+
+
+func request_draw_from_host(requesting_peer_id: int) -> void:
 	if not GDSync.is_host():
 		return
 
-	_host_resolve_draw(requesting_peer_id, amount)
+	_host_resolve_draw(requesting_peer_id)
 
 
-func _host_resolve_draw(drawer_peer_id: int, amount: int) -> void:
-	_host_spawn_cards(drawer_peer_id, amount, commit_draw_remote)
+func _host_resolve_draw(drawer_peer_id: int) -> void:
+	_host_spawn_cards(drawer_peer_id, 1, commit_draw_remote)
 
 
 func commit_draw_remote(
