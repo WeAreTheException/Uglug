@@ -62,8 +62,11 @@ func receive_starting_players(p1: int, p2: int) -> void:
 		await get_tree().process_frame
 
 		var game_start_draw_handler := get_node_or_null("../GameStartDrawHandler")
+
 		if game_start_draw_handler != null:
-			game_start_draw_handler.give_starting_cards()
+			game_start_draw_handler.call("give_starting_cards", player_one_id, player_two_id)
+		else:
+			print("TurnManager blocked: GameStartDrawHandler not found")
 
 		start_place_phase()
 

@@ -25,6 +25,8 @@ var worker_union_buff_handler: WorkerUnionBuffHandler = null
 
 
 func _ready() -> void:
+	add_to_group("deck_draw_handlers")
+	
 	GDSync.expose_node(self)
 	GDSync.expose_func(request_draw_from_host)
 	GDSync.expose_func(commit_draw_remote)
