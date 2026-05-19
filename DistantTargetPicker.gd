@@ -99,8 +99,22 @@ func _on_slot_clicked(slot: NewSlots) -> void:
 
 
 func _set_ready_visual(value: bool) -> void:
-	if ready_visual != null:
-		ready_visual.visible = value
+	if ready_visual == null:
+		return
+
+	if card == null:
+		card = _find_card_parent()
+
+	if card == null:
+		ready_visual.visible = false
+		return
+
+	# Only the attacking card's owner should see the Distant prompt.
+	if int(GDSync.get_client_id()) != card.owning_peer_id:
+		ready_visual.visible = false
+		return
+
+	ready_visual.visible = value
 
 
 func _disconnect_slots() -> void:
