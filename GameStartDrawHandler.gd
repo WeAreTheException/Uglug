@@ -1,16 +1,24 @@
 extends Node
 class_name GameStartDrawHandler
 
-@export var worker_deck: DeckDrawHandler
-@export var warrior_deck: DeckDrawHandler
+@export var worker_deck_root: Node
+@export var warrior_deck_root: Node
 
 @export var starting_workers: int = 2
 @export var starting_warriors: int = 2
 
+var worker_deck: DeckDrawHandler = null
+var warrior_deck: DeckDrawHandler = null
 var has_given_starting_cards := false
 
 
 func _ready() -> void:
+	if worker_deck_root != null:
+		worker_deck = worker_deck_root.get_node_or_null("DeckDrawHandler") as DeckDrawHandler
+
+	if warrior_deck_root != null:
+		warrior_deck = warrior_deck_root.get_node_or_null("DeckDrawHandler") as DeckDrawHandler
+
 	print("GameStartDrawHandler worker_deck = ", worker_deck)
 	print("GameStartDrawHandler warrior_deck = ", warrior_deck)
 
@@ -35,10 +43,7 @@ func give_starting_cards(player_one_id: int, player_two_id: int) -> void:
 		print("starting draw blocked: warrior_deck is null")
 		return
 
-	var player_ids: Array[int] = [
-		player_one_id,
-		player_two_id
-	]
+	var player_ids: Array[int] = [player_one_id, player_two_id]
 
 	for peer_id in player_ids:
 		print("Giving starting cards to peer: ", peer_id)
