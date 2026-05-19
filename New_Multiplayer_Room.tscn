@@ -36,7 +36,6 @@
 [ext_resource type="PackedScene" uid="uid://dacxspbhp804b" path="res://Dominant/Dominant.tscn" id="25_2p7eh"]
 [ext_resource type="Texture2D" uid="uid://it6pftgf2ru4" path="res://References/Screenshot 2026-05-07 at 4.48.53 PM.png" id="27_ebn5f"]
 [ext_resource type="Texture2D" uid="uid://bkafxhbg4kvug" path="res://Sprites/CardSlot.png" id="28_e2c01"]
-[ext_resource type="PackedScene" uid="uid://bb6d0vmntt6xo" path="res://Scissor.tscn" id="30_x7w1o"]
 [ext_resource type="PackedScene" uid="uid://52uj0s5wxoub" path="res://Buff_Pile.tscn" id="32_axksp"]
 
 [node name="NewMuliplayer_Room" type="Node" unique_id=462638439]
@@ -382,10 +381,6 @@ lane_id = 2
 [node name="Lane1" parent="Slots" unique_id=1932373052 instance=ExtResource("1_phlo6")]
 position = Vector2(608, 480)
 lane_id = 1
-
-[node name="Scissor" parent="." unique_id=1763799064 node_paths=PackedStringArray("board_manager") instance=ExtResource("30_x7w1o")]
-position = Vector2(946, 788)
-board_manager = NodePath("../Managers/BoardManager")
 
 [node name="BuffPile" parent="." unique_id=1953419234 node_paths=PackedStringArray("player_hand", "phase_manager") instance=ExtResource("32_axksp")]
 visible = false
