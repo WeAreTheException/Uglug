@@ -57,6 +57,16 @@ func receive_starting_players(p1: int, p2: int) -> void:
 
 	receive_round_start(current_first_id)
 
+	if GDSync.is_host():
+		await get_tree().process_frame
+		await get_tree().process_frame
+
+		var game_start_draw_handler := get_node_or_null("../GameStartDrawHandler")
+		if game_start_draw_handler != null:
+			game_start_draw_handler.give_starting_cards()
+
+		start_place_phase()
+
 func receive_round_start(first_id: int) -> void:
 	current_first_id = first_id
 

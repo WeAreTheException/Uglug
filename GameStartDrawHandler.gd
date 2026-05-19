@@ -10,7 +10,7 @@ class_name GameStartDrawHandler
 
 var worker_deck: DeckDrawHandler = null
 var warrior_deck: DeckDrawHandler = null
-var turn_manager: TurnManager = null
+var turn_manager: Node = null
 
 var has_given_starting_cards := false
 
@@ -18,34 +18,11 @@ var has_given_starting_cards := false
 func _ready() -> void:
 	worker_deck = get_node_or_null(worker_deck_path) as DeckDrawHandler
 	warrior_deck = get_node_or_null(warrior_deck_path) as DeckDrawHandler
-	turn_manager = get_node_or_null(turn_manager_path) as TurnManager
+	turn_manager = get_node_or_null(turn_manager_path)
 
-	if worker_deck == null:
-		print("GameStartDrawHandler blocked: worker_deck not found at ", worker_deck_path)
-
-	if warrior_deck == null:
-		print("GameStartDrawHandler blocked: warrior_deck not found at ", warrior_deck_path)
-
-	if turn_manager == null:
-		print("GameStartDrawHandler blocked: turn_manager not found at ", turn_manager_path)
-
-	if not GDSync.is_host():
-		return
-
-	call_deferred("_wait_for_players_then_draw")
-
-
-func _wait_for_players_then_draw() -> void:
-	if has_given_starting_cards:
-		return
-
-	while turn_manager != null:
-		if turn_manager.player_one_id != -1 and turn_manager.player_two_id != -1:
-			break
-
-		await get_tree().process_frame
-
-	give_starting_cards()
+	print("GameStartDrawHandler worker_deck = ", worker_deck)
+	print("GameStartDrawHandler warrior_deck = ", warrior_deck)
+	print("GameStartDrawHandler turn_manager = ", turn_manager)
 
 
 func give_starting_cards() -> void:
@@ -54,17 +31,21 @@ func give_starting_cards() -> void:
 
 	has_given_starting_cards = true
 
+	if not GDSync.is_host():
+		return
+
 	if turn_manager == null:
-		print("GameStartDrawHandler blocked: turn_manager is null")
+		print("starting draw blocked: turn_manager is null")
 		return
 
 	var player_ids: Array[int] = [
-		turn_manager.player_one_id,
-		turn_manager.player_two_id
-	]
+	int(turn_manager.get("player_one_id")),
+	int(turn_manager.get("player_two_id"))
+]
 
 	for peer_id in player_ids:
 		if peer_id == -1:
+			print("starting draw blocked: invalid peer id")
 			continue
 
 		print("Giving starting cards to peer: ", peer_id)

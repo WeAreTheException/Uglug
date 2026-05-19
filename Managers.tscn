@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dbskxdwepofk4"]
 
 [ext_resource type="Script" uid="uid://bxbqihkit6rgo" path="res://Managers/Phasemanager.gd" id="1_4ddq4"]
-[ext_resource type="Script" uid="uid://bneanu1h8dlxb" path="res://TurnOrderManager.gd" id="2_7sv2p"]
+[ext_resource type="Script" uid="uid://bneanu1h8dlxb" path="res://TurnManager.gd" id="2_7sv2p"]
 [ext_resource type="Script" uid="uid://ukqcaw2u1h1i" path="res://MultiplayerManager.gd" id="3_220el"]
 [ext_resource type="Script" uid="uid://b730hf2p1uwqw" path="res://TuggaManager.gd" id="4_h5cb1"]
 [ext_resource type="Script" uid="uid://dsifsjjn64ofo" path="res://Multiplayer/TuggaManager.gd" id="5_p1inv"]

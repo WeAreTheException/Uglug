@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://kwpbjydk33rh" path="res://Art/P1_AttackOrder.png" id="2_m7shj"]
 [ext_resource type="Script" uid="uid://dgiphjbgc46k0" path="res://Phase/AttackFirstSlotLabel.gd" id="2_ykjx8"]
 [ext_resource type="Script" uid="uid://bfxl8a4iwbxde" path="res://PhaseLabel.gd" id="2_yxvsl"]
-[ext_resource type="Script" uid="uid://bneanu1h8dlxb" path="res://TurnOrderManager.gd" id="3_npu2i"]
+[ext_resource type="Script" uid="uid://bneanu1h8dlxb" path="res://TurnManager.gd" id="3_npu2i"]
 [ext_resource type="Texture2D" uid="uid://bqvhbvonl6m57" path="res://References/maxresdefault.jpg" id="6_cpbwq"]
 [ext_resource type="Script" uid="uid://bg4foc8mrsyhd" path="res://Phase/AttackOrderSpriteHandler.gd" id="8_cymfb"]
 [ext_resource type="Texture2D" uid="uid://brsmr8tj8tbtg" path="res://Art/P2_AttackOrder.png" id="10_r8uo6"]
@@ -251,8 +251,6 @@ player_hand = NodePath("../../Hand&Deck/PlayerHand")
 
 [node name="GameStartDrawHandler" type="Node" parent="Handlers" unique_id=292297102]
 script = ExtResource("19_tr2pb")
-worker_deck_path = NodePath("../../Hand&Deck/WorkerDeck")
-warrior_deck_path = NodePath("../../Hand&Deck/WarriorDeck")
 
 [node name="Managers" type="Node" parent="." unique_id=5384537]
 

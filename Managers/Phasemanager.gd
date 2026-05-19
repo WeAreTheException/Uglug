@@ -50,8 +50,6 @@ func _ready() -> void:
 	if timer_label != null:
 		timer_label.visible = false
 
-	call_deferred("start_match_phases")
-
 
 func _process(_delta: float) -> void:
 	update_timer_label()
