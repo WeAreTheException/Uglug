@@ -54,17 +54,31 @@ func cache_empty_textures() -> void:
 
 func setup_player_labels() -> void:
 	if player_one_name_label == null:
-		print("tugga ui: player_one_name_label missing")
 		return
 
 	if player_two_name_label == null:
-		print("tugga ui: player_two_name_label missing")
 		return
 
-	player_one_name_label.text = "P1"
-	player_two_name_label.text = "P2"
+	var turn_manager := get_tree().get_first_node_in_group("turn_manager") as TurnManager
 
+	if turn_manager == null:
+		return
 
+	player_one_name_label.text = _get_name_for_peer(turn_manager.player_one_id)
+	player_two_name_label.text = _get_name_for_peer(turn_manager.player_two_id)
+
+func _get_name_for_peer(peer_id: int) -> String:
+	if peer_id == int(GDSync.get_client_id()):
+		return GDSync.get_player_username()
+
+	var clients := GDSync.lobby_get_all_clients()
+
+	for client_id in clients:
+		if int(client_id) == peer_id:
+			return GDSync.lobby_get_player_data(client_id, "Username")
+
+	return "Player"
+	
 func _on_scale_changed(_value: int) -> void:
 	update_ui()
 
