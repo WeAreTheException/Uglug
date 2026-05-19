@@ -5,10 +5,7 @@ class_name CombatManager
 @export var turn_manager: TurnManager
 @export var delay_between_attacks: float = 0.35
 @export var delay_between_sides: float = 0.6
-
-# Temporary Distant fix:
-# This gives the attacking player time to pick slots before the next card starts attacking.
-@export var distant_pick_time_per_target: float = 4
+@export var distant_pick_time_per_target: float = 4.0
 
 var attack_round_running: bool = false
 
@@ -32,12 +29,18 @@ func start_attack_round() -> void:
 		print("attack round blocked: turn_manager is null")
 		return
 
+	var first_id := turn_manager.current_first_id
+	var second_id := _get_second_attacker_id(first_id)
+
+	if first_id == -1 or second_id == -1:
+		print("attack round blocked: invalid attack order first=", first_id, " second=", second_id)
+		return
+
 	attack_round_running = true
 
-	var host_id := turn_manager.player_one_id
-	var client_id := turn_manager.player_two_id
+	print("ATTACK ORDER: first=", first_id, " second=", second_id)
 
-	await _run_attack_side(host_id)
+	await _run_attack_side(first_id)
 
 	if not _can_continue_combat():
 		attack_round_running = false
@@ -55,9 +58,22 @@ func start_attack_round() -> void:
 		attack_round_running = false
 		return
 
-	await _run_attack_side(client_id)
+	await _run_attack_side(second_id)
 
 	attack_round_running = false
+
+
+func _get_second_attacker_id(first_id: int) -> int:
+	if turn_manager == null:
+		return -1
+
+	if first_id == turn_manager.player_one_id:
+		return turn_manager.player_two_id
+
+	if first_id == turn_manager.player_two_id:
+		return turn_manager.player_one_id
+
+	return -1
 
 
 func _run_attack_side(owner_peer_id: int) -> void:
