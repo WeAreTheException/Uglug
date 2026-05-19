@@ -1,29 +1,44 @@
-[gd_scene format=3 uid="uid://mutationtooltipfixed"]
+[gd_scene format=3 uid="uid://bocxu8xu5hh8b"]
 
-[node name="MutationToolTip" type="Control"]
-offset_right = 260.0
+[node name="MutationToolTip" type="Control" unique_id=783565587]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 174.0
 offset_bottom = 120.0
+pivot_offset = Vector2(87, 60)
 mouse_filter = 2
 
-[node name="Panel" type="Panel" parent="."]
-anchors_preset = 15
-anchor_right = 1.0
+[node name="Panel" type="Panel" parent="." unique_id=440085595]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.67300004
 anchor_bottom = 1.0
+offset_right = 56.897995
 grow_horizontal = 2
 grow_vertical = 2
+pivot_offset = Vector2(87, 60)
 mouse_filter = 2
 
-[node name="NameLabel" type="Label" parent="Panel"]
+[node name="NameLabel" type="Label" parent="Panel" unique_id=1327250483]
+layout_mode = 0
 offset_left = 10.0
 offset_top = 8.0
-offset_right = 250.0
+offset_right = 165.0
 offset_bottom = 34.0
-mouse_filter = 2
+pivot_offset = Vector2(78, 13)
+horizontal_alignment = 1
 
-[node name="DescriptionLabel" type="Label" parent="Panel"]
-offset_left = 10.0
-offset_top = 40.0
-offset_right = 250.0
-offset_bottom = 110.0
-mouse_filter = 2
-autowrap_mode = 3
+[node name="DescriptionLabel" type="Label" parent="Panel" unique_id=1444951111]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.503
+anchor_top = 0.5
+anchor_right = 0.503
+anchor_bottom = 0.5
+offset_left = -78.025
+offset_top = -26.0
+offset_right = 76.975
+offset_bottom = 48.0
+pivot_offset = Vector2(78, 37)
+theme_override_font_sizes/font_size = 10
+autowrap_mode = 2

@@ -119,7 +119,7 @@ func _create_tooltip() -> void:
 	get_tree().current_scene.add_child(tooltip_instance)
 
 	tooltip_instance.visible = false
-	tooltip_instance.z_index = 9999
+	tooltip_instance.z_index = 100
 	tooltip_instance.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 	tooltip_name_label = tooltip_instance.find_child("NameLabel", true, false) as Label

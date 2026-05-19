@@ -23,10 +23,10 @@
 [ext_resource type="Texture2D" uid="uid://cgs5k6p3mggyf" path="res://Art/Ants/AntSprite.png" id="18_dm30q"]
 [ext_resource type="Script" uid="uid://cfvsqn441hgwq" path="res://Cards/CardStats.gd" id="22_koaue"]
 [ext_resource type="Script" uid="uid://de64ge4akihco" path="res://Mutations/ToolTip/MutationToolTipHandler.gd" id="23_2w08q"]
-[ext_resource type="PackedScene" uid="uid://d4lwi1f8i5uat" path="res://Mutations/ToolTip/MutationToolTip.tscn" id="24_lsojp"]
+[ext_resource type="PackedScene" uid="uid://bocxu8xu5hh8b" path="res://Mutations/ToolTip/MutationToolTip.tscn" id="24_lsojp"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
-size = Vector2(176, 270)
+size = Vector2(174, 268)
 
 [node name="Card" type="Node2D" unique_id=1703534497 node_paths=PackedStringArray("input_listener", "card_stats", "base_sigil_container", "additional_sigil_container")]
 script = ExtResource("1_ch35y")
@@ -40,7 +40,7 @@ script = ExtResource("10_koaue")
 metadata/_edit_lock_ = true
 
 [node name="CardCollision" type="CollisionShape2D" parent="InputListener" unique_id=2061957776]
-position = Vector2(-3.0517578e-05, -7.6293945e-06)
+position = Vector2(0, -7.6293945e-06)
 shape = SubResource("RectangleShape2D_rjlel")
 metadata/_edit_lock_ = true
 
@@ -123,10 +123,6 @@ texture = ExtResource("9_dm30q")
 
 [node name="Name" type="RichTextLabel" parent="Stats" unique_id=484770799]
 anchors_preset = -1
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
 offset_left = -78.0
 offset_top = -128.0
 offset_right = 78.0
@@ -176,5 +172,4 @@ script = ExtResource("23_2w08q")
 tooltip_scene = ExtResource("24_lsojp")
 base_sigil_sprites = [NodePath("../BaseMutation/BaseSprite")]
 additional_sigil_sprites = [NodePath("../AdditonalMutation/Additional1"), NodePath("../AdditonalMutation/Additional2"), NodePath("../AdditonalMutation/Additional3")]
-card_top_offset = Vector2(-87, -240)
-tooltip_gap = 0.0
+card_top_offset = Vector2(0, -135)
