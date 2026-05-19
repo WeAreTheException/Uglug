@@ -16,9 +16,17 @@ func _ready() -> void:
 	add_to_group("tugga")
 
 	GDSync.expose_node(self)
+	GDSync.expose_func(request_direct_damage)
 	GDSync.expose_func(commit_tugga_value)
 
 	scale_changed.emit(current_value)
+
+
+func request_direct_damage(attacker_peer_id: int, amount: int) -> void:
+	if GDSync.is_host():
+		take_direct_damage(attacker_peer_id, amount)
+	else:
+		GDSync.call_func(request_direct_damage, attacker_peer_id, amount)
 
 
 func take_direct_damage(attacker_peer_id: int, amount: int) -> void:
@@ -29,6 +37,7 @@ func take_direct_damage(attacker_peer_id: int, amount: int) -> void:
 		return
 
 	if not GDSync.is_host():
+		request_direct_damage(attacker_peer_id, amount)
 		return
 
 	var player_one_id := _get_player_one_id()
@@ -63,7 +72,6 @@ func _check_for_game_end_locally() -> void:
 
 	if current_value >= max_value:
 		_end_game_locally(_get_player_two_id())
-
 	elif current_value <= -max_value:
 		_end_game_locally(_get_player_one_id())
 

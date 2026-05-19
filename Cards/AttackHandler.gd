@@ -156,11 +156,12 @@ func _resolve_direct_attack(slot: NewSlots) -> void:
 
 	var tugga := tree.get_first_node_in_group("tugga")
 
-	if tugga != null and tugga.has_method("take_direct_damage"):
+	if tugga != null and tugga.has_method("request_direct_damage"):
+		tugga.request_direct_damage(card.owning_peer_id, direct_damage)
+	elif tugga != null and tugga.has_method("take_direct_damage"):
 		tugga.take_direct_damage(card.owning_peer_id, direct_damage)
 	else:
 		print("direct damage blocked: tugga not found")
-
 
 func _has_antler_ordered_slots() -> bool:
 	return not _get_antler_ordered_slots().is_empty()
