@@ -24,7 +24,11 @@ enum Phase {
 @export var player_one_place_color: Color = Color.WHITE
 @export var player_two_place_color: Color = Color.RED
 
+@export var skip_draw_and_buff_on_turn_one: bool = true
+
 var current_phase: Phase = Phase.DRAW
+var turn_number: int = 1
+
 
 func _ready() -> void:
 	if draw_timer != null:
@@ -45,19 +49,29 @@ func _ready() -> void:
 	if timer_label != null:
 		timer_label.visible = false
 
+
 func _process(_delta: float) -> void:
 	update_timer_label()
+
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
 		match event.keycode:
 			KEY_1:
 				if turn_manager != null:
-					turn_manager.request_step(Phase.DRAW)
+					if should_skip_draw_and_buff():
+						print("Turn 1 skips Draw phase")
+						turn_manager.request_start_place_phase()
+					else:
+						turn_manager.request_step(Phase.DRAW)
 
 			KEY_2:
 				if turn_manager != null:
-					turn_manager.request_step(Phase.BUFF)
+					if should_skip_draw_and_buff():
+						print("Turn 1 skips Buff phase")
+						turn_manager.request_start_place_phase()
+					else:
+						turn_manager.request_step(Phase.BUFF)
 
 			KEY_3:
 				if turn_manager != null:
@@ -75,7 +89,36 @@ func _unhandled_input(event: InputEvent) -> void:
 				if turn_manager != null:
 					turn_manager.request_done_placing()
 
+
+func start_match_phases() -> void:
+	turn_number = 1
+
+	if skip_draw_and_buff_on_turn_one:
+		if turn_manager != null:
+			turn_manager.request_start_place_phase()
+		else:
+			set_phase(Phase.PLACE)
+	else:
+		if turn_manager != null:
+			turn_manager.request_step(Phase.DRAW)
+		else:
+			set_phase(Phase.DRAW)
+
+
 func set_phase(new_phase: Phase) -> void:
+	if should_skip_draw_and_buff():
+		if new_phase == Phase.DRAW or new_phase == Phase.BUFF:
+			print("Turn 1 phase skipped: ", get_phase_name_from_value(new_phase))
+
+			if turn_manager != null:
+				turn_manager.start_place_phase()
+			else:
+				current_phase = Phase.PLACE
+				phase_changed.emit(get_phase_name())
+				print("PHASE CHANGED TO: ", get_phase_name())
+
+			return
+
 	current_phase = new_phase
 	phase_changed.emit(get_phase_name())
 	print("PHASE CHANGED TO: ", get_phase_name())
@@ -86,6 +129,16 @@ func set_phase(new_phase: Phase) -> void:
 		start_buff_timer()
 	elif current_phase != Phase.PLACE:
 		stop_visible_timers()
+
+
+func should_skip_draw_and_buff() -> bool:
+	return skip_draw_and_buff_on_turn_one and turn_number == 1
+
+
+func advance_turn_number() -> void:
+	turn_number += 1
+	print("TURN NUMBER: ", turn_number)
+
 
 func start_draw_timer() -> void:
 	stop_visible_timers()
@@ -101,6 +154,7 @@ func start_draw_timer() -> void:
 
 	update_timer_label()
 
+
 func start_buff_timer() -> void:
 	stop_visible_timers()
 
@@ -114,6 +168,7 @@ func start_buff_timer() -> void:
 		timer_label.add_theme_color_override("font_color", buff_timer_color)
 
 	update_timer_label()
+
 
 func start_place_timer(is_player_one_turn: bool) -> void:
 	stop_visible_timers()
@@ -133,12 +188,14 @@ func start_place_timer(is_player_one_turn: bool) -> void:
 
 	update_timer_label()
 
+
 func stop_place_timer() -> void:
 	if place_timer != null:
 		place_timer.stop()
 
 	if timer_label != null:
 		timer_label.visible = false
+
 
 func stop_visible_timers() -> void:
 	if draw_timer != null:
@@ -153,11 +210,13 @@ func stop_visible_timers() -> void:
 	if timer_label != null:
 		timer_label.visible = false
 
+
 func stop_all_timers() -> void:
 	stop_visible_timers()
 
 	if attack_timer != null:
 		attack_timer.stop()
+
 
 func wait_attack_timer() -> void:
 	if attack_timer == null:
@@ -166,6 +225,7 @@ func wait_attack_timer() -> void:
 	attack_timer.stop()
 	attack_timer.start(attack_timer.wait_time)
 	await attack_timer.timeout
+
 
 func update_timer_label() -> void:
 	if timer_label == null:
@@ -185,6 +245,7 @@ func update_timer_label() -> void:
 
 	timer_label.text = "%d:%02d" % [minutes, seconds]
 
+
 func get_active_visible_timer() -> Timer:
 	if draw_timer != null and not draw_timer.is_stopped():
 		return draw_timer
@@ -197,6 +258,7 @@ func get_active_visible_timer() -> Timer:
 
 	return null
 
+
 func _on_draw_timer_timeout() -> void:
 	if turn_manager == null:
 		return
@@ -204,7 +266,11 @@ func _on_draw_timer_timeout() -> void:
 	if not GDSync.is_host():
 		return
 
-	turn_manager.request_step(Phase.BUFF)
+	if should_skip_draw_and_buff():
+		turn_manager.start_place_phase()
+	else:
+		turn_manager.request_step(Phase.BUFF)
+
 
 func _on_buff_timer_timeout() -> void:
 	if turn_manager == null:
@@ -215,6 +281,7 @@ func _on_buff_timer_timeout() -> void:
 
 	turn_manager.start_place_phase()
 
+
 func _on_place_timer_timeout() -> void:
 	if turn_manager == null:
 		return
@@ -224,8 +291,13 @@ func _on_place_timer_timeout() -> void:
 
 	turn_manager.force_done_current_placing_player()
 
+
 func get_phase_name() -> String:
-	match current_phase:
+	return get_phase_name_from_value(current_phase)
+
+
+func get_phase_name_from_value(phase_value: Phase) -> String:
+	match phase_value:
 		Phase.DRAW:
 			return "Draw"
 		Phase.BUFF:
@@ -237,17 +309,22 @@ func get_phase_name() -> String:
 
 	return ""
 
+
 func is_draw_phase() -> bool:
 	return current_phase == Phase.DRAW
+
 
 func is_buff_phase() -> bool:
 	return current_phase == Phase.BUFF
 
+
 func is_place_phase() -> bool:
 	return current_phase == Phase.PLACE
 
+
 func is_player_place_phase() -> bool:
 	return current_phase == Phase.PLACE
+
 
 func is_attack_phase() -> bool:
 	return current_phase == Phase.ATTACK
