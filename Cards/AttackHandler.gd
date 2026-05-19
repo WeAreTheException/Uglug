@@ -10,6 +10,9 @@ var card: Card = null
 func _ready() -> void:
 	card = _find_card_parent()
 
+	if distant_target_picker == null:
+		distant_target_picker = _find_distant_target_picker()
+
 
 func attack() -> void:
 	if card == null:
@@ -160,24 +163,6 @@ func _get_distant_count() -> int:
 
 	return count
 
-
-func _is_distant_mutation(mutation: Mutation) -> bool:
-	if mutation == null:
-		return false
-
-	if mutation.has_method("wants_manual_attack_target"):
-		if mutation.wants_manual_attack_target():
-			return true
-
-	if mutation is Distant:
-		return true
-
-	if mutation.resource_path.to_lower().contains("distant"):
-		return true
-
-	return false
-
-
 func _flash_slot(slot: Node) -> void:
 	print("TRY FLASH SLOT: ", slot)
 
@@ -276,3 +261,14 @@ func _find_card_parent() -> Card:
 		current = current.get_parent()
 
 	return null
+
+func _find_distant_target_picker() -> DistantTargetPicker:
+	if card == null:
+		return null
+
+	var picker := card.get_node_or_null("DistantTargetPicker") as DistantTargetPicker
+
+	if picker != null:
+		return picker
+
+	return card.find_child("DistantTargetPicker", true, false) as DistantTargetPicker

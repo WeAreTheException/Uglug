@@ -20,6 +20,7 @@
 [ext_resource type="Script" uid="uid://dtoyyse7bnjuv" path="res://Code/States/CardInputListener.gd" id="10_koaue"]
 [ext_resource type="Script" uid="uid://d0qu3q360kdsl" path="res://Code/States/CardInputReciever.gd" id="11_2w08q"]
 [ext_resource type="Script" uid="uid://ro02870urhpb" path="res://Code/States/CardStateMachine.gd" id="12_lsojp"]
+[ext_resource type="Script" uid="uid://bsqidwsxqggmu" path="res://DistantTargetPicker.gd" id="13_vartc"]
 [ext_resource type="Texture2D" uid="uid://cgs5k6p3mggyf" path="res://Art/Ants/AntSprite.png" id="18_dm30q"]
 [ext_resource type="Script" uid="uid://cfvsqn441hgwq" path="res://Cards/CardStats.gd" id="22_koaue"]
 [ext_resource type="Script" uid="uid://de64ge4akihco" path="res://Mutations/ToolTip/MutationToolTipHandler.gd" id="23_2w08q"]
@@ -77,6 +78,13 @@ die_anim = NodePath("DthAnim")
 
 [node name="DthAnim" type="Node" parent="CardStateMachine/Die" unique_id=1661689933]
 script = ExtResource("9_fuvn1")
+
+[node name="CardStats" type="Node" parent="." unique_id=1956418628 node_paths=PackedStringArray("stats_visual")]
+script = ExtResource("22_koaue")
+stats_visual = NodePath("../Stats")
+
+[node name="DistantTargetPicker" type="Node" parent="." unique_id=375972492]
+script = ExtResource("13_vartc")
 
 [node name="Stats" type="Node2D" parent="." unique_id=1314998697 node_paths=PackedStringArray("card_sprite", "attack", "health", "cost", "name_label")]
 script = ExtResource("2_52a3h")
@@ -162,10 +170,6 @@ texture = ExtResource("2_sphwu")
 position = Vector2(-64, 32)
 scale = Vector2(0.128, 0.12799999)
 texture = ExtResource("2_sphwu")
-
-[node name="CardStats" type="Node" parent="." unique_id=1956418628 node_paths=PackedStringArray("stats_visual")]
-script = ExtResource("22_koaue")
-stats_visual = NodePath("../Stats")
 
 [node name="MutationToolTipHandler" type="Node2D" parent="." unique_id=2060041199 node_paths=PackedStringArray("base_sigil_sprites", "additional_sigil_sprites")]
 script = ExtResource("23_2w08q")
