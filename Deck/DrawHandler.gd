@@ -10,6 +10,10 @@ const CARD_DRAW_SPEED = 0.4
 
 static var next_card_id: int = 1
 
+static var shared_draws_used_this_turn: int = 0
+static var shared_draw_limit_this_turn: int = 2
+static var shared_was_in_draw_phase := false
+
 @export var card_database: CardDatabase
 @export var deck_type: DeckType = DeckType.WORKER
 
@@ -25,10 +29,6 @@ var phase_manager: PhaseManager = null
 var select_handler: SelectHandler = null
 
 var worker_union_buff_handler: WorkerUnionBuffHandler = null
-
-var draws_used_this_turn: int = 0
-var draw_limit_this_turn: int = 2
-var was_in_draw_phase := false
 
 
 func _ready() -> void:
@@ -70,14 +70,20 @@ func draw_player_card() -> void:
 
 	_check_draw_phase_reset()
 
-	if draws_used_this_turn >= draw_limit_this_turn:
+	if DeckDrawHandler.shared_draws_used_this_turn >= DeckDrawHandler.shared_draw_limit_this_turn:
 		print("draw blocked: max draws this turn")
 		return
 
 	var my_peer_id := int(GDSync.get_client_id())
 
-	draws_used_this_turn += 1
-	print("draw used: ", draws_used_this_turn, "/", draw_limit_this_turn)
+	DeckDrawHandler.shared_draws_used_this_turn += 1
+
+	print(
+		"draw used: ",
+		DeckDrawHandler.shared_draws_used_this_turn,
+		"/",
+		DeckDrawHandler.shared_draw_limit_this_turn
+	)
 
 	if GDSync.is_host():
 		_host_resolve_draw(my_peer_id)
@@ -89,22 +95,22 @@ func _check_draw_phase_reset() -> void:
 	if phase_manager == null:
 		return
 
-	if phase_manager.is_draw_phase() and not was_in_draw_phase:
-		was_in_draw_phase = true
-		draws_used_this_turn = 0
+	if phase_manager.is_draw_phase() and not DeckDrawHandler.shared_was_in_draw_phase:
+		DeckDrawHandler.shared_was_in_draw_phase = true
+		DeckDrawHandler.shared_draws_used_this_turn = 0
 
 		if player_hand != null and player_hand.has_method("get_hand_size"):
 			if int(player_hand.get_hand_size()) == 0:
-				draw_limit_this_turn = empty_hand_draw_limit
+				DeckDrawHandler.shared_draw_limit_this_turn = empty_hand_draw_limit
 			else:
-				draw_limit_this_turn = normal_draw_limit
+				DeckDrawHandler.shared_draw_limit_this_turn = normal_draw_limit
 		else:
-			draw_limit_this_turn = normal_draw_limit
+			DeckDrawHandler.shared_draw_limit_this_turn = normal_draw_limit
 
-		print(get_deck_type_name(), " draw limit this turn: ", draw_limit_this_turn)
+		print("shared draw limit this turn: ", DeckDrawHandler.shared_draw_limit_this_turn)
 
 	elif not phase_manager.is_draw_phase():
-		was_in_draw_phase = false
+		DeckDrawHandler.shared_was_in_draw_phase = false
 
 
 func request_draw_from_host(requesting_peer_id: int) -> void:
