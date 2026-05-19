@@ -94,7 +94,12 @@ func attack() -> void:
 
 		_flash_slot(slot_to_flash)
 
-		var tugga := get_tree().get_first_node_in_group("tugga")
+		var tree := get_tree()
+
+		if tree == null:
+			return
+
+		var tugga := tree.get_first_node_in_group("tugga")
 
 		if tugga != null and tugga.has_method("take_direct_damage"):
 			tugga.take_direct_damage(card.owning_peer_id, direct_damage)
