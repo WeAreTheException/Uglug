@@ -10,7 +10,7 @@ enum Phase {
 	ATTACK
 }
 
-@export var turn_manager: TurnManager
+@export var turn_manager: Node
 
 @export var draw_timer: Timer
 @export var buff_timer: Timer
@@ -26,8 +26,9 @@ enum Phase {
 
 @export var skip_draw_and_buff_on_turn_one: bool = true
 
-var current_phase: Phase = Phase.DRAW
+var current_phase: Phase = Phase.PLACE
 var turn_number: int = 1
+var has_started_match_phases := false
 
 
 func _ready() -> void:
@@ -49,6 +50,8 @@ func _ready() -> void:
 	if timer_label != null:
 		timer_label.visible = false
 
+	call_deferred("start_match_phases")
+
 
 func _process(_delta: float) -> void:
 	update_timer_label()
@@ -59,64 +62,57 @@ func _unhandled_input(event: InputEvent) -> void:
 		match event.keycode:
 			KEY_1:
 				if turn_manager != null:
-					if should_skip_draw_and_buff():
-						print("Turn 1 skips Draw phase")
-						turn_manager.request_start_place_phase()
-					else:
-						turn_manager.request_step(Phase.DRAW)
+					turn_manager.call("request_step", Phase.DRAW)
 
 			KEY_2:
 				if turn_manager != null:
-					if should_skip_draw_and_buff():
-						print("Turn 1 skips Buff phase")
-						turn_manager.request_start_place_phase()
-					else:
-						turn_manager.request_step(Phase.BUFF)
+					turn_manager.call("request_step", Phase.BUFF)
 
 			KEY_3:
 				if turn_manager != null:
-					turn_manager.request_start_place_phase()
+					turn_manager.call("request_start_place_phase")
 
 			KEY_4:
 				if turn_manager != null:
-					turn_manager.request_step(Phase.ATTACK)
+					turn_manager.call("request_step", Phase.ATTACK)
 
 			KEY_5:
 				if turn_manager != null:
-					turn_manager.request_flip_attacking_first()
+					turn_manager.call("request_flip_attacking_first")
 
 			KEY_SPACE:
 				if turn_manager != null:
-					turn_manager.request_done_placing()
+					turn_manager.call("request_done_placing")
 
 
 func start_match_phases() -> void:
+	if has_started_match_phases:
+		return
+
+	has_started_match_phases = true
+
+	if not GDSync.is_host():
+		return
+
 	turn_number = 1
 
 	if skip_draw_and_buff_on_turn_one:
 		if turn_manager != null:
-			turn_manager.request_start_place_phase()
+			turn_manager.call("request_start_place_phase")
 		else:
 			set_phase(Phase.PLACE)
 	else:
 		if turn_manager != null:
-			turn_manager.request_step(Phase.DRAW)
+			turn_manager.call("request_step", Phase.DRAW)
 		else:
 			set_phase(Phase.DRAW)
 
 
 func set_phase(new_phase: Phase) -> void:
-	if should_skip_draw_and_buff():
+	if skip_draw_and_buff_on_turn_one and turn_number == 1:
 		if new_phase == Phase.DRAW or new_phase == Phase.BUFF:
-			print("Turn 1 phase skipped: ", get_phase_name_from_value(new_phase))
-
-			if turn_manager != null:
-				turn_manager.start_place_phase()
-			else:
-				current_phase = Phase.PLACE
-				phase_changed.emit(get_phase_name())
-				print("PHASE CHANGED TO: ", get_phase_name())
-
+			print("Turn 1 skipped phase: ", get_phase_name_from_value(new_phase))
+			set_phase(Phase.PLACE)
 			return
 
 	current_phase = new_phase
@@ -127,17 +123,16 @@ func set_phase(new_phase: Phase) -> void:
 		start_draw_timer()
 	elif current_phase == Phase.BUFF:
 		start_buff_timer()
-	elif current_phase != Phase.PLACE:
+	elif current_phase == Phase.ATTACK:
 		stop_visible_timers()
 
-
-func should_skip_draw_and_buff() -> bool:
-	return skip_draw_and_buff_on_turn_one and turn_number == 1
-
-
-func advance_turn_number() -> void:
-	turn_number += 1
-	print("TURN NUMBER: ", turn_number)
+		if turn_number == 1:
+			turn_number = 2
+			print("TURN NUMBER: ", turn_number)
+	elif current_phase == Phase.PLACE:
+		pass
+	else:
+		stop_visible_timers()
 
 
 func start_draw_timer() -> void:
@@ -266,10 +261,7 @@ func _on_draw_timer_timeout() -> void:
 	if not GDSync.is_host():
 		return
 
-	if should_skip_draw_and_buff():
-		turn_manager.start_place_phase()
-	else:
-		turn_manager.request_step(Phase.BUFF)
+	turn_manager.call("request_step", Phase.BUFF)
 
 
 func _on_buff_timer_timeout() -> void:
@@ -279,7 +271,7 @@ func _on_buff_timer_timeout() -> void:
 	if not GDSync.is_host():
 		return
 
-	turn_manager.start_place_phase()
+	turn_manager.call("start_place_phase")
 
 
 func _on_place_timer_timeout() -> void:
@@ -289,7 +281,7 @@ func _on_place_timer_timeout() -> void:
 	if not GDSync.is_host():
 		return
 
-	turn_manager.force_done_current_placing_player()
+	turn_manager.call("force_done_current_placing_player")
 
 
 func get_phase_name() -> String:
