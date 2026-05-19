@@ -54,7 +54,9 @@ func _add_slot_or_direct(targets: Array[Card], slot: NewSlots) -> void:
 		empty_adjacent_slots.append(slot)
 		return
 
-	targets.append(slot.current_card)
+	var target_card := slot.current_card as Card
+	if target_card != null:
+		targets.append(target_card)
 
 
 func _card_attacks_left_to_right(card: Card) -> bool:
@@ -64,10 +66,7 @@ func _card_attacks_left_to_right(card: Card) -> bool:
 	if card.current_slot == null:
 		return true
 
-	# Usually player one slots visually attack left -> right.
-	# Player two slots attack right -> left.
-	# If your enum names are different, adjust this line.
-	return card.current_slot.slot_owner == NewSlots.SlotOwner.PLAYER_ONE
+	return card.current_slot.slot_owner == NewSlots.SlotOwner.PLAYER
 
 
 func _get_slots_root(card: Card) -> Node:
