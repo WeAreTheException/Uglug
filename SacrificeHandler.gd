@@ -137,16 +137,16 @@ func resolve_sacrifice_payment(pending_play_card: Card) -> void:
 	print("payment complete for ", pending_play_card.card_name, " / paid worth = ", paid_sacrifice_worth)
 
 	if GDSync.is_host():
-		GDSync.call_func_all(commit_sacrifice, [sacrificed_data])
+		GDSync.call_func_all(commit_sacrifice, sacrificed_data)
 	else:
-		GDSync.call_func(request_sacrifice_from_host, [sacrificed_data])
+		GDSync.call_func(request_sacrifice_from_host, sacrificed_data)
 
 
 func request_sacrifice_from_host(sacrificed_data: Array) -> void:
 	if not GDSync.is_host():
 		return
 
-	GDSync.call_func_all(commit_sacrifice, [sacrificed_data])
+	GDSync.call_func_all(commit_sacrifice, sacrificed_data)
 
 
 func commit_sacrifice(sacrificed_data: Array) -> void:
