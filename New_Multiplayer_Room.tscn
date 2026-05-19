@@ -275,11 +275,12 @@ wait_time = 2.0
 [node name="BuffTimer" type="Timer" parent="Managers/PhaseManager" unique_id=722981550]
 wait_time = 5.0
 
-[node name="TurnManager" type="Node" parent="Managers" unique_id=1986901783 node_paths=PackedStringArray("phase_manager", "combat_manager", "round_manager")]
+[node name="TurnManager" type="Node" parent="Managers" unique_id=1986901783 node_paths=PackedStringArray("phase_manager", "combat_manager", "round_manager", "game_start_draw_handler")]
 script = ExtResource("3_npu2i")
 phase_manager = NodePath("../PhaseManager")
 combat_manager = NodePath("../CombatManager")
 round_manager = NodePath("../RoundManager")
+game_start_draw_handler = NodePath("../../Handlers/GameStartDrawHandler")
 
 [node name="MultiplayerManager" type="Node" parent="Managers" unique_id=2113897365 node_paths=PackedStringArray("player_name_label", "enemy_name_label")]
 script = ExtResource("2_gdibd")
