@@ -2,10 +2,9 @@ extends Node
 class_name AttackHandler
 
 @export var attack_anim: Node
+@export var distant_target_picker: DistantTargetPicker
 
 var card: Card = null
-var waiting_for_distant_slot := false
-var chosen_distant_slot: NewSlots = null
 
 
 func _ready() -> void:
@@ -24,16 +23,31 @@ func attack() -> void:
 		print(card.card_name, " attack skipped: 0 attack")
 		return
 
+	var distant_count := _get_distant_count()
+
+	if distant_count > 0:
+		for i in range(distant_count):
+			print(card.card_name, " has Distant. Waiting for slot choice ", i + 1, "/", distant_count)
+
+			if distant_target_picker == null:
+				print("Distant blocked: distant_target_picker missing")
+				continue
+
+			var picked_slot := await distant_target_picker.pick_slot()
+
+			if picked_slot == null:
+				print("Distant attack cancelled: no slot picked")
+				continue
+
+			_resolve_attack_from_slot(picked_slot)
+
+		return
+
 	var starting_slot: NewSlots = card.current_slot.opposing_slot
+	_resolve_attack_from_slot(starting_slot)
 
-	if _card_wants_manual_attack_slot():
-		print(card.card_name, " has Distant. Waiting for slot choice...")
-		starting_slot = await _wait_for_distant_slot()
 
-		if starting_slot == null:
-			print("Distant attack cancelled: no slot picked")
-			return
-
+func _resolve_attack_from_slot(starting_slot: NewSlots) -> void:
 	var opposing_card: Card = null
 
 	if starting_slot != null:
@@ -66,7 +80,7 @@ func attack() -> void:
 
 	var direct_attack_slots := _get_direct_attack_slots_from_mutations()
 
-	if targets.is_empty() and starting_slot != null and _card_wants_manual_attack_slot():
+	if targets.is_empty() and starting_slot != null:
 		if not direct_attack_slots.has(starting_slot):
 			direct_attack_slots.append(starting_slot)
 
@@ -78,7 +92,7 @@ func attack() -> void:
 	if targets.is_empty() and direct_attack_count <= 0:
 		direct_attack_count = 1
 
-	for i in direct_attack_count:
+	for i in range(direct_attack_count):
 		if attack_anim != null and attack_anim.has_method("play_attack"):
 			attack_anim.play_attack(null)
 
@@ -133,111 +147,32 @@ func attack() -> void:
 		target.take_damage(damage, card)
 
 
-func _wait_for_distant_slot() -> NewSlots:
-	waiting_for_distant_slot = true
-	chosen_distant_slot = null
+func _get_distant_count() -> int:
+	var count := 0
 
-	var tree := get_tree()
-
-	if tree == null:
-		waiting_for_distant_slot = false
-		return null
-
-	var slots := tree.get_nodes_in_group("slots")
-
-	for slot in slots:
-		var new_slot := slot as NewSlots
-
-		if new_slot == null:
-			continue
-
-		if not new_slot.slot_clicked.is_connected(_on_distant_slot_clicked):
-			new_slot.slot_clicked.connect(_on_distant_slot_clicked)
-
-	while waiting_for_distant_slot:
-		tree = get_tree()
-
-		if tree == null:
-			waiting_for_distant_slot = false
-			return null
-
-		await tree.process_frame
-
-	_disconnect_distant_slots()
-
-	return chosen_distant_slot
-
-
-func _on_distant_slot_clicked(slot: NewSlots) -> void:
-	if not waiting_for_distant_slot:
-		return
-
-	if card == null:
-		return
-
-	if card.current_slot == null:
-		return
-
-	if slot == null:
-		return
-
-	if slot.slot_owner == card.current_slot.slot_owner:
-		print("Distant blocked: cannot attack own side")
-		return
-
-	chosen_distant_slot = slot
-	waiting_for_distant_slot = false
-
-	print(card.card_name, " chose Distant slot: ", slot.name)
-
-
-func _disconnect_distant_slots() -> void:
-	var tree := get_tree()
-
-	if tree == null:
-		return
-
-	var slots := tree.get_nodes_in_group("slots")
-
-	for slot in slots:
-		var new_slot := slot as NewSlots
-
-		if new_slot == null:
-			continue
-
-		if new_slot.slot_clicked.is_connected(_on_distant_slot_clicked):
-			new_slot.slot_clicked.disconnect(_on_distant_slot_clicked)
-
-
-func _card_wants_manual_attack_slot() -> bool:
 	for mutation in card.base_mutations:
-		if _is_distant_mutation(mutation):
-			return true
+		if mutation != null and mutation.wants_manual_attack_target():
+			count += 1
 
 	for mutation in card.additional_mutations:
-		if _is_distant_mutation(mutation):
-			return true
+		if mutation != null and mutation.wants_manual_attack_target():
+			count += 1
 
-	return false
+	return count
 
 
 func _is_distant_mutation(mutation: Mutation) -> bool:
 	if mutation == null:
 		return false
 
-	print("checking mutation: ", mutation, " script=", mutation.get_script())
-
-	if mutation.has_method("wants_manual_attack_slot"):
-		if mutation.wants_manual_attack_slot():
-			print("Distant detected by wants_manual_attack_slot")
+	if mutation.has_method("wants_manual_attack_target"):
+		if mutation.wants_manual_attack_target():
 			return true
 
 	if mutation is Distant:
-		print("Distant detected by class")
 		return true
 
 	if mutation.resource_path.to_lower().contains("distant"):
-		print("Distant detected by resource path")
 		return true
 
 	return false
