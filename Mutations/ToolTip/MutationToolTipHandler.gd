@@ -46,7 +46,6 @@ func _process(_delta: float) -> void:
 		print("SHOW TOOLTIP: ", mutation.get_tooltip_name())
 
 	last_hovered_mutation = mutation
-
 	_show_tooltip(mutation)
 
 
@@ -127,22 +126,22 @@ func _get_hovered_mutation() -> Mutation:
 	if not is_instance_valid(card):
 		return null
 
-	var mutations := card.get_all_mutations()
-
-	var sprites: Array = []
-
-	for sprite in base_sigil_sprites:
-		sprites.append(sprite)
-
-	for sprite in additional_sigil_sprites:
-		sprites.append(sprite)
-
-	for i in sprites.size():
-		if i >= mutations.size():
+	for i in range(base_sigil_sprites.size()):
+		if i >= card.base_mutations.size():
 			continue
 
-		var sprite = sprites[i]
-		var mutation: Mutation = mutations[i]
+		var mutation: Mutation = card.base_mutations[i]
+		var sprite: Sprite2D = base_sigil_sprites[i]
+
+		if mutation != null and _is_mouse_over_sprite(sprite):
+			return mutation
+
+	for i in range(additional_sigil_sprites.size()):
+		if i >= card.additional_mutations.size():
+			continue
+
+		var mutation: Mutation = card.additional_mutations[i]
+		var sprite: Sprite2D = additional_sigil_sprites[i]
 
 		if mutation != null and _is_mouse_over_sprite(sprite):
 			return mutation
