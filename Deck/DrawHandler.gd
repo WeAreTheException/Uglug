@@ -57,23 +57,36 @@ func draw_player_card() -> void:
 		print("draw blocked: not draw phase")
 		return
 
+	if player_hand == null:
+		print("draw blocked: player_hand is null")
+		return
+
+	var amount := 1
+
+	if player_hand.has_method("get_required_draw_amount"):
+		amount = int(player_hand.get_required_draw_amount())
+
+	if amount <= 0:
+		print("draw blocked: amount <= 0")
+		return
+
 	var my_peer_id := int(GDSync.get_client_id())
 
 	if GDSync.is_host():
-		_host_resolve_draw(my_peer_id)
+		_host_resolve_draw(my_peer_id, amount)
 	else:
-		GDSync.call_func(request_draw_from_host, my_peer_id)
+		GDSync.call_func(request_draw_from_host, my_peer_id, amount)
 
 
-func request_draw_from_host(requesting_peer_id: int) -> void:
+func request_draw_from_host(requesting_peer_id: int, amount: int) -> void:
 	if not GDSync.is_host():
 		return
 
-	_host_resolve_draw(requesting_peer_id)
+	_host_resolve_draw(requesting_peer_id, amount)
 
 
-func _host_resolve_draw(drawer_peer_id: int) -> void:
-	_host_spawn_cards(drawer_peer_id, 1, commit_draw_remote)
+func _host_resolve_draw(drawer_peer_id: int, amount: int) -> void:
+	_host_spawn_cards(drawer_peer_id, amount, commit_draw_remote)
 
 
 func commit_draw_remote(
