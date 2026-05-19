@@ -6,6 +6,10 @@ class_name CombatManager
 @export var delay_between_attacks: float = 0.35
 @export var delay_between_sides: float = 0.6
 
+# Temporary Distant fix:
+# This gives the attacking player time to pick slots before the next card starts attacking.
+@export var distant_pick_time_per_target: float = 4.0
+
 var attack_round_running: bool = false
 
 
@@ -87,7 +91,30 @@ func _run_attack_side(owner_peer_id: int) -> void:
 		if tree == null:
 			return
 
-		await tree.create_timer(delay_between_attacks).timeout
+		var wait_time := delay_between_attacks
+		var distant_count := _get_distant_count(card)
+
+		if distant_count > 0:
+			wait_time += distant_pick_time_per_target * distant_count
+
+		await tree.create_timer(wait_time).timeout
+
+
+func _get_distant_count(card: Card) -> int:
+	if card == null:
+		return 0
+
+	var count := 0
+
+	for mutation in card.base_mutations:
+		if mutation != null and mutation.wants_manual_attack_target():
+			count += 1
+
+	for mutation in card.additional_mutations:
+		if mutation != null and mutation.wants_manual_attack_target():
+			count += 1
+
+	return count
 
 
 func _can_continue_combat() -> bool:
@@ -223,7 +250,7 @@ func commit_attack_remote(attacker_card_id: int) -> void:
 		print("remote attack blocked: attack_handler missing on ", attacker.card_name)
 		return
 
-	attacker.attack_handler.attack()
+	await attacker.attack_handler.attack()
 
 
 func find_card_by_id(card_id: int) -> Card:
