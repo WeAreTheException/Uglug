@@ -5,8 +5,10 @@ class_name HurtHandler
 
 var card: Card = null
 
+
 func _ready() -> void:
 	card = _find_card_parent()
+
 
 func take_damage(amount: int, attacker: Card = null) -> void:
 	if card == null:
@@ -20,16 +22,13 @@ func take_damage(amount: int, attacker: Card = null) -> void:
 	if card.current_health < 0:
 		card.current_health = 0
 
-	if card.stats != null:
-		card.stats.update_health(card.current_health)
-
 	if hurt_anim != null and hurt_anim.has_method("play_hurt"):
 		hurt_anim.play_hurt()
 
 	var mutations := card.get_all_mutations()
 
 	for mutation in mutations:
-		if mutation != null:
+		if mutation != null and mutation.has_method("on_damaged"):
 			mutation.on_damaged(card, attacker, amount)
 
 	if card.current_health <= 0:
@@ -37,6 +36,7 @@ func take_damage(amount: int, attacker: Card = null) -> void:
 			card.die_handler.die()
 		else:
 			card.kill()
+
 
 func _find_card_parent() -> Card:
 	var current := get_parent()
