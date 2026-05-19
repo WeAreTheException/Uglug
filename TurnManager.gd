@@ -7,6 +7,7 @@ signal turn_player_changed(client_id: int, phase_name: String)
 @export var phase_manager: PhaseManager
 @export var combat_manager: CombatManager
 @export var round_manager: RoundManager
+@export var game_start_draw_handler: GameStartDrawHandler
 
 var player_one_id: int = -1
 var player_two_id: int = -1
@@ -61,12 +62,10 @@ func receive_starting_players(p1: int, p2: int) -> void:
 		await get_tree().process_frame
 		await get_tree().process_frame
 
-		var game_start_draw_handler := get_node_or_null("../GameStartDrawHandler")
-
-		if game_start_draw_handler != null:
-			game_start_draw_handler.call("give_starting_cards", player_one_id, player_two_id)
-		else:
-			print("TurnManager blocked: GameStartDrawHandler not found")
+	if game_start_draw_handler != null:
+		game_start_draw_handler.give_starting_cards(player_one_id, player_two_id)
+	else:
+		print("TurnManager blocked: game_start_draw_handler is null")
 
 		start_place_phase()
 
