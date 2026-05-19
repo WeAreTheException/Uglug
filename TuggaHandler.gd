@@ -64,6 +64,7 @@ func _check_for_game_end() -> void:
 
 	if current_value >= max_value:
 		_end_game(_get_player_one_id())
+
 	elif current_value <= -max_value:
 		_end_game(_get_player_two_id())
 
@@ -88,9 +89,7 @@ func _show_screen(screen_scene: PackedScene) -> void:
 		print("end screen blocked: scene is null")
 		return
 
-	var screen := screen_scene.instantiate()
-
-	get_tree().current_scene.add_child(screen)
+	get_tree().change_scene_to_packed(screen_scene)
 
 
 func _get_player_one_id() -> int:
