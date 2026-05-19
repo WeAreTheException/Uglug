@@ -10,6 +10,8 @@
 [ext_resource type="Script" uid="uid://bfxl8a4iwbxde" path="res://PhaseLabel.gd" id="2_yxvsl"]
 [ext_resource type="Script" uid="uid://bneanu1h8dlxb" path="res://TurnManager.gd" id="3_npu2i"]
 [ext_resource type="Texture2D" uid="uid://bqvhbvonl6m57" path="res://References/maxresdefault.jpg" id="6_cpbwq"]
+[ext_resource type="PackedScene" uid="uid://ctpwjfpdouwp8" path="res://Win_Screen.tscn" id="6_xplwh"]
+[ext_resource type="PackedScene" uid="uid://cnd7d5ewb2p6i" path="res://Lose_Screen.tscn" id="7_husai"]
 [ext_resource type="Script" uid="uid://bg4foc8mrsyhd" path="res://Phase/AttackOrderSpriteHandler.gd" id="8_cymfb"]
 [ext_resource type="Texture2D" uid="uid://brsmr8tj8tbtg" path="res://Art/P2_AttackOrder.png" id="10_r8uo6"]
 [ext_resource type="Script" uid="uid://cftnkry62jh5d" path="res://SelectAnimation.gd" id="10_rs0lp"]
@@ -148,6 +150,8 @@ vertical_alignment = 1
 
 [node name="TuggaHandler" type="Node" parent="Handlers" unique_id=1116993693]
 script = ExtResource("14_oiy75")
+win_screen_scene = ExtResource("6_xplwh")
+lose_screen_scene = ExtResource("7_husai")
 
 [node name="TuggaUI" type="Sprite2D" parent="Handlers/TuggaHandler" unique_id=646403484 node_paths=PackedStringArray("tugga_handler", "player_one_slot_1", "player_one_slot_2", "player_one_slot_3", "player_one_slot_4", "player_one_slot_5", "player_two_slot_1", "player_two_slot_2", "player_two_slot_3", "player_two_slot_4", "player_two_slot_5")]
 script = ExtResource("18_ebxid")
