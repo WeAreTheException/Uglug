@@ -119,8 +119,9 @@ text = "1:00"
 horizontal_alignment = 1
 vertical_alignment = 2
 
-[node name="AttackFirstSlotLabels" type="Node" parent="Labels" unique_id=1548268673 node_paths=PackedStringArray("player_one_label", "player_two_label")]
+[node name="AttackFirstSlotLabels" type="Node" parent="Labels" unique_id=1548268673 node_paths=PackedStringArray("turn_manager", "player_one_label", "player_two_label")]
 script = ExtResource("2_ykjx8")
+turn_manager = NodePath("../../Managers/TurnManager")
 player_one_label = NodePath("P1Label")
 player_two_label = NodePath("P2Label")
 
