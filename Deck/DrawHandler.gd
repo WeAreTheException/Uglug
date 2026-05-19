@@ -23,11 +23,11 @@ var select_handler: SelectHandler = null
 
 var worker_union_buff_handler: WorkerUnionBuffHandler = null
 
+
 func _ready() -> void:
 	GDSync.expose_node(self)
 	GDSync.expose_func(request_draw_from_host)
 	GDSync.expose_func(commit_draw_remote)
-
 	GDSync.expose_func(request_spawn_cards_from_host)
 	GDSync.expose_func(commit_spawn_card_from_effect)
 
@@ -37,20 +37,22 @@ func _ready() -> void:
 
 
 func get_deck_type_name() -> String:
-	if deck_type == DeckType.WORKER:
-		return "WORKER"
-
-	if deck_type == DeckType.WARRIOR:
-		return "WARRIOR"
+	match deck_type:
+		DeckType.WORKER:
+			return "WORKER"
+		DeckType.WARRIOR:
+			return "WARRIOR"
 
 	return "UNKNOWN"
 
 
 func draw_player_card() -> void:
 	if phase_manager == null:
+		print("draw blocked: phase_manager is null")
 		return
 
 	if not phase_manager.is_draw_phase():
+		print("draw blocked: not draw phase")
 		return
 
 	var my_peer_id := int(GDSync.get_client_id())
@@ -69,27 +71,10 @@ func request_draw_from_host(requesting_peer_id: int) -> void:
 
 
 func _host_resolve_draw(drawer_peer_id: int) -> void:
-	var data := pick_card_data()
-
-	if data == null:
-		return
-
-	var card_id := DeckDrawHandler.next_card_id
-	DeckDrawHandler.next_card_id += 1
-
-	GDSync.call_func_all(
-		commit_draw_remote,
-		drawer_peer_id,
-		data.name,
-		card_id
-	)
+	_host_spawn_cards(drawer_peer_id, 1, commit_draw_remote)
 
 
-func commit_draw_remote(
-	drawer_peer_id: int,
-	card_name: String,
-	card_id: int
-) -> void:
+func commit_draw_remote(drawer_peer_id: int, card_name: String, card_id: int) -> void:
 	_commit_draw_local(drawer_peer_id, card_name, card_id)
 
 
@@ -100,11 +85,7 @@ func spawn_cards_from_effect(owner_peer_id: int, amount: int) -> void:
 	if GDSync.is_host():
 		_host_spawn_cards_from_effect(owner_peer_id, amount)
 	else:
-		GDSync.call_func(
-			request_spawn_cards_from_host,
-			owner_peer_id,
-			amount
-		)
+		GDSync.call_func(request_spawn_cards_from_host, owner_peer_id, amount)
 
 
 func request_spawn_cards_from_host(owner_peer_id: int, amount: int) -> void:
@@ -115,36 +96,33 @@ func request_spawn_cards_from_host(owner_peer_id: int, amount: int) -> void:
 
 
 func _host_spawn_cards_from_effect(owner_peer_id: int, amount: int) -> void:
+	_host_spawn_cards(owner_peer_id, amount, commit_spawn_card_from_effect)
+
+
+func _host_spawn_cards(owner_peer_id: int, amount: int, commit_func: Callable) -> void:
 	for i in range(amount):
 		var data := pick_card_data()
 
 		if data == null:
+			print("spawn blocked: no card data from ", get_deck_type_name(), " deck")
 			continue
 
 		var card_id := DeckDrawHandler.next_card_id
 		DeckDrawHandler.next_card_id += 1
 
 		GDSync.call_func_all(
-			commit_spawn_card_from_effect,
+			commit_func,
 			owner_peer_id,
 			data.name,
 			card_id
 		)
 
 
-func commit_spawn_card_from_effect(
-	owner_peer_id: int,
-	card_name: String,
-	card_id: int
-) -> void:
+func commit_spawn_card_from_effect(owner_peer_id: int, card_name: String, card_id: int) -> void:
 	_commit_draw_local(owner_peer_id, card_name, card_id)
 
 
-func _commit_draw_local(
-	drawer_peer_id: int,
-	card_name: String,
-	card_id: int
-) -> bool:
+func _commit_draw_local(drawer_peer_id: int, card_name: String, card_id: int) -> bool:
 	var target_hand: Node2D = player_hand
 	var new_card_owner: int = Card.Owner.PLAYER
 
@@ -169,39 +147,39 @@ func draw_specific_card_to_hand(
 	owning_peer_id: int
 ) -> bool:
 	if deck == null:
-		print("draw blocked: deck is null")
+		print("draw blocked: deck is null on ", get_deck_type_name())
 		return false
 
 	if target_hand == null:
-		print("draw blocked: target_hand is null")
+		print("draw blocked: target_hand is null on ", get_deck_type_name())
 		return false
 
 	if card_database == null:
-		print("draw blocked: card_database is null")
+		print("draw blocked: card_database is null on ", get_deck_type_name())
 		return false
 
 	if deck.card_scene == null:
-		print("draw blocked: deck.card_scene is null")
+		print("draw blocked: deck.card_scene is null on ", get_deck_type_name())
 		return false
 
 	if not target_hand.has_method("add_card_to_hand"):
-		print("draw blocked: target_hand missing add_card_to_hand")
+		print("draw blocked: target_hand missing add_card_to_hand on ", get_deck_type_name())
 		return false
 
 	if target_hand.has_method("is_hand_full") and target_hand.is_hand_full():
-		print("draw blocked: hand is full")
+		print("draw blocked: hand is full on ", get_deck_type_name())
 		return false
 
 	var data := get_card_data_by_name(card_name)
 
 	if data == null:
-		print("draw blocked: could not find card data named ", card_name)
+		print("draw blocked: could not find card data named ", card_name, " in ", get_deck_type_name())
 		return false
 
 	var new_card := deck.card_scene.instantiate() as Card
 
 	if new_card == null:
-		print("draw blocked: card_scene did not instantiate Card")
+		print("draw blocked: card_scene did not instantiate Card on ", get_deck_type_name())
 		return false
 
 	new_card.multiplayer_card_id = card_id
@@ -218,15 +196,13 @@ func draw_specific_card_to_hand(
 	target_hand.add_child(new_card)
 
 	var deck_root := get_parent() as Node2D
-
 	if deck_root != null:
 		new_card.global_position = deck_root.global_position
 
 	new_card.setup_card(data)
 
-	if deck_type == DeckType.WORKER:
-		if worker_union_buff_handler != null:
-			worker_union_buff_handler.try_apply_to_card(new_card)
+	if deck_type == DeckType.WORKER and worker_union_buff_handler != null:
+		worker_union_buff_handler.try_apply_to_card(new_card)
 
 	target_hand.add_card_to_hand(new_card, CARD_DRAW_SPEED)
 
@@ -254,11 +230,11 @@ func get_card_data_by_name(card_name: String) -> CardData:
 
 func pick_card_data() -> CardData:
 	if deck == null:
-		print("pick_card_data blocked: deck is null")
+		print("pick_card_data blocked: deck is null on ", get_deck_type_name())
 		return null
 
 	if not deck.has_cards():
-		print("pick_card_data blocked: deck is empty")
+		print("pick_card_data blocked: deck is empty on ", get_deck_type_name())
 		return null
 
 	return deck.draw_card_data()
