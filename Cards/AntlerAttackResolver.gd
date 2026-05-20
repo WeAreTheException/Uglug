@@ -21,9 +21,6 @@ func resolve() -> bool:
 	if card == null:
 		return false
 
-	if attack_handler == null:
-		return false
-
 	if executor == null:
 		return false
 
@@ -34,58 +31,44 @@ func resolve() -> bool:
 		print("Antler waiting for host synced attack")
 		return true
 
-	var lanes := get_antler_lanes()
+	var attack_plan := _build_attack_plan()
 
-	print("HOST SYNCING ANTLER LANES: ", lanes)
+	print("HOST SYNCING ANTLER PLAN: ", attack_plan)
 
-	GDSync.call_func_all(run_synced_antler_attack, lanes)
+	GDSync.call_func_all(run_synced_antler_attack, attack_plan)
 
 	return true
 
 
-func run_synced_antler_attack(lanes: Array) -> void:
+func run_synced_antler_attack(attack_plan: Array) -> void:
 	_refresh_refs()
 
 	if card == null:
 		return
 
-	if attack_handler == null:
-		return
-
 	if executor == null:
 		return
 
-	if card.current_slot == null:
-		return
+	print("RUN SYNCED ANTLER peer=", int(GDSync.get_client_id()), " owner=", card.owning_peer_id, " plan=", attack_plan)
 
-	var front_slot := card.current_slot.opposing_slot
-
-	if front_slot == null:
-		return
-
-	var root := _get_slots_root()
-
-	if root == null:
-		return
-
-	var enemy_slots := _get_slots_for_owner(root, front_slot.slot_owner)
-
-	print("RUN SYNCED ANTLER peer=", int(GDSync.get_client_id()), " owner=", card.owning_peer_id, " lanes=", lanes)
-
-	for lane in lanes:
-		var lane_id := int(lane)
-		var slot := _get_slot_by_lane(enemy_slots, lane_id)
-
-		if slot == null:
-			print("ANTLER synced lane missing: ", lane_id)
+	for entry in attack_plan:
+		if typeof(entry) != TYPE_DICTIONARY:
 			continue
 
-		var target := slot.current_card as Card
+		var is_direct := bool(entry.get("direct", false))
+		var lane_id := int(entry.get("lane_id", -1))
+		var target_card_id := int(entry.get("card_id", -1))
 
-		if target != null:
-			await executor.resolve_card_attack(target, attack_handler.attack_anim)
+		if is_direct:
+			var direct_slot := _find_target_slot_by_lane(lane_id)
+			await executor.resolve_direct_attack(direct_slot, attack_handler.attack_anim if attack_handler != null else null)
 		else:
-			await executor.resolve_direct_attack(slot, attack_handler.attack_anim)
+			var target_card := _find_card_by_multiplayer_id(target_card_id)
+
+			if target_card != null:
+				await executor.resolve_card_attack(target_card, attack_handler.attack_anim if attack_handler != null else null)
+			else:
+				print("ANTLER target card missing on this peer: ", target_card_id)
 
 		if delay_between_attacks > 0.0:
 			await get_tree().create_timer(delay_between_attacks).timeout
@@ -108,38 +91,68 @@ func has_antler() -> bool:
 	return false
 
 
-func get_antler_lanes() -> Array[int]:
-	var lanes: Array[int] = []
+func _build_attack_plan() -> Array:
+	var plan: Array = []
+
+	var slots := _get_ordered_antler_slots()
+
+	for slot in slots:
+		if slot == null:
+			continue
+
+		var target := slot.current_card as Card
+
+		var entry := {
+			"lane_id": slot.lane_id,
+			"direct": target == null,
+			"card_id": target.multiplayer_card_id if target != null else -1
+		}
+
+		plan.append(entry)
+
+	return plan
+
+
+func _get_ordered_antler_slots() -> Array[NewSlots]:
+	var slots: Array[NewSlots] = []
 
 	_refresh_refs()
 
 	if card == null:
-		return lanes
+		return slots
 
 	if card.current_slot == null:
-		return lanes
+		return slots
 
 	var front_slot := card.current_slot.opposing_slot
-
 	if front_slot == null:
-		return lanes
+		return slots
 
-	var lower_lane := front_slot.lane_id - 1
-	var higher_lane := front_slot.lane_id + 1
+	var enemy_slots := _get_slots_for_owner(_get_slots_root(), front_slot.slot_owner)
+
+	var lower_lane_slot := _get_slot_by_lane(enemy_slots, front_slot.lane_id - 1)
+	var higher_lane_slot := _get_slot_by_lane(enemy_slots, front_slot.lane_id + 1)
 
 	if _card_owner_is_player_one():
-		lanes.append(lower_lane)
-		lanes.append(higher_lane)
+		_add_slot(slots, lower_lane_slot)
+		_add_slot(slots, higher_lane_slot)
 	else:
-		lanes.append(higher_lane)
-		lanes.append(lower_lane)
+		_add_slot(slots, higher_lane_slot)
+		_add_slot(slots, lower_lane_slot)
 
-	print("ANTLER LANES owner peer=", card.owning_peer_id)
-	print("ANTLER LANES player one=", _get_player_one_id())
-	print("ANTLER LANES front lane=", front_slot.lane_id)
-	print("ANTLER LANES final=", lanes)
+	print("ANTLER PLAN owner peer=", card.owning_peer_id)
+	print("ANTLER PLAN player one=", _get_player_one_id())
+	print("ANTLER PLAN front lane=", front_slot.lane_id)
+	print("ANTLER PLAN final slots=", slots)
 
-	return lanes
+	return slots
+
+
+func _add_slot(slots: Array[NewSlots], slot: NewSlots) -> void:
+	if slot == null:
+		return
+
+	slots.append(slot)
 
 
 func _card_owner_is_player_one() -> bool:
@@ -158,6 +171,51 @@ func _get_player_one_id() -> int:
 		return -1
 
 	return turn_manager.player_one_id
+
+
+func _find_target_slot_by_lane(lane_id: int) -> NewSlots:
+	_refresh_refs()
+
+	if card == null:
+		return null
+
+	if card.current_slot == null:
+		return null
+
+	var front_slot := card.current_slot.opposing_slot
+	if front_slot == null:
+		return null
+
+	var root := _get_slots_root()
+	if root == null:
+		return null
+
+	var enemy_slots := _get_slots_for_owner(root, front_slot.slot_owner)
+
+	return _get_slot_by_lane(enemy_slots, lane_id)
+
+
+func _find_card_by_multiplayer_id(card_id: int) -> Card:
+	if card_id < 0:
+		return null
+
+	var tree := get_tree()
+
+	if tree == null:
+		return null
+
+	var cards := tree.get_nodes_in_group("cards")
+
+	for node in cards:
+		var found_card := node as Card
+
+		if found_card == null:
+			continue
+
+		if found_card.multiplayer_card_id == card_id:
+			return found_card
+
+	return null
 
 
 func _get_slot_by_lane(slots: Array[NewSlots], lane_id: int) -> NewSlots:
@@ -184,7 +242,12 @@ func _get_slots_root() -> Node:
 
 func _get_slots_for_owner(root: Node, wanted_owner: NewSlots.SlotOwner) -> Array[NewSlots]:
 	var slots: Array[NewSlots] = []
+
+	if root == null:
+		return slots
+
 	_collect_slots_for_owner(root, wanted_owner, slots)
+
 	return slots
 
 
