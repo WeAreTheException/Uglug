@@ -87,11 +87,11 @@ func _get_ordered_antler_slots_with_offsets() -> Array:
 	var right_slot := _get_adjacent_slot_from_pair(front_slot, 1)
 
 	if _card_owner_is_player_one():
-		_add_slot_entry(result, left_slot, -1)
 		_add_slot_entry(result, right_slot, 1)
+		_add_slot_entry(result, left_slot, -1)
 	else:
-		_add_slot_entry(result, right_slot, 1)
 		_add_slot_entry(result, left_slot, -1)
+		_add_slot_entry(result, right_slot, 1)
 
 	print("ANTLER owner peer=", card.owning_peer_id)
 	print("ANTLER player one=", _get_player_one_id())
