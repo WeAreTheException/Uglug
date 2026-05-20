@@ -15,7 +15,8 @@ func _ready() -> void:
 		distant_target_picker = _find_distant_target_picker()
 
 	if antler_resolver == null:
-		antler_resolver = get_node_or_null("AntlerAttackResolver") as AntlerAttackResolver
+		antler_resolver = card.get_node_or_null("AntlerAttackResolver") as AntlerAttackResolver
+	print("AttackHandler antler_resolver = ", antler_resolver)
 
 
 func attack() -> void:

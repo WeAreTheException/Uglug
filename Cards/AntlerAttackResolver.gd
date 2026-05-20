@@ -205,11 +205,8 @@ func _find_closest_slot_right_of(center_slot: NewSlots, slots: Array[NewSlots]) 
 
 
 func _refresh_card() -> void:
-	if card != null:
-		return
+	if card == null:
+		card = get_parent() as Card
 
-	if attack_handler == null:
-		attack_handler = get_parent() as AttackHandler
-
-	if attack_handler != null:
-		card = attack_handler.card
+	if attack_handler == null and card != null:
+		attack_handler = card.attack_handler
