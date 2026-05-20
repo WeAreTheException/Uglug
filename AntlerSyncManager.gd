@@ -39,10 +39,10 @@ func run_antler_attack(attacker_card_id: int, attack_plan: Array) -> void:
 
 		var is_direct := bool(entry.get("direct", false))
 		var target_card_id := int(entry.get("card_id", -1))
-		var lane_id := int(entry.get("lane_id", -1))
+		var offset := int(entry.get("offset", 0))
 
 		if is_direct:
-			var direct_slot := _find_target_slot_for_attacker(attacker, lane_id)
+			var direct_slot := _find_direct_slot_by_pair_offset(attacker, offset)
 			await executor.resolve_direct_attack(direct_slot, _get_attack_anim(attacker))
 		else:
 			var target := _find_card_by_id(target_card_id)
@@ -56,7 +56,7 @@ func run_antler_attack(attacker_card_id: int, attack_plan: Array) -> void:
 			await get_tree().create_timer(delay_between_attacks).timeout
 
 
-func _find_target_slot_for_attacker(attacker: Card, lane_id: int) -> NewSlots:
+func _find_direct_slot_by_pair_offset(attacker: Card, offset: int) -> NewSlots:
 	if attacker == null:
 		return null
 
@@ -64,23 +64,42 @@ func _find_target_slot_for_attacker(attacker: Card, lane_id: int) -> NewSlots:
 		return null
 
 	var front_slot := attacker.current_slot.opposing_slot
-
 	if front_slot == null:
 		return null
 
-	var root := _get_slots_root(attacker)
-
-	if root == null:
+	var front_pair := front_slot.get_parent()
+	if front_pair == null:
 		return null
 
-	var enemy_slots := _get_slots_for_owner(root, front_slot.slot_owner)
+	var pairs_root := front_pair.get_parent()
+	if pairs_root == null:
+		return null
 
-	for slot in enemy_slots:
-		if slot == null:
-			continue
+	var pairs := pairs_root.get_children()
+	var front_index := pairs.find(front_pair)
 
-		if slot.lane_id == lane_id:
-			return slot
+	if front_index == -1:
+		return null
+
+	var target_index := front_index + offset
+
+	if target_index < 0 or target_index >= pairs.size():
+		return null
+
+	var target_pair := pairs[target_index]
+	return _get_slot_in_pair_for_owner(target_pair, front_slot.slot_owner)
+
+
+func _get_slot_in_pair_for_owner(pair_node: Node, wanted_owner: NewSlots.SlotOwner) -> NewSlots:
+	if pair_node == null:
+		return null
+
+	for child in pair_node.get_children():
+		var slot := child as NewSlots
+
+		if slot != null:
+			if slot.slot_owner == wanted_owner:
+				return slot
 
 	return null
 
@@ -111,37 +130,3 @@ func _find_card_by_id(card_id: int) -> Card:
 			return found
 
 	return null
-
-
-func _get_slots_root(card: Card) -> Node:
-	if card != null:
-		if card.combat_manager != null:
-			if card.combat_manager.slots_root != null:
-				return card.combat_manager.slots_root
-
-	return get_tree().current_scene
-
-
-func _get_slots_for_owner(root: Node, wanted_owner: NewSlots.SlotOwner) -> Array[NewSlots]:
-	var slots: Array[NewSlots] = []
-
-	if root == null:
-		return slots
-
-	_collect_slots_for_owner(root, wanted_owner, slots)
-
-	return slots
-
-
-func _collect_slots_for_owner(node: Node, wanted_owner: NewSlots.SlotOwner, found: Array[NewSlots]) -> void:
-	if node == null:
-		return
-
-	var slot := node as NewSlots
-
-	if slot != null:
-		if slot.slot_owner == wanted_owner:
-			found.append(slot)
-
-	for child in node.get_children():
-		_collect_slots_for_owner(child, wanted_owner, found)

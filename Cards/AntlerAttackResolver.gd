@@ -18,13 +18,11 @@ func resolve() -> bool:
 		return true
 
 	var manager := _get_sync_manager()
-
 	if manager == null:
 		print("ANTLER blocked: AntlerSyncManager missing")
 		return true
 
 	var attack_plan := _build_attack_plan()
-
 	manager.sync_antler_attack(card.multiplayer_card_id, attack_plan)
 
 	return true
@@ -49,71 +47,109 @@ func has_antler() -> bool:
 
 func _build_attack_plan() -> Array:
 	var plan: Array = []
-	var slots := _get_ordered_antler_slots()
 
-	for slot in slots:
+	var entries := _get_ordered_antler_slots_with_offsets()
+
+	for entry in entries:
+		var slot := entry["slot"] as NewSlots
+		var offset := int(entry["offset"])
+
 		if slot == null:
 			continue
 
 		var target := slot.current_card as Card
 
-		var entry := {
-			"lane_id": slot.lane_id,
+		plan.append({
+			"offset": offset,
 			"direct": target == null,
 			"card_id": target.multiplayer_card_id if target != null else -1
-		}
-
-		plan.append(entry)
+		})
 
 	print("ANTLER ATTACK PLAN: ", plan)
 
 	return plan
 
 
-func _get_ordered_antler_slots() -> Array[NewSlots]:
-	var slots: Array[NewSlots] = []
+func _get_ordered_antler_slots_with_offsets() -> Array:
+	var result: Array = []
 
 	if card == null:
-		return slots
+		return result
 
 	if card.current_slot == null:
-		return slots
+		return result
 
 	var front_slot := card.current_slot.opposing_slot
-
 	if front_slot == null:
-		return slots
+		return result
 
-	var root := _get_slots_root()
-
-	if root == null:
-		return slots
-
-	var enemy_slots := _get_slots_for_owner(root, front_slot.slot_owner)
-
-	var lower_lane_slot := _get_slot_by_lane(enemy_slots, front_slot.lane_id - 1)
-	var higher_lane_slot := _get_slot_by_lane(enemy_slots, front_slot.lane_id + 1)
+	var left_slot := _get_adjacent_slot_from_pair(front_slot, -1)
+	var right_slot := _get_adjacent_slot_from_pair(front_slot, 1)
 
 	if _card_owner_is_player_one():
-		_add_slot(slots, lower_lane_slot)
-		_add_slot(slots, higher_lane_slot)
+		_add_slot_entry(result, left_slot, -1)
+		_add_slot_entry(result, right_slot, 1)
 	else:
-		_add_slot(slots, higher_lane_slot)
-		_add_slot(slots, lower_lane_slot)
+		_add_slot_entry(result, right_slot, 1)
+		_add_slot_entry(result, left_slot, -1)
 
 	print("ANTLER owner peer=", card.owning_peer_id)
 	print("ANTLER player one=", _get_player_one_id())
-	print("ANTLER front lane=", front_slot.lane_id)
-	print("ANTLER ordered slots=", slots)
+	print("ANTLER front slot=", front_slot)
+	print("ANTLER ordered pair slots=", result)
 
-	return slots
+	return result
 
 
-func _add_slot(slots: Array[NewSlots], slot: NewSlots) -> void:
+func _get_adjacent_slot_from_pair(front_slot: NewSlots, offset: int) -> NewSlots:
+	if front_slot == null:
+		return null
+
+	var front_pair := front_slot.get_parent()
+	if front_pair == null:
+		return null
+
+	var pairs_root := front_pair.get_parent()
+	if pairs_root == null:
+		return null
+
+	var pairs := pairs_root.get_children()
+	var front_index := pairs.find(front_pair)
+
+	if front_index == -1:
+		return null
+
+	var target_index := front_index + offset
+
+	if target_index < 0 or target_index >= pairs.size():
+		return null
+
+	var target_pair := pairs[target_index]
+	return _get_slot_in_pair_for_owner(target_pair, front_slot.slot_owner)
+
+
+func _get_slot_in_pair_for_owner(pair_node: Node, wanted_owner: NewSlots.SlotOwner) -> NewSlots:
+	if pair_node == null:
+		return null
+
+	for child in pair_node.get_children():
+		var slot := child as NewSlots
+
+		if slot != null:
+			if slot.slot_owner == wanted_owner:
+				return slot
+
+	return null
+
+
+func _add_slot_entry(result: Array, slot: NewSlots, offset: int) -> void:
 	if slot == null:
 		return
 
-	slots.append(slot)
+	result.append({
+		"slot": slot,
+		"offset": offset
+	})
 
 
 func _card_owner_is_player_one() -> bool:
@@ -122,12 +158,10 @@ func _card_owner_is_player_one() -> bool:
 
 func _get_player_one_id() -> int:
 	var tree := get_tree()
-
 	if tree == null:
 		return -1
 
 	var turn_manager := tree.get_first_node_in_group("turn_manager") as TurnManager
-
 	if turn_manager == null:
 		return -1
 
@@ -136,56 +170,10 @@ func _get_player_one_id() -> int:
 
 func _get_sync_manager() -> AntlerSyncManager:
 	var tree := get_tree()
-
 	if tree == null:
 		return null
 
 	return tree.get_first_node_in_group("antler_sync_manager") as AntlerSyncManager
-
-
-func _get_slot_by_lane(slots: Array[NewSlots], lane_id: int) -> NewSlots:
-	for slot in slots:
-		if slot == null:
-			continue
-
-		if slot.lane_id == lane_id:
-			return slot
-
-	return null
-
-
-func _get_slots_root() -> Node:
-	if card != null:
-		if card.combat_manager != null:
-			if card.combat_manager.slots_root != null:
-				return card.combat_manager.slots_root
-
-	return get_tree().current_scene
-
-
-func _get_slots_for_owner(root: Node, wanted_owner: NewSlots.SlotOwner) -> Array[NewSlots]:
-	var slots: Array[NewSlots] = []
-
-	if root == null:
-		return slots
-
-	_collect_slots_for_owner(root, wanted_owner, slots)
-
-	return slots
-
-
-func _collect_slots_for_owner(node: Node, wanted_owner: NewSlots.SlotOwner, found: Array[NewSlots]) -> void:
-	if node == null:
-		return
-
-	var slot := node as NewSlots
-
-	if slot != null:
-		if slot.slot_owner == wanted_owner:
-			found.append(slot)
-
-	for child in node.get_children():
-		_collect_slots_for_owner(child, wanted_owner, found)
 
 
 func _refresh_refs() -> void:
