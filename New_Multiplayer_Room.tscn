@@ -212,8 +212,10 @@ texture = ExtResource("20_7p785")
 position = Vector2(1264.5, 56.5)
 texture = ExtResource("20_7p785")
 
-[node name="AttackOrderSpriteHandler" type="Node" parent="Handlers" unique_id=345904283]
+[node name="AttackOrderSpriteHandler" type="Node" parent="Handlers" unique_id=345904283 node_paths=PackedStringArray("player_one_sprite", "player_two_sprite")]
 script = ExtResource("8_cymfb")
+player_one_sprite = NodePath("P1AttackOrder")
+player_two_sprite = NodePath("P2AttackOrder")
 
 [node name="P2AttackOrder" type="Sprite2D" parent="Handlers/AttackOrderSpriteHandler" unique_id=1399297561]
 position = Vector2(960, 448)
