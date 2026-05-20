@@ -7,30 +7,6 @@ var attack_handler: AttackHandler = null
 var card: Card = null
 
 
-func _ready() -> void:
-	attack_handler = get_parent() as AttackHandler
-
-	if attack_handler != null:
-		card = attack_handler.card
-
-
-func has_antler() -> bool:
-	_refresh_card()
-
-	if card == null:
-		return false
-
-	for mutation in card.base_mutations:
-		if mutation is Antler:
-			return true
-
-	for mutation in card.additional_mutations:
-		if mutation is Antler:
-			return true
-
-	return false
-
-
 func resolve() -> bool:
 	_refresh_card()
 
@@ -59,6 +35,23 @@ func resolve() -> bool:
 	return true
 
 
+func has_antler() -> bool:
+	_refresh_card()
+
+	if card == null:
+		return false
+
+	for mutation in card.base_mutations:
+		if mutation is Antler:
+			return true
+
+	for mutation in card.additional_mutations:
+		if mutation is Antler:
+			return true
+
+	return false
+
+
 func get_antler_slots() -> Array[NewSlots]:
 	var slots: Array[NewSlots] = []
 
@@ -71,17 +64,19 @@ func get_antler_slots() -> Array[NewSlots]:
 		return slots
 
 	var front_slot := card.current_slot.opposing_slot
+
 	if front_slot == null:
 		return slots
 
 	var root := _get_slots_root()
+
 	if root == null:
 		return slots
 
 	var enemy_slots := _get_slots_for_owner(root, front_slot.slot_owner)
 
-	var left_slot := _find_closest_slot_left_of(front_slot, enemy_slots)
-	var right_slot := _find_closest_slot_right_of(front_slot, enemy_slots)
+	var left_slot := _get_slot_by_lane(enemy_slots, front_slot.lane_id - 1)
+	var right_slot := _get_slot_by_lane(enemy_slots, front_slot.lane_id + 1)
 
 	if _card_owner_attacks_left_to_right():
 		if left_slot != null:
@@ -96,9 +91,10 @@ func get_antler_slots() -> Array[NewSlots]:
 		if left_slot != null:
 			slots.append(left_slot)
 
-	print("ANTLER RESOLVER front slot=", front_slot)
-	print("ANTLER RESOLVER left slot=", left_slot)
-	print("ANTLER RESOLVER right slot=", right_slot)
+	print("ANTLER RESOLVER owner peer=", card.owning_peer_id)
+	print("ANTLER RESOLVER front lane=", front_slot.lane_id)
+	print("ANTLER RESOLVER left lane=", left_slot.lane_id if left_slot != null else "null")
+	print("ANTLER RESOLVER right lane=", right_slot.lane_id if right_slot != null else "null")
 	print("ANTLER RESOLVER final slots=", slots)
 
 	return slots
@@ -111,14 +107,27 @@ func _card_owner_attacks_left_to_right() -> bool:
 		return true
 
 	var tree := get_tree()
+
 	if tree == null:
 		return true
 
 	var turn_manager := tree.get_first_node_in_group("turn_manager") as TurnManager
+
 	if turn_manager == null:
-		return card.current_slot.slot_owner == NewSlots.SlotOwner.PLAYER
+		return true
 
 	return card.owning_peer_id == turn_manager.player_one_id
+
+
+func _get_slot_by_lane(slots: Array[NewSlots], lane_id: int) -> NewSlots:
+	for slot in slots:
+		if slot == null:
+			continue
+
+		if slot.lane_id == lane_id:
+			return slot
+
+	return null
 
 
 func _get_slots_root() -> Node:
@@ -150,58 +159,6 @@ func _collect_slots_for_owner(node: Node, wanted_owner: NewSlots.SlotOwner, foun
 
 	for child in node.get_children():
 		_collect_slots_for_owner(child, wanted_owner, found)
-
-
-func _find_closest_slot_left_of(center_slot: NewSlots, slots: Array[NewSlots]) -> NewSlots:
-	var closest: NewSlots = null
-	var closest_distance: float = INF
-	var center_x: float = center_slot.global_position.x
-
-	for slot in slots:
-		if slot == null:
-			continue
-
-		if slot == center_slot:
-			continue
-
-		var slot_x: float = slot.global_position.x
-
-		if slot_x >= center_x:
-			continue
-
-		var distance: float = abs(center_x - slot_x)
-
-		if distance < closest_distance:
-			closest_distance = distance
-			closest = slot
-
-	return closest
-
-
-func _find_closest_slot_right_of(center_slot: NewSlots, slots: Array[NewSlots]) -> NewSlots:
-	var closest: NewSlots = null
-	var closest_distance: float = INF
-	var center_x: float = center_slot.global_position.x
-
-	for slot in slots:
-		if slot == null:
-			continue
-
-		if slot == center_slot:
-			continue
-
-		var slot_x: float = slot.global_position.x
-
-		if slot_x <= center_x:
-			continue
-
-		var distance: float = abs(center_x - slot_x)
-
-		if distance < closest_distance:
-			closest_distance = distance
-			closest = slot
-
-	return closest
 
 
 func _refresh_card() -> void:
