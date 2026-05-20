@@ -47,7 +47,6 @@ func has_antler() -> bool:
 
 func _build_attack_plan() -> Array:
 	var plan: Array = []
-
 	var entries := _get_ordered_antler_slots_with_offsets()
 
 	for entry in entries:
@@ -83,15 +82,17 @@ func _get_ordered_antler_slots_with_offsets() -> Array:
 	if front_slot == null:
 		return result
 
-	var left_slot := _get_adjacent_slot_from_pair(front_slot, -1)
-	var right_slot := _get_adjacent_slot_from_pair(front_slot, 1)
+	var lower_pair_slot := _get_adjacent_slot_from_pair(front_slot, -1)
+	var higher_pair_slot := _get_adjacent_slot_from_pair(front_slot, 1)
 
+	# P1/host attack order: lower pair -> higher pair.
+	# P2/client attack order: higher pair -> lower pair.
 	if _card_owner_is_player_one():
-		_add_slot_entry(result, right_slot, 1)
-		_add_slot_entry(result, left_slot, -1)
+		_add_slot_entry(result, lower_pair_slot, -1)
+		_add_slot_entry(result, higher_pair_slot, 1)
 	else:
-		_add_slot_entry(result, left_slot, -1)
-		_add_slot_entry(result, right_slot, 1)
+		_add_slot_entry(result, higher_pair_slot, 1)
+		_add_slot_entry(result, lower_pair_slot, -1)
 
 	print("ANTLER owner peer=", card.owning_peer_id)
 	print("ANTLER player one=", _get_player_one_id())
