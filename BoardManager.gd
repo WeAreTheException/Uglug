@@ -5,6 +5,9 @@ class_name BoardManager
 @export var card_scene: PackedScene
 @export var phase_manager: PhaseManager
 
+@export var total_lanes: int = 4
+
+
 func _ready() -> void:
 	GDSync.expose_node(self)
 
@@ -15,6 +18,7 @@ func _ready() -> void:
 	GDSync.expose_func(commit_discard_card)
 
 	print("BoardManager ready / GDSync host = ", GDSync.is_host())
+
 
 func request_place_card(card: Card, slot: NewSlots) -> void:
 	print("BOARD request_place_card")
@@ -53,6 +57,7 @@ func request_place_card(card: Card, slot: NewSlots) -> void:
 		print("BOARD sending request to host")
 		GDSync.call_func(request_place_card_from_client, snapshot)
 
+
 func request_place_card_from_client(snapshot: Dictionary) -> void:
 	print("BOARD host received client place request: ", snapshot)
 
@@ -61,6 +66,7 @@ func request_place_card_from_client(snapshot: Dictionary) -> void:
 		return
 
 	host_resolve_place_card(snapshot)
+
 
 func host_resolve_place_card(snapshot: Dictionary) -> void:
 	print("BOARD host_resolve_place_card: ", snapshot)
@@ -73,6 +79,7 @@ func host_resolve_place_card(snapshot: Dictionary) -> void:
 	var lane_id: int = int(snapshot["lane_id"])
 
 	var target_slot := find_visual_slot_for_owner(owner_peer_id, lane_id)
+
 	if target_slot == null:
 		print("Host place blocked: target slot not found")
 		return
@@ -85,9 +92,11 @@ func host_resolve_place_card(snapshot: Dictionary) -> void:
 
 	GDSync.call_func_all(commit_place_card, snapshot)
 
+
 func commit_place_card(snapshot: Dictionary) -> void:
 	print("BOARD commit_place_card received: ", snapshot)
 	apply_place_card(snapshot)
+
 
 func apply_place_card(snapshot: Dictionary) -> void:
 	var card_id: int = int(snapshot["card_id"])
@@ -118,9 +127,10 @@ func apply_place_card(snapshot: Dictionary) -> void:
 
 	apply_snapshot_to_card(card, snapshot)
 
-	print("BOARD placing card ", card.card_name, " into lane ", lane_id)
+	print("BOARD placing card ", card.card_name, " into real lane ", lane_id, " visual lane ", target_slot.lane_id)
 
 	card.place_into_slot(target_slot)
+
 
 func request_discard_card(card: Card) -> void:
 	if card == null:
@@ -145,11 +155,13 @@ func request_discard_card(card: Card) -> void:
 	else:
 		GDSync.call_func(request_discard_card_from_client, snapshot)
 
+
 func request_discard_card_from_client(snapshot: Dictionary) -> void:
 	if not GDSync.is_host():
 		return
 
 	host_resolve_discard_card(snapshot)
+
 
 func host_resolve_discard_card(snapshot: Dictionary) -> void:
 	var card_id: int = int(snapshot["card_id"])
@@ -167,6 +179,7 @@ func host_resolve_discard_card(snapshot: Dictionary) -> void:
 
 	GDSync.call_func_all(commit_discard_card, snapshot)
 
+
 func commit_discard_card(snapshot: Dictionary) -> void:
 	var card_id: int = int(snapshot["card_id"])
 	var owner_peer_id: int = int(snapshot["owner_peer_id"])
@@ -178,6 +191,7 @@ func commit_discard_card(snapshot: Dictionary) -> void:
 		return
 
 	card.discard()
+
 
 func make_card_snapshot(card: Card, lane_id: int) -> Dictionary:
 	return {
@@ -191,12 +205,14 @@ func make_card_snapshot(card: Card, lane_id: int) -> Dictionary:
 		"lane_id": lane_id
 	}
 
+
 func spawn_card_from_snapshot(snapshot: Dictionary) -> Card:
 	if card_scene == null:
 		print("spawn_card_from_snapshot failed: card_scene is null")
 		return null
 
 	var new_card := card_scene.instantiate() as Card
+
 	if new_card == null:
 		print("spawn_card_from_snapshot failed: scene is not Card")
 		return null
@@ -207,6 +223,7 @@ func spawn_card_from_snapshot(snapshot: Dictionary) -> Card:
 	new_card.player_hand = null
 
 	return new_card
+
 
 func apply_snapshot_to_card(card: Card, snapshot: Dictionary) -> void:
 	card.multiplayer_card_id = int(snapshot["card_id"])
@@ -224,12 +241,22 @@ func apply_snapshot_to_card(card: Card, snapshot: Dictionary) -> void:
 
 
 func find_visual_slot_for_owner(owner_peer_id: int, lane_id: int) -> NewSlots:
+	var local_peer_id := int(GDSync.get_client_id())
+
 	var wanted_owner := NewSlots.SlotOwner.OPPONENT
+	var visual_lane_id := lane_id
 
-	if int(GDSync.get_client_id()) == owner_peer_id:
+	if local_peer_id == owner_peer_id:
 		wanted_owner = NewSlots.SlotOwner.PLAYER
+	else:
+		visual_lane_id = get_mirrored_lane_id(lane_id)
 
-	return find_slot_by_lane_and_owner(slots_root, lane_id, wanted_owner)
+	return find_slot_by_lane_and_owner(slots_root, visual_lane_id, wanted_owner)
+
+
+func get_mirrored_lane_id(lane_id: int) -> int:
+	return (total_lanes + 1) - lane_id
+
 
 func find_slot_by_lane_and_owner(
 	node: Node,
@@ -240,23 +267,28 @@ func find_slot_by_lane_and_owner(
 		return null
 
 	var slot := node as NewSlots
+
 	if slot != null:
 		if slot.lane_id == lane_id and slot.slot_owner == slot_owner:
 			return slot
 
 	for child in node.get_children():
 		var found := find_slot_by_lane_and_owner(child, lane_id, slot_owner)
+
 		if found != null:
 			return found
 
 	return null
 
+
 func find_card_by_multiplayer_data(card_id: int, owner_peer_id: int) -> Card:
 	var scene := get_tree().current_scene
+
 	if scene == null:
 		return null
 
 	return find_card_by_multiplayer_data_recursive(scene, card_id, owner_peer_id)
+
 
 func find_card_by_multiplayer_data_recursive(
 	node: Node,
@@ -271,10 +303,12 @@ func find_card_by_multiplayer_data_recursive(
 
 	for child in node.get_children():
 		var found := find_card_by_multiplayer_data_recursive(child, card_id, owner_peer_id)
+
 		if found != null:
 			return found
 
 	return null
+
 
 func request_add_mutation_to_card(card: Card, mutation: Mutation) -> void:
 	if card == null:
@@ -298,11 +332,13 @@ func request_add_mutation_to_card(card: Card, mutation: Mutation) -> void:
 	else:
 		GDSync.call_func(request_add_mutation_from_client, snapshot)
 
+
 func request_add_mutation_from_client(snapshot: Dictionary) -> void:
 	if not GDSync.is_host():
 		return
 
 	host_resolve_add_mutation(snapshot)
+
 
 func host_resolve_add_mutation(snapshot: Dictionary) -> void:
 	var card_id: int = int(snapshot["card_id"])
@@ -315,6 +351,7 @@ func host_resolve_add_mutation(snapshot: Dictionary) -> void:
 		return
 
 	GDSync.call_func_all(commit_add_mutation_to_card, snapshot)
+
 
 func commit_add_mutation_to_card(snapshot: Dictionary) -> void:
 	var card_id: int = int(snapshot["card_id"])
