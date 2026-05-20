@@ -16,6 +16,12 @@ func resolve() -> bool:
 	if not has_antler():
 		return false
 
+	var my_peer_id := int(GDSync.get_client_id())
+
+	if my_peer_id != card.owning_peer_id:
+		print("Antler skipped on non-owner peer")
+		return true
+
 	var slots := get_antler_slots()
 
 	for slot in slots:
