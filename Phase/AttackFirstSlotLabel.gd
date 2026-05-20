@@ -3,6 +3,9 @@ class_name AttackFirstSlotLabels
 
 @export var turn_manager: Node
 
+# These are local-screen labels:
+# player_one_label = my side label
+# player_two_label = opponent side label
 @export var player_one_label: Label
 @export var player_two_label: Label
 
@@ -31,6 +34,7 @@ func _setup() -> void:
 	var current_first_id := int(turn_manager.get("current_first_id"))
 
 	print("AttackFirstSlotLabels ready")
+	print("local_id = ", int(GDSync.get_client_id()))
 	print("player_one_id = ", int(turn_manager.get("player_one_id")))
 	print("player_two_id = ", int(turn_manager.get("player_two_id")))
 	print("current_first_id = ", current_first_id)
@@ -38,28 +42,22 @@ func _setup() -> void:
 	show_attacking_first(current_first_id)
 
 
-func show_attacking_first(client_id: int) -> void:
+func show_attacking_first(attacking_first_id: int) -> void:
 	if turn_manager == null:
 		return
 
-	var player_one_id := int(turn_manager.get("player_one_id"))
-	var player_two_id := int(turn_manager.get("player_two_id"))
+	var local_id := int(GDSync.get_client_id())
 
-	print("show attacking first: ", client_id)
+	print("show attacking first: ", attacking_first_id, " local_id: ", local_id)
 
-	if client_id == player_one_id:
+	if attacking_first_id == local_id:
 		show_player_one()
-		return
-
-	if client_id == player_two_id:
+	else:
 		show_player_two()
-		return
-
-	hide_both()
 
 
 func show_player_one() -> void:
-	print("SHOW PLAYER ONE ATTACK FIRST LABEL")
+	print("SHOW LOCAL PLAYER ATTACK FIRST LABEL")
 
 	if player_one_label != null:
 		player_one_label.visible = true
@@ -74,7 +72,7 @@ func show_player_one() -> void:
 
 
 func show_player_two() -> void:
-	print("SHOW PLAYER TWO ATTACK FIRST LABEL")
+	print("SHOW OPPONENT ATTACK FIRST LABEL")
 
 	if player_one_label != null:
 		player_one_label.visible = false
