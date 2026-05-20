@@ -52,10 +52,6 @@ func attack() -> void:
 
 
 func _resolve_attack_from_slot(starting_slot: NewSlots) -> void:
-	if _has_antler_ordered_slots():
-		await _resolve_antler_ordered_attack()
-		return
-
 	var opposing_card: Card = null
 
 	if starting_slot != null:
