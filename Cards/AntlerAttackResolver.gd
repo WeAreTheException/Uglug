@@ -88,8 +88,8 @@ func _get_ordered_antler_slots_with_offsets() -> Array:
 	# P1/host attack order: lower pair -> higher pair.
 	# P2/client attack order: higher pair -> lower pair.
 	if _card_owner_is_player_one():
-		_add_slot_entry(result, lower_pair_slot, -1)
 		_add_slot_entry(result, higher_pair_slot, 1)
+		_add_slot_entry(result, lower_pair_slot, -1)
 	else:
 		_add_slot_entry(result, higher_pair_slot, 1)
 		_add_slot_entry(result, lower_pair_slot, -1)
