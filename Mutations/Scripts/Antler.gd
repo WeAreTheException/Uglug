@@ -79,10 +79,15 @@ func _card_attacks_left_to_right(card: Card) -> bool:
 	if card == null:
 		return true
 
-	if card.current_slot == null:
+	var tree := card.get_tree()
+	if tree == null:
 		return true
 
-	return card.current_slot.slot_owner == NewSlots.SlotOwner.PLAYER
+	var turn_manager := tree.get_first_node_in_group("turn_manager") as TurnManager
+	if turn_manager == null:
+		return true
+
+	return card.owning_peer_id == turn_manager.player_one_id
 
 
 func _find_slot_by_lane(slots: Array[NewSlots], wanted_lane_id: int) -> NewSlots:
