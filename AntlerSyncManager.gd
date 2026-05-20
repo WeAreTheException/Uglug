@@ -33,7 +33,12 @@ func run_antler_attack(attacker_card_id: int, attack_plan: Array) -> void:
 		print("ANTLER SYNC blocked: executor missing on attacker ", attacker_card_id)
 		return
 
-	for entry in attack_plan:
+	var playback_plan := attack_plan.duplicate()
+
+	if not GDSync.is_host():
+		playback_plan.reverse()
+
+	for entry in playback_plan:
 		if typeof(entry) != TYPE_DICTIONARY:
 			continue
 
