@@ -98,29 +98,6 @@ func _resolve_attack_from_slot(starting_slot: NewSlots) -> void:
 		await _resolve_card_attack(target)
 
 
-func resolve_card_attack_from_external(target: Card) -> void:
-	await _resolve_card_attack(target)
-
-
-func resolve_direct_attack_from_external(slot: NewSlots) -> void:
-	await _resolve_direct_attack(slot)
-
-
-func play_attack_visual_from_external(target: Card) -> void:
-	if attack_anim != null and attack_anim.has_method("play_attack"):
-		attack_anim.play_attack(target)
-
-	if target != null:
-		_flash_slot(target.current_slot)
-
-
-func play_direct_attack_visual_from_external(slot: NewSlots) -> void:
-	if attack_anim != null and attack_anim.has_method("play_attack"):
-		attack_anim.play_attack(null)
-
-	_flash_slot(slot)
-
-
 func _resolve_card_attack(target: Card) -> void:
 	if target == null:
 		return
@@ -155,6 +132,7 @@ func _resolve_direct_attack(slot: NewSlots) -> void:
 	_flash_slot(slot)
 
 	var tree := get_tree()
+
 	if tree == null:
 		return
 
@@ -189,14 +167,10 @@ func _get_distant_count() -> int:
 
 
 func _flash_slot(slot: Node) -> void:
-	print("TRY FLASH SLOT: ", slot)
-
 	if slot == null:
-		print("flash blocked: slot is null")
 		return
 
 	if not slot.has_method("flash_damage"):
-		print("flash blocked: slot has no flash_damage method: ", slot.name)
 		return
 
 	slot.flash_damage()

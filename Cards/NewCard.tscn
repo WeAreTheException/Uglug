@@ -22,6 +22,7 @@
 [ext_resource type="Script" uid="uid://ro02870urhpb" path="res://Code/States/CardStateMachine.gd" id="12_lsojp"]
 [ext_resource type="Script" uid="uid://bsqidwsxqggmu" path="res://DistantTargetPicker.gd" id="13_vartc"]
 [ext_resource type="Script" uid="uid://ddadxkic18s44" path="res://Cards/AntlerAttackResolver.gd" id="14_4ukko"]
+[ext_resource type="Script" uid="uid://c43ots6r45ip6" path="res://Cards/AntlerAttackExecutor.gd" id="15_aqnhy"]
 [ext_resource type="Texture2D" uid="uid://cgs5k6p3mggyf" path="res://Art/Ants/AntSprite.png" id="18_dm30q"]
 [ext_resource type="Script" uid="uid://cfvsqn441hgwq" path="res://Cards/CardStats.gd" id="22_koaue"]
 [ext_resource type="Script" uid="uid://de64ge4akihco" path="res://Mutations/ToolTip/MutationToolTipHandler.gd" id="23_2w08q"]
@@ -90,6 +91,9 @@ ready_visual = NodePath("../DistantReadyVisual")
 
 [node name="AntlerAttackResolver" type="Node" parent="." unique_id=796752569]
 script = ExtResource("14_4ukko")
+
+[node name="AntlerAttackExecutor" type="Node" parent="." unique_id=908601862]
+script = ExtResource("15_aqnhy")
 
 [node name="DistantReadyVisual" type="Panel" parent="." unique_id=1887081021]
 offset_left = -86.0
