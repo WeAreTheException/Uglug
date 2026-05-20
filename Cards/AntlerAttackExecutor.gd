@@ -43,8 +43,16 @@ func resolve_direct_attack(slot: NewSlots, attack_anim: Node) -> void:
 	if card == null:
 		return
 
+	# IMPORTANT:
+	# Do NOT pass null here. Null makes your attack visual use the front slot.
 	if attack_anim != null and attack_anim.has_method("play_attack"):
-		attack_anim.play_attack(null)
+		if slot != null and slot.current_card != null:
+			attack_anim.play_attack(slot.current_card)
+		elif attack_anim.has_method("play_attack_to_slot"):
+			attack_anim.play_attack_to_slot(slot)
+		else:
+			# Fallback: no direct-slot animation support, so only flash the slot.
+			pass
 
 	var direct_damage := card.current_attack
 	print(card.card_name, " ANTLER direct damage: ", direct_damage)
@@ -55,7 +63,6 @@ func resolve_direct_attack(slot: NewSlots, attack_anim: Node) -> void:
 		return
 
 	var tree := get_tree()
-
 	if tree == null:
 		return
 
