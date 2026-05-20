@@ -3,7 +3,7 @@ class_name AttackHandler
 
 @export var attack_anim: Node
 @export var distant_target_picker: DistantTargetPicker
-@export var delay_between_multi_attacks: float = 0.25
+@export var antler_resolver: AntlerAttackResolver
 
 var card: Card = null
 
@@ -13,6 +13,9 @@ func _ready() -> void:
 
 	if distant_target_picker == null:
 		distant_target_picker = _find_distant_target_picker()
+
+	if antler_resolver == null:
+		antler_resolver = get_node_or_null("AntlerAttackResolver") as AntlerAttackResolver
 
 
 func attack() -> void:
@@ -82,9 +85,10 @@ func _resolve_attack_from_slot(starting_slot: NewSlots) -> void:
 
 	targets = _clean_targets(targets)
 
-	if _has_antler_ordered_slots():
-		await _resolve_antler_ordered_attack()
-		return
+	if antler_resolver != null:
+		var handled := await antler_resolver.resolve()
+		if handled:
+			return
 
 	if targets.is_empty():
 		await _resolve_direct_attack(starting_slot)
@@ -94,22 +98,12 @@ func _resolve_attack_from_slot(starting_slot: NewSlots) -> void:
 		await _resolve_card_attack(target)
 
 
-func _resolve_antler_ordered_attack() -> void:
-	var slots := _get_antler_ordered_slots()
+func resolve_card_attack_from_external(target: Card) -> void:
+	await _resolve_card_attack(target)
 
-	for slot in slots:
-		if slot == null:
-			continue
 
-		var target := slot.current_card as Card
-
-		if target != null:
-			await _resolve_card_attack(target)
-		else:
-			await _resolve_direct_attack(slot)
-
-		if delay_between_multi_attacks > 0.0:
-			await get_tree().create_timer(delay_between_multi_attacks).timeout
+func resolve_direct_attack_from_external(slot: NewSlots) -> void:
+	await _resolve_direct_attack(slot)
 
 
 func _resolve_card_attack(target: Card) -> void:
@@ -164,34 +158,6 @@ func _resolve_direct_attack(slot: NewSlots) -> void:
 		tugga.take_direct_damage(card.owning_peer_id, direct_damage)
 	else:
 		print("direct damage blocked: tugga not found")
-
-
-func _has_antler_ordered_slots() -> bool:
-	return not _get_antler_ordered_slots().is_empty()
-
-
-func _get_antler_ordered_slots() -> Array[NewSlots]:
-	var slots: Array[NewSlots] = []
-
-	for mutation in card.base_mutations:
-		if mutation == null:
-			continue
-
-		if "ordered_adjacent_slots" in mutation:
-			for slot in mutation.ordered_adjacent_slots:
-				if slot != null and not slots.has(slot):
-					slots.append(slot)
-
-	for mutation in card.additional_mutations:
-		if mutation == null:
-			continue
-
-		if "ordered_adjacent_slots" in mutation:
-			for slot in mutation.ordered_adjacent_slots:
-				if slot != null and not slots.has(slot):
-					slots.append(slot)
-
-	return slots
 
 
 func _get_distant_count() -> int:
