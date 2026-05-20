@@ -73,6 +73,7 @@ var hurt_handler: HurtHandler = null
 var die_handler: DieHandler = null
 var mutation_handler: MutationHandler = null
 
+
 func _ready() -> void:
 	add_to_group("cards")
 
@@ -96,8 +97,10 @@ func _ready() -> void:
 	if test_data != null:
 		setup_card(test_data)
 
+
 func _process(delta: float) -> void:
 	update_sacrifice_hint(delta)
+
 
 func setup_card(data: CardData) -> void:
 	if data == null:
@@ -111,8 +114,16 @@ func setup_card(data: CardData) -> void:
 	if mutation_handler != null:
 		mutation_handler.setup_from_card_data(data)
 	else:
-		base_mutations = data.base_mutations.duplicate()
-		additional_mutations = []
+		base_mutations.clear()
+
+		for mutation in data.base_mutations:
+			if mutation == null:
+				continue
+
+			base_mutations.append(mutation.duplicate(true))
+
+		additional_mutations.clear()
+
 
 func add_additional_mutation(mutation: Mutation) -> void:
 	if mutation_handler != null:
@@ -122,8 +133,9 @@ func add_additional_mutation(mutation: Mutation) -> void:
 	if mutation == null:
 		return
 
-	additional_mutations.append(mutation)
+	additional_mutations.append(mutation.duplicate(true))
 	print(card_name, " gained mutation")
+
 
 func add_additional_mutation_from_path(mutation_path: String) -> void:
 	if mutation_handler != null:
@@ -140,6 +152,7 @@ func add_additional_mutation_from_path(mutation_path: String) -> void:
 		return
 
 	add_additional_mutation(mutation)
+
 
 func get_additional_mutation_paths() -> Array[String]:
 	if mutation_handler != null:
@@ -158,6 +171,7 @@ func get_additional_mutation_paths() -> Array[String]:
 
 	return paths
 
+
 func get_all_mutations() -> Array[Mutation]:
 	if mutation_handler != null:
 		return mutation_handler.get_all_mutations()
@@ -174,9 +188,11 @@ func get_all_mutations() -> Array[Mutation]:
 
 	return combined
 
+
 func update_sigils() -> void:
 	if mutation_handler != null:
 		mutation_handler.update_sigils()
+
 
 func get_main_sprite() -> Sprite2D:
 	var found := find_children("*", "Sprite2D", true, false)
@@ -186,6 +202,7 @@ func get_main_sprite() -> Sprite2D:
 
 	return found[0] as Sprite2D
 
+
 func _on_pressed(_listener) -> void:
 	print("card pressed: ", card_name)
 
@@ -194,6 +211,7 @@ func _on_pressed(_listener) -> void:
 		return
 
 	select_handler.select_card(self)
+
 
 func take_damage(amount: int, attacker: Card = null) -> void:
 	if hurt_handler != null:
@@ -210,12 +228,14 @@ func take_damage(amount: int, attacker: Card = null) -> void:
 	if current_health <= 0:
 		kill()
 
+
 func discard() -> void:
 	if current_slot != null:
 		current_slot.clear_card()
 		current_slot = null
 
 	queue_free()
+
 
 func kill() -> void:
 	if die_handler != null:
@@ -238,18 +258,23 @@ func kill() -> void:
 
 	queue_free()
 
+
 func _on_hovered(_listener) -> void:
 	is_hovered = true
+
 
 func _on_hovered_off(_listener) -> void:
 	is_hovered = false
 
+
 func _on_slot_entered(slot: NewSlots) -> void:
 	overlapping_slot = slot
+
 
 func _on_slot_exited(slot: NewSlots) -> void:
 	if overlapping_slot == slot:
 		overlapping_slot = null
+
 
 func set_selected(value: bool) -> void:
 	is_selected = value
@@ -263,6 +288,7 @@ func set_selected(value: bool) -> void:
 		scale_tween.tween_property(self, "scale", Vector2(1.15, 1.15), 0.12)
 	else:
 		scale_tween.tween_property(self, "scale", Vector2(1.0, 1.0), 0.12)
+
 
 func place_into_slot(slot: NewSlots) -> void:
 	if slot == null:
@@ -282,12 +308,14 @@ func place_into_slot(slot: NewSlots) -> void:
 
 	animate_to_position(slot.global_position)
 
+
 func animate_to_position(target_pos: Vector2) -> void:
 	if move_tween != null:
 		move_tween.kill()
 
 	move_tween = create_tween()
 	move_tween.tween_property(self, "global_position", target_pos, 0.18)
+
 
 func apply_slot_owner(slot: NewSlots) -> void:
 	if slot == null:
@@ -297,6 +325,7 @@ func apply_slot_owner(slot: NewSlots) -> void:
 		card_owner = Owner.PLAYER
 	else:
 		card_owner = Owner.OPPONENT
+
 
 func return_to_hand() -> void:
 	if current_slot != null:
@@ -309,14 +338,17 @@ func return_to_hand() -> void:
 
 	set_selected(false)
 
+
 func start_sacrifice_hint() -> void:
 	sacrifice_hint_active = true
 	sacrifice_hint_time = 0.0
+
 
 func stop_sacrifice_hint() -> void:
 	sacrifice_hint_active = false
 	sacrifice_hint_time = 0.0
 	rotation = 0.0
+
 
 func update_sacrifice_hint(delta: float) -> void:
 	if not sacrifice_hint_active:
