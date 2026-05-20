@@ -58,7 +58,6 @@ func _build_attack_plan() -> Array:
 		var target := slot.current_card as Card
 
 		var entry := {
-			"lane_id": slot.lane_id,
 			"direct": target == null,
 			"card_id": target.multiplayer_card_id if target != null else -1
 		}
