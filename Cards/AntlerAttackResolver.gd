@@ -19,9 +19,7 @@ func resolve() -> bool:
 	if not has_antler():
 		return false
 
-	var my_peer_id := int(GDSync.get_client_id())
-	var should_apply_damage := my_peer_id == card.owning_peer_id
-
+	var should_apply_damage := GDSync.is_host()
 	var slots := get_antler_slots()
 
 	for slot in slots:
@@ -85,44 +83,47 @@ func get_antler_slots() -> Array[NewSlots]:
 
 	var enemy_slots := _get_slots_for_owner(root, front_slot.slot_owner)
 
-	var left_slot := _get_slot_by_lane(enemy_slots, front_slot.lane_id - 1)
-	var right_slot := _get_slot_by_lane(enemy_slots, front_slot.lane_id + 1)
+	var lower_lane_slot := _get_slot_by_lane(enemy_slots, front_slot.lane_id - 1)
+	var higher_lane_slot := _get_slot_by_lane(enemy_slots, front_slot.lane_id + 1)
 
-	if _card_owner_attacks_left_to_right():
-		if left_slot != null:
-			slots.append(left_slot)
-
-		if right_slot != null:
-			slots.append(right_slot)
+	if _card_owner_is_player_one():
+		_add_slot(slots, lower_lane_slot)
+		_add_slot(slots, higher_lane_slot)
 	else:
-		if right_slot != null:
-			slots.append(right_slot)
+		_add_slot(slots, higher_lane_slot)
+		_add_slot(slots, lower_lane_slot)
 
-		if left_slot != null:
-			slots.append(left_slot)
-
-	print("ANTLER RESOLVER owner peer=", card.owning_peer_id)
-	print("ANTLER RESOLVER front lane=", front_slot.lane_id)
-	print("ANTLER RESOLVER final slots=", slots)
+	print("ANTLER owner peer=", card.owning_peer_id)
+	print("ANTLER p1 peer=", _get_player_one_id())
+	print("ANTLER front lane=", front_slot.lane_id)
+	print("ANTLER final slots=", slots)
 
 	return slots
 
 
-func _card_owner_attacks_left_to_right() -> bool:
-	_refresh_card()
+func _add_slot(slots: Array[NewSlots], slot: NewSlots) -> void:
+	if slot == null:
+		return
 
-	if card == null:
-		return true
+	slots.append(slot)
 
+
+func _card_owner_is_player_one() -> bool:
+	return card.owning_peer_id == _get_player_one_id()
+
+
+func _get_player_one_id() -> int:
 	var tree := get_tree()
+
 	if tree == null:
-		return true
+		return -1
 
 	var turn_manager := tree.get_first_node_in_group("turn_manager") as TurnManager
-	if turn_manager == null:
-		return true
 
-	return card.owning_peer_id == turn_manager.player_one_id
+	if turn_manager == null:
+		return -1
+
+	return turn_manager.player_one_id
 
 
 func _get_slot_by_lane(slots: Array[NewSlots], lane_id: int) -> NewSlots:
