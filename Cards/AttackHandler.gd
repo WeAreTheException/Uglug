@@ -14,9 +14,8 @@ func _ready() -> void:
 	if distant_target_picker == null:
 		distant_target_picker = _find_distant_target_picker()
 
-	if antler_resolver == null:
+	if antler_resolver == null and card != null:
 		antler_resolver = card.get_node_or_null("AntlerAttackResolver") as AntlerAttackResolver
-	print("AttackHandler antler_resolver = ", antler_resolver)
 
 
 func attack() -> void:
@@ -56,6 +55,11 @@ func attack() -> void:
 
 
 func _resolve_attack_from_slot(starting_slot: NewSlots) -> void:
+	if antler_resolver != null:
+		var handled := await antler_resolver.resolve()
+		if handled:
+			return
+
 	var opposing_card: Card = null
 
 	if starting_slot != null:
@@ -86,11 +90,6 @@ func _resolve_attack_from_slot(starting_slot: NewSlots) -> void:
 
 	targets = _clean_targets(targets)
 
-	if antler_resolver != null:
-		var handled := await antler_resolver.resolve()
-		if handled:
-			return
-
 	if targets.is_empty():
 		await _resolve_direct_attack(starting_slot)
 		return
@@ -105,6 +104,21 @@ func resolve_card_attack_from_external(target: Card) -> void:
 
 func resolve_direct_attack_from_external(slot: NewSlots) -> void:
 	await _resolve_direct_attack(slot)
+
+
+func play_attack_visual_from_external(target: Card) -> void:
+	if attack_anim != null and attack_anim.has_method("play_attack"):
+		attack_anim.play_attack(target)
+
+	if target != null:
+		_flash_slot(target.current_slot)
+
+
+func play_direct_attack_visual_from_external(slot: NewSlots) -> void:
+	if attack_anim != null and attack_anim.has_method("play_attack"):
+		attack_anim.play_attack(null)
+
+	_flash_slot(slot)
 
 
 func _resolve_card_attack(target: Card) -> void:
@@ -141,7 +155,6 @@ func _resolve_direct_attack(slot: NewSlots) -> void:
 	_flash_slot(slot)
 
 	var tree := get_tree()
-
 	if tree == null:
 		return
 

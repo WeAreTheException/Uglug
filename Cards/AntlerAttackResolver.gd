@@ -13,14 +13,14 @@ func resolve() -> bool:
 	if card == null:
 		return false
 
+	if attack_handler == null:
+		return false
+
 	if not has_antler():
 		return false
 
 	var my_peer_id := int(GDSync.get_client_id())
-
-	if my_peer_id != card.owning_peer_id:
-		print("Antler skipped on non-owner peer")
-		return true
+	var should_apply_damage := my_peer_id == card.owning_peer_id
 
 	var slots := get_antler_slots()
 
@@ -31,9 +31,15 @@ func resolve() -> bool:
 		var target := slot.current_card as Card
 
 		if target != null:
-			await attack_handler.resolve_card_attack_from_external(target)
+			if should_apply_damage:
+				await attack_handler.resolve_card_attack_from_external(target)
+			else:
+				attack_handler.play_attack_visual_from_external(target)
 		else:
-			await attack_handler.resolve_direct_attack_from_external(slot)
+			if should_apply_damage:
+				await attack_handler.resolve_direct_attack_from_external(slot)
+			else:
+				attack_handler.play_direct_attack_visual_from_external(slot)
 
 		if delay_between_attacks > 0.0:
 			await get_tree().create_timer(delay_between_attacks).timeout
@@ -70,12 +76,10 @@ func get_antler_slots() -> Array[NewSlots]:
 		return slots
 
 	var front_slot := card.current_slot.opposing_slot
-
 	if front_slot == null:
 		return slots
 
 	var root := _get_slots_root()
-
 	if root == null:
 		return slots
 
@@ -99,8 +103,6 @@ func get_antler_slots() -> Array[NewSlots]:
 
 	print("ANTLER RESOLVER owner peer=", card.owning_peer_id)
 	print("ANTLER RESOLVER front lane=", front_slot.lane_id)
-	print("ANTLER RESOLVER left lane=", left_slot.lane_id if left_slot != null else "null")
-	print("ANTLER RESOLVER right lane=", right_slot.lane_id if right_slot != null else "null")
 	print("ANTLER RESOLVER final slots=", slots)
 
 	return slots
@@ -113,12 +115,10 @@ func _card_owner_attacks_left_to_right() -> bool:
 		return true
 
 	var tree := get_tree()
-
 	if tree == null:
 		return true
 
 	var turn_manager := tree.get_first_node_in_group("turn_manager") as TurnManager
-
 	if turn_manager == null:
 		return true
 
