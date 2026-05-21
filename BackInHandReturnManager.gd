@@ -85,13 +85,7 @@ func commit_return_back_in_hand(snapshot: Dictionary) -> void:
 
 
 func _force_return_card(card: Card) -> void:
-	var old_slot := card.current_slot
-
-	if old_slot != null and is_instance_valid(old_slot):
-		if old_slot.current_card == card:
-			old_slot.current_card = null
-
-		print("BackInHand cleared slot. Slot empty now = ", old_slot.is_empty())
+	_clear_all_slots_holding_card(card)
 
 	card.current_slot = null
 	card.current_health = 1
@@ -120,9 +114,37 @@ func _force_return_card(card: Card) -> void:
 
 	card.current_slot = null
 	card.current_health = 1
+	card.death_processed = false
 	card.visible = true
+	card.rotation = 0.0
+	card.scale = Vector2.ONE
+	card.z_index = 0
 
 	print("BACK IN HAND returned card: ", card.card_name, " owner=", card.owning_peer_id)
+
+
+func _clear_all_slots_holding_card(card: Card) -> void:
+	var scene := get_tree().current_scene
+
+	if scene == null:
+		return
+
+	var slots := scene.find_children("*", "NewSlots", true, false)
+
+	for node in slots:
+		var slot := node as NewSlots
+
+		if slot == null:
+			continue
+
+		if slot.current_card == card:
+			slot.current_card = null
+			print("BackInHand force-cleared slot lane=", slot.lane_id)
+
+	if card.current_slot != null and is_instance_valid(card.current_slot):
+		card.current_slot.current_card = null
+
+	card.current_slot = null
 
 
 func _get_target_hand(card: Card) -> Node:
@@ -140,6 +162,7 @@ func _make_key(snapshot: Dictionary) -> String:
 
 func _find_card(card_id: int, owner_peer_id: int) -> Card:
 	var scene := get_tree().current_scene
+
 	if scene == null:
 		return null
 
