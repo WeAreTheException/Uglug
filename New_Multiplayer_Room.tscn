@@ -394,8 +394,9 @@ script = ExtResource("38_xplwh")
 [node name="BackInHandChoiceHandler" type="Node" parent="." unique_id=1739336518]
 script = ExtResource("39_husai")
 
-[node name="BackInHandReturnManager" type="Node" parent="." unique_id=1397937658]
+[node name="BackInHandReturnManager" type="Node" parent="." unique_id=1397937658 node_paths=PackedStringArray("player_hand")]
 script = ExtResource("40_1cr0f")
+player_hand = NodePath("../Hand&Deck/PlayerHand")
 
 [node name="CardDeathRouter" type="Node" parent="." unique_id=1205808905]
 script = ExtResource("41_3h1dv")
