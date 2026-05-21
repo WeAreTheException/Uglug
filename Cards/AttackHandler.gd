@@ -22,7 +22,10 @@ func attack() -> void:
 	if card == null:
 		return
 
-	if card.current_slot == null:
+	if not is_instance_valid(card):
+		return
+
+	if card.current_slot == null or not is_instance_valid(card.current_slot):
 		print("attack blocked")
 		return
 
@@ -62,8 +65,13 @@ func _resolve_attack_from_slot(starting_slot: NewSlots) -> void:
 
 	var opposing_card: Card = null
 
-	if starting_slot != null:
-		opposing_card = starting_slot.current_card as Card
+	if starting_slot != null and is_instance_valid(starting_slot):
+		var possible_target = starting_slot.current_card
+
+		if possible_target != null and is_instance_valid(possible_target):
+			opposing_card = possible_target as Card
+		else:
+			starting_slot.current_card = null
 
 	var had_original_target := opposing_card != null and is_instance_valid(opposing_card)
 
@@ -130,7 +138,7 @@ func _resolve_card_attack(target: Card) -> void:
 
 
 func _resolve_direct_attack(slot: NewSlots) -> void:
-	if slot != null:
+	if slot != null and is_instance_valid(slot):
 		var blocker := get_tree().get_first_node_in_group("back_in_hand_direct_damage_blocker") as BackInHandDirectDamageBlocker
 
 		if blocker != null and blocker.should_block_lane(slot.lane_id):
@@ -182,6 +190,9 @@ func _get_distant_count() -> int:
 
 func _flash_slot(slot: Node) -> void:
 	if slot == null:
+		return
+
+	if not is_instance_valid(slot):
 		return
 
 	if not slot.has_method("flash_damage"):
