@@ -40,18 +40,18 @@ func return_card_to_hand(card: Node2D) -> void:
 	if real_card == null:
 		return
 
-	var key := str(real_card.multiplayer_card_id) + "_" + str(real_card.owning_peer_id)
+	var snapshot := {
+		"card_id": real_card.multiplayer_card_id,
+		"owner_peer_id": real_card.owning_peer_id
+	}
+
+	var key := _make_key(snapshot)
 
 	if returning_cards.has(key):
 		return
 
 	returning_cards[key] = true
 	real_card.death_processed = true
-
-	var snapshot := {
-		"card_id": real_card.multiplayer_card_id,
-		"owner_peer_id": real_card.owning_peer_id
-	}
 
 	if GDSync.is_host():
 		GDSync.call_func_all(commit_return_back_in_hand, snapshot)
@@ -67,15 +67,16 @@ func request_return_back_in_hand(snapshot: Dictionary) -> void:
 
 
 func commit_return_back_in_hand(snapshot: Dictionary) -> void:
+	var key := _make_key(snapshot)
+
 	var card_id := int(snapshot["card_id"])
 	var owner_peer_id := int(snapshot["owner_peer_id"])
-
-	var key := str(card_id) + "_" + str(owner_peer_id)
 
 	var card := _find_card(card_id, owner_peer_id)
 
 	if card == null:
-		print("BackInHand return blocked: card not found id=", card_id)
+		print("BackInHand return blocked: card not found id=", card_id, " owner=", owner_peer_id)
+		returning_cards.erase(key)
 		return
 
 	_force_return_card(card)
@@ -84,7 +85,6 @@ func commit_return_back_in_hand(snapshot: Dictionary) -> void:
 
 
 func _force_return_card(card: Card) -> void:
-	# Clear board slot.
 	var old_slot := card.current_slot
 
 	if old_slot != null and is_instance_valid(old_slot):
@@ -94,22 +94,18 @@ func _force_return_card(card: Card) -> void:
 		print("BackInHand cleared slot. Slot empty now = ", old_slot.is_empty())
 
 	card.current_slot = null
-
-	# Restore card state.
 	card.current_health = 1
 	card.death_processed = false
 
 	if card.has_method("set_selected"):
 		card.set_selected(false)
 
-	# Pick correct hand on this machine.
 	var target_hand := _get_target_hand(card)
 
 	if target_hand == null:
 		print("BackInHand return blocked: target hand is null")
 		return
 
-	# Fully remove from board parent.
 	if card.get_parent() != null:
 		card.get_parent().remove_child(card)
 
@@ -126,7 +122,7 @@ func _force_return_card(card: Card) -> void:
 	card.current_health = 1
 	card.visible = true
 
-	print("BACK IN HAND returned card: ", card.card_name)
+	print("BACK IN HAND returned card: ", card.card_name, " owner=", card.owning_peer_id)
 
 
 func _get_target_hand(card: Card) -> Node:
@@ -135,17 +131,15 @@ func _get_target_hand(card: Card) -> Node:
 	if card.owning_peer_id == local_peer_id:
 		return player_hand
 
-	if opponent_hand != null:
-		return opponent_hand
+	return opponent_hand
 
-	# If you do not have an opponent hand script assigned yet,
-	# at least remove the card from board instead of putting it back in a slot.
-	return get_tree().current_scene
+
+func _make_key(snapshot: Dictionary) -> String:
+	return str(int(snapshot["card_id"])) + "_" + str(int(snapshot["owner_peer_id"]))
 
 
 func _find_card(card_id: int, owner_peer_id: int) -> Card:
 	var scene := get_tree().current_scene
-
 	if scene == null:
 		return null
 

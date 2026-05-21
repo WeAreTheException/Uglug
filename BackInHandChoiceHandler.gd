@@ -25,7 +25,6 @@ func choose_card(card: Node2D) -> void:
 		return
 
 	var real_card := card as Card
-
 	if real_card == null:
 		return
 
@@ -42,12 +41,12 @@ func choose_card(card: Node2D) -> void:
 		"owner_peer_id": real_card.owning_peer_id
 	}
 
+	is_choosing = false
+
 	if GDSync.is_host():
-		commit_choose_back_in_hand(snapshot)
+		GDSync.call_func_all(commit_choose_back_in_hand, snapshot)
 	else:
 		GDSync.call_func(request_choose_back_in_hand, snapshot)
-
-	is_choosing = false
 
 
 func request_choose_back_in_hand(snapshot: Dictionary) -> void:
@@ -64,7 +63,7 @@ func commit_choose_back_in_hand(snapshot: Dictionary) -> void:
 	var card := _find_card(card_id, owner_peer_id)
 
 	if card == null:
-		print("Back In Hand commit blocked: card not found id=", card_id)
+		print("Back In Hand commit blocked: card not found id=", card_id, " owner=", owner_peer_id)
 		return
 
 	var state := card.get_node_or_null("BackInHandCardState") as BackInHandCardState
@@ -74,15 +73,13 @@ func commit_choose_back_in_hand(snapshot: Dictionary) -> void:
 		return
 
 	state.enable()
-
 	chosen_card = card
 
-	print("BACK IN HAND synced onto: ", card.card_name)
+	print("BACK IN HAND synced onto: ", card.card_name, " owner=", owner_peer_id)
 
 
 func _find_card(card_id: int, owner_peer_id: int) -> Card:
 	var scene := get_tree().current_scene
-
 	if scene == null:
 		return null
 
