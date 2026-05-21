@@ -34,83 +34,61 @@ func return_card_to_hand(card: Node2D) -> void:
 	if real_card == null:
 		return
 
-	# --- CLEAR BOARD STATE ---
+	# Stop other death logic from processing this card this frame.
+	real_card.death_processed = true
 
-	var old_slot := real_card.current_slot
+	# Do the actual move after the current attack/damage stack finishes.
+	call_deferred("_deferred_return_card_to_hand", real_card)
 
-	if old_slot != null and is_instance_valid(old_slot):
-		old_slot.current_card = null
 
-	real_card.current_slot = null
+func _deferred_return_card_to_hand(card: Card) -> void:
+	if card == null:
+		return
 
-	# --- RESET CARD STATE ---
-
-	real_card.current_health = 1
-	real_card.death_processed = false
-
-	# --- REMOVE EFFECT ---
-
-	var state := real_card.get_node_or_null("BackInHandCardState") as BackInHandCardState
-
-	if state != null:
-		state.disable()
-
-	# --- MOVE TO HAND ---
+	if not is_instance_valid(card):
+		return
 
 	if player_hand == null:
 		print("BackInHandReturnManager blocked: player_hand is null")
 		return
 
-	if real_card.get_parent() != null:
-		real_card.get_parent().remove_child(real_card)
+	# Clear slot/board reference.
+	var old_slot := card.current_slot
 
-	player_hand.add_child(real_card)
-	player_hand.add_card_to_hand(real_card)
-
-	# --- RESET VISUALS ---
-
-	if real_card.has_method("set_selected"):
-		real_card.set_selected(false)
-
-	print("BACK IN HAND returned card: ", real_card.card_name)
-
-
-func _clear_slot(card: Card) -> void:
-	if card.current_slot == null:
-		return
-
-	var slot := card.current_slot
-
-	if not is_instance_valid(slot):
-		card.current_slot = null
-		return
-
-	if slot.get("current_card") == card:
-		slot.set("current_card", null)
-
-	if slot.has_method("clear_card"):
-		slot.clear_card()
-	elif slot.has_method("remove_card"):
-		slot.remove_card()
+	if old_slot != null and is_instance_valid(old_slot):
+		if old_slot.current_card == card:
+			old_slot.current_card = null
 
 	card.current_slot = null
 
+	# Remove Back In Hand effect after it successfully triggers.
+	var state := card.get_node_or_null("BackInHandCardState") as BackInHandCardState
+	if state != null:
+		state.disable()
 
-func _restore_health(card: Card) -> void:
-	var max_health := 1
+	# Restore card health.
+	card.current_health = 1
+	card.death_processed = false
 
-	if card.get("max_health") != null:
-		max_health = int(card.get("max_health"))
-	elif card.get("base_health") != null:
-		max_health = int(card.get("base_health"))
-	elif card.get("card_data") != null and card.get("card_data") != null:
-		var data = card.get("card_data")
-		if data.get("health") != null:
-			max_health = int(data.get("health"))
+	# Remove from old parent.
+	if card.get_parent() != null:
+		card.get_parent().remove_child(card)
 
-	card.current_health = max_health
+	# Add to hand.
+	player_hand.add_child(card)
 
-	if card.has_method("refresh_stats"):
-		card.refresh_stats()
-	elif card.has_method("update_stats"):
-		card.update_stats()
+	if not card in player_hand.player_hand:
+		player_hand.add_card_to_hand(card)
+	else:
+		player_hand.update_hand_positions()
+
+	# Reset visuals.
+	card.position = Vector2.ZERO
+	card.rotation = 0.0
+	card.scale = Vector2.ONE
+	card.z_index = 0
+
+	if card.has_method("set_selected"):
+		card.set_selected(false)
+
+	print("BACK IN HAND returned card: ", card.card_name)
