@@ -3,7 +3,7 @@ class_name BackInHandReturnManager
 
 @export var player_hand: NewPlayerHand
 @export var opponent_hand: Node
-@export var return_delay: float = 0.6
+@export var return_delay: float = 0.8
 
 var returning_cards := {}
 
@@ -91,14 +91,11 @@ func commit_return_back_in_hand(snapshot: Dictionary) -> void:
 
 func _prepare_card_for_return(card: Card) -> void:
 	_block_direct_damage_for_card_lane(card)
-	_clear_all_slots_holding_card(card)
 
-	card.current_slot = null
+	# Do NOT clear the slot here.
+	# The attack animation may still need target.current_slot.
 	card.current_health = 1
 	card.death_processed = true
-
-	# Do NOT hide the card here.
-	# Hiding it can interrupt local attack animations.
 	card.visible = true
 
 	print("BACK IN HAND prepared return: ", card.card_name)
