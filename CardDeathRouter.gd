@@ -12,6 +12,9 @@ func kill_card(card: Node2D) -> void:
 	if card == null:
 		return
 
+	if not is_instance_valid(card):
+		return
+
 	var back_in_hand_manager := get_tree().get_first_node_in_group("back_in_hand_return_manager") as BackInHandReturnManager
 
 	if back_in_hand_manager != null:
