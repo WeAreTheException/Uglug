@@ -27,6 +27,8 @@
 [ext_resource type="Script" uid="uid://cfvsqn441hgwq" path="res://Cards/CardStats.gd" id="22_koaue"]
 [ext_resource type="Script" uid="uid://de64ge4akihco" path="res://Mutations/ToolTip/MutationToolTipHandler.gd" id="23_2w08q"]
 [ext_resource type="PackedScene" uid="uid://bocxu8xu5hh8b" path="res://Mutations/ToolTip/MutationToolTip.tscn" id="24_lsojp"]
+[ext_resource type="Script" uid="uid://cmhvnj1h173o2" path="res://Cards/BackInHandCardState.gd" id="28_esvva"]
+[ext_resource type="Material" uid="uid://dh78conckoov3" path="res://Cards/BackInHandInvert.tres" id="29_rn1hg"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
 size = Vector2(174, 268)
@@ -201,3 +203,7 @@ tooltip_scene = ExtResource("24_lsojp")
 base_sigil_sprites = [NodePath("../BaseMutation/BaseSprite")]
 additional_sigil_sprites = [NodePath("../AdditonalMutation/Additional1"), NodePath("../AdditonalMutation/Additional2"), NodePath("../AdditonalMutation/Additional3")]
 card_top_offset = Vector2(0, -135)
+
+[node name="BackInHandCardState" type="Node" parent="." unique_id=992252634]
+script = ExtResource("28_esvva")
+invert_material = ExtResource("29_rn1hg")

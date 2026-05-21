@@ -32,6 +32,12 @@ func take_damage(amount: int, attacker: Card = null) -> void:
 			mutation.on_damaged(card, attacker, amount)
 
 	if card.current_health <= 0:
+		var death_router := get_tree().get_first_node_in_group("card_death_router") as CardDeathRouter
+
+		if death_router != null:
+			death_router.kill_card(card)
+			return
+
 		if card.die_handler != null:
 			card.die_handler.die()
 		else:

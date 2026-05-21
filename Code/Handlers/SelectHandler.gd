@@ -78,6 +78,12 @@ func can_use_place_logic() -> bool:
 
 
 func select_card(card: Card) -> void:
+	var back_in_hand_choice := get_tree().get_first_node_in_group("back_in_hand_choice_handler") as BackInHandChoiceHandler
+
+	if back_in_hand_choice != null and back_in_hand_choice.is_choosing:
+		back_in_hand_choice.choose_card(card)
+		return
+
 	if not can_select_hand_cards():
 		print("select_card blocked: not buff phase or your placement turn")
 		return
