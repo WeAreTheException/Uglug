@@ -209,5 +209,6 @@ card_top_offset = Vector2(0, -135)
 script = ExtResource("28_esvva")
 invert_material = ExtResource("29_rn1hg")
 
-[node name="BackInHandDeathVisualHandler" type="Node" parent="." unique_id=1505106241]
+[node name="BackInHandDeathVisualHandler" type="Node" parent="." unique_id=1505106241 node_paths=PackedStringArray("die_anim")]
 script = ExtResource("30_el32v")
+die_anim = NodePath("../CardStateMachine/Die/DthAnim")
