@@ -38,6 +38,7 @@
 [ext_resource type="Texture2D" uid="uid://bkafxhbg4kvug" path="res://Sprites/CardSlot.png" id="28_e2c01"]
 [ext_resource type="PackedScene" uid="uid://52uj0s5wxoub" path="res://Buff_Pile.tscn" id="32_axksp"]
 [ext_resource type="Script" uid="uid://4qwf56ogub57" path="res://AntlerSyncManager.gd" id="38_xplwh"]
+[ext_resource type="Script" uid="uid://bf27ygnadk54n" path="res://BackInHandDirectDamageBlocker.gd" id="39_ama4m"]
 [ext_resource type="Script" uid="uid://coffu55rm3akr" path="res://BackInHandChoiceHandler.gd" id="39_husai"]
 [ext_resource type="Script" uid="uid://c2v0pavabfxji" path="res://BackInHandReturnManager.gd" id="40_1cr0f"]
 [ext_resource type="Script" uid="uid://bo06dxe1jmrss" path="res://CardDeathRouter.gd" id="41_3h1dv"]
@@ -390,6 +391,9 @@ phase_manager = NodePath("../Managers/PhaseManager")
 
 [node name="AntlerSyncManager" type="Node" parent="." unique_id=1108464900]
 script = ExtResource("38_xplwh")
+
+[node name="BackInHandDirectDamageBlocker" type="Node" parent="." unique_id=1724932890]
+script = ExtResource("39_ama4m")
 
 [node name="BackInHandChoiceHandler" type="Node" parent="." unique_id=1739336518]
 script = ExtResource("39_husai")

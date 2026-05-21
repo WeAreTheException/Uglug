@@ -130,6 +130,13 @@ func _resolve_card_attack(target: Card) -> void:
 
 
 func _resolve_direct_attack(slot: NewSlots) -> void:
+	if slot != null:
+		var blocker := get_tree().get_first_node_in_group("back_in_hand_direct_damage_blocker") as BackInHandDirectDamageBlocker
+
+		if blocker != null and blocker.should_block_lane(slot.lane_id):
+			print("direct damage blocked by Back In Hand lane=", slot.lane_id)
+			return
+
 	if attack_anim != null and attack_anim.has_method("play_attack"):
 		attack_anim.play_attack(null)
 

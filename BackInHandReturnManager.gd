@@ -3,8 +3,7 @@ class_name BackInHandReturnManager
 
 @export var player_hand: NewPlayerHand
 @export var opponent_hand: Node
-
-@export var return_delay: float = 0.45
+@export var return_delay: float = 0.6
 
 var returning_cards := {}
 
@@ -91,13 +90,12 @@ func commit_return_back_in_hand(snapshot: Dictionary) -> void:
 
 
 func _prepare_card_for_return(card: Card) -> void:
+	_block_direct_damage_for_card_lane(card)
 	_clear_all_slots_holding_card(card)
 
 	card.current_slot = null
 	card.current_health = 1
 	card.death_processed = true
-
-	# This keeps the card from being visibly snapped by board/attack tweens.
 	card.visible = false
 
 	print("BACK IN HAND prepared return: ", card.card_name)
@@ -144,6 +142,21 @@ func _finish_return_card(card: Card) -> void:
 		card.set_selected(false)
 
 	print("BACK IN HAND returned card: ", card.card_name, " owner=", card.owning_peer_id)
+
+
+func _block_direct_damage_for_card_lane(card: Card) -> void:
+	if card.current_slot == null:
+		return
+
+	if not is_instance_valid(card.current_slot):
+		return
+
+	var lane_id := card.current_slot.lane_id
+
+	var blocker := get_tree().get_first_node_in_group("back_in_hand_direct_damage_blocker") as BackInHandDirectDamageBlocker
+
+	if blocker != null:
+		blocker.block_lane(lane_id)
 
 
 func _clear_all_slots_holding_card(card: Card) -> void:
