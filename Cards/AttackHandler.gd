@@ -65,9 +65,11 @@ func _resolve_attack_from_slot(starting_slot: NewSlots) -> void:
 	if starting_slot != null:
 		opposing_card = starting_slot.current_card as Card
 
+	var had_original_target := opposing_card != null and is_instance_valid(opposing_card)
+
 	var targets: Array[Card] = []
 
-	if opposing_card != null:
+	if had_original_target:
 		targets.append(opposing_card)
 
 	for mutation in card.base_mutations:
@@ -91,7 +93,9 @@ func _resolve_attack_from_slot(starting_slot: NewSlots) -> void:
 	targets = _clean_targets(targets)
 
 	if targets.is_empty():
-		await _resolve_direct_attack(starting_slot)
+		if not had_original_target:
+			await _resolve_direct_attack(starting_slot)
+
 		return
 
 	for target in targets:
@@ -100,6 +104,9 @@ func _resolve_attack_from_slot(starting_slot: NewSlots) -> void:
 
 func _resolve_card_attack(target: Card) -> void:
 	if target == null:
+		return
+
+	if not is_instance_valid(target):
 		return
 
 	if attack_anim != null and attack_anim.has_method("play_attack"):
@@ -183,9 +190,15 @@ func _apply_single_target_mutation(mutation: Mutation, targets: Array[Card]) -> 
 	var changed_targets: Array[Card] = []
 
 	for target in targets:
+		if target == null:
+			continue
+
+		if not is_instance_valid(target):
+			continue
+
 		var new_target: Card = mutation.get_attack_target(card, target)
 
-		if new_target != null:
+		if new_target != null and is_instance_valid(new_target):
 			changed_targets.append(new_target)
 
 	return changed_targets
@@ -196,6 +209,9 @@ func _clean_targets(targets: Array[Card]) -> Array[Card]:
 
 	for target in targets:
 		if target == null:
+			continue
+
+		if not is_instance_valid(target):
 			continue
 
 		if cleaned.has(target):
