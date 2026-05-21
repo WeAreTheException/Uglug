@@ -89,7 +89,19 @@ func _run_attack_side(owner_peer_id: int) -> void:
 		if slot == null:
 			continue
 
-		var card := slot.current_card as Card
+		if not is_instance_valid(slot):
+			continue
+
+		var current = slot.current_card
+
+		if current == null:
+			continue
+
+		if not is_instance_valid(current):
+			slot.current_card = null
+			continue
+
+		var card := current as Card
 
 		if card == null:
 			continue
