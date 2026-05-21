@@ -4,6 +4,8 @@ class_name BackInHandReturnManager
 @export var player_hand: NewPlayerHand
 @export var opponent_hand: Node
 
+@export var return_delay: float = 0.45
+
 var returning_cards := {}
 
 
@@ -79,25 +81,42 @@ func commit_return_back_in_hand(snapshot: Dictionary) -> void:
 		returning_cards.erase(key)
 		return
 
-	_force_return_card(card)
+	_prepare_card_for_return(card)
+
+	await get_tree().create_timer(return_delay).timeout
+
+	_finish_return_card(card)
 
 	returning_cards.erase(key)
 
 
-func _force_return_card(card: Card) -> void:
+func _prepare_card_for_return(card: Card) -> void:
 	_clear_all_slots_holding_card(card)
 
 	card.current_slot = null
 	card.current_health = 1
-	card.death_processed = false
+	card.death_processed = true
 
-	if card.has_method("set_selected"):
-		card.set_selected(false)
+	# This keeps the card from being visibly snapped by board/attack tweens.
+	card.visible = false
+
+	print("BACK IN HAND prepared return: ", card.card_name)
+
+
+func _finish_return_card(card: Card) -> void:
+	if card == null:
+		return
+
+	if not is_instance_valid(card):
+		return
+
+	_clear_all_slots_holding_card(card)
 
 	var target_hand := _get_target_hand(card)
 
 	if target_hand == null:
 		print("BackInHand return blocked: target hand is null")
+		card.visible = true
 		return
 
 	if card.get_parent() != null:
@@ -115,10 +134,14 @@ func _force_return_card(card: Card) -> void:
 	card.current_slot = null
 	card.current_health = 1
 	card.death_processed = false
+
 	card.visible = true
 	card.rotation = 0.0
 	card.scale = Vector2.ONE
 	card.z_index = 0
+
+	if card.has_method("set_selected"):
+		card.set_selected(false)
 
 	print("BACK IN HAND returned card: ", card.card_name, " owner=", card.owning_peer_id)
 
