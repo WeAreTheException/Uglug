@@ -19,6 +19,9 @@ func _ready() -> void:
 	if warrior_deck_root != null:
 		warrior_deck = warrior_deck_root.get_node_or_null("DeckDrawHandler") as DeckDrawHandler
 
+	GDSync.expose_node(self)
+	GDSync.expose_func(start_back_in_hand_choice)
+
 	print("GameStartDrawHandler worker_deck = ", worker_deck)
 	print("GameStartDrawHandler warrior_deck = ", warrior_deck)
 
@@ -52,3 +55,18 @@ func give_starting_cards(player_one_id: int, player_two_id: int) -> void:
 		warrior_deck.spawn_cards_from_effect(peer_id, starting_warriors)
 
 	print("GAME START DRAW COMPLETE")
+
+	await get_tree().process_frame
+	await get_tree().process_frame
+
+	GDSync.call_func_all(start_back_in_hand_choice)
+
+
+func start_back_in_hand_choice() -> void:
+	var choice_handler := get_tree().get_first_node_in_group("back_in_hand_choice_handler") as BackInHandChoiceHandler
+
+	if choice_handler == null:
+		print("Back In Hand blocked: no BackInHandChoiceHandler found")
+		return
+
+	choice_handler.start_choice()
