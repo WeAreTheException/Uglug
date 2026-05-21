@@ -10,6 +10,9 @@ func should_return_to_hand(card: Node2D) -> bool:
 	if card == null:
 		return false
 
+	if not is_instance_valid(card):
+		return false
+
 	var state := card.get_node_or_null("BackInHandCardState") as BackInHandCardState
 	if state == null:
 		return false
@@ -21,15 +24,26 @@ func return_card_to_hand(card: Node2D) -> void:
 	if card == null:
 		return
 
+	if not is_instance_valid(card):
+		return
+
+	var hand := _find_return_hand()
+
+	if hand == null:
+		print("BackInHandReturnManager blocked: could not find return hand")
+		return
+
+	var old_slot = card.get("current_slot")
+
+	if old_slot != null and is_instance_valid(old_slot):
+		if old_slot.get("current_card") == card:
+			old_slot.set("current_card", null)
+
+	card.set("current_slot", null)
+
 	var state := card.get_node_or_null("BackInHandCardState") as BackInHandCardState
 	if state != null:
 		state.disable()
-
-	var hand := _find_owner_hand(card)
-
-	if hand == null:
-		print("BackInHandReturnManager blocked: could not find owner hand")
-		return
 
 	if card.get_parent() != null:
 		card.get_parent().remove_child(card)
@@ -41,25 +55,24 @@ func return_card_to_hand(card: Node2D) -> void:
 	else:
 		card.position = Vector2.ZERO
 
+	if card.has_method("set_selected"):
+		card.set_selected(false)
+
 	print("BACK IN HAND returned card: ", card.name)
 
 
-func _find_owner_hand(card: Node2D) -> Node:
-	var owner_peer_id := -1
+func _find_return_hand() -> Node:
+	var hand := get_tree().get_first_node_in_group("local_player_hand")
+	if hand != null:
+		return hand
 
-	if card.has_method("get_owner_peer_id"):
-		owner_peer_id = int(card.get_owner_peer_id())
-	elif card.get("owner_peer_id") != null:
-		owner_peer_id = int(card.get("owner_peer_id"))
+	hand = get_tree().get_first_node_in_group("player_hand")
+	if hand != null:
+		return hand
 
-	var hands := get_tree().get_nodes_in_group("player_hand")
+	var all_nodes := get_tree().root.find_children("*", "NewPlayerHand", true, false)
 
-	for hand in hands:
-		if hand.get("owner_peer_id") != null and int(hand.get("owner_peer_id")) == owner_peer_id:
-			return hand
+	if all_nodes.size() > 0:
+		return all_nodes[0]
 
-	var local_hands := get_tree().get_nodes_in_group("local_player_hand")
-	if local_hands.size() > 0:
-		return local_hands[0]
-
-	return get_tree().get_first_node_in_group("player_hand")
+	return null
