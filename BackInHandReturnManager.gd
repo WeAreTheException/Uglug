@@ -96,7 +96,10 @@ func _prepare_card_for_return(card: Card) -> void:
 	card.current_slot = null
 	card.current_health = 1
 	card.death_processed = true
-	card.visible = false
+
+	# Do NOT hide the card here.
+	# Hiding it can interrupt local attack animations.
+	card.visible = true
 
 	print("BACK IN HAND prepared return: ", card.card_name)
 
