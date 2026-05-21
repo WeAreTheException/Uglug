@@ -92,8 +92,11 @@ func commit_return_back_in_hand(snapshot: Dictionary) -> void:
 func _prepare_card_for_return(card: Card) -> void:
 	_block_direct_damage_for_card_lane(card)
 
-	# Do NOT clear the slot here.
-	# The attack animation may still need target.current_slot.
+	var visual_handler := card.get_node_or_null("BackInHandDeathVisualHandler") as BackInHandDeathVisualHandler
+
+	if visual_handler != null:
+		await visual_handler.play_visual_death()
+
 	card.current_health = 1
 	card.death_processed = true
 	card.visible = true

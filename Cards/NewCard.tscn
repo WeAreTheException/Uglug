@@ -29,6 +29,7 @@
 [ext_resource type="PackedScene" uid="uid://bocxu8xu5hh8b" path="res://Mutations/ToolTip/MutationToolTip.tscn" id="24_lsojp"]
 [ext_resource type="Script" uid="uid://cmhvnj1h173o2" path="res://Cards/BackInHandCardState.gd" id="28_esvva"]
 [ext_resource type="Material" uid="uid://dh78conckoov3" path="res://Cards/BackInHandInvert.tres" id="29_rn1hg"]
+[ext_resource type="Script" uid="uid://dhkq7ls1f2ddm" path="res://Cards/BackInHandDeathVisualHandler.gd" id="30_el32v"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
 size = Vector2(174, 268)
@@ -207,3 +208,6 @@ card_top_offset = Vector2(0, -135)
 [node name="BackInHandCardState" type="Node" parent="." unique_id=992252634]
 script = ExtResource("28_esvva")
 invert_material = ExtResource("29_rn1hg")
+
+[node name="BackInHandDeathVisualHandler" type="Node" parent="." unique_id=1505106241]
+script = ExtResource("30_el32v")
