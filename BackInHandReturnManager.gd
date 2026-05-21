@@ -36,10 +36,35 @@ func return_card_to_hand(card: Node2D) -> void:
 
 	real_card.death_processed = true
 
-	call_deferred("_deferred_return_card_to_hand", real_card)
+	_remove_from_board_now(real_card)
+
+	call_deferred("_finish_return_after_attack_stack", real_card)
 
 
-func _deferred_return_card_to_hand(card: Card) -> void:
+func _remove_from_board_now(card: Card) -> void:
+	var old_slot := card.current_slot
+
+	if old_slot != null and is_instance_valid(old_slot):
+		if old_slot.current_card == card:
+			old_slot.current_card = null
+
+		print("BackInHand cleared slot. Slot empty now = ", old_slot.is_empty())
+
+	card.current_slot = null
+	card.current_health = 1
+
+	card.visible = false
+
+	if card.get_parent() != null:
+		card.get_parent().remove_child(card)
+
+	get_tree().current_scene.add_child(card)
+
+
+func _finish_return_after_attack_stack(card: Card) -> void:
+	await get_tree().process_frame
+	await get_tree().process_frame
+
 	if card == null:
 		return
 
@@ -48,13 +73,8 @@ func _deferred_return_card_to_hand(card: Card) -> void:
 
 	if player_hand == null:
 		print("BackInHandReturnManager blocked: player_hand is null")
+		card.visible = true
 		return
-
-	_force_remove_from_slot(card)
-
-	card.current_health = 1
-	card.death_processed = false
-	card.current_slot = null
 
 	if card.get_parent() != null:
 		card.get_parent().remove_child(card)
@@ -66,7 +86,11 @@ func _deferred_return_card_to_hand(card: Card) -> void:
 	else:
 		player_hand.add_card_to_hand(card)
 
-	card.position = Vector2.ZERO
+	card.current_slot = null
+	card.current_health = 1
+	card.death_processed = false
+
+	card.visible = true
 	card.rotation = 0.0
 	card.scale = Vector2.ONE
 	card.z_index = 0
@@ -74,17 +98,4 @@ func _deferred_return_card_to_hand(card: Card) -> void:
 	if card.has_method("set_selected"):
 		card.set_selected(false)
 
-	print("BACK IN HAND returned card: ", card.card_name)
-
-
-func _force_remove_from_slot(card: Card) -> void:
-	var old_slot := card.current_slot
-
-	if old_slot != null and is_instance_valid(old_slot):
-		if old_slot.current_card == card:
-			old_slot.current_card = null
-
-		if old_slot.has_method("is_empty"):
-			print("BackInHand cleared slot. Slot empty now = ", old_slot.is_empty())
-
-	card.current_slot = null
+	print("BACK IN HAND finished return: ", card.card_name)
