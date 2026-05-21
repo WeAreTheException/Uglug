@@ -26,8 +26,8 @@ func choose_card(card: Node2D) -> void:
 	if card == null:
 		return
 
-	if not _is_card_in_local_hand(card):
-		print("Back In Hand blocked: card is not in local hand")
+	if not _is_valid_choice(card):
+		print("Back In Hand blocked: invalid card choice")
 		return
 
 	var state := card.get_node_or_null("BackInHandCardState") as BackInHandCardState
@@ -43,20 +43,19 @@ func choose_card(card: Node2D) -> void:
 	print("BACK IN HAND chosen: ", card.name)
 
 
-func _is_card_in_local_hand(card: Node2D) -> bool:
-	var hand := _find_local_hand()
-	if hand == null:
+func _is_valid_choice(card: Node2D) -> bool:
+	if card == null:
 		return false
 
-	if hand.has_method("get") and hand.get("player_hand") is Array:
-		return card in hand.get("player_hand")
+	if card is Card:
+		var real_card := card as Card
 
-	return card.get_parent() == hand
+		if real_card.card_owner != Card.Owner.PLAYER:
+			return false
 
+		if real_card.current_slot != null:
+			return false
 
-func _find_local_hand() -> Node:
-	var hands := get_tree().get_nodes_in_group("local_player_hand")
-	if hands.size() > 0:
-		return hands[0]
+		return true
 
-	return get_tree().get_first_node_in_group("player_hand")
+	return false
