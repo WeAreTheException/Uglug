@@ -3,13 +3,13 @@ class_name BackInHandCardState
 
 @export var invert_material: ShaderMaterial
 
-var card: Node2D = null
+var card: Card = null
 var is_enabled := false
 var original_material: Material = null
 
 
 func _ready() -> void:
-	card = get_parent() as Node2D
+	card = get_parent() as Card
 
 
 func enable() -> void:
@@ -23,6 +23,23 @@ func enable() -> void:
 func disable() -> void:
 	is_enabled = false
 	_clear_visual()
+
+
+func try_handle_death() -> bool:
+	if not is_enabled:
+		return false
+
+	if card == null:
+		return false
+
+	var return_manager := get_tree().get_first_node_in_group("back_in_hand_return_manager") as BackInHandReturnManager
+
+	if return_manager == null:
+		print("BackInHandCardState blocked: no BackInHandReturnManager found")
+		return false
+
+	return_manager.return_card_to_hand(card)
+	return true
 
 
 func _apply_visual() -> void:
