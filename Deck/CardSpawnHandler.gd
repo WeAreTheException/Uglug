@@ -105,6 +105,12 @@ func _setup_card_runtime_data(
 	else:
 		card.select_handler = null
 
+	var input_receiver := card.get_node_or_null("InputReceiver") as CardInputReceiver
+
+	if input_receiver != null:
+		input_receiver.card_root = card
+		input_receiver.select_handler = card.select_handler
+
 
 func get_card_data_by_name(card_name: String) -> CardData:
 	if card_database == null:

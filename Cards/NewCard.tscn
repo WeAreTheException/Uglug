@@ -18,7 +18,7 @@
 [ext_resource type="Texture2D" uid="uid://d1ypj3toan6r1" path="res://Art/Blood.png" id="9_dm30q"]
 [ext_resource type="Script" uid="uid://d4a12kjlckce0" path="res://Cards/DeathAnim.gd" id="9_fuvn1"]
 [ext_resource type="Script" uid="uid://dtoyyse7bnjuv" path="res://Code/States/CardInputListener.gd" id="10_koaue"]
-[ext_resource type="Script" uid="uid://d0qu3q360kdsl" path="res://Code/States/CardInputReciever.gd" id="11_2w08q"]
+[ext_resource type="Script" uid="uid://d0qu3q360kdsl" path="res://Code/States/CardInputReceiver.gd" id="11_2w08q"]
 [ext_resource type="Script" uid="uid://ro02870urhpb" path="res://Code/States/CardStateMachine.gd" id="12_lsojp"]
 [ext_resource type="Script" uid="uid://bsqidwsxqggmu" path="res://DistantTargetPicker.gd" id="13_vartc"]
 [ext_resource type="Script" uid="uid://ddadxkic18s44" path="res://Cards/AntlerAttackResolver.gd" id="14_4ukko"]
@@ -92,9 +92,8 @@ shader = ExtResource("28_5yc7r")
 shader_parameter/line_color = Color(0.105882354, 0.09019608, 0.08627451, 1)
 shader_parameter/line_thickness = 10.0
 
-[node name="Card" type="Node2D" unique_id=1703534497 node_paths=PackedStringArray("input_listener", "card_stats", "base_sigil_container", "additional_sigil_container")]
+[node name="Card" type="Node2D" unique_id=1703534497 node_paths=PackedStringArray("card_stats", "base_sigil_container", "additional_sigil_container")]
 script = ExtResource("1_ch35y")
-input_listener = NodePath("InputListener")
 card_stats = NodePath("CardStats")
 base_sigil_container = NodePath("BaseMutation")
 additional_sigil_container = NodePath("AdditonalMutation")
@@ -108,7 +107,7 @@ position = Vector2(0, -7.6293945e-06)
 shape = SubResource("RectangleShape2D_rjlel")
 metadata/_edit_lock_ = true
 
-[node name="InputReciver" type="Node" parent="." unique_id=213661670 node_paths=PackedStringArray("card_state_machine", "card_input_listener", "card_root")]
+[node name="InputReceiver" type="Node" parent="." unique_id=213661670 node_paths=PackedStringArray("card_state_machine", "card_input_listener", "card_root")]
 script = ExtResource("11_2w08q")
 card_state_machine = NodePath("../CardStateMachine")
 card_input_listener = NodePath("../InputListener")

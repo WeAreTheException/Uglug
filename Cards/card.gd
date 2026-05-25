@@ -6,7 +6,6 @@ enum Owner {
 	OPPONENT
 }
 
-@export var input_listener: CardInputListener
 @export var card_stats: CardStats
 @export var test_data: CardData
 @export var base_sigil_container: Node2D
@@ -83,13 +82,6 @@ func _ready() -> void:
 	attack_handler = get_node_or_null("CardStateMachine/Attack") as AttackHandler
 	hurt_handler = get_node_or_null("CardStateMachine/Hurt") as HurtHandler
 	die_handler = get_node_or_null("CardStateMachine/Die") as DieHandler
-
-	if input_listener != null:
-		input_listener.hovered.connect(_on_hovered)
-		input_listener.hovered_off.connect(_on_hovered_off)
-		input_listener.slot_entered.connect(_on_slot_entered)
-		input_listener.slot_exited.connect(_on_slot_exited)
-		input_listener.pressed.connect(_on_pressed)
 
 	if test_data != null:
 		setup_card(test_data)
@@ -196,16 +188,6 @@ func get_main_sprite() -> Sprite2D:
 	return found[0] as Sprite2D
 
 
-func _on_pressed(_listener) -> void:
-	print("card pressed: ", card_name)
-
-	if select_handler == null:
-		print("card pressed blocked: select_handler is null on ", card_name)
-		return
-
-	select_handler.select_card(self)
-
-
 func take_damage(amount: int, attacker: Card = null) -> void:
 	if hurt_handler != null:
 		hurt_handler.take_damage(amount, attacker)
@@ -250,23 +232,6 @@ func kill() -> void:
 		current_slot = null
 
 	queue_free()
-
-
-func _on_hovered(_listener) -> void:
-	is_hovered = true
-
-
-func _on_hovered_off(_listener) -> void:
-	is_hovered = false
-
-
-func _on_slot_entered(slot: NewSlots) -> void:
-	overlapping_slot = slot
-
-
-func _on_slot_exited(slot: NewSlots) -> void:
-	if overlapping_slot == slot:
-		overlapping_slot = null
 
 
 func set_selected(value: bool) -> void:
