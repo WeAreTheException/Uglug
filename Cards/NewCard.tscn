@@ -47,7 +47,7 @@ shader_parameter/screen_center = Vector2(960, 540)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5yc7r"]
 shader = ExtResource("24_gyg67")
-shader_parameter/shadow_color = Color(0.16229333, 0.17, 0.1428, 0.09803922)
+shader_parameter/shadow_color = Color(0.16229333, 0.17, 0.1428, 0.19607843)
 shader_parameter/shadow_scale = 0.025
 shader_parameter/shadow_min_length = 2.0
 shader_parameter/shadow_max_length = 0.0
