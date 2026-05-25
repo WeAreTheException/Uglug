@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://l28s3hnlv4iy" path="res://Cards/NewCard.tscn" id="3_7lkv5"]
 [ext_resource type="Script" uid="uid://chcqvu28271sh" path="res://Deck/DrawHandler.gd" id="4_gy366"]
 [ext_resource type="Script" uid="uid://blq43rpyvye6c" path="res://Data/CardDatabase.gd" id="5_rw1me"]
+[ext_resource type="Script" uid="uid://b8glhjm2vi2f1" path="res://Deck/DeckDrawAnimationHandler.gd" id="5_x7m7j"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="6_00oes"]
 [ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Mutations/Scripts/Mutation.gd" id="7_eu8gw"]
 [ext_resource type="Resource" uid="uid://ceeskmu01vy5g" path="res://Mutations/Antler.tres" id="8_n0yp5"]
@@ -63,6 +64,9 @@ card_scene = ExtResource("3_7lkv5")
 script = ExtResource("4_gy366")
 card_database = NodePath("../CardDatabase")
 deck_type = 1
+
+[node name="DeckDrawAnimationHandler" type="Node" parent="DeckDrawHandler" unique_id=298698796]
+script = ExtResource("5_x7m7j")
 
 [node name="CardDatabase" type="Node" parent="." unique_id=1978405134]
 script = ExtResource("5_rw1me")

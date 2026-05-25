@@ -6,8 +6,6 @@ enum DeckType {
 	WARRIOR
 }
 
-const CARD_DRAW_SPEED = 0.4
-
 static var next_card_id: int = 1
 
 static var shared_draws_used_this_turn: int = 0
@@ -29,6 +27,7 @@ var phase_manager: PhaseManager = null
 var select_handler: SelectHandler = null
 
 var worker_union_buff_handler: WorkerUnionBuffHandler = null
+var draw_animation_handler: DeckDrawAnimationHandler = null
 
 
 func _ready() -> void:
@@ -41,6 +40,7 @@ func _ready() -> void:
 	GDSync.expose_func(commit_spawn_card_from_effect)
 
 	worker_union_buff_handler = get_node_or_null("WorkerUnionBuffHandler") as WorkerUnionBuffHandler
+	draw_animation_handler = get_node_or_null("DeckDrawAnimationHandler") as DeckDrawAnimationHandler
 
 	print("DeckDrawHandler ready / deck_type = ", get_deck_type_name(), " / GDSync host = ", GDSync.is_host())
 
@@ -262,7 +262,10 @@ func draw_specific_card_to_hand(
 	target_hand.add_child(new_card)
 
 	var deck_root := get_parent() as Node2D
-	if deck_root != null:
+
+	if draw_animation_handler != null:
+		draw_animation_handler.prepare_card_start_position(new_card, deck_root)
+	elif deck_root != null:
 		new_card.global_position = deck_root.global_position
 
 	new_card.setup_card(data)
@@ -270,10 +273,11 @@ func draw_specific_card_to_hand(
 	if deck_type == DeckType.WORKER and worker_union_buff_handler != null:
 		worker_union_buff_handler.try_apply_to_card(new_card)
 
-	target_hand.add_card_to_hand(new_card, CARD_DRAW_SPEED)
-
-	if new_card.has_node("AnimationPlayer"):
-		new_card.get_node("AnimationPlayer").play("card_flip")
+	if draw_animation_handler != null:
+		draw_animation_handler.add_card_to_hand_with_animation(target_hand, new_card)
+		draw_animation_handler.play_draw_animation(new_card)
+	else:
+		target_hand.add_card_to_hand(new_card)
 
 	print("spawned from ", get_deck_type_name(), " deck: ", new_card.card_name)
 
