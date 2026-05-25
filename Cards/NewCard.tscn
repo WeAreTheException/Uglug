@@ -52,7 +52,7 @@ shader_parameter/screen_center = Vector2(960, 540)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5tkk3"]
 shader = ExtResource("26_j2h1k")
-shader_parameter/speed = Vector2(-0.025, 0.01)
+shader_parameter/speed = Vector2(-0.01, 0)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5yc7r"]
 shader = ExtResource("24_gyg67")
@@ -71,7 +71,7 @@ gradient = SubResource("Gradient_mhehh")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_octkm"]
 shader = ExtResource("28_uad50")
 shader_parameter/gradient = SubResource("GradientTexture1D_qltuj")
-shader_parameter/circle_color = Color(0.724185, 0.77, 0.63909996, 0.34901962)
+shader_parameter/circle_color = Color(0.11, 0.09427, 0.0671, 0.05882353)
 shader_parameter/circle_multiplier = 35.0
 shader_parameter/speed = 0.45
 shader_parameter/direction = Vector2(10, 5)
@@ -265,12 +265,13 @@ texture = ExtResource("25_duyd4")
 offset = Vector2(45, 20)
 metadata/_edit_lock_ = true
 
-[node name="Panel" type="Panel" parent="." unique_id=244048710]
+[node name="BackgroundDots" type="Panel" parent="." unique_id=244048710]
 material = SubResource("ShaderMaterial_octkm")
 offset_left = -86.0
 offset_top = -135.0
 offset_right = 87.0
 offset_bottom = 135.0
+metadata/_edit_lock_ = true
 
 [node name="Ant" type="Sprite2D" parent="." unique_id=821885335]
 material = SubResource("ShaderMaterial_wmwgk")
