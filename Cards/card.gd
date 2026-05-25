@@ -7,13 +7,14 @@ enum Owner {
 }
 
 @export var input_listener: CardInputListener
-@export var select_handler: SelectHandler
 @export var card_stats: CardStats
 @export var test_data: CardData
-@export var battle_scale: BattleScale
 @export var base_sigil_container: Node2D
 @export var additional_sigil_container: Node2D
-@export var combat_manager: CombatManager
+
+var select_handler: SelectHandler = null
+var battle_scale: BattleScale = null
+var combat_manager: CombatManager = null
 
 var current_attack: int:
 	get:
@@ -62,11 +63,11 @@ var additional_mutations: Array[Mutation] = []
 var death_processed: bool = false
 
 var move_tween: Tween = null
-var scale_tween: Tween = null
 
 var sacrifice_hint_active: bool = false
 var sacrifice_hint_time: float = 0.0
 
+var selection_visual_handler: CardSelectionVisualHandler = null
 var state_machine: CardStateMachine = null
 var attack_handler: AttackHandler = null
 var hurt_handler: HurtHandler = null
@@ -80,6 +81,7 @@ func _ready() -> void:
 	if card_stats == null:
 		card_stats = get_node_or_null("CardStats") as CardStats
 
+	selection_visual_handler = get_node_or_null("CardSelectionVisualHandler") as CardSelectionVisualHandler
 	mutation_handler = get_node_or_null("MutationHandler") as MutationHandler
 
 	state_machine = get_node_or_null("CardStateMachine") as CardStateMachine
@@ -279,15 +281,8 @@ func _on_slot_exited(slot: NewSlots) -> void:
 func set_selected(value: bool) -> void:
 	is_selected = value
 
-	if scale_tween != null:
-		scale_tween.kill()
-
-	scale_tween = create_tween()
-
-	if is_selected:
-		scale_tween.tween_property(self, "scale", Vector2(1.15, 1.15), 0.12)
-	else:
-		scale_tween.tween_property(self, "scale", Vector2(1.0, 1.0), 0.12)
+	if selection_visual_handler != null:
+		selection_visual_handler.set_selected(value)
 
 
 func place_into_slot(slot: NewSlots) -> void:
