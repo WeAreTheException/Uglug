@@ -62,9 +62,6 @@ var additional_mutations: Array[Mutation] = []
 
 var death_processed: bool = false
 
-var sacrifice_hint_active: bool = false
-var sacrifice_hint_time: float = 0.0
-
 var slot_handler: CardSlotHandler = null
 var state_machine: CardStateMachine = null
 var attack_handler: AttackHandler = null
@@ -96,10 +93,6 @@ func _ready() -> void:
 
 	if test_data != null:
 		setup_card(test_data)
-
-
-func _process(delta: float) -> void:
-	update_sacrifice_hint(delta)
 
 
 func setup_card(data: CardData) -> void:
@@ -298,22 +291,3 @@ func apply_slot_owner(slot: NewSlots) -> void:
 func return_to_hand() -> void:
 	if slot_handler != null:
 		slot_handler.return_to_hand()
-
-
-func start_sacrifice_hint() -> void:
-	sacrifice_hint_active = true
-	sacrifice_hint_time = 0.0
-
-
-func stop_sacrifice_hint() -> void:
-	sacrifice_hint_active = false
-	sacrifice_hint_time = 0.0
-	rotation = 0.0
-
-
-func update_sacrifice_hint(delta: float) -> void:
-	if not sacrifice_hint_active:
-		return
-
-	sacrifice_hint_time += delta
-	rotation = sin(sacrifice_hint_time * 8.0) * deg_to_rad(3.0)
