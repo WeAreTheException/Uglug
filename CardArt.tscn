@@ -8,6 +8,7 @@
 [ext_resource type="Shader" uid="uid://ck3gs6whq2t57" path="res://Cards/AntSway.gdshader" id="4_yq5o4"]
 [ext_resource type="Texture2D" uid="uid://dv7v478yhlcrv" path="res://Art/CardFog.png" id="5_7ndf7"]
 [ext_resource type="Shader" uid="uid://clsxlhuocr8hn" path="res://Cards/BackgroundSlide.gdshader" id="5_8nudy"]
+[ext_resource type="Texture2D" uid="uid://c4v3je4ncss3j" path="res://Art/WorkerAnt_Test_Alpha.png" id="6_7ndf7"]
 [ext_resource type="Texture2D" uid="uid://wak6qieqhlsb" path="res://Art/CardBorder.png" id="6_8nudy"]
 [ext_resource type="Shader" uid="uid://dt77y6ccd1hxy" path="res://Cards/SigilOutline.gdshader" id="7_bft4m"]
 [ext_resource type="Texture2D" uid="uid://dqtxvu584lxsj" path="res://Art/Mutations/Ant_Hill_Sigil.PNG" id="8_483al"]
@@ -23,21 +24,6 @@ shader_parameter/screen_center = Vector2(960, 540)
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bft4m"]
 shader = ExtResource("3_yq5o4")
 shader_parameter/speed = Vector2(0, 0)
-
-[sub_resource type="Gradient" id="Gradient_587ti"]
-colors = PackedColorArray(0.35606432, 0.35606432, 0.35606432, 1, 0.567368, 0.5673676, 0.56736773, 1)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_qltuj"]
-gradient = SubResource("Gradient_587ti")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_3380x"]
-shader = ExtResource("5_8nudy")
-shader_parameter/gradient = SubResource("GradientTexture1D_qltuj")
-shader_parameter/circle_color = Color(0.11, 0.09427, 0.0671, 0.05882353)
-shader_parameter/circle_multiplier = 35.0
-shader_parameter/speed = 0.45
-shader_parameter/direction = Vector2(10, 5)
-shader_parameter/rotation = Transform2D(1, -1, 1, 1, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_483al"]
 shader = ExtResource("4_7ndf7")
@@ -60,13 +46,29 @@ colors = PackedColorArray(1, 1, 1, 1)
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_3q3n8"]
 gradient = SubResource("Gradient_pg6v0")
 
+[sub_resource type="Gradient" id="Gradient_8nudy"]
+colors = PackedColorArray(0.36207703, 0.36207703, 0.362077, 1, 0.5996037, 0.5996037, 0.5996037, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_bft4m"]
+gradient = SubResource("Gradient_8nudy")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3380x"]
+shader = ExtResource("5_8nudy")
+shader_parameter/gradient = SubResource("GradientTexture1D_bft4m")
+shader_parameter/circle_color = Color(0.11, 0.09427, 0.0671, 0.05882353)
+shader_parameter/circle_multiplier = 35.0
+shader_parameter/speed = 0.45
+shader_parameter/direction = Vector2(10, 5)
+shader_parameter/rotation = Transform2D(1, -1, 1, 1, 0, 0)
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3q3n8"]
-shader = ExtResource("1_kyvol")
-shader_parameter/shadow_color = Color(0.16229333, 0.17, 0.1428, 0.19607843)
-shader_parameter/shadow_scale = 0.025
-shader_parameter/shadow_min_length = 2.0
-shader_parameter/shadow_max_length = 0.0
-shader_parameter/screen_center = Vector2(960, 540)
+shader = ExtResource("5_8nudy")
+shader_parameter/gradient = ExtResource("6_7ndf7")
+shader_parameter/circle_color = Color(0.1, 0.09240001, 0.081, 0.23529412)
+shader_parameter/circle_multiplier = 55.0
+shader_parameter/speed = 0.1
+shader_parameter/direction = Vector2(1, 1)
+shader_parameter/rotation = Transform2D(1, -1, 1, 1, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_587ti"]
 shader = ExtResource("4_yq5o4")
@@ -118,14 +120,6 @@ material = SubResource("ShaderMaterial_bft4m")
 scale = Vector2(0.14520307, 0.14520307)
 texture = ExtResource("2_px4ui")
 
-[node name="BackgroundDots" type="Panel" parent="CanvasLayer" unique_id=1188586363]
-material = SubResource("ShaderMaterial_3380x")
-offset_left = -86.0
-offset_top = -135.0
-offset_right = 87.0
-offset_bottom = 135.0
-metadata/_edit_lock_ = true
-
 [node name="Backgroundatro" type="TextureRect" parent="CanvasLayer" unique_id=620924349]
 material = SubResource("ShaderMaterial_483al")
 offset_left = -86.0
@@ -134,6 +128,16 @@ offset_right = 87.0
 offset_bottom = 135.0
 texture = SubResource("GradientTexture1D_3q3n8")
 expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="BackgroundDots" type="Panel" parent="CanvasLayer" unique_id=1188586363]
+visible = false
+material = SubResource("ShaderMaterial_3380x")
+offset_left = -86.0
+offset_top = -135.0
+offset_right = 87.0
+offset_bottom = 135.0
+metadata/_edit_lock_ = true
 
 [node name="Antdows" type="Sprite2D" parent="CanvasLayer" unique_id=33299499]
 material = SubResource("ShaderMaterial_3q3n8")
