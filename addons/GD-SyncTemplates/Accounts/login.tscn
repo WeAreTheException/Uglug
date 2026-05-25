@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://b6v2t1l5wlcjk"]
+[gd_scene format=3 uid="uid://b6v2t1l5wlcjk"]
 
-[ext_resource type="Script" path="res://GD-SyncTemplates/Accounts/login.gd" id="1_dw383"]
+[ext_resource type="Script" uid="uid://dkwor7ud64x08" path="res://addons/GD-SyncTemplates/Accounts/login.gd" id="1_dw383"]
 
 [node name="Login" type="Control"]
 layout_mode = 3

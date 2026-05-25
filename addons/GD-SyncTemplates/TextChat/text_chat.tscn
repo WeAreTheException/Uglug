@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://dgbv7r0yrg4yk"]
+[gd_scene format=3 uid="uid://dgbv7r0yrg4yk"]
 
-[ext_resource type="Script" path="res://GD-SyncTemplates/TextChat/text_chat.gd" id="1_rkot3"]
+[ext_resource type="Script" uid="uid://u6o4t3s52qlj" path="res://addons/GD-SyncTemplates/TextChat/text_chat.gd" id="1_rkot3"]
 
 [node name="TextChat" type="Control"]
 layout_mode = 3

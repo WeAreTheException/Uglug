@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://8qy4jenu2w1m"]
+[gd_scene format=3 uid="uid://8qy4jenu2w1m"]
 
-[ext_resource type="Script" path="res://GD-SyncTemplates/LobbyBrowser/lobby_browser.gd" id="1_gf4jf"]
+[ext_resource type="Script" uid="uid://xtw8d6xhqkee" path="res://addons/GD-SyncTemplates/LobbyBrowser/lobby_browser.gd" id="1_gf4jf"]
 
 [node name="LobbyBrowser" type="Control"]
 layout_mode = 3

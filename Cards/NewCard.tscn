@@ -20,9 +20,6 @@
 [ext_resource type="Script" uid="uid://dtoyyse7bnjuv" path="res://Code/States/CardInputListener.gd" id="10_koaue"]
 [ext_resource type="Script" uid="uid://d0qu3q360kdsl" path="res://Code/States/CardInputReceiver.gd" id="11_2w08q"]
 [ext_resource type="Script" uid="uid://ro02870urhpb" path="res://Code/States/CardStateMachine.gd" id="12_lsojp"]
-[ext_resource type="Script" uid="uid://bsqidwsxqggmu" path="res://DistantTargetPicker.gd" id="13_vartc"]
-[ext_resource type="Script" uid="uid://ddadxkic18s44" path="res://Cards/AntlerAttackResolver.gd" id="14_4ukko"]
-[ext_resource type="Script" uid="uid://c43ots6r45ip6" path="res://Cards/AntlerAttackExecutor.gd" id="15_aqnhy"]
 [ext_resource type="Script" uid="uid://cfvsqn441hgwq" path="res://Cards/CardStats.gd" id="22_koaue"]
 [ext_resource type="Script" uid="uid://de64ge4akihco" path="res://Mutations/ToolTip/MutationToolTipHandler.gd" id="23_2w08q"]
 [ext_resource type="Shader" uid="uid://rctscsnbymrv" path="res://Cards/CardShadow.gdshader" id="24_gyg67"]
@@ -38,6 +35,7 @@
 [ext_resource type="Script" uid="uid://cmhvnj1h173o2" path="res://Cards/BackInHandCardState.gd" id="34_wmwgk"]
 [ext_resource type="Material" uid="uid://dh78conckoov3" path="res://Cards/BackInHandInvert.tres" id="35_5yc7r"]
 [ext_resource type="Script" uid="uid://dhkq7ls1f2ddm" path="res://Cards/BackInHandDeathVisualHandler.gd" id="36_x5477"]
+[ext_resource type="PackedScene" uid="uid://ciqnjvisfunfm" path="res://CardCode.tscn" id="37_j2h1k"]
 [ext_resource type="Script" uid="uid://c6m8lgpe46l6r" path="res://Cards/CardSlotHandler.gd" id="37_ra3pw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
@@ -165,31 +163,6 @@ script = ExtResource("9_fuvn1")
 [node name="CardStats" type="Node" parent="." unique_id=1956418628 node_paths=PackedStringArray("stats_visual")]
 script = ExtResource("22_koaue")
 stats_visual = NodePath("../Stats")
-
-[node name="DistantTargetPicker" type="Node" parent="." unique_id=375972492 node_paths=PackedStringArray("ready_visual")]
-script = ExtResource("13_vartc")
-ready_visual = NodePath("../DistantReadyVisual")
-
-[node name="AntlerAttackResolver" type="Node" parent="." unique_id=796752569]
-script = ExtResource("14_4ukko")
-
-[node name="AntlerAttackExecutor" type="Node" parent="." unique_id=908601862]
-script = ExtResource("15_aqnhy")
-
-[node name="DistantReadyVisual" type="Panel" parent="." unique_id=1887081021]
-offset_left = -86.0
-offset_top = -155.0
-offset_right = 86.0
-offset_bottom = -134.0
-
-[node name="Label" type="Label" parent="DistantReadyVisual" unique_id=414593817]
-z_index = 5
-layout_mode = 0
-offset_left = 4.0
-offset_top = -2.0
-offset_right = 169.0
-offset_bottom = 21.0
-text = "Choose Slot to Attack"
 
 [node name="Stats" type="Node2D" parent="." unique_id=1314998697 node_paths=PackedStringArray("card_sprite", "attack", "health", "cost", "name_label")]
 script = ExtResource("2_52a3h")
@@ -348,3 +321,5 @@ die_anim = NodePath("../CardStateMachine/Die/DthAnim")
 
 [node name="CardSlotHandler" type="Node" parent="." unique_id=1956819410]
 script = ExtResource("37_ra3pw")
+
+[node name="CardSpecific" parent="." unique_id=60008231 instance=ExtResource("37_j2h1k")]

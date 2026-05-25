@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://cekqljqrlxm2j"]
+[gd_scene format=3 uid="uid://cekqljqrlxm2j"]
 
-[ext_resource type="Script" path="res://GD-SyncTemplates/Leaderboards/leaderboard_browser.gd" id="1_bxr2j"]
+[ext_resource type="Script" uid="uid://cdvm1fcevdpj1" path="res://addons/GD-SyncTemplates/Leaderboards/leaderboard_browser.gd" id="1_bxr2j"]
 
 [node name="LeaderboardBrowser" type="Control"]
 layout_mode = 3
