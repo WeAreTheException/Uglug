@@ -22,6 +22,7 @@ var select_handler: SelectHandler = null
 var worker_union_buff_handler: WorkerUnionBuffHandler = null
 var draw_animation_handler: DeckDrawAnimationHandler = null
 var draw_limit_handler: DeckDrawLimitHandler = null
+var card_spawn_handler: CardSpawnHandler = null
 
 
 func _ready() -> void:
@@ -36,10 +37,9 @@ func _ready() -> void:
 	worker_union_buff_handler = get_node_or_null("WorkerUnionBuffHandler") as WorkerUnionBuffHandler
 	draw_animation_handler = get_node_or_null("DeckDrawAnimationHandler") as DeckDrawAnimationHandler
 	draw_limit_handler = get_node_or_null("DeckDrawLimitHandler") as DeckDrawLimitHandler
+	card_spawn_handler = get_node_or_null("CardSpawnHandler") as CardSpawnHandler
 
-	if draw_limit_handler != null:
-		draw_limit_handler.phase_manager = phase_manager
-		draw_limit_handler.player_hand = player_hand
+	_setup_child_handlers()
 
 	print("DeckDrawHandler ready / deck_type = ", get_deck_type_name(), " / GDSync host = ", GDSync.is_host())
 
@@ -47,6 +47,22 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	if draw_limit_handler != null:
 		draw_limit_handler.process_limit_reset()
+
+
+func _setup_child_handlers() -> void:
+	if draw_limit_handler != null:
+		draw_limit_handler.phase_manager = phase_manager
+		draw_limit_handler.player_hand = player_hand
+
+	if card_spawn_handler != null:
+		card_spawn_handler.card_database = card_database
+		card_spawn_handler.deck = deck
+		card_spawn_handler.combat_manager = combat_manager
+		card_spawn_handler.select_handler = select_handler
+		card_spawn_handler.draw_animation_handler = draw_animation_handler
+		card_spawn_handler.worker_union_buff_handler = worker_union_buff_handler
+		card_spawn_handler.deck_type_name = get_deck_type_name()
+		card_spawn_handler.should_apply_worker_union_buff = deck_type == DeckType.WORKER
 
 
 func get_deck_type_name() -> String:
@@ -181,90 +197,20 @@ func draw_specific_card_to_hand(
 	card_id: int,
 	owning_peer_id: int
 ) -> bool:
-	if deck == null:
-		print("draw blocked: deck is null on ", get_deck_type_name())
+	if card_spawn_handler == null:
+		print("draw blocked: CardSpawnHandler missing on ", get_deck_type_name())
 		return false
-
-	if target_hand == null:
-		print("draw blocked: target_hand is null on ", get_deck_type_name())
-		return false
-
-	if card_database == null:
-		print("draw blocked: card_database is null on ", get_deck_type_name())
-		return false
-
-	if deck.card_scene == null:
-		print("draw blocked: deck.card_scene is null on ", get_deck_type_name())
-		return false
-
-	if not target_hand.has_method("add_card_to_hand"):
-		print("draw blocked: target_hand missing add_card_to_hand on ", get_deck_type_name())
-		return false
-
-	if target_hand.has_method("is_hand_full") and target_hand.is_hand_full():
-		print("draw blocked: hand is full on ", get_deck_type_name())
-		return false
-
-	var data := get_card_data_by_name(card_name)
-
-	if data == null:
-		print("draw blocked: could not find card data named ", card_name, " in ", get_deck_type_name())
-		return false
-
-	var new_card := deck.card_scene.instantiate() as Card
-
-	if new_card == null:
-		print("draw blocked: card_scene did not instantiate Card on ", get_deck_type_name())
-		return false
-
-	new_card.multiplayer_card_id = card_id
-	new_card.owning_peer_id = owning_peer_id
-	new_card.card_owner = new_card_owner
-	new_card.player_hand = target_hand
-	new_card.combat_manager = combat_manager
-
-	if new_card_owner == Card.Owner.PLAYER:
-		new_card.select_handler = select_handler
-	else:
-		new_card.select_handler = null
-
-	target_hand.add_child(new_card)
 
 	var deck_root := get_parent() as Node2D
 
-	if draw_animation_handler != null:
-		draw_animation_handler.prepare_card_start_position(new_card, deck_root)
-	elif deck_root != null:
-		new_card.global_position = deck_root.global_position
-
-	new_card.setup_card(data)
-
-	if deck_type == DeckType.WORKER and worker_union_buff_handler != null:
-		worker_union_buff_handler.try_apply_to_card(new_card)
-
-	if draw_animation_handler != null:
-		draw_animation_handler.add_card_to_hand_with_animation(target_hand, new_card)
-		draw_animation_handler.play_draw_animation(new_card)
-	else:
-		target_hand.add_card_to_hand(new_card)
-
-	print("spawned from ", get_deck_type_name(), " deck: ", new_card.card_name)
-
-	return true
-
-
-func get_card_data_by_name(card_name: String) -> CardData:
-	if card_database == null:
-		return null
-
-	for data in card_database.cards:
-		if data == null:
-			continue
-
-		if data.name == card_name:
-			return data
-
-	return null
+	return card_spawn_handler.spawn_card_to_hand(
+		target_hand,
+		new_card_owner,
+		card_name,
+		card_id,
+		owning_peer_id,
+		deck_root
+	)
 
 
 func pick_card_data() -> CardData:
