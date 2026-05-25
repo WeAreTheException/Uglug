@@ -36,7 +36,6 @@
 [ext_resource type="Script" uid="uid://cmhvnj1h173o2" path="res://Cards/BackInHandCardState.gd" id="34_wmwgk"]
 [ext_resource type="Material" uid="uid://dh78conckoov3" path="res://Cards/BackInHandInvert.tres" id="35_5yc7r"]
 [ext_resource type="Script" uid="uid://dhkq7ls1f2ddm" path="res://Cards/BackInHandDeathVisualHandler.gd" id="36_x5477"]
-[ext_resource type="Script" uid="uid://dop3u0hj61e1d" path="res://Cards/CardSelectionVisualHandler.gd" id="37_ra3pw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
 size = Vector2(174, 268)
@@ -306,6 +305,3 @@ invert_material = ExtResource("35_5yc7r")
 [node name="BackInHandDeathVisualHandler" type="Node" parent="." unique_id=2138241591 node_paths=PackedStringArray("die_anim")]
 script = ExtResource("36_x5477")
 die_anim = NodePath("../CardStateMachine/Die/DthAnim")
-
-[node name="CardSelectionVisualHandler" type="Node" parent="." unique_id=621849004]
-script = ExtResource("37_ra3pw")

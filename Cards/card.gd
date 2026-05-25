@@ -281,10 +281,6 @@ func _on_slot_exited(slot: NewSlots) -> void:
 func set_selected(value: bool) -> void:
 	is_selected = value
 
-	if selection_visual_handler != null:
-		selection_visual_handler.set_selected(value)
-
-
 func place_into_slot(slot: NewSlots) -> void:
 	if slot == null:
 		return
