@@ -6,12 +6,15 @@
 [ext_resource type="Script" uid="uid://chw242mi2nxl4" path="res://Deck/DeckInputListener.gd" id="3_6omjd"]
 [ext_resource type="Script" uid="uid://chcqvu28271sh" path="res://Deck/DrawHandler.gd" id="4_4nk3w"]
 [ext_resource type="Script" uid="uid://blq43rpyvye6c" path="res://Data/CardDatabase.gd" id="4_xceh1"]
+[ext_resource type="Script" uid="uid://b8glhjm2vi2f1" path="res://Deck/DeckDrawAnimationHandler.gd" id="5_8hegm"]
 [ext_resource type="Script" uid="uid://dgeu721gn1kmj" path="res://Deck/MutationInhertinanceHandler.gd" id="5_jiq85"]
 [ext_resource type="Script" uid="uid://c8owoh3gv45g4" path="res://Deck/DeckView.gd" id="5_wj4mp"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="6_efqef"]
-[ext_resource type="Script" path="res://Deck/WorkerUnionBuffHandler.gd" id="6_fboto"]
+[ext_resource type="Script" uid="uid://c6fl8bglcex85" path="res://Deck/WorkerUnionBuffHandler.gd" id="6_fboto"]
+[ext_resource type="Script" uid="uid://bvxcpx68kfwbq" path="res://Deck/DeckDrawLimitHandler.gd" id="6_tpck8"]
 [ext_resource type="Texture2D" uid="uid://cgs5k6p3mggyf" path="res://Art/Ants/AntSprite.png" id="7_hsdj0"]
 [ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Mutations/Scripts/Mutation.gd" id="8_fboto"]
+[ext_resource type="Script" uid="uid://c4gh41beiex8k" path="res://Deck/CardSpawnHandler.gd" id="9_l83sp"]
 
 [sub_resource type="Resource" id="Resource_hsdj0"]
 script = ExtResource("6_efqef")
@@ -34,6 +37,15 @@ card_scene = ExtResource("3_5cebq")
 [node name="DeckDrawHandler" type="Node" parent="." unique_id=1995550717 node_paths=PackedStringArray("card_database")]
 script = ExtResource("4_4nk3w")
 card_database = NodePath("../CardDatabase")
+
+[node name="DeckDrawAnimationHandler" type="Node" parent="DeckDrawHandler" unique_id=1233680016]
+script = ExtResource("5_8hegm")
+
+[node name="DeckDrawLimitHandler" type="Node" parent="DeckDrawHandler" unique_id=1328647075]
+script = ExtResource("6_tpck8")
+
+[node name="CardSpawnHandler" type="Node" parent="DeckDrawHandler" unique_id=1565397988]
+script = ExtResource("9_l83sp")
 
 [node name="MutationInhertitanceHandler" type="Node" parent="DeckDrawHandler" unique_id=161332538]
 script = ExtResource("5_jiq85")
