@@ -33,6 +33,9 @@
 [ext_resource type="Texture2D" uid="uid://dv7v478yhlcrv" path="res://Art/CardFog.png" id="26_gyg67"]
 [ext_resource type="Texture2D" uid="uid://wak6qieqhlsb" path="res://Art/CardBorder.png" id="27_wmwgk"]
 [ext_resource type="Shader" uid="uid://dt77y6ccd1hxy" path="res://Cards/SigilOutline.gdshader" id="28_5yc7r"]
+[ext_resource type="Script" uid="uid://cmhvnj1h173o2" path="res://Cards/BackInHandCardState.gd" id="34_wmwgk"]
+[ext_resource type="Material" uid="uid://dh78conckoov3" path="res://Cards/BackInHandInvert.tres" id="35_5yc7r"]
+[ext_resource type="Script" uid="uid://dhkq7ls1f2ddm" path="res://Cards/BackInHandDeathVisualHandler.gd" id="36_x5477"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
 size = Vector2(174, 268)
@@ -294,3 +297,11 @@ tooltip_scene = ExtResource("24_lsojp")
 base_sigil_sprites = [NodePath("../BaseMutation/BaseSprite")]
 additional_sigil_sprites = [NodePath("../AdditonalMutation/Additional1"), NodePath("../AdditonalMutation/Additional2"), NodePath("../AdditonalMutation/Additional3")]
 card_top_offset = Vector2(0, -135)
+
+[node name="BackInHandCardState" type="Node" parent="." unique_id=2077672213]
+script = ExtResource("34_wmwgk")
+invert_material = ExtResource("35_5yc7r")
+
+[node name="BackInHandDeathVisualHandler" type="Node" parent="." unique_id=2138241591 node_paths=PackedStringArray("die_anim")]
+script = ExtResource("36_x5477")
+die_anim = NodePath("../CardStateMachine/Die/DthAnim")
