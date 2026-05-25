@@ -11,6 +11,7 @@
 [ext_resource type="Script" uid="uid://c8owoh3gv45g4" path="res://Deck/DeckView.gd" id="5_wj4mp"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="6_efqef"]
 [ext_resource type="Script" uid="uid://c6fl8bglcex85" path="res://Deck/WorkerUnionBuffHandler.gd" id="6_fboto"]
+[ext_resource type="Script" uid="uid://bvxcpx68kfwbq" path="res://Deck/DeckDrawLimitHandler.gd" id="6_tpck8"]
 [ext_resource type="Texture2D" uid="uid://cgs5k6p3mggyf" path="res://Art/Ants/AntSprite.png" id="7_hsdj0"]
 [ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Mutations/Scripts/Mutation.gd" id="8_fboto"]
 
@@ -38,6 +39,9 @@ card_database = NodePath("../CardDatabase")
 
 [node name="DeckDrawAnimationHandler" type="Node" parent="DeckDrawHandler" unique_id=1233680016]
 script = ExtResource("5_8hegm")
+
+[node name="DeckDrawLimitHandler" type="Node" parent="DeckDrawHandler" unique_id=1328647075]
+script = ExtResource("6_tpck8")
 
 [node name="MutationInhertitanceHandler" type="Node" parent="DeckDrawHandler" unique_id=161332538]
 script = ExtResource("5_jiq85")
