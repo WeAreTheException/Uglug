@@ -62,12 +62,10 @@ var additional_mutations: Array[Mutation] = []
 
 var death_processed: bool = false
 
-var move_tween: Tween = null
-
 var sacrifice_hint_active: bool = false
 var sacrifice_hint_time: float = 0.0
 
-var selection_visual_handler: CardSelectionVisualHandler = null
+var slot_handler: CardSlotHandler = null
 var state_machine: CardStateMachine = null
 var attack_handler: AttackHandler = null
 var hurt_handler: HurtHandler = null
@@ -81,7 +79,7 @@ func _ready() -> void:
 	if card_stats == null:
 		card_stats = get_node_or_null("CardStats") as CardStats
 
-	selection_visual_handler = get_node_or_null("CardSelectionVisualHandler") as CardSelectionVisualHandler
+	slot_handler = get_node_or_null("CardSlotHandler") as CardSlotHandler
 	mutation_handler = get_node_or_null("MutationHandler") as MutationHandler
 
 	state_machine = get_node_or_null("CardStateMachine") as CardStateMachine
@@ -281,53 +279,25 @@ func _on_slot_exited(slot: NewSlots) -> void:
 func set_selected(value: bool) -> void:
 	is_selected = value
 
+
 func place_into_slot(slot: NewSlots) -> void:
-	if slot == null:
-		return
-
-	if not slot.assign_card(self):
-		return
-
-	if current_slot != null and current_slot != slot:
-		current_slot.clear_card()
-
-	current_slot = slot
-
-	if player_hand != null:
-		if player_hand.has_method("remove_card_from_hand"):
-			player_hand.remove_card_from_hand(self)
-
-	animate_to_position(slot.global_position)
+	if slot_handler != null:
+		slot_handler.place_into_slot(slot)
 
 
 func animate_to_position(target_pos: Vector2) -> void:
-	if move_tween != null:
-		move_tween.kill()
-
-	move_tween = create_tween()
-	move_tween.tween_property(self, "global_position", target_pos, 0.18)
+	if slot_handler != null:
+		slot_handler.animate_to_position(target_pos)
 
 
 func apply_slot_owner(slot: NewSlots) -> void:
-	if slot == null:
-		return
-
-	if slot.slot_owner == NewSlots.SlotOwner.PLAYER:
-		card_owner = Owner.PLAYER
-	else:
-		card_owner = Owner.OPPONENT
+	if slot_handler != null:
+		slot_handler.apply_slot_owner(slot)
 
 
 func return_to_hand() -> void:
-	if current_slot != null:
-		current_slot.clear_card()
-		current_slot = null
-
-	if player_hand != null:
-		if player_hand.has_method("add_card_to_hand"):
-			player_hand.add_card_to_hand(self)
-
-	set_selected(false)
+	if slot_handler != null:
+		slot_handler.return_to_hand()
 
 
 func start_sacrifice_hint() -> void:
