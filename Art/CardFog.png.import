@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://btcjfpehdqul6"
-path="res://.godot/imported/Anthrax_Sigil.PNG-42861f7f9a190e1dda898ea425800d83.ctex"
+uid="uid://dv7v478yhlcrv"
+path="res://.godot/imported/CardFog.png-b797999d6fc30ad33bf56d84fd3f75c3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Art/Mutations/Anthrax_Sigil.PNG"
-dest_files=["res://.godot/imported/Anthrax_Sigil.PNG-42861f7f9a190e1dda898ea425800d83.ctex"]
+source_file="res://Art/CardFog.png"
+dest_files=["res://.godot/imported/CardFog.png-b797999d6fc30ad33bf56d84fd3f75c3.ctex"]
 
 [params]
 
