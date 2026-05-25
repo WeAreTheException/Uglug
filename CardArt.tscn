@@ -1,0 +1,129 @@
+[gd_scene format=3 uid="uid://b8f0lryqwcw7j"]
+
+[ext_resource type="Shader" uid="uid://rctscsnbymrv" path="res://Cards/CardShadow.gdshader" id="1_kyvol"]
+[ext_resource type="Texture2D" uid="uid://bt8o5l5yrmihl" path="res://Art/CardBackground.png" id="2_px4ui"]
+[ext_resource type="Texture2D" uid="uid://b8a1gr84h2iie" path="res://Art/Ants/WorkerAnt_Standalone.png" id="3_rpqwj"]
+[ext_resource type="Shader" uid="uid://ck3gs6whq2t57" path="res://Cards/AntSway.gdshader" id="4_yq5o4"]
+[ext_resource type="Texture2D" uid="uid://dv7v478yhlcrv" path="res://Art/CardFog.png" id="5_7ndf7"]
+[ext_resource type="Texture2D" uid="uid://wak6qieqhlsb" path="res://Art/CardBorder.png" id="6_8nudy"]
+[ext_resource type="Shader" uid="uid://dt77y6ccd1hxy" path="res://Cards/SigilOutline.gdshader" id="7_bft4m"]
+[ext_resource type="Texture2D" uid="uid://dqtxvu584lxsj" path="res://Art/Mutations/Ant_Hill_Sigil.PNG" id="8_483al"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pg6v0"]
+shader = ExtResource("1_kyvol")
+shader_parameter/shadow_color = Color(0.0666, 0.07440001, 0.09, 0.6666667)
+shader_parameter/shadow_scale = 0.025
+shader_parameter/shadow_min_length = 1.0
+shader_parameter/shadow_max_length = 10.0
+shader_parameter/screen_center = Vector2(960, 540)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3q3n8"]
+shader = ExtResource("1_kyvol")
+shader_parameter/shadow_color = Color(0.16229333, 0.17, 0.1428, 0.19607843)
+shader_parameter/shadow_scale = 0.025
+shader_parameter/shadow_min_length = 2.0
+shader_parameter/shadow_max_length = 0.0
+shader_parameter/screen_center = Vector2(960, 540)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_587ti"]
+shader = ExtResource("4_yq5o4")
+shader_parameter/waveAmplitude = 0.0330000015675
+shader_parameter/correctVertex = true
+shader_parameter/waveFrequency = 0.0
+shader_parameter/verticalWave = true
+shader_parameter/keepTransparency = true
+shader_parameter/useTime = true
+shader_parameter/waveSpeed = 1.0
+shader_parameter/progress = 0.0
+shader_parameter/firstHalf = 0.5
+shader_parameter/secondHalf = 0.5
+shader_parameter/freezeFirstHalf = false
+shader_parameter/freezeSecondHalf = false
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6nr3l"]
+shader = ExtResource("7_bft4m")
+shader_parameter/line_color = Color(0.105882354, 0.09019608, 0.08627451, 1)
+shader_parameter/line_thickness = 10.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0l3ys"]
+shader = ExtResource("7_bft4m")
+shader_parameter/line_color = Color(0.105882354, 0.09019608, 0.08627451, 1)
+shader_parameter/line_thickness = 10.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_l5g41"]
+shader = ExtResource("7_bft4m")
+shader_parameter/line_color = Color(0.105882354, 0.09019608, 0.08627451, 1)
+shader_parameter/line_thickness = 10.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hdaxf"]
+shader = ExtResource("7_bft4m")
+shader_parameter/line_color = Color(0.105882354, 0.09019608, 0.08627451, 1)
+shader_parameter/line_thickness = 10.0
+
+[node name="CardArt" type="Node2D" unique_id=1593445486]
+
+[node name="CardShadow" type="Sprite2D" parent="." unique_id=2132133737]
+material = SubResource("ShaderMaterial_pg6v0")
+scale = Vector2(0.14520307, 0.14520307)
+texture = ExtResource("2_px4ui")
+offset = Vector2(0, 25)
+
+[node name="CardImage" type="Sprite2D" parent="." unique_id=1831669461]
+scale = Vector2(0.14520307, 0.14520307)
+texture = ExtResource("2_px4ui")
+
+[node name="Antdows" type="Sprite2D" parent="." unique_id=33299499]
+material = SubResource("ShaderMaterial_3q3n8")
+position = Vector2(0, 2.3841858e-06)
+scale = Vector2(0.14500003, 0.1451613)
+texture = ExtResource("3_rpqwj")
+offset = Vector2(45, 20)
+
+[node name="Ant" type="Sprite2D" parent="." unique_id=1609290713]
+material = SubResource("ShaderMaterial_587ti")
+position = Vector2(0, 2.3841858e-06)
+scale = Vector2(0.14500003, 0.1451613)
+texture = ExtResource("3_rpqwj")
+
+[node name="CardFog" type="Sprite2D" parent="." unique_id=908625951]
+position = Vector2(9.2267965e-07, 0.4999895)
+scale = Vector2(0.14500001, 0.14462365)
+texture = ExtResource("5_7ndf7")
+
+[node name="CardBorder" type="Sprite2D" parent="." unique_id=182582064]
+position = Vector2(2.670288e-05, -3.0517578e-05)
+scale = Vector2(0.14500006, 0.14516132)
+texture = ExtResource("6_8nudy")
+
+[node name="Mutations" type="Node2D" parent="." unique_id=1925102954]
+
+[node name="BaseMutation" type="Node2D" parent="Mutations" unique_id=1979689219]
+z_index = 1
+position = Vector2(0, 96)
+scale = Vector2(0.028686536, 0.028686536)
+
+[node name="BaseSprite" type="Sprite2D" parent="Mutations/BaseMutation" unique_id=935391738]
+material = SubResource("ShaderMaterial_6nr3l")
+position = Vector2(0.00012207031, 3.0517578e-05)
+scale = Vector2(4.4620237, 4.4620233)
+texture = ExtResource("8_483al")
+
+[node name="AdditonalMutation" type="Node2D" parent="Mutations" unique_id=100591237]
+
+[node name="Additional1" type="Sprite2D" parent="Mutations/AdditonalMutation" unique_id=185873266]
+material = SubResource("ShaderMaterial_0l3ys")
+position = Vector2(-64, -75)
+scale = Vector2(0.128, 0.12799999)
+texture = ExtResource("8_483al")
+
+[node name="Additional2" type="Sprite2D" parent="Mutations/AdditonalMutation" unique_id=1787102359]
+material = SubResource("ShaderMaterial_l5g41")
+position = Vector2(66, 0)
+scale = Vector2(0.128, 0.12799999)
+texture = ExtResource("8_483al")
+
+[node name="Additional3" type="Sprite2D" parent="Mutations/AdditonalMutation" unique_id=259294942]
+material = SubResource("ShaderMaterial_hdaxf")
+position = Vector2(-64, 32)
+scale = Vector2(0.128, 0.12799999)
+texture = ExtResource("8_483al")
