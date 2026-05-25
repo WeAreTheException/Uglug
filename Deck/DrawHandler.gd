@@ -34,22 +34,38 @@ func _ready() -> void:
 	GDSync.expose_func(request_spawn_cards_from_host)
 	GDSync.expose_func(commit_spawn_card_from_effect)
 
-	worker_union_buff_handler = get_node_or_null("WorkerUnionBuffHandler") as WorkerUnionBuffHandler
-	draw_animation_handler = get_node_or_null("DeckDrawAnimationHandler") as DeckDrawAnimationHandler
-	draw_limit_handler = get_node_or_null("DeckDrawLimitHandler") as DeckDrawLimitHandler
-	card_spawn_handler = get_node_or_null("CardSpawnHandler") as CardSpawnHandler
-
-	_setup_child_handlers()
+	_find_child_handlers()
 
 	print("DeckDrawHandler ready / deck_type = ", get_deck_type_name(), " / GDSync host = ", GDSync.is_host())
 
 
 func _process(_delta: float) -> void:
+	_refresh_child_handlers()
+
 	if draw_limit_handler != null:
 		draw_limit_handler.process_limit_reset()
 
 
-func _setup_child_handlers() -> void:
+func _find_child_handlers() -> void:
+	worker_union_buff_handler = get_node_or_null("WorkerUnionBuffHandler") as WorkerUnionBuffHandler
+	draw_animation_handler = get_node_or_null("DeckDrawAnimationHandler") as DeckDrawAnimationHandler
+	draw_limit_handler = get_node_or_null("DeckDrawLimitHandler") as DeckDrawLimitHandler
+	card_spawn_handler = get_node_or_null("CardSpawnHandler") as CardSpawnHandler
+
+
+func _refresh_child_handlers() -> void:
+	if worker_union_buff_handler == null:
+		worker_union_buff_handler = get_node_or_null("WorkerUnionBuffHandler") as WorkerUnionBuffHandler
+
+	if draw_animation_handler == null:
+		draw_animation_handler = get_node_or_null("DeckDrawAnimationHandler") as DeckDrawAnimationHandler
+
+	if draw_limit_handler == null:
+		draw_limit_handler = get_node_or_null("DeckDrawLimitHandler") as DeckDrawLimitHandler
+
+	if card_spawn_handler == null:
+		card_spawn_handler = get_node_or_null("CardSpawnHandler") as CardSpawnHandler
+
 	if draw_limit_handler != null:
 		draw_limit_handler.phase_manager = phase_manager
 		draw_limit_handler.player_hand = player_hand
@@ -83,6 +99,8 @@ func draw_player_card() -> void:
 	if not phase_manager.is_draw_phase():
 		print("draw blocked: not draw phase")
 		return
+
+	_refresh_child_handlers()
 
 	if draw_limit_handler != null:
 		if not draw_limit_handler.can_draw():
@@ -197,6 +215,8 @@ func draw_specific_card_to_hand(
 	card_id: int,
 	owning_peer_id: int
 ) -> bool:
+	_refresh_child_handlers()
+
 	if card_spawn_handler == null:
 		print("draw blocked: CardSpawnHandler missing on ", get_deck_type_name())
 		return false
