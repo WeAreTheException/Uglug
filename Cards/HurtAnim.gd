@@ -5,11 +5,21 @@ class_name HurtFeedbackHandler
 @export var shake_time: float = 0.04
 @export var flash_time: float = 0.05
 
+@export var hurt_sfx: AudioStream
+@export var volume_db: float = 0.0
+
 var card: Card = null
 var is_playing: bool = false
+var audio_player: AudioStreamPlayer
+
 
 func _ready() -> void:
 	card = _find_card_parent()
+
+	audio_player = AudioStreamPlayer.new()
+	add_child(audio_player)
+	audio_player.volume_db = volume_db
+
 
 func play_hurt() -> void:
 	if card == null:
@@ -18,6 +28,7 @@ func play_hurt() -> void:
 		return
 
 	is_playing = true
+	_play_sfx(hurt_sfx)
 
 	var start_pos := card.position
 	var sprite: Sprite2D = card.get_main_sprite()
@@ -40,6 +51,15 @@ func play_hurt() -> void:
 		sprite.modulate = Color(1, 1, 1, 1)
 
 	is_playing = false
+
+
+func _play_sfx(stream: AudioStream) -> void:
+	if stream == null:
+		return
+
+	audio_player.stream = stream
+	audio_player.play()
+
 
 func _find_card_parent() -> Card:
 	var current := get_parent()

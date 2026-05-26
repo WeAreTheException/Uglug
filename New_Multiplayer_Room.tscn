@@ -28,6 +28,7 @@
 [ext_resource type="Script" uid="uid://dsifsjjn64ofo" path="res://Multiplayer/TuggaUIManager.gd" id="18_ebxid"]
 [ext_resource type="Texture2D" uid="uid://2pljvs41hqvt" path="res://Art/Tugga/P1_Tugga_Emptyl.png" id="19_7p785"]
 [ext_resource type="Script" uid="uid://yewsi0ihyspk" path="res://GameStartDrawHandler.gd" id="19_tr2pb"]
+[ext_resource type="AudioStream" uid="uid://dyjnch1pvfq2q" path="res://Audio/Placeholder SFX/sacrifice_default.wav" id="20_6ev5o"]
 [ext_resource type="Texture2D" uid="uid://c3bh4b5ajh8a1" path="res://Art/Tugga/P2_Tugga_Emptypng.png" id="20_7p785"]
 [ext_resource type="Script" uid="uid://2atv8mfbeu07" path="res://BoardManager.gd" id="20_jgxe7"]
 [ext_resource type="PackedScene" uid="uid://l28s3hnlv4iy" path="res://Cards/NewCard.tscn" id="21_nxiui"]
@@ -249,11 +250,10 @@ metadata/_custom_type_script = "uid://bqtoohcvy57vk"
 
 [node name="SacrificeAnimation" type="Node" parent="Handlers/SacrificeHandler" unique_id=1154187561]
 script = ExtResource("12_rvenm")
+sacrifice_sfx = ExtResource("20_6ev5o")
 
-[node name="BuffPhaseAnimationHandler" type="Node" parent="Handlers" unique_id=940939912 node_paths=PackedStringArray("phase_manager", "player_hand")]
+[node name="BuffPhaseAnimationHandler" type="Node" parent="Handlers" unique_id=940939912]
 script = ExtResource("16_nh7p2")
-phase_manager = NodePath("../../Managers/PhaseManager")
-player_hand = NodePath("../../Hand&Deck/PlayerHand")
 
 [node name="GameStartDrawHandler" type="Node" parent="Handlers" unique_id=292297102 node_paths=PackedStringArray("worker_deck_root", "warrior_deck_root")]
 script = ExtResource("19_tr2pb")

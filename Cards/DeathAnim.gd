@@ -5,11 +5,21 @@ class_name DeathFeedbackHandler
 @export var death_time: float = 0.18
 @export var end_scale: Vector2 = Vector2(0.7, 0.7)
 
+@export var death_sfx: AudioStream
+@export var volume_db: float = 0.0
+
 var card: Card = null
 var is_playing: bool = false
+var audio_player: AudioStreamPlayer
+
 
 func _ready() -> void:
 	card = _find_card_parent()
+
+	audio_player = AudioStreamPlayer.new()
+	add_child(audio_player)
+	audio_player.volume_db = volume_db
+
 
 func play_death() -> void:
 	if card == null:
@@ -18,6 +28,7 @@ func play_death() -> void:
 		return
 
 	is_playing = true
+	_play_sfx(death_sfx)
 
 	var start_pos := card.position
 	var sprite: Sprite2D = card.get_main_sprite()
@@ -34,6 +45,15 @@ func play_death() -> void:
 
 	await tween.finished
 	is_playing = false
+
+
+func _play_sfx(stream: AudioStream) -> void:
+	if stream == null:
+		return
+
+	audio_player.stream = stream
+	audio_player.play()
+
 
 func _find_card_parent() -> Card:
 	var current := get_parent()

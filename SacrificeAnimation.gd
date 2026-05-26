@@ -4,8 +4,18 @@ class_name SacrificeAnimation
 @export var hint_speed: float = 8.0
 @export var hint_degrees: float = 3.0
 
+@export var sacrifice_sfx: AudioStream
+@export var volume_db: float = 0.0
+
 var hinted_cards: Array[Card] = []
 var hint_times: Dictionary = {}
+var audio_player: AudioStreamPlayer
+
+
+func _ready() -> void:
+	audio_player = AudioStreamPlayer.new()
+	add_child(audio_player)
+	audio_player.volume_db = volume_db
 
 
 func _process(delta: float) -> void:
@@ -53,3 +63,15 @@ func hide_sacrifice_hint(card: Card) -> void:
 	hinted_cards.erase(card)
 	hint_times.erase(card)
 	card.rotation = 0.0
+
+
+func play_sacrifice() -> void:
+	_play_sfx(sacrifice_sfx)
+
+
+func _play_sfx(stream: AudioStream) -> void:
+	if stream == null:
+		return
+
+	audio_player.stream = stream
+	audio_player.play()

@@ -8,20 +8,23 @@
 [ext_resource type="Script" uid="uid://hkeygquk7osj" path="res://Cards/MutationHandler.gd" id="4_dm30q"]
 [ext_resource type="Texture2D" uid="uid://clk0ori80b5gg" path="res://Art/Numbers/2.png" id="4_krn1d"]
 [ext_resource type="Script" uid="uid://ccv156o7qykgy" path="res://Cards/HurtHandler.gd" id="5_5yjln"]
-[ext_resource type="Script" path="res://Cards/AttackAnim.gd" id="5_r4p8t"]
+[ext_resource type="Script" uid="uid://bdusbw1xmopfs" path="res://Cards/AttackAnim.gd" id="5_r4p8t"]
 [ext_resource type="Texture2D" uid="uid://bnj2kyvgakfq3" path="res://Art/Numbers/3.png" id="5_s0kml"]
 [ext_resource type="Script" uid="uid://bq2dj2n38w2bi" path="res://Cards/DieHandler.gd" id="6_krn1d"]
 [ext_resource type="Texture2D" uid="uid://4f3gn63utyru" path="res://Art/Numbers/4.png" id="6_r4p8t"]
 [ext_resource type="Texture2D" uid="uid://c1fev2dw4ehne" path="res://Art/Numbers/5.png" id="7_fuvn1"]
-[ext_resource type="Script" path="res://Cards/HurtAnim.gd" id="7_r4p8t"]
+[ext_resource type="Script" uid="uid://ceg0uirr80hi2" path="res://Cards/HurtAnim.gd" id="7_r4p8t"]
 [ext_resource type="Texture2D" uid="uid://bq8esv4xpuv68" path="res://Art/Numbers/6.png" id="8_sphwu"]
 [ext_resource type="Texture2D" uid="uid://d1ypj3toan6r1" path="res://Art/Blood.png" id="9_dm30q"]
-[ext_resource type="Script" path="res://Cards/DeathAnim.gd" id="9_fuvn1"]
+[ext_resource type="Script" uid="uid://d4a12kjlckce0" path="res://Cards/DeathAnim.gd" id="9_fuvn1"]
+[ext_resource type="AudioStream" uid="uid://cwmwlsgbj6uf" path="res://Audio/Placeholder SFX/card_attack_creature.wav" id="9_qltuj"]
 [ext_resource type="Script" uid="uid://dtoyyse7bnjuv" path="res://Code/States/CardInputListener.gd" id="10_koaue"]
 [ext_resource type="Script" uid="uid://d0qu3q360kdsl" path="res://Code/States/CardInputReceiver.gd" id="11_2w08q"]
 [ext_resource type="Script" uid="uid://ro02870urhpb" path="res://Code/States/CardStateMachine.gd" id="12_lsojp"]
+[ext_resource type="AudioStream" uid="uid://dm1lem708ohqr" path="res://Audio/Placeholder SFX/card_attack_damage.wav" id="12_octkm"]
 [ext_resource type="Script" uid="uid://bsqidwsxqggmu" path="res://DistantTargetPicker.gd" id="13_vartc"]
 [ext_resource type="Script" uid="uid://ddadxkic18s44" path="res://Cards/AntlerAttackResolver.gd" id="14_4ukko"]
+[ext_resource type="AudioStream" uid="uid://5uho8ho3dlfo" path="res://Audio/Placeholder SFX/card_death.wav" id="15_5hax5"]
 [ext_resource type="Script" uid="uid://c43ots6r45ip6" path="res://Cards/AntlerAttackExecutor.gd" id="15_aqnhy"]
 [ext_resource type="Script" uid="uid://cfvsqn441hgwq" path="res://Cards/CardStats.gd" id="22_koaue"]
 [ext_resource type="Script" uid="uid://de64ge4akihco" path="res://Mutations/ToolTip/MutationToolTipHandler.gd" id="23_2w08q"]
@@ -134,6 +137,9 @@ card_state_machine = NodePath("../CardStateMachine")
 card_input_listener = NodePath("../InputListener")
 card_root = NodePath("..")
 
+[node name="CardSlotHandler" type="Node" parent="." unique_id=1956819410]
+script = ExtResource("37_ra3pw")
+
 [node name="MutationHandler" type="Node" parent="." unique_id=1335831258]
 script = ExtResource("4_dm30q")
 
@@ -143,24 +149,27 @@ metadata/_custom_type_script = "uid://ro02870urhpb"
 
 [node name="Attack" type="Node" parent="CardStateMachine" unique_id=1288671045 node_paths=PackedStringArray("attack_anim")]
 script = ExtResource("4_52a3h")
-attack_anim = NodePath("AtkAnim")
+attack_anim = NodePath("AttackFeedback")
 
-[node name="AtkAnim" type="Node" parent="CardStateMachine/Attack" unique_id=387907870]
+[node name="AttackFeedback" type="Node" parent="CardStateMachine/Attack" unique_id=387907870]
 script = ExtResource("5_r4p8t")
+attack_sfx = ExtResource("9_qltuj")
 
 [node name="Hurt" type="Node" parent="CardStateMachine" unique_id=1647059360 node_paths=PackedStringArray("hurt_anim")]
 script = ExtResource("5_5yjln")
-hurt_anim = NodePath("HrtAnim")
+hurt_anim = NodePath("HurtFeedback")
 
-[node name="HrtAnim" type="Node" parent="CardStateMachine/Hurt" unique_id=1865324068]
+[node name="HurtFeedback" type="Node" parent="CardStateMachine/Hurt" unique_id=1865324068]
 script = ExtResource("7_r4p8t")
+hurt_sfx = ExtResource("12_octkm")
 
 [node name="Die" type="Node" parent="CardStateMachine" unique_id=1355649510 node_paths=PackedStringArray("die_anim")]
 script = ExtResource("6_krn1d")
-die_anim = NodePath("DthAnim")
+die_anim = NodePath("DeathFeedback")
 
-[node name="DthAnim" type="Node" parent="CardStateMachine/Die" unique_id=1661689933]
+[node name="DeathFeedback" type="Node" parent="CardStateMachine/Die" unique_id=1661689933]
 script = ExtResource("9_fuvn1")
+death_sfx = ExtResource("15_5hax5")
 
 [node name="CardStats" type="Node" parent="." unique_id=1956418628 node_paths=PackedStringArray("stats_visual")]
 script = ExtResource("22_koaue")
@@ -344,7 +353,4 @@ invert_material = ExtResource("35_5yc7r")
 
 [node name="BackInHandDeathVisualHandler" type="Node" parent="." unique_id=2138241591 node_paths=PackedStringArray("die_anim")]
 script = ExtResource("36_x5477")
-die_anim = NodePath("../CardStateMachine/Die/DthAnim")
-
-[node name="CardSlotHandler" type="Node" parent="." unique_id=1956819410]
-script = ExtResource("37_ra3pw")
+die_anim = NodePath("../CardStateMachine/Die/DeathFeedback")
