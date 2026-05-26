@@ -7,7 +7,7 @@
 [ext_resource type="Script" uid="uid://chcqvu28271sh" path="res://Deck/DrawHandler.gd" id="4_4nk3w"]
 [ext_resource type="Script" uid="uid://blq43rpyvye6c" path="res://Data/CardDatabase.gd" id="4_xceh1"]
 [ext_resource type="Script" uid="uid://b8glhjm2vi2f1" path="res://Deck/DeckDrawAnimationHandler.gd" id="5_8hegm"]
-[ext_resource type="Script" uid="uid://dgeu721gn1kmj" path="res://Deck/MutationInhertinanceHandler.gd" id="5_jiq85"]
+[ext_resource type="Script" uid="uid://dgeu721gn1kmj" path="res://Cards/Mutations/MutationInhertinanceHandler.gd" id="5_jiq85"]
 [ext_resource type="Script" uid="uid://c8owoh3gv45g4" path="res://Deck/DeckView.gd" id="5_wj4mp"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="6_efqef"]
 [ext_resource type="Script" uid="uid://c6fl8bglcex85" path="res://Deck/WorkerUnionBuffHandler.gd" id="6_fboto"]

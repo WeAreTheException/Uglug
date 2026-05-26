@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://dqtxvu584lxsj" path="res://Art/Mutations/Ant_Hill_Sigil.PNG" id="2_sphwu"]
 [ext_resource type="Texture2D" uid="uid://bdi7eyt5cmur0" path="res://Art/Numbers/1.png" id="3_5yjln"]
 [ext_resource type="Script" uid="uid://d35vj6r6tt0ty" path="res://Cards/AttackHandler.gd" id="4_52a3h"]
-[ext_resource type="Script" uid="uid://hkeygquk7osj" path="res://Cards/MutationHandler.gd" id="4_dm30q"]
+[ext_resource type="Script" uid="uid://hkeygquk7osj" path="res://Cards/Mutations/MutationHandler.gd" id="4_dm30q"]
 [ext_resource type="Texture2D" uid="uid://clk0ori80b5gg" path="res://Art/Numbers/2.png" id="4_krn1d"]
 [ext_resource type="Script" uid="uid://ccv156o7qykgy" path="res://Cards/HurtHandler.gd" id="5_5yjln"]
 [ext_resource type="Script" uid="uid://bdusbw1xmopfs" path="res://Cards/AttackAnim.gd" id="5_r4p8t"]
