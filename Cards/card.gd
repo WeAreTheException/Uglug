@@ -8,8 +8,7 @@ enum Owner {
 
 @export var card_stats: CardStats
 @export var test_data: CardData
-@export var base_sigil_container: Node2D
-@export var additional_sigil_container: Node2D
+@export var card_art: CardArt
 
 var select_handler: SelectHandler = null
 var battle_scale: BattleScale = null
@@ -75,6 +74,9 @@ func _ready() -> void:
 	if card_stats == null:
 		card_stats = get_node_or_null("CardStats") as CardStats
 
+	if card_art == null:
+		card_art = get_node_or_null("CardArt") as CardArt
+
 	slot_handler = get_node_or_null("CardSlotHandler") as CardSlotHandler
 	mutation_handler = get_node_or_null("MutationHandler") as MutationHandler
 
@@ -96,6 +98,9 @@ func setup_card(data: CardData) -> void:
 	if card_stats != null:
 		card_stats.setup_from_card_data(data)
 
+	if card_art != null:
+		card_art.set_ant_texture(data.ant_texture)
+
 	if mutation_handler != null:
 		mutation_handler.setup_from_card_data(data)
 	else:
@@ -108,6 +113,7 @@ func setup_card(data: CardData) -> void:
 			base_mutations.append(mutation.duplicate(true))
 
 		additional_mutations.clear()
+		update_sigils()
 
 
 func add_additional_mutation(mutation: Mutation) -> void:
@@ -119,6 +125,7 @@ func add_additional_mutation(mutation: Mutation) -> void:
 		return
 
 	additional_mutations.append(mutation.duplicate(true))
+	update_sigils()
 	print(card_name, " gained mutation")
 
 
@@ -177,9 +184,35 @@ func get_all_mutations() -> Array[Mutation]:
 func update_sigils() -> void:
 	if mutation_handler != null:
 		mutation_handler.update_sigils()
+		return
+
+	if card_art == null:
+		return
+
+	card_art.clear_base_sigils()
+	card_art.clear_additional_sigils()
+
+	for i in range(base_mutations.size()):
+		var mutation := base_mutations[i]
+
+		if mutation == null:
+			continue
+
+		card_art.set_base_sigil(i, mutation.sigil_texture)
+
+	for i in range(additional_mutations.size()):
+		var mutation := additional_mutations[i]
+
+		if mutation == null:
+			continue
+
+		card_art.set_additional_sigil(i, mutation.sigil_texture)
 
 
 func get_main_sprite() -> Sprite2D:
+	if card_art != null and card_art.card_image != null:
+		return card_art.card_image
+
 	var found := find_children("*", "Sprite2D", true, false)
 
 	if found.size() <= 0:

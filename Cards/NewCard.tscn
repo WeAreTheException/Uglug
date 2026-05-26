@@ -2,12 +2,12 @@
 
 [ext_resource type="Script" uid="uid://bgw4gcc8buxly" path="res://Cards/card.gd" id="1_ch35y"]
 [ext_resource type="Script" uid="uid://dbemrm25gvek6" path="res://Cards/Stats.gd" id="2_52a3h"]
-[ext_resource type="Texture2D" uid="uid://dqtxvu584lxsj" path="res://Art/Mutations/Ant_Hill_Sigil.PNG" id="2_sphwu"]
+[ext_resource type="PackedScene" uid="uid://b8f0lryqwcw7j" path="res://CardArt.tscn" id="2_x1h4b"]
 [ext_resource type="Texture2D" uid="uid://bdi7eyt5cmur0" path="res://Art/Numbers/1.png" id="3_5yjln"]
 [ext_resource type="Script" uid="uid://d35vj6r6tt0ty" path="res://Cards/AttackHandler.gd" id="4_52a3h"]
 [ext_resource type="Texture2D" uid="uid://clk0ori80b5gg" path="res://Art/Numbers/2.png" id="4_krn1d"]
 [ext_resource type="Script" uid="uid://ccv156o7qykgy" path="res://Cards/HurtHandler.gd" id="5_5yjln"]
-[ext_resource type="Script" path="res://Cards/Mutations/MutationHandler.gd" id="5_qltuj"]
+[ext_resource type="Script" uid="uid://hkeygquk7osj" path="res://Cards/Mutations/MutationHandler.gd" id="5_qltuj"]
 [ext_resource type="Script" uid="uid://bdusbw1xmopfs" path="res://Cards/AttackAnim.gd" id="5_r4p8t"]
 [ext_resource type="Texture2D" uid="uid://bnj2kyvgakfq3" path="res://Art/Numbers/3.png" id="5_s0kml"]
 [ext_resource type="Script" uid="uid://bq2dj2n38w2bi" path="res://Cards/DieHandler.gd" id="6_krn1d"]
@@ -27,17 +27,6 @@
 [ext_resource type="AudioStream" uid="uid://5uho8ho3dlfo" path="res://Audio/Placeholder SFX/card_death.wav" id="15_5hax5"]
 [ext_resource type="Script" uid="uid://c43ots6r45ip6" path="res://Cards/AntlerAttackExecutor.gd" id="15_aqnhy"]
 [ext_resource type="Script" uid="uid://cfvsqn441hgwq" path="res://Cards/CardStats.gd" id="22_koaue"]
-[ext_resource type="Script" uid="uid://de64ge4akihco" path="res://Cards/Mutations/ToolTip/MutationToolTipHandler.gd" id="23_2w08q"]
-[ext_resource type="Shader" uid="uid://rctscsnbymrv" path="res://Cards/CardShadow.gdshader" id="24_gyg67"]
-[ext_resource type="PackedScene" uid="uid://bocxu8xu5hh8b" path="res://Cards/Mutations/ToolTip/MutationToolTip.tscn" id="24_lsojp"]
-[ext_resource type="Texture2D" uid="uid://bt8o5l5yrmihl" path="res://Art/CardBackground.png" id="24_x1h4b"]
-[ext_resource type="Texture2D" uid="uid://b8a1gr84h2iie" path="res://Art/Ants/WorkerAnt_Standalone.png" id="25_duyd4"]
-[ext_resource type="Shader" uid="uid://ck3gs6whq2t57" path="res://Cards/AntSway.gdshader" id="25_gyg67"]
-[ext_resource type="Texture2D" uid="uid://dv7v478yhlcrv" path="res://Art/CardFog.png" id="26_gyg67"]
-[ext_resource type="Shader" uid="uid://b12e0umk1s7xs" path="res://Cards/Panner.gdshader" id="26_j2h1k"]
-[ext_resource type="Texture2D" uid="uid://wak6qieqhlsb" path="res://Art/CardBorder.png" id="27_wmwgk"]
-[ext_resource type="Shader" uid="uid://dt77y6ccd1hxy" path="res://Cards/SigilOutline.gdshader" id="28_5yc7r"]
-[ext_resource type="Shader" uid="uid://clsxlhuocr8hn" path="res://Cards/BackgroundSlide.gdshader" id="28_uad50"]
 [ext_resource type="Script" uid="uid://cmhvnj1h173o2" path="res://Cards/BackInHandCardState.gd" id="34_wmwgk"]
 [ext_resource type="Material" uid="uid://dh78conckoov3" path="res://Cards/BackInHandInvert.tres" id="35_5yc7r"]
 [ext_resource type="Script" uid="uid://dhkq7ls1f2ddm" path="res://Cards/BackInHandDeathVisualHandler.gd" id="36_x5477"]
@@ -46,81 +35,10 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
 size = Vector2(174, 268)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_gyg67"]
-shader = ExtResource("24_gyg67")
-shader_parameter/shadow_color = Color(0.0666, 0.07440001, 0.09, 0.6666667)
-shader_parameter/shadow_scale = 0.025
-shader_parameter/shadow_min_length = 1.0
-shader_parameter/shadow_max_length = 10.0
-shader_parameter/screen_center = Vector2(960, 540)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_5tkk3"]
-shader = ExtResource("26_j2h1k")
-shader_parameter/speed = Vector2(-0.01, 0)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_5yc7r"]
-shader = ExtResource("24_gyg67")
-shader_parameter/shadow_color = Color(0.16229333, 0.17, 0.1428, 0.19607843)
-shader_parameter/shadow_scale = 0.025
-shader_parameter/shadow_min_length = 2.0
-shader_parameter/shadow_max_length = 0.0
-shader_parameter/screen_center = Vector2(960, 540)
-
-[sub_resource type="Gradient" id="Gradient_mhehh"]
-colors = PackedColorArray(0.35606432, 0.35606432, 0.35606432, 1, 0.567368, 0.5673676, 0.56736773, 1)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_qltuj"]
-gradient = SubResource("Gradient_mhehh")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_octkm"]
-shader = ExtResource("28_uad50")
-shader_parameter/gradient = SubResource("GradientTexture1D_qltuj")
-shader_parameter/circle_color = Color(0.11, 0.09427, 0.0671, 0.05882353)
-shader_parameter/circle_multiplier = 35.0
-shader_parameter/speed = 0.45
-shader_parameter/direction = Vector2(10, 5)
-shader_parameter/rotation = Transform2D(1, -1, 1, 1, 0, 0)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_wmwgk"]
-shader = ExtResource("25_gyg67")
-shader_parameter/waveAmplitude = 0.0330000015675
-shader_parameter/correctVertex = true
-shader_parameter/waveFrequency = 0.0
-shader_parameter/verticalWave = true
-shader_parameter/keepTransparency = true
-shader_parameter/useTime = true
-shader_parameter/waveSpeed = 1.0
-shader_parameter/progress = 0.0
-shader_parameter/firstHalf = 0.5
-shader_parameter/secondHalf = 0.5
-shader_parameter/freezeFirstHalf = false
-shader_parameter/freezeSecondHalf = false
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_x5477"]
-shader = ExtResource("28_5yc7r")
-shader_parameter/line_color = Color(0.105882354, 0.09019608, 0.08627451, 1)
-shader_parameter/line_thickness = 10.0
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ra3pw"]
-shader = ExtResource("28_5yc7r")
-shader_parameter/line_color = Color(0.105882354, 0.09019608, 0.08627451, 1)
-shader_parameter/line_thickness = 10.0
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_j2h1k"]
-shader = ExtResource("28_5yc7r")
-shader_parameter/line_color = Color(0.105882354, 0.09019608, 0.08627451, 1)
-shader_parameter/line_thickness = 10.0
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_uad50"]
-shader = ExtResource("28_5yc7r")
-shader_parameter/line_color = Color(0.105882354, 0.09019608, 0.08627451, 1)
-shader_parameter/line_thickness = 10.0
-
-[node name="Card" type="Node2D" unique_id=1703534497 node_paths=PackedStringArray("card_stats", "base_sigil_container", "additional_sigil_container")]
+[node name="Card" type="Node2D" unique_id=1703534497 node_paths=PackedStringArray("card_stats", "card_art")]
 script = ExtResource("1_ch35y")
 card_stats = NodePath("CardStats")
-base_sigil_container = NodePath("BaseMutation")
-additional_sigil_container = NodePath("AdditonalMutation")
+card_art = NodePath("CardArt")
 
 [node name="InputListener" type="Area2D" parent="." unique_id=1220273102]
 script = ExtResource("10_koaue")
@@ -204,9 +122,8 @@ offset_right = 169.0
 offset_bottom = 21.0
 text = "Choose Slot to Attack"
 
-[node name="Stats" type="Node2D" parent="." unique_id=1314998697 node_paths=PackedStringArray("card_sprite", "attack", "health", "cost", "name_label")]
+[node name="Stats" type="Node2D" parent="." unique_id=1314998697 node_paths=PackedStringArray("attack", "health", "cost", "name_label")]
 script = ExtResource("2_52a3h")
-card_sprite = NodePath("../CardImage")
 attack = NodePath("Attack")
 health = NodePath("Health")
 cost = [NodePath("Blood"), NodePath("Blood2"), NodePath("Blood3"), NodePath("Blood4")]
@@ -257,98 +174,6 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/default_color = Color(0.16206557, 0.1620656, 0.16206557, 1)
 
-[node name="Shadows" type="Sprite2D" parent="." unique_id=1711994070]
-visible = false
-material = SubResource("ShaderMaterial_gyg67")
-scale = Vector2(0.14520307, 0.14520307)
-texture = ExtResource("24_x1h4b")
-offset = Vector2(0, 25)
-metadata/_edit_lock_ = true
-
-[node name="CardImage" type="Sprite2D" parent="." unique_id=1482464689]
-visible = false
-material = SubResource("ShaderMaterial_5tkk3")
-scale = Vector2(0.14520307, 0.14520307)
-texture = ExtResource("24_x1h4b")
-metadata/_edit_lock_ = true
-
-[node name="Antdows" type="Sprite2D" parent="." unique_id=1631056774]
-visible = false
-material = SubResource("ShaderMaterial_5yc7r")
-position = Vector2(0, 2.3841858e-06)
-scale = Vector2(0.14500003, 0.1451613)
-texture = ExtResource("25_duyd4")
-offset = Vector2(45, 20)
-metadata/_edit_lock_ = true
-
-[node name="BackgroundDots" type="Panel" parent="." unique_id=244048710]
-visible = false
-material = SubResource("ShaderMaterial_octkm")
-offset_left = -86.0
-offset_top = -135.0
-offset_right = 87.0
-offset_bottom = 135.0
-metadata/_edit_lock_ = true
-
-[node name="Ant" type="Sprite2D" parent="." unique_id=821885335]
-material = SubResource("ShaderMaterial_wmwgk")
-position = Vector2(0, 2.3841858e-06)
-scale = Vector2(0.14500003, 0.1451613)
-texture = ExtResource("25_duyd4")
-
-[node name="CardFog" type="Sprite2D" parent="." unique_id=2013518481]
-visible = false
-position = Vector2(9.2267965e-07, 0.4999895)
-scale = Vector2(0.14500001, 0.14462365)
-texture = ExtResource("26_gyg67")
-
-[node name="CardBorder" type="Sprite2D" parent="." unique_id=999024722]
-visible = false
-position = Vector2(2.670288e-05, -3.0517578e-05)
-scale = Vector2(0.14500006, 0.14516132)
-texture = ExtResource("27_wmwgk")
-metadata/_edit_lock_ = true
-
-[node name="BaseMutation" type="Node2D" parent="." unique_id=856620296]
-z_index = 1
-position = Vector2(0, 96)
-scale = Vector2(0.028686536, 0.028686536)
-
-[node name="BaseSprite" type="Sprite2D" parent="BaseMutation" unique_id=354731525]
-material = SubResource("ShaderMaterial_x5477")
-position = Vector2(0.00012207031, 3.0517578e-05)
-scale = Vector2(4.4620237, 4.4620233)
-texture = ExtResource("2_sphwu")
-
-[node name="AdditonalMutation" type="Node2D" parent="." unique_id=1488082497]
-visible = false
-
-[node name="Additional1" type="Sprite2D" parent="AdditonalMutation" unique_id=67915591]
-material = SubResource("ShaderMaterial_ra3pw")
-position = Vector2(-64, -75)
-scale = Vector2(0.128, 0.12799999)
-texture = ExtResource("2_sphwu")
-
-[node name="Additional2" type="Sprite2D" parent="AdditonalMutation" unique_id=2081525418]
-material = SubResource("ShaderMaterial_j2h1k")
-position = Vector2(66, 0)
-scale = Vector2(0.128, 0.12799999)
-texture = ExtResource("2_sphwu")
-
-[node name="Additional3" type="Sprite2D" parent="AdditonalMutation" unique_id=535450100]
-material = SubResource("ShaderMaterial_uad50")
-position = Vector2(-64, 32)
-scale = Vector2(0.128, 0.12799999)
-texture = ExtResource("2_sphwu")
-
-[node name="MutationToolTipHandler" type="Node2D" parent="." unique_id=2060041199 node_paths=PackedStringArray("base_sigil_sprites", "additional_sigil_sprites")]
-visible = false
-script = ExtResource("23_2w08q")
-tooltip_scene = ExtResource("24_lsojp")
-base_sigil_sprites = [NodePath("../BaseMutation/BaseSprite")]
-additional_sigil_sprites = [NodePath("../AdditonalMutation/Additional1"), NodePath("../AdditonalMutation/Additional2"), NodePath("../AdditonalMutation/Additional3")]
-card_top_offset = Vector2(0, -135)
-
 [node name="BackInHandCardState" type="Node" parent="." unique_id=2077672213]
 script = ExtResource("34_wmwgk")
 invert_material = ExtResource("35_5yc7r")
@@ -356,3 +181,5 @@ invert_material = ExtResource("35_5yc7r")
 [node name="BackInHandDeathVisualHandler" type="Node" parent="." unique_id=2138241591 node_paths=PackedStringArray("die_anim")]
 script = ExtResource("36_x5477")
 die_anim = NodePath("../CardStateMachine/Die/DeathFeedback")
+
+[node name="CardArt" parent="." unique_id=1593445486 instance=ExtResource("2_x1h4b")]

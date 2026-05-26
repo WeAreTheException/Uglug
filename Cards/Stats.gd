@@ -1,7 +1,6 @@
 extends Node2D
 class_name Stats
 
-@export var card_sprite: Sprite2D
 @export var attack: Sprite2D
 @export var health: Sprite2D
 @export var cost: Array[Sprite2D]
@@ -10,15 +9,16 @@ class_name Stats
 @export var attack_textures: Array[Texture2D]
 @export var health_textures: Array[Texture2D]
 
+
 func setup_from_card_data(data: CardData) -> void:
 	if data == null:
 		return
 
 	update_name(data.name)
-	update_sprite(data.sprite)
 	update_attack(data.attack)
 	update_health(data.health)
 	update_cost(data.cost)
+
 
 func update_name(value: String) -> void:
 	if name_label == null:
@@ -27,12 +27,6 @@ func update_name(value: String) -> void:
 	name_label.text = value
 	name_label.z_index = 100
 
-func update_sprite(texture: Texture2D) -> void:
-	if card_sprite == null:
-		return
-
-	card_sprite.texture = texture
-	card_sprite.z_index = 0
 
 func update_attack(value: int) -> void:
 	if attack == null:
@@ -46,10 +40,12 @@ func update_attack(value: int) -> void:
 		return
 
 	var index: int = value - 1
+
 	if index >= 0 and index < attack_textures.size():
 		attack.texture = attack_textures[index]
 	else:
 		attack.texture = null
+
 
 func update_health(value: int) -> void:
 	if health == null:
@@ -63,10 +59,12 @@ func update_health(value: int) -> void:
 		return
 
 	var index: int = value - 1
+
 	if index >= 0 and index < health_textures.size():
 		health.texture = health_textures[index]
 	else:
 		health.texture = null
+
 
 func update_cost(card_cost: int) -> void:
 	for i in range(cost.size()):

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://b8f0lryqwcw7j"]
 
-[ext_resource type="Shader" uid="uid://rctscsnbymrv" path="res://Cards/CardShadow.gdshader" id="1_kyvol"]
+[ext_resource type="Script" uid="uid://cdu3ykilblant" path="res://CardArtRoot.gd" id="1_8nudy"]
 [ext_resource type="Texture2D" uid="uid://bt8o5l5yrmihl" path="res://Art/CardBackground.png" id="2_px4ui"]
 [ext_resource type="Texture2D" uid="uid://b8a1gr84h2iie" path="res://Art/Ants/WorkerAnt_Standalone.png" id="3_rpqwj"]
 [ext_resource type="Shader" uid="uid://b12e0umk1s7xs" path="res://Cards/Panner.gdshader" id="3_yq5o4"]
@@ -12,14 +12,6 @@
 [ext_resource type="Texture2D" uid="uid://wak6qieqhlsb" path="res://Art/CardBorder.png" id="6_8nudy"]
 [ext_resource type="Shader" uid="uid://dt77y6ccd1hxy" path="res://Cards/SigilOutline.gdshader" id="7_bft4m"]
 [ext_resource type="Texture2D" uid="uid://dqtxvu584lxsj" path="res://Art/Mutations/Ant_Hill_Sigil.PNG" id="8_483al"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_pg6v0"]
-shader = ExtResource("1_kyvol")
-shader_parameter/shadow_color = Color(0.0666, 0.07440001, 0.09, 0.6666667)
-shader_parameter/shadow_scale = 0.025
-shader_parameter/shadow_min_length = 1.0
-shader_parameter/shadow_max_length = 10.0
-shader_parameter/screen_center = Vector2(960, 540)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bft4m"]
 shader = ExtResource("3_yq5o4")
@@ -61,15 +53,6 @@ shader_parameter/speed = 0.45
 shader_parameter/direction = Vector2(10, 5)
 shader_parameter/rotation = Transform2D(1, -1, 1, 1, 0, 0)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_3q3n8"]
-shader = ExtResource("5_8nudy")
-shader_parameter/gradient = ExtResource("6_7ndf7")
-shader_parameter/circle_color = Color(0.1, 0.09240001, 0.081, 0.23529412)
-shader_parameter/circle_multiplier = 55.0
-shader_parameter/speed = 0.1
-shader_parameter/direction = Vector2(1, 1)
-shader_parameter/rotation = Transform2D(1, -1, 1, 1, 0, 0)
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_587ti"]
 shader = ExtResource("4_yq5o4")
 shader_parameter/waveAmplitude = 0.0330000015675
@@ -84,6 +67,15 @@ shader_parameter/firstHalf = 0.5
 shader_parameter/secondHalf = 0.5
 shader_parameter/freezeFirstHalf = false
 shader_parameter/freezeSecondHalf = false
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3q3n8"]
+shader = ExtResource("5_8nudy")
+shader_parameter/gradient = ExtResource("6_7ndf7")
+shader_parameter/circle_color = Color(0.1, 0.09240001, 0.081, 0.23529412)
+shader_parameter/circle_multiplier = 55.0
+shader_parameter/speed = 0.1
+shader_parameter/direction = Vector2(1, 1)
+shader_parameter/rotation = Transform2D(1, -1, 1, 1, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_6nr3l"]
 shader = ExtResource("7_bft4m")
@@ -105,22 +97,28 @@ shader = ExtResource("7_bft4m")
 shader_parameter/line_color = Color(0.105882354, 0.09019608, 0.08627451, 1)
 shader_parameter/line_thickness = 10.0
 
-[node name="CardArt" type="Node2D" unique_id=1593445486]
+[node name="CardArt" type="Node2D" unique_id=1593445486 node_paths=PackedStringArray("ant_sprite", "card_image", "card_shadow", "card_border", "base_sigil_container", "additional_sigil_container", "card_fog")]
+script = ExtResource("1_8nudy")
+ant_sprite = NodePath("Ant")
+card_image = NodePath("CardImage")
+card_shadow = NodePath("CardShadow")
+card_border = NodePath("CardBorder")
+base_sigil_container = NodePath("Mutations/BaseMutation")
+additional_sigil_container = NodePath("Mutations/AdditonalMutation")
+card_fog = NodePath("CardFog")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=395931702]
-
-[node name="CardShadow" type="Sprite2D" parent="CanvasLayer" unique_id=2132133737]
-material = SubResource("ShaderMaterial_pg6v0")
+[node name="CardShadow" type="Sprite2D" parent="." unique_id=2132133737]
+visibility_layer = 0
 scale = Vector2(0.14520307, 0.14520307)
 texture = ExtResource("2_px4ui")
 offset = Vector2(0, 25)
 
-[node name="CardImage" type="Sprite2D" parent="CanvasLayer" unique_id=1611913013]
+[node name="CardImage" type="Sprite2D" parent="." unique_id=1611913013]
 material = SubResource("ShaderMaterial_bft4m")
 scale = Vector2(0.14520307, 0.14520307)
 texture = ExtResource("2_px4ui")
 
-[node name="Backgroundatro" type="TextureRect" parent="CanvasLayer" unique_id=620924349]
+[node name="Backgroundatro" type="TextureRect" parent="." unique_id=620924349]
 material = SubResource("ShaderMaterial_483al")
 offset_left = -86.0
 offset_top = -135.0
@@ -130,44 +128,39 @@ texture = SubResource("GradientTexture1D_3q3n8")
 expand_mode = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="BackgroundDots" type="Panel" parent="CanvasLayer" unique_id=1188586363]
-visible = false
+[node name="BackgroundDots" type="Panel" parent="." unique_id=1188586363]
 material = SubResource("ShaderMaterial_3380x")
 offset_left = -86.0
 offset_top = -135.0
 offset_right = 87.0
 offset_bottom = 135.0
-metadata/_edit_lock_ = true
 
-[node name="Antdows" type="Sprite2D" parent="CanvasLayer" unique_id=33299499]
+[node name="Ant" type="Sprite2D" parent="." unique_id=1609290713]
+material = SubResource("ShaderMaterial_587ti")
+position = Vector2(0, 2.3841858e-06)
+scale = Vector2(0.14500003, 0.1451613)
+texture = ExtResource("3_rpqwj")
+
+[node name="Antdows" type="Sprite2D" parent="." unique_id=33299499]
 material = SubResource("ShaderMaterial_3q3n8")
 position = Vector2(0, 2.3841858e-06)
 scale = Vector2(0.14500003, 0.1451613)
 texture = ExtResource("3_rpqwj")
 offset = Vector2(45, 20)
 
-[node name="Ant" type="Sprite2D" parent="CanvasLayer" unique_id=1609290713]
-material = SubResource("ShaderMaterial_587ti")
-position = Vector2(0, 2.3841858e-06)
-scale = Vector2(0.14500003, 0.1451613)
-texture = ExtResource("3_rpqwj")
-
-[node name="CardFog" type="Sprite2D" parent="CanvasLayer" unique_id=908625951]
+[node name="CardFog" type="Sprite2D" parent="." unique_id=908625951]
 position = Vector2(9.2267965e-07, 0.4999895)
 scale = Vector2(0.14500001, 0.14462365)
 texture = ExtResource("5_7ndf7")
 
-[node name="CardBorder" type="Sprite2D" parent="CanvasLayer" unique_id=182582064]
-position = Vector2(2.670288e-05, -3.0517578e-05)
-scale = Vector2(0.14500006, 0.14516132)
-texture = ExtResource("6_8nudy")
-
 [node name="Mutations" type="Node2D" parent="." unique_id=1925102954]
+metadata/_edit_lock_ = true
 
 [node name="BaseMutation" type="Node2D" parent="Mutations" unique_id=1979689219]
 z_index = 1
 position = Vector2(0, 96)
 scale = Vector2(0.028686536, 0.028686536)
+metadata/_edit_lock_ = true
 
 [node name="BaseSprite" type="Sprite2D" parent="Mutations/BaseMutation" unique_id=935391738]
 material = SubResource("ShaderMaterial_6nr3l")
@@ -176,6 +169,7 @@ scale = Vector2(4.4620237, 4.4620233)
 texture = ExtResource("8_483al")
 
 [node name="AdditonalMutation" type="Node2D" parent="Mutations" unique_id=100591237]
+metadata/_edit_lock_ = true
 
 [node name="Additional1" type="Sprite2D" parent="Mutations/AdditonalMutation" unique_id=185873266]
 material = SubResource("ShaderMaterial_0l3ys")
@@ -194,3 +188,8 @@ material = SubResource("ShaderMaterial_hdaxf")
 position = Vector2(-64, 32)
 scale = Vector2(0.128, 0.12799999)
 texture = ExtResource("8_483al")
+
+[node name="CardBorder" type="Sprite2D" parent="." unique_id=182582064]
+position = Vector2(2.670288e-05, -3.0517578e-05)
+scale = Vector2(0.14500006, 0.14516132)
+texture = ExtResource("6_8nudy")
