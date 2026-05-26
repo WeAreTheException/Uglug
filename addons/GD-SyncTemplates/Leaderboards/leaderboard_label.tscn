@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://b11acmdcq41ko"]
+[gd_scene format=3 uid="uid://b11acmdcq41ko"]
 
-[ext_resource type="Script" path="res://GD-SyncTemplates/Leaderboards/leaderboard_label.gd" id="1_gg6n8"]
+[ext_resource type="Script" uid="uid://b8eu7kt7p47um" path="res://addons/GD-SyncTemplates/Leaderboards/leaderboard_label.gd" id="1_gg6n8"]
 
 [node name="LeaderboardLabel" type="HBoxContainer"]
 anchors_preset = 15

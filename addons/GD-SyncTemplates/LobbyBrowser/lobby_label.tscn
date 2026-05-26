@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://cva15bed5a0cc"]
+[gd_scene format=3 uid="uid://cva15bed5a0cc"]
 
-[ext_resource type="Script" path="res://GD-SyncTemplates/LobbyBrowser/lobby_label.gd" id="1_13l6x"]
+[ext_resource type="Script" uid="uid://b3garpxjd87ts" path="res://addons/GD-SyncTemplates/LobbyBrowser/lobby_label.gd" id="1_13l6x"]
 
 [node name="LobbyLabel" type="HBoxContainer"]
 anchors_preset = 15

@@ -5,17 +5,15 @@
 [ext_resource type="PackedScene" uid="uid://bxghpl6h2pl6u" path="res://Deck/WorkerDeck.tscn" id="3_2au82"]
 [ext_resource type="PackedScene" uid="uid://bif5q1mjmf8e5" path="res://PlayerHand/PlayerHand.tscn" id="5_aq4fw"]
 [ext_resource type="PackedScene" uid="uid://0y4bo4fdwdc" path="res://Cards/CardManager.tscn" id="5_ivycn"]
-[ext_resource type="Script" uid="uid://ckhj5f54piprm" path="res://Managers/Phasemanager.gd" id="5_q1uvj"]
+[ext_resource type="Script" uid="uid://bxbqihkit6rgo" path="res://Managers/Phasemanager.gd" id="5_q1uvj"]
 [ext_resource type="Script" uid="uid://sodd748rdqha" path="res://Managers/OpponentController.gd" id="7_q1uvj"]
 [ext_resource type="PackedScene" uid="uid://ctp48eusxy1qn" path="res://Deck/WarriorDeck.tscn" id="8_qs82m"]
 [ext_resource type="Script" uid="uid://ga6f6537weuu" path="res://Tugga/BattleScale.gd" id="9_c4vo5"]
 [ext_resource type="Script" uid="uid://clgbwnniuqm7g" path="res://Code/Handlers/SelectHandler.gd" id="10_vwb7u"]
 [ext_resource type="Script" uid="uid://bqtoohcvy57vk" path="res://SacrificeHandler.gd" id="11_cqdos"]
 
-[node name="Playground" type="Node2D" unique_id=1073653813 node_paths=PackedStringArray("phase_manager", "end_placement_button")]
+[node name="Playground" type="Node2D" unique_id=1073653813]
 script = ExtResource("1_ivycn")
-phase_manager = NodePath("PhaseManager")
-end_placement_button = NodePath("Button")
 
 [node name="CardManager" parent="." unique_id=59503870 instance=ExtResource("5_ivycn")]
 
@@ -25,32 +23,20 @@ position = Vector2(768, 1024)
 [node name="EnemyHand" parent="." unique_id=587472935 instance=ExtResource("5_aq4fw")]
 position = Vector2(768, 64)
 
-[node name="WorkerDeck" parent="." unique_id=1069789393 node_paths=PackedStringArray("player_hand", "card_manager", "spawn_anchor", "phase_manager", "battle_scale", "select_handler") instance=ExtResource("3_2au82")]
+[node name="WorkerDeck" parent="." unique_id=1069789393 node_paths=PackedStringArray("player_hand", "phase_manager", "select_handler") instance=ExtResource("3_2au82")]
 position = Vector2(1792, 576)
 player_hand = NodePath("../PlayerHand")
-card_manager = NodePath("../CardManager")
-spawn_anchor = NodePath(".")
 phase_manager = NodePath("../PhaseManager")
-battle_scale = NodePath("../BattleScale")
 select_handler = NodePath("../SelectHandler")
 
-[node name="WarriorDeck" parent="." unique_id=280972336 node_paths=PackedStringArray("player_hand", "card_manager", "spawn_anchor", "phase_manager", "battle_scale", "select_handler", "worker_deck_root") instance=ExtResource("8_qs82m")]
+[node name="WarriorDeck" parent="." unique_id=280972336 node_paths=PackedStringArray("player_hand", "phase_manager", "select_handler") instance=ExtResource("8_qs82m")]
 position = Vector2(1792, 896)
 player_hand = NodePath("../PlayerHand")
-card_manager = NodePath("../CardManager")
-spawn_anchor = NodePath(".")
 phase_manager = NodePath("../PhaseManager")
-battle_scale = NodePath("../BattleScale")
 select_handler = NodePath("../SelectHandler")
-worker_deck_root = NodePath("../WorkerDeck")
 
-[node name="PhaseManager" type="Node" parent="." unique_id=384942188 node_paths=PackedStringArray("deck_root", "opponent_hand", "opponent_spawn_anchor", "opponent_controller", "slots")]
+[node name="PhaseManager" type="Node" parent="." unique_id=384942188]
 script = ExtResource("5_q1uvj")
-deck_root = NodePath("../WorkerDeck")
-opponent_hand = NodePath("../EnemyHand")
-opponent_spawn_anchor = NodePath("../WorkerDeck")
-opponent_controller = NodePath("../OpponentController")
-slots = [NodePath("../Slots/Slot1"), NodePath("../Slots/Slot3"), NodePath("../Slots/Slot2"), NodePath("../Slots/Slot4")]
 
 [node name="Button" type="Button" parent="." unique_id=109142189]
 offset_right = 8.0
@@ -81,10 +67,9 @@ position = Vector2(128, 512)
 [node name="BattleScale" type="Node" parent="." unique_id=284856531]
 script = ExtResource("9_c4vo5")
 
-[node name="SelectHandler" type="Node2D" parent="." unique_id=1598983565 node_paths=PackedStringArray("slots_root", "card_manager", "sacrifice_handler")]
+[node name="SelectHandler" type="Node2D" parent="." unique_id=1598983565 node_paths=PackedStringArray("slots_root", "sacrifice_handler")]
 script = ExtResource("10_vwb7u")
 slots_root = NodePath("../Slots")
-card_manager = NodePath("../CardManager")
 sacrifice_handler = NodePath("../SacrificeHandler")
 
 [node name="SacrificeHandler" type="Node2D" parent="." unique_id=240265303]

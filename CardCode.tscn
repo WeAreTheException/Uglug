@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://ciqnjvisfunfm"]
+
+[ext_resource type="Script" uid="uid://bsqidwsxqggmu" path="res://DistantTargetPicker.gd" id="12_0k2cf"]
+[ext_resource type="Script" uid="uid://ddadxkic18s44" path="res://Cards/AntlerAttackResolver.gd" id="13_wnpi1"]
+[ext_resource type="Script" uid="uid://c43ots6r45ip6" path="res://Cards/AntlerAttackExecutor.gd" id="14_ar57v"]
+
+[node name="CardSpecific" type="Node" unique_id=60008231]
+
+[node name="DistantTargetPicker" type="Node" parent="." unique_id=257382352 node_paths=PackedStringArray("ready_visual")]
+script = ExtResource("12_0k2cf")
+ready_visual = NodePath("")
+
+[node name="AntlerAttackResolver" type="Node" parent="." unique_id=1657062714]
+script = ExtResource("13_wnpi1")
+
+[node name="AntlerAttackExecutor" type="Node" parent="." unique_id=635794135]
+script = ExtResource("14_ar57v")
+
+[node name="DistantReadyVisual" type="Panel" parent="." unique_id=644716841]
+offset_left = -86.0
+offset_top = -155.0
+offset_right = 86.0
+offset_bottom = -134.0
+
+[node name="Label" type="Label" parent="DistantReadyVisual" unique_id=292298815]
+z_index = 5
+layout_mode = 0
+offset_left = 4.0
+offset_top = -2.0
+offset_right = 169.0
+offset_bottom = 21.0
+text = "Choose Slot to Attack"
