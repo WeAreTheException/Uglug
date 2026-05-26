@@ -26,12 +26,29 @@ enum Phase {
 
 @export var skip_draw_and_buff_on_turn_one: bool = true
 
+@export var phase_change_sfx: AudioStream
+@export var low_time_sfx: AudioStream
+@export var sfx_volume_db: float = 0.0
+@export var low_time_threshold: float = 10.0
+
 var current_phase: Phase = Phase.PLACE
 var turn_number: int = 1
 var has_started_match_phases := false
 
+var phase_audio_player: AudioStreamPlayer
+var low_time_audio_player: AudioStreamPlayer
+var low_time_sound_active := false
+
 
 func _ready() -> void:
+	phase_audio_player = AudioStreamPlayer.new()
+	add_child(phase_audio_player)
+	phase_audio_player.volume_db = sfx_volume_db
+
+	low_time_audio_player = AudioStreamPlayer.new()
+	add_child(low_time_audio_player)
+	low_time_audio_player.volume_db = sfx_volume_db
+
 	if draw_timer != null:
 		draw_timer.one_shot = true
 		draw_timer.timeout.connect(_on_draw_timer_timeout)
@@ -53,6 +70,7 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	update_timer_label()
+	update_low_time_sfx()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -114,6 +132,10 @@ func set_phase(new_phase: Phase) -> void:
 			return
 
 	current_phase = new_phase
+
+	play_phase_change_sfx()
+	stop_low_time_sfx()
+
 	phase_changed.emit(get_phase_name())
 	print("PHASE CHANGED TO: ", get_phase_name())
 
@@ -186,6 +208,8 @@ func stop_place_timer() -> void:
 	if place_timer != null:
 		place_timer.stop()
 
+	stop_low_time_sfx()
+
 	if timer_label != null:
 		timer_label.visible = false
 
@@ -199,6 +223,8 @@ func stop_visible_timers() -> void:
 
 	if place_timer != null:
 		place_timer.stop()
+
+	stop_low_time_sfx()
 
 	if timer_label != null:
 		timer_label.visible = false
@@ -237,6 +263,46 @@ func update_timer_label() -> void:
 	var seconds := seconds_left % 60
 
 	timer_label.text = "%d:%02d" % [minutes, seconds]
+
+
+func update_low_time_sfx() -> void:
+	var active_timer := get_active_visible_timer()
+
+	if active_timer == null:
+		stop_low_time_sfx()
+		return
+
+	if active_timer.time_left <= low_time_threshold and active_timer.time_left > 0.0:
+		start_low_time_sfx()
+	else:
+		stop_low_time_sfx()
+
+
+func start_low_time_sfx() -> void:
+	if low_time_sound_active:
+		return
+
+	if low_time_sfx == null:
+		return
+
+	low_time_sound_active = true
+	low_time_audio_player.stream = low_time_sfx
+	low_time_audio_player.play()
+
+
+func stop_low_time_sfx() -> void:
+	low_time_sound_active = false
+
+	if low_time_audio_player != null:
+		low_time_audio_player.stop()
+
+
+func play_phase_change_sfx() -> void:
+	if phase_change_sfx == null:
+		return
+
+	phase_audio_player.stream = phase_change_sfx
+	phase_audio_player.play()
 
 
 func get_active_visible_timer() -> Timer:
