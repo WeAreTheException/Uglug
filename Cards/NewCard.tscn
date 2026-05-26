@@ -27,9 +27,9 @@
 [ext_resource type="AudioStream" uid="uid://5uho8ho3dlfo" path="res://Audio/Placeholder SFX/card_death.wav" id="15_5hax5"]
 [ext_resource type="Script" uid="uid://c43ots6r45ip6" path="res://Cards/AntlerAttackExecutor.gd" id="15_aqnhy"]
 [ext_resource type="Script" uid="uid://cfvsqn441hgwq" path="res://Cards/CardStats.gd" id="22_koaue"]
-[ext_resource type="Script" uid="uid://de64ge4akihco" path="res://Mutations/ToolTip/MutationToolTipHandler.gd" id="23_2w08q"]
+[ext_resource type="Script" uid="uid://de64ge4akihco" path="res://Cards/Mutations/ToolTip/MutationToolTipHandler.gd" id="23_2w08q"]
 [ext_resource type="Shader" uid="uid://rctscsnbymrv" path="res://Cards/CardShadow.gdshader" id="24_gyg67"]
-[ext_resource type="PackedScene" uid="uid://bocxu8xu5hh8b" path="res://Mutations/ToolTip/MutationToolTip.tscn" id="24_lsojp"]
+[ext_resource type="PackedScene" uid="uid://bocxu8xu5hh8b" path="res://Cards/Mutations/ToolTip/MutationToolTip.tscn" id="24_lsojp"]
 [ext_resource type="Texture2D" uid="uid://bt8o5l5yrmihl" path="res://Art/CardBackground.png" id="24_x1h4b"]
 [ext_resource type="Texture2D" uid="uid://b8a1gr84h2iie" path="res://Art/Ants/WorkerAnt_Standalone.png" id="25_duyd4"]
 [ext_resource type="Shader" uid="uid://ck3gs6whq2t57" path="res://Cards/AntSway.gdshader" id="25_gyg67"]
@@ -287,7 +287,6 @@ offset_bottom = 135.0
 metadata/_edit_lock_ = true
 
 [node name="Ant" type="Sprite2D" parent="." unique_id=821885335]
-visible = false
 material = SubResource("ShaderMaterial_wmwgk")
 position = Vector2(0, 2.3841858e-06)
 scale = Vector2(0.14500003, 0.1451613)
@@ -307,7 +306,6 @@ texture = ExtResource("27_wmwgk")
 metadata/_edit_lock_ = true
 
 [node name="BaseMutation" type="Node2D" parent="." unique_id=856620296]
-visible = false
 z_index = 1
 position = Vector2(0, 96)
 scale = Vector2(0.028686536, 0.028686536)

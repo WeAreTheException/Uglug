@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="Flying" format=3 uid="uid://cd6q56i51qkgo"]
 
-[ext_resource type="Script" uid="uid://bev4i65sbtpqe" path="res://Mutations/Scripts/Flying.gd" id="1_a11b5"]
+[ext_resource type="Script" uid="uid://bev4i65sbtpqe" path="res://Cards/Mutations/MutationPresets/MutationBehaviourHandlers/DirectAttack.gd" id="1_a11b5"]
 [ext_resource type="Texture2D" uid="uid://b4u7x4egbnlae" path="res://Art/Mutations/Aviant_Sigil.PNG" id="2_a11b5"]
 
 [resource]
