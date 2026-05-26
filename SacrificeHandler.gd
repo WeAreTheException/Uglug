@@ -161,6 +161,10 @@ func commit_sacrifice(sacrificed_data: Array) -> void:
 			continue
 
 		remove_card_from_player_hand(card)
+
+		if sacrifice_animation != null:
+			sacrifice_animation.play_sacrifice()
+
 		discard_card(card)
 
 

@@ -1,13 +1,13 @@
 [gd_scene format=3 uid="uid://cdwck7o2s40qg"]
 
 [ext_resource type="Script" uid="uid://bxbqihkit6rgo" path="res://Managers/Phasemanager.gd" id="1_hco1x"]
-[ext_resource type="Script" path="res://PlayerNameSizing.gd" id="1_npv2n"]
+[ext_resource type="Script" uid="uid://cnivviyt7i5qu" path="res://PlayerNameSizing.gd" id="1_npv2n"]
 [ext_resource type="PackedScene" uid="uid://c8mekq0tyuadn" path="res://Slots/NewSlots.tscn" id="1_phlo6"]
-[ext_resource type="Script" path="res://TurnOrderLabel.gd" id="1_vaqi8"]
+[ext_resource type="Script" uid="uid://cwireilh2n5g3" path="res://TurnOrderLabel.gd" id="1_vaqi8"]
 [ext_resource type="Script" uid="uid://ukqcaw2u1h1i" path="res://MultiplayerManager.gd" id="2_gdibd"]
 [ext_resource type="Texture2D" uid="uid://kwpbjydk33rh" path="res://Art/P1_AttackOrder.png" id="2_m7shj"]
 [ext_resource type="Script" uid="uid://dgiphjbgc46k0" path="res://Phase/AttackFirstSlotLabel.gd" id="2_ykjx8"]
-[ext_resource type="Script" path="res://PhaseLabel.gd" id="2_yxvsl"]
+[ext_resource type="Script" uid="uid://bfxl8a4iwbxde" path="res://PhaseLabel.gd" id="2_yxvsl"]
 [ext_resource type="Script" uid="uid://bneanu1h8dlxb" path="res://TurnManager.gd" id="3_npu2i"]
 [ext_resource type="Texture2D" uid="uid://bqvhbvonl6m57" path="res://References/maxresdefault.jpg" id="6_cpbwq"]
 [ext_resource type="PackedScene" uid="uid://ctpwjfpdouwp8" path="res://Win_Screen.tscn" id="6_xplwh"]
@@ -33,8 +33,10 @@
 [ext_resource type="Script" uid="uid://2atv8mfbeu07" path="res://BoardManager.gd" id="20_jgxe7"]
 [ext_resource type="PackedScene" uid="uid://l28s3hnlv4iy" path="res://Cards/NewCard.tscn" id="21_nxiui"]
 [ext_resource type="Script" uid="uid://ccnjnfxdpodn8" path="res://CombatManager.gd" id="22_v2l0b"]
+[ext_resource type="AudioStream" uid="uid://bigxegrfrb6o5" path="res://Audio/Placeholder SFX/card_blessing.wav" id="24_gap0t"]
 [ext_resource type="Script" uid="uid://b4y3ff1x1rnm7" path="res://RoundManager.gd" id="24_s2s56"]
 [ext_resource type="PackedScene" uid="uid://dacxspbhp804b" path="res://Dominant/Dominant.tscn" id="25_2p7eh"]
+[ext_resource type="AudioStream" uid="uid://kflvovvt7xxn" path="res://Audio/Placeholder SFX/ClockTickingLooped.mp3" id="25_gap0t"]
 [ext_resource type="Texture2D" uid="uid://it6pftgf2ru4" path="res://References/Screenshot 2026-05-07 at 4.48.53 PM.png" id="27_ebn5f"]
 [ext_resource type="Texture2D" uid="uid://bkafxhbg4kvug" path="res://Sprites/CardSlot.png" id="28_e2c01"]
 [ext_resource type="PackedScene" uid="uid://52uj0s5wxoub" path="res://Buff_Pile.tscn" id="32_axksp"]
@@ -270,6 +272,8 @@ buff_timer = NodePath("BuffTimer")
 place_timer = NodePath("PlaceTimer")
 attack_timer = NodePath("AttackTimer")
 timer_label = NodePath("../../Labels/Timer")
+phase_change_sfx = ExtResource("24_gap0t")
+low_time_sfx = ExtResource("25_gap0t")
 
 [node name="PlaceTimer" type="Timer" parent="Managers/PhaseManager" unique_id=866131047]
 wait_time = 45.0
