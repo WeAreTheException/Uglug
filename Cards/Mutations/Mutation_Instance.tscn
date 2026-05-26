@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://cqf5jbfh1y1ul"]
 
-[ext_resource type="Script" uid="uid://dpqsjpwfcnumx" path="res://UseButton.gd" id="1_3soah"]
-[ext_resource type="Script" uid="uid://cuhu2a3qwu5nv" path="res://MutationInstance.gd" id="1_75087"]
-[ext_resource type="PackedScene" uid="uid://d4lwi1f8i5uat" path="res://Mutations/ToolTip/MutationToolTip.tscn" id="2_h6um3"]
+[ext_resource type="Script" path="res://UseButton.gd" id="1_3soah"]
+[ext_resource type="Script" uid="uid://cuhu2a3qwu5nv" path="res://Cards/Mutations/MutationInstance.gd" id="1_75087"]
+[ext_resource type="PackedScene" path="res://Mutations/ToolTip/MutationToolTip.tscn" id="2_h6um3"]
 [ext_resource type="Texture2D" uid="uid://cxfrhckwspi6a" path="res://Art/Mutations/Antlers_Sigil.PNG" id="3_h2fld"]
 
 [node name="MutationInstance" type="Node2D" unique_id=1349463859]

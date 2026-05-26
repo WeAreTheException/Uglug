@@ -72,10 +72,16 @@ func enter_attack() -> void:
 		set_main_state(MainState.WAIT)
 		return
 
-	if card.get_all_mutations().size() > 0:
-		print("mutation attack")
-		set_main_state(MainState.WAIT)
-		return
+	for mutation in card.get_all_mutations():
+		if mutation == null:
+			continue
+
+		var handled := mutation.mutation_attack(card)
+
+		if handled:
+			print("mutation attack")
+			set_main_state(MainState.WAIT)
+			return
 
 	if card.combat_manager != null:
 		card.combat_manager.request_attack(card)

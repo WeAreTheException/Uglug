@@ -5,29 +5,40 @@ class_name Mutation
 @export_multiline var mutation_description: String = ""
 @export var sigil_texture: Texture2D
 
-func get_tooltip_name() -> String:
-	if mutation_name.strip_edges() != "":
-		return mutation_name
 
-	if resource_path != "":
-		return resource_path.get_file().get_basename()
+func mutation_attack(_card: Card) -> bool:
+	return false
 
-	return "Mutation"
-
-func get_tooltip_description() -> String:
-	return mutation_description
-
-func get_attack_target(_attacker: Card, opposing_card: Card) -> Card:
-	return opposing_card
-
-func modify_damage(_attacker: Card, _defender: Card, base_damage: int) -> int:
-	return base_damage
 
 func on_death(_card: Card) -> void:
 	pass
 
-func on_damaged(_card: Card, _attacker: Card, _amount: int) -> void:
+
+func on_damaged(
+	_card: Card,
+	_attacker: Card,
+	_damage: int
+) -> void:
 	pass
 
-func wants_manual_attack_target() -> bool:
-	return false
+
+func modify_damage(
+	_card: Card,
+	_target: Card,
+	damage: int
+) -> int:
+	return damage
+
+
+func get_attack_target(
+	_card: Card,
+	target: Card
+) -> Card:
+	return target
+
+
+func get_attack_targets(
+	_card: Card,
+	targets: Array[Card]
+) -> Array[Card]:
+	return targets
