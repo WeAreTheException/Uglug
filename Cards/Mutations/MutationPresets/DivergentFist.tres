@@ -1,11 +1,11 @@
-[gd_resource type="Resource" script_class="Mutation" format=3 uid="uid://teuhdsb6t6x3"]
+[gd_resource type="Resource" script_class="DivergentFist" format=3 uid="uid://dcgqrr05c2pyg"]
 
-[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Cards/Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="1_acqmv"]
-[ext_resource type="Texture2D" uid="uid://yjpdo0p2lav5" path="res://Art/Mutations/Persistant_Sigil.PNG" id="2_n22my"]
+[ext_resource type="Script" uid="uid://bwweclqiu0d44" path="res://Cards/Mutations/MutationPresets/MutationBehaviourHandlers/DivergentFist.gd" id="1_21ko3"]
+[ext_resource type="Texture2D" uid="uid://yjpdo0p2lav5" path="res://Art/Mutations/Persistant_Sigil.PNG" id="2_acqmv"]
 
 [resource]
-script = ExtResource("1_acqmv")
+script = ExtResource("1_21ko3")
 mutation_name = "Divergent Fist"
-mutation_description = "Hit Twice"
-sigil_texture = ExtResource("2_n22my")
-metadata/_custom_type_script = "uid://be8yk3djwb5oc"
+mutation_description = "Hits Twice"
+sigil_texture = ExtResource("2_acqmv")
+metadata/_custom_type_script = "uid://bwweclqiu0d44"

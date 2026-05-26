@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="CardData" format=3 uid="uid://jd5rbexi4lr4"]
 
 [ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Cards/Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="1_u80qt"]
-[ext_resource type="Resource" uid="uid://teuhdsb6t6x3" path="res://Cards/Mutations/MutationPresets/DivergentFist.tres" id="2_odebo"]
+[ext_resource type="Resource" uid="uid://dcgqrr05c2pyg" path="res://Cards/Mutations/MutationPresets/DivergentFist.tres" id="2_odebo"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="2_w52ji"]
 [ext_resource type="Texture2D" uid="uid://b8a1gr84h2iie" path="res://Art/Ants/WorkerAnt_Standalone.png" id="3_mtqv4"]
 
