@@ -4,6 +4,23 @@
 [ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Mutations/Scripts/Mutation.gd" id="2_dod1g"]
 [ext_resource type="Resource" uid="uid://cd6q56i51qkgo" path="res://Mutations/Flying.tres" id="3_jrtyf"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="3_kuxp0"]
+[ext_resource type="Script" uid="uid://cm2da67ckyqv6" path="res://Mutations/Scripts/Antler.gd" id="3_lkn6a"]
+
+[sub_resource type="Resource" id="Resource_gxwoc"]
+script = ExtResource("3_lkn6a")
+metadata/_custom_type_script = "uid://cm2da67ckyqv6"
+
+[sub_resource type="Resource" id="Resource_ms81t"]
+script = ExtResource("3_kuxp0")
+name = "1111"
+attack = 1
+cost = 1
+base_mutations = Array[ExtResource("2_dod1g")]([SubResource("Resource_gxwoc")])
+metadata/_custom_type_script = "uid://duslcpxrhurv8"
+
+[sub_resource type="Resource" id="Resource_v3d7p"]
+script = ExtResource("3_kuxp0")
+metadata/_custom_type_script = "uid://duslcpxrhurv8"
 
 [sub_resource type="Resource" id="Resource_jrtyf"]
 script = ExtResource("3_kuxp0")
@@ -24,6 +41,8 @@ lane_id = 1
 [node name="w2" parent="." unique_id=679783875 instance=ExtResource("1_tiyv0")]
 position = Vector2(896, 512)
 lane_id = 2
+player_starting_card = SubResource("Resource_ms81t")
+opponent_starting_card = SubResource("Resource_v3d7p")
 
 [node name="w3" parent="." unique_id=994308354 instance=ExtResource("1_tiyv0")]
 position = Vector2(1088, 512)
