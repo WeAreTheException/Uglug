@@ -43,7 +43,7 @@ func _process(_delta: float) -> void:
 		return
 
 	if mutation != last_hovered_mutation:
-		print("SHOW TOOLTIP: ", mutation.get_tooltip_name())
+		print("SHOW TOOLTIP: ", mutation.mutation_name)
 
 	last_hovered_mutation = mutation
 	_show_tooltip(mutation)
@@ -90,10 +90,10 @@ func _show_tooltip(mutation: Mutation) -> void:
 	tooltip_root.visible = true
 
 	if name_label != null:
-		name_label.text = mutation.get_tooltip_name()
+		name_label.text = mutation.mutation_name
 
 	if description_label != null:
-		description_label.text = mutation.get_tooltip_description()
+		description_label.text = mutation.mutation_description
 
 	await get_tree().process_frame
 
