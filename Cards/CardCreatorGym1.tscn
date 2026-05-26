@@ -2,33 +2,6 @@
 
 [ext_resource type="PackedScene" uid="uid://c8mekq0tyuadn" path="res://Slots/NewSlots.tscn" id="1_nsflq"]
 [ext_resource type="Resource" uid="uid://jd5rbexi4lr4" path="res://Cards/CardPresets/Persistant.tres" id="2_3f68n"]
-[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Cards/Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="3_rkngt"]
-[ext_resource type="Script" uid="uid://cm2da67ckyqv6" path="res://Cards/Mutations/MutationPresets/MutationBehaviourHandlers/YAttack.gd" id="4_248mh"]
-[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="5_7goba"]
-[ext_resource type="Resource" uid="uid://cd6q56i51qkgo" path="res://Cards/Mutations/MutationPresets/Flying.tres" id="6_ycsoo"]
-
-[sub_resource type="Resource" id="Resource_gxwoc"]
-script = ExtResource("4_248mh")
-metadata/_custom_type_script = "uid://cm2da67ckyqv6"
-
-[sub_resource type="Resource" id="Resource_ms81t"]
-script = ExtResource("5_7goba")
-name = "1111"
-attack = 1
-cost = 1
-base_mutations = Array[ExtResource("3_rkngt")]([SubResource("Resource_gxwoc")])
-metadata/_custom_type_script = "uid://duslcpxrhurv8"
-
-[sub_resource type="Resource" id="Resource_v3d7p"]
-script = ExtResource("5_7goba")
-metadata/_custom_type_script = "uid://duslcpxrhurv8"
-
-[sub_resource type="Resource" id="Resource_jrtyf"]
-script = ExtResource("5_7goba")
-name = "Aviant"
-attack = 1
-base_mutations = Array[ExtResource("3_rkngt")]([ExtResource("6_ycsoo")])
-metadata/_custom_type_script = "uid://duslcpxrhurv8"
 
 [node name="CardCreatorGym1" type="Node2D" unique_id=2045850218]
 
@@ -37,19 +10,13 @@ position = Vector2(512, 512)
 player_starting_card = ExtResource("2_3f68n")
 
 [node name="w" parent="." unique_id=494863648 instance=ExtResource("1_nsflq")]
-visible = false
 position = Vector2(704, 512)
 lane_id = 1
 
 [node name="w2" parent="." unique_id=679783875 instance=ExtResource("1_nsflq")]
-visible = false
 position = Vector2(896, 512)
 lane_id = 2
-player_starting_card = SubResource("Resource_ms81t")
-opponent_starting_card = SubResource("Resource_v3d7p")
 
 [node name="w3" parent="." unique_id=994308354 instance=ExtResource("1_nsflq")]
-visible = false
 position = Vector2(1088, 512)
 lane_id = 3
-player_starting_card = SubResource("Resource_jrtyf")

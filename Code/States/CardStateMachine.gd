@@ -13,20 +13,28 @@ enum PowerState {
 	EMPOWERED
 }
 
+@export var attack_handler: AttackHandler
+@export var hurt_handler: HurtHandler
+@export var die_handler: DieHandler
+
 var current_main_state: MainState = MainState.WAIT
 var current_power_state: PowerState = PowerState.BASE
 
 var card: Card = null
-var attack_handler: AttackHandler = null
-var hurt_handler: HurtHandler = null
-var die_handler: DieHandler = null
+
 
 func _ready() -> void:
 	card = get_parent() as Card
 
-	attack_handler = get_node_or_null("Attack") as AttackHandler
-	hurt_handler = get_node_or_null("Hurt") as HurtHandler
-	die_handler = get_node_or_null("Die") as DieHandler
+	if attack_handler == null:
+		attack_handler = get_node_or_null("Attack/AttackHandler") as AttackHandler
+
+	if hurt_handler == null:
+		hurt_handler = get_node_or_null("Hurt") as HurtHandler
+
+	if die_handler == null:
+		die_handler = get_node_or_null("Die") as DieHandler
+
 
 func _unhandled_input(event: InputEvent) -> void:
 	if card == null:
@@ -50,6 +58,7 @@ func _unhandled_input(event: InputEvent) -> void:
 					KEY_D:
 						set_main_state(MainState.DEATH)
 
+
 func set_main_state(new_state: MainState) -> void:
 	if current_main_state == new_state:
 		return
@@ -59,42 +68,23 @@ func set_main_state(new_state: MainState) -> void:
 
 	match current_main_state:
 		MainState.ATTACK:
-			enter_attack()
+			if attack_handler == null:
+				print("attack blocked: attack_handler is null")
+				set_main_state(MainState.WAIT)
+				return
+
+			attack_handler.enter_attack()
+			set_main_state(MainState.WAIT)
+
 		MainState.HURT:
 			enter_hurt()
+
 		MainState.DEATH:
 			enter_death()
+
 		MainState.WAIT:
 			enter_wait()
 
-func enter_attack() -> void:
-	if card == null:
-		set_main_state(MainState.WAIT)
-		return
-
-	for mutation in card.get_all_mutations():
-		if mutation == null:
-			continue
-
-		var handled := mutation.mutation_attack(card)
-
-		if handled:
-			print("mutation attack")
-			set_main_state(MainState.WAIT)
-			return
-
-	if card.combat_manager != null:
-		card.combat_manager.request_attack(card)
-		set_main_state(MainState.WAIT)
-		return
-
-	if attack_handler == null:
-		print("attack blocked: attack_handler is null")
-		set_main_state(MainState.WAIT)
-		return
-
-	attack_handler.attack()
-	set_main_state(MainState.WAIT)
 
 func enter_hurt() -> void:
 	if hurt_handler == null:
@@ -107,6 +97,7 @@ func enter_hurt() -> void:
 	if is_instance_valid(card) and card.current_health > 0:
 		set_main_state(MainState.WAIT)
 
+
 func enter_death() -> void:
 	if die_handler == null:
 		print("death blocked: die_handler is null")
@@ -114,8 +105,10 @@ func enter_death() -> void:
 
 	die_handler.die()
 
+
 func enter_wait() -> void:
 	pass
+
 
 func set_power_state(new_state: PowerState) -> void:
 	if current_power_state == new_state:
@@ -123,8 +116,10 @@ func set_power_state(new_state: PowerState) -> void:
 
 	current_power_state = new_state
 
+
 func is_in_main_state(state: MainState) -> bool:
 	return current_main_state == state
+
 
 func is_in_power_state(state: PowerState) -> bool:
 	return current_power_state == state

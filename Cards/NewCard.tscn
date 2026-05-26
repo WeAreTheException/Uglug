@@ -143,16 +143,20 @@ script = ExtResource("37_ra3pw")
 [node name="MutationHandler" type="Node" parent="." unique_id=1335831258]
 script = ExtResource("5_qltuj")
 
-[node name="CardStateMachine" type="Node" parent="." unique_id=1069228844]
+[node name="CardStateMachine" type="Node" parent="." unique_id=1069228844 node_paths=PackedStringArray("attack_handler", "hurt_handler", "die_handler")]
 script = ExtResource("12_lsojp")
+attack_handler = NodePath("Attack")
+hurt_handler = NodePath("Hurt")
+die_handler = NodePath("Die")
 metadata/_custom_type_script = "uid://ro02870urhpb"
 
 [node name="Attack" type="Node" parent="CardStateMachine" unique_id=1288671045 node_paths=PackedStringArray("attack_anim")]
 script = ExtResource("4_52a3h")
-attack_anim = NodePath("AttackFeedback")
+attack_anim = NodePath("AtkFeedback")
 
-[node name="AttackFeedback" type="Node" parent="CardStateMachine/Attack" unique_id=387907870]
+[node name="AtkFeedback" type="Node" parent="CardStateMachine/Attack" unique_id=387907870]
 script = ExtResource("5_r4p8t")
+return_time = 0.1
 attack_sfx = ExtResource("9_qltuj")
 
 [node name="Hurt" type="Node" parent="CardStateMachine" unique_id=1647059360 node_paths=PackedStringArray("hurt_anim")]

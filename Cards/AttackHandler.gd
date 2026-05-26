@@ -1,16 +1,57 @@
 extends Node
 class_name AttackHandler
 
-@export var attack_anim: Node
+@export var attack_anim: AttackFeedbackHandler
 
 var card: Card = null
+
+var is_attacking: bool = false
+var queued_attacks: int = 0
 
 
 func _ready() -> void:
 	card = _find_card_parent()
 
+	if attack_anim == null:
+		var parent := get_parent()
+
+		if parent != null:
+			attack_anim = parent.get_node_or_null("AttackFeedback") as AttackFeedbackHandler
+
+
+func enter_attack() -> void:
+	if card == null:
+		return
+
+	if not is_instance_valid(card):
+		return
+
+	for mutation in card.get_all_mutations():
+		if mutation == null:
+			continue
+
+		var handled := mutation.mutation_attack(card)
+
+		if handled:
+			print("mutation attack")
+			return
+
+	if card.combat_manager != null:
+		card.combat_manager.request_attack(card)
+		return
+
+	attack()
+
 
 func attack() -> void:
+	if is_attacking:
+		queued_attacks += 1
+		return
+
+	_run_attack()
+
+
+func _run_attack() -> void:
 	if card == null:
 		return
 
@@ -25,9 +66,12 @@ func attack() -> void:
 		print(card.card_name, " attack skipped: 0 attack")
 		return
 
+	is_attacking = true
+
 	var target_slot := card.current_slot.opposing_slot
 
 	if target_slot == null:
+		is_attacking = false
 		return
 
 	var target_card := target_slot.current_card as Card
@@ -37,6 +81,15 @@ func attack() -> void:
 	else:
 		_resolve_direct_attack(target_slot)
 
+	if attack_anim != null:
+		await attack_anim.attack_feedback_finished
+
+	is_attacking = false
+
+	if queued_attacks > 0:
+		queued_attacks -= 1
+		attack()
+
 
 func _resolve_card_attack(target: Card) -> void:
 	if target == null:
@@ -45,7 +98,7 @@ func _resolve_card_attack(target: Card) -> void:
 	if not is_instance_valid(target):
 		return
 
-	if attack_anim != null and attack_anim.has_method("play_attack"):
+	if attack_anim != null:
 		attack_anim.play_attack(target)
 
 	var damage := card.current_attack
@@ -64,7 +117,7 @@ func _resolve_card_attack(target: Card) -> void:
 
 
 func _resolve_direct_attack(slot: NewSlots) -> void:
-	if attack_anim != null and attack_anim.has_method("play_attack"):
+	if attack_anim != null:
 		attack_anim.play_attack(null)
 
 	var direct_damage := card.current_attack
