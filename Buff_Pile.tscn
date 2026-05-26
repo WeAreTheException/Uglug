@@ -2,10 +2,10 @@
 
 [ext_resource type="Script" uid="uid://cbd4f43ddcg3k" path="res://BuffPileButton.gd" id="1_g5o64"]
 [ext_resource type="PackedScene" uid="uid://cqf5jbfh1y1ul" path="res://Mutation_Instance.tscn" id="2_gg26q"]
-[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Mutations/Scripts/Mutation.gd" id="3_31rnl"]
-[ext_resource type="Script" uid="uid://djtnl5koe1f0x" path="res://BuffDatabase.gd" id="3_f8g5j"]
-[ext_resource type="Resource" uid="uid://bvjhx37xius1c" path="res://Mutations/PregnAnt.tres" id="6_nvumm"]
-[ext_resource type="Resource" uid="uid://cd6q56i51qkgo" path="res://Mutations/Flying.tres" id="7_qsuhv"]
+[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Cards/Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="3_31rnl"]
+[ext_resource type="Script" path="res://BuffDatabase.gd" id="3_f8g5j"]
+[ext_resource type="Resource" uid="uid://bvjhx37xius1c" path="res://Cards/Mutations/MutationPresets/PregnAnt.tres" id="6_nvumm"]
+[ext_resource type="Resource" uid="uid://cd6q56i51qkgo" path="res://Cards/Mutations/MutationPresets/Flying.tres" id="7_qsuhv"]
 
 [node name="BuffPile" type="Button" unique_id=1953419234 node_paths=PackedStringArray("spawn_anchor")]
 offset_right = 512.0

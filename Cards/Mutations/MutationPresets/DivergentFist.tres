@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Mutation" format=3 uid="uid://teuhdsb6t6x3"]
+
+[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Cards/Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="1_acqmv"]
+[ext_resource type="Texture2D" uid="uid://yjpdo0p2lav5" path="res://Art/Mutations/Persistant_Sigil.PNG" id="2_n22my"]
+
+[resource]
+script = ExtResource("1_acqmv")
+mutation_name = "Divergent Fist"
+mutation_description = "Hit Twice"
+sigil_texture = ExtResource("2_n22my")
+metadata/_custom_type_script = "uid://be8yk3djwb5oc"

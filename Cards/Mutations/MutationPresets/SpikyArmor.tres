@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="SpikyArmor" format=3 uid="uid://x7aj76vgo8mk"]
 
-[ext_resource type="Script" uid="uid://dvg4r4x5ffbcs" path="res://Mutations/Scripts/SpikyArmor.gd" id="1_g3mkb"]
+[ext_resource type="Script" uid="uid://dvg4r4x5ffbcs" path="res://Cards/Mutations/MutationPresets/MutationBehaviourHandlers/SpikyArmor.gd" id="1_g3mkb"]
 [ext_resource type="Texture2D" uid="uid://c8kf7vqpx34gh" path="res://Art/Mutations/Duriant_Sigil.PNG" id="2_bgxtu"]
 
 [resource]
