@@ -244,7 +244,7 @@ warrior_deck_root = NodePath("../../Hand&Deck/WarriorDeck")
 
 [node name="Managers" type="Node" parent="." unique_id=5384537]
 
-[node name="PhaseManager" type="Node" parent="Managers" unique_id=822521768 node_paths=PackedStringArray("turn_manager", "draw_timer", "buff_timer", "place_timer", "attack_timer", "timer_label")]
+[node name="PhaseManager" type="Node" parent="Managers" unique_id=822521768 node_paths=PackedStringArray("turn_manager", "draw_timer", "buff_timer", "place_timer", "attack_timer", "timer_label", "phase_change_feedback")]
 script = ExtResource("1_hco1x")
 turn_manager = NodePath("../TurnManager")
 draw_timer = NodePath("DrawTimer")
@@ -252,6 +252,7 @@ buff_timer = NodePath("BuffTimer")
 place_timer = NodePath("PlaceTimer")
 attack_timer = NodePath("AttackTimer")
 timer_label = NodePath("../../Labels/Timer")
+phase_change_feedback = NodePath("../../PhaseChangeFeedback")
 phase_change_sfx = ExtResource("24_gap0t")
 low_time_sfx = ExtResource("25_gap0t")
 sfx_volume_db = -20.0
