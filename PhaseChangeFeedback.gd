@@ -1,6 +1,8 @@
 extends Node
 class_name PhaseChangeFeedback
 
+signal feedback_finished
+
 @export var phase_manager: PhaseManager
 @export var source_phase_label: Label
 
@@ -22,10 +24,9 @@ class_name PhaseChangeFeedback
 
 @export var darken_alpha: float = 0.65
 
-
 var tween: Tween
 
-var debug_phases := [
+var debug_phases: Array[String] = [
 	"Draw",
 	"Buff",
 	"Place",
@@ -33,9 +34,13 @@ var debug_phases := [
 ]
 
 var debug_phase_index := 0
+var base_label_position: Vector2
 
 
 func _ready() -> void:
+	if feedback_label != null:
+		base_label_position = feedback_label.position
+
 	_hide_feedback()
 
 	if phase_manager != null:
@@ -72,9 +77,11 @@ func play_phase_change(phase_name: String) -> void:
 
 func play_feedback_text(text_to_show: String) -> void:
 	if background_darken == null:
+		feedback_finished.emit()
 		return
 
 	if feedback_label == null:
+		feedback_finished.emit()
 		return
 
 	if tween != null:
@@ -89,10 +96,7 @@ func play_feedback_text(text_to_show: String) -> void:
 	feedback_label.modulate.a = 0.0
 
 	feedback_label.scale = start_scale
-	var center_position := feedback_label.position
-
-	feedback_label.position = center_position + start_offset
-	
+	feedback_label.position = base_label_position + start_offset
 	feedback_label.pivot_offset = feedback_label.size * 0.5
 
 	tween = create_tween()
@@ -112,11 +116,11 @@ func play_feedback_text(text_to_show: String) -> void:
 		middle_scale,
 		fade_in_time
 	).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-	
+
 	tween.parallel().tween_property(
 		feedback_label,
 		"position",
-		center_position + end_offset,
+		base_label_position + end_offset,
 		fade_in_time + hold_time
 	).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 
@@ -143,7 +147,12 @@ func play_feedback_text(text_to_show: String) -> void:
 		fade_out_time
 	)
 
-	tween.tween_callback(_hide_feedback)
+	tween.tween_callback(_finish_feedback)
+
+
+func _finish_feedback() -> void:
+	_hide_feedback()
+	feedback_finished.emit()
 
 
 func _hide_feedback() -> void:
@@ -155,3 +164,4 @@ func _hide_feedback() -> void:
 		feedback_label.visible = false
 		feedback_label.modulate.a = 0.0
 		feedback_label.scale = start_scale
+		feedback_label.position = base_label_position

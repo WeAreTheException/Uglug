@@ -18,6 +18,7 @@ enum Phase {
 @export var attack_timer: Timer
 
 @export var timer_label: Label
+@export var phase_change_feedback: PhaseChangeFeedback
 
 @export var draw_timer_color: Color = Color.WHITE
 @export var buff_timer_color: Color = Color.YELLOW
@@ -135,9 +136,13 @@ func set_phase(new_phase: Phase) -> void:
 
 	play_phase_change_sfx()
 	stop_low_time_sfx()
+	stop_visible_timers()
 
 	phase_changed.emit(get_phase_name())
 	print("PHASE CHANGED TO: ", get_phase_name())
+
+	if phase_change_feedback != null:
+		await phase_change_feedback.feedback_finished
 
 	if current_phase == Phase.DRAW:
 		start_draw_timer()
