@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://cwseeh4sdrkab"]
+
+[ext_resource type="Script" uid="uid://cwireilh2n5g3" path="res://PhaseChangeFeedback.gd" id="1_mih8c"]
+
+[node name="PhaseChangeFeedback" type="Node" unique_id=363774523 node_paths=PackedStringArray("background_darken", "feedback_label")]
+script = ExtResource("1_mih8c")
+background_darken = NodePath("ColorRect")
+feedback_label = NodePath("Label")
+hold_time = 3.0
+
+[node name="Label" type="Label" parent="." unique_id=716052155]
+z_index = 2
+offset_left = 416.0
+offset_top = 256.0
+offset_right = 1440.0
+offset_bottom = 832.0
+pivot_offset = Vector2(512, 288)
+theme_override_font_sizes/font_size = 120
+text = "Mao Goes First"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1737361940]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1.1488971e-05, 1.1488971e-05, 1.1488971e-05, 1)
