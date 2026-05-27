@@ -7,6 +7,8 @@ class_name PhaseChangeFeedback
 @export var background_darken: ColorRect
 @export var feedback_label: Label
 
+@export var debug_key_enabled: bool = true
+
 @export var fade_in_time: float = 0.15
 @export var hold_time: float = 0.55
 @export var fade_out_time: float = 0.25
@@ -15,9 +17,22 @@ class_name PhaseChangeFeedback
 @export var middle_scale: Vector2 = Vector2(1.15, 1.15)
 @export var end_scale: Vector2 = Vector2(1.0, 1.0)
 
+@export var start_offset: Vector2 = Vector2(40, 0)
+@export var end_offset: Vector2 = Vector2(-20, 0)
+
 @export var darken_alpha: float = 0.65
 
+
 var tween: Tween
+
+var debug_phases := [
+	"Draw",
+	"Buff",
+	"Place",
+	"Attack"
+]
+
+var debug_phase_index := 0
 
 
 func _ready() -> void:
@@ -28,7 +43,34 @@ func _ready() -> void:
 			phase_manager.phase_changed.connect(play_phase_change)
 
 
-func play_phase_change(_phase_name: String) -> void:
+func _unhandled_input(event: InputEvent) -> void:
+	if not debug_key_enabled:
+		return
+
+	if event is InputEventKey and event.pressed and not event.echo:
+		if event.keycode == KEY_P:
+			play_debug_feedback()
+
+
+func play_debug_feedback() -> void:
+	var text: String = debug_phases[debug_phase_index]
+
+	play_feedback_text(text)
+
+	debug_phase_index += 1
+
+	if debug_phase_index >= debug_phases.size():
+		debug_phase_index = 0
+
+
+func play_phase_change(phase_name: String) -> void:
+	if source_phase_label != null and source_phase_label.text != "":
+		play_feedback_text(source_phase_label.text)
+	else:
+		play_feedback_text(phase_name)
+
+
+func play_feedback_text(text_to_show: String) -> void:
 	if background_darken == null:
 		return
 
@@ -38,10 +80,7 @@ func play_phase_change(_phase_name: String) -> void:
 	if tween != null:
 		tween.kill()
 
-	if source_phase_label != null:
-		feedback_label.text = source_phase_label.text
-	else:
-		feedback_label.text = _phase_name
+	feedback_label.text = text_to_show
 
 	background_darken.visible = true
 	feedback_label.visible = true
@@ -50,26 +89,60 @@ func play_phase_change(_phase_name: String) -> void:
 	feedback_label.modulate.a = 0.0
 
 	feedback_label.scale = start_scale
+	var center_position := feedback_label.position
+
+	feedback_label.position = center_position + start_offset
+	
 	feedback_label.pivot_offset = feedback_label.size * 0.5
 
 	tween = create_tween()
-	tween.set_parallel(true)
 
 	tween.tween_property(background_darken, "modulate:a", darken_alpha, fade_in_time)
-	tween.tween_property(feedback_label, "modulate:a", 1.0, fade_in_time)
-	tween.tween_property(feedback_label, "scale", middle_scale, fade_in_time).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
-	tween.chain()
+	tween.parallel().tween_property(
+		feedback_label,
+		"modulate:a",
+		1.0,
+		fade_in_time
+	)
+
+	tween.parallel().tween_property(
+		feedback_label,
+		"scale",
+		middle_scale,
+		fade_in_time
+	).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	
+	tween.parallel().tween_property(
+		feedback_label,
+		"position",
+		center_position + end_offset,
+		fade_in_time + hold_time
+	).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+
 	tween.tween_interval(hold_time)
 
-	tween.chain()
-	tween.set_parallel(true)
+	tween.tween_property(
+		background_darken,
+		"modulate:a",
+		0.0,
+		fade_out_time
+	)
 
-	tween.tween_property(background_darken, "modulate:a", 0.0, fade_out_time)
-	tween.tween_property(feedback_label, "modulate:a", 0.0, fade_out_time)
-	tween.tween_property(feedback_label, "scale", end_scale, fade_out_time)
+	tween.parallel().tween_property(
+		feedback_label,
+		"modulate:a",
+		0.0,
+		fade_out_time
+	)
 
-	tween.chain()
+	tween.parallel().tween_property(
+		feedback_label,
+		"scale",
+		end_scale,
+		fade_out_time
+	)
+
 	tween.tween_callback(_hide_feedback)
 
 

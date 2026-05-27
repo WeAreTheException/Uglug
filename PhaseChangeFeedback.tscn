@@ -6,7 +6,8 @@
 script = ExtResource("1_mih8c")
 background_darken = NodePath("ColorRect")
 feedback_label = NodePath("Label")
-hold_time = 3.0
+hold_time = 1.0
+end_offset = Vector2(0, 0)
 
 [node name="Label" type="Label" parent="." unique_id=716052155]
 z_index = 2
