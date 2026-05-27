@@ -25,6 +25,8 @@ signal feedback_finished
 @export var darken_alpha: float = 0.65
 
 var tween: Tween
+var is_playing_feedback := false
+var base_label_position: Vector2
 
 var debug_phases: Array[String] = [
 	"Draw",
@@ -34,7 +36,6 @@ var debug_phases: Array[String] = [
 ]
 
 var debug_phase_index := 0
-var base_label_position: Vector2
 
 
 func _ready() -> void:
@@ -59,7 +60,6 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func play_debug_feedback() -> void:
 	var text: String = debug_phases[debug_phase_index]
-
 	play_feedback_text(text)
 
 	debug_phase_index += 1
@@ -77,15 +77,17 @@ func play_phase_change(phase_name: String) -> void:
 
 func play_feedback_text(text_to_show: String) -> void:
 	if background_darken == null:
-		feedback_finished.emit()
+		_finish_feedback()
 		return
 
 	if feedback_label == null:
-		feedback_finished.emit()
+		_finish_feedback()
 		return
 
 	if tween != null:
 		tween.kill()
+
+	is_playing_feedback = true
 
 	feedback_label.text = text_to_show
 
@@ -102,20 +104,8 @@ func play_feedback_text(text_to_show: String) -> void:
 	tween = create_tween()
 
 	tween.tween_property(background_darken, "modulate:a", darken_alpha, fade_in_time)
-
-	tween.parallel().tween_property(
-		feedback_label,
-		"modulate:a",
-		1.0,
-		fade_in_time
-	)
-
-	tween.parallel().tween_property(
-		feedback_label,
-		"scale",
-		middle_scale,
-		fade_in_time
-	).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tween.parallel().tween_property(feedback_label, "modulate:a", 1.0, fade_in_time)
+	tween.parallel().tween_property(feedback_label, "scale", middle_scale, fade_in_time).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
 	tween.parallel().tween_property(
 		feedback_label,
@@ -126,31 +116,15 @@ func play_feedback_text(text_to_show: String) -> void:
 
 	tween.tween_interval(hold_time)
 
-	tween.tween_property(
-		background_darken,
-		"modulate:a",
-		0.0,
-		fade_out_time
-	)
-
-	tween.parallel().tween_property(
-		feedback_label,
-		"modulate:a",
-		0.0,
-		fade_out_time
-	)
-
-	tween.parallel().tween_property(
-		feedback_label,
-		"scale",
-		end_scale,
-		fade_out_time
-	)
+	tween.tween_property(background_darken, "modulate:a", 0.0, fade_out_time)
+	tween.parallel().tween_property(feedback_label, "modulate:a", 0.0, fade_out_time)
+	tween.parallel().tween_property(feedback_label, "scale", end_scale, fade_out_time)
 
 	tween.tween_callback(_finish_feedback)
 
 
 func _finish_feedback() -> void:
+	is_playing_feedback = false
 	_hide_feedback()
 	feedback_finished.emit()
 

@@ -141,9 +141,6 @@ func set_phase(new_phase: Phase) -> void:
 	phase_changed.emit(get_phase_name())
 	print("PHASE CHANGED TO: ", get_phase_name())
 
-	if phase_change_feedback != null:
-		await phase_change_feedback.feedback_finished
-
 	if current_phase == Phase.DRAW:
 		start_draw_timer()
 	elif current_phase == Phase.BUFF:
@@ -160,7 +157,17 @@ func set_phase(new_phase: Phase) -> void:
 		stop_visible_timers()
 
 
+func wait_for_phase_feedback() -> void:
+	if phase_change_feedback == null:
+		return
+
+	if phase_change_feedback.is_playing_feedback:
+		await phase_change_feedback.feedback_finished
+
+
 func start_draw_timer() -> void:
+	await wait_for_phase_feedback()
+
 	stop_visible_timers()
 
 	if draw_timer == null:
@@ -176,6 +183,8 @@ func start_draw_timer() -> void:
 
 
 func start_buff_timer() -> void:
+	await wait_for_phase_feedback()
+
 	stop_visible_timers()
 
 	if buff_timer == null:
@@ -191,6 +200,8 @@ func start_buff_timer() -> void:
 
 
 func start_place_timer(is_player_one_turn: bool) -> void:
+	await wait_for_phase_feedback()
+
 	stop_visible_timers()
 
 	if place_timer == null:
