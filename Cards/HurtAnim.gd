@@ -21,6 +21,7 @@ func _ready() -> void:
 	audio_player = AudioStreamPlayer.new()
 	add_child(audio_player)
 	audio_player.volume_db = volume_db
+	audio_player.bus = sfx_bus_name
 
 
 func play_hurt() -> void:
