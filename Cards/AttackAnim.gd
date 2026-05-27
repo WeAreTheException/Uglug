@@ -10,6 +10,8 @@ signal attack_feedback_finished
 
 @export var attack_sfx: AudioStream
 @export var volume_db: float = 0.0
+@export var sfx_bus_name: String = "SFX"
+
 
 var card: Card = null
 var is_playing: bool = false

@@ -255,7 +255,7 @@ timer_label = NodePath("../../Labels/Timer")
 phase_change_feedback = NodePath("../../PhaseChangeFeedback")
 phase_change_sfx = ExtResource("24_gap0t")
 low_time_sfx = ExtResource("25_gap0t")
-sfx_volume_db = -20.0
+phase_change_volume_db = -20.0
 
 [node name="PlaceTimer" type="Timer" parent="Managers/PhaseManager" unique_id=866131047]
 wait_time = 45.0

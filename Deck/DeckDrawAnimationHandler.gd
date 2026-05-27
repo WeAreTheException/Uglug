@@ -6,6 +6,8 @@ class_name DeckDrawAnimationHandler
 
 @export var draw_sfx: AudioStream
 @export var volume_db: float = 0.0
+@export var sfx_bus_name: String = "SFX"
+
 
 var audio_player: AudioStreamPlayer
 

@@ -29,7 +29,9 @@ enum Phase {
 
 @export var phase_change_sfx: AudioStream
 @export var low_time_sfx: AudioStream
-@export var sfx_volume_db: float = 0.0
+@export var phase_change_volume_db: float = 0.0
+@export var low_time_volume_db: float = 0.0
+@export var sfx_bus_name: String = "SFX"
 @export var low_time_threshold: float = 10.0
 
 var current_phase: Phase = Phase.PLACE
@@ -44,11 +46,13 @@ var low_time_sound_active := false
 func _ready() -> void:
 	phase_audio_player = AudioStreamPlayer.new()
 	add_child(phase_audio_player)
-	phase_audio_player.volume_db = sfx_volume_db
+	phase_audio_player.volume_db = phase_change_volume_db
+	phase_audio_player.bus = sfx_bus_name
 
 	low_time_audio_player = AudioStreamPlayer.new()
 	add_child(low_time_audio_player)
-	low_time_audio_player.volume_db = sfx_volume_db
+	low_time_audio_player.volume_db = low_time_volume_db
+	low_time_audio_player.bus = sfx_bus_name
 
 	if draw_timer != null:
 		draw_timer.one_shot = true
