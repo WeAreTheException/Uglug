@@ -47,7 +47,6 @@
 [ext_resource type="Script" uid="uid://bo06dxe1jmrss" path="res://CardDeathRouter.gd" id="41_3h1dv"]
 [ext_resource type="Shader" uid="uid://cfwy7ul6434i3" path="res://PlaceLiquidTimer.gdshader" id="46_02g6p"]
 [ext_resource type="Script" uid="uid://wjhccgreglg6" path="res://PlaceLiquidTimer.gd" id="46_saxf4"]
-[ext_resource type="Texture2D" uid="uid://d1ypj3toan6r1" path="res://Art/Blood.png" id="47_s5gjl"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_s5gjl"]
 shader = ExtResource("46_02g6p")
@@ -67,6 +66,7 @@ offset_left = 1008.0
 offset_top = 32.0
 offset_right = 1104.0
 offset_bottom = 82.0
+theme_override_colors/font_color = Color(1, 0, 0, 1)
 theme_override_font_sizes/font_size = 24
 text = "Trex"
 horizontal_alignment = 1
@@ -82,6 +82,7 @@ offset_left = 784.0
 offset_top = 32.0
 offset_right = 880.0
 offset_bottom = 82.0
+theme_override_colors/font_color = Color(0, 1, 0, 1)
 theme_override_font_sizes/font_size = 24
 text = "Sergio"
 horizontal_alignment = 1
@@ -89,6 +90,7 @@ vertical_alignment = 1
 script = ExtResource("1_npv2n")
 
 [node name="PhaseLabel" type="Label" parent="Labels" unique_id=229779506 node_paths=PackedStringArray("phase_manager")]
+z_index = 1
 offset_left = 880.0
 offset_top = 32.0
 offset_right = 1008.0
@@ -101,6 +103,7 @@ script = ExtResource("2_yxvsl")
 phase_manager = NodePath("../../Managers/PhaseManager")
 
 [node name="Timer" type="Label" parent="Labels" unique_id=181246000]
+z_index = 1
 offset_left = 896.0
 offset_top = 82.0
 offset_right = 992.0
@@ -141,6 +144,16 @@ vertical_alignment = 1
 [node name="PhaseChangeFeedback" parent="." unique_id=363774523 node_paths=PackedStringArray("phase_manager", "source_phase_label") instance=ExtResource("4_gap0t")]
 phase_manager = NodePath("../Managers/PhaseManager")
 source_phase_label = NodePath("../Labels/PhaseLabel")
+
+[node name="PlaceLiquidTimer" type="Sprite2D" parent="." unique_id=1562184819 node_paths=PackedStringArray("place_timer", "phase_manager", "turn_manager")]
+material = SubResource("ShaderMaterial_s5gjl")
+position = Vector2(1198, 321)
+scale = Vector2(20.453598, 20.453598)
+texture = ExtResource("17_jgxe7")
+script = ExtResource("46_saxf4")
+place_timer = NodePath("../Managers/PhaseManager/PlaceTimer")
+phase_manager = NodePath("../Managers/PhaseManager")
+turn_manager = NodePath("../Managers/TurnManager")
 
 [node name="Handlers" type="Node" parent="." unique_id=616662030]
 
@@ -401,9 +414,3 @@ opponent_hand = NodePath("../Hand&Deck/OpponentHand")
 
 [node name="CardDeathRouter" type="Node" parent="." unique_id=1205808905]
 script = ExtResource("41_3h1dv")
-
-[node name="PlaceLiquidTimer" type="Sprite2D" parent="." unique_id=1562184819]
-material = SubResource("ShaderMaterial_s5gjl")
-position = Vector2(992, 80)
-texture = ExtResource("47_s5gjl")
-script = ExtResource("46_saxf4")
