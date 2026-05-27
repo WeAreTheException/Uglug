@@ -45,6 +45,16 @@
 [ext_resource type="Script" uid="uid://coffu55rm3akr" path="res://BackInHandChoiceHandler.gd" id="39_husai"]
 [ext_resource type="Script" uid="uid://c2v0pavabfxji" path="res://BackInHandReturnManager.gd" id="40_1cr0f"]
 [ext_resource type="Script" uid="uid://bo06dxe1jmrss" path="res://CardDeathRouter.gd" id="41_3h1dv"]
+[ext_resource type="Shader" uid="uid://cfwy7ul6434i3" path="res://PlaceLiquidTimer.gdshader" id="46_02g6p"]
+[ext_resource type="Script" uid="uid://wjhccgreglg6" path="res://PlaceLiquidTimer.gd" id="46_saxf4"]
+[ext_resource type="Texture2D" uid="uid://d1ypj3toan6r1" path="res://Art/Blood.png" id="47_s5gjl"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_s5gjl"]
+shader = ExtResource("46_02g6p")
+shader_parameter/fV = 1.0
+shader_parameter/liquid_color = Color(1, 0, 0, 1)
+shader_parameter/empty_color = Color(0.05, 0.05, 0.05, 0.35)
+shader_parameter/rim_color = Color(1, 1, 1, 1)
 
 [node name="NewMuliplayer_Room" type="Node" unique_id=462638439]
 
@@ -391,3 +401,9 @@ opponent_hand = NodePath("../Hand&Deck/OpponentHand")
 
 [node name="CardDeathRouter" type="Node" parent="." unique_id=1205808905]
 script = ExtResource("41_3h1dv")
+
+[node name="PlaceLiquidTimer" type="Sprite2D" parent="." unique_id=1562184819]
+material = SubResource("ShaderMaterial_s5gjl")
+position = Vector2(992, 80)
+texture = ExtResource("47_s5gjl")
+script = ExtResource("46_saxf4")
