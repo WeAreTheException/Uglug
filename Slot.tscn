@@ -1,0 +1,142 @@
+[gd_scene format=3 uid="uid://bw8c7m7n5yuk8"]
+
+[ext_resource type="Texture2D" uid="uid://bkafxhbg4kvug" path="res://Sprites/CardSlot.png" id="1_miv4b"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_otx1m"]
+size = Vector2(144, 216)
+
+[node name="Slots" type="Node2D" unique_id=1318716624]
+
+[node name="Player1" type="Node2D" parent="." unique_id=211964924]
+position = Vector2(348, 108)
+
+[node name="Slot1" type="Node2D" parent="Player1" unique_id=799802496]
+position = Vector2(-348, -108)
+
+[node name="SlotTexture" type="TextureRect" parent="Player1/Slot1" unique_id=1172217970]
+offset_right = 144.0
+offset_bottom = 216.0
+texture = ExtResource("1_miv4b")
+expand_mode = 1
+
+[node name="Area2D" type="Area2D" parent="Player1/Slot1" unique_id=968235315]
+position = Vector2(72, 108)
+
+[node name="SlotColider" type="CollisionShape2D" parent="Player1/Slot1/Area2D" unique_id=2019029801]
+shape = SubResource("RectangleShape2D_otx1m")
+metadata/_edit_lock_ = true
+
+[node name="Slot2" type="Node2D" parent="Player1" unique_id=1069618950]
+position = Vector2(-168, -108)
+
+[node name="SlotTexture" type="TextureRect" parent="Player1/Slot2" unique_id=787761445]
+offset_right = 144.0
+offset_bottom = 216.0
+texture = ExtResource("1_miv4b")
+expand_mode = 1
+
+[node name="Area2D" type="Area2D" parent="Player1/Slot2" unique_id=844898849]
+position = Vector2(72, 108)
+
+[node name="SlotColider" type="CollisionShape2D" parent="Player1/Slot2/Area2D" unique_id=1405491182]
+shape = SubResource("RectangleShape2D_otx1m")
+metadata/_edit_lock_ = true
+
+[node name="Slot3" type="Node2D" parent="Player1" unique_id=1328173666]
+position = Vector2(12, -108)
+
+[node name="SlotTexture" type="TextureRect" parent="Player1/Slot3" unique_id=614193871]
+offset_right = 144.0
+offset_bottom = 216.0
+texture = ExtResource("1_miv4b")
+expand_mode = 1
+
+[node name="Area2D" type="Area2D" parent="Player1/Slot3" unique_id=1338819268]
+position = Vector2(72, 108)
+
+[node name="SlotColider" type="CollisionShape2D" parent="Player1/Slot3/Area2D" unique_id=549003004]
+shape = SubResource("RectangleShape2D_otx1m")
+metadata/_edit_lock_ = true
+
+[node name="Slot4" type="Node2D" parent="Player1" unique_id=1055360580]
+position = Vector2(192, -108)
+
+[node name="SlotTexture" type="TextureRect" parent="Player1/Slot4" unique_id=789308248]
+offset_right = 144.0
+offset_bottom = 216.0
+texture = ExtResource("1_miv4b")
+expand_mode = 1
+
+[node name="Area2D" type="Area2D" parent="Player1/Slot4" unique_id=1097069332]
+position = Vector2(72, 108)
+
+[node name="SlotColider" type="CollisionShape2D" parent="Player1/Slot4/Area2D" unique_id=482235022]
+shape = SubResource("RectangleShape2D_otx1m")
+metadata/_edit_lock_ = true
+
+[node name="Player2" type="Node2D" parent="." unique_id=604740611]
+position = Vector2(336, 360)
+
+[node name="Slot5" type="Node2D" parent="Player2" unique_id=1329535185]
+position = Vector2(-336, -108)
+
+[node name="SlotTexture" type="TextureRect" parent="Player2/Slot5" unique_id=846000499]
+offset_right = 144.0
+offset_bottom = 216.0
+texture = ExtResource("1_miv4b")
+expand_mode = 1
+
+[node name="Area2D" type="Area2D" parent="Player2/Slot5" unique_id=326990147]
+position = Vector2(72, 108)
+
+[node name="SlotColider" type="CollisionShape2D" parent="Player2/Slot5/Area2D" unique_id=295204380]
+shape = SubResource("RectangleShape2D_otx1m")
+metadata/_edit_lock_ = true
+
+[node name="Slot6" type="Node2D" parent="Player2" unique_id=1169223945]
+position = Vector2(-156, -108)
+
+[node name="SlotTexture" type="TextureRect" parent="Player2/Slot6" unique_id=806192979]
+offset_right = 144.0
+offset_bottom = 216.0
+texture = ExtResource("1_miv4b")
+expand_mode = 1
+
+[node name="Area2D" type="Area2D" parent="Player2/Slot6" unique_id=1136745309]
+position = Vector2(72, 108)
+
+[node name="SlotColider" type="CollisionShape2D" parent="Player2/Slot6/Area2D" unique_id=79934560]
+shape = SubResource("RectangleShape2D_otx1m")
+metadata/_edit_lock_ = true
+
+[node name="Slot7" type="Node2D" parent="Player2" unique_id=1019881082]
+position = Vector2(24, -108)
+
+[node name="SlotTexture" type="TextureRect" parent="Player2/Slot7" unique_id=1244302851]
+offset_right = 144.0
+offset_bottom = 216.0
+texture = ExtResource("1_miv4b")
+expand_mode = 1
+
+[node name="Area2D" type="Area2D" parent="Player2/Slot7" unique_id=315857017]
+position = Vector2(72, 108)
+
+[node name="SlotColider" type="CollisionShape2D" parent="Player2/Slot7/Area2D" unique_id=1663255400]
+shape = SubResource("RectangleShape2D_otx1m")
+metadata/_edit_lock_ = true
+
+[node name="Slot8" type="Node2D" parent="Player2" unique_id=280513865]
+position = Vector2(204, -108)
+
+[node name="SlotTexture" type="TextureRect" parent="Player2/Slot8" unique_id=314728370]
+offset_right = 144.0
+offset_bottom = 216.0
+texture = ExtResource("1_miv4b")
+expand_mode = 1
+
+[node name="Area2D" type="Area2D" parent="Player2/Slot8" unique_id=2026487767]
+position = Vector2(72, 108)
+
+[node name="SlotColider" type="CollisionShape2D" parent="Player2/Slot8/Area2D" unique_id=1498601159]
+shape = SubResource("RectangleShape2D_otx1m")
+metadata/_edit_lock_ = true
