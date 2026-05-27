@@ -1,4 +1,4 @@
-extends Node2D
+extends Node
 class_name PhaseChangeFeedback
 
 @export var phase_manager: PhaseManager
