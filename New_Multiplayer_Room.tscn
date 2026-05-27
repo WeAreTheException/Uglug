@@ -36,7 +36,7 @@
 [ext_resource type="AudioStream" uid="uid://bigxegrfrb6o5" path="res://Audio/Placeholder SFX/card_blessing.wav" id="24_gap0t"]
 [ext_resource type="Script" uid="uid://b4y3ff1x1rnm7" path="res://RoundManager.gd" id="24_s2s56"]
 [ext_resource type="PackedScene" uid="uid://dacxspbhp804b" path="res://Dominant/Dominant.tscn" id="25_2p7eh"]
-[ext_resource type="AudioStream" uid="uid://kflvovvt7xxn" path="res://Audio/Placeholder SFX/ClockTickingLooped.mp3" id="25_gap0t"]
+[ext_resource type="AudioStream" uid="uid://dn8ohco6dkq58" path="res://Audio/Placeholder SFX/TickingClockLooped.mp3" id="25_gap0t"]
 [ext_resource type="Texture2D" uid="uid://it6pftgf2ru4" path="res://References/Screenshot 2026-05-07 at 4.48.53 PM.png" id="27_ebn5f"]
 [ext_resource type="Texture2D" uid="uid://bkafxhbg4kvug" path="res://Sprites/CardSlot.png" id="28_e2c01"]
 [ext_resource type="PackedScene" uid="uid://52uj0s5wxoub" path="res://Buff_Pile.tscn" id="32_axksp"]
