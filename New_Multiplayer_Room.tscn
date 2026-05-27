@@ -1,13 +1,15 @@
 [gd_scene format=3 uid="uid://cdwck7o2s40qg"]
 
 [ext_resource type="Script" uid="uid://bxbqihkit6rgo" path="res://Managers/Phasemanager.gd" id="1_hco1x"]
-[ext_resource type="Script" path="res://PlayerNameSizing.gd" id="1_npv2n"]
+[ext_resource type="Script" uid="uid://cnivviyt7i5qu" path="res://PlayerNameSizing.gd" id="1_npv2n"]
+[ext_resource type="Shader" uid="uid://bhyc4yh02e24c" path="res://VoronoiTest.gdshader" id="1_phf2j"]
 [ext_resource type="PackedScene" uid="uid://c8mekq0tyuadn" path="res://Slots/NewSlots.tscn" id="1_phlo6"]
-[ext_resource type="Script" path="res://TurnOrderLabel.gd" id="1_vaqi8"]
+[ext_resource type="Script" uid="uid://cwireilh2n5g3" path="res://TurnOrderLabel.gd" id="1_vaqi8"]
 [ext_resource type="Script" uid="uid://ukqcaw2u1h1i" path="res://MultiplayerManager.gd" id="2_gdibd"]
 [ext_resource type="Texture2D" uid="uid://kwpbjydk33rh" path="res://Art/P1_AttackOrder.png" id="2_m7shj"]
+[ext_resource type="Texture2D" uid="uid://bt8o5l5yrmihl" path="res://Art/CardBackground.png" id="2_rjpis"]
 [ext_resource type="Script" uid="uid://dgiphjbgc46k0" path="res://Phase/AttackFirstSlotLabel.gd" id="2_ykjx8"]
-[ext_resource type="Script" path="res://PhaseLabel.gd" id="2_yxvsl"]
+[ext_resource type="Script" uid="uid://bfxl8a4iwbxde" path="res://PhaseLabel.gd" id="2_yxvsl"]
 [ext_resource type="Script" uid="uid://bneanu1h8dlxb" path="res://TurnManager.gd" id="3_npu2i"]
 [ext_resource type="Texture2D" uid="uid://bqvhbvonl6m57" path="res://References/maxresdefault.jpg" id="6_cpbwq"]
 [ext_resource type="PackedScene" uid="uid://ctpwjfpdouwp8" path="res://Win_Screen.tscn" id="6_xplwh"]
@@ -45,8 +47,37 @@
 [ext_resource type="Script" uid="uid://coffu55rm3akr" path="res://BackInHandChoiceHandler.gd" id="39_husai"]
 [ext_resource type="Script" uid="uid://c2v0pavabfxji" path="res://BackInHandReturnManager.gd" id="40_1cr0f"]
 [ext_resource type="Script" uid="uid://bo06dxe1jmrss" path="res://CardDeathRouter.gd" id="41_3h1dv"]
+[ext_resource type="Resource" uid="uid://jd5rbexi4lr4" path="res://Cards/CardPresets/Persistant.tres" id="41_s5gjl"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hge43"]
+shader = ExtResource("1_phf2j")
+shader_parameter/aurora_color = Color(0.36456496, 0.3621, 0.51, 1)
+shader_parameter/background_color1 = Color(0.16494808, 0.1958242, 0.2549623, 1)
+shader_parameter/background_color2 = Color(0.08333307, 0.24467942, 0.13405043, 1)
+shader_parameter/aurora_intensity = 1.8
+shader_parameter/star_brightness = 0.2000000095
+
+[sub_resource type="Gradient" id="Gradient_s5gjl"]
+offsets = PackedFloat32Array(0, 0.43233082, 0.7105263)
+colors = PackedColorArray(0.802191, 0.8021911, 0.802191, 1, 0.38018948, 0.3801888, 0.38018906, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_phf2j"]
+gradient = SubResource("Gradient_s5gjl")
+width = 1024
+height = 256
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 1)
 
 [node name="NewMuliplayer_Room" type="Node" unique_id=462638439]
+
+[node name="BackdropForLighting" type="TextureRect" parent="." unique_id=1158437245]
+show_behind_parent = true
+material = SubResource("ShaderMaterial_hge43")
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("2_rjpis")
+expand_mode = 1
 
 [node name="Labels" type="Node" parent="." unique_id=1220800706]
 
@@ -356,7 +387,6 @@ scale = Vector2(1.5, 1.4666666)
 texture = ExtResource("6_cpbwq")
 
 [node name="HandRef" type="Sprite2D" parent="Ref" unique_id=185652076]
-visible = false
 position = Vector2(966, 957)
 texture = ExtResource("27_ebn5f")
 
@@ -375,18 +405,26 @@ texture = ExtResource("28_e2c01")
 [node name="Lane4" parent="Slots" unique_id=1783533892 instance=ExtResource("1_phlo6")]
 position = Vector2(1280, 480)
 lane_id = 4
+player_starting_card = ExtResource("41_s5gjl")
+opponent_starting_card = ExtResource("41_s5gjl")
 
 [node name="Lane3" parent="Slots" unique_id=918336549 instance=ExtResource("1_phlo6")]
 position = Vector2(1056, 480)
 lane_id = 3
+player_starting_card = ExtResource("41_s5gjl")
+opponent_starting_card = ExtResource("41_s5gjl")
 
 [node name="Lane2" parent="Slots" unique_id=120099331 instance=ExtResource("1_phlo6")]
 position = Vector2(832, 480)
 lane_id = 2
+player_starting_card = ExtResource("41_s5gjl")
+opponent_starting_card = ExtResource("41_s5gjl")
 
 [node name="Lane1" parent="Slots" unique_id=1932373052 instance=ExtResource("1_phlo6")]
 position = Vector2(608, 480)
 lane_id = 1
+player_starting_card = ExtResource("41_s5gjl")
+opponent_starting_card = ExtResource("41_s5gjl")
 
 [node name="BuffPile" parent="." unique_id=1953419234 node_paths=PackedStringArray("player_hand", "phase_manager") instance=ExtResource("32_axksp")]
 visible = false
@@ -409,3 +447,19 @@ opponent_hand = NodePath("../Hand&Deck/OpponentHand")
 
 [node name="CardDeathRouter" type="Node" parent="." unique_id=1205808905]
 script = ExtResource("41_3h1dv")
+
+[node name="Lights" type="Node" parent="." unique_id=1562185604]
+
+[node name="PlayerGreenLight" type="PointLight2D" parent="Lights" unique_id=1012374724]
+position = Vector2(960, 608)
+color = Color(0.20590001, 0.71, 0.59237665, 1)
+energy = 3.0
+texture = SubResource("GradientTexture2D_phf2j")
+texture_scale = 1.7
+
+[node name="PlayerRedLight" type="PointLight2D" parent="Lights" unique_id=2050424545]
+position = Vector2(960, 297)
+color = Color(0.627451, 0, 0.23137255, 1)
+energy = 3.0
+texture = SubResource("GradientTexture2D_phf2j")
+texture_scale = 1.7
