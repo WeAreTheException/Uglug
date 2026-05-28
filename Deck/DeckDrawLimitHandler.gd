@@ -31,7 +31,6 @@ func can_draw() -> bool:
 	process_limit_reset()
 
 	if DeckDrawLimitHandler.shared_draws_used_this_turn >= DeckDrawLimitHandler.shared_draw_limit_this_turn:
-		print("draw blocked: max draws this turn")
 		return false
 
 	return true

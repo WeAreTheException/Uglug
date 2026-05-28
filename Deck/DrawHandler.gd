@@ -20,7 +20,7 @@ var phase_manager: PhaseManager = null
 var select_handler: SelectHandler = null
 
 var worker_union_buff_handler: WorkerUnionBuffHandler = null
-var draw_animation_handler: DeckDrawAnimationHandler = null
+var draw_feedback: DeckDrawFeedback = null
 var draw_limit_handler: DeckDrawLimitHandler = null
 var card_spawn_handler: CardSpawnHandler = null
 
@@ -48,7 +48,7 @@ func _process(_delta: float) -> void:
 
 func _find_child_handlers() -> void:
 	worker_union_buff_handler = get_node_or_null("WorkerUnionBuffHandler") as WorkerUnionBuffHandler
-	draw_animation_handler = get_node_or_null("DeckDrawAnimationHandler") as DeckDrawAnimationHandler
+	draw_feedback = get_node_or_null("DeckDrawFeedback") as DeckDrawFeedback
 	draw_limit_handler = get_node_or_null("DeckDrawLimitHandler") as DeckDrawLimitHandler
 	card_spawn_handler = get_node_or_null("CardSpawnHandler") as CardSpawnHandler
 
@@ -57,8 +57,8 @@ func _refresh_child_handlers() -> void:
 	if worker_union_buff_handler == null:
 		worker_union_buff_handler = get_node_or_null("WorkerUnionBuffHandler") as WorkerUnionBuffHandler
 
-	if draw_animation_handler == null:
-		draw_animation_handler = get_node_or_null("DeckDrawAnimationHandler") as DeckDrawAnimationHandler
+	if draw_feedback == null:
+		draw_feedback = get_node_or_null("DeckDrawFeedback") as DeckDrawFeedback
 
 	if draw_limit_handler == null:
 		draw_limit_handler = get_node_or_null("DeckDrawLimitHandler") as DeckDrawLimitHandler
@@ -70,12 +70,16 @@ func _refresh_child_handlers() -> void:
 		draw_limit_handler.phase_manager = phase_manager
 		draw_limit_handler.player_hand = player_hand
 
+	if draw_feedback != null:
+		draw_feedback.phase_manager = phase_manager
+		draw_feedback.draw_limit_handler = draw_limit_handler
+
 	if card_spawn_handler != null:
 		card_spawn_handler.card_database = card_database
 		card_spawn_handler.deck = deck
 		card_spawn_handler.combat_manager = combat_manager
 		card_spawn_handler.select_handler = select_handler
-		card_spawn_handler.draw_animation_handler = draw_animation_handler
+		card_spawn_handler.draw_feedback = draw_feedback
 		card_spawn_handler.worker_union_buff_handler = worker_union_buff_handler
 		card_spawn_handler.deck_type_name = get_deck_type_name()
 		card_spawn_handler.should_apply_worker_union_buff = deck_type == DeckType.WORKER
@@ -104,6 +108,8 @@ func draw_player_card() -> void:
 
 	if draw_limit_handler != null:
 		if not draw_limit_handler.can_draw():
+			if draw_feedback != null:
+				draw_feedback.show_max_draw_limit_message()
 			return
 
 		draw_limit_handler.use_draw()

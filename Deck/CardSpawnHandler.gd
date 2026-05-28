@@ -5,7 +5,7 @@ var card_database: CardDatabase = null
 var deck: DeckCount = null
 var combat_manager: CombatManager = null
 var select_handler: SelectHandler = null
-var draw_animation_handler: DeckDrawAnimationHandler = null
+var draw_feedback: DeckDrawFeedback = null
 var worker_union_buff_handler: WorkerUnionBuffHandler = null
 
 var deck_type_name: String = "UNKNOWN"
@@ -66,8 +66,8 @@ func spawn_card_to_hand(
 
 	target_hand.add_child(new_card)
 
-	if draw_animation_handler != null:
-		draw_animation_handler.prepare_card_start_position(new_card, deck_root)
+	if draw_feedback != null:
+		draw_feedback.prepare_card_start_position(new_card, deck_root)
 	elif deck_root != null:
 		new_card.global_position = deck_root.global_position
 
@@ -76,9 +76,9 @@ func spawn_card_to_hand(
 	if should_apply_worker_union_buff and worker_union_buff_handler != null:
 		worker_union_buff_handler.try_apply_to_card(new_card)
 
-	if draw_animation_handler != null:
-		draw_animation_handler.add_card_to_hand_with_animation(target_hand, new_card)
-		draw_animation_handler.play_draw_animation(new_card)
+	if draw_feedback != null:
+		draw_feedback.add_card_to_hand_with_animation(target_hand, new_card)
+		draw_feedback.play_draw_animation(new_card)
 	else:
 		target_hand.add_card_to_hand(new_card)
 

@@ -141,9 +141,17 @@ First"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PhaseChangeFeedback" parent="." unique_id=363774523 node_paths=PackedStringArray("phase_manager", "source_phase_label") instance=ExtResource("4_gap0t")]
-phase_manager = NodePath("../Managers/PhaseManager")
-source_phase_label = NodePath("../Labels/PhaseLabel")
+[node name="MaxDrawLimitLabel" type="Label" parent="Labels" unique_id=1799615398 groups=["max_draw_limit_label"]]
+visible = false
+offset_left = 1392.0
+offset_top = 407.0
+offset_right = 1608.0
+offset_bottom = 539.0
+theme_override_font_sizes/font_size = 30
+text = "Draw Limit Reached"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="PlaceLiquidTimer" type="Sprite2D" parent="." unique_id=1562184819 node_paths=PackedStringArray("place_timer", "phase_manager", "turn_manager")]
 material = SubResource("ShaderMaterial_s5gjl")
@@ -154,6 +162,10 @@ script = ExtResource("46_saxf4")
 place_timer = NodePath("../Managers/PhaseManager/PlaceTimer")
 phase_manager = NodePath("../Managers/PhaseManager")
 turn_manager = NodePath("../Managers/TurnManager")
+
+[node name="PhaseChangeFeedback" parent="." unique_id=363774523 node_paths=PackedStringArray("phase_manager", "source_phase_label") instance=ExtResource("4_gap0t")]
+phase_manager = NodePath("../Managers/PhaseManager")
+source_phase_label = NodePath("../Labels/PhaseLabel")
 
 [node name="Handlers" type="Node" parent="." unique_id=616662030]
 
