@@ -16,6 +16,8 @@
 [ext_resource type="Texture2D" uid="uid://cgs5k6p3mggyf" path="res://Art/Ants/AntSprite.png" id="7_hsdj0"]
 [ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Cards/Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="8_fboto"]
 [ext_resource type="Script" uid="uid://c4gh41beiex8k" path="res://Deck/CardSpawnHandler.gd" id="9_l83sp"]
+[ext_resource type="Shader" uid="uid://cmmdj008ojau0" path="res://Deck/Glow&ClickRipple.gdshader" id="17_ybeps"]
+[ext_resource type="Texture2D" uid="uid://cwrn656wtnb84" path="res://Sprites/Ant.png" id="18_360fs"]
 
 [sub_resource type="Resource" id="Resource_hsdj0"]
 script = ExtResource("6_efqef")
@@ -26,6 +28,19 @@ metadata/_custom_type_script = "uid://duslcpxrhurv8"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4nk3w"]
 size = Vector2(174, 270)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kx33s"]
+shader = ExtResource("17_ybeps")
+shader_parameter/size = Vector2(0, 0)
+shader_parameter/center1 = Vector2(0, 0)
+shader_parameter/center2 = Vector2(0, 0)
+shader_parameter/time1 = 0.0
+shader_parameter/time2 = 0.0
+shader_parameter/width1 = 0.05
+shader_parameter/width2 = 0.1
+shader_parameter/corner_radius = 0.0
+shader_parameter/glow = 0.0
+shader_parameter/color = Color(1, 1, 1, 1)
 
 [node name="WorkerDeck" type="Node2D" unique_id=1069789393]
 script = ExtResource("1_2sl2c")
@@ -39,9 +54,14 @@ card_scene = ExtResource("3_5cebq")
 script = ExtResource("4_4nk3w")
 card_database = NodePath("../CardDatabase")
 
-[node name="DeckDrawFeedback" type="Node" parent="DeckDrawHandler" unique_id=148100644]
+[node name="DeckDrawFeedback" type="Node" parent="DeckDrawHandler" unique_id=148100644 node_paths=PackedStringArray("hover_area", "glow_visual", "scale_target")]
 script = ExtResource("5_8hegm")
 draw_sfx = ExtResource("6_6uvic")
+hover_area = NodePath("../../DeckInputListener")
+glow_visual = NodePath("../../DeckGlowOverlay")
+scale_target = NodePath("../../DeckImage")
+normal_scale = Vector2(0.145, 0.143)
+hover_scale = Vector2(0.155, 0.153)
 
 [node name="DeckDrawLimitHandler" type="Node" parent="DeckDrawHandler" unique_id=1328647075]
 script = ExtResource("6_tpck8")
@@ -60,10 +80,6 @@ script = ExtResource("6_fboto")
 script = ExtResource("4_xceh1")
 cards = Array[ExtResource("6_efqef")]([SubResource("Resource_hsdj0")])
 
-[node name="DeckView" type="Node" parent="." unique_id=696320865]
-script = ExtResource("5_wj4mp")
-metadata/_custom_type_script = "uid://c8owoh3gv45g4"
-
 [node name="DeckInputListener" type="Area2D" parent="." unique_id=935371638]
 script = ExtResource("3_6omjd")
 
@@ -76,16 +92,8 @@ scale = Vector2(0.145, 0.145)
 texture = ExtResource("7_hsdj0")
 script = ExtResource("5_wj4mp")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="." unique_id=305945305]
-z_index = -2
-offset_left = -89.99988
-offset_top = -132.99994
-offset_right = -53.999878
-offset_bottom = -79.79993
-scale = Vector2(5, 5)
-mouse_filter = 2
-text = "0
-"
-horizontal_alignment = 1
-vertical_alignment = 1
-metadata/_edit_use_anchors_ = true
+[node name="DeckGlowOverlay" type="Sprite2D" parent="." unique_id=870535297]
+material = SubResource("ShaderMaterial_kx33s")
+position = Vector2(0, -3.0517578e-05)
+scale = Vector2(0.145, 0.14301077)
+texture = ExtResource("18_360fs")

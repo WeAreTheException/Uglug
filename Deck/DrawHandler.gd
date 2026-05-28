@@ -69,9 +69,10 @@ func _refresh_child_handlers() -> void:
 	if draw_limit_handler != null:
 		draw_limit_handler.phase_manager = phase_manager
 		draw_limit_handler.player_hand = player_hand
-	
+
 	if draw_feedback != null:
 		draw_feedback.phase_manager = phase_manager
+		draw_feedback.draw_limit_handler = draw_limit_handler
 
 	if card_spawn_handler != null:
 		card_spawn_handler.card_database = card_database
@@ -107,6 +108,8 @@ func draw_player_card() -> void:
 
 	if draw_limit_handler != null:
 		if not draw_limit_handler.can_draw():
+			if draw_feedback != null:
+				draw_feedback.show_max_draw_limit_message()
 			return
 
 		draw_limit_handler.use_draw()
