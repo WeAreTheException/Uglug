@@ -14,7 +14,6 @@
 size = Vector2(144, 216)
 
 [node name="Card" type="Node2D" unique_id=1649731477 node_paths=PackedStringArray("input", "board_presence", "stats", "mutations", "card_art_root")]
-position = Vector2(864, 540)
 script = ExtResource("1_hdbik")
 test_data = ExtResource("2_c3ju1")
 input = NodePath("CardInput")
