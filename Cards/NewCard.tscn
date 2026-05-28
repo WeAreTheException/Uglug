@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bgw4gcc8buxly" path="res://Cards/card.gd" id="1_ch35y"]
 [ext_resource type="Script" uid="uid://dbemrm25gvek6" path="res://Cards/Stats.gd" id="2_52a3h"]
-[ext_resource type="PackedScene" uid="uid://b8f0lryqwcw7j" path="res://CardArt.tscn" id="2_x1h4b"]
+[ext_resource type="PackedScene" uid="uid://b8f0lryqwcw7j" path="res://Revamp/Card/CardArt.tscn" id="2_x1h4b"]
 [ext_resource type="Texture2D" uid="uid://bdi7eyt5cmur0" path="res://Art/Numbers/1.png" id="3_5yjln"]
 [ext_resource type="Script" uid="uid://d35vj6r6tt0ty" path="res://Cards/AttackHandler.gd" id="4_52a3h"]
 [ext_resource type="Texture2D" uid="uid://clk0ori80b5gg" path="res://Art/Numbers/2.png" id="4_krn1d"]

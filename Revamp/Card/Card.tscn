@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://5qb61nfrd521"]
 
-[ext_resource type="PackedScene" uid="uid://b8f0lryqwcw7j" path="res://CardArt.tscn" id="1_2duqk"]
+[ext_resource type="PackedScene" uid="uid://b8f0lryqwcw7j" path="res://Revamp/Card/CardArt.tscn" id="1_2duqk"]
 [ext_resource type="Script" uid="uid://dbemrm25gvek6" path="res://Cards/Stats.gd" id="2_ivqip"]
 [ext_resource type="Texture2D" uid="uid://bdi7eyt5cmur0" path="res://Art/Numbers/1.png" id="3_hdbik"]
 [ext_resource type="Texture2D" uid="uid://clk0ori80b5gg" path="res://Art/Numbers/2.png" id="4_c3ju1"]
@@ -10,23 +10,393 @@
 [ext_resource type="Texture2D" uid="uid://bq8esv4xpuv68" path="res://Art/Numbers/6.png" id="8_8l6ss"]
 [ext_resource type="Texture2D" uid="uid://d1ypj3toan6r1" path="res://Art/Blood.png" id="9_r5dqq"]
 
+[sub_resource type="GDScript" id="GDScript_2duqk"]
+script/source = "extends Node2D
+class_name Card
+
+signal hovered(card: Card)
+signal unhovered(card: Card)
+signal pressed(card: Card)
+signal released(card: Card)
+
+@export var test_data: CardData
+
+@export var input: CardInput
+@export var board_presence: BoardPresence
+@export var stats: CardStats
+@export var mutations: CardMutations
+@export var card_art: CardArt
+
+var card_data: CardData = null
+var card_name: String = \"\"
+
+
+func _ready() -> void:
+	_cache_children()
+	_connect_input()
+
+	if test_data != null:
+		setup(test_data)
+
+
+func _cache_children() -> void:
+	if input == null:
+		input = get_node_or_null(\"Input/CardCollider\") as CardInput
+
+	if board_presence == null:
+		board_presence = get_node_or_null(\"Core/BoardPresence\") as BoardPresence
+
+	if stats == null:
+		stats = get_node_or_null(\"Core/CardStats\") as CardStats
+
+	if mutations == null:
+		mutations = get_node_or_null(\"Core/CardMutations\") as CardMutations
+
+	if card_art == null:
+		card_art = get_node_or_null(\"Visuals/CardArt\") as CardArt
+
+
+func _connect_input() -> void:
+	if input == null:
+		return
+
+	input.hovered.connect(_on_input_hovered)
+	input.unhovered.connect(_on_input_unhovered)
+	input.pressed.connect(_on_input_pressed)
+	input.released.connect(_on_input_released)
+
+
+func setup(data: CardData) -> void:
+	if data == null:
+		return
+
+	card_data = data
+	card_name = data.name
+
+	if stats != null:
+		stats.setup_from_data(data)
+
+	if mutations != null:
+		mutations.setup_from_data(data)
+
+	if card_art != null:
+		card_art.setup_from_card(self)
+
+
+func is_on_board() -> bool:
+	return board_presence != null and board_presence.is_on_board()
+
+
+func get_current_slot() -> Slot:
+	if board_presence == null:
+		return null
+
+	return board_presence.current_slot
+
+
+func _on_input_hovered() -> void:
+	hovered.emit(self)
+
+
+func _on_input_unhovered() -> void:
+	unhovered.emit(self)
+
+
+func _on_input_pressed() -> void:
+	pressed.emit(self)
+
+
+func _on_input_released() -> void:
+	released.emit(self)
+"
+
+[sub_resource type="GDScript" id="GDScript_ivqip"]
+script/source = "extends Area2D
+class_name CardInput
+
+signal hovered
+signal unhovered
+signal pressed
+signal released
+
+
+func _ready() -> void:
+	input_pickable = true
+
+	mouse_entered.connect(_on_mouse_entered)
+	mouse_exited.connect(_on_mouse_exited)
+
+
+func _input_event(_viewport, event, _shape_idx) -> void:
+	if event is InputEventMouseButton:
+		if event.button_index != MOUSE_BUTTON_LEFT:
+			return
+
+		if event.pressed:
+			pressed.emit()
+		else:
+			released.emit()
+
+
+func _on_mouse_entered() -> void:
+	hovered.emit()
+
+
+func _on_mouse_exited() -> void:
+	unhovered.emit()
+"
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g8l5j"]
 size = Vector2(144, 216)
 
+[sub_resource type="GDScript" id="GDScript_hdbik"]
+script/source = "extends Node
+class_name BoardPresence
+
+var current_slot: Slot = null
+
+
+func is_on_board() -> bool:
+	return current_slot != null
+
+
+func enter_slot(slot: Slot, card: Card) -> bool:
+	if slot == null:
+		return false
+
+	if card == null:
+		return false
+
+	if not slot.assign_card(card):
+		return false
+
+	current_slot = slot
+	return true
+
+
+func leave_slot(card: Card) -> void:
+	if current_slot == null:
+		return
+
+	if current_slot.current_card == card:
+		current_slot.clear_card()
+
+	current_slot = null
+
+
+func force_set_slot(slot: Slot) -> void:
+	current_slot = slot
+"
+
+[sub_resource type="GDScript" id="GDScript_c3ju1"]
+script/source = "extends Node
+class_name CardStats
+
+signal stats_changed
+signal attack_changed(value: int)
+signal health_changed(value: int)
+signal cost_changed(value: int)
+signal worth_changed(value: int)
+
+var current_attack: int = 0
+var current_health: int = 0
+var current_cost: int = 0
+var current_worth: int = 0
+
+
+func setup_from_data(data: CardData) -> void:
+	if data == null:
+		return
+
+	current_attack = data.attack
+	current_health = data.health
+	current_cost = data.cost
+	current_worth = data.worth
+
+	_emit_all_changed()
+
+
+func set_attack(value: int) -> void:
+	current_attack = max(value, 0)
+	attack_changed.emit(current_attack)
+	stats_changed.emit()
+
+
+func set_health(value: int) -> void:
+	current_health = max(value, 0)
+	health_changed.emit(current_health)
+	stats_changed.emit()
+
+
+func set_cost(value: int) -> void:
+	current_cost = max(value, 0)
+	cost_changed.emit(current_cost)
+	stats_changed.emit()
+
+
+func set_worth(value: int) -> void:
+	current_worth = max(value, 0)
+	worth_changed.emit(current_worth)
+	stats_changed.emit()
+
+
+func apply_bonus(attack_bonus: int, health_bonus: int) -> void:
+	current_attack = max(current_attack + attack_bonus, 0)
+	current_health = max(current_health + health_bonus, 0)
+
+	attack_changed.emit(current_attack)
+	health_changed.emit(current_health)
+	stats_changed.emit()
+
+
+func take_damage(amount: int) -> void:
+	if amount <= 0:
+		return
+
+	current_health = max(current_health - amount, 0)
+
+	health_changed.emit(current_health)
+	stats_changed.emit()
+
+
+func is_dead() -> bool:
+	return current_health <= 0
+
+
+func _emit_all_changed() -> void:
+	attack_changed.emit(current_attack)
+	health_changed.emit(current_health)
+	cost_changed.emit(current_cost)
+	worth_changed.emit(current_worth)
+	stats_changed.emit()
+"
+
+[sub_resource type="GDScript" id="GDScript_xqgh7"]
+script/source = "extends Node
+class_name CardMutations
+
+signal mutations_changed
+
+var base_mutations: Array[CardMutationInstance] = []
+var additional_mutations: Array[CardMutationInstance] = []
+
+
+func setup_from_data(data: CardData) -> void:
+	base_mutations.clear()
+	additional_mutations.clear()
+
+	if data == null:
+		mutations_changed.emit()
+		return
+
+	for mutation in data.base_mutations:
+		add_base_mutation(mutation)
+
+	mutations_changed.emit()
+
+
+func add_base_mutation(mutation: Mutation) -> void:
+	var instance := _make_instance(mutation)
+
+	if instance == null:
+		return
+
+	base_mutations.append(instance)
+	mutations_changed.emit()
+
+
+func add_additional_mutation(mutation: Mutation) -> void:
+	var instance := _make_instance(mutation)
+
+	if instance == null:
+		return
+
+	additional_mutations.append(instance)
+	mutations_changed.emit()
+
+
+func remove_instance(instance: CardMutationInstance) -> void:
+	if instance == null:
+		return
+
+	base_mutations.erase(instance)
+	additional_mutations.erase(instance)
+
+	mutations_changed.emit()
+
+
+func get_all_instances() -> Array[CardMutationInstance]:
+	var result: Array[CardMutationInstance] = []
+
+	result.append_array(base_mutations)
+	result.append_array(additional_mutations)
+
+	return result
+
+
+func get_active_instances() -> Array[CardMutationInstance]:
+	var result: Array[CardMutationInstance] = []
+
+	for instance in get_all_instances():
+		if instance != null and instance.can_use():
+			result.append(instance)
+
+	return result
+
+
+func get_all_mutations() -> Array[Mutation]:
+	var result: Array[Mutation] = []
+
+	for instance in get_all_instances():
+		if instance == null:
+			continue
+
+		if instance.mutation == null:
+			continue
+
+		result.append(instance.mutation)
+
+	return result
+
+
+func get_active_mutations() -> Array[Mutation]:
+	var result: Array[Mutation] = []
+
+	for instance in get_active_instances():
+		result.append(instance.mutation)
+
+	return result
+
+
+func _make_instance(mutation: Mutation) -> CardMutationInstance:
+	if mutation == null:
+		return null
+
+	var instance := CardMutationInstance.new()
+	instance.setup(mutation)
+
+	return instance
+"
+
 [node name="Card" type="Node2D" unique_id=1649731477]
+script = SubResource("GDScript_2duqk")
 
-[node name="InputArea" type="Area2D" parent="." unique_id=502264031]
+[node name="CardInput" type="Area2D" parent="." unique_id=502264031]
+script = SubResource("GDScript_ivqip")
 
-[node name="CardCollider" type="CollisionShape2D" parent="InputArea" unique_id=1550845996]
+[node name="CardCollider" type="CollisionShape2D" parent="CardInput" unique_id=1550845996]
 shape = SubResource("RectangleShape2D_g8l5j")
 
 [node name="Core" type="Node" parent="." unique_id=1306606518]
 
 [node name="BoardPresence" type="Node" parent="Core" unique_id=1035349122]
+script = SubResource("GDScript_hdbik")
 
 [node name="CardStats" type="Node" parent="Core" unique_id=179603737]
+script = SubResource("GDScript_c3ju1")
 
-[node name="CardMutation" type="Node" parent="Core" unique_id=1430961326]
+[node name="CardMutations" type="Node" parent="Core" unique_id=1430961326]
+script = SubResource("GDScript_xqgh7")
 
 [node name="Actions" type="Node" parent="." unique_id=857836663]
 
@@ -44,10 +414,13 @@ shape = SubResource("RectangleShape2D_g8l5j")
 
 [node name="Debug" type="Node" parent="." unique_id=445916254]
 
-[node name="CardArt" parent="." unique_id=1593445486 instance=ExtResource("1_2duqk")]
+[node name="Visuals" type="Node2D" parent="." unique_id=2044401141]
 metadata/_edit_lock_ = true
 
-[node name="Stats" type="Node2D" parent="." unique_id=1577578591 node_paths=PackedStringArray("attack", "health", "cost", "name_label")]
+[node name="CardArt" parent="Visuals" unique_id=1593445486 instance=ExtResource("1_2duqk")]
+metadata/_edit_lock_ = true
+
+[node name="StatsVisuals" type="Node2D" parent="Visuals" unique_id=1577578591 node_paths=PackedStringArray("attack", "health", "cost", "name_label")]
 script = ExtResource("2_ivqip")
 attack = NodePath("Attack")
 health = NodePath("Health")
@@ -57,47 +430,53 @@ attack_textures = Array[Texture2D]([ExtResource("3_hdbik"), ExtResource("4_c3ju1
 health_textures = Array[Texture2D]([ExtResource("3_hdbik"), ExtResource("4_c3ju1"), ExtResource("5_xqgh7"), ExtResource("6_olfje"), ExtResource("7_vth4y"), ExtResource("8_8l6ss")])
 metadata/_edit_lock_ = true
 
-[node name="Name" type="RichTextLabel" parent="Stats" unique_id=1751801496]
+[node name="Name" type="RichTextLabel" parent="Visuals/StatsVisuals" unique_id=1751801496]
 anchors_preset = -1
-offset_left = -78.0
-offset_top = -128.0
-offset_right = 78.0
-offset_bottom = -103.0
+offset_left = -64.0
+offset_top = -103.0
+offset_right = 65.0
+offset_bottom = -78.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/default_color = Color(0.16206557, 0.1620656, 0.16206557, 1)
+metadata/_edit_lock_ = true
 
-[node name="Blood" type="Node2D" parent="Stats" unique_id=1405083590]
+[node name="Blood" type="Node2D" parent="Visuals/StatsVisuals" unique_id=1405083590]
 scale = Vector2(0.8, 0.8)
+metadata/_edit_lock_ = true
 
-[node name="Blood" type="Sprite2D" parent="Stats/Blood" unique_id=306163443]
+[node name="Blood" type="Sprite2D" parent="Visuals/StatsVisuals/Blood" unique_id=306163443]
 z_index = 100
 position = Vector2(71, -83)
 scale = Vector2(0.157, 0.144)
 texture = ExtResource("9_r5dqq")
 
-[node name="Blood2" type="Sprite2D" parent="Stats/Blood" unique_id=2037895940]
+[node name="Blood2" type="Sprite2D" parent="Visuals/StatsVisuals/Blood" unique_id=2037895940]
 z_index = 100
 position = Vector2(55, -83)
 scale = Vector2(0.157, 0.144)
 texture = ExtResource("9_r5dqq")
 
-[node name="Blood3" type="Sprite2D" parent="Stats/Blood" unique_id=542492146]
+[node name="Blood3" type="Sprite2D" parent="Visuals/StatsVisuals/Blood" unique_id=542492146]
 z_index = 100
 position = Vector2(63, -64)
 scale = Vector2(0.157, 0.144)
 texture = ExtResource("9_r5dqq")
 
-[node name="Blood4" type="Sprite2D" parent="Stats/Blood" unique_id=1656884532]
+[node name="Blood4" type="Sprite2D" parent="Visuals/StatsVisuals/Blood" unique_id=1656884532]
 z_index = 100
 position = Vector2(47, -64)
 scale = Vector2(0.157, 0.144)
 texture = ExtResource("9_r5dqq")
 
-[node name="Attack" type="Sprite2D" parent="Stats" unique_id=968012136]
+[node name="Attack" type="Sprite2D" parent="Visuals/StatsVisuals" unique_id=968012136]
 position = Vector2(-69.4375, 89)
 scale = Vector2(0.14727725, 0.14345993)
+metadata/_edit_lock_ = true
 
-[node name="Health" type="Sprite2D" parent="Stats" unique_id=1239654057]
+[node name="Health" type="Sprite2D" parent="Visuals/StatsVisuals" unique_id=1239654057]
 position = Vector2(66, 111.00001)
 scale = Vector2(0.14727725, 0.14345993)
+metadata/_edit_lock_ = true
+
+[node name="CardFeedback" type="Node" parent="Visuals" unique_id=824411320]
