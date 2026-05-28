@@ -9,22 +9,16 @@ class_name StatsVisuals
 @export var attack_textures: Array[Texture2D]
 @export var health_textures: Array[Texture2D]
 
-var card: CardRoot = null
 var stats: CardStats = null
 
 
-func setup_from_card(source_card: CardRoot) -> void:
-	if source_card == null:
+func setup_from_stats(source_stats: CardStats, card_name: String) -> void:
+	if source_stats == null:
 		return
 
-	card = source_card
-	stats = card.stats
+	stats = source_stats
 
-	if card.card_data != null:
-		update_name(card.card_data.name)
-
-	if stats == null:
-		return
+	update_name(card_name)
 
 	if not stats.attack_changed.is_connected(update_attack):
 		stats.attack_changed.connect(update_attack)
