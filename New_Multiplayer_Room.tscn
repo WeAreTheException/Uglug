@@ -145,7 +145,7 @@ vertical_alignment = 1
 phase_manager = NodePath("../Managers/PhaseManager")
 source_phase_label = NodePath("../Labels/PhaseLabel")
 
-[node name="PlaceLiquidTimer" type="Sprite2D" parent="." unique_id=1562184819 node_paths=PackedStringArray("place_timer", "phase_manager")]
+[node name="PlaceLiquidTimer" type="Sprite2D" parent="." unique_id=1562184819 node_paths=PackedStringArray("place_timer", "phase_manager", "turn_manager")]
 material = SubResource("ShaderMaterial_s5gjl")
 position = Vector2(1198, 321)
 scale = Vector2(20.453598, 20.453598)
@@ -153,6 +153,7 @@ texture = ExtResource("17_jgxe7")
 script = ExtResource("46_saxf4")
 place_timer = NodePath("../Managers/PhaseManager/PlaceTimer")
 phase_manager = NodePath("../Managers/PhaseManager")
+turn_manager = NodePath("../Managers/TurnManager")
 
 [node name="Handlers" type="Node" parent="." unique_id=616662030]
 
