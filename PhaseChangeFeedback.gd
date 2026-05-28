@@ -9,8 +9,6 @@ signal feedback_finished
 @export var background_darken: ColorRect
 @export var feedback_label: Label
 
-@export var debug_key_enabled: bool = true
-
 @export var fade_in_time: float = 0.15
 @export var hold_time: float = 0.55
 @export var fade_out_time: float = 0.25
@@ -28,15 +26,6 @@ var tween: Tween
 var is_playing_feedback := false
 var base_label_position: Vector2
 
-var debug_phases: Array[String] = [
-	"Draw",
-	"Buff",
-	"Place",
-	"Attack"
-]
-
-var debug_phase_index := 0
-
 
 func _ready() -> void:
 	if feedback_label != null:
@@ -47,25 +36,6 @@ func _ready() -> void:
 	if phase_manager != null:
 		if not phase_manager.phase_changed.is_connected(play_phase_change):
 			phase_manager.phase_changed.connect(play_phase_change)
-
-
-func _unhandled_input(event: InputEvent) -> void:
-	if not debug_key_enabled:
-		return
-
-	if event is InputEventKey and event.pressed and not event.echo:
-		if event.keycode == KEY_P:
-			play_debug_feedback()
-
-
-func play_debug_feedback() -> void:
-	var text: String = debug_phases[debug_phase_index]
-	play_feedback_text(text)
-
-	debug_phase_index += 1
-
-	if debug_phase_index >= debug_phases.size():
-		debug_phase_index = 0
 
 
 func play_phase_change(phase_name: String) -> void:
