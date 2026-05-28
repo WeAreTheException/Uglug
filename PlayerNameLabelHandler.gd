@@ -8,7 +8,7 @@ class_name PlayerNameLabelHandler
 @export var fallback_player_two_name: String = "Player 2"
 
 var turn_manager: TurnManager = null
-var has_set_real_names: bool = false
+var has_set_real_names := false
 
 
 func _ready() -> void:
@@ -48,25 +48,24 @@ func _try_set_names() -> void:
 	if player_one_id == -1 or player_two_id == -1:
 		return
 
-	var local_id := int(GDSync.get_client_id())
+	var player_one_name := GDSync.player_get_username(
+		player_one_id,
+		fallback_player_one_name
+	)
 
-	var local_player_name := ""
-	var enemy_player_name := ""
+	var player_two_name := GDSync.player_get_username(
+		player_two_id,
+		fallback_player_two_name
+	)
 
-	if local_id == player_one_id:
-		local_player_name = GDSync.player_get_username(player_one_id, fallback_player_one_name)
-		enemy_player_name = GDSync.player_get_username(player_two_id, fallback_player_two_name)
-	else:
-		local_player_name = GDSync.player_get_username(player_two_id, fallback_player_two_name)
-		enemy_player_name = GDSync.player_get_username(player_one_id, fallback_player_one_name)
+	_set_labels(player_one_name, player_two_name)
 
-	_set_labels(local_player_name, enemy_player_name)
 	has_set_real_names = true
 
 
-func _set_labels(local_player_name: String, enemy_player_name: String) -> void:
+func _set_labels(player_one_name: String, player_two_name: String) -> void:
 	if player_name_label != null:
-		player_name_label.text = local_player_name
+		player_name_label.text = player_one_name
 
 	if enemy_name_label != null:
-		enemy_name_label.text = enemy_player_name
+		enemy_name_label.text = player_two_name
