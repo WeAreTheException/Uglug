@@ -20,12 +20,17 @@
 [ext_resource type="AudioStream" uid="uid://cwmwlsgbj6uf" path="res://Audio/Placeholder SFX/card_attack_creature.wav" id="9_qltuj"]
 [ext_resource type="Script" uid="uid://dtoyyse7bnjuv" path="res://Code/States/CardInputListener.gd" id="10_koaue"]
 [ext_resource type="Script" uid="uid://d0qu3q360kdsl" path="res://Code/States/CardInputReceiver.gd" id="11_2w08q"]
+[ext_resource type="Script" uid="uid://bn3cluen8f43v" path="res://Cards/HurtFeedbackHandler.gd" id="11_el32v"]
 [ext_resource type="Script" uid="uid://ro02870urhpb" path="res://Code/States/CardStateMachine.gd" id="12_lsojp"]
 [ext_resource type="AudioStream" uid="uid://dm1lem708ohqr" path="res://Audio/Placeholder SFX/card_attack_damage.wav" id="12_octkm"]
+[ext_resource type="Script" uid="uid://bldlc6qrdhpwn" path="res://Cards/HurtAudio.gd" id="13_duyd4"]
 [ext_resource type="Script" uid="uid://bsqidwsxqggmu" path="res://DistantTargetPicker.gd" id="13_vartc"]
 [ext_resource type="Script" uid="uid://ddadxkic18s44" path="res://Cards/AntlerAttackResolver.gd" id="14_4ukko"]
+[ext_resource type="Script" uid="uid://csjuiyyiseyvy" path="res://Cards/HurtFlash.gd" id="14_gyg67"]
 [ext_resource type="AudioStream" uid="uid://5uho8ho3dlfo" path="res://Audio/Placeholder SFX/card_death.wav" id="15_5hax5"]
 [ext_resource type="Script" uid="uid://c43ots6r45ip6" path="res://Cards/AntlerAttackExecutor.gd" id="15_aqnhy"]
+[ext_resource type="Script" uid="uid://s8ie03o2jwn3" path="res://Cards/HurtSprite.gd" id="15_wmwgk"]
+[ext_resource type="Texture2D" uid="uid://cxc62tmwvs36" path="res://Art/HurtSprite.png" id="16_5yc7r"]
 [ext_resource type="Script" uid="uid://cfvsqn441hgwq" path="res://Cards/CardStats.gd" id="22_koaue"]
 [ext_resource type="Script" uid="uid://cmhvnj1h173o2" path="res://Cards/BackInHandCardState.gd" id="34_wmwgk"]
 [ext_resource type="Material" uid="uid://dh78conckoov3" path="res://Cards/BackInHandInvert.tres" id="35_5yc7r"]
@@ -82,8 +87,32 @@ script = ExtResource("5_5yjln")
 hurt_anim = NodePath("HurtFeedback")
 
 [node name="HurtFeedback" type="Node" parent="CardStateMachine/Hurt" unique_id=1865324068]
+script = ExtResource("11_el32v")
+
+[node name="HurtAnim" type="Node" parent="CardStateMachine/Hurt/HurtFeedback" unique_id=1096822831]
 script = ExtResource("7_r4p8t")
+shake_time = 0.1
+
+[node name="HurtAudio" type="Node" parent="CardStateMachine/Hurt/HurtFeedback" unique_id=1658878572]
+script = ExtResource("13_duyd4")
 hurt_sfx = ExtResource("12_octkm")
+
+[node name="HurtFlash" type="Node" parent="CardStateMachine/Hurt/HurtFeedback" unique_id=1429493296]
+script = ExtResource("14_gyg67")
+flash_time = 0.1
+flash_color = Color(1, 0.5019608, 0.5019608, 1)
+
+[node name="HurtSprite" type="Node" parent="CardStateMachine/Hurt/HurtFeedback" unique_id=281682364 node_paths=PackedStringArray("sprite")]
+script = ExtResource("15_wmwgk")
+sprite = NodePath("Sprite")
+card_center_offset = Vector2(515, 625)
+start_scale = Vector2(0.145, 0.14499998)
+end_scale = Vector2(0.155, 0.155)
+
+[node name="Sprite" type="Sprite2D" parent="CardStateMachine/Hurt/HurtFeedback/HurtSprite" unique_id=190210633]
+position = Vector2(1.9073486e-06, 1.4781952e-05)
+scale = Vector2(0.145, 0.14499998)
+texture = ExtResource("16_5yc7r")
 
 [node name="Die" type="Node" parent="CardStateMachine" unique_id=1355649510 node_paths=PackedStringArray("die_anim")]
 script = ExtResource("6_krn1d")
