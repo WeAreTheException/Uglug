@@ -3,6 +3,7 @@ class_name PlaceLiquidTimer
 
 @export var place_timer: Timer
 @export var phase_manager: PhaseManager
+@export var turn_manager: TurnManager
 
 @export var host_color: Color = Color.RED
 @export var client_color: Color = Color.GREEN
@@ -23,7 +24,10 @@ func _ready() -> void:
 	if phase_manager != null:
 		phase_manager.phase_changed.connect(_on_phase_changed)
 
-	_update_color()
+	if turn_manager != null:
+		turn_manager.turn_player_changed.connect(_on_turn_player_changed)
+
+	_update_color_from_current_placing_player()
 
 
 func _process(_delta: float) -> void:
@@ -46,30 +50,39 @@ func _process(_delta: float) -> void:
 	if shader_material != null:
 		shader_material.set_shader_parameter("fV", fill_amount)
 
-	_update_color()
-
 
 func _on_phase_changed(phase_name: String) -> void:
 	is_place_phase = phase_name.to_lower() == "place"
 
 	if is_place_phase:
-		_update_color()
+		_update_color_from_current_placing_player()
 	else:
 		visible = false
 
 
-func _update_color() -> void:
+func _on_turn_player_changed(client_id: int, phase_name: String) -> void:
+	if phase_name.to_lower() != "place":
+		return
+
+	_update_color_from_client_id(client_id)
+
+
+func _update_color_from_current_placing_player() -> void:
+	if turn_manager == null:
+		return
+
+	_update_color_from_client_id(turn_manager.current_placing_player_id)
+
+
+func _update_color_from_client_id(client_id: int) -> void:
 	if shader_material == null:
 		return
 
-	if phase_manager == null:
+	if turn_manager == null:
+		shader_material.set_shader_parameter("liquid_color", host_color)
 		return
 
-	var current_color: Color = phase_manager.timer_label.get_theme_color("font_color")
-
-	print("CURRENT TIMER COLOR: ", current_color)
-
-	if current_color == phase_manager.player_one_place_color:
+	if client_id == turn_manager.player_one_id:
 		shader_material.set_shader_parameter("liquid_color", host_color)
 	else:
 		shader_material.set_shader_parameter("liquid_color", client_color)
