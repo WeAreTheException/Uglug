@@ -9,11 +9,14 @@
 [ext_resource type="Texture2D" uid="uid://di66ndoe6cgnp" path="res://Art/Ants/Antler.png" id="3_2duqk"]
 [ext_resource type="Script" uid="uid://cbbim8d3qcxf6" path="res://Revamp/Card/CardScripts/CardMutations.gd" id="5_olfje"]
 [ext_resource type="Script" uid="uid://db1lyj46ylxcb" path="res://Revamp/Card/CardScripts/CardFeedback.gd" id="8_nau7p"]
+[ext_resource type="Script" uid="uid://dky1ptblaym2b" path="res://Revamp/Card/PositionFeedback.gd" id="9_hdbik"]
+[ext_resource type="Script" uid="uid://c317k3ig4aoxg" path="res://Revamp/Card/ScaleFeedback.gd" id="10_c3ju1"]
+[ext_resource type="Script" uid="uid://cf4ka1vcw1057" path="res://Revamp/Card/ShadowFeedback.gd" id="11_c3ju1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g8l5j"]
 size = Vector2(144, 216)
 
-[node name="Card" type="Node2D" unique_id=1649731477 node_paths=PackedStringArray("input", "board_presence", "stats", "mutations", "card_visuals_root")]
+[node name="Card" type="Node2D" unique_id=1649731477 node_paths=PackedStringArray("input", "board_presence", "stats", "mutations", "card_visuals_root", "card_feedback")]
 script = ExtResource("1_hdbik")
 test_data = ExtResource("2_c3ju1")
 input = NodePath("CardInput")
@@ -21,6 +24,7 @@ board_presence = NodePath("Core/BoardPresence")
 stats = NodePath("Core/CardStats")
 mutations = NodePath("Core/CardMutations")
 card_visuals_root = NodePath("Visuals/TitlRoot/CardVisuals")
+card_feedback = NodePath("CardFeedback")
 
 [node name="Shadow" type="TextureRect" parent="." unique_id=2074399658]
 modulate = Color(0.029506557, 0.029506557, 0.029506557, 1)
@@ -52,22 +56,32 @@ script = ExtResource("5_olfje")
 
 [node name="Attack" type="Node" parent="Actions" unique_id=1376954352]
 
-[node name="ATKFeedback" type="Node" parent="Actions/Attack" unique_id=1385978826]
-
 [node name="Hurt" type="Node" parent="Actions" unique_id=1957973461]
-
-[node name="HRTFeedback" type="Node" parent="Actions/Hurt" unique_id=1401271033]
 
 [node name="Death" type="Node" parent="Actions" unique_id=1463626010]
 
-[node name="DTHFeedback" type="Node" parent="Actions/Death" unique_id=62696343]
-
 [node name="Debug" type="Node" parent="." unique_id=445916254]
 
-[node name="CardFeedback" type="Node" parent="." unique_id=824411320 node_paths=PackedStringArray("card", "shadow_texture")]
+[node name="CardFeedback" type="Node" parent="." unique_id=824411320 node_paths=PackedStringArray("card", "position_feedback", "scale_feedback", "shadow_feedback")]
 script = ExtResource("8_nau7p")
 card = NodePath("..")
-shadow_texture = NodePath("../Shadow")
+position_feedback = NodePath("PositionFeedback")
+scale_feedback = NodePath("ScaleFeedback")
+shadow_feedback = NodePath("ShadowFeedback")
+hover_offset = Vector2(1, 1)
+pressed_offset = Vector2(2, 2)
+hover_scale = Vector2(1, 1)
+pressed_scale = Vector2(2, 2)
+
+[node name="PositionFeedback" type="Node" parent="CardFeedback" unique_id=659627164]
+script = ExtResource("9_hdbik")
+
+[node name="ScaleFeedback" type="Node" parent="CardFeedback" unique_id=1062761578]
+script = ExtResource("10_c3ju1")
+
+[node name="ShadowFeedback" type="Node" parent="CardFeedback" unique_id=248472187 node_paths=PackedStringArray("shadow_texture")]
+script = ExtResource("11_c3ju1")
+shadow_texture = NodePath("../../Shadow")
 
 [node name="Visuals" type="Node2D" parent="." unique_id=2044401141]
 metadata/_edit_lock_ = true
@@ -77,4 +91,3 @@ metadata/_edit_lock_ = true
 [node name="TitlRoot" type="Node2D" parent="Visuals" unique_id=349954330]
 
 [node name="CardVisuals" parent="Visuals/TitlRoot" unique_id=1593445486 instance=ExtResource("1_2duqk")]
-metadata/_edit_lock_ = true

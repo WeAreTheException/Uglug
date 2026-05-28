@@ -13,6 +13,7 @@ signal released(card: CardRoot)
 @export var stats: CardStats
 @export var mutations: CardMutations
 @export var card_visuals_root: CardVisualsRoot
+@export var card_feedback: CardFeedback
 
 var card_data: CardData = null
 var card_name: String = ""
