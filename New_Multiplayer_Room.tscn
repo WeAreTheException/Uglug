@@ -357,7 +357,6 @@ scale = Vector2(1.5, 1.4666666)
 texture = ExtResource("6_cpbwq")
 
 [node name="HandRef" type="Sprite2D" parent="Ref" unique_id=185652076]
-visible = false
 position = Vector2(966, 957)
 texture = ExtResource("27_ebn5f")
 
@@ -370,26 +369,6 @@ texture = ExtResource("28_e2c01")
 visible = false
 position = Vector2(380, 288)
 texture = ExtResource("28_e2c01")
-
-[node name="Slots" type="Node2D" parent="." unique_id=1282402441]
-visible = false
-scale = Vector2(0.8, 0.8)
-
-[node name="Lane4" parent="Slots" unique_id=1783533892 instance=ExtResource("1_phlo6")]
-position = Vector2(1280, 480)
-lane_id = 4
-
-[node name="Lane3" parent="Slots" unique_id=918336549 instance=ExtResource("1_phlo6")]
-position = Vector2(1056, 480)
-lane_id = 3
-
-[node name="Lane2" parent="Slots" unique_id=120099331 instance=ExtResource("1_phlo6")]
-position = Vector2(832, 480)
-lane_id = 2
-
-[node name="Lane1" parent="Slots" unique_id=1932373052 instance=ExtResource("1_phlo6")]
-position = Vector2(608, 480)
-lane_id = 1
 
 [node name="BuffPile" parent="." unique_id=1953419234 node_paths=PackedStringArray("player_hand", "phase_manager") instance=ExtResource("32_axksp")]
 visible = false
@@ -412,6 +391,26 @@ opponent_hand = NodePath("../Hand&Deck/OpponentHand")
 
 [node name="CardDeathRouter" type="Node" parent="." unique_id=1205808905]
 script = ExtResource("41_3h1dv")
+
+[node name="Slots" type="Node2D" parent="." unique_id=1282402441]
+visible = false
+scale = Vector2(0.8, 0.8)
+
+[node name="Lane4" parent="Slots" unique_id=1783533892 instance=ExtResource("1_phlo6")]
+position = Vector2(1280, 480)
+lane_id = 4
+
+[node name="Lane3" parent="Slots" unique_id=918336549 instance=ExtResource("1_phlo6")]
+position = Vector2(1056, 480)
+lane_id = 3
+
+[node name="Lane2" parent="Slots" unique_id=120099331 instance=ExtResource("1_phlo6")]
+position = Vector2(832, 480)
+lane_id = 2
+
+[node name="Lane1" parent="Slots" unique_id=1932373052 instance=ExtResource("1_phlo6")]
+position = Vector2(608, 480)
+lane_id = 1
 
 [node name="Slots2" parent="." unique_id=1318716624 instance=ExtResource("46_saxf4")]
 position = Vector2(416, 127)
