@@ -6,7 +6,7 @@ signal clicked(slot: Slot)
 @export var slot_index: int = 1
 @export var click_area: Area2D
 
-var current_card: Card = null
+var current_card: CardRoot = null
 
 
 func _ready() -> void:
@@ -27,11 +27,15 @@ func is_empty() -> bool:
 	return current_card == null
 
 
-func assign_card(card: Card) -> bool:
-	if card == null or current_card != null:
+func assign_card(card: CardRoot) -> bool:
+	if card == null:
+		return false
+
+	if current_card != null:
 		return false
 
 	current_card = card
+
 	return true
 
 

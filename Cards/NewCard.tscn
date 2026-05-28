@@ -35,10 +35,8 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
 size = Vector2(174, 268)
 
-[node name="Card" type="Node2D" unique_id=1703534497 node_paths=PackedStringArray("card_stats", "card_art")]
+[node name="Card" type="Node2D" unique_id=1703534497]
 script = ExtResource("1_ch35y")
-card_stats = NodePath("CardStats")
-card_art = NodePath("CardArt")
 
 [node name="InputListener" type="Area2D" parent="." unique_id=1220273102]
 script = ExtResource("10_koaue")

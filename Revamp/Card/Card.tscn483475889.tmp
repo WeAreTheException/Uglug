@@ -4,10 +4,11 @@
 [ext_resource type="Script" uid="uid://ctlcy38qx1jj2" path="res://Revamp/Card/CardScripts/CardRoot.gd" id="1_hdbik"]
 [ext_resource type="Script" uid="uid://3tw3j0h4rvc3" path="res://Revamp/Card/CardScripts/BoardPresence.gd" id="1_ivqip"]
 [ext_resource type="Resource" uid="uid://jd5rbexi4lr4" path="res://Cards/CardPresets/Persistant.tres" id="2_c3ju1"]
-[ext_resource type="Script" uid="uid://dpkom03l84r4y" path="res://Revamp/Card/CardScripts/CardStats.gd" id="2_hdbik"]
-[ext_resource type="Script" uid="uid://xlxu58fop1wg" path="res://Revamp/Card/CardScripts/CardInput.gd" id="2_nau7p"]
-[ext_resource type="Script" uid="uid://cbbim8d3qcxf6" path="res://Revamp/Card/CardScripts/CardMutations.gd" id="5_olfje"]
-[ext_resource type="Script" uid="uid://bq48m50dnrwib" path="res://Revamp/Card/CardScripts/StatsVisual.gd" id="7_nau7p"]
+[ext_resource type="Script" uid="uid://dpkom03l84r4y" path="res://Revamp/Card/CardStats.gd" id="2_hdbik"]
+[ext_resource type="Script" uid="uid://xlxu58fop1wg" path="res://Revamp/Card/CardInput.gd" id="2_nau7p"]
+[ext_resource type="Script" uid="uid://b0214w31yfwlw" path="res://Revamp/Card/MutationRuntime.gd" id="4_xqgh7"]
+[ext_resource type="Script" uid="uid://cbbim8d3qcxf6" path="res://Revamp/Card/CardMutations.gd" id="5_olfje"]
+[ext_resource type="Script" uid="uid://bq48m50dnrwib" path="res://Revamp/Card/StatsVisual.gd" id="7_nau7p"]
 [ext_resource type="Texture2D" uid="uid://d1ypj3toan6r1" path="res://Art/Blood.png" id="9_r5dqq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g8l5j"]
@@ -35,6 +36,9 @@ script = ExtResource("1_ivqip")
 
 [node name="CardStats" type="Node" parent="Core" unique_id=179603737]
 script = ExtResource("2_hdbik")
+
+[node name="MutationRuntime" type="Node" parent="Core" unique_id=590245857]
+script = ExtResource("4_xqgh7")
 
 [node name="CardMutations" type="Node" parent="Core" unique_id=1430961326]
 script = ExtResource("5_olfje")

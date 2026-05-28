@@ -1,5 +1,5 @@
 extends Node2D
-class_name CardArt
+class_name CardArtRoot
 
 @export var ant_sprite: Sprite2D
 
@@ -12,6 +12,29 @@ class_name CardArt
 
 @export var card_fog: Sprite2D
 @export var background_dots: Sprite2D
+
+@export var stats_visuals: StatsVisuals
+
+var card: CardRoot = null
+
+
+func setup_from_card(source_card: CardRoot) -> void:
+	if source_card == null:
+		return
+
+	card = source_card
+
+	if card.card_data != null:
+		set_ant_texture(card.card_data.ant_texture)
+
+	if stats_visuals != null:
+		stats_visuals.setup_from_card(card)
+
+	if card.mutations != null:
+		if not card.mutations.mutations_changed.is_connected(update_sigils):
+			card.mutations.mutations_changed.connect(update_sigils)
+
+	update_sigils()
 
 
 func set_ant_texture(texture: Texture2D) -> void:
@@ -30,12 +53,46 @@ func set_card_texture(texture: Texture2D) -> void:
 	card_image.visible = texture != null
 
 
-func set_base_sigil(index: int, texture: Texture2D) -> void:
-	_set_sigil_texture(base_sigil_container, index, texture)
+func update_sigils() -> void:
+	clear_base_sigils()
+	clear_additional_sigils()
+
+	if card == null:
+		return
+
+	if card.mutations == null:
+		return
+
+	var runtimes := card.mutations.get_all_runtimes()
+
+	for i in range(runtimes.size()):
+		var runtime := runtimes[i]
+
+		if runtime == null:
+			continue
+
+		if runtime.mutation == null:
+			continue
+
+		set_sigil(i, runtime.mutation.sigil_texture, runtime.is_greyed_out)
 
 
-func set_additional_sigil(index: int, texture: Texture2D) -> void:
-	_set_sigil_texture(additional_sigil_container, index, texture)
+func set_sigil(index: int, texture: Texture2D, greyed_out: bool = false) -> void:
+	if index < 0:
+		return
+
+	if index < _get_base_sigil_count():
+		_set_sigil_texture(base_sigil_container, index, texture, greyed_out)
+		return
+
+	var additional_index := index - _get_base_sigil_count()
+
+	_set_sigil_texture(
+		additional_sigil_container,
+		additional_index,
+		texture,
+		greyed_out
+	)
 
 
 func clear_base_sigils() -> void:
@@ -46,7 +103,12 @@ func clear_additional_sigils() -> void:
 	_clear_sigils(additional_sigil_container)
 
 
-func _set_sigil_texture(container: Node2D, index: int, texture: Texture2D) -> void:
+func _set_sigil_texture(
+	container: Node2D,
+	index: int,
+	texture: Texture2D,
+	greyed_out: bool
+) -> void:
 	if container == null:
 		return
 
@@ -61,6 +123,7 @@ func _set_sigil_texture(container: Node2D, index: int, texture: Texture2D) -> vo
 	if child is Sprite2D:
 		child.texture = texture
 		child.visible = texture != null
+		child.modulate.a = 0.35 if greyed_out else 1.0
 
 
 func _clear_sigils(container: Node2D) -> void:
@@ -71,3 +134,11 @@ func _clear_sigils(container: Node2D) -> void:
 		if child is Sprite2D:
 			child.texture = null
 			child.visible = false
+			child.modulate.a = 1.0
+
+
+func _get_base_sigil_count() -> int:
+	if base_sigil_container == null:
+		return 0
+
+	return base_sigil_container.get_child_count()

@@ -1,0 +1,264 @@
+[gd_scene format=3 uid="uid://5qb61nfrd521"]
+
+[ext_resource type="PackedScene" uid="uid://b8f0lryqwcw7j" path="res://Revamp/Card/CardArt.tscn" id="1_2duqk"]
+[ext_resource type="Script" uid="uid://3tw3j0h4rvc3" path="res://Revamp/Card/CardScripts/BoardPresence.gd" id="1_ivqip"]
+[ext_resource type="Script" uid="uid://dpkom03l84r4y" path="res://Revamp/Card/CardStats.gd" id="2_hdbik"]
+[ext_resource type="Script" uid="uid://dbemrm25gvek6" path="res://Cards/Stats.gd" id="2_ivqip"]
+[ext_resource type="Script" uid="uid://4p86t457p8cb" path="res://Revamp/Card/StatModifer.gd" id="3_c3ju1"]
+[ext_resource type="Texture2D" uid="uid://bdi7eyt5cmur0" path="res://Art/Numbers/1.png" id="3_hdbik"]
+[ext_resource type="Texture2D" uid="uid://clk0ori80b5gg" path="res://Art/Numbers/2.png" id="4_c3ju1"]
+[ext_resource type="Script" uid="uid://b0214w31yfwlw" path="res://Revamp/Card/MutationRuntime.gd" id="4_xqgh7"]
+[ext_resource type="Script" uid="uid://cbbim8d3qcxf6" path="res://Revamp/Card/CardMutations.gd" id="5_olfje"]
+[ext_resource type="Texture2D" uid="uid://bnj2kyvgakfq3" path="res://Art/Numbers/3.png" id="5_xqgh7"]
+[ext_resource type="Texture2D" uid="uid://4f3gn63utyru" path="res://Art/Numbers/4.png" id="6_olfje"]
+[ext_resource type="Texture2D" uid="uid://c1fev2dw4ehne" path="res://Art/Numbers/5.png" id="7_vth4y"]
+[ext_resource type="Texture2D" uid="uid://bq8esv4xpuv68" path="res://Art/Numbers/6.png" id="8_8l6ss"]
+[ext_resource type="Texture2D" uid="uid://d1ypj3toan6r1" path="res://Art/Blood.png" id="9_r5dqq"]
+
+[sub_resource type="GDScript" id="GDScript_2duqk"]
+script/source = "extends Node2D
+class_name Card
+
+signal hovered(card: Card)
+signal unhovered(card: Card)
+signal pressed(card: Card)
+signal released(card: Card)
+
+@export var test_data: CardData
+
+@export var input: CardInput
+@export var board_presence: BoardPresence
+@export var stats: CardStats
+@export var mutations: CardMutations
+@export var card_art: CardArt
+
+var card_data: CardData = null
+var card_name: String = \"\"
+
+
+func _ready() -> void:
+	_cache_children()
+	_connect_input()
+
+	if test_data != null:
+		setup(test_data)
+
+
+func _cache_children() -> void:
+	if input == null:
+		input = get_node_or_null(\"Input/CardCollider\") as CardInput
+
+	if board_presence == null:
+		board_presence = get_node_or_null(\"Core/BoardPresence\") as BoardPresence
+
+	if stats == null:
+		stats = get_node_or_null(\"Core/CardStats\") as CardStats
+
+	if mutations == null:
+		mutations = get_node_or_null(\"Core/CardMutations\") as CardMutations
+
+	if card_art == null:
+		card_art = get_node_or_null(\"Visuals/CardArt\") as CardArt
+
+
+func _connect_input() -> void:
+	if input == null:
+		return
+
+	input.hovered.connect(_on_input_hovered)
+	input.unhovered.connect(_on_input_unhovered)
+	input.pressed.connect(_on_input_pressed)
+	input.released.connect(_on_input_released)
+
+
+func setup(data: CardData) -> void:
+	if data == null:
+		return
+
+	card_data = data
+	card_name = data.name
+
+	if stats != null:
+		stats.setup_from_data(data)
+
+	if mutations != null:
+		mutations.setup_from_data(data)
+
+	if card_art != null:
+		card_art.setup_from_card(self)
+
+
+func is_on_board() -> bool:
+	return board_presence != null and board_presence.is_on_board()
+
+
+func get_current_slot() -> Slot:
+	if board_presence == null:
+		return null
+
+	return board_presence.current_slot
+
+
+func _on_input_hovered() -> void:
+	hovered.emit(self)
+
+
+func _on_input_unhovered() -> void:
+	unhovered.emit(self)
+
+
+func _on_input_pressed() -> void:
+	pressed.emit(self)
+
+
+func _on_input_released() -> void:
+	released.emit(self)
+"
+
+[sub_resource type="GDScript" id="GDScript_ivqip"]
+script/source = "extends Area2D
+class_name CardInput
+
+signal hovered
+signal unhovered
+signal pressed
+signal released
+
+
+func _ready() -> void:
+	input_pickable = true
+
+	mouse_entered.connect(_on_mouse_entered)
+	mouse_exited.connect(_on_mouse_exited)
+
+
+func _input_event(_viewport, event, _shape_idx) -> void:
+	if event is InputEventMouseButton:
+		if event.button_index != MOUSE_BUTTON_LEFT:
+			return
+
+		if event.pressed:
+			pressed.emit()
+		else:
+			released.emit()
+
+
+func _on_mouse_entered() -> void:
+	hovered.emit()
+
+
+func _on_mouse_exited() -> void:
+	unhovered.emit()
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g8l5j"]
+size = Vector2(144, 216)
+
+[node name="Card" type="Node2D" unique_id=1649731477]
+script = SubResource("GDScript_2duqk")
+
+[node name="CardInput" type="Area2D" parent="." unique_id=502264031]
+script = SubResource("GDScript_ivqip")
+
+[node name="CardCollider" type="CollisionShape2D" parent="CardInput" unique_id=1550845996]
+shape = SubResource("RectangleShape2D_g8l5j")
+
+[node name="Core" type="Node" parent="." unique_id=1306606518]
+
+[node name="BoardPresence" type="Node" parent="Core" unique_id=1035349122]
+script = ExtResource("1_ivqip")
+
+[node name="CardStats" type="Node" parent="Core" unique_id=179603737]
+script = ExtResource("2_hdbik")
+
+[node name="MutationRuntime" type="Node" parent="Core" unique_id=590245857]
+script = ExtResource("4_xqgh7")
+
+[node name="StatModifer" type="Node" parent="Core" unique_id=1654983888]
+script = ExtResource("3_c3ju1")
+
+[node name="CardMutations" type="Node" parent="Core" unique_id=1430961326]
+script = ExtResource("5_olfje")
+
+[node name="Actions" type="Node" parent="." unique_id=857836663]
+
+[node name="Attack" type="Node" parent="Actions" unique_id=1376954352]
+
+[node name="ATKFeedback" type="Node" parent="Actions/Attack" unique_id=1385978826]
+
+[node name="Hurt" type="Node" parent="Actions" unique_id=1957973461]
+
+[node name="HRTFeedback" type="Node" parent="Actions/Hurt" unique_id=1401271033]
+
+[node name="Death" type="Node" parent="Actions" unique_id=1463626010]
+
+[node name="DTHFeedback" type="Node" parent="Actions/Death" unique_id=62696343]
+
+[node name="Debug" type="Node" parent="." unique_id=445916254]
+
+[node name="Visuals" type="Node2D" parent="." unique_id=2044401141]
+metadata/_edit_lock_ = true
+
+[node name="CardArt" parent="Visuals" unique_id=1593445486 instance=ExtResource("1_2duqk")]
+metadata/_edit_lock_ = true
+
+[node name="StatsVisuals" type="Node2D" parent="Visuals" unique_id=1577578591 node_paths=PackedStringArray("attack", "health", "cost", "name_label")]
+script = ExtResource("2_ivqip")
+attack = NodePath("Attack")
+health = NodePath("Health")
+cost = [null, null, null, null]
+name_label = NodePath("Name")
+attack_textures = Array[Texture2D]([ExtResource("3_hdbik"), ExtResource("4_c3ju1"), ExtResource("5_xqgh7"), ExtResource("6_olfje"), ExtResource("7_vth4y"), ExtResource("8_8l6ss")])
+health_textures = Array[Texture2D]([ExtResource("3_hdbik"), ExtResource("4_c3ju1"), ExtResource("5_xqgh7"), ExtResource("6_olfje"), ExtResource("7_vth4y"), ExtResource("8_8l6ss")])
+metadata/_edit_lock_ = true
+
+[node name="Name" type="RichTextLabel" parent="Visuals/StatsVisuals" unique_id=1751801496]
+anchors_preset = -1
+offset_left = -64.0
+offset_top = -103.0
+offset_right = 65.0
+offset_bottom = -78.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0.16206557, 0.1620656, 0.16206557, 1)
+metadata/_edit_lock_ = true
+
+[node name="Blood" type="Node2D" parent="Visuals/StatsVisuals" unique_id=1405083590]
+scale = Vector2(0.8, 0.8)
+metadata/_edit_lock_ = true
+
+[node name="Blood" type="Sprite2D" parent="Visuals/StatsVisuals/Blood" unique_id=306163443]
+z_index = 100
+position = Vector2(71, -83)
+scale = Vector2(0.157, 0.144)
+texture = ExtResource("9_r5dqq")
+
+[node name="Blood2" type="Sprite2D" parent="Visuals/StatsVisuals/Blood" unique_id=2037895940]
+z_index = 100
+position = Vector2(55, -83)
+scale = Vector2(0.157, 0.144)
+texture = ExtResource("9_r5dqq")
+
+[node name="Blood3" type="Sprite2D" parent="Visuals/StatsVisuals/Blood" unique_id=542492146]
+z_index = 100
+position = Vector2(63, -64)
+scale = Vector2(0.157, 0.144)
+texture = ExtResource("9_r5dqq")
+
+[node name="Blood4" type="Sprite2D" parent="Visuals/StatsVisuals/Blood" unique_id=1656884532]
+z_index = 100
+position = Vector2(47, -64)
+scale = Vector2(0.157, 0.144)
+texture = ExtResource("9_r5dqq")
+
+[node name="Attack" type="Sprite2D" parent="Visuals/StatsVisuals" unique_id=968012136]
+position = Vector2(-69.4375, 89)
+scale = Vector2(0.14727725, 0.14345993)
+metadata/_edit_lock_ = true
+
+[node name="Health" type="Sprite2D" parent="Visuals/StatsVisuals" unique_id=1239654057]
+position = Vector2(66, 111.00001)
+scale = Vector2(0.14727725, 0.14345993)
+metadata/_edit_lock_ = true
+
+[node name="CardFeedback" type="Node" parent="Visuals" unique_id=824411320]

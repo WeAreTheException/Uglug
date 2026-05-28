@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://b8f0lryqwcw7j"]
 
-[ext_resource type="Script" path="res://CardArtRoot.gd" id="1_8nudy"]
+[ext_resource type="Script" uid="uid://cdu3ykilblant" path="res://CardArtRoot.gd" id="1_8nudy"]
 [ext_resource type="Texture2D" uid="uid://bt8o5l5yrmihl" path="res://Art/CardBackground.png" id="2_px4ui"]
 [ext_resource type="Texture2D" uid="uid://b8a1gr84h2iie" path="res://Art/Ants/WorkerAnt_Standalone.png" id="3_rpqwj"]
 [ext_resource type="Shader" uid="uid://b12e0umk1s7xs" path="res://Cards/Panner.gdshader" id="3_yq5o4"]
