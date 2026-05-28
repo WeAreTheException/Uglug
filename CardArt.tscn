@@ -204,6 +204,7 @@ scale = Vector2(0.128, 0.12799999)
 texture = ExtResource("8_483al")
 
 [node name="Grime" type="Sprite2D" parent="." unique_id=2026883198]
+visible = false
 modulate = Color(1, 1, 1, 0.3137255)
 position = Vector2(1.0728836e-06, -2.1457672e-06)
 scale = Vector2(0.14500001, 0.1451613)
