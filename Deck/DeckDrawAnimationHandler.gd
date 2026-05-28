@@ -6,6 +6,8 @@ class_name DeckDrawAnimationHandler
 
 @export var draw_sfx: AudioStream
 @export var volume_db: float = 0.0
+@export var sfx_bus_name: String = "SFX"
+
 
 var audio_player: AudioStreamPlayer
 
@@ -14,6 +16,7 @@ func _ready() -> void:
 	audio_player = AudioStreamPlayer.new()
 	add_child(audio_player)
 	audio_player.volume_db = volume_db
+	audio_player.bus = sfx_bus_name
 
 
 func prepare_card_start_position(card: Node2D, deck_root: Node2D) -> void:

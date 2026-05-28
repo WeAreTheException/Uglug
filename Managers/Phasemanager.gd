@@ -18,6 +18,7 @@ enum Phase {
 @export var attack_timer: Timer
 
 @export var timer_label: Label
+@export var phase_change_feedback: PhaseChangeFeedback
 
 @export var draw_timer_color: Color = Color.WHITE
 @export var buff_timer_color: Color = Color.YELLOW
@@ -28,7 +29,9 @@ enum Phase {
 
 @export var phase_change_sfx: AudioStream
 @export var low_time_sfx: AudioStream
-@export var sfx_volume_db: float = 0.0
+@export var phase_change_volume_db: float = 0.0
+@export var low_time_volume_db: float = 0.0
+@export var sfx_bus_name: String = "SFX"
 @export var low_time_threshold: float = 10.0
 
 var current_phase: Phase = Phase.PLACE
@@ -43,11 +46,13 @@ var low_time_sound_active := false
 func _ready() -> void:
 	phase_audio_player = AudioStreamPlayer.new()
 	add_child(phase_audio_player)
-	phase_audio_player.volume_db = sfx_volume_db
+	phase_audio_player.volume_db = phase_change_volume_db
+	phase_audio_player.bus = sfx_bus_name
 
 	low_time_audio_player = AudioStreamPlayer.new()
 	add_child(low_time_audio_player)
-	low_time_audio_player.volume_db = sfx_volume_db
+	low_time_audio_player.volume_db = low_time_volume_db
+	low_time_audio_player.bus = sfx_bus_name
 
 	if draw_timer != null:
 		draw_timer.one_shot = true
@@ -135,6 +140,7 @@ func set_phase(new_phase: Phase) -> void:
 
 	play_phase_change_sfx()
 	stop_low_time_sfx()
+	stop_visible_timers()
 
 	phase_changed.emit(get_phase_name())
 	print("PHASE CHANGED TO: ", get_phase_name())
@@ -155,7 +161,17 @@ func set_phase(new_phase: Phase) -> void:
 		stop_visible_timers()
 
 
+func wait_for_phase_feedback() -> void:
+	if phase_change_feedback == null:
+		return
+
+	if phase_change_feedback.is_playing_feedback:
+		await phase_change_feedback.feedback_finished
+
+
 func start_draw_timer() -> void:
+	await wait_for_phase_feedback()
+
 	stop_visible_timers()
 
 	if draw_timer == null:
@@ -171,6 +187,8 @@ func start_draw_timer() -> void:
 
 
 func start_buff_timer() -> void:
+	await wait_for_phase_feedback()
+
 	stop_visible_timers()
 
 	if buff_timer == null:
@@ -186,6 +204,8 @@ func start_buff_timer() -> void:
 
 
 func start_place_timer(is_player_one_turn: bool) -> void:
+	await wait_for_phase_feedback()
+
 	stop_visible_timers()
 
 	if place_timer == null:
