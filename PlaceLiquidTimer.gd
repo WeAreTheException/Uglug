@@ -2,8 +2,7 @@ extends CanvasItem
 class_name PlaceLiquidTimer
 
 @export var place_timer: Timer
-@export var phase_manager: Node
-@export var turn_manager: Node
+@export var phase_manager: PhaseManager
 
 @export var host_color: Color = Color.RED
 @export var client_color: Color = Color.GREEN
@@ -21,7 +20,7 @@ func _ready() -> void:
 		shader_material = material.duplicate() as ShaderMaterial
 		material = shader_material
 
-	if phase_manager != null and phase_manager.has_signal("phase_changed"):
+	if phase_manager != null:
 		phase_manager.phase_changed.connect(_on_phase_changed)
 
 	_update_color()
@@ -53,7 +52,9 @@ func _process(_delta: float) -> void:
 func _on_phase_changed(phase_name: String) -> void:
 	is_place_phase = phase_name.to_lower() == "place"
 
-	if not is_place_phase:
+	if is_place_phase:
+		_update_color()
+	else:
 		visible = false
 
 
@@ -61,39 +62,13 @@ func _update_color() -> void:
 	if shader_material == null:
 		return
 
-	if _is_host_turn():
+	if phase_manager == null:
+		shader_material.set_shader_parameter("liquid_color", host_color)
+		return
+
+	var place_color: Color = phase_manager.timer_label.modulate
+
+	if place_color == phase_manager.player_one_place_color:
 		shader_material.set_shader_parameter("liquid_color", host_color)
 	else:
 		shader_material.set_shader_parameter("liquid_color", client_color)
-
-
-func _is_host_turn() -> bool:
-	if turn_manager == null:
-		return true
-
-	if turn_manager.has_method("is_host_turn"):
-		return turn_manager.is_host_turn()
-
-	var possible_values: Array[String] = [
-		"current_turn_player",
-		"current_player",
-		"turn_player",
-		"active_player",
-		"current_turn"
-	]
-
-	for property_name: String in possible_values:
-		var value = turn_manager.get(property_name)
-
-		if value == null:
-			continue
-
-		var text: String = str(value).to_lower()
-
-		if text == "host" or text == "player1" or text == "player_1" or text == "1":
-			return true
-
-		if text == "client" or text == "player2" or text == "player_2" or text == "2":
-			return false
-
-	return true
