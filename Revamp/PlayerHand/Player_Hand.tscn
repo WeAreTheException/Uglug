@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://1wr1e57v7trd"]
+
+[ext_resource type="Script" uid="uid://cu8tygtobpls5" path="res://Revamp/PlayerHand/PlayerHandScripts/PlayerHandRoot.gd" id="1_sfirx"]
+[ext_resource type="PackedScene" uid="uid://5qb61nfrd521" path="res://Revamp/Card/Card.tscn" id="2_o2jdk"]
+[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="3_edkx2"]
+[ext_resource type="Resource" uid="uid://jd5rbexi4lr4" path="res://Cards/CardPresets/Persistant.tres" id="4_02mp4"]
+[ext_resource type="Script" uid="uid://d2jwgwoqd7be1" path="res://Revamp/PlayerHand/PlayerHandScripts/HandLayout.gd" id="5_02mp4"]
+[ext_resource type="Script" uid="uid://o0q47cw4mhcv" path="res://Revamp/PlayerHand/HandSelectionController.gd" id="6_7snob"]
+
+[node name="PlayerHandRoot" type="Node2D" unique_id=371738706 node_paths=PackedStringArray("hand_layout")]
+script = ExtResource("1_sfirx")
+card_scene = ExtResource("2_o2jdk")
+starting_cards = Array[ExtResource("3_edkx2")]([ExtResource("4_02mp4")])
+hand_layout = NodePath("HandLayout")
+
+[node name="Transform" type="Node2D" parent="." unique_id=1961309861]
+position = Vector2(960, 720)
+
+[node name="HandCardSpawner" type="Node" parent="." unique_id=979805471]
+
+[node name="HandCardLayout" type="Node" parent="." unique_id=576888335]
+
+[node name="HandLayout" type="Node2D" parent="." unique_id=1334379553]
+position = Vector2(960, 720)
+script = ExtResource("5_02mp4")
+
+[node name="HandDragController" type="Node" parent="." unique_id=1839244026]
+
+[node name="HandSelectionController" type="Node" parent="." unique_id=1212449443 node_paths=PackedStringArray("hand")]
+script = ExtResource("6_7snob")
+hand = NodePath("..")

@@ -1,8 +1,12 @@
 [gd_scene format=3 uid="uid://bi71mx5pbjj66"]
 
 [ext_resource type="PackedScene" uid="uid://5qb61nfrd521" path="res://Revamp/Card/Card.tscn" id="1_xehuq"]
+[ext_resource type="PackedScene" uid="uid://bif5q1mjmf8e5" path="res://PlayerHand/PlayerHand.tscn" id="2_6rloj"]
 
 [node name="mao" type="Node2D" unique_id=1783129988]
 
 [node name="Card" parent="." unique_id=1649731477 instance=ExtResource("1_xehuq")]
 position = Vector2(432, 336)
+
+[node name="PlayerHand" parent="." unique_id=2142011949 instance=ExtResource("2_6rloj")]
+position = Vector2(768, 924)
