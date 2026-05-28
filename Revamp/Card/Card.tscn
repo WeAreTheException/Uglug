@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://d1ypj3toan6r1" path="res://Art/Blood.png" id="9_r5dqq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g8l5j"]
+size = Vector2(144, 216)
 
 [node name="Card" type="Node2D" unique_id=1649731477]
 
@@ -44,6 +45,7 @@ shape = SubResource("RectangleShape2D_g8l5j")
 [node name="Debug" type="Node" parent="." unique_id=445916254]
 
 [node name="CardArt" parent="." unique_id=1593445486 instance=ExtResource("1_2duqk")]
+metadata/_edit_lock_ = true
 
 [node name="Stats" type="Node2D" parent="." unique_id=1577578591 node_paths=PackedStringArray("attack", "health", "cost", "name_label")]
 script = ExtResource("2_ivqip")
