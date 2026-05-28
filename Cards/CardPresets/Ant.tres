@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="CardData" format=3 uid="uid://bja2y7nk15cys"]
+
+[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Cards/Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="1_41n2h"]
+[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="2_ykhw3"]
+[ext_resource type="Texture2D" uid="uid://cwrn656wtnb84" path="res://Sprites/Ant.png" id="3_t5tyi"]
+
+[resource]
+script = ExtResource("2_ykhw3")
+name = "Ant"
+attack = 1
+health = 10
+sprite = ExtResource("3_t5tyi")

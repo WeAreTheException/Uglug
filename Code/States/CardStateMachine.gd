@@ -37,26 +37,36 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if card == null:
-		return
-
 	if event is InputEventKey and event.pressed and not event.echo:
 		match event.keycode:
-			KEY_A, KEY_H, KEY_D:
-				if card.current_slot == null:
-					print("card must be in a slot")
-					return
+			KEY_A:
+				_debug_all_cards(MainState.ATTACK)
+			KEY_H:
+				_debug_all_cards(MainState.HURT)
+			KEY_D:
+				_debug_all_cards(MainState.DEATH)
 
-				if not card.is_hovered:
-					return
 
-				match event.keycode:
-					KEY_A:
-						set_main_state(MainState.ATTACK)
-					KEY_H:
-						set_main_state(MainState.HURT)
-					KEY_D:
-						set_main_state(MainState.DEATH)
+func _debug_all_cards(state: MainState) -> void:
+	var cards := get_tree().get_nodes_in_group("cards")
+
+	for found_card in cards:
+		if found_card == null:
+			continue
+
+		if not found_card is Card:
+			continue
+
+		var found_state_machine := found_card.get_node_or_null("CardStateMachine") as CardStateMachine
+
+		if found_state_machine == null:
+			continue
+
+		if found_card.current_slot == null:
+			print("card must be in a slot: ", found_card.name)
+			continue
+
+		found_state_machine.set_main_state(state)
 
 
 func set_main_state(new_state: MainState) -> void:

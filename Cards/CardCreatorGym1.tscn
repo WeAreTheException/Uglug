@@ -1,13 +1,13 @@
 [gd_scene format=3 uid="uid://bad0j4xjilakx"]
 
 [ext_resource type="PackedScene" uid="uid://c8mekq0tyuadn" path="res://Slots/NewSlots.tscn" id="1_nsflq"]
-[ext_resource type="Resource" uid="uid://jd5rbexi4lr4" path="res://Cards/CardPresets/Persistant.tres" id="2_3f68n"]
+[ext_resource type="Resource" uid="uid://bja2y7nk15cys" path="res://Cards/CardPresets/Ant.tres" id="2_1arsx"]
 
 [node name="CardCreatorGym1" type="Node2D" unique_id=2045850218]
 
 [node name="SlotPair" parent="." unique_id=1783533892 instance=ExtResource("1_nsflq")]
 position = Vector2(512, 512)
-player_starting_card = ExtResource("2_3f68n")
+player_starting_card = ExtResource("2_1arsx")
 
 [node name="w" parent="." unique_id=494863648 instance=ExtResource("1_nsflq")]
 position = Vector2(704, 512)
