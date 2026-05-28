@@ -6,6 +6,8 @@ signal unhovered
 signal pressed
 signal released
 
+var is_hovered: bool = false
+
 
 func _ready() -> void:
 	input_pickable = true
@@ -13,21 +15,33 @@ func _ready() -> void:
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
 
+	print("CardInput ready")
+	print("input_pickable = ", input_pickable)
 
-func _input_event(_viewport, event, _shape_idx) -> void:
+
+func _input(event: InputEvent) -> void:
+	if not is_hovered:
+		return
+
 	if event is InputEventMouseButton:
-		if event.button_index != MOUSE_BUTTON_LEFT:
-			return
+		print("MOUSE BUTTON WHILE HOVERED: ", event)
 
-		if event.pressed:
-			pressed.emit()
-		else:
-			released.emit()
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			if event.pressed:
+				print("CARD CLICK REGISTERED")
+				pressed.emit()
+			else:
+				print("CARD RELEASE REGISTERED")
+				released.emit()
 
 
 func _on_mouse_entered() -> void:
+	is_hovered = true
+	print("CARD HOVER ENTERED")
 	hovered.emit()
 
 
 func _on_mouse_exited() -> void:
+	is_hovered = false
+	print("CARD HOVER EXITED")
 	unhovered.emit()

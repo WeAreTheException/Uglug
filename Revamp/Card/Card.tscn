@@ -6,6 +6,7 @@
 [ext_resource type="Resource" uid="uid://jd5rbexi4lr4" path="res://Cards/CardPresets/Persistant.tres" id="2_c3ju1"]
 [ext_resource type="Script" uid="uid://dpkom03l84r4y" path="res://Revamp/Card/CardScripts/CardStats.gd" id="2_hdbik"]
 [ext_resource type="Script" uid="uid://xlxu58fop1wg" path="res://Revamp/Card/CardScripts/CardInput.gd" id="2_nau7p"]
+[ext_resource type="Texture2D" uid="uid://di66ndoe6cgnp" path="res://Art/Ants/Antler.png" id="3_2duqk"]
 [ext_resource type="Script" uid="uid://cbbim8d3qcxf6" path="res://Revamp/Card/CardScripts/CardMutations.gd" id="5_olfje"]
 [ext_resource type="Script" uid="uid://db1lyj46ylxcb" path="res://Revamp/Card/CardFeedback.gd" id="8_nau7p"]
 
@@ -13,14 +14,23 @@
 size = Vector2(144, 216)
 
 [node name="Card" type="Node2D" unique_id=1649731477 node_paths=PackedStringArray("input", "board_presence", "stats", "mutations", "card_art_root")]
-position = Vector2(654, 483)
+position = Vector2(864, 540)
 script = ExtResource("1_hdbik")
 test_data = ExtResource("2_c3ju1")
 input = NodePath("CardInput")
 board_presence = NodePath("Core/BoardPresence")
 stats = NodePath("Core/CardStats")
 mutations = NodePath("Core/CardMutations")
-card_art_root = NodePath("Visuals/CardArt")
+card_art_root = NodePath("Visuals/TitlRoot/CardArt")
+
+[node name="Shadow" type="TextureRect" parent="." unique_id=2074399658]
+modulate = Color(0.029506557, 0.029506557, 0.029506557, 1)
+offset_left = -72.0
+offset_top = -84.0
+offset_right = 72.0
+offset_bottom = 131.0
+texture = ExtResource("3_2duqk")
+expand_mode = 1
 
 [node name="CardInput" type="Area2D" parent="." unique_id=502264031]
 script = ExtResource("2_nau7p")
@@ -55,12 +65,15 @@ script = ExtResource("5_olfje")
 
 [node name="Debug" type="Node" parent="." unique_id=445916254]
 
+[node name="CardFeedback" type="Node" parent="." unique_id=824411320 node_paths=PackedStringArray("card", "shadow_texture")]
+script = ExtResource("8_nau7p")
+card = NodePath("..")
+shadow_texture = NodePath("../Shadow")
+
 [node name="Visuals" type="Node2D" parent="." unique_id=2044401141]
 metadata/_edit_lock_ = true
 
-[node name="CardArt" parent="Visuals" unique_id=1593445486 instance=ExtResource("1_2duqk")]
-metadata/_edit_lock_ = true
+[node name="TitlRoot" type="Node2D" parent="Visuals" unique_id=349954330]
 
-[node name="CardFeedback" type="Node" parent="Visuals" unique_id=824411320 node_paths=PackedStringArray("card")]
-script = ExtResource("8_nau7p")
-card = NodePath("../..")
+[node name="CardArt" parent="Visuals/TitlRoot" unique_id=1593445486 instance=ExtResource("1_2duqk")]
+metadata/_edit_lock_ = true
