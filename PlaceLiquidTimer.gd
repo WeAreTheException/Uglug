@@ -63,12 +63,13 @@ func _update_color() -> void:
 		return
 
 	if phase_manager == null:
-		shader_material.set_shader_parameter("liquid_color", host_color)
 		return
 
-	var place_color: Color = phase_manager.timer_label.modulate
+	var current_color: Color = phase_manager.timer_label.get_theme_color("font_color")
 
-	if place_color == phase_manager.player_one_place_color:
+	print("CURRENT TIMER COLOR: ", current_color)
+
+	if current_color == phase_manager.player_one_place_color:
 		shader_material.set_shader_parameter("liquid_color", host_color)
 	else:
 		shader_material.set_shader_parameter("liquid_color", client_color)
