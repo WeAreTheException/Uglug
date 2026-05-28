@@ -7,22 +7,43 @@ class_name PlayerNameLabelHandler
 @export var fallback_player_one_name: String = "Player 1"
 @export var fallback_player_two_name: String = "Player 2"
 
+var turn_manager: TurnManager = null
+var has_set_real_names: bool = false
+
 
 func _ready() -> void:
+	_set_labels(fallback_player_one_name, fallback_player_two_name)
+
 	if not GDSync.is_active():
-		_set_labels(fallback_player_one_name, fallback_player_two_name)
 		return
 
-	await get_tree().create_timer(1.0).timeout
+	await get_tree().process_frame
+	await get_tree().process_frame
 
-	var turn_manager := get_tree().get_first_node_in_group("turn_manager") as TurnManager
+	turn_manager = get_tree().get_first_node_in_group("turn_manager") as TurnManager
 
-	var player_one_id := -1
-	var player_two_id := -1
+	if turn_manager == null:
+		return
 
-	if turn_manager != null:
-		player_one_id = turn_manager.player_one_id
-		player_two_id = turn_manager.player_two_id
+	if not turn_manager.attacking_first_changed.is_connected(_on_turn_manager_ready):
+		turn_manager.attacking_first_changed.connect(_on_turn_manager_ready)
+
+	_try_set_names()
+
+
+func _on_turn_manager_ready(_client_id: int) -> void:
+	_try_set_names()
+
+
+func _try_set_names() -> void:
+	if has_set_real_names:
+		return
+
+	if turn_manager == null:
+		return
+
+	var player_one_id := turn_manager.player_one_id
+	var player_two_id := turn_manager.player_two_id
 
 	if player_one_id == -1 or player_two_id == -1:
 		return
@@ -40,6 +61,7 @@ func _ready() -> void:
 		enemy_player_name = GDSync.player_get_username(player_one_id, fallback_player_one_name)
 
 	_set_labels(local_player_name, enemy_player_name)
+	has_set_real_names = true
 
 
 func _set_labels(local_player_name: String, enemy_player_name: String) -> void:
