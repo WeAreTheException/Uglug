@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://btlmt7wpeuevx"]
+
+[ext_resource type="PackedScene" uid="uid://5qb61nfrd521" path="res://Revamp/Card/Card.tscn" id="1_r4omw"]
+
+[node name="Node2D" type="Node2D" unique_id=130945156]
+
+[node name="Card" parent="." unique_id=1649731477 instance=ExtResource("1_r4omw")]
+position = Vector2(504, 600)
+
+[node name="Card2" parent="." unique_id=1908842307 instance=ExtResource("1_r4omw")]
+position = Vector2(-168, 216)
+
+[node name="Card3" parent="." unique_id=1221101735 instance=ExtResource("1_r4omw")]
+position = Vector2(576, 144)
+
+[node name="Card4" parent="." unique_id=569798301 instance=ExtResource("1_r4omw")]
+position = Vector2(48, 216)
+
+[node name="Card5" parent="." unique_id=742130368 instance=ExtResource("1_r4omw")]
+position = Vector2(924, 396)
+
+[node name="Card6" parent="." unique_id=1535445069 instance=ExtResource("1_r4omw")]
+position = Vector2(120, 492)

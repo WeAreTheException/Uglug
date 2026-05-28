@@ -1,6 +1,10 @@
 extends Node2D
 class_name CardArtRoot
 
+@export var viewport_sprite: Sprite2D
+@export var subviewport: SubViewport
+@export var visuals_root: Node2D
+
 @export var ant_sprite: Sprite2D
 
 @export var card_image: Sprite2D
@@ -18,7 +22,27 @@ class_name CardArtRoot
 var card: CardRoot = null
 
 
+func _ready() -> void:
+	setup_viewport()
+
+
+func setup_viewport() -> void:
+	if viewport_sprite == null:
+		return
+
+	if subviewport == null:
+		return
+
+	subviewport.transparent_bg = true
+	subviewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+
+	viewport_sprite.texture = subviewport.get_texture()
+	viewport_sprite.centered = true
+
+
 func setup_from_card(source_card: CardRoot) -> void:
+	setup_viewport()
+
 	if source_card == null:
 		return
 
