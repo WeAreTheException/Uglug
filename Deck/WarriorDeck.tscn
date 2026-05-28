@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://l28s3hnlv4iy" path="res://Cards/NewCard.tscn" id="3_7lkv5"]
 [ext_resource type="Script" uid="uid://chcqvu28271sh" path="res://Deck/DrawHandler.gd" id="4_gy366"]
 [ext_resource type="Script" uid="uid://blq43rpyvye6c" path="res://Data/CardDatabase.gd" id="5_rw1me"]
-[ext_resource type="Script" uid="uid://b8glhjm2vi2f1" path="res://Deck/DeckDrawAnimationHandler.gd" id="5_x7m7j"]
+[ext_resource type="Script" uid="uid://b8glhjm2vi2f1" path="res://Deck/DeckDrawFeedback.gd" id="5_x7m7j"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="6_00oes"]
 [ext_resource type="AudioStream" uid="uid://c8k83arjmn244" path="res://Audio/Placeholder SFX/card#1.wav" id="6_gy366"]
 [ext_resource type="Script" uid="uid://bvxcpx68kfwbq" path="res://Deck/DeckDrawLimitHandler.gd" id="6_n0yp5"]
@@ -31,9 +31,11 @@ script = ExtResource("4_gy366")
 card_database = NodePath("../CardDatabase")
 deck_type = 1
 
-[node name="DeckDrawAnimationHandler" type="Node" parent="DeckDrawHandler" unique_id=298698796]
+[node name="DeckDrawFeedback" type="Node" parent="DeckDrawHandler" unique_id=298698796 node_paths=PackedStringArray("hover_area", "deck_visual")]
 script = ExtResource("5_x7m7j")
 draw_sfx = ExtResource("6_gy366")
+hover_area = NodePath("../../DeckInputListener")
+deck_visual = NodePath("../../DeckImage")
 
 [node name="DeckDrawLimitHandler" type="Node" parent="DeckDrawHandler" unique_id=455365821]
 script = ExtResource("6_n0yp5")
