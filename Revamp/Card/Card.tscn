@@ -7,13 +7,13 @@
 [ext_resource type="Script" uid="uid://dpkom03l84r4y" path="res://Revamp/Card/CardScripts/CardStats.gd" id="2_hdbik"]
 [ext_resource type="Script" uid="uid://xlxu58fop1wg" path="res://Revamp/Card/CardScripts/CardInput.gd" id="2_nau7p"]
 [ext_resource type="Script" uid="uid://cbbim8d3qcxf6" path="res://Revamp/Card/CardScripts/CardMutations.gd" id="5_olfje"]
-[ext_resource type="Script" uid="uid://bq48m50dnrwib" path="res://Revamp/Card/CardScripts/StatsVisual.gd" id="7_nau7p"]
-[ext_resource type="Texture2D" uid="uid://d1ypj3toan6r1" path="res://Art/Blood.png" id="9_r5dqq"]
+[ext_resource type="Script" uid="uid://db1lyj46ylxcb" path="res://Revamp/Card/CardFeedback.gd" id="8_nau7p"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g8l5j"]
 size = Vector2(144, 216)
 
 [node name="Card" type="Node2D" unique_id=1649731477 node_paths=PackedStringArray("input", "board_presence", "stats", "mutations", "card_art_root")]
+position = Vector2(654, 483)
 script = ExtResource("1_hdbik")
 test_data = ExtResource("2_c3ju1")
 input = NodePath("CardInput")
@@ -61,54 +61,6 @@ metadata/_edit_lock_ = true
 [node name="CardArt" parent="Visuals" unique_id=1593445486 instance=ExtResource("1_2duqk")]
 metadata/_edit_lock_ = true
 
-[node name="CardFeedback" type="Node" parent="Visuals" unique_id=824411320]
-
-[node name="StatsVisual" type="Node2D" parent="Visuals" unique_id=604603897]
-script = ExtResource("7_nau7p")
-metadata/_edit_lock_ = true
-
-[node name="Attack" type="Sprite2D" parent="Visuals/StatsVisual" unique_id=237444889]
-position = Vector2(-69.4375, 89)
-scale = Vector2(0.14727725, 0.14345993)
-
-[node name="Health" type="Sprite2D" parent="Visuals/StatsVisual" unique_id=881076691]
-position = Vector2(66, 111.00001)
-scale = Vector2(0.14727725, 0.14345993)
-
-[node name="Name" type="RichTextLabel" parent="Visuals/StatsVisual" unique_id=1871329637]
-anchors_preset = -1
-offset_left = -78.0
-offset_top = -128.0
-offset_right = 78.0
-offset_bottom = -103.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/default_color = Color(0.16206557, 0.1620656, 0.16206557, 1)
-metadata/_edit_use_anchors_ = true
-
-[node name="Node2D" type="Node2D" parent="Visuals/StatsVisual" unique_id=532443355]
-scale = Vector2(0.8, 0.8)
-
-[node name="Blood" type="Sprite2D" parent="Visuals/StatsVisual/Node2D" unique_id=1780996899]
-z_index = 100
-position = Vector2(71, -83)
-scale = Vector2(0.157, 0.144)
-texture = ExtResource("9_r5dqq")
-
-[node name="Blood2" type="Sprite2D" parent="Visuals/StatsVisual/Node2D" unique_id=1805383410]
-z_index = 100
-position = Vector2(55, -83)
-scale = Vector2(0.157, 0.144)
-texture = ExtResource("9_r5dqq")
-
-[node name="Blood3" type="Sprite2D" parent="Visuals/StatsVisual/Node2D" unique_id=1238974003]
-z_index = 100
-position = Vector2(63, -64)
-scale = Vector2(0.157, 0.144)
-texture = ExtResource("9_r5dqq")
-
-[node name="Blood4" type="Sprite2D" parent="Visuals/StatsVisual/Node2D" unique_id=1159241212]
-z_index = 100
-position = Vector2(47, -64)
-scale = Vector2(0.157, 0.144)
-texture = ExtResource("9_r5dqq")
+[node name="CardFeedback" type="Node" parent="Visuals" unique_id=824411320 node_paths=PackedStringArray("card")]
+script = ExtResource("8_nau7p")
+card = NodePath("../..")

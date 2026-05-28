@@ -12,6 +12,14 @@
 [ext_resource type="Texture2D" uid="uid://wak6qieqhlsb" path="res://Art/CardBorder.png" id="6_8nudy"]
 [ext_resource type="Shader" uid="uid://dt77y6ccd1hxy" path="res://Cards/SigilOutline.gdshader" id="7_bft4m"]
 [ext_resource type="Texture2D" uid="uid://dqtxvu584lxsj" path="res://Art/Mutations/Ant_Hill_Sigil.PNG" id="8_483al"]
+[ext_resource type="Script" uid="uid://bq48m50dnrwib" path="res://Revamp/Card/CardScripts/StatsVisual.gd" id="13_xf3hk"]
+[ext_resource type="Texture2D" uid="uid://bdi7eyt5cmur0" path="res://Art/Numbers/1.png" id="14_82eix"]
+[ext_resource type="Texture2D" uid="uid://d1ypj3toan6r1" path="res://Art/Blood.png" id="14_mty2y"]
+[ext_resource type="Texture2D" uid="uid://clk0ori80b5gg" path="res://Art/Numbers/2.png" id="15_rri1g"]
+[ext_resource type="Texture2D" uid="uid://bnj2kyvgakfq3" path="res://Art/Numbers/3.png" id="16_reh76"]
+[ext_resource type="Texture2D" uid="uid://4f3gn63utyru" path="res://Art/Numbers/4.png" id="17_ljh1u"]
+[ext_resource type="Texture2D" uid="uid://c1fev2dw4ehne" path="res://Art/Numbers/5.png" id="18_ex7oe"]
+[ext_resource type="Texture2D" uid="uid://bq8esv4xpuv68" path="res://Art/Numbers/6.png" id="19_s2e8w"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bft4m"]
 shader = ExtResource("3_yq5o4")
@@ -97,7 +105,7 @@ shader = ExtResource("7_bft4m")
 shader_parameter/line_color = Color(0.105882354, 0.09019608, 0.08627451, 1)
 shader_parameter/line_thickness = 10.0
 
-[node name="CardArt" type="Node2D" unique_id=1593445486 node_paths=PackedStringArray("ant_sprite", "card_image", "card_shadow", "card_border", "base_sigil_container", "additional_sigil_container", "card_fog")]
+[node name="CardArt" type="Node2D" unique_id=1593445486 node_paths=PackedStringArray("ant_sprite", "card_image", "card_shadow", "card_border", "base_sigil_container", "additional_sigil_container", "card_fog", "stats_visuals")]
 scale = Vector2(0.8, 0.8)
 script = ExtResource("1_8nudy")
 ant_sprite = NodePath("Ant")
@@ -107,6 +115,7 @@ card_border = NodePath("CardBorder")
 base_sigil_container = NodePath("Mutations/BaseMutation")
 additional_sigil_container = NodePath("Mutations/AdditonalMutation")
 card_fog = NodePath("CardFog")
+stats_visuals = NodePath("StatsVisual")
 
 [node name="CardShadow" type="Sprite2D" parent="." unique_id=2132133737]
 visibility_layer = 0
@@ -194,3 +203,63 @@ texture = ExtResource("8_483al")
 position = Vector2(2.670288e-05, -3.0517578e-05)
 scale = Vector2(0.14500006, 0.14516132)
 texture = ExtResource("6_8nudy")
+
+[node name="StatsVisual" type="Node2D" parent="." unique_id=769110726 node_paths=PackedStringArray("attack", "health", "cost", "name_label")]
+script = ExtResource("13_xf3hk")
+attack = NodePath("Attack")
+health = NodePath("Health")
+cost = [NodePath("Cost/Blood"), NodePath("Cost/Blood2"), NodePath("Cost/Blood3"), NodePath("Cost/Blood4")]
+name_label = NodePath("Name")
+attack_textures = Array[Texture2D]([ExtResource("14_82eix"), ExtResource("15_rri1g"), ExtResource("16_reh76"), ExtResource("17_ljh1u"), ExtResource("18_ex7oe"), ExtResource("19_s2e8w")])
+health_textures = Array[Texture2D]([ExtResource("14_82eix"), ExtResource("15_rri1g"), ExtResource("16_reh76"), ExtResource("17_ljh1u"), ExtResource("18_ex7oe"), ExtResource("19_s2e8w")])
+metadata/_edit_lock_ = true
+
+[node name="Attack" type="Sprite2D" parent="StatsVisual" unique_id=1626750204]
+position = Vector2(-69.4375, 89)
+scale = Vector2(0.14727725, 0.14345993)
+metadata/_edit_lock_ = true
+
+[node name="Health" type="Sprite2D" parent="StatsVisual" unique_id=582152933]
+position = Vector2(66, 111.00001)
+scale = Vector2(0.14727725, 0.14345993)
+metadata/_edit_lock_ = true
+
+[node name="Name" type="RichTextLabel" parent="StatsVisual" unique_id=37488759]
+anchors_preset = -1
+offset_left = -78.0
+offset_top = -103.0
+offset_right = 78.0
+offset_bottom = -78.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0.16206557, 0.1620656, 0.16206557, 1)
+metadata/_edit_use_anchors_ = true
+metadata/_edit_lock_ = true
+
+[node name="Cost" type="Node2D" parent="StatsVisual" unique_id=954479722]
+visible = false
+metadata/_edit_lock_ = true
+
+[node name="Blood" type="Sprite2D" parent="StatsVisual/Cost" unique_id=1132072044]
+z_index = 100
+position = Vector2(71, -83)
+scale = Vector2(0.157, 0.144)
+texture = ExtResource("14_mty2y")
+
+[node name="Blood2" type="Sprite2D" parent="StatsVisual/Cost" unique_id=1694147808]
+z_index = 100
+position = Vector2(55, -83)
+scale = Vector2(0.157, 0.144)
+texture = ExtResource("14_mty2y")
+
+[node name="Blood3" type="Sprite2D" parent="StatsVisual/Cost" unique_id=1533755818]
+z_index = 100
+position = Vector2(63, -64)
+scale = Vector2(0.157, 0.144)
+texture = ExtResource("14_mty2y")
+
+[node name="Blood4" type="Sprite2D" parent="StatsVisual/Cost" unique_id=1261569810]
+z_index = 100
+position = Vector2(47, -64)
+scale = Vector2(0.157, 0.144)
+texture = ExtResource("14_mty2y")

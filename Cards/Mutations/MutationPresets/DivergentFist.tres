@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="DivergentFist" format=3 uid="uid://dcgqrr05c2pyg"]
 
 [ext_resource type="Script" uid="uid://bwweclqiu0d44" path="res://Cards/Mutations/MutationPresets/MutationBehaviourHandlers/DivergentFist.gd" id="1_21ko3"]
-[ext_resource type="Texture2D" uid="uid://yjpdo0p2lav5" path="res://Art/Mutations/Persistant_Sigil.PNG" id="2_acqmv"]
+[ext_resource type="Texture2D" uid="uid://yjpdo0p2lav5" path="res://Art/Mutations/DivergentFist.PNG" id="2_acqmv"]
 
 [resource]
 script = ExtResource("1_21ko3")
