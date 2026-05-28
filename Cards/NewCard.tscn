@@ -10,7 +10,7 @@
 [ext_resource type="Script" uid="uid://hkeygquk7osj" path="res://Cards/Mutations/MutationHandler.gd" id="5_qltuj"]
 [ext_resource type="Script" uid="uid://bdusbw1xmopfs" path="res://Cards/AttackAnim.gd" id="5_r4p8t"]
 [ext_resource type="Texture2D" uid="uid://bnj2kyvgakfq3" path="res://Art/Numbers/3.png" id="5_s0kml"]
-[ext_resource type="Script" uid="uid://bq2dj2n38w2bi" path="res://Cards/DieHandler.gd" id="6_krn1d"]
+[ext_resource type="Script" path="res://Cards/DieHandler.gd" id="6_krn1d"]
 [ext_resource type="Texture2D" uid="uid://4f3gn63utyru" path="res://Art/Numbers/4.png" id="6_r4p8t"]
 [ext_resource type="Texture2D" uid="uid://c1fev2dw4ehne" path="res://Art/Numbers/5.png" id="7_fuvn1"]
 [ext_resource type="Script" uid="uid://ceg0uirr80hi2" path="res://Cards/HurtAnim.gd" id="7_r4p8t"]
@@ -22,15 +22,15 @@
 [ext_resource type="Script" uid="uid://d0qu3q360kdsl" path="res://Code/States/CardInputReceiver.gd" id="11_2w08q"]
 [ext_resource type="Script" uid="uid://ro02870urhpb" path="res://Code/States/CardStateMachine.gd" id="12_lsojp"]
 [ext_resource type="AudioStream" uid="uid://dm1lem708ohqr" path="res://Audio/Placeholder SFX/card_attack_damage.wav" id="12_octkm"]
-[ext_resource type="Script" uid="uid://bsqidwsxqggmu" path="res://DistantTargetPicker.gd" id="13_vartc"]
-[ext_resource type="Script" uid="uid://ddadxkic18s44" path="res://Cards/AntlerAttackResolver.gd" id="14_4ukko"]
+[ext_resource type="Script" path="res://DistantTargetPicker.gd" id="13_vartc"]
+[ext_resource type="Script" path="res://Cards/AntlerAttackResolver.gd" id="14_4ukko"]
 [ext_resource type="AudioStream" uid="uid://5uho8ho3dlfo" path="res://Audio/Placeholder SFX/card_death.wav" id="15_5hax5"]
-[ext_resource type="Script" uid="uid://c43ots6r45ip6" path="res://Cards/AntlerAttackExecutor.gd" id="15_aqnhy"]
-[ext_resource type="Script" uid="uid://cfvsqn441hgwq" path="res://Cards/CardStats.gd" id="22_koaue"]
-[ext_resource type="Script" uid="uid://cmhvnj1h173o2" path="res://Cards/BackInHandCardState.gd" id="34_wmwgk"]
+[ext_resource type="Script" path="res://Cards/AntlerAttackExecutor.gd" id="15_aqnhy"]
+[ext_resource type="Script" path="res://Cards/CardStats.gd" id="22_koaue"]
+[ext_resource type="Script" path="res://Cards/BackInHandCardState.gd" id="34_wmwgk"]
 [ext_resource type="Material" uid="uid://dh78conckoov3" path="res://Cards/BackInHandInvert.tres" id="35_5yc7r"]
-[ext_resource type="Script" uid="uid://dhkq7ls1f2ddm" path="res://Cards/BackInHandDeathVisualHandler.gd" id="36_x5477"]
-[ext_resource type="Script" uid="uid://c6m8lgpe46l6r" path="res://Cards/CardSlotHandler.gd" id="37_ra3pw"]
+[ext_resource type="Script" path="res://Cards/BackInHandDeathVisualHandler.gd" id="36_x5477"]
+[ext_resource type="Script" path="res://Cards/CardSlotHandler.gd" id="37_ra3pw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
 size = Vector2(174, 268)
@@ -126,7 +126,7 @@ text = "Choose Slot to Attack"
 script = ExtResource("2_52a3h")
 attack = NodePath("Attack")
 health = NodePath("Health")
-cost = [NodePath("Blood"), NodePath("Blood2"), NodePath("Blood3"), NodePath("Blood4")]
+cost = [NodePath("Node2D/Blood"), NodePath("Node2D/Blood2"), NodePath("Node2D/Blood3"), NodePath("Node2D/Blood4")]
 name_label = NodePath("Name")
 attack_textures = Array[Texture2D]([ExtResource("3_5yjln"), ExtResource("4_krn1d"), ExtResource("5_s0kml"), ExtResource("6_r4p8t"), ExtResource("7_fuvn1"), ExtResource("8_sphwu")])
 health_textures = Array[Texture2D]([ExtResource("3_5yjln"), ExtResource("4_krn1d"), ExtResource("5_s0kml"), ExtResource("6_r4p8t"), ExtResource("7_fuvn1"), ExtResource("8_sphwu")])
@@ -140,30 +140,6 @@ scale = Vector2(0.14727725, 0.14345993)
 position = Vector2(66, 111.00001)
 scale = Vector2(0.14727725, 0.14345993)
 
-[node name="Blood" type="Sprite2D" parent="Stats" unique_id=1555982944]
-z_index = 100
-position = Vector2(71, -83)
-scale = Vector2(0.157, 0.144)
-texture = ExtResource("9_dm30q")
-
-[node name="Blood2" type="Sprite2D" parent="Stats" unique_id=1630070528]
-z_index = 100
-position = Vector2(55, -83)
-scale = Vector2(0.157, 0.144)
-texture = ExtResource("9_dm30q")
-
-[node name="Blood3" type="Sprite2D" parent="Stats" unique_id=1751345964]
-z_index = 100
-position = Vector2(63, -64)
-scale = Vector2(0.157, 0.144)
-texture = ExtResource("9_dm30q")
-
-[node name="Blood4" type="Sprite2D" parent="Stats" unique_id=221770338]
-z_index = 100
-position = Vector2(47, -64)
-scale = Vector2(0.157, 0.144)
-texture = ExtResource("9_dm30q")
-
 [node name="Name" type="RichTextLabel" parent="Stats" unique_id=484770799]
 anchors_preset = -1
 offset_left = -78.0
@@ -173,6 +149,33 @@ offset_bottom = -103.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/default_color = Color(0.16206557, 0.1620656, 0.16206557, 1)
+
+[node name="Node2D" type="Node2D" parent="Stats" unique_id=1135674047]
+scale = Vector2(0.8, 0.8)
+
+[node name="Blood" type="Sprite2D" parent="Stats/Node2D" unique_id=1555982944]
+z_index = 100
+position = Vector2(71, -83)
+scale = Vector2(0.157, 0.144)
+texture = ExtResource("9_dm30q")
+
+[node name="Blood2" type="Sprite2D" parent="Stats/Node2D" unique_id=1630070528]
+z_index = 100
+position = Vector2(55, -83)
+scale = Vector2(0.157, 0.144)
+texture = ExtResource("9_dm30q")
+
+[node name="Blood3" type="Sprite2D" parent="Stats/Node2D" unique_id=1751345964]
+z_index = 100
+position = Vector2(63, -64)
+scale = Vector2(0.157, 0.144)
+texture = ExtResource("9_dm30q")
+
+[node name="Blood4" type="Sprite2D" parent="Stats/Node2D" unique_id=221770338]
+z_index = 100
+position = Vector2(47, -64)
+scale = Vector2(0.157, 0.144)
+texture = ExtResource("9_dm30q")
 
 [node name="BackInHandCardState" type="Node" parent="." unique_id=2077672213]
 script = ExtResource("34_wmwgk")

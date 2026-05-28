@@ -1,27 +1,28 @@
 [gd_scene format=3 uid="uid://bw8c7m7n5yuk8"]
 
-[ext_resource type="Script" uid="uid://bukeona4oyi7j" path="res://SlotsRoot.gd" id="1_js1s2"]
-[ext_resource type="Texture2D" uid="uid://bkafxhbg4kvug" path="res://Sprites/CardSlot.png" id="1_miv4b"]
-[ext_resource type="Script" uid="uid://dylxhiaox4q0u" path="res://SlotRow.gd" id="2_tlcma"]
-[ext_resource type="Script" uid="uid://ctb0sphxjf65u" path="res://Slot.gd" id="3_js1s2"]
+[ext_resource type="Script" uid="uid://bukeona4oyi7j" path="res://Slots/SlotsRoot.gd" id="1_3ytwd"]
+[ext_resource type="Script" uid="uid://dylxhiaox4q0u" path="res://Slots/SlotRow.gd" id="2_ivrkr"]
+[ext_resource type="Script" uid="uid://ctb0sphxjf65u" path="res://Slots/Slot.gd" id="3_ekdqv"]
+[ext_resource type="Texture2D" uid="uid://bkafxhbg4kvug" path="res://Sprites/CardSlot.png" id="4_yu8x8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_otx1m"]
 size = Vector2(144, 216)
 
 [node name="Slots" type="Node2D" unique_id=1318716624 node_paths=PackedStringArray("player_row", "opponent_row")]
-script = ExtResource("1_js1s2")
+script = ExtResource("1_3ytwd")
 player_row = NodePath("Player")
 opponent_row = NodePath("Opponent")
 
 [node name="Opponent" type="Node2D" parent="." unique_id=211964924]
 position = Vector2(348, 108)
-script = ExtResource("2_tlcma")
+script = ExtResource("2_ivrkr")
 slot_owner = 1
 
 [node name="Slot1" type="Node2D" parent="Opponent" unique_id=799802496 node_paths=PackedStringArray("click_area")]
 position = Vector2(-348, -108)
-script = ExtResource("3_js1s2")
+script = ExtResource("3_ekdqv")
 click_area = NodePath("ClickArea")
+metadata/_edit_lock_ = true
 
 [node name="ClickArea" type="Area2D" parent="Opponent/Slot1" unique_id=968235315]
 position = Vector2(72, 108)
@@ -33,15 +34,16 @@ metadata/_edit_lock_ = true
 [node name="SlotTexture" type="TextureRect" parent="Opponent/Slot1" unique_id=1172217970]
 offset_right = 144.0
 offset_bottom = 216.0
-texture = ExtResource("1_miv4b")
+texture = ExtResource("4_yu8x8")
 expand_mode = 1
 
 [node name="SlotFeedback" type="Node" parent="Opponent/Slot1" unique_id=1826578079]
 
 [node name="Slot2" type="Node2D" parent="Opponent" unique_id=1661655321 node_paths=PackedStringArray("click_area")]
 position = Vector2(-168, -108)
-script = ExtResource("3_js1s2")
+script = ExtResource("3_ekdqv")
 click_area = NodePath("ClickArea")
+metadata/_edit_lock_ = true
 
 [node name="ClickArea" type="Area2D" parent="Opponent/Slot2" unique_id=1207478336]
 position = Vector2(72, 108)
@@ -53,15 +55,16 @@ metadata/_edit_lock_ = true
 [node name="SlotTexture" type="TextureRect" parent="Opponent/Slot2" unique_id=1473462959]
 offset_right = 144.0
 offset_bottom = 216.0
-texture = ExtResource("1_miv4b")
+texture = ExtResource("4_yu8x8")
 expand_mode = 1
 
 [node name="SlotFeedback" type="Node" parent="Opponent/Slot2" unique_id=38078689]
 
 [node name="Slot3" type="Node2D" parent="Opponent" unique_id=130931274 node_paths=PackedStringArray("click_area")]
 position = Vector2(12, -108)
-script = ExtResource("3_js1s2")
+script = ExtResource("3_ekdqv")
 click_area = NodePath("ClickArea")
+metadata/_edit_lock_ = true
 
 [node name="ClickArea" type="Area2D" parent="Opponent/Slot3" unique_id=843472877]
 position = Vector2(72, 108)
@@ -73,15 +76,16 @@ metadata/_edit_lock_ = true
 [node name="SlotTexture" type="TextureRect" parent="Opponent/Slot3" unique_id=1909826515]
 offset_right = 144.0
 offset_bottom = 216.0
-texture = ExtResource("1_miv4b")
+texture = ExtResource("4_yu8x8")
 expand_mode = 1
 
 [node name="SlotFeedback" type="Node" parent="Opponent/Slot3" unique_id=123411766]
 
 [node name="Slot4" type="Node2D" parent="Opponent" unique_id=798353800 node_paths=PackedStringArray("click_area")]
 position = Vector2(192, -108)
-script = ExtResource("3_js1s2")
+script = ExtResource("3_ekdqv")
 click_area = NodePath("ClickArea")
+metadata/_edit_lock_ = true
 
 [node name="ClickArea" type="Area2D" parent="Opponent/Slot4" unique_id=562953100]
 position = Vector2(72, 108)
@@ -93,19 +97,20 @@ metadata/_edit_lock_ = true
 [node name="SlotTexture" type="TextureRect" parent="Opponent/Slot4" unique_id=248283614]
 offset_right = 144.0
 offset_bottom = 216.0
-texture = ExtResource("1_miv4b")
+texture = ExtResource("4_yu8x8")
 expand_mode = 1
 
 [node name="SlotFeedback" type="Node" parent="Opponent/Slot4" unique_id=2097364835]
 
 [node name="Player" type="Node2D" parent="." unique_id=604740611]
 position = Vector2(336, 360)
-script = ExtResource("2_tlcma")
+script = ExtResource("2_ivrkr")
 
 [node name="Slot5" type="Node2D" parent="Player" unique_id=2092360183 node_paths=PackedStringArray("click_area")]
 position = Vector2(-336, -108)
-script = ExtResource("3_js1s2")
+script = ExtResource("3_ekdqv")
 click_area = NodePath("ClickArea")
+metadata/_edit_lock_ = true
 
 [node name="ClickArea" type="Area2D" parent="Player/Slot5" unique_id=450770695]
 position = Vector2(72, 108)
@@ -117,15 +122,16 @@ metadata/_edit_lock_ = true
 [node name="SlotTexture" type="TextureRect" parent="Player/Slot5" unique_id=1084105652]
 offset_right = 144.0
 offset_bottom = 216.0
-texture = ExtResource("1_miv4b")
+texture = ExtResource("4_yu8x8")
 expand_mode = 1
 
 [node name="SlotFeedback" type="Node" parent="Player/Slot5" unique_id=1931548327]
 
 [node name="Slot6" type="Node2D" parent="Player" unique_id=186405394 node_paths=PackedStringArray("click_area")]
 position = Vector2(-156, -108)
-script = ExtResource("3_js1s2")
+script = ExtResource("3_ekdqv")
 click_area = NodePath("ClickArea")
+metadata/_edit_lock_ = true
 
 [node name="ClickArea" type="Area2D" parent="Player/Slot6" unique_id=941390480]
 position = Vector2(72, 108)
@@ -137,15 +143,16 @@ metadata/_edit_lock_ = true
 [node name="SlotTexture" type="TextureRect" parent="Player/Slot6" unique_id=1238336564]
 offset_right = 144.0
 offset_bottom = 216.0
-texture = ExtResource("1_miv4b")
+texture = ExtResource("4_yu8x8")
 expand_mode = 1
 
 [node name="SlotFeedback" type="Node" parent="Player/Slot6" unique_id=1383329884]
 
 [node name="Slot7" type="Node2D" parent="Player" unique_id=1101951748 node_paths=PackedStringArray("click_area")]
 position = Vector2(24, -108)
-script = ExtResource("3_js1s2")
+script = ExtResource("3_ekdqv")
 click_area = NodePath("ClickArea")
+metadata/_edit_lock_ = true
 
 [node name="ClickArea" type="Area2D" parent="Player/Slot7" unique_id=448739834]
 position = Vector2(72, 108)
@@ -157,15 +164,16 @@ metadata/_edit_lock_ = true
 [node name="SlotTexture" type="TextureRect" parent="Player/Slot7" unique_id=2136552650]
 offset_right = 144.0
 offset_bottom = 216.0
-texture = ExtResource("1_miv4b")
+texture = ExtResource("4_yu8x8")
 expand_mode = 1
 
 [node name="SlotFeedback" type="Node" parent="Player/Slot7" unique_id=765973517]
 
 [node name="Slot8" type="Node2D" parent="Player" unique_id=392012950 node_paths=PackedStringArray("click_area")]
 position = Vector2(204, -108)
-script = ExtResource("3_js1s2")
+script = ExtResource("3_ekdqv")
 click_area = NodePath("ClickArea")
+metadata/_edit_lock_ = true
 
 [node name="ClickArea" type="Area2D" parent="Player/Slot8" unique_id=259124982]
 position = Vector2(72, 108)
@@ -177,7 +185,7 @@ metadata/_edit_lock_ = true
 [node name="SlotTexture" type="TextureRect" parent="Player/Slot8" unique_id=1804169833]
 offset_right = 144.0
 offset_bottom = 216.0
-texture = ExtResource("1_miv4b")
+texture = ExtResource("4_yu8x8")
 expand_mode = 1
 
 [node name="SlotFeedback" type="Node" parent="Player/Slot8" unique_id=2131736610]

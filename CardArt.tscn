@@ -3,14 +3,14 @@
 [ext_resource type="Script" path="res://CardArtRoot.gd" id="1_8nudy"]
 [ext_resource type="Texture2D" uid="uid://bt8o5l5yrmihl" path="res://Art/CardBackground.png" id="2_px4ui"]
 [ext_resource type="Texture2D" uid="uid://b8a1gr84h2iie" path="res://Art/Ants/WorkerAnt_Standalone.png" id="3_rpqwj"]
-[ext_resource type="Shader" path="res://Cards/Panner.gdshader" id="3_yq5o4"]
+[ext_resource type="Shader" uid="uid://b12e0umk1s7xs" path="res://Cards/Panner.gdshader" id="3_yq5o4"]
 [ext_resource type="Shader" uid="uid://n3l4egojry4s" path="res://Balatro.gdshader" id="4_7ndf7"]
-[ext_resource type="Shader" path="res://Cards/AntSway.gdshader" id="4_yq5o4"]
+[ext_resource type="Shader" uid="uid://ck3gs6whq2t57" path="res://Cards/AntSway.gdshader" id="4_yq5o4"]
 [ext_resource type="Texture2D" uid="uid://dv7v478yhlcrv" path="res://Art/CardFog.png" id="5_7ndf7"]
 [ext_resource type="Shader" path="res://Cards/BackgroundSlide.gdshader" id="5_8nudy"]
 [ext_resource type="Texture2D" uid="uid://c4v3je4ncss3j" path="res://Art/WorkerAnt_Test_Alpha.png" id="6_7ndf7"]
 [ext_resource type="Texture2D" uid="uid://wak6qieqhlsb" path="res://Art/CardBorder.png" id="6_8nudy"]
-[ext_resource type="Shader" path="res://Cards/SigilOutline.gdshader" id="7_bft4m"]
+[ext_resource type="Shader" uid="uid://dt77y6ccd1hxy" path="res://Cards/SigilOutline.gdshader" id="7_bft4m"]
 [ext_resource type="Texture2D" uid="uid://dqtxvu584lxsj" path="res://Art/Mutations/Ant_Hill_Sigil.PNG" id="8_483al"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bft4m"]
@@ -98,6 +98,7 @@ shader_parameter/line_color = Color(0.105882354, 0.09019608, 0.08627451, 1)
 shader_parameter/line_thickness = 10.0
 
 [node name="CardArt" type="Node2D" unique_id=1593445486 node_paths=PackedStringArray("ant_sprite", "card_image", "card_shadow", "card_border", "base_sigil_container", "additional_sigil_container", "card_fog")]
+scale = Vector2(0.8, 0.8)
 script = ExtResource("1_8nudy")
 ant_sprite = NodePath("Ant")
 card_image = NodePath("CardImage")
