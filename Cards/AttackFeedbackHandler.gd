@@ -13,7 +13,6 @@ signal attack_feedback_finished
 @export var attack_far_left_anim: AttackAnim
 @export var attack_furthest_left_anim: AttackAnim
 
-@export var attack_audio: AttackAudio
 @export var attack_screen_shake: AttackScreenShake
 
 var card: Card = null
@@ -43,9 +42,6 @@ func _ready() -> void:
 
 	if attack_furthest_left_anim == null:
 		attack_furthest_left_anim = get_node_or_null("AttackFurthestLeftAnim") as AttackAnim
-
-	if attack_audio == null:
-		attack_audio = get_node_or_null("AttackAudio") as AttackAudio
 
 	if attack_screen_shake == null:
 		attack_screen_shake = get_node_or_null("AttackScreenShake") as AttackScreenShake
@@ -85,9 +81,6 @@ func _play_debug_anim(anim: AttackAnim) -> void:
 
 	is_playing = true
 
-	if attack_audio != null:
-		attack_audio.play()
-
 	if attack_screen_shake != null:
 		attack_screen_shake.play()
 
@@ -104,9 +97,6 @@ func play_attack(target: Card = null) -> void:
 		return
 
 	is_playing = true
-
-	if attack_audio != null:
-		attack_audio.play()
 
 	if attack_screen_shake != null:
 		attack_screen_shake.play()

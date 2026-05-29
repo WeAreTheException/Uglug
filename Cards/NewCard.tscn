@@ -19,7 +19,6 @@
 [ext_resource type="Texture2D" uid="uid://d1ypj3toan6r1" path="res://Art/Blood.png" id="9_dm30q"]
 [ext_resource type="Script" uid="uid://d4a12kjlckce0" path="res://Cards/DeathAnim.gd" id="9_fuvn1"]
 [ext_resource type="Script" uid="uid://dtoyyse7bnjuv" path="res://Code/States/CardInputListener.gd" id="10_koaue"]
-[ext_resource type="Script" uid="uid://cpk4u5n70vkm2" path="res://Cards/AttackAudio.gd" id="10_ra3pw"]
 [ext_resource type="Script" uid="uid://d0qu3q360kdsl" path="res://Code/States/CardInputReceiver.gd" id="11_2w08q"]
 [ext_resource type="Script" uid="uid://bn3cluen8f43v" path="res://Cards/HurtFeedbackHandler.gd" id="11_el32v"]
 [ext_resource type="Script" uid="uid://ckmmc2wy5xv1h" path="res://Cards/AttackScreenshake.gd" id="11_j2h1k"]
@@ -79,10 +78,9 @@ metadata/_custom_type_script = "uid://ro02870urhpb"
 script = ExtResource("4_52a3h")
 attack_anim = NodePath("AttackFeedback")
 
-[node name="AttackFeedback" type="Node" parent="CardStateMachine/Attack" unique_id=387907870 node_paths=PackedStringArray("attack_anim", "attack_audio", "attack_screen_shake")]
+[node name="AttackFeedback" type="Node" parent="CardStateMachine/Attack" unique_id=387907870 node_paths=PackedStringArray("attack_anim", "attack_screen_shake")]
 script = ExtResource("8_x5477")
 attack_anim = NodePath("AttackAnim")
-attack_audio = NodePath("AttackAudio")
 attack_screen_shake = NodePath("AttackScreenshake")
 
 [node name="AttackAnim" type="Node" parent="CardStateMachine/Attack/AttackFeedback" unique_id=136239265]
@@ -116,9 +114,6 @@ script = ExtResource("5_r4p8t")
 attack_direction = Vector2(-20, -10)
 attack_distance = 600.0
 
-[node name="AttackAudio" type="Node" parent="CardStateMachine/Attack/AttackFeedback" unique_id=1807748504]
-script = ExtResource("10_ra3pw")
-
 [node name="AttackScreenshake" type="Node" parent="CardStateMachine/Attack/AttackFeedback" unique_id=1044692934]
 script = ExtResource("11_j2h1k")
 
@@ -131,7 +126,9 @@ script = ExtResource("11_el32v")
 
 [node name="HurtAnim" type="Node" parent="CardStateMachine/Hurt/HurtFeedback" unique_id=1096822831]
 script = ExtResource("7_r4p8t")
-shake_time = 0.1
+up_distance = 0.0
+horizontal_shake_time = 0.1
+vertical_shake_time = 0.1
 
 [node name="HurtAudio" type="Node" parent="CardStateMachine/Hurt/HurtFeedback" unique_id=1658878572]
 script = ExtResource("13_duyd4")
