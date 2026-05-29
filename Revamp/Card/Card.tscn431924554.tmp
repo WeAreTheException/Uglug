@@ -67,6 +67,8 @@ script = ExtResource("5_olfje")
 [node name="Attack" type="Node" parent="Actions" unique_id=1376954352 node_paths=PackedStringArray("animation_runner")]
 script = ExtResource("8_vth4y")
 animation_runner = NodePath("AttackAnimationRunner")
+enable_debug_key = null
+debug_key = 4194320
 
 [node name="AttackAnimationRunner" type="Node" parent="Actions/Attack" unique_id=1122768788 node_paths=PackedStringArray("animated_target")]
 script = ExtResource("9_r5dqq")

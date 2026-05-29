@@ -1,11 +1,7 @@
 extends Node
 class_name Attack
 
-@export var atk_forward: AttackAnimation
-@export var atk_left_close: AttackAnimation
-@export var atk_right_close: AttackAnimation
-@export var atk_left_far: AttackAnimation
-@export var atk_right_far: AttackAnimation
+@export var animation_runner: AttackAnimationRunner
 
 @export var enable_debug_key: bool = true
 @export var debug_key: Key = KEY_A
@@ -39,8 +35,11 @@ func _input(event: InputEvent) -> void:
 		return
 
 	if event is InputEventKey and event.pressed and not event.echo:
-		if event.keycode == debug_key:
+		if event.keycode == KEY_A:
 			perform_debug_attack()
+
+		if event.keycode == KEY_S:
+			await _debug_all_attack_variations()
 
 
 func perform_debug_attack() -> void:
@@ -55,6 +54,10 @@ func perform_debug_attack() -> void:
 		print("attack blocked: slots_root missing")
 		return
 
+	if animation_runner == null:
+		print("attack blocked: animation runner missing")
+		return
+
 	var attacker_slot := card.get_current_slot()
 
 	if attacker_slot == null:
@@ -67,33 +70,35 @@ func perform_debug_attack() -> void:
 		print("attack blocked: no target slot")
 		return
 
-	var animation := _get_animation_for_target(attacker_slot, target_slot)
-
-	if animation == null:
-		print("attack blocked: no attack animation assigned")
-		return
-
 	is_attacking = true
-	await animation.play()
+	await animation_runner.play_attack(attacker_slot, target_slot)
 	is_attacking = false
 
 
-func _get_animation_for_target(attacker_slot: Slot, target_slot: Slot) -> AttackAnimation:
-	var difference := target_slot.slot_index - attacker_slot.slot_index
+func _debug_all_attack_variations() -> void:
+	if animation_runner == null:
+		return
 
-	match difference:
-		-2:
-			return atk_left_far if atk_left_far != null else atk_forward
-		-1:
-			return atk_left_close if atk_left_close != null else atk_forward
-		0:
-			return atk_forward
-		1:
-			return atk_right_close if atk_right_close != null else atk_forward
-		2:
-			return atk_right_far if atk_right_far != null else atk_forward
+	print("FORWARD")
+	await animation_runner.debug_play_difference(0)
 
-	return atk_forward
+	print("RIGHT CLOSE")
+	await animation_runner.debug_play_difference(1)
+
+	print("RIGHT FAR")
+	await animation_runner.debug_play_difference(2)
+
+	print("RIGHT FURTHEST")
+	await animation_runner.debug_play_difference(3)
+
+	print("LEFT CLOSE")
+	await animation_runner.debug_play_difference(-1)
+
+	print("LEFT FAR")
+	await animation_runner.debug_play_difference(-2)
+
+	print("LEFT FURTHEST")
+	await animation_runner.debug_play_difference(-3)
 
 
 func _on_card_hovered(_card: CardRoot) -> void:
