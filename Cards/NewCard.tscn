@@ -15,10 +15,11 @@
 [ext_resource type="Texture2D" uid="uid://c1fev2dw4ehne" path="res://Art/Numbers/5.png" id="7_fuvn1"]
 [ext_resource type="Script" uid="uid://ceg0uirr80hi2" path="res://Cards/HurtAnim.gd" id="7_r4p8t"]
 [ext_resource type="Texture2D" uid="uid://bq8esv4xpuv68" path="res://Art/Numbers/6.png" id="8_sphwu"]
+[ext_resource type="Script" uid="uid://bme3mqwks57ar" path="res://Cards/AttackFeedbackHandler.gd" id="8_x5477"]
 [ext_resource type="Texture2D" uid="uid://d1ypj3toan6r1" path="res://Art/Blood.png" id="9_dm30q"]
 [ext_resource type="Script" uid="uid://d4a12kjlckce0" path="res://Cards/DeathAnim.gd" id="9_fuvn1"]
-[ext_resource type="AudioStream" uid="uid://cwmwlsgbj6uf" path="res://Audio/Placeholder SFX/card_attack_creature.wav" id="9_qltuj"]
 [ext_resource type="Script" uid="uid://dtoyyse7bnjuv" path="res://Code/States/CardInputListener.gd" id="10_koaue"]
+[ext_resource type="Script" uid="uid://cpk4u5n70vkm2" path="res://Cards/AttackAudio.gd" id="10_ra3pw"]
 [ext_resource type="Script" uid="uid://d0qu3q360kdsl" path="res://Code/States/CardInputReceiver.gd" id="11_2w08q"]
 [ext_resource type="Script" uid="uid://bn3cluen8f43v" path="res://Cards/HurtFeedbackHandler.gd" id="11_el32v"]
 [ext_resource type="Script" uid="uid://ro02870urhpb" path="res://Code/States/CardStateMachine.gd" id="12_lsojp"]
@@ -75,12 +76,24 @@ metadata/_custom_type_script = "uid://ro02870urhpb"
 
 [node name="Attack" type="Node" parent="CardStateMachine" unique_id=1288671045 node_paths=PackedStringArray("attack_anim")]
 script = ExtResource("4_52a3h")
-attack_anim = NodePath("AtkFeedback")
+attack_anim = NodePath("AttackFeedback")
 
-[node name="AtkFeedback" type="Node" parent="CardStateMachine/Attack" unique_id=387907870]
+[node name="AttackFeedback" type="Node" parent="CardStateMachine/Attack" unique_id=387907870]
+script = ExtResource("8_x5477")
+
+[node name="AttackAnim" type="Node" parent="CardStateMachine/Attack/AttackFeedback" unique_id=136239265]
 script = ExtResource("5_r4p8t")
-return_time = 0.1
-attack_sfx = ExtResource("9_qltuj")
+attack_distance = 200.0
+windup_time = 0.16
+attack_time = 0.04
+return_time = 0.2
+windup_scale = Vector2(0.9, 1.1)
+attack_scale = Vector2(1.1, 0.9)
+windup_rotation_degrees = -10.0
+attack_rotation_degrees = 20.0
+
+[node name="AttackAudio" type="Node" parent="CardStateMachine/Attack/AttackFeedback" unique_id=1807748504]
+script = ExtResource("10_ra3pw")
 
 [node name="Hurt" type="Node" parent="CardStateMachine" unique_id=1647059360 node_paths=PackedStringArray("hurt_anim")]
 script = ExtResource("5_5yjln")
