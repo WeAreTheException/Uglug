@@ -3,21 +3,14 @@ class_name CardFeedback
 
 @export var card: CardRoot
 
+@export var feedback_database: CardFeedbackDatabase
+
 @export var position_feedback: PositionFeedback
 @export var scale_feedback: ScaleFeedback
 @export var shadow_feedback: ShadowFeedback
 
-@export var hover_offset: Vector2 = Vector2(0, -18)
-@export var pressed_offset: Vector2 = Vector2(0, -34)
-@export var hand_selected_offset: Vector2 = Vector2(0, -24)
-
-@export var hover_scale: Vector2 = Vector2(1.04, 1.04)
-@export var pressed_scale: Vector2 = Vector2(1.08, 1.08)
-@export var hand_selected_scale: Vector2 = Vector2(1.07, 1.07)
-
-@export var hover_shadow_alpha: float = 0.0
-@export var pressed_shadow_alpha: float = 0.45
-@export var hand_selected_shadow_alpha: float = 0.35
+@export var enable_debug_key: bool = true
+@export var debug_feedback_key: String = "generic"
 
 var is_hovered: bool = false
 var is_pressed: bool = false
@@ -46,56 +39,86 @@ func _ready() -> void:
 	card.released.connect(_on_card_released)
 
 
+func _input(event: InputEvent) -> void:
+	if not enable_debug_key:
+		return
+
+	if event is InputEventKey and event.pressed and not event.echo:
+		if event.keycode == KEY_F:
+			play_feedback(debug_feedback_key)
+
+
+func play_feedback(feedback_key: String) -> void:
+	if feedback_database == null:
+		print("feedback blocked: database missing")
+		return
+
+	var feedback_data := feedback_database.get_feedback(feedback_key)
+
+	if feedback_data == null:
+		print("feedback blocked: no feedback for key: ", feedback_key)
+		return
+
+	play_feedback_data(feedback_data)
+
+
+func play_feedback_data(feedback_data: CardFeedbackData) -> void:
+	if feedback_data == null:
+		return
+
+	if position_feedback != null:
+		position_feedback.move_to_offset(
+			feedback_data.position_offset,
+			feedback_data.position_time
+		)
+
+	if scale_feedback != null:
+		scale_feedback.scale_to(
+			feedback_data.scale_multiplier,
+			feedback_data.scale_time
+		)
+
+	if shadow_feedback != null:
+		shadow_feedback.fade_to(
+			feedback_data.shadow_alpha,
+			feedback_data.shadow_time
+		)
+
+
 func set_hand_selected(value: bool) -> void:
 	is_hand_selected = value
-	_apply_feedback()
+
+	if is_hand_selected:
+		play_feedback("hand_selected")
+	else:
+		play_feedback("neutral")
 
 
 func _on_card_hovered(_card: CardRoot) -> void:
 	is_hovered = true
-	_apply_feedback()
+	play_feedback("hover")
 
 
 func _on_card_unhovered(_card: CardRoot) -> void:
 	is_hovered = false
-	_apply_feedback()
+
+	if is_hand_selected:
+		play_feedback("hand_selected")
+	else:
+		play_feedback("neutral")
 
 
 func _on_card_pressed(_card: CardRoot) -> void:
 	is_pressed = true
-	_apply_feedback()
+	play_feedback("pressed")
 
 
 func _on_card_released(_card: CardRoot) -> void:
 	is_pressed = false
-	_apply_feedback()
-
-
-func _apply_feedback() -> void:
-	var target_offset := Vector2.ZERO
-	var target_scale := Vector2.ONE
-	var target_shadow_alpha := 0.0
 
 	if is_hand_selected:
-		target_offset += hand_selected_offset
-		target_scale = hand_selected_scale
-		target_shadow_alpha = hand_selected_shadow_alpha
-
-	if is_hovered:
-		target_offset += hover_offset
-		target_scale = hover_scale
-		target_shadow_alpha = max(target_shadow_alpha, hover_shadow_alpha)
-
-	if is_pressed:
-		target_offset += pressed_offset
-		target_scale = pressed_scale
-		target_shadow_alpha = max(target_shadow_alpha, pressed_shadow_alpha)
-
-	if position_feedback != null:
-		position_feedback.move_to_offset(target_offset)
-
-	if scale_feedback != null:
-		scale_feedback.scale_to(target_scale)
-
-	if shadow_feedback != null:
-		shadow_feedback.fade_to(target_shadow_alpha)
+		play_feedback("hand_selected")
+	elif is_hovered:
+		play_feedback("hover")
+	else:
+		play_feedback("neutral")

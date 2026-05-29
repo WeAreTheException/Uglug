@@ -2,7 +2,7 @@ extends Node
 class_name ShadowFeedback
 
 @export var shadow_texture: TextureRect
-@export var fade_time: float = 0.10
+@export var default_time: float = 0.10
 
 var tween: Tween = null
 
@@ -15,12 +15,17 @@ func setup() -> void:
 	shadow_texture.modulate.a = 0.0
 
 
-func fade_to(alpha: float) -> void:
+func fade_to(alpha: float, duration: float = -1.0) -> void:
 	if shadow_texture == null:
 		return
 
 	if tween != null:
 		tween.kill()
+
+	var fade_time := default_time
+
+	if duration >= 0.0:
+		fade_time = duration
 
 	tween = create_tween()
 	tween.set_trans(Tween.TRANS_CUBIC)

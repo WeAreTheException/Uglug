@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="CardFeedbackDatabase" format=3 uid="uid://crjuqv8kcaxlm"]
+
+[ext_resource type="Script" uid="uid://bnx5t488gtt2d" path="res://Revamp/Card/CardFeedback/CardFeebackEntry.gd" id="1_0a4ma"]
+[ext_resource type="Script" uid="uid://b88l0j4r1o4s4" path="res://Revamp/Card/CardFeedback/CardFeebackDatabase.gd" id="2_e31rj"]
+[ext_resource type="Resource" uid="uid://pcdk5yayild5" path="res://Revamp/Tres/FeebackTres/CardFeedbackEntry.tres" id="2_wvwd2"]
+
+[resource]
+script = ExtResource("2_e31rj")
+entries = Array[ExtResource("1_0a4ma")]([ExtResource("2_wvwd2")])
+metadata/_custom_type_script = "uid://b88l0j4r1o4s4"

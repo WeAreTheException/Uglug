@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="CardFeedbackData" format=3 uid="uid://db25rl4gxqy1a"]
+
+[ext_resource type="Script" uid="uid://b2d4i6o0tecky" path="res://Revamp/Tres/FeebackTres/CardFeedbackData.gd" id="1_8ot8j"]
+
+[resource]
+script = ExtResource("1_8ot8j")
+metadata/_custom_type_script = "uid://b2d4i6o0tecky"

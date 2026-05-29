@@ -10,18 +10,11 @@
 [ext_resource type="Script" uid="uid://cbbim8d3qcxf6" path="res://Revamp/Card/CardScripts/CardMutations.gd" id="5_olfje"]
 [ext_resource type="Script" uid="uid://db1lyj46ylxcb" path="res://Revamp/Card/CardScripts/CardFeedback.gd" id="8_nau7p"]
 [ext_resource type="Script" uid="uid://dky1ptblaym2b" path="res://Revamp/Card/PositionFeedback.gd" id="9_hdbik"]
-[ext_resource type="Script" uid="uid://bnx5t488gtt2d" path="res://Revamp/Card/CardFeedback/CardFeebackEntry.gd" id="9_olfje"]
 [ext_resource type="Script" uid="uid://c317k3ig4aoxg" path="res://Revamp/Card/ScaleFeedback.gd" id="10_c3ju1"]
-[ext_resource type="Script" uid="uid://b88l0j4r1o4s4" path="res://Revamp/Card/CardFeedback/CardFeebackDatabase.gd" id="10_vth4y"]
 [ext_resource type="Script" uid="uid://cf4ka1vcw1057" path="res://Revamp/Card/ShadowFeedback.gd" id="11_c3ju1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g8l5j"]
 size = Vector2(144, 216)
-
-[sub_resource type="Resource" id="Resource_olfje"]
-script = ExtResource("10_vth4y")
-entries = Array[ExtResource("9_olfje")]([null])
-metadata/_custom_type_script = "uid://b88l0j4r1o4s4"
 
 [node name="Card" type="Node2D" unique_id=1649731477 node_paths=PackedStringArray("input", "board_presence", "stats", "mutations", "card_visuals_root", "card_feedback")]
 script = ExtResource("1_hdbik")
@@ -72,12 +65,18 @@ script = ExtResource("5_olfje")
 [node name="CardFeedback" type="Node" parent="." unique_id=824411320 node_paths=PackedStringArray("card", "position_feedback", "scale_feedback", "shadow_feedback")]
 script = ExtResource("8_nau7p")
 card = NodePath("..")
-feedback_database = SubResource("Resource_olfje")
 position_feedback = NodePath("PositionFeedback")
 scale_feedback = NodePath("ScaleFeedback")
 shadow_feedback = NodePath("ShadowFeedback")
-enable_debug_key = null
-debug_feedback_key = null
+hover_offset = Vector2(0, 0)
+pressed_offset = Vector2(0, 0)
+hand_selected_offset = null
+hover_scale = Vector2(0, 0)
+pressed_scale = Vector2(0, 0)
+hand_selected_scale = null
+hover_shadow_alpha = null
+pressed_shadow_alpha = null
+hand_selected_shadow_alpha = null
 
 [node name="PositionFeedback" type="Node" parent="CardFeedback" unique_id=659627164]
 script = ExtResource("9_hdbik")

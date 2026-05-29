@@ -1,7 +1,7 @@
 extends Node
 class_name PositionFeedback
 
-@export var move_time: float = 0.12
+@export var default_time: float = 0.12
 
 var card: CardRoot = null
 var base_position: Vector2
@@ -17,12 +17,17 @@ func setup(source_card: CardRoot) -> void:
 	base_position = card.position
 
 
-func move_to_offset(offset: Vector2) -> void:
+func move_to_offset(offset: Vector2, duration: float = -1.0) -> void:
 	if card == null:
 		return
 
 	if tween != null:
 		tween.kill()
+
+	var move_time := default_time
+
+	if duration >= 0.0:
+		move_time = duration
 
 	tween = create_tween()
 	tween.set_trans(Tween.TRANS_CUBIC)

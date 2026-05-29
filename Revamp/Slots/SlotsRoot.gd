@@ -6,6 +6,19 @@ signal slot_clicked(slot: Slot)
 @export var player_row: SlotRow
 @export var opponent_row: SlotRow
 
+@export var card_scene: PackedScene
+@export var spawned_card_parent: Node2D
+
+@export var player_slot_1_card: CardData
+@export var player_slot_2_card: CardData
+@export var player_slot_3_card: CardData
+@export var player_slot_4_card: CardData
+
+@export var opponent_slot_1_card: CardData
+@export var opponent_slot_2_card: CardData
+@export var opponent_slot_3_card: CardData
+@export var opponent_slot_4_card: CardData
+
 var player_slots: Array[Slot] = []
 var opponent_slots: Array[Slot] = []
 
@@ -17,6 +30,12 @@ func _ready() -> void:
 	_connect_slots(player_slots)
 	_connect_slots(opponent_slots)
 
+	var preset_handler := get_node_or_null("SlotPresetHandler") as SlotPresetHandler
+
+	if preset_handler != null:
+		preset_handler.setup(self)
+		preset_handler.spawn_all_presets()
+
 
 func _connect_slots(slots: Array[Slot]) -> void:
 	for slot in slots:
@@ -26,6 +45,37 @@ func _connect_slots(slots: Array[Slot]) -> void:
 
 func _on_slot_clicked(slot: Slot) -> void:
 	slot_clicked.emit(slot)
+
+
+func get_preset_for_slot(slot: Slot) -> CardData:
+	if slot == null:
+		return null
+
+	var owner := get_owner_of_slot(slot)
+
+	if owner == SlotRow.SlotOwner.PLAYER:
+		match slot.slot_index:
+			1:
+				return player_slot_1_card
+			2:
+				return player_slot_2_card
+			3:
+				return player_slot_3_card
+			4:
+				return player_slot_4_card
+
+	if owner == SlotRow.SlotOwner.OPPONENT:
+		match slot.slot_index:
+			1:
+				return opponent_slot_1_card
+			2:
+				return opponent_slot_2_card
+			3:
+				return opponent_slot_3_card
+			4:
+				return opponent_slot_4_card
+
+	return null
 
 
 func get_slot(slot_owner: SlotRow.SlotOwner, slot_index: int) -> Slot:
