@@ -15,12 +15,16 @@ signal released(card: CardRoot)
 @export var card_visuals_root: CardVisualsRoot
 @export var card_feedback: CardFeedback
 
+@export var slots_root: SlotsRoot
+@export var attack: Attack
+
 var card_data: CardData = null
 var card_name: String = ""
 
 
 func _ready() -> void:
 	_connect_input()
+	_setup_actions()
 
 	if test_data != null:
 		setup(test_data)
@@ -65,6 +69,11 @@ func _connect_input() -> void:
 	input.unhovered.connect(_on_input_unhovered)
 	input.pressed.connect(_on_input_pressed)
 	input.released.connect(_on_input_released)
+
+
+func _setup_actions() -> void:
+	if attack != null:
+		attack.setup(self, slots_root)
 
 
 func _on_input_hovered() -> void:

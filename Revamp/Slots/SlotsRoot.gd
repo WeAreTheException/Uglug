@@ -30,7 +30,7 @@ func _ready() -> void:
 	_connect_slots(player_slots)
 	_connect_slots(opponent_slots)
 
-	var preset_handler := get_node_or_null("SlotPresetHandler") as SlotPresetHandler
+	var preset_handler := get_node_or_null("SlotPresetHandler") as SlotPresetHandler1
 
 	if preset_handler != null:
 		preset_handler.setup(self)

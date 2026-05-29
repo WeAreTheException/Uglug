@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://ctb0sphxjf65u" path="res://Slots/Slot.gd" id="3_iq660"]
 [ext_resource type="Texture2D" uid="uid://bkafxhbg4kvug" path="res://Sprites/CardSlot.png" id="4_s3p7v"]
 [ext_resource type="PackedScene" uid="uid://5qb61nfrd521" path="res://Revamp/Card/Card.tscn" id="5_1gkk1"]
-[ext_resource type="Script" uid="uid://67hlpuvgnyel" path="res://Revamp/Slots/SlotPresetHandler1.gd" id="7_iq660"]
+[ext_resource type="Script" uid="uid://67hlpuvgnyel" path="res://Revamp/Slots/SlotPresetHandler.gd" id="6_2k41x"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_otx1m"]
 size = Vector2(144, 216)
@@ -15,99 +15,92 @@ size = Vector2(144, 216)
 script = ExtResource("1_vhubw")
 player_row = NodePath("PlayerRow")
 opponent_row = NodePath("OpponentRow")
-card_scene = ExtResource("5_1gkk1")
 player_slot_1_card = ExtResource("2_iq660")
-
-[node name="SlotPresetHandler" type="Node" parent="." unique_id=920475702]
-script = ExtResource("7_iq660")
 
 [node name="OpponentRow" type="Node2D" parent="." unique_id=211964924]
 position = Vector2(348, 108)
 script = ExtResource("2_2k41x")
 slot_owner = 1
-metadata/_edit_lock_ = true
 
 [node name="Slot1" type="Node2D" parent="OpponentRow" unique_id=799802496 node_paths=PackedStringArray("click_area")]
-position = Vector2(-276, 0)
+position = Vector2(-348, -108)
 script = ExtResource("3_iq660")
 click_area = NodePath("ClickArea")
 metadata/_edit_lock_ = true
 
 [node name="ClickArea" type="Area2D" parent="OpponentRow/Slot1" unique_id=968235315]
+position = Vector2(72, 108)
 
 [node name="SlotColider" type="CollisionShape2D" parent="OpponentRow/Slot1/ClickArea" unique_id=2019029801]
 shape = SubResource("RectangleShape2D_otx1m")
 metadata/_edit_lock_ = true
 
 [node name="SlotTexture" type="TextureRect" parent="OpponentRow/Slot1" unique_id=1172217970]
-offset_left = -72.0
-offset_top = -108.0
-offset_right = 72.0
-offset_bottom = 108.0
+offset_right = 144.0
+offset_bottom = 216.0
 texture = ExtResource("4_s3p7v")
 expand_mode = 1
 
 [node name="SlotFeedback" type="Node" parent="OpponentRow/Slot1" unique_id=1826578079]
 
 [node name="Slot2" type="Node2D" parent="OpponentRow" unique_id=1661655321 node_paths=PackedStringArray("click_area")]
-position = Vector2(-96, 0)
+position = Vector2(-168, -108)
 script = ExtResource("3_iq660")
 click_area = NodePath("ClickArea")
 metadata/_edit_lock_ = true
 
 [node name="ClickArea" type="Area2D" parent="OpponentRow/Slot2" unique_id=1207478336]
+position = Vector2(72, 108)
 
 [node name="SlotColider" type="CollisionShape2D" parent="OpponentRow/Slot2/ClickArea" unique_id=1227999562]
 shape = SubResource("RectangleShape2D_otx1m")
 metadata/_edit_lock_ = true
 
 [node name="SlotTexture" type="TextureRect" parent="OpponentRow/Slot2" unique_id=1473462959]
-offset_left = -72.0
-offset_top = -108.0
-offset_right = 72.0
-offset_bottom = 108.0
+offset_right = 144.0
+offset_bottom = 216.0
 texture = ExtResource("4_s3p7v")
 expand_mode = 1
 
 [node name="SlotFeedback" type="Node" parent="OpponentRow/Slot2" unique_id=38078689]
 
 [node name="Slot3" type="Node2D" parent="OpponentRow" unique_id=130931274 node_paths=PackedStringArray("click_area")]
-position = Vector2(84, 0)
+position = Vector2(12, -108)
 script = ExtResource("3_iq660")
 click_area = NodePath("ClickArea")
+metadata/_edit_lock_ = true
 
 [node name="ClickArea" type="Area2D" parent="OpponentRow/Slot3" unique_id=843472877]
+position = Vector2(72, 108)
 
 [node name="SlotColider" type="CollisionShape2D" parent="OpponentRow/Slot3/ClickArea" unique_id=132200593]
 shape = SubResource("RectangleShape2D_otx1m")
 metadata/_edit_lock_ = true
 
 [node name="SlotTexture" type="TextureRect" parent="OpponentRow/Slot3" unique_id=1909826515]
-offset_left = -72.0
-offset_top = -108.0
-offset_right = 72.0
-offset_bottom = 108.0
+offset_right = 144.0
+offset_bottom = 216.0
 texture = ExtResource("4_s3p7v")
 expand_mode = 1
 
 [node name="SlotFeedback" type="Node" parent="OpponentRow/Slot3" unique_id=123411766]
 
 [node name="Slot4" type="Node2D" parent="OpponentRow" unique_id=798353800 node_paths=PackedStringArray("click_area")]
-position = Vector2(264, 0)
+position = Vector2(192, -108)
 script = ExtResource("3_iq660")
 click_area = NodePath("ClickArea")
+metadata/_edit_lock_ = true
 
 [node name="ClickArea" type="Area2D" parent="OpponentRow/Slot4" unique_id=562953100]
+position = Vector2(72, 108)
 
 [node name="SlotColider" type="CollisionShape2D" parent="OpponentRow/Slot4/ClickArea" unique_id=647591349]
 shape = SubResource("RectangleShape2D_otx1m")
 metadata/_edit_lock_ = true
 
 [node name="SlotTexture" type="TextureRect" parent="OpponentRow/Slot4" unique_id=248283614]
-offset_left = -72.0
-offset_top = -108.0
-offset_right = 72.0
-offset_bottom = 108.0
+offset_right = 144.0
+offset_bottom = 216.0
 texture = ExtResource("4_s3p7v")
 expand_mode = 1
 
@@ -116,88 +109,93 @@ expand_mode = 1
 [node name="PlayerRow" type="Node2D" parent="." unique_id=604740611]
 position = Vector2(336, 360)
 script = ExtResource("2_2k41x")
-metadata/_edit_lock_ = true
 
 [node name="Slot5" type="Node2D" parent="PlayerRow" unique_id=2092360183 node_paths=PackedStringArray("click_area")]
-position = Vector2(-264, 0)
+position = Vector2(-336, -108)
 script = ExtResource("3_iq660")
 click_area = NodePath("ClickArea")
+metadata/_edit_lock_ = true
 
 [node name="ClickArea" type="Area2D" parent="PlayerRow/Slot5" unique_id=450770695]
+position = Vector2(72, 108)
 
 [node name="SlotColider" type="CollisionShape2D" parent="PlayerRow/Slot5/ClickArea" unique_id=1260455412]
 shape = SubResource("RectangleShape2D_otx1m")
 metadata/_edit_lock_ = true
 
 [node name="SlotTexture" type="TextureRect" parent="PlayerRow/Slot5" unique_id=1084105652]
-offset_left = -72.0
-offset_top = -108.0
-offset_right = 72.0
-offset_bottom = 108.0
+offset_right = 144.0
+offset_bottom = 216.0
 texture = ExtResource("4_s3p7v")
 expand_mode = 1
 
 [node name="SlotFeedback" type="Node" parent="PlayerRow/Slot5" unique_id=1931548327]
 
 [node name="Slot6" type="Node2D" parent="PlayerRow" unique_id=186405394 node_paths=PackedStringArray("click_area")]
-position = Vector2(-84, 0)
+position = Vector2(-156, -108)
 script = ExtResource("3_iq660")
 click_area = NodePath("ClickArea")
+metadata/_edit_lock_ = true
 
 [node name="ClickArea" type="Area2D" parent="PlayerRow/Slot6" unique_id=941390480]
+position = Vector2(72, 108)
 
 [node name="SlotColider" type="CollisionShape2D" parent="PlayerRow/Slot6/ClickArea" unique_id=1062002614]
 shape = SubResource("RectangleShape2D_otx1m")
 metadata/_edit_lock_ = true
 
 [node name="SlotTexture" type="TextureRect" parent="PlayerRow/Slot6" unique_id=1238336564]
-offset_left = -72.0
-offset_top = -108.0
-offset_right = 72.0
-offset_bottom = 108.0
+offset_right = 144.0
+offset_bottom = 216.0
 texture = ExtResource("4_s3p7v")
 expand_mode = 1
 
 [node name="SlotFeedback" type="Node" parent="PlayerRow/Slot6" unique_id=1383329884]
 
 [node name="Slot7" type="Node2D" parent="PlayerRow" unique_id=1101951748 node_paths=PackedStringArray("click_area")]
-position = Vector2(96, 0)
+position = Vector2(24, -108)
 script = ExtResource("3_iq660")
 click_area = NodePath("ClickArea")
+metadata/_edit_lock_ = true
 
 [node name="ClickArea" type="Area2D" parent="PlayerRow/Slot7" unique_id=448739834]
+position = Vector2(72, 108)
 
 [node name="SlotColider" type="CollisionShape2D" parent="PlayerRow/Slot7/ClickArea" unique_id=345011807]
 shape = SubResource("RectangleShape2D_otx1m")
 metadata/_edit_lock_ = true
 
 [node name="SlotTexture" type="TextureRect" parent="PlayerRow/Slot7" unique_id=2136552650]
-offset_left = -72.0
-offset_top = -108.0
-offset_right = 72.0
-offset_bottom = 108.0
+offset_right = 144.0
+offset_bottom = 216.0
 texture = ExtResource("4_s3p7v")
 expand_mode = 1
 
 [node name="SlotFeedback" type="Node" parent="PlayerRow/Slot7" unique_id=765973517]
 
 [node name="Slot8" type="Node2D" parent="PlayerRow" unique_id=392012950 node_paths=PackedStringArray("click_area")]
-position = Vector2(276, 0)
+position = Vector2(204, -108)
 script = ExtResource("3_iq660")
 click_area = NodePath("ClickArea")
+metadata/_edit_lock_ = true
 
 [node name="ClickArea" type="Area2D" parent="PlayerRow/Slot8" unique_id=259124982]
+position = Vector2(72, 108)
 
 [node name="SlotColider" type="CollisionShape2D" parent="PlayerRow/Slot8/ClickArea" unique_id=1016571817]
 shape = SubResource("RectangleShape2D_otx1m")
 metadata/_edit_lock_ = true
 
 [node name="SlotTexture" type="TextureRect" parent="PlayerRow/Slot8" unique_id=1804169833]
-offset_left = -72.0
-offset_top = -108.0
-offset_right = 72.0
-offset_bottom = 108.0
+offset_right = 144.0
+offset_bottom = 216.0
 texture = ExtResource("4_s3p7v")
 expand_mode = 1
 
 [node name="SlotFeedback" type="Node" parent="PlayerRow/Slot8" unique_id=2131736610]
+
+[node name="Card" parent="." unique_id=1649731477 instance=ExtResource("5_1gkk1")]
+position = Vector2(252, 360)
+
+[node name="SlotPresetHandler" type="Node" parent="." unique_id=920475702]
+script = ExtResource("6_2k41x")
