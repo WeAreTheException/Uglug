@@ -20,3 +20,6 @@ lane_id = 2
 [node name="w3" parent="." unique_id=994308354 instance=ExtResource("1_nsflq")]
 position = Vector2(1088, 512)
 lane_id = 3
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=657819313]
+position = Vector2(960, 540)

@@ -1,19 +1,22 @@
 extends Node
 class_name AttackAnim
 
+@export var use_target_direction: bool = false
+@export var attack_direction: Vector2 = Vector2.UP
+
 @export var windup_distance: float = 18.0
-@export var attack_distance: float = 55.0
+@export var attack_distance: float = 200.0
 
-@export var windup_time: float = 0.12
-@export var attack_time: float = 0.10
+@export var windup_time: float = 0.16
+@export var attack_time: float = 0.04
 @export var hit_hold_time: float = 0.08
-@export var return_time: float = 0.18
+@export var return_time: float = 0.2
 
-@export var windup_scale: Vector2 = Vector2(0.96, 1.06)
-@export var attack_scale: Vector2 = Vector2(1.10, 0.92)
+@export var windup_scale: Vector2 = Vector2(0.9, 1.1)
+@export var attack_scale: Vector2 = Vector2(1.1, 0.9)
 
-@export var windup_rotation_degrees: float = -6.0
-@export var attack_rotation_degrees: float = 4.0
+@export var windup_rotation_degrees: float = -10.0
+@export var attack_rotation_degrees: float = 20.0
 
 
 func play(card: Card, target: Card = null) -> void:
@@ -24,10 +27,13 @@ func play(card: Card, target: Card = null) -> void:
 	var start_scale := card.scale
 	var start_rotation := card.rotation
 
-	var direction := Vector2.UP
+	var direction := attack_direction.normalized()
 
-	if target != null:
+	if use_target_direction and target != null:
 		direction = (target.global_position - card.global_position).normalized()
+
+	if direction == Vector2.ZERO:
+		direction = Vector2.UP
 
 	var windup_position := start_position - direction * windup_distance
 	var attack_position := start_position + direction * attack_distance
