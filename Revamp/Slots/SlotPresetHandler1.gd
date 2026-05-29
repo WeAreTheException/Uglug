@@ -54,6 +54,7 @@ func _spawn_preset_for_slot(slot: Slot) -> void:
 	slot.add_child(card)
 	card.position = Vector2.ZERO
 	card.setup(data)
+	card.setup_board_context(slots_root)
 
 	if card.board_presence != null:
 		card.board_presence.enter_slot(slot, card)

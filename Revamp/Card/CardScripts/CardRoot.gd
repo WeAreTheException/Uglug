@@ -14,9 +14,9 @@ signal released(card: CardRoot)
 @export var mutations: CardMutations
 @export var card_visuals_root: CardVisualsRoot
 @export var card_feedback: CardFeedback
-
-@export var slots_root: SlotsRoot
 @export var attack: Attack
+
+var slots_root: SlotsRoot = null
 
 var card_data: CardData = null
 var card_name: String = ""
@@ -24,7 +24,7 @@ var card_name: String = ""
 
 func _ready() -> void:
 	_connect_input()
-	_setup_actions()
+	setup_actions()
 
 	if test_data != null:
 		setup(test_data)
@@ -45,6 +45,16 @@ func setup(data: CardData) -> void:
 
 	if card_visuals_root != null:
 		card_visuals_root.setup_from_card(self)
+
+
+func setup_board_context(new_slots_root: SlotsRoot) -> void:
+	slots_root = new_slots_root
+	setup_actions()
+
+
+func setup_actions() -> void:
+	if attack != null:
+		attack.setup(self, slots_root)
 
 
 func is_on_board() -> bool:
@@ -69,11 +79,6 @@ func _connect_input() -> void:
 	input.unhovered.connect(_on_input_unhovered)
 	input.pressed.connect(_on_input_pressed)
 	input.released.connect(_on_input_released)
-
-
-func _setup_actions() -> void:
-	if attack != null:
-		attack.setup(self, slots_root)
 
 
 func _on_input_hovered() -> void:
