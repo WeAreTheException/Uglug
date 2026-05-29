@@ -32,6 +32,8 @@
 [ext_resource type="Script" uid="uid://c43ots6r45ip6" path="res://Cards/AntlerAttackExecutor.gd" id="15_aqnhy"]
 [ext_resource type="Script" uid="uid://s8ie03o2jwn3" path="res://Cards/HurtSprite.gd" id="15_wmwgk"]
 [ext_resource type="Texture2D" uid="uid://cxc62tmwvs36" path="res://Art/HurtSprite.png" id="16_5yc7r"]
+[ext_resource type="Script" uid="uid://jl4igq2ekghh" path="res://Cards/DeathFeedbackHandler.gd" id="20_x5477"]
+[ext_resource type="Script" uid="uid://ckvc3mq8ki3yc" path="res://Cards/DeathAudio.gd" id="22_j2h1k"]
 [ext_resource type="Script" uid="uid://cfvsqn441hgwq" path="res://Cards/CardStats.gd" id="22_koaue"]
 [ext_resource type="Script" uid="uid://cmhvnj1h173o2" path="res://Cards/BackInHandCardState.gd" id="34_wmwgk"]
 [ext_resource type="Material" uid="uid://dh78conckoov3" path="res://Cards/BackInHandInvert.tres" id="35_5yc7r"]
@@ -155,8 +157,16 @@ texture = ExtResource("16_5yc7r")
 script = ExtResource("6_krn1d")
 die_anim = NodePath("DeathFeedback")
 
-[node name="DeathFeedback" type="Node" parent="CardStateMachine/Die" unique_id=1661689933]
+[node name="DeathFeedback" type="Node" parent="CardStateMachine/Die" unique_id=1661689933 node_paths=PackedStringArray("death_audio")]
+script = ExtResource("20_x5477")
+death_audio = NodePath("DeathAudio")
+
+[node name="DeathAnim" type="Node" parent="CardStateMachine/Die/DeathFeedback" unique_id=1665308815]
 script = ExtResource("9_fuvn1")
+rotate_degrees = 0.0
+
+[node name="DeathAudio" type="Node" parent="CardStateMachine/Die/DeathFeedback" unique_id=420433064]
+script = ExtResource("22_j2h1k")
 death_sfx = ExtResource("15_5hax5")
 
 [node name="CardStats" type="Node" parent="." unique_id=1956418628 node_paths=PackedStringArray("stats_visual")]
@@ -207,25 +217,25 @@ position = Vector2(66, 111.00001)
 scale = Vector2(0.14727725, 0.14345993)
 
 [node name="Blood" type="Sprite2D" parent="Stats" unique_id=1555982944]
-z_index = 100
+z_index = 9
 position = Vector2(71, -83)
 scale = Vector2(0.157, 0.144)
 texture = ExtResource("9_dm30q")
 
 [node name="Blood2" type="Sprite2D" parent="Stats" unique_id=1630070528]
-z_index = 100
+z_index = 9
 position = Vector2(55, -83)
 scale = Vector2(0.157, 0.144)
 texture = ExtResource("9_dm30q")
 
 [node name="Blood3" type="Sprite2D" parent="Stats" unique_id=1751345964]
-z_index = 100
+z_index = 9
 position = Vector2(63, -64)
 scale = Vector2(0.157, 0.144)
 texture = ExtResource("9_dm30q")
 
 [node name="Blood4" type="Sprite2D" parent="Stats" unique_id=221770338]
-z_index = 100
+z_index = 9
 position = Vector2(47, -64)
 scale = Vector2(0.157, 0.144)
 texture = ExtResource("9_dm30q")
