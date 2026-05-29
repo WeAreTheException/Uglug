@@ -2,6 +2,7 @@ extends Node
 class_name Attack
 
 @export var animation_runner: AttackAnimationRunner
+@export var target_resolver: AttackTargetResolver
 
 @export var enable_debug_key: bool = true
 @export var debug_key: Key = KEY_A
@@ -35,11 +36,8 @@ func _input(event: InputEvent) -> void:
 		return
 
 	if event is InputEventKey and event.pressed and not event.echo:
-		if event.keycode == KEY_A:
+		if event.keycode == debug_key:
 			perform_debug_attack()
-
-		if event.keycode == KEY_S:
-			await _debug_all_attack_variations()
 
 
 func perform_debug_attack() -> void:
@@ -58,47 +56,52 @@ func perform_debug_attack() -> void:
 		print("attack blocked: animation runner missing")
 		return
 
-	var attacker_slot := card.get_current_slot()
-
-	if attacker_slot == null:
-		print("attack blocked: card is not in a slot")
+	if target_resolver == null:
+		print("attack blocked: target resolver missing")
 		return
 
-	var target_slot := slots_root.get_opposing_slot(attacker_slot)
+	var target_slots := target_resolver.get_target_slots(card, slots_root)
 
-	if target_slot == null:
-		print("attack blocked: no target slot")
+	if target_slots.is_empty():
+		print("attack skipped: no valid target slots")
 		return
 
 	is_attacking = true
-	await animation_runner.play_attack(attacker_slot, target_slot)
+
+	var attack_count := _get_attack_count()
+
+	for attack_index in range(attack_count):
+		for target_slot in target_slots:
+			if target_slot == null:
+				continue
+
+			await animation_runner.play_attack(card.get_current_slot(), target_slot)
+
 	is_attacking = false
 
 
-func _debug_all_attack_variations() -> void:
-	if animation_runner == null:
-		return
+func _get_attack_count() -> int:
+	if _has_mutation_named("Persistent"):
+		return 2
 
-	print("FORWARD")
-	await animation_runner.debug_play_difference(0)
+	return 1
 
-	print("RIGHT CLOSE")
-	await animation_runner.debug_play_difference(1)
 
-	print("RIGHT FAR")
-	await animation_runner.debug_play_difference(2)
+func _has_mutation_named(target_name: String) -> bool:
+	if card == null:
+		return false
 
-	print("RIGHT FURTHEST")
-	await animation_runner.debug_play_difference(3)
+	if card.mutations == null:
+		return false
 
-	print("LEFT CLOSE")
-	await animation_runner.debug_play_difference(-1)
+	for mutation in card.mutations.get_active_mutations():
+		if mutation == null:
+			continue
 
-	print("LEFT FAR")
-	await animation_runner.debug_play_difference(-2)
+		if "mutation_name" in mutation and mutation.mutation_name == target_name:
+			return true
 
-	print("LEFT FURTHEST")
-	await animation_runner.debug_play_difference(-3)
+	return false
 
 
 func _on_card_hovered(_card: CardRoot) -> void:

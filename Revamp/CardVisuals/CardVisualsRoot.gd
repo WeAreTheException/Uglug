@@ -35,11 +35,6 @@ func setup_from_card_data(data: CardData) -> void:
 		main_visuals.set_ant_texture(data.ant_texture)
 
 
-func set_card_texture(texture: Texture2D) -> void:
-	if main_visuals != null:
-		main_visuals.set_card_texture(texture)
-
-
 func refresh_all() -> void:
 	if card == null:
 		return
@@ -61,12 +56,12 @@ func _update_mutation_visuals() -> void:
 	if mutation_visuals == null:
 		return
 
+	mutation_visuals.clear_all()
+
 	if card == null:
-		mutation_visuals.clear_all()
 		return
 
 	if card.mutations == null:
-		mutation_visuals.clear_all()
 		return
 
 	mutation_visuals.display_runtimes(card.mutations.get_all_runtimes())
