@@ -14,7 +14,10 @@ signal released(card: CardRoot)
 @export var mutations: CardMutations
 @export var card_visuals_root: CardVisualsRoot
 @export var card_feedback: CardFeedback
+
 @export var attack: Attack
+@export var hurt: Hurt
+@export var die: Die
 
 var slots_root: SlotsRoot = null
 
@@ -55,6 +58,12 @@ func setup_board_context(new_slots_root: SlotsRoot) -> void:
 func setup_actions() -> void:
 	if attack != null:
 		attack.setup(self, slots_root)
+
+	if hurt != null:
+		hurt.setup(self)
+
+	if die != null:
+		die.setup(self)
 
 
 func is_on_board() -> bool:
