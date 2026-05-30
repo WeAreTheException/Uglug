@@ -18,6 +18,9 @@ func setup_from_data(data: CardData, owner_card: CardRoot) -> void:
 	for mutation in data.base_mutations:
 		add_mutation(mutation, owner_card)
 
+	for mutation in data.additional_mutations:
+		add_mutation(mutation, owner_card)
+
 	mutations_changed.emit()
 
 

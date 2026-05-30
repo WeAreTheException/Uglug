@@ -13,4 +13,4 @@ class_name CardData
 @export var deck_amount: int = 1
 @export var base_mutations: Array[Mutation] = []
 
-var additional_mutations: Array[Mutation] = []
+@export var additional_mutations: Array[Mutation] = []

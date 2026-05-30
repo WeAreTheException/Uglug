@@ -12,4 +12,5 @@ attack = 2
 cost = 2
 ant_texture = ExtResource("3_mtqv4")
 base_mutations = Array[ExtResource("1_u80qt")]([ExtResource("2_odebo")])
+additional_mutations = Array[ExtResource("1_u80qt")]([ExtResource("2_odebo")])
 metadata/_custom_type_script = "uid://duslcpxrhurv8"

@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Cards/Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="1_u80qt"]
 [ext_resource type="Texture2D" uid="uid://b8a1gr84h2iie" path="res://Art/Ants/WorkerAnt_Standalone.png" id="1_w52ji"]
+[ext_resource type="Resource" uid="uid://dcgqrr05c2pyg" path="res://Cards/Mutations/MutationPresets/DivergentFist.tres" id="2_sm2wd"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="2_w52ji"]
 [ext_resource type="Resource" uid="uid://ceeskmu01vy5g" path="res://Cards/Mutations/MutationPresets/YAttack.tres" id="3_mdlpr"]
 
@@ -12,4 +13,5 @@ attack = 1
 cost = 1
 ant_texture = ExtResource("1_w52ji")
 base_mutations = Array[ExtResource("1_u80qt")]([ExtResource("3_mdlpr")])
+additional_mutations = Array[ExtResource("1_u80qt")]([ExtResource("2_sm2wd")])
 metadata/_custom_type_script = "uid://duslcpxrhurv8"
