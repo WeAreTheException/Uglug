@@ -3,7 +3,7 @@ class_name DeathAnim
 
 @export var fade_time: float = 0.25
 @export var shrink_scale: Vector2 = Vector2(0.85, 0.85)
-@export var rotate_degrees: float = 8.0
+@export var rotate_degrees: float = 0.0
 
 
 func play(card: Card) -> void:

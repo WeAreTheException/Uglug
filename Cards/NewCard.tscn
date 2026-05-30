@@ -43,6 +43,16 @@
 [ext_resource type="Script" uid="uid://jodvah2xjc1d" path="res://Cards/BuffAnim.gd" id="41_mhehh"]
 [ext_resource type="Script" uid="uid://ctvsleljruon0" path="res://Cards/BuffAudio.gd" id="42_qltuj"]
 [ext_resource type="AudioStream" uid="uid://bigxegrfrb6o5" path="res://Audio/Placeholder SFX/card_blessing.wav" id="43_octkm"]
+[ext_resource type="Script" uid="uid://dchkp38etn06x" path="res://Cards/SacrificeFeedbackHandler.gd" id="44_5hax5"]
+[ext_resource type="Script" uid="uid://cexddbtp8dmji" path="res://Cards/SacrificeAnim.gd" id="45_l46l7"]
+[ext_resource type="Script" uid="uid://cmupiixl5pdmn" path="res://Cards/SacrificeSprite.gd" id="46_7mhj7"]
+[ext_resource type="Script" uid="uid://1w8eqfr12hru" path="res://Cards/SacrificeAudio.gd" id="47_6gwra"]
+[ext_resource type="Texture2D" uid="uid://dq700h45mp26i" path="res://Art/SacrificeSprite.png" id="47_cm7jo"]
+[ext_resource type="Script" uid="uid://cfxmw3ybionmv" path="res://Cards/SacrificeBurn.gd" id="48_dnq78"]
+[ext_resource type="Shader" uid="uid://b4ecwj11l0vio" path="res://Art/BurnFromPoint.gdshader" id="49_f7rda"]
+[ext_resource type="Texture2D" uid="uid://dp5aka0mpgihw" path="res://Art/NoiseTexture.jpg" id="50_yxs0m"]
+[ext_resource type="Script" uid="uid://dkgco3mni57yr" path="res://Cards/SacrificeDissolve.gd" id="51_yxs0m"]
+[ext_resource type="Shader" uid="uid://crt6yckegki36" path="res://Art/TurnToDust.gdshader" id="52_n3ibn"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
 size = Vector2(174, 268)
@@ -132,9 +142,6 @@ script = ExtResource("11_el32v")
 
 [node name="HurtAnim" type="Node" parent="CardStateMachine/Hurt/HurtFeedback" unique_id=1096822831]
 script = ExtResource("7_r4p8t")
-up_distance = 0.0
-horizontal_shake_time = 0.1
-vertical_shake_time = 0.1
 
 [node name="HurtAudio" type="Node" parent="CardStateMachine/Hurt/HurtFeedback" unique_id=1658878572]
 script = ExtResource("13_duyd4")
@@ -167,7 +174,6 @@ death_audio = NodePath("DeathAudio")
 
 [node name="DeathAnim" type="Node" parent="CardStateMachine/Die/DeathFeedback" unique_id=1665308815]
 script = ExtResource("9_fuvn1")
-rotate_degrees = 0.0
 
 [node name="DeathAudio" type="Node" parent="CardStateMachine/Die/DeathFeedback" unique_id=420433064]
 script = ExtResource("22_j2h1k")
@@ -277,3 +283,28 @@ hold_time = 1.0
 [node name="BuffAudio" type="Node" parent="BuffFeedbackHandler" unique_id=906618107]
 script = ExtResource("42_qltuj")
 buff_sfx = ExtResource("43_octkm")
+
+[node name="SacrificeFeedbackHandler" type="Node" parent="." unique_id=1649930290 node_paths=PackedStringArray("sacrifice_burn")]
+script = ExtResource("44_5hax5")
+sacrifice_burn = NodePath("SacrificeBurn")
+
+[node name="SacrificeAnim" type="Node" parent="SacrificeFeedbackHandler" unique_id=347009746]
+script = ExtResource("45_l46l7")
+
+[node name="SacrificeSprite" type="Node" parent="SacrificeFeedbackHandler" unique_id=898161577]
+script = ExtResource("46_7mhj7")
+sacrifice_texture = ExtResource("47_cm7jo")
+sprite_scale = Vector2(0.15, 0.15)
+
+[node name="SacrificeBurn" type="Node" parent="SacrificeFeedbackHandler" unique_id=744669333]
+script = ExtResource("48_dnq78")
+burn_shader = ExtResource("49_f7rda")
+noise_texture = ExtResource("50_yxs0m")
+burn_time = 1.0
+
+[node name="SacrificeDissolve" type="Node" parent="SacrificeFeedbackHandler" unique_id=1045196602]
+script = ExtResource("51_yxs0m")
+dissolve_shader = ExtResource("52_n3ibn")
+
+[node name="SacrificeAudio" type="Node" parent="SacrificeFeedbackHandler" unique_id=1049534577]
+script = ExtResource("47_6gwra")

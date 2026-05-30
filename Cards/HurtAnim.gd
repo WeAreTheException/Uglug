@@ -5,10 +5,10 @@ class_name HurtAnim
 @export var right_distance: float = 10.0
 
 @export var down_distance: float = 6.0
-@export var up_distance: float = 6.0
+@export var up_distance: float = 0
 
-@export var horizontal_shake_time: float = 0.04
-@export var vertical_shake_time: float = 0.04
+@export var horizontal_shake_time: float = 0.1
+@export var vertical_shake_time: float = 0.1
 
 
 func play(card: Card) -> void:
