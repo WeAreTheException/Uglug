@@ -22,6 +22,9 @@ func _ready() -> void:
 
 
 func set_selected(value: bool) -> void:
+	if not _can_use_hand_feedback():
+		value = false
+
 	is_selected = value
 
 	if select_feedback != null:
@@ -36,6 +39,9 @@ func set_selected(value: bool) -> void:
 
 func _on_card_hovered(_card: CardRoot) -> void:
 	is_hovered = true
+
+	if not _can_use_hand_feedback():
+		return
 
 	if is_selected:
 		return
@@ -55,7 +61,11 @@ func _on_card_unhovered(_card: CardRoot) -> void:
 
 
 func _on_card_pressed(_card: CardRoot) -> void:
+	if not _can_use_hand_feedback():
+		return
+
 	set_selected(not is_selected)
+
 
 func _can_use_hand_feedback() -> bool:
 	if card == null:
