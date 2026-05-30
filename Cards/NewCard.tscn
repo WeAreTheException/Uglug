@@ -39,6 +39,10 @@
 [ext_resource type="Material" uid="uid://dh78conckoov3" path="res://Cards/BackInHandInvert.tres" id="35_5yc7r"]
 [ext_resource type="Script" uid="uid://dhkq7ls1f2ddm" path="res://Cards/BackInHandDeathVisualHandler.gd" id="36_x5477"]
 [ext_resource type="Script" uid="uid://c6m8lgpe46l6r" path="res://Cards/CardSlotHandler.gd" id="37_ra3pw"]
+[ext_resource type="Script" uid="uid://5li3ej1e5q7f" path="res://Cards/BuffFeedbackHandler.gd" id="40_5tkk3"]
+[ext_resource type="Script" uid="uid://jodvah2xjc1d" path="res://Cards/BuffAnim.gd" id="41_mhehh"]
+[ext_resource type="Script" uid="uid://ctvsleljruon0" path="res://Cards/BuffAudio.gd" id="42_qltuj"]
+[ext_resource type="AudioStream" uid="uid://bigxegrfrb6o5" path="res://Audio/Placeholder SFX/card_blessing.wav" id="43_octkm"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
 size = Vector2(174, 268)
@@ -259,3 +263,17 @@ script = ExtResource("36_x5477")
 die_anim = NodePath("../CardStateMachine/Die/DeathFeedback")
 
 [node name="CardArt" parent="." unique_id=1593445486 instance=ExtResource("2_x1h4b")]
+
+[node name="BuffFeedbackHandler" type="Node" parent="." unique_id=47463992 node_paths=PackedStringArray("buff_anim", "buff_audio")]
+script = ExtResource("40_5tkk3")
+buff_anim = NodePath("BuffAnim")
+buff_audio = NodePath("BuffAudio")
+
+[node name="BuffAnim" type="Node" parent="BuffFeedbackHandler" unique_id=56232825]
+script = ExtResource("41_mhehh")
+grow_scale = Vector2(1.5, 1.5)
+hold_time = 1.0
+
+[node name="BuffAudio" type="Node" parent="BuffFeedbackHandler" unique_id=906618107]
+script = ExtResource("42_qltuj")
+buff_sfx = ExtResource("43_octkm")
