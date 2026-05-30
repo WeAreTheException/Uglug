@@ -60,6 +60,12 @@ func perform_debug_attack() -> void:
 		print("attack blocked: target resolver missing")
 		return
 
+	var attacker_slot := card.get_current_slot()
+
+	if attacker_slot == null:
+		print("attack blocked: card is not in a slot")
+		return
+
 	var target_slots := target_resolver.get_target_slots(card, slots_root)
 
 	if target_slots.is_empty():
@@ -75,13 +81,13 @@ func perform_debug_attack() -> void:
 			if target_slot == null:
 				continue
 
-			await animation_runner.play_attack(card.get_current_slot(), target_slot)
+			await animation_runner.play_attack(attacker_slot, target_slot)
 
 	is_attacking = false
 
 
 func _get_attack_count() -> int:
-	if _has_mutation_named("Persistent"):
+	if _has_mutation_named("Divergent Fist"):
 		return 2
 
 	return 1

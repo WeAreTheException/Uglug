@@ -1,5 +1,5 @@
 extends Mutation
-class_name Antler
+class_name YAttack
 
 
 func get_attack_targets(_card: Card, _current_targets: Array[Card]) -> Array[Card]:

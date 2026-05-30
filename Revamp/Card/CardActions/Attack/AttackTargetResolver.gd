@@ -16,7 +16,7 @@ func get_target_slots(card: CardRoot, slots_root: SlotsRoot) -> Array[Slot]:
 	if attacker_slot == null:
 		return targets
 
-	if _has_mutation_named(card, "Antler"):
+	if _has_mutation_named(card, "Y Attack"):
 		return slots_root.get_adjacent_enemy_slots(attacker_slot)
 
 	var opposing_slot := slots_root.get_opposing_slot(attacker_slot)
