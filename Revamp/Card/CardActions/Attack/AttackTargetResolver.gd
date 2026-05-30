@@ -1,41 +1,46 @@
 extends Node
 class_name AttackTargetResolver
 
+const FORWARD := "FORWARD"
+const LEFT := "LEFT"
+const RIGHT := "RIGHT"
 
-func get_target_slots(card: CardRoot, slots_root: SlotsRoot) -> Array[Slot]:
-	var targets: Array[Slot] = []
 
-	if card == null:
-		return targets
-
+func resolve_target(
+	slots_root: SlotsRoot,
+	context: AttackContext
+) -> void:
 	if slots_root == null:
-		return targets
+		return
 
-	var attacker_slot := card.get_current_slot()
+	if context == null:
+		return
 
-	if attacker_slot == null:
-		return targets
+	if context.origin_slot == null:
+		return
 
-	if _has_mutation_named(card, "Y Attack"):
-		return slots_root.get_adjacent_enemy_slots(attacker_slot)
+	var owner := slots_root.get_owner_of_slot(context.origin_slot)
 
-	var opposing_slot := slots_root.get_opposing_slot(attacker_slot)
+	var enemy_owner := SlotRow.SlotOwner.OPPONENT
 
-	if opposing_slot != null:
-		targets.append(opposing_slot)
+	if owner == SlotRow.SlotOwner.OPPONENT:
+		enemy_owner = SlotRow.SlotOwner.PLAYER
 
-	return targets
+	match context.attack_event:
+		FORWARD:
+			context.target_slot = slots_root.get_slot(
+				enemy_owner,
+				context.origin_slot.slot_index
+			)
 
+		LEFT:
+			context.target_slot = slots_root.get_slot(
+				enemy_owner,
+				context.origin_slot.slot_index - 1
+			)
 
-func _has_mutation_named(card: CardRoot, target_name: String) -> bool:
-	if card.mutations == null:
-		return false
-
-	for mutation in card.mutations.get_active_mutations():
-		if mutation == null:
-			continue
-
-		if "mutation_name" in mutation and mutation.mutation_name == target_name:
-			return true
-
-	return false
+		RIGHT:
+			context.target_slot = slots_root.get_slot(
+				enemy_owner,
+				context.origin_slot.slot_index + 1
+			)

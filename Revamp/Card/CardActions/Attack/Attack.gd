@@ -3,6 +3,7 @@ class_name Attack
 
 @export var animation_runner: AttackAnimationRunner
 @export var target_resolver: AttackTargetResolver
+@export var attack_sequencer: AttackSequencer
 
 @export var enable_debug_key: bool = true
 @export var debug_key: Key = KEY_A
@@ -45,69 +46,62 @@ func perform_debug_attack() -> void:
 		return
 
 	if card == null:
-		print("attack blocked: card missing")
 		return
 
 	if slots_root == null:
 		print("attack blocked: slots_root missing")
 		return
 
-	if animation_runner == null:
-		print("attack blocked: animation runner missing")
+	if attack_sequencer == null:
+		print("attack blocked: attack_sequencer missing")
 		return
 
 	if target_resolver == null:
-		print("attack blocked: target resolver missing")
+		print("attack blocked: target_resolver missing")
+		return
+
+	if animation_runner == null:
+		print("attack blocked: animation_runner missing")
 		return
 
 	var attacker_slot := card.get_current_slot()
 
 	if attacker_slot == null:
-		print("attack blocked: card is not in a slot")
+		print("attack blocked: attacker slot missing")
 		return
 
-	var target_slots := target_resolver.get_target_slots(card, slots_root)
+	var sequence := attack_sequencer.build_sequence(card)
 
-	if target_slots.is_empty():
-		print("attack skipped: no valid target slots")
+	if sequence.is_empty():
 		return
 
 	is_attacking = true
 
-	var attack_count := _get_attack_count()
+	for attack_event in sequence:
+		var context := AttackContext.new()
 
-	for attack_index in range(attack_count):
-		for target_slot in target_slots:
-			if target_slot == null:
-				continue
+		context.attacker_card = card
+		context.attacker_slot = attacker_slot
 
-			await animation_runner.play_attack(attacker_slot, target_slot)
+		context.attack_event = attack_event
 
-	is_attacking = false
+		# Later Distant can override this.
+		context.origin_slot = attacker_slot
 
+		target_resolver.resolve_target(
+			slots_root,
+			context
+		)
 
-func _get_attack_count() -> int:
-	if _has_mutation_named("Divergent Fist"):
-		return 2
-
-	return 1
-
-
-func _has_mutation_named(target_name: String) -> bool:
-	if card == null:
-		return false
-
-	if card.mutations == null:
-		return false
-
-	for mutation in card.mutations.get_active_mutations():
-		if mutation == null:
+		if context.target_slot == null:
 			continue
 
-		if "mutation_name" in mutation and mutation.mutation_name == target_name:
-			return true
+		await animation_runner.play_attack(
+			context.attacker_slot,
+			context.target_slot
+		)
 
-	return false
+	is_attacking = false
 
 
 func _on_card_hovered(_card: CardRoot) -> void:

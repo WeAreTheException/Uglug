@@ -10,15 +10,22 @@
 [ext_resource type="Script" uid="uid://cbbim8d3qcxf6" path="res://Revamp/Card/CardScripts/CardMutations.gd" id="5_olfje"]
 [ext_resource type="Script" uid="uid://db1lyj46ylxcb" path="res://Revamp/Card/CardScripts/CardFeedback.gd" id="8_nau7p"]
 [ext_resource type="Script" uid="uid://dgdnj6214hjto" path="res://Revamp/Card/CardActions/Attack/Attack.gd" id="8_vth4y"]
+[ext_resource type="Script" uid="uid://d0ro2rubnnaxd" path="res://Revamp/Card/CardActions/Attack/AttackDebug.gd" id="9_8l6ss"]
 [ext_resource type="Script" uid="uid://dky1ptblaym2b" path="res://Revamp/Card/PositionFeedback.gd" id="9_hdbik"]
 [ext_resource type="Script" uid="uid://bfsf4xd5j38lv" path="res://Revamp/Card/CardActions/Attack/AttackAnimationRunner.gd" id="9_r5dqq"]
+[ext_resource type="Script" uid="uid://b2d4i6o0tecky" path="res://Revamp/Tres/FeebackTres/CardFeedbackData.gd" id="10_8l6ss"]
 [ext_resource type="Script" uid="uid://c317k3ig4aoxg" path="res://Revamp/Card/ScaleFeedback.gd" id="10_c3ju1"]
 [ext_resource type="Script" uid="uid://csrjk2fx52jll" path="res://Revamp/Card/CardActions/Attack/AttackTargetResolver.gd" id="10_opxhd"]
+[ext_resource type="Script" uid="uid://b88l0j4r1o4s4" path="res://Revamp/Card/CardFeedback/CardFeebackDatabase.gd" id="10_vth4y"]
 [ext_resource type="Script" uid="uid://cf4ka1vcw1057" path="res://Revamp/Card/ShadowFeedback.gd" id="11_c3ju1"]
 [ext_resource type="Script" uid="uid://dtplnofbjxace" path="res://Revamp/Card/CardActions/Attack/AttackSequenceBuilder.gd" id="11_iynnv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g8l5j"]
 size = Vector2(144, 216)
+
+[sub_resource type="Resource" id="Resource_olfje"]
+script = ExtResource("10_vth4y")
+metadata/_custom_type_script = "uid://b88l0j4r1o4s4"
 
 [node name="Card" type="Node2D" unique_id=1649731477 node_paths=PackedStringArray("input", "board_presence", "stats", "mutations", "card_visuals_root", "card_feedback", "attack")]
 script = ExtResource("1_hdbik")
@@ -59,11 +66,12 @@ script = ExtResource("5_olfje")
 
 [node name="Actions" type="Node" parent="." unique_id=857836663]
 
-[node name="Attack" type="Node" parent="Actions" unique_id=1376954352 node_paths=PackedStringArray("animation_runner", "target_resolver", "attack_sequencer")]
+[node name="Attack" type="Node" parent="Actions" unique_id=1376954352 node_paths=PackedStringArray("animation_runner", "target_resolver")]
 script = ExtResource("8_vth4y")
 animation_runner = NodePath("AttackAnimationRunner")
 target_resolver = NodePath("AttackTargetResolver")
-attack_sequencer = NodePath("AttackSequencer")
+enable_debug_key = null
+debug_key = null
 
 [node name="AttackAnimationRunner" type="Node" parent="Actions/Attack" unique_id=1122768788 node_paths=PackedStringArray("animated_target")]
 script = ExtResource("9_r5dqq")
@@ -81,17 +89,28 @@ right_furthest_attack_rotation_degrees = 20.0
 [node name="AttackTargetResolver" type="Node" parent="Actions/Attack" unique_id=1783246087]
 script = ExtResource("10_opxhd")
 
-[node name="AttackSequencer" type="Node" parent="Actions/Attack" unique_id=2068513187]
+[node name="AttackSequenceBuilder" type="Node" parent="Actions/Attack" unique_id=2068513187]
 script = ExtResource("11_iynnv")
 
 [node name="Hurt" type="Node" parent="Actions" unique_id=1957973461]
 
 [node name="Death" type="Node" parent="Actions" unique_id=1463626010]
 
-[node name="CardFeedback" type="Node" parent="." unique_id=824411320 node_paths=PackedStringArray("card", "shadow_feedback")]
+[node name="Debug" type="Node" parent="." unique_id=445916254]
+
+[node name="AttackDebug" type="Node" parent="Debug" unique_id=1269161084 node_paths=PackedStringArray("attack")]
+script = ExtResource("9_8l6ss")
+attack = NodePath("../../Actions/Attack")
+
+[node name="CardFeedback" type="Node" parent="." unique_id=824411320 node_paths=PackedStringArray("card", "position_feedback", "scale_feedback", "shadow_feedback")]
 script = ExtResource("8_nau7p")
 card = NodePath("..")
+feedback_database = SubResource("Resource_olfje")
+position_feedback = NodePath("PositionFeedback")
+scale_feedback = NodePath("ScaleFeedback")
 shadow_feedback = NodePath("ShadowFeedback")
+enable_debug_key = null
+debug_feedback_key = null
 
 [node name="PositionFeedback" type="Node" parent="CardFeedback" unique_id=659627164]
 script = ExtResource("9_hdbik")
