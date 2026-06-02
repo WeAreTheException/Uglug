@@ -5,10 +5,12 @@ signal attack_order_finished
 
 @export var slots_root: SlotsRoot
 
-@export var enable_debug_key: bool = true
-@export var debug_key: Key = KEY_T
+@export var enable_debug_keys: bool = true
+@export var player_debug_key: Key = KEY_P
+@export var opponent_debug_key: Key = KEY_O
 
-@export var attacking_owner: SlotRow.SlotOwner = SlotRow.SlotOwner.PLAYER
+@export var player_left_to_right: bool = true
+@export var opponent_left_to_right: bool = true
 
 var is_running := false
 
@@ -19,12 +21,15 @@ func _ready() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if not enable_debug_key:
+	if not enable_debug_keys:
 		return
 
 	if event is InputEventKey and event.pressed and not event.echo:
-		if event.keycode == debug_key:
-			run_attack_order(attacking_owner)
+		if event.keycode == player_debug_key:
+			run_attack_order(SlotRow.SlotOwner.PLAYER)
+
+		if event.keycode == opponent_debug_key:
+			run_attack_order(SlotRow.SlotOwner.OPPONENT)
 
 
 func run_attack_order(owner: SlotRow.SlotOwner) -> void:
@@ -38,7 +43,7 @@ func run_attack_order(owner: SlotRow.SlotOwner) -> void:
 	is_running = true
 
 	var entries := _build_attack_entries(owner)
-	_sort_attack_entries(entries)
+	_sort_attack_entries(entries, owner)
 
 	for entry in entries:
 		var card := entry["card"] as CardRoot
@@ -82,7 +87,12 @@ func _build_attack_entries(owner: SlotRow.SlotOwner) -> Array[Dictionary]:
 	return entries
 
 
-func _sort_attack_entries(entries: Array[Dictionary]) -> void:
+func _sort_attack_entries(entries: Array[Dictionary], owner: SlotRow.SlotOwner) -> void:
+	var left_to_right := player_left_to_right
+
+	if owner == SlotRow.SlotOwner.OPPONENT:
+		left_to_right = opponent_left_to_right
+
 	entries.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
 		var a_priority: int = a["priority"]
 		var b_priority: int = b["priority"]
@@ -93,7 +103,10 @@ func _sort_attack_entries(entries: Array[Dictionary]) -> void:
 		var a_slot_index: int = a["slot_index"]
 		var b_slot_index: int = b["slot_index"]
 
-		return a_slot_index < b_slot_index
+		if left_to_right:
+			return a_slot_index < b_slot_index
+
+		return a_slot_index > b_slot_index
 	)
 
 
