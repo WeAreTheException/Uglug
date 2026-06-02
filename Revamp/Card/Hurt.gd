@@ -3,6 +3,9 @@ class_name Hurt
 
 @export var animation_runner: HurtAnimationRunner
 
+@export var change_health_on_hurt: bool = true
+@export var default_damage_amount: int = 1
+
 @export var enable_debug_key: bool = true
 @export var debug_key: Key = KEY_H
 
@@ -34,15 +37,18 @@ func _input(event: InputEvent) -> void:
 
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.keycode == debug_key:
-			play_hurt()
+			play_hurt(default_damage_amount)
 
 
-func play_hurt() -> void:
+func play_hurt(amount: int = 1) -> void:
 	if is_playing:
 		return
 
 	if card == null:
 		return
+
+	if change_health_on_hurt and card.stats != null:
+		card.stats.take_damage(amount)
 
 	if animation_runner == null:
 		print("hurt blocked: animation_runner missing")

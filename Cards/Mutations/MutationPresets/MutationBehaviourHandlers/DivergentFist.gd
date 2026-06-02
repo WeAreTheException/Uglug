@@ -2,14 +2,14 @@ extends Mutation
 class_name DivergentFist
 
 
-func mutation_attack(card: Card) -> bool:
-	if card == null:
-		return false
+func modify_attack_sequence(
+	_runtime: MutationRuntime,
+	sequence: Array[String]
+) -> Array[String]:
+	var new_sequence: Array[String] = []
 
-	if card.attack_handler == null:
-		return true
+	for attack_event in sequence:
+		new_sequence.append(attack_event)
+		new_sequence.append(attack_event)
 
-	card.attack_handler.attack()
-	card.attack_handler.attack()
-
-	return true
+	return new_sequence

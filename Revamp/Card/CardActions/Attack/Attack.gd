@@ -38,10 +38,10 @@ func _input(event: InputEvent) -> void:
 
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.keycode == debug_key:
-			perform_debug_attack()
+			perform_attack()
 
 
-func perform_debug_attack() -> void:
+func perform_attack() -> void:
 	if is_attacking:
 		return
 
@@ -82,24 +82,30 @@ func perform_debug_attack() -> void:
 
 		context.attacker_card = card
 		context.attacker_slot = attacker_slot
+		context.attacker_owner = slots_root.get_owner_of_slot(attacker_slot)
 
 		context.attack_event = attack_event
 
-		# Later Distant can override this.
 		context.origin_slot = attacker_slot
 
-		target_resolver.resolve_target(
-			slots_root,
-			context
-		)
+		target_resolver.resolve_target(slots_root, context)
 
 		if context.target_slot == null:
 			continue
 
-		await animation_runner.play_attack(
-			context.attacker_slot,
-			context.target_slot
-		)
+		context.target_owner = slots_root.get_owner_of_slot(context.target_slot)
+
+		await animation_runner.play_attack(context)
+
+		var target_card := context.target_slot.current_card
+
+		if target_card != null and target_card.hurt != null:
+			var damage := 1
+
+			if card.stats != null:
+				damage = card.stats.get_attack()
+
+			await target_card.hurt.play_hurt(damage)
 
 	is_attacking = false
 

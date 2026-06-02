@@ -9,23 +9,23 @@ class_name AttackAnimationRunner
 @export var forward_windup_rotation_degrees: float = -10.0
 @export var forward_attack_rotation_degrees: float = 20.0
 
-@export_category("Right Close")
-@export var right_close_windup_distance: float = 18.0
-@export var right_close_attack_distance: float = 180.0
-@export var right_close_windup_rotation_degrees: float = -8.0
-@export var right_close_attack_rotation_degrees: float = 18.0
+@export_category("Diagonal Close")
+@export var diagonal_close_windup_distance: float = 18.0
+@export var diagonal_close_attack_distance: float = 180.0
+@export var diagonal_close_windup_rotation_degrees: float = -8.0
+@export var diagonal_close_attack_rotation_degrees: float = 18.0
 
-@export_category("Right Far")
-@export var right_far_windup_distance: float = 20.0
-@export var right_far_attack_distance: float = 220.0
-@export var right_far_windup_rotation_degrees: float = -12.0
-@export var right_far_attack_rotation_degrees: float = 24.0
+@export_category("Diagonal Far")
+@export var diagonal_far_windup_distance: float = 20.0
+@export var diagonal_far_attack_distance: float = 220.0
+@export var diagonal_far_windup_rotation_degrees: float = -12.0
+@export var diagonal_far_attack_rotation_degrees: float = 24.0
 
-@export_category("Right Furthest")
-@export var right_furthest_windup_distance: float = 22.0
-@export var right_furthest_attack_distance: float = 260.0
-@export var right_furthest_windup_rotation_degrees: float = -15.0
-@export var right_furthest_attack_rotation_degrees: float = 30.0
+@export_category("Diagonal Furthest")
+@export var diagonal_furthest_windup_distance: float = 22.0
+@export var diagonal_furthest_attack_distance: float = 260.0
+@export var diagonal_furthest_windup_rotation_degrees: float = -15.0
+@export var diagonal_furthest_attack_rotation_degrees: float = 30.0
 
 @export_category("Shared Timing")
 @export var windup_time: float = 0.16
@@ -38,19 +38,31 @@ class_name AttackAnimationRunner
 @export var attack_scale: Vector2 = Vector2(1.1, 0.9)
 
 
-func play_attack(attacker_slot: Slot, target_slot: Slot) -> void:
-	if animated_target == null or attacker_slot == null or target_slot == null:
+func play_attack(context: AttackContext) -> void:
+	if animated_target == null:
 		return
 
-	var difference: int = target_slot.slot_index - attacker_slot.slot_index
+	if context == null:
+		return
+
+	if context.attacker_slot == null:
+		return
+
+	if context.target_slot == null:
+		return
+
+	var difference: int = context.target_slot.slot_index - context.attacker_slot.slot_index
 	var direction: Vector2 = _get_direction_from_difference(difference)
+
+	if context.attacker_owner == SlotRow.SlotOwner.OPPONENT:
+		direction.y *= -1.0
 
 	await _play_motion(
 		direction,
 		_get_windup_distance(difference),
 		_get_attack_distance(difference),
-		_get_windup_rotation(difference),
-		_get_attack_rotation(difference)
+		_get_windup_rotation(difference, context.attacker_owner),
+		_get_attack_rotation(difference, context.attacker_owner)
 	)
 
 
@@ -110,11 +122,11 @@ func _get_windup_distance(difference: int) -> float:
 		0:
 			return forward_windup_distance
 		1:
-			return right_close_windup_distance
+			return diagonal_close_windup_distance
 		2:
-			return right_far_windup_distance
+			return diagonal_far_windup_distance
 		3:
-			return right_furthest_windup_distance
+			return diagonal_furthest_windup_distance
 
 	return forward_windup_distance
 
@@ -124,53 +136,51 @@ func _get_attack_distance(difference: int) -> float:
 		0:
 			return forward_attack_distance
 		1:
-			return right_close_attack_distance
+			return diagonal_close_attack_distance
 		2:
-			return right_far_attack_distance
+			return diagonal_far_attack_distance
 		3:
-			return right_furthest_attack_distance
+			return diagonal_furthest_attack_distance
 
 	return forward_attack_distance
 
 
-func _get_windup_rotation(difference: int) -> float:
-	var side: float = signf(float(difference))
+func _get_windup_rotation(difference: int, attacker_owner: SlotRow.SlotOwner) -> float:
+	var side := _get_rotation_side(difference, attacker_owner)
 
 	match abs(difference):
 		0:
-			return forward_windup_rotation_degrees
+			return forward_windup_rotation_degrees * side
 		1:
-			return right_close_windup_rotation_degrees * side
+			return diagonal_close_windup_rotation_degrees * side
 		2:
-			return right_far_windup_rotation_degrees * side
+			return diagonal_far_windup_rotation_degrees * side
 		3:
-			return right_furthest_windup_rotation_degrees * side
+			return diagonal_furthest_windup_rotation_degrees * side
 
-	return forward_windup_rotation_degrees
+	return forward_windup_rotation_degrees * side
 
 
-func _get_attack_rotation(difference: int) -> float:
-	var side: float = signf(float(difference))
+func _get_attack_rotation(difference: int, attacker_owner: SlotRow.SlotOwner) -> float:
+	var side := _get_rotation_side(difference, attacker_owner)
 
 	match abs(difference):
 		0:
-			return forward_attack_rotation_degrees
+			return forward_attack_rotation_degrees * side
 		1:
-			return right_close_attack_rotation_degrees * side
+			return diagonal_close_attack_rotation_degrees * side
 		2:
-			return right_far_attack_rotation_degrees * side
+			return diagonal_far_attack_rotation_degrees * side
 		3:
-			return right_furthest_attack_rotation_degrees * side
+			return diagonal_furthest_attack_rotation_degrees * side
 
-	return forward_attack_rotation_degrees
+	return forward_attack_rotation_degrees * side
 
-func debug_play_difference(difference: int) -> void:
-	var direction: Vector2 = _get_direction_from_difference(difference)
 
-	await _play_motion(
-		direction,
-		_get_windup_distance(difference),
-		_get_attack_distance(difference),
-		_get_windup_rotation(difference),
-		_get_attack_rotation(difference)
-	)
+func _get_rotation_side(difference: int, _attacker_owner: SlotRow.SlotOwner) -> float:
+	var side: float = signf(float(difference))
+
+	if side == 0.0:
+		side = 1.0
+
+	return side

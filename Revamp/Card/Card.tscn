@@ -61,19 +61,12 @@ script = ExtResource("8_vth4y")
 animation_runner = NodePath("AttackAnimationRunner")
 target_resolver = NodePath("AttackTargetResolver")
 attack_sequencer = NodePath("AttackSequencer")
+enable_debug_key = null
+debug_key = null
 
 [node name="AttackAnimationRunner" type="Node" parent="Actions/Attack" unique_id=1122768788 node_paths=PackedStringArray("animated_target")]
 script = ExtResource("9_r5dqq")
 animated_target = NodePath("../../../Visuals/CardVisuals")
-right_close_attack_distance = 200.0
-right_close_windup_rotation_degrees = -10.0
-right_close_attack_rotation_degrees = 20.0
-right_far_attack_distance = 400.0
-right_far_windup_rotation_degrees = -10.0
-right_far_attack_rotation_degrees = 20.0
-right_furthest_attack_distance = 600.0
-right_furthest_windup_rotation_degrees = -10.0
-right_furthest_attack_rotation_degrees = 20.0
 
 [node name="AttackTargetResolver" type="Node" parent="Actions/Attack" unique_id=1783246087]
 script = ExtResource("10_opxhd")
@@ -120,8 +113,6 @@ metadata/_edit_lock_ = true
 [node name="RevenAnttVisualHandler" type="Node" parent="Visuals" unique_id=434054176]
 
 [node name="CardVisuals" parent="Visuals" unique_id=1593445486 instance=ExtResource("1_2duqk")]
-
-[node name="TitlRoot" type="Node2D" parent="Visuals" unique_id=349954330]
 
 [node name="Shadow" type="TextureRect" parent="Visuals" unique_id=2074399658]
 modulate = Color(0.029506557, 0.029506557, 0.029506557, 1)
