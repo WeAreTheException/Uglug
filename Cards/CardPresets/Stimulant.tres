@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="CardData" format=3 uid="uid://b10yu2ml8hwx2"]
+
+[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Cards/Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="1_hxlom"]
+[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="2_c7jri"]
+[ext_resource type="Texture2D" uid="uid://b8a1gr84h2iie" path="res://Art/Ants/WorkerAnt_Standalone.png" id="2_kbvvf"]
+[ext_resource type="Resource" uid="uid://cyutbyh2av6iv" path="res://Cards/Mutations/MutationPresets/SteroidDealer.tres" id="3_kbv62"]
+
+[resource]
+script = ExtResource("2_c7jri")
+name = "Stimulant"
+attack = 1
+cost = 1
+ant_texture = ExtResource("2_kbvvf")
+base_mutations = Array[ExtResource("1_hxlom")]([ExtResource("3_kbv62")])
+metadata/_custom_type_script = "uid://duslcpxrhurv8"
