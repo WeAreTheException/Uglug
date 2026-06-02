@@ -18,7 +18,6 @@ func _ready() -> void:
 
 	card.hovered.connect(_on_card_hovered)
 	card.unhovered.connect(_on_card_unhovered)
-	card.pressed.connect(_on_card_pressed)
 
 
 func set_selected(value: bool) -> void:
@@ -58,13 +57,6 @@ func _on_card_unhovered(_card: CardRoot) -> void:
 
 	if hover_feedback != null:
 		hover_feedback.play_unhover()
-
-
-func _on_card_pressed(_card: CardRoot) -> void:
-	if not _can_use_hand_feedback():
-		return
-
-	set_selected(not is_selected)
 
 
 func _can_use_hand_feedback() -> bool:

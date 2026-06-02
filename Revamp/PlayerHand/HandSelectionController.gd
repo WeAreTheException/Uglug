@@ -39,9 +39,15 @@ func select_card(card: CardRoot) -> void:
 		return
 
 	if selected_card != null:
+		if selected_card.card_feedback != null:
+			selected_card.card_feedback.set_selected(false)
+
 		card_deselected.emit(selected_card)
 
 	selected_card = card
+
+	if selected_card.card_feedback != null:
+		selected_card.card_feedback.set_selected(true)
 
 	card_selected.emit(selected_card)
 	selected_card_changed.emit(selected_card)
@@ -52,6 +58,10 @@ func deselect_current() -> void:
 		return
 
 	var old_card := selected_card
+
+	if old_card.card_feedback != null:
+		old_card.card_feedback.set_selected(false)
+
 	selected_card = null
 
 	card_deselected.emit(old_card)

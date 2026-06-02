@@ -1,15 +1,11 @@
 [gd_resource type="Resource" script_class="CardData" format=3 uid="uid://d1n1fhj8y5tq"]
 
 [ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Cards/Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="1_cnk5k"]
-[ext_resource type="Texture2D" uid="uid://qj0rq272pn56" path="res://Revamp/Giant_Sprite.png" id="2_73u0c"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="2_m35vo"]
-[ext_resource type="Resource" uid="uid://bk7bftdp5178x" path="res://Cards/Mutations/MeFirst.tres" id="3_yjp4r"]
 
 [resource]
 script = ExtResource("2_m35vo")
 name = "Initiant"
 attack = 1
 cost = 1
-ant_texture = ExtResource("2_73u0c")
-base_mutations = Array[ExtResource("1_cnk5k")]([ExtResource("3_yjp4r")])
 metadata/_custom_type_script = "uid://duslcpxrhurv8"

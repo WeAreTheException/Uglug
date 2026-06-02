@@ -3,30 +3,40 @@ class_name PlayerHandRoot
 
 signal card_added(card: CardRoot)
 signal card_removed(card: CardRoot)
-signal card_selected(card: CardRoot)
-signal card_deselected(card: CardRoot)
 signal hand_changed
 
 @export var card_scene: PackedScene
 @export var starting_cards: Array[CardData]
 
-@export var max_hand_size: int = 7
-@export var minimum_hand_size: int = 3
+@export var hand_cards_layer: Node2D
+@export var drag_layer: Node2D
 
 @export var hand_layout: Node
 
+@export var max_hand_size: int = 7
+@export var minimum_hand_size: int = 3
+
 var current_cards: Array[CardRoot] = []
-var selected_card: CardRoot = null
 
 
 func _ready() -> void:
-	print("PLAYER HAND READY")
-	print("card_scene = ", card_scene)
-	print("starting_cards = ", starting_cards.size())
-	print("hand_layout = ", hand_layout)
-
+	_validate_references()
 	spawn_starting_cards()
 	arrange_cards()
+
+
+func _validate_references() -> void:
+	if hand_cards_layer == null:
+		print("PlayerHandRoot warning: hand_cards_layer is not assigned")
+
+	if drag_layer == null:
+		print("PlayerHandRoot warning: drag_layer is not assigned")
+
+	if hand_layout == null:
+		print("PlayerHandRoot warning: hand_layout is not assigned")
+
+	if card_scene == null:
+		print("PlayerHandRoot warning: card_scene is not assigned")
 
 
 func spawn_starting_cards() -> void:
@@ -46,6 +56,10 @@ func spawn_card(data: CardData) -> CardRoot:
 		print("SPAWN BLOCKED: card_scene is null")
 		return null
 
+	if hand_cards_layer == null:
+		print("SPAWN BLOCKED: hand_cards_layer is null")
+		return null
+
 	if is_full():
 		print("SPAWN BLOCKED: hand is full")
 		return null
@@ -56,10 +70,9 @@ func spawn_card(data: CardData) -> CardRoot:
 		print("SPAWN BLOCKED: card_scene root is not CardRoot")
 		return null
 
-	add_child(card)
+	hand_cards_layer.add_child(card)
+	card.position = Vector2.ZERO
 	card.setup(data)
-
-	print("SPAWNED CARD: ", card.card_name, " at ", card.global_position)
 
 	add_card(card)
 
@@ -78,9 +91,6 @@ func add_card(card: CardRoot) -> void:
 
 	current_cards.append(card)
 
-	if not card.pressed.is_connected(_on_card_pressed):
-		card.pressed.connect(_on_card_pressed)
-
 	card_added.emit(card)
 	hand_changed.emit()
 
@@ -96,40 +106,34 @@ func remove_card(card: CardRoot) -> void:
 
 	current_cards.erase(card)
 
-	if selected_card == card:
-		clear_selected_card()
-
 	card_removed.emit(card)
 	hand_changed.emit()
 
 	arrange_cards()
 
 
-func select_card(card: CardRoot) -> void:
+func move_card_to_index(card: CardRoot, new_index: int) -> void:
 	if card == null:
 		return
 
 	if not current_cards.has(card):
 		return
 
-	if selected_card == card:
-		return
+	current_cards.erase(card)
 
-	if selected_card != null:
-		card_deselected.emit(selected_card)
+	var clamped_index := clampi(new_index, 0, current_cards.size())
+	current_cards.insert(clamped_index, card)
 
-	selected_card = card
-	card_selected.emit(selected_card)
+	hand_changed.emit()
+	arrange_cards()
 
 
-func clear_selected_card() -> void:
-	if selected_card == null:
-		return
+func get_index_of_card(card: CardRoot) -> int:
+	return current_cards.find(card)
 
-	var old_card := selected_card
-	selected_card = null
 
-	card_deselected.emit(old_card)
+func is_card_in_hand(card: CardRoot) -> bool:
+	return current_cards.has(card)
 
 
 func is_full() -> bool:
@@ -145,18 +149,8 @@ func get_cards() -> Array[CardRoot]:
 
 
 func arrange_cards() -> void:
-	print("ARRANGE CALLED. hand_layout = ", hand_layout)
-
 	if hand_layout == null:
-		print("ARRANGE BLOCKED: hand_layout is null")
 		return
 
 	if hand_layout.has_method("arrange_cards"):
-		print("ARRANGE USING HAND LAYOUT")
 		hand_layout.arrange_cards(current_cards)
-	else:
-		print("ARRANGE BLOCKED: hand_layout has no arrange_cards method")
-
-
-func _on_card_pressed(card: CardRoot) -> void:
-	select_card(card)

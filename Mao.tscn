@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://cxkinl0mu66jc"]
+
+[ext_resource type="PackedScene" uid="uid://bw8c7m7n5yuk8" path="res://Revamp/Slots/Slots.tscn" id="1_yq750"]
+[ext_resource type="PackedScene" uid="uid://1wr1e57v7trd" path="res://Revamp/PlayerHand/Player_Hand.tscn" id="2_mi1n2"]
+[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="3_d5ogx"]
+[ext_resource type="Resource" uid="uid://jd5rbexi4lr4" path="res://Cards/CardPresets/Persistant.tres" id="4_ftb0s"]
+[ext_resource type="Resource" uid="uid://kmwnulcu4tml" path="res://Cards/CardPresets/Antler.tres" id="5_ql7l1"]
+[ext_resource type="Resource" uid="uid://d1n1fhj8y5tq" path="res://Cards/CardPresets/Initiant.tres" id="6_cc2no"]
+
+[node name="Mao" type="Node2D" unique_id=550121538]
+
+[node name="Slots" parent="." unique_id=1318716624 instance=ExtResource("1_yq750")]
+position = Vector2(120, 120)
+
+[node name="PlayerHandRoot" parent="." unique_id=371738706 instance=ExtResource("2_mi1n2")]
+position = Vector2(720, 960)
+starting_cards = Array[ExtResource("3_d5ogx")]([ExtResource("4_ftb0s"), ExtResource("5_ql7l1"), ExtResource("6_cc2no")])

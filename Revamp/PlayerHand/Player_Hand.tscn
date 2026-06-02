@@ -7,25 +7,27 @@
 [ext_resource type="Script" uid="uid://d2jwgwoqd7be1" path="res://Revamp/PlayerHand/PlayerHandScripts/HandLayout.gd" id="5_02mp4"]
 [ext_resource type="Script" uid="uid://o0q47cw4mhcv" path="res://Revamp/PlayerHand/HandSelectionController.gd" id="6_7snob"]
 
-[node name="PlayerHandRoot" type="Node2D" unique_id=371738706 node_paths=PackedStringArray("hand_layout")]
+[node name="PlayerHandRoot" type="Node2D" unique_id=371738706 node_paths=PackedStringArray("hand_cards_layer", "drag_layer", "hand_layout")]
 script = ExtResource("1_sfirx")
 card_scene = ExtResource("2_o2jdk")
 starting_cards = Array[ExtResource("3_edkx2")]([ExtResource("4_02mp4")])
-hand_layout = NodePath("HandLayout")
+hand_cards_layer = NodePath("Hand_CardLayout")
+drag_layer = NodePath("Drag_Layer")
+hand_layout = NodePath("Hand_Layout")
 
-[node name="Transform" type="Node2D" parent="." unique_id=1961309861]
-position = Vector2(960, 720)
+[node name="Drag_Layer" type="Node2D" parent="." unique_id=364693775]
 
-[node name="HandCardSpawner" type="Node" parent="." unique_id=979805471]
+[node name="Hand_CardLayout" type="Node2D" parent="." unique_id=1709952561]
 
-[node name="HandCardLayout" type="Node" parent="." unique_id=576888335]
+[node name="Hand_CardSpawner" type="Node" parent="." unique_id=979805471]
 
-[node name="HandLayout" type="Node2D" parent="." unique_id=1334379553]
-position = Vector2(960, 720)
+[node name="Hand_Layout" type="Node2D" parent="." unique_id=1869482169]
 script = ExtResource("5_02mp4")
 
-[node name="HandDragController" type="Node" parent="." unique_id=1839244026]
+[node name="Hand_DragController" type="Node" parent="." unique_id=1839244026]
 
-[node name="HandSelectionController" type="Node" parent="." unique_id=1212449443 node_paths=PackedStringArray("hand")]
+[node name="Hand_SelectionController" type="Node" parent="." unique_id=1212449443 node_paths=PackedStringArray("hand")]
 script = ExtResource("6_7snob")
 hand = NodePath("..")
+
+[node name="Hand_SortController" type="Node" parent="." unique_id=447247999]
