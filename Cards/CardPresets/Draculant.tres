@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="CardData" format=3 uid="uid://b350kw1jayfdj"]
+
+[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Cards/Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="1_scbkg"]
+[ext_resource type="Texture2D" uid="uid://b8a1gr84h2iie" path="res://Art/Ants/WorkerAnt_Standalone.png" id="2_0vdqb"]
+[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="2_cmrgt"]
+[ext_resource type="Resource" uid="uid://njutef00oac8" path="res://Cards/Mutations/MutationPresets/LifeSteal.tres" id="2_vvsqe"]
+
+[resource]
+script = ExtResource("2_cmrgt")
+name = "Draculant"
+attack = 1
+ant_texture = ExtResource("2_0vdqb")
+base_mutations = Array[ExtResource("1_scbkg")]([ExtResource("2_vvsqe")])
+metadata/_custom_type_script = "uid://duslcpxrhurv8"
