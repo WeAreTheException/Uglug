@@ -110,7 +110,9 @@ func perform_attack() -> void:
 		if target_card != null and target_card.hurt != null:
 			var damage := _get_attack_damage(target_card)
 
-			await target_card.hurt.play_hurt(damage, card)
+			var actual_damage: int = await target_card.hurt.play_hurt(damage, card)
+
+			_notify_damage_dealt(target_card, actual_damage)
 
 		attack_finished.emit(context)
 
@@ -143,6 +145,30 @@ func _get_attack_damage(target_card: CardRoot) -> int:
 		)
 
 	return max(damage, 0)
+
+
+func _notify_damage_dealt(target_card: CardRoot, damage: int) -> void:
+	if damage <= 0:
+		return
+
+	if card == null:
+		return
+
+	if card.mutations == null:
+		return
+
+	for runtime in card.mutations.get_active_runtimes():
+		if runtime == null:
+			continue
+
+		if runtime.mutation == null:
+			continue
+
+		runtime.mutation.on_damage_dealt(
+			card,
+			target_card,
+			damage
+		)
 
 
 func _on_card_hovered(_card: CardRoot) -> void:
