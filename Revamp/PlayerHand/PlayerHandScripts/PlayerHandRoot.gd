@@ -107,6 +107,13 @@ func move_card_to_index(card: CardRoot, new_index: int) -> void:
 	arrange_cards()
 
 
+func sort_cards(compare_function: Callable) -> void:
+	current_cards.sort_custom(compare_function)
+
+	hand_changed.emit()
+	arrange_cards()
+
+
 func get_index_of_card(card: CardRoot) -> int:
 	return current_cards.find(card)
 
