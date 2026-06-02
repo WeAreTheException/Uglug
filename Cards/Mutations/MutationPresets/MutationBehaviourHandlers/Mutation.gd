@@ -30,6 +30,13 @@ func modify_attack_target(
 ) -> void:
 	pass
 
+func modify_incoming_damage(
+	_runtime: MutationRuntime,
+	_card: CardRoot,
+	_attacker: CardRoot,
+	damage: int
+) -> int:
+	return damage
 
 func mutation_attack(_card: CardRoot) -> bool:
 	return false

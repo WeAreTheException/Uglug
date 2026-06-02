@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="CardData" format=3 uid="uid://bckromx6ufd8m"]
+
+[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Cards/Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="1_8gjhy"]
+[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="2_ag7g0"]
+[ext_resource type="Texture2D" uid="uid://b8a1gr84h2iie" path="res://Art/Ants/WorkerAnt_Standalone.png" id="2_vs5mf"]
+[ext_resource type="Resource" uid="uid://b6afw5yomddli" path="res://Cards/Mutations/MutationPresets/Shield.tres" id="3_vs5mf"]
+
+[resource]
+script = ExtResource("2_ag7g0")
+name = "Escucheant"
+attack = 1
+health = 2
+cost = 1
+ant_texture = ExtResource("2_vs5mf")
+base_mutations = Array[ExtResource("1_8gjhy")]([ExtResource("3_vs5mf")])
+metadata/_custom_type_script = "uid://duslcpxrhurv8"

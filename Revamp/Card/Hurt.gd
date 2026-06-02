@@ -54,13 +54,21 @@ func play_hurt(
 	if card == null:
 		return
 
-	hurt_started.emit(card, amount)
+	var final_damage := amount
+
+	if trigger_damaged_mutations:
+		final_damage = _modify_incoming_damage(final_damage, attacker)
+
+	final_damage = max(final_damage, 0)
+
+	hurt_started.emit(card, final_damage)
 
 	if change_health_on_hurt and card.stats != null:
-		card.stats.take_damage(amount)
+		if final_damage > 0:
+			card.stats.take_damage(final_damage)
 
 		if trigger_damaged_mutations:
-			_notify_damaged_mutations(attacker, amount)
+			_notify_damaged_mutations(attacker, final_damage)
 
 	if animation_runner == null:
 		print("hurt blocked: animation_runner missing")
@@ -76,7 +84,33 @@ func play_hurt(
 
 	is_playing = false
 
-	hurt_finished.emit(card, amount)
+	hurt_finished.emit(card, final_damage)
+
+
+func _modify_incoming_damage(amount: int, attacker: CardRoot) -> int:
+	if card == null:
+		return amount
+
+	if card.mutations == null:
+		return amount
+
+	var result := amount
+
+	for runtime in card.mutations.get_active_runtimes():
+		if runtime == null:
+			continue
+
+		if runtime.mutation == null:
+			continue
+
+		result = runtime.mutation.modify_incoming_damage(
+			runtime,
+			card,
+			attacker,
+			result
+		)
+
+	return result
 
 
 func _notify_damaged_mutations(attacker: CardRoot, amount: int) -> void:

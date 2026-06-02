@@ -1,12 +1,12 @@
 [gd_scene format=3 uid="uid://bad0j4xjilakx"]
 
 [ext_resource type="PackedScene" uid="uid://bw8c7m7n5yuk8" path="res://Revamp/Slots/Slots.tscn" id="1_6m8xi"]
-[ext_resource type="Resource" uid="uid://dbgpqc3vdl8t" path="res://Cards/CardPresets/Duriant.tres" id="2_fqiq5"]
+[ext_resource type="Resource" uid="uid://bckromx6ufd8m" path="res://Cards/CardPresets/Escucheant.tres" id="2_4g3my"]
 [ext_resource type="Resource" uid="uid://d1n1fhj8y5tq" path="res://Cards/CardPresets/Initiant.tres" id="3_4g3my"]
 
 [node name="CardCreatorGym1" type="Node2D" unique_id=2045850218]
 
 [node name="Slots" parent="." unique_id=1318716624 instance=ExtResource("1_6m8xi")]
 position = Vector2(389, 296)
-player_slot_1_card = ExtResource("2_fqiq5")
+player_slot_1_card = ExtResource("2_4g3my")
 opponent_slot_1_card = ExtResource("3_4g3my")
