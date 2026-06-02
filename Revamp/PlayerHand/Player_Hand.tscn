@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cu8tygtobpls5" path="res://Revamp/PlayerHand/PlayerHandScripts/PlayerHandRoot.gd" id="1_sfirx"]
 [ext_resource type="PackedScene" uid="uid://5qb61nfrd521" path="res://Revamp/Card/Card.tscn" id="2_o2jdk"]
+[ext_resource type="Script" uid="uid://1trhe4hahjjw" path="res://Revamp/PlayerHand/HandDragController.gd" id="4_02mp4"]
 [ext_resource type="Script" uid="uid://d2jwgwoqd7be1" path="res://Revamp/PlayerHand/PlayerHandScripts/HandLayout.gd" id="5_02mp4"]
 [ext_resource type="Script" uid="uid://o0q47cw4mhcv" path="res://Revamp/PlayerHand/HandSelectionController.gd" id="6_7snob"]
 
@@ -11,6 +12,8 @@ card_scene = ExtResource("2_o2jdk")
 hand_cards_layer = NodePath("Hand_CardLayout")
 drag_layer = NodePath("Drag_Layer")
 hand_layout = NodePath("Hand_Layout")
+max_hand_size = null
+minimum_hand_size = null
 
 [node name="Drag_Layer" type="Node2D" parent="." unique_id=364693775]
 
@@ -20,10 +23,9 @@ hand_layout = NodePath("Hand_Layout")
 
 [node name="Hand_Layout" type="Node2D" parent="." unique_id=1869482169]
 script = ExtResource("5_02mp4")
-curve_height = 20.0
-max_rotation_degrees = 10.0
 
 [node name="Hand_DragController" type="Node" parent="." unique_id=1839244026]
+script = ExtResource("4_02mp4")
 
 [node name="Hand_SelectionController" type="Node" parent="." unique_id=1212449443 node_paths=PackedStringArray("hand")]
 script = ExtResource("6_7snob")

@@ -10,13 +10,13 @@ signal hand_changed
 
 @export var hand_cards_layer: Node2D
 @export var drag_layer: Node2D
-
-@export var hand_layout: Node
+@export var hand_layout: HandLayout
 
 @export var max_hand_size: int = 7
 @export var minimum_hand_size: int = 3
 
 var current_cards: Array[CardRoot] = []
+var layout_ignored_card: CardRoot = null
 
 
 func _ready() -> void:
@@ -49,25 +49,20 @@ func spawn_starting_cards() -> void:
 
 func spawn_card(data: CardData) -> CardRoot:
 	if data == null:
-		print("SPAWN BLOCKED: data is null")
 		return null
 
 	if card_scene == null:
-		print("SPAWN BLOCKED: card_scene is null")
 		return null
 
 	if hand_cards_layer == null:
-		print("SPAWN BLOCKED: hand_cards_layer is null")
 		return null
 
 	if is_full():
-		print("SPAWN BLOCKED: hand is full")
 		return null
 
 	var card := card_scene.instantiate() as CardRoot
 
 	if card == null:
-		print("SPAWN BLOCKED: card_scene root is not CardRoot")
 		return null
 
 	hand_cards_layer.add_child(card)
@@ -128,6 +123,31 @@ func move_card_to_index(card: CardRoot, new_index: int) -> void:
 	arrange_cards()
 
 
+func get_insert_index_from_global_x(global_x: float) -> int:
+	if hand_layout == null:
+		return current_cards.size()
+
+	if current_cards.is_empty():
+		return 0
+
+	var total_width := hand_layout.card_spacing * float(current_cards.size() - 1)
+	var start_x := -total_width / 2.0
+	var local_x := global_x - hand_layout.global_position.x
+
+	var index := int(round((local_x - start_x) / hand_layout.card_spacing))
+	return clampi(index, 0, current_cards.size() - 1)
+
+
+func set_layout_ignored_card(card: CardRoot) -> void:
+	layout_ignored_card = card
+	arrange_cards()
+
+
+func clear_layout_ignored_card() -> void:
+	layout_ignored_card = null
+	arrange_cards()
+
+
 func get_index_of_card(card: CardRoot) -> int:
 	return current_cards.find(card)
 
@@ -152,5 +172,4 @@ func arrange_cards() -> void:
 	if hand_layout == null:
 		return
 
-	if hand_layout.has_method("arrange_cards"):
-		hand_layout.arrange_cards(current_cards)
+	hand_layout.arrange_cards(current_cards, layout_ignored_card)

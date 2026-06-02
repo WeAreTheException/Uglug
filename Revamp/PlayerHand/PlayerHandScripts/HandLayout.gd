@@ -8,8 +8,10 @@ class_name HandLayout
 @export var max_rotation_degrees: float = 12.0
 @export var hand_width_reference: float = 550.0
 
+@export var normal_z_start: int = 0
 
-func arrange_cards(cards: Array[CardRoot]) -> void:
+
+func arrange_cards(cards: Array[CardRoot], ignored_card: CardRoot = null) -> void:
 	if cards.is_empty():
 		return
 
@@ -21,6 +23,11 @@ func arrange_cards(cards: Array[CardRoot]) -> void:
 
 		if card == null:
 			continue
+
+		if card == ignored_card:
+			continue
+
+		card.z_index = normal_z_start + i
 
 		var x_pos := start_x + card_spacing * i
 
