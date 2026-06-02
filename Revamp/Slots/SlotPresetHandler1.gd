@@ -21,6 +21,8 @@ func spawn_all_presets() -> void:
 
 	for slot in slots_root.opponent_slots:
 		_spawn_preset_for_slot(slot)
+	
+	slots_root.refresh_board_mutations()
 
 
 func _spawn_preset_for_slot(slot: Slot) -> void:

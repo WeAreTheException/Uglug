@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="CardData" format=3 uid="uid://b8tgum0dpv4iv"]
+
+[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Cards/Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="1_j46im"]
+[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="2_i4d0u"]
+[ext_resource type="Resource" uid="uid://qm2l2rlbwj77" path="res://Cards/Mutations/MutationPresets/Heckler.tres" id="2_n0nc2"]
+
+[resource]
+script = ExtResource("2_i4d0u")
+name = "Deterrant"
+attack = 1
+health = 3
+cost = 2
+deck_amount = 2
+base_mutations = Array[ExtResource("1_j46im")]([ExtResource("2_n0nc2")])
+metadata/_custom_type_script = "uid://duslcpxrhurv8"

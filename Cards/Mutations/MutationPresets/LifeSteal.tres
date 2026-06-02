@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Lifesteal" format=3 uid="uid://njutef00oac8"]
+
+[ext_resource type="Script" uid="uid://ceh5iwcgmycl6" path="res://Cards/Mutations/MutationPresets/MutationBehaviourHandlers/LifeSteal.gd" id="1_occ1b"]
+[ext_resource type="Texture2D" uid="uid://dysykkevjmrhp" path="res://Art/Mutations/Draculant_Sigil.PNG" id="2_a74kf"]
+
+[resource]
+script = ExtResource("1_occ1b")
+mutation_name = "Lifesteal"
+mutation_description = "On attack, gain 1HP"
+sigil_texture = ExtResource("2_a74kf")
+metadata/_custom_type_script = "uid://be8yk3djwb5oc"

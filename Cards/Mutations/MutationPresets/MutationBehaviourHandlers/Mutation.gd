@@ -30,6 +30,13 @@ func modify_attack_target(
 ) -> void:
 	pass
 
+func modify_incoming_damage(
+	_runtime: MutationRuntime,
+	_card: CardRoot,
+	_attacker: CardRoot,
+	damage: int
+) -> int:
+	return damage
 
 func mutation_attack(_card: CardRoot) -> bool:
 	return false
@@ -67,3 +74,10 @@ func get_attack_targets(
 	targets: Array[CardRoot]
 ) -> Array[CardRoot]:
 	return targets
+
+func refresh_board_effect(_runtime: MutationRuntime) -> void:
+	pass
+
+
+func on_left_board(_runtime: MutationRuntime) -> void:
+	pass
