@@ -10,8 +10,10 @@ class_name HandLayout
 
 @export var normal_z_start: int = 0
 
+var ignored_card: CardRoot = null
 
-func arrange_cards(cards: Array[CardRoot], ignored_card: CardRoot = null) -> void:
+
+func arrange_cards(cards: Array[CardRoot]) -> void:
 	if cards.is_empty():
 		return
 
@@ -45,3 +47,24 @@ func arrange_cards(cards: Array[CardRoot], ignored_card: CardRoot = null) -> voi
 
 		tween.parallel().tween_property(card, "global_position", target_position, move_time)
 		tween.parallel().tween_property(card, "rotation_degrees", rotation_deg, move_time)
+
+
+func set_ignored_card(card: CardRoot) -> void:
+	ignored_card = card
+
+
+func clear_ignored_card() -> void:
+	ignored_card = null
+
+
+func get_insert_index_from_global_x(global_x: float, cards: Array[CardRoot]) -> int:
+	if cards.is_empty():
+		return 0
+
+	var total_width := card_spacing * float(cards.size() - 1)
+	var start_x := -total_width / 2.0
+	var local_x := global_x - global_position.x
+
+	var index := int(round((local_x - start_x) / card_spacing))
+
+	return clampi(index, 0, cards.size() - 1)

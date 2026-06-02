@@ -2,6 +2,7 @@ extends Node
 class_name HandDragController
 
 @export var hand: PlayerHandRoot
+@export var hand_layout: HandLayout
 
 @export var dragged_z_index: int = 200
 @export var drag_threshold: float = 12.0
@@ -16,6 +17,9 @@ var drag_offset: Vector2 = Vector2.ZERO
 func _ready() -> void:
 	if hand == null:
 		hand = get_parent() as PlayerHandRoot
+
+	if hand != null and hand_layout == null:
+		hand_layout = hand.hand_layout
 
 	if hand == null:
 		return
@@ -43,7 +47,14 @@ func _process(_delta: float) -> void:
 	dragged_card.global_position = dragged_card.get_global_mouse_position() + drag_offset
 	dragged_card.z_index = dragged_z_index
 
-	var new_index := hand.get_insert_index_from_global_x(dragged_card.global_position.x)
+	if hand_layout == null:
+		return
+
+	var new_index := hand_layout.get_insert_index_from_global_x(
+		dragged_card.global_position.x,
+		hand.get_cards()
+	)
+
 	hand.move_card_to_index(dragged_card, new_index)
 
 
@@ -103,6 +114,9 @@ func _start_drag(card: CardRoot) -> void:
 	if hand == null:
 		return
 
+	if hand_layout == null:
+		return
+
 	if card == null:
 		return
 
@@ -110,7 +124,8 @@ func _start_drag(card: CardRoot) -> void:
 		return
 
 	dragged_card = card
-	hand.set_layout_ignored_card(card)
+	hand_layout.set_ignored_card(card)
+	hand.arrange_cards()
 
 	var saved_global_transform := card.global_transform
 
@@ -123,6 +138,12 @@ func _start_drag(card: CardRoot) -> void:
 
 
 func _finish_drag(card: CardRoot) -> void:
+	if hand == null:
+		return
+
+	if hand_layout == null:
+		return
+
 	var saved_global_transform := card.global_transform
 
 	if card.get_parent() != null:
@@ -131,4 +152,5 @@ func _finish_drag(card: CardRoot) -> void:
 	hand.hand_cards_layer.add_child(card)
 	card.global_transform = saved_global_transform
 
-	hand.clear_layout_ignored_card()
+	hand_layout.clear_ignored_card()
+	hand.arrange_cards()

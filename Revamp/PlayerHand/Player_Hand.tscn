@@ -24,6 +24,8 @@ script = ExtResource("5_02mp4")
 
 [node name="Hand_DragController" type="Node" parent="." unique_id=1839244026]
 script = ExtResource("4_02mp4")
+dragged_z_index = null
+drag_threshold = null
 
 [node name="Hand_SelectionController" type="Node" parent="." unique_id=1212449443 node_paths=PackedStringArray("hand")]
 script = ExtResource("6_7snob")

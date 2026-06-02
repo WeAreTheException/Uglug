@@ -16,7 +16,6 @@ signal hand_changed
 @export var minimum_hand_size: int = 3
 
 var current_cards: Array[CardRoot] = []
-var layout_ignored_card: CardRoot = null
 
 
 func _ready() -> void:
@@ -33,7 +32,13 @@ func spawn_starting_cards() -> void:
 
 
 func spawn_card(data: CardData) -> CardRoot:
-	if data == null or card_scene == null or hand_cards_layer == null:
+	if data == null:
+		return null
+
+	if card_scene == null:
+		return null
+
+	if hand_cards_layer == null:
 		return null
 
 	if is_full():
@@ -80,9 +85,6 @@ func remove_card(card: CardRoot) -> void:
 
 	current_cards.erase(card)
 
-	if layout_ignored_card == card:
-		layout_ignored_card = null
-
 	card_removed.emit(card)
 	hand_changed.emit()
 
@@ -102,31 +104,6 @@ func move_card_to_index(card: CardRoot, new_index: int) -> void:
 	current_cards.insert(clamped_index, card)
 
 	hand_changed.emit()
-	arrange_cards()
-
-
-func get_insert_index_from_global_x(global_x: float) -> int:
-	if hand_layout == null:
-		return current_cards.size()
-
-	if current_cards.is_empty():
-		return 0
-
-	var total_width := hand_layout.card_spacing * float(current_cards.size() - 1)
-	var start_x := -total_width / 2.0
-	var local_x := global_x - hand_layout.global_position.x
-
-	var index := int(round((local_x - start_x) / hand_layout.card_spacing))
-	return clampi(index, 0, current_cards.size() - 1)
-
-
-func set_layout_ignored_card(card: CardRoot) -> void:
-	layout_ignored_card = card
-	arrange_cards()
-
-
-func clear_layout_ignored_card() -> void:
-	layout_ignored_card = null
 	arrange_cards()
 
 
@@ -154,4 +131,4 @@ func arrange_cards() -> void:
 	if hand_layout == null:
 		return
 
-	hand_layout.arrange_cards(current_cards, layout_ignored_card)
+	hand_layout.arrange_cards(current_cards)
