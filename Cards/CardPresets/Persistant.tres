@@ -8,7 +8,7 @@
 script = ExtResource("2_w52ji")
 name = "Persistent"
 attack = 2
-cost = 2
+cost = 1
 ant_texture = ExtResource("3_mtqv4")
 base_mutations = Array[ExtResource("1_u80qt")]([null])
 metadata/_custom_type_script = "uid://duslcpxrhurv8"
