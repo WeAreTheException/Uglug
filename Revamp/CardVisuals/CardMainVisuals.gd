@@ -6,7 +6,6 @@ class_name CardMainVisuals
 @export var card_image: Sprite2D
 @export var card_shadow: Sprite2D
 @export var card_border: Sprite2D
-
 @export var card_fog: Sprite2D
 
 
@@ -14,16 +13,16 @@ func set_ant_texture(texture: Texture2D) -> void:
 	if ant_sprite == null:
 		return
 
-	ant_sprite.texture = texture
-	ant_sprite.visible = texture != null
+	if texture != null:
+		ant_sprite.texture = texture
 
 
-func set_card_texture(texture: Texture2D) -> void:
+func set_background_texture(texture: Texture2D) -> void:
 	if card_image == null:
 		return
 
-	card_image.texture = texture
-	card_image.visible = texture != null
+	if texture != null:
+		card_image.texture = texture
 
 
 func set_shadow_texture(texture: Texture2D) -> void:

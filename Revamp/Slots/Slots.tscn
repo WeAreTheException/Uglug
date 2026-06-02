@@ -3,8 +3,6 @@
 [ext_resource type="Script" uid="uid://bukeona4oyi7j" path="res://Revamp/Slots/SlotsRoot.gd" id="1_vhubw"]
 [ext_resource type="Script" uid="uid://dylxhiaox4q0u" path="res://Revamp/SlotRow.gd" id="2_2k41x"]
 [ext_resource type="Script" uid="uid://ctb0sphxjf65u" path="res://Slots/Slot.gd" id="3_iq660"]
-[ext_resource type="Resource" uid="uid://kmwnulcu4tml" path="res://Cards/CardPresets/Antler.tres" id="3_s3p7v"]
-[ext_resource type="Resource" uid="uid://d1n1fhj8y5tq" path="res://Cards/CardPresets/Initiant.tres" id="4_1gkk1"]
 [ext_resource type="Texture2D" uid="uid://bkafxhbg4kvug" path="res://Sprites/CardSlot.png" id="4_s3p7v"]
 [ext_resource type="PackedScene" uid="uid://5qb61nfrd521" path="res://Revamp/Card/Card.tscn" id="5_1gkk1"]
 [ext_resource type="Script" uid="uid://67hlpuvgnyel" path="res://Revamp/Slots/SlotPresetHandler1.gd" id="7_iq660"]
@@ -18,9 +16,6 @@ script = ExtResource("1_vhubw")
 player_row = NodePath("BoardCardsLayer/PlayerRow")
 opponent_row = NodePath("BoardCardsLayer/OpponentRow")
 card_scene = ExtResource("5_1gkk1")
-player_slot_1_card = ExtResource("4_1gkk1")
-player_slot_2_card = ExtResource("4_1gkk1")
-opponent_slot_1_card = ExtResource("3_s3p7v")
 attack_animation_layer = NodePath("AttackAnimationLayer")
 
 [node name="BoardCardsLayer" type="Node2D" parent="." unique_id=1962797662]

@@ -5,12 +5,14 @@
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="2_w52ji"]
 [ext_resource type="Resource" uid="uid://ceeskmu01vy5g" path="res://Cards/Mutations/MutationPresets/YAttack.tres" id="3_mdlpr"]
 [ext_resource type="Texture2D" uid="uid://qj0rq272pn56" path="res://Revamp/Giant_Sprite.png" id="3_sm2wd"]
+[ext_resource type="Texture2D" uid="uid://j75yocnxblk4" path="res://Art/RedBackground.png" id="4_718sv"]
 
 [resource]
 script = ExtResource("2_w52ji")
 name = "Antler"
 attack = 1
 cost = 1
+background_texture = ExtResource("4_718sv")
 ant_texture = ExtResource("3_sm2wd")
 base_mutations = Array[ExtResource("1_u80qt")]([ExtResource("3_mdlpr")])
 additional_mutations = Array[ExtResource("1_u80qt")]([ExtResource("2_sm2wd")])

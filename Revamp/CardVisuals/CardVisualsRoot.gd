@@ -33,6 +33,7 @@ func setup_from_card_data(data: CardData) -> void:
 
 	if main_visuals != null:
 		main_visuals.set_ant_texture(data.ant_texture)
+		main_visuals.set_background_texture(data.background_texture)
 
 
 func refresh_all() -> void:

@@ -7,7 +7,7 @@ class_name CardData
 @export var cost: int
 @export var worth: int = 1
 
-@export var sprite: Texture2D
+@export var background_texture: Texture2D
 @export var ant_texture: Texture2D
 
 @export var deck_amount: int = 1

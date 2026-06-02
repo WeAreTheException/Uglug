@@ -11,7 +11,10 @@
 
 [node name="Slots" parent="." unique_id=1318716624 instance=ExtResource("1_yq750")]
 position = Vector2(120, 120)
+player_slot_1_card = ExtResource("5_ql7l1")
 
 [node name="PlayerHandRoot" parent="." unique_id=371738706 instance=ExtResource("2_mi1n2")]
 position = Vector2(720, 960)
 starting_cards = Array[ExtResource("3_d5ogx")]([ExtResource("4_ftb0s"), ExtResource("5_ql7l1"), ExtResource("6_cc2no"), ExtResource("4_ftb0s"), ExtResource("5_ql7l1"), ExtResource("6_cc2no")])
+
+[node name="PhaseManager" type="Node" parent="." unique_id=1588673703]

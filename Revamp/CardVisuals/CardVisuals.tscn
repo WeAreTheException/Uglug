@@ -273,7 +273,6 @@ theme_override_colors/default_color = Color(0.16206557, 0.1620656, 0.16206557, 1
 metadata/_edit_use_anchors_ = true
 
 [node name="Cost" type="Node2D" parent="SubViewport/Visuals/StatsVisual" unique_id=954479722]
-visible = false
 
 [node name="Blood" type="Sprite2D" parent="SubViewport/Visuals/StatsVisual/Cost" unique_id=1132072044]
 z_index = 100
