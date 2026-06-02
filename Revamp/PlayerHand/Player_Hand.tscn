@@ -12,8 +12,6 @@ card_scene = ExtResource("2_o2jdk")
 hand_cards_layer = NodePath("Hand_CardLayout")
 drag_layer = NodePath("Drag_Layer")
 hand_layout = NodePath("Hand_Layout")
-max_hand_size = null
-minimum_hand_size = null
 
 [node name="Drag_Layer" type="Node2D" parent="." unique_id=364693775]
 

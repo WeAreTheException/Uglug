@@ -1,14 +1,14 @@
 extends Node
 class_name HandSelectionController
 
-signal selected_card_changed(card: CardRoot)
-signal card_selected(card: CardRoot)
-signal card_deselected(card: CardRoot)
+signal held_card_changed(card: CardRoot)
+signal card_held(card: CardRoot)
+signal card_released(card: CardRoot)
 
 @export var hand: PlayerHandRoot
-@export var selected_z_index: int = 100
+@export var held_z_index: int = 100
 
-var selected_card: CardRoot = null
+var held_card: CardRoot = null
 
 
 func _ready() -> void:
@@ -26,51 +26,56 @@ func _ready() -> void:
 		_connect_card(card)
 
 
-func select_card(card: CardRoot) -> void:
+func hold_card(card: CardRoot) -> void:
 	if card == null:
 		return
 
-	if selected_card == card:
+	if hand == null:
 		return
 
-	if selected_card != null:
-		deselect_current()
-
-	selected_card = card
-
-	if selected_card.card_feedback != null:
-		selected_card.card_feedback.set_selected(true)
-
-	selected_card.z_index = selected_z_index
-
-	card_selected.emit(selected_card)
-	selected_card_changed.emit(selected_card)
-
-
-func deselect_current() -> void:
-	if selected_card == null:
+	if not hand.is_card_in_hand(card):
 		return
 
-	var old_card := selected_card
+	if held_card == card:
+		return
+
+	release_current()
+
+	held_card = card
+
+	if held_card.card_feedback != null:
+		held_card.card_feedback.set_selected(true)
+
+	held_card.z_index = held_z_index
+
+	card_held.emit(held_card)
+	held_card_changed.emit(held_card)
+
+
+func release_current() -> void:
+	if held_card == null:
+		return
+
+	var old_card := held_card
 
 	if old_card.card_feedback != null:
 		old_card.card_feedback.set_selected(false)
 
-	selected_card = null
+	held_card = null
 
-	card_deselected.emit(old_card)
-	selected_card_changed.emit(null)
+	card_released.emit(old_card)
+	held_card_changed.emit(null)
 
 	if hand != null:
 		hand.arrange_cards()
 
 
-func has_selected_card() -> bool:
-	return selected_card != null
+func has_held_card() -> bool:
+	return held_card != null
 
 
-func get_selected_card() -> CardRoot:
-	return selected_card
+func get_held_card() -> CardRoot:
+	return held_card
 
 
 func _on_card_added(card: CardRoot) -> void:
@@ -78,13 +83,13 @@ func _on_card_added(card: CardRoot) -> void:
 
 
 func _on_card_removed(card: CardRoot) -> void:
-	if selected_card == card:
-		deselect_current()
+	if held_card == card:
+		release_current()
 
 
 func _on_hand_changed() -> void:
-	if selected_card != null:
-		selected_card.z_index = selected_z_index
+	if held_card != null:
+		held_card.z_index = held_z_index
 
 
 func _connect_card(card: CardRoot) -> void:
@@ -99,8 +104,9 @@ func _connect_card(card: CardRoot) -> void:
 
 
 func _on_card_pressed(card: CardRoot) -> void:
-	select_card(card)
+	hold_card(card)
 
 
-func _on_card_released(_card: CardRoot) -> void:
-	deselect_current()
+func _on_card_released(card: CardRoot) -> void:
+	if held_card == card:
+		release_current()

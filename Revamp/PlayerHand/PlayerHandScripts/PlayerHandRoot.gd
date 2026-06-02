@@ -20,23 +20,8 @@ var layout_ignored_card: CardRoot = null
 
 
 func _ready() -> void:
-	_validate_references()
 	spawn_starting_cards()
 	arrange_cards()
-
-
-func _validate_references() -> void:
-	if hand_cards_layer == null:
-		print("PlayerHandRoot warning: hand_cards_layer is not assigned")
-
-	if drag_layer == null:
-		print("PlayerHandRoot warning: drag_layer is not assigned")
-
-	if hand_layout == null:
-		print("PlayerHandRoot warning: hand_layout is not assigned")
-
-	if card_scene == null:
-		print("PlayerHandRoot warning: card_scene is not assigned")
 
 
 func spawn_starting_cards() -> void:
@@ -48,13 +33,7 @@ func spawn_starting_cards() -> void:
 
 
 func spawn_card(data: CardData) -> CardRoot:
-	if data == null:
-		return null
-
-	if card_scene == null:
-		return null
-
-	if hand_cards_layer == null:
+	if data == null or card_scene == null or hand_cards_layer == null:
 		return null
 
 	if is_full():
@@ -100,6 +79,9 @@ func remove_card(card: CardRoot) -> void:
 		return
 
 	current_cards.erase(card)
+
+	if layout_ignored_card == card:
+		layout_ignored_card = null
 
 	card_removed.emit(card)
 	hand_changed.emit()
