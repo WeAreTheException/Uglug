@@ -4,10 +4,12 @@ class_name HandLayout
 @export var card_spacing: float = 110.0
 @export var move_time: float = 0.15
 
+@export var curve_height: float = 40.0
+@export var max_rotation_degrees: float = 12.0
+@export var hand_width_reference: float = 550.0
+
 
 func arrange_cards(cards: Array[CardRoot]) -> void:
-	print("HAND LAYOUT ARRANGE. cards = ", cards.size(), " layout pos = ", global_position)
-
 	if cards.is_empty():
 		return
 
@@ -20,11 +22,19 @@ func arrange_cards(cards: Array[CardRoot]) -> void:
 		if card == null:
 			continue
 
-		var target_position := global_position + Vector2(start_x + card_spacing * i, 0)
+		var x_pos := start_x + card_spacing * i
 
-		print("MOVING CARD: ", card.card_name, " to ", target_position)
+		var normalized_x := x_pos / hand_width_reference
+		normalized_x = clampf(normalized_x, -1.0, 1.0)
+
+		var y_pos := -(1.0 - normalized_x * normalized_x) * curve_height
+		var rotation_deg := normalized_x * max_rotation_degrees
+
+		var target_position := global_position + Vector2(x_pos, y_pos)
 
 		var tween := card.create_tween()
 		tween.set_trans(Tween.TRANS_CUBIC)
 		tween.set_ease(Tween.EASE_OUT)
-		tween.tween_property(card, "global_position", target_position, move_time)
+
+		tween.parallel().tween_property(card, "global_position", target_position, move_time)
+		tween.parallel().tween_property(card, "rotation_degrees", rotation_deg, move_time)
