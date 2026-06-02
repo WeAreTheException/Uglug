@@ -135,3 +135,29 @@ func get_adjacent_enemy_slots(slot: Slot) -> Array[Slot]:
 		result.append(right)
 
 	return result
+
+func refresh_board_mutations() -> void:
+	var all_slots: Array[Slot] = []
+	all_slots.append_array(player_slots)
+	all_slots.append_array(opponent_slots)
+
+	for slot in all_slots:
+		if slot == null:
+			continue
+
+		var card := slot.current_card
+
+		if card == null:
+			continue
+
+		if card.mutations == null:
+			continue
+
+		for runtime in card.mutations.get_active_runtimes():
+			if runtime == null:
+				continue
+
+			if runtime.mutation == null:
+				continue
+
+			runtime.mutation.refresh_board_effect(runtime)

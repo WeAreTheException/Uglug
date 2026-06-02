@@ -74,3 +74,10 @@ func get_attack_targets(
 	targets: Array[CardRoot]
 ) -> Array[CardRoot]:
 	return targets
+
+func refresh_board_effect(_runtime: MutationRuntime) -> void:
+	pass
+
+
+func on_left_board(_runtime: MutationRuntime) -> void:
+	pass
