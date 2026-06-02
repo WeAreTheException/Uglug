@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://bad0j4xjilakx"]
+
+[ext_resource type="PackedScene" uid="uid://bw8c7m7n5yuk8" path="res://Revamp/Slots/Slots.tscn" id="1_cd5c2"]
+
+[node name="CardCreatorGym1" type="Node2D" unique_id=2045850218]
+
+[node name="Slots" parent="." unique_id=1318716624 instance=ExtResource("1_cd5c2")]
+position = Vector2(389, 296)
