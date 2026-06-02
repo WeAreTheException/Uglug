@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bt8o5l5yrmihl"
-path="res://.godot/imported/CardBackground.png-65ae51c371520c3c917d97c8b28eb017.ctex"
+uid="uid://drmdkjkno3j8e"
+path="res://.godot/imported/BlueAnt.png-7f8a269f0e3a84eef3a243f2d18b1afd.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Art/CardBackground.png"
-dest_files=["res://.godot/imported/CardBackground.png-65ae51c371520c3c917d97c8b28eb017.ctex"]
+source_file="res://Art/AntBack/BlueAnt.png"
+dest_files=["res://.godot/imported/BlueAnt.png-7f8a269f0e3a84eef3a243f2d18b1afd.ctex"]
 
 [params]
 

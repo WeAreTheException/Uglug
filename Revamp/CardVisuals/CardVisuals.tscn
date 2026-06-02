@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://cdu3ykilblant" path="res://Revamp/CardVisuals/CardVisualsRoot.gd" id="1_gy5gi"]
 [ext_resource type="Shader" uid="uid://dmiuuajh8r665" path="res://Revamp/CardVisuals/CardTilt.gdshader" id="2_4t10r"]
 [ext_resource type="Script" uid="uid://cafcxy3c8eco5" path="res://Revamp/CardVisuals/CardMainVisuals.gd" id="2_a8btx"]
-[ext_resource type="Texture2D" uid="uid://bt8o5l5yrmihl" path="res://Art/CardBackground.png" id="3_4t10r"]
+[ext_resource type="Texture2D" uid="uid://bt8o5l5yrmihl" path="res://Art/AntBack/CardBackground.png" id="3_4t10r"]
 [ext_resource type="Shader" uid="uid://b12e0umk1s7xs" path="res://Cards/Panner.gdshader" id="4_460t8"]
 [ext_resource type="Shader" uid="uid://n3l4egojry4s" path="res://Balatro.gdshader" id="5_0pq8k"]
 [ext_resource type="Shader" uid="uid://clsxlhuocr8hn" path="res://Cards/BackgroundSlide.gdshader" id="6_g780n"]
