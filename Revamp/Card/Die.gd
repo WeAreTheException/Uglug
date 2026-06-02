@@ -9,6 +9,8 @@ signal die_finished(card: CardRoot)
 @export var enable_debug_key: bool = true
 @export var debug_key: Key = KEY_D
 
+@export var free_card_after_death: bool = true
+
 var card: CardRoot = null
 
 var is_hovered := false
@@ -67,7 +69,26 @@ func play_die() -> void:
 
 	is_playing = false
 
+	_remove_card_from_board()
+
 	die_finished.emit(card)
+
+	if free_card_after_death and is_instance_valid(card):
+		card.queue_free()
+
+
+func _remove_card_from_board() -> void:
+	if card == null:
+		return
+
+	if card.board_presence != null:
+		card.board_presence.leave_slot(card)
+		return
+
+	var current_slot := card.get_current_slot()
+
+	if current_slot != null and current_slot.current_card == card:
+		current_slot.clear_card()
 
 
 func _notify_death_mutations() -> void:
