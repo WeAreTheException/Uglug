@@ -44,3 +44,30 @@ func resolve_target(
 				enemy_owner,
 				context.origin_slot.slot_index + 1
 			)
+
+	_apply_mutation_target_modifiers(context)
+
+
+func _apply_mutation_target_modifiers(
+	context: AttackContext
+) -> void:
+	if context == null:
+		return
+
+	if context.attacker_card == null:
+		return
+
+	if context.attacker_card.mutations == null:
+		return
+
+	for runtime in context.attacker_card.mutations.get_active_runtimes():
+		if runtime == null:
+			continue
+
+		if runtime.mutation == null:
+			continue
+
+		runtime.mutation.modify_attack_target(
+			runtime,
+			context
+		)

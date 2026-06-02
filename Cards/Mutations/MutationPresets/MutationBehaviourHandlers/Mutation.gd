@@ -24,6 +24,13 @@ func modify_attack_sequence(
 	return sequence
 
 
+func modify_attack_target(
+	_runtime: MutationRuntime,
+	_context: AttackContext
+) -> void:
+	pass
+
+
 func mutation_attack(_card: CardRoot) -> bool:
 	return false
 

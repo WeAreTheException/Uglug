@@ -40,10 +40,10 @@ func _input(event: InputEvent) -> void:
 
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.keycode == debug_key:
-			play_hurt(default_damage_amount)
+			play_hurt(default_damage_amount, null)
 
 
-func play_hurt(amount: int = 1) -> void:
+func play_hurt(amount: int = 1, attacker: CardRoot = null) -> void:
 	if is_playing:
 		return
 
@@ -55,6 +55,8 @@ func play_hurt(amount: int = 1) -> void:
 	if change_health_on_hurt and card.stats != null:
 		card.stats.take_damage(amount)
 
+	_notify_damaged_mutations(attacker, amount)
+
 	if animation_runner == null:
 		print("hurt blocked: animation_runner missing")
 		return
@@ -63,9 +65,34 @@ func play_hurt(amount: int = 1) -> void:
 
 	await animation_runner.play(card)
 
+	if card.stats != null and card.stats.is_dead():
+		if card.die != null:
+			await card.die.play_die()
+
 	is_playing = false
 
 	hurt_finished.emit(card, amount)
+
+
+func _notify_damaged_mutations(attacker: CardRoot, amount: int) -> void:
+	if card == null:
+		return
+
+	if card.mutations == null:
+		return
+
+	for runtime in card.mutations.get_active_runtimes():
+		if runtime == null:
+			continue
+
+		if runtime.mutation == null:
+			continue
+
+		runtime.mutation.on_damaged(
+			card,
+			attacker,
+			amount
+		)
 
 
 func _on_card_hovered(_card: CardRoot) -> void:

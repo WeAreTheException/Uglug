@@ -13,6 +13,7 @@ var card: CardRoot = null
 
 var is_hovered := false
 var is_playing := false
+var has_died := false
 
 
 func setup(source_card: CardRoot) -> void:
@@ -44,8 +45,15 @@ func play_die() -> void:
 	if is_playing:
 		return
 
+	if has_died:
+		return
+
 	if card == null:
 		return
+
+	has_died = true
+
+	_notify_death_mutations()
 
 	if animation_runner == null:
 		print("die blocked: animation_runner missing")
@@ -60,6 +68,23 @@ func play_die() -> void:
 	is_playing = false
 
 	die_finished.emit(card)
+
+
+func _notify_death_mutations() -> void:
+	if card == null:
+		return
+
+	if card.mutations == null:
+		return
+
+	for runtime in card.mutations.get_active_runtimes():
+		if runtime == null:
+			continue
+
+		if runtime.mutation == null:
+			continue
+
+		runtime.mutation.on_death(card)
 
 
 func _on_card_hovered(_card: CardRoot) -> void:
