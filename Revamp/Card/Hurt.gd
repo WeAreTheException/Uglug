@@ -43,7 +43,11 @@ func _input(event: InputEvent) -> void:
 			play_hurt(default_damage_amount, null)
 
 
-func play_hurt(amount: int = 1, attacker: CardRoot = null) -> void:
+func play_hurt(
+	amount: int = 1,
+	attacker: CardRoot = null,
+	trigger_damaged_mutations: bool = true
+) -> void:
 	if is_playing:
 		return
 
@@ -55,7 +59,8 @@ func play_hurt(amount: int = 1, attacker: CardRoot = null) -> void:
 	if change_health_on_hurt and card.stats != null:
 		card.stats.take_damage(amount)
 
-	_notify_damaged_mutations(attacker, amount)
+		if trigger_damaged_mutations:
+			_notify_damaged_mutations(attacker, amount)
 
 	if animation_runner == null:
 		print("hurt blocked: animation_runner missing")
