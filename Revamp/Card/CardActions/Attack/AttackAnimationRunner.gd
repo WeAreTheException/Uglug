@@ -37,6 +37,9 @@ class_name AttackAnimationRunner
 @export var windup_scale: Vector2 = Vector2(0.9, 1.1)
 @export var attack_scale: Vector2 = Vector2(1.1, 0.9)
 
+@export var raise_z_index_during_attack: bool = true
+@export var attack_z_index: int = 100
+
 
 func play_attack(context: AttackContext) -> void:
 	if animated_target == null:
@@ -58,15 +61,31 @@ func play_attack(context: AttackContext) -> void:
 		direction.y *= -1.0
 
 	await _play_motion(
-		direction,
-		_get_windup_distance(difference),
-		_get_attack_distance(difference),
-		_get_windup_rotation(difference, context.attacker_owner),
-		_get_attack_rotation(difference, context.attacker_owner)
-	)
+	direction,
+	_get_windup_distance(difference),
+	_get_attack_distance(difference),
+	_get_windup_rotation(difference, context.attacker_owner),
+	_get_attack_rotation(difference, context.attacker_owner),
+	context.attack_animation_layer
+)
 
 
-func _play_motion(direction: Vector2, windup_distance: float, attack_distance: float, windup_rotation_degrees: float, attack_rotation_degrees: float) -> void:
+func _play_motion(
+	direction: Vector2,
+	windup_distance: float,
+	attack_distance: float,
+	windup_rotation_degrees: float,
+	attack_rotation_degrees: float,
+	attack_animation_layer: Node2D = null
+) -> void:
+	var original_parent: Node = animated_target.get_parent()
+	var original_index: int = animated_target.get_index()
+	var original_global_transform: Transform2D = animated_target.global_transform
+
+	if attack_animation_layer != null:
+		animated_target.reparent(attack_animation_layer)
+		animated_target.global_transform = original_global_transform
+
 	var start_position: Vector2 = animated_target.position
 	var start_scale: Vector2 = animated_target.scale
 	var start_rotation: float = animated_target.rotation
@@ -95,6 +114,16 @@ func _play_motion(direction: Vector2, windup_distance: float, attack_distance: f
 	tween.parallel().tween_property(animated_target, "rotation", start_rotation, return_time)
 
 	await tween.finished
+
+	if attack_animation_layer != null and original_parent != null:
+		var return_global_transform: Transform2D = animated_target.global_transform
+		animated_target.reparent(original_parent)
+		original_parent.move_child(animated_target, original_index)
+		animated_target.global_transform = return_global_transform
+
+	animated_target.position = Vector2.ZERO
+	animated_target.scale = start_scale
+	animated_target.rotation = start_rotation
 
 
 func _get_direction_from_difference(difference: int) -> Vector2:

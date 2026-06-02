@@ -1,6 +1,10 @@
 extends Node
 class_name Attack
 
+signal attack_started(context: AttackContext)
+signal attack_hit(context: AttackContext)
+signal attack_finished(context: AttackContext)
+
 @export var animation_runner: AttackAnimationRunner
 @export var target_resolver: AttackTargetResolver
 @export var attack_sequencer: AttackSequencer
@@ -83,9 +87,9 @@ func perform_attack() -> void:
 		context.attacker_card = card
 		context.attacker_slot = attacker_slot
 		context.attacker_owner = slots_root.get_owner_of_slot(attacker_slot)
+		context.attack_animation_layer = slots_root.attack_animation_layer
 
 		context.attack_event = attack_event
-
 		context.origin_slot = attacker_slot
 
 		target_resolver.resolve_target(slots_root, context)
@@ -95,7 +99,11 @@ func perform_attack() -> void:
 
 		context.target_owner = slots_root.get_owner_of_slot(context.target_slot)
 
+		attack_started.emit(context)
+
 		await animation_runner.play_attack(context)
+
+		attack_hit.emit(context)
 
 		var target_card := context.target_slot.current_card
 
@@ -106,6 +114,8 @@ func perform_attack() -> void:
 				damage = card.stats.get_attack()
 
 			await target_card.hurt.play_hurt(damage)
+
+		attack_finished.emit(context)
 
 	is_attacking = false
 

@@ -1,6 +1,9 @@
 extends Node
 class_name Hurt
 
+signal hurt_started(card: CardRoot, damage: int)
+signal hurt_finished(card: CardRoot, damage: int)
+
 @export var animation_runner: HurtAnimationRunner
 
 @export var change_health_on_hurt: bool = true
@@ -47,6 +50,8 @@ func play_hurt(amount: int = 1) -> void:
 	if card == null:
 		return
 
+	hurt_started.emit(card, amount)
+
 	if change_health_on_hurt and card.stats != null:
 		card.stats.take_damage(amount)
 
@@ -59,6 +64,8 @@ func play_hurt(amount: int = 1) -> void:
 	await animation_runner.play(card)
 
 	is_playing = false
+
+	hurt_finished.emit(card, amount)
 
 
 func _on_card_hovered(_card: CardRoot) -> void:

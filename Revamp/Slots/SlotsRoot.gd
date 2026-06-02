@@ -19,6 +19,8 @@ signal slot_clicked(slot: Slot)
 @export var opponent_slot_3_card: CardData
 @export var opponent_slot_4_card: CardData
 
+@export var attack_animation_layer: Node2D
+
 var player_slots: Array[Slot] = []
 var opponent_slots: Array[Slot] = []
 

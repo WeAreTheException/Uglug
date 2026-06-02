@@ -10,3 +10,5 @@ var attack_event: String = ""
 var origin_slot: Slot = null
 var target_slot: Slot = null
 var target_owner: SlotRow.SlotOwner = SlotRow.SlotOwner.OPPONENT
+
+var attack_animation_layer: Node2D = null

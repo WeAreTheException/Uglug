@@ -1,6 +1,9 @@
 extends Node
 class_name Die
 
+signal die_started(card: CardRoot)
+signal die_finished(card: CardRoot)
+
 @export var animation_runner: DieAnimationRunner
 
 @export var enable_debug_key: bool = true
@@ -48,11 +51,15 @@ func play_die() -> void:
 		print("die blocked: animation_runner missing")
 		return
 
+	die_started.emit(card)
+
 	is_playing = true
 
 	await animation_runner.play(card)
 
 	is_playing = false
+
+	die_finished.emit(card)
 
 
 func _on_card_hovered(_card: CardRoot) -> void:
