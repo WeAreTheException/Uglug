@@ -1,8 +1,8 @@
 extends Node
 class_name Hand_DragController
 
-@export var dragged_z_index: int = 200
 @export var held_z_index: int = 100
+@export var dragged_z_index: int = 200
 @export var drag_threshold: float = 12.0
 
 var interaction_root: Hand_InteractionRoot = null
@@ -12,6 +12,7 @@ var dragged_card: CardRoot = null
 
 var press_mouse_position: Vector2 = Vector2.ZERO
 var drag_offset: Vector2 = Vector2.ZERO
+var last_insert_index: int = -1
 
 var drag_enabled: bool = true
 
@@ -44,6 +45,9 @@ func handle_card_pressed(card: CardRoot) -> void:
 		_set_drag_feedback(held_card, false)
 
 	held_card = card
+	dragged_card = null
+	last_insert_index = interaction_root.get_card_index(card)
+
 	press_mouse_position = card.get_global_mouse_position()
 	drag_offset = card.global_position - press_mouse_position
 
@@ -60,11 +64,16 @@ func handle_card_released(card: CardRoot) -> void:
 
 	if dragged_card == card:
 		_finish_drag(card)
+	else:
+		interaction_root.arrange_cards()
 
 	_set_drag_feedback(card, false)
 
 	held_card = null
 	dragged_card = null
+	last_insert_index = -1
+
+	interaction_root.refresh_hover_focus()
 
 
 func forget_card(card: CardRoot) -> void:
@@ -83,9 +92,7 @@ func _process(_delta: float) -> void:
 		return
 
 	if dragged_card == null:
-		var distance := held_card.get_global_mouse_position().distance_to(
-			press_mouse_position
-		)
+		var distance := held_card.get_global_mouse_position().distance_to(press_mouse_position)
 
 		if distance >= drag_threshold:
 			_start_drag(held_card)
@@ -110,17 +117,19 @@ func _update_dragged_card() -> void:
 	if interaction_root == null:
 		return
 
-	dragged_card.global_position = (
-		dragged_card.get_global_mouse_position() + drag_offset
-	)
-
+	dragged_card.global_position = dragged_card.get_global_mouse_position() + drag_offset
 	dragged_card.z_index = dragged_z_index
 
 	var new_index := interaction_root.get_insert_index_from_global_x(
 		dragged_card.global_position.x
 	)
 
+	if new_index == last_insert_index:
+		return
+
+	last_insert_index = new_index
 	interaction_root.move_card_to_index(dragged_card, new_index)
+	interaction_root.arrange_cards()
 
 
 func _finish_drag(card: CardRoot) -> void:
@@ -137,6 +146,7 @@ func _cancel_drag_state() -> void:
 
 	held_card = null
 	dragged_card = null
+	last_insert_index = -1
 
 
 func _set_drag_feedback(card: CardRoot, value: bool) -> void:

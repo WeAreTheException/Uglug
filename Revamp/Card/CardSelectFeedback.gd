@@ -48,4 +48,9 @@ func set_selected(value: bool) -> void:
 	tween.parallel().tween_property(target, "scale", final_scale, tween_time)
 
 	if shadow != null:
-		tween.parallel().tween_property(shadow, "modulate:a", final_shadow_alpha, tween_time)
+		tween.parallel().tween_property(
+			shadow,
+			"modulate:a",
+			final_shadow_alpha,
+			tween_time
+		)

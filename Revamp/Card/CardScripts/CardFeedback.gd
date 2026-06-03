@@ -5,9 +5,9 @@ class_name CardFeedback
 @export var hover_feedback: CardHoverFeedback
 @export var select_feedback: CardSelectFeedback
 
-var is_hover_focused := false
-var is_dragging := false
-var is_prime_selected := false
+var is_hover_focused: bool = false
+var is_dragging: bool = false
+var is_prime_selected: bool = false
 
 
 func _ready() -> void:
@@ -39,33 +39,34 @@ func clear_all() -> void:
 
 func _refresh() -> void:
 	if not _can_use_hand_feedback():
-		_apply_selected(false)
 		_apply_hover(false)
+		_apply_selected(false)
 		return
 
 	var should_select := is_dragging or is_prime_selected
 
-	_apply_selected(should_select)
-
 	if should_select:
-		_apply_hover(false, false)
-	else:
-		_apply_hover(is_hover_focused, true)
+		_apply_hover(false)
+		_apply_selected(true)
+		return
+
+	_apply_selected(false)
+	_apply_hover(is_hover_focused)
+
+
+func _apply_hover(value: bool) -> void:
+	if hover_feedback == null:
+		return
+
+	hover_feedback.set_enabled(value)
+
+	if value:
+		hover_feedback.play_hover()
 
 
 func _apply_selected(value: bool) -> void:
 	if select_feedback != null:
 		select_feedback.set_selected(value)
-
-
-func _apply_hover(value: bool, reset_when_disabled: bool = true) -> void:
-	if hover_feedback == null:
-		return
-
-	hover_feedback.set_enabled(value, reset_when_disabled)
-
-	if value:
-		hover_feedback.play_hover()
 
 
 func _can_use_hand_feedback() -> bool:

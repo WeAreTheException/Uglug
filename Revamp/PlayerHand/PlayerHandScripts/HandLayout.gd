@@ -10,6 +10,7 @@ enum LayoutMode {
 @export var play_layout: Hand_PlayLayout
 @export var layout_exclusion: Hand_LayoutExclusion
 @export var insert_index_resolver: Hand_InsertIndexResolver
+@export var layout_tweener: Hand_LayoutTweener
 
 var current_layout_mode: LayoutMode = LayoutMode.IDLE
 
@@ -24,11 +25,11 @@ func arrange_cards(cards: Array[CardRoot]) -> void:
 	match current_layout_mode:
 		LayoutMode.IDLE:
 			if idle_layout != null:
-				idle_layout.arrange_cards(layout_cards, global_position)
+				idle_layout.arrange_cards(layout_cards, global_position, layout_tweener)
 
 		LayoutMode.PLAY:
 			if play_layout != null:
-				play_layout.arrange_cards(layout_cards, global_position)
+				play_layout.arrange_cards(layout_cards, global_position, layout_tweener)
 
 
 func set_ignored_card(card: CardRoot) -> void:

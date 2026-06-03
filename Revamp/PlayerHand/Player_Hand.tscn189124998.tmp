@@ -49,13 +49,12 @@ sacrifice_selection = NodePath("Hand_SacrificeSelection")
 [node name="Hand_CardSpawner" type="Node" parent="." unique_id=979805471]
 script = ExtResource("3_ei7ej")
 
-[node name="Hand_Layout" type="Node2D" parent="." unique_id=1869482169 node_paths=PackedStringArray("idle_layout", "play_layout", "layout_exclusion", "insert_index_resolver", "layout_tweener")]
+[node name="Hand_Layout" type="Node2D" parent="." unique_id=1869482169 node_paths=PackedStringArray("idle_layout", "play_layout", "layout_exclusion", "insert_index_resolver")]
 script = ExtResource("5_02mp4")
 idle_layout = NodePath("Hand_IdleLayout")
 play_layout = NodePath("Hand_PlayLayout")
 layout_exclusion = NodePath("Hand_LayoutExclusion")
 insert_index_resolver = NodePath("Hand_InsertIndexResolver")
-layout_tweener = NodePath("Hand_LayoutTweener")
 
 [node name="Hand_IdleLayout" type="Node2D" parent="Hand_Layout" unique_id=1708688104]
 script = ExtResource("5_byk4v")
@@ -90,11 +89,8 @@ script = ExtResource("12_minj7")
 [node name="Hand_SacrificeState" type="Node" parent="Hand_StateMachine" unique_id=746739850]
 script = ExtResource("13_ag06q")
 
-[node name="Hand_InteractionRoot" type="Node" parent="." unique_id=1490631773 node_paths=PackedStringArray("input_router", "hover_focus", "card_layer_mover", "drag_controller", "prime_controller")]
+[node name="Hand_InteractionRoot" type="Node" parent="." unique_id=1490631773 node_paths=PackedStringArray("drag_controller", "prime_controller")]
 script = ExtResource("14_vlybu")
-input_router = NodePath("Hand_InputRouter")
-hover_focus = NodePath("Hand_HoverFocus")
-card_layer_mover = NodePath("Hand_CardLayerMover")
 drag_controller = NodePath("Hand_DragController")
 prime_controller = NodePath("../Hand_PrimeController")
 

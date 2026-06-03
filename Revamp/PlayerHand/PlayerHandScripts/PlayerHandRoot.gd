@@ -54,13 +54,7 @@ func _setup_spawner() -> void:
 	if card_spawner == null:
 		return
 
-	card_spawner.configure(
-		card_scene,
-		starting_cards,
-		hand_card_layer,
-		max_hand_size,
-		minimum_hand_size
-	)
+	card_spawner.configure(card_scene, starting_cards, hand_card_layer, max_hand_size, minimum_hand_size)
 
 	card_spawner.card_added.connect(_on_card_added)
 	card_spawner.card_removed.connect(_on_card_removed)
@@ -106,13 +100,7 @@ func _connect_external_buttons() -> void:
 
 
 func _connect_signal(source: Object, signal_name: StringName, target: Callable) -> void:
-	if source == null:
-		return
-
-	if not source.has_signal(signal_name):
-		return
-
-	if not source.is_connected(signal_name, target):
+	if source != null and source.has_signal(signal_name) and not source.is_connected(signal_name, target):
 		source.connect(signal_name, target)
 
 
@@ -149,13 +137,8 @@ func request_sort_by_mutation_count() -> void:
 
 
 func request_sacrifice() -> void:
-	if sacrifice_selection == null:
-		return
-
-	sacrifice_requested.emit(
-		get_primed_card(),
-		sacrifice_selection.get_selected_cards()
-	)
+	if sacrifice_selection != null:
+		sacrifice_requested.emit(get_primed_card(), sacrifice_selection.get_selected_cards())
 
 
 func enter_idle_state() -> void:
@@ -180,13 +163,6 @@ func get_primed_card() -> CardRoot:
 	return interaction_root.get_primed_card()
 
 
-func get_cards() -> Array[CardRoot]:
-	if card_spawner == null:
-		return []
-
-	return card_spawner.get_cards()
-
-
 func _on_card_added(card: CardRoot) -> void:
 	card_added.emit(card)
 
@@ -198,6 +174,10 @@ func _on_card_removed(card: CardRoot) -> void:
 func _on_hand_changed() -> void:
 	hand_changed.emit()
 	arrange_cards()
+
+	if interaction_root != null:
+		interaction_root.refresh_hover_focus()
+
 	_emit_prime_state()
 
 

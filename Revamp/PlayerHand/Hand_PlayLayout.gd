@@ -8,7 +8,11 @@ class_name Hand_PlayLayout
 @export var normal_z_start: int = 0
 
 
-func arrange_cards(cards: Array[CardRoot], anchor_global_position: Vector2) -> void:
+func arrange_cards(
+	cards: Array[CardRoot],
+	anchor_global_position: Vector2,
+	layout_tweener: Hand_LayoutTweener
+) -> void:
 	if cards.is_empty():
 		return
 
@@ -22,25 +26,27 @@ func arrange_cards(cards: Array[CardRoot], anchor_global_position: Vector2) -> v
 			continue
 
 		var x_pos := start_x + card_spacing * i
+		var target_position := anchor_global_position + Vector2(x_pos, 0.0)
 
-		_apply_card_layout(
-			card,
-			anchor_global_position + Vector2(x_pos, 0.0),
-			normal_z_start + i
-		)
+		if layout_tweener != null:
+			layout_tweener.tween_card(
+				card,
+				target_position,
+				0.0,
+				target_scale,
+				normal_z_start + i,
+				move_time
+			)
+		else:
+			_apply_card_immediate(card, target_position, normal_z_start + i)
 
 
-func _apply_card_layout(
+func _apply_card_immediate(
 	card: CardRoot,
 	target_position: Vector2,
 	z_value: int
 ) -> void:
 	card.z_index = z_value
-
-	var tween := card.create_tween()
-	tween.set_trans(Tween.TRANS_CUBIC)
-	tween.set_ease(Tween.EASE_OUT)
-
-	tween.parallel().tween_property(card, "global_position", target_position, move_time)
-	tween.parallel().tween_property(card, "rotation_degrees", 0.0, move_time)
-	tween.parallel().tween_property(card, "scale", target_scale, move_time)
+	card.global_position = target_position
+	card.rotation_degrees = 0.0
+	card.scale = target_scale
