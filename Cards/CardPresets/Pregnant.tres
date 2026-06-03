@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="CardData" format=3 uid="uid://mnht3u87f5og"]
+
+[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Cards/Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="1_54sm2"]
+[ext_resource type="Texture2D" uid="uid://cpgvdfdrt7v4o" path="res://Art/Ants/Pregnant.png" id="2_3ny8f"]
+[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="2_mr0ff"]
+[ext_resource type="Resource" uid="uid://b4tpqnugaguvu" path="res://Cards/Mutations/MutationPresets/BabyMaker.tres" id="3_3ny8f"]
+
+[resource]
+script = ExtResource("2_mr0ff")
+name = "Pregnant"
+health = 2
+cost = 1
+ant_texture = ExtResource("2_3ny8f")
+base_mutations = Array[ExtResource("1_54sm2")]([ExtResource("3_3ny8f")])
+metadata/_custom_type_script = "uid://duslcpxrhurv8"
