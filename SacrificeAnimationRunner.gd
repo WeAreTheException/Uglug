@@ -12,7 +12,7 @@ class_name SacrificeAnimationRunner
 @export var random_start_delay_max: float = 0.12
 
 var base_position: Vector2 = Vector2.ZERO
-var has_base_values := false
+var has_base_values: bool = false
 
 var shake_tween: Tween = null
 var delay_tween: Tween = null
@@ -71,7 +71,7 @@ func _start_delayed_shake(
 
 	delay_tween = create_tween()
 	delay_tween.tween_interval(random_delay)
-	delay_tween.tween_callback(func():
+	delay_tween.tween_callback(func() -> void:
 		_start_shake_loop(target, shake_distance, shake_time)
 	)
 
