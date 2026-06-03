@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="CardData" format=3 uid="uid://2d6xo4jns8it"]
+
+[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Cards/Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="1_oypj7"]
+[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="2_1hbjw"]
+
+[resource]
+script = ExtResource("2_1hbjw")
+name = "BOB"
+attack = 3
+cost = 2
+deck_amount = 2
+metadata/_custom_type_script = "uid://duslcpxrhurv8"

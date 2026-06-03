@@ -12,5 +12,6 @@ attack = 1
 health = 2
 cost = 1
 ant_texture = ExtResource("2_ktjsc")
+deck_amount = 2
 base_mutations = Array[ExtResource("1_1tbc1")]([ExtResource("2_gigdl")])
 metadata/_custom_type_script = "uid://duslcpxrhurv8"

@@ -10,5 +10,6 @@ script = ExtResource("2_cmrgt")
 name = "Draculant"
 attack = 1
 ant_texture = ExtResource("2_0vdqb")
+deck_amount = 2
 base_mutations = Array[ExtResource("1_scbkg")]([ExtResource("2_vvsqe")])
 metadata/_custom_type_script = "uid://duslcpxrhurv8"
