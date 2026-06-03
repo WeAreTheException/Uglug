@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://c0cpgrqgl3a0d"]
+
+[ext_resource type="Script" uid="uid://bi12hqvmd4mg7" path="res://PlayerHandButtonRoot.gd" id="1_slxr1"]
+
+[node name="PlayerHandButtons" type="Node2D" unique_id=1099949362 node_paths=PackedStringArray("prime_button")]
+script = ExtResource("1_slxr1")
+prime_button = NodePath("Prime")
+
+[node name="Prime" type="Button" parent="." unique_id=1394895957]
+offset_left = -120.0
+offset_top = -36.0
+offset_right = 120.0
+offset_bottom = 36.0
+text = "Prime"
+
+[node name="Prime2" type="Button" parent="." unique_id=1352882803]
+offset_left = -120.0
+offset_top = 48.0
+offset_right = 120.0
+offset_bottom = 120.0
+text = "Sacrifice"

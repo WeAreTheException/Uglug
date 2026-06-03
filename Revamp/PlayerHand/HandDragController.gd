@@ -13,6 +13,15 @@ var dragged_card: CardRoot = null
 var press_mouse_position: Vector2 = Vector2.ZERO
 var drag_offset: Vector2 = Vector2.ZERO
 
+var drag_enabled := true
+
+
+func set_drag_enabled(value: bool) -> void:
+	drag_enabled = value
+
+	if not drag_enabled:
+		_cancel_drag_state()
+
 
 func _ready() -> void:
 	if hand == null:
@@ -32,6 +41,9 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
+	if not drag_enabled:
+		return
+
 	if held_card == null:
 		return
 
@@ -82,6 +94,9 @@ func _connect_card(card: CardRoot) -> void:
 
 
 func _on_card_pressed(card: CardRoot) -> void:
+	if not drag_enabled:
+		return
+
 	if hand == null:
 		return
 
@@ -154,3 +169,11 @@ func _finish_drag(card: CardRoot) -> void:
 
 	hand_layout.clear_ignored_card()
 	hand.arrange_cards()
+
+
+func _cancel_drag_state() -> void:
+	if dragged_card != null:
+		_finish_drag(dragged_card)
+
+	held_card = null
+	dragged_card = null

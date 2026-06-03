@@ -1,18 +1,23 @@
 [gd_scene format=3 uid="uid://1wr1e57v7trd"]
 
 [ext_resource type="Script" uid="uid://cu8tygtobpls5" path="res://Revamp/PlayerHand/PlayerHandScripts/PlayerHandRoot.gd" id="1_sfirx"]
-[ext_resource type="PackedScene" uid="uid://5qb61nfrd521" path="res://Revamp/Card/Card.tscn" id="2_o2jdk"]
+[ext_resource type="PackedScene" uid="uid://5qb61nfrd521" path="res://Revamp/Card/Card.tscn" id="2_0ixd0"]
 [ext_resource type="Script" uid="uid://1trhe4hahjjw" path="res://Revamp/PlayerHand/HandDragController.gd" id="4_02mp4"]
 [ext_resource type="Script" uid="uid://d2jwgwoqd7be1" path="res://Revamp/PlayerHand/PlayerHandScripts/HandLayout.gd" id="5_02mp4"]
 [ext_resource type="Script" uid="uid://cmkraotvrlljk" path="res://Revamp/PlayerHand/HandSortController.gd" id="6_0ixd0"]
 [ext_resource type="Script" uid="uid://o0q47cw4mhcv" path="res://Revamp/PlayerHand/HandSelectionController.gd" id="6_7snob"]
+[ext_resource type="Script" uid="uid://burlohwf87mbm" path="res://Revamp/PlayerHand/HandModeController.gd" id="6_lmw24"]
+[ext_resource type="Script" uid="uid://q7ps8fi8b23k" path="res://Revamp/PlayerHand/HandPrimeController.gd" id="8_lmw24"]
 
-[node name="PlayerHandRoot" type="Node2D" unique_id=371738706 node_paths=PackedStringArray("hand_cards_layer", "drag_layer", "hand_layout")]
+[node name="PlayerHandRoot" type="Node2D" unique_id=371738706 node_paths=PackedStringArray("hand_cards_layer", "drag_layer", "hand_layout", "hand_mode_controller", "hand_selection_controller", "hand_prime_controller")]
 script = ExtResource("1_sfirx")
-card_scene = ExtResource("2_o2jdk")
+card_scene = ExtResource("2_0ixd0")
 hand_cards_layer = NodePath("Hand_CardLayout")
 drag_layer = NodePath("Drag_Layer")
 hand_layout = NodePath("Hand_Layout")
+hand_mode_controller = NodePath("HandModeController")
+hand_selection_controller = NodePath("Hand_SelectionController")
+hand_prime_controller = NodePath("HandPrimeController")
 
 [node name="Drag_Layer" type="Node2D" parent="." unique_id=364693775]
 
@@ -23,10 +28,10 @@ hand_layout = NodePath("Hand_Layout")
 [node name="Hand_Layout" type="Node2D" parent="." unique_id=1869482169]
 script = ExtResource("5_02mp4")
 
-[node name="Hand_DragController" type="Node" parent="." unique_id=1839244026]
+[node name="Hand_DragController" type="Node" parent="." unique_id=1839244026 node_paths=PackedStringArray("hand", "hand_layout")]
 script = ExtResource("4_02mp4")
-dragged_z_index = null
-drag_threshold = null
+hand = NodePath("..")
+hand_layout = NodePath("../Hand_Layout")
 
 [node name="Hand_SelectionController" type="Node" parent="." unique_id=1212449443 node_paths=PackedStringArray("hand")]
 script = ExtResource("6_7snob")
@@ -35,21 +40,16 @@ hand = NodePath("..")
 [node name="Hand_SortController" type="Node" parent="." unique_id=447247999 node_paths=PackedStringArray("hand", "cost_sort_button", "mutation_sort_button")]
 script = ExtResource("6_0ixd0")
 hand = NodePath("..")
-cost_sort_button = NodePath("../Cost")
-mutation_sort_button = NodePath("../Mutation")
+cost_sort_button = NodePath("")
+mutation_sort_button = NodePath("")
 
-[node name="Mutation" type="Button" parent="." unique_id=50887050]
-offset_left = -144.0
-offset_top = 72.0
-offset_right = -64.0
-offset_bottom = 115.0
-text = "Mutation
-"
+[node name="HandModeController" type="Node" parent="." unique_id=1376543797 node_paths=PackedStringArray("hand", "hand_layout", "hand_drag_controller")]
+script = ExtResource("6_lmw24")
+hand = NodePath("..")
+hand_layout = NodePath("../Hand_Layout")
+hand_drag_controller = NodePath("../Hand_DragController")
 
-[node name="Cost" type="Button" parent="." unique_id=170662283]
-offset_left = 60.0
-offset_top = 72.0
-offset_right = 140.0
-offset_bottom = 115.0
-text = "Cost
-"
+[node name="HandPrimeController" type="Node" parent="." unique_id=1907000838 node_paths=PackedStringArray("hand", "selection_controller")]
+script = ExtResource("8_lmw24")
+hand = NodePath("..")
+selection_controller = NodePath("../Hand_SelectionController")
