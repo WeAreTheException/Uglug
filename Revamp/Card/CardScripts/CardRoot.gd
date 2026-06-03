@@ -63,6 +63,9 @@ func setup_actions() -> void:
 	if die != null:
 		die.setup(self)
 
+	if sacrifice != null:
+		sacrifice.setup(self)
+
 
 func set_hover_focused(value: bool) -> void:
 	if card_feedback != null:
@@ -97,7 +100,7 @@ func stop_sacrifice_anticipation() -> void:
 
 func set_sacrifice_selected(value: bool) -> void:
 	if sacrifice != null:
-		sacrifice.set_selected_for_sacrifice(value)
+		sacrifice.set_marked_for_sacrifice(value)
 
 
 func get_sacrifice_worth() -> int:
