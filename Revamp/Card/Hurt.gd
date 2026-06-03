@@ -5,6 +5,7 @@ signal hurt_started(card: CardRoot, damage: int)
 signal hurt_finished(card: CardRoot, damage: int)
 
 @export var animation_runner: HurtAnimationRunner
+@export var feedback_handler: HurtFeedbackHandler
 
 @export var change_health_on_hurt: bool = true
 @export var default_damage_amount: int = 1
@@ -65,6 +66,9 @@ func play_hurt(
 		return 0
 
 	hurt_started.emit(card, final_damage)
+
+	if feedback_handler != null:
+		feedback_handler.play(card)
 
 	if change_health_on_hurt and card.stats != null:
 		card.stats.take_damage(final_damage)
