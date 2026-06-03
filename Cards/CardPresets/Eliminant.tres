@@ -11,5 +11,6 @@ name = "Eliminant"
 attack = 1
 cost = 2
 ant_texture = ExtResource("2_rwmwq")
+deck_amount = 2
 base_mutations = Array[ExtResource("1_40dth")]([ExtResource("3_rwmwq")])
 metadata/_custom_type_script = "uid://duslcpxrhurv8"

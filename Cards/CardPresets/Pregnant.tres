@@ -11,5 +11,6 @@ name = "Pregnant"
 health = 2
 cost = 1
 ant_texture = ExtResource("2_3ny8f")
+deck_amount = 2
 base_mutations = Array[ExtResource("1_54sm2")]([ExtResource("3_3ny8f")])
 metadata/_custom_type_script = "uid://duslcpxrhurv8"

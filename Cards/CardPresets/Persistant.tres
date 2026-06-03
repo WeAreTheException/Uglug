@@ -10,5 +10,6 @@ name = "Persistent"
 attack = 2
 cost = 1
 ant_texture = ExtResource("3_mtqv4")
+deck_amount = 2
 base_mutations = Array[ExtResource("1_u80qt")]([null])
 metadata/_custom_type_script = "uid://duslcpxrhurv8"
