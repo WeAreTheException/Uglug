@@ -13,12 +13,12 @@
 [ext_resource type="Script" uid="uid://csrjk2fx52jll" path="res://Revamp/Card/CardActions/Attack/AttackTargetResolver.gd" id="10_opxhd"]
 [ext_resource type="Script" uid="uid://cf4ka1vcw1057" path="res://Revamp/Card/ShadowFeedback.gd" id="11_c3ju1"]
 [ext_resource type="Script" uid="uid://dtplnofbjxace" path="res://Revamp/Card/CardActions/Attack/AttackSequenceBuilder.gd" id="11_iynnv"]
-[ext_resource type="Script" path="res://Revamp/Card/HurtFeedbackHandler.gd" id="12_mvgl2"]
-[ext_resource type="Script" path="res://Revamp/Card/HurtAudio.gd" id="12_q2sni"]
+[ext_resource type="Script" uid="uid://bffk1pwgwmawi" path="res://Revamp/Card/HurtFeedbackHandler.gd" id="12_mvgl2"]
+[ext_resource type="Script" uid="uid://r5c1gxcq78os" path="res://Revamp/Card/HurtAudio.gd" id="12_q2sni"]
 [ext_resource type="Script" uid="uid://behvtd6jpqaj" path="res://Revamp/Card/Hurt.gd" id="12_r5dqq"]
-[ext_resource type="Script" path="res://Revamp/Card/HurtFlash.gd" id="13_mvgl2"]
+[ext_resource type="Script" uid="uid://3q7tforlyo6a" path="res://Revamp/Card/HurtFlash.gd" id="13_mvgl2"]
 [ext_resource type="Script" uid="uid://5ajbnfxgx2dx" path="res://Revamp/Card/HurtAnimationRunner.gd" id="13_opxhd"]
-[ext_resource type="Script" path="res://Revamp/Card/HurtSprite.gd" id="14_1m3h3"]
+[ext_resource type="Script" uid="uid://c73fc68wlpcah" path="res://Revamp/Card/HurtSprite.gd" id="14_1m3h3"]
 [ext_resource type="Script" uid="uid://i1xyctx2i65u" path="res://Revamp/Card/Die.gd" id="14_fx0xs"]
 [ext_resource type="AudioStream" uid="uid://dm1lem708ohqr" path="res://Audio/Placeholder SFX/card_attack_damage.wav" id="14_vnay7"]
 [ext_resource type="Script" uid="uid://crfcylmn2r5gf" path="res://Revamp/Card/DieAnimationRunner.gd" id="15_jgw7k"]
@@ -103,12 +103,14 @@ hurt_sfx = ExtResource("14_vnay7")
 script = ExtResource("13_mvgl2")
 visuals_root = NodePath("../../../../Visuals/CardVisuals")
 
-[node name="HurtSprite" type="Node" parent="Actions/Hurt/HurtFeedbackHandler" unique_id=1287537828 node_paths=PackedStringArray("sprite")]
+[node name="HurtSprite" type="Node" parent="Actions/Hurt/HurtFeedbackHandler" unique_id=1287537828 node_paths=PackedStringArray("sprite", "anchor")]
 script = ExtResource("14_1m3h3")
 sprite = NodePath("Sprite2D")
+hurt_texture = ExtResource("17_7vw44")
+anchor = NodePath("../../../../Visuals/CardVisuals/FeedbackSpriteAnchor")
+sprite_size = Vector2(150, 232.5)
 
 [node name="Sprite2D" type="Sprite2D" parent="Actions/Hurt/HurtFeedbackHandler/HurtSprite" unique_id=2136417742]
-visible = false
 position = Vector2(9.536743e-07, 0)
 scale = Vector2(0.12312501, 0.12312499)
 texture = ExtResource("17_7vw44")
@@ -161,6 +163,8 @@ metadata/_edit_lock_ = true
 [node name="RevenAnttVisualHandler" type="Node" parent="Visuals" unique_id=434054176]
 
 [node name="CardVisuals" parent="Visuals" unique_id=1593445486 instance=ExtResource("1_2duqk")]
+
+[node name="FeedbackSpriteAnchor" type="Node2D" parent="Visuals/CardVisuals" unique_id=626068744]
 
 [node name="Shadow" type="TextureRect" parent="Visuals" unique_id=2074399658]
 modulate = Color(0.029506557, 0.029506557, 0.029506557, 1)
