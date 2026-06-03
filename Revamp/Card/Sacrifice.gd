@@ -7,6 +7,7 @@ signal sacrifice_selected(card: CardRoot)
 signal sacrifice_deselected(card: CardRoot)
 
 @export var animation_runner: SacrificeAnimationRunner
+@export var sacrifice_select_feedback: CardSelectFeedback
 
 var card: CardRoot = null
 var is_anticipating := false
@@ -42,6 +43,9 @@ func stop_anticipation() -> void:
 	if animation_runner != null:
 		animation_runner.stop_all(card)
 
+	if sacrifice_select_feedback != null:
+		sacrifice_select_feedback.set_selected(false)
+
 	sacrifice_anticipation_stopped.emit(card)
 
 
@@ -53,6 +57,9 @@ func set_selected_for_sacrifice(value: bool) -> void:
 		return
 
 	is_selected_for_sacrifice = value
+
+	if sacrifice_select_feedback != null:
+		sacrifice_select_feedback.set_selected(is_selected_for_sacrifice)
 
 	if is_selected_for_sacrifice:
 		if animation_runner != null:

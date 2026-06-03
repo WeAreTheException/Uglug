@@ -8,30 +8,24 @@ signal sacrifice_card_selected(card: CardRoot)
 signal sacrifice_card_deselected(card: CardRoot)
 
 @export var player_hand_root: PlayerHandRoot
-
-var primed_card: CardRoot = null
-var selected_cards: Array[CardRoot] = []
-
-var required_worth: int = 0
-var current_worth: int = 0
-var is_active := false
+@export var session: SacrificeSession
+@export var selection: SacrificeSelection
 
 
 func _ready() -> void:
 	if player_hand_root == null:
 		return
 
-	if not player_hand_root.card_primed.is_connected(_on_card_primed):
-		player_hand_root.card_primed.connect(_on_card_primed)
+	if session == null:
+		session = $SacrificeSession as SacrificeSession
 
-	if not player_hand_root.card_unprimed.is_connected(_on_card_unprimed):
-		player_hand_root.card_unprimed.connect(_on_card_unprimed)
+	if selection == null:
+		selection = $SacrificeSelection as SacrificeSelection
 
-	if not player_hand_root.card_added.is_connected(_on_card_added):
-		player_hand_root.card_added.connect(_on_card_added)
-
-	if not player_hand_root.card_removed.is_connected(_on_card_removed):
-		player_hand_root.card_removed.connect(_on_card_removed)
+	player_hand_root.card_primed.connect(_on_card_primed)
+	player_hand_root.card_unprimed.connect(_on_card_unprimed)
+	player_hand_root.card_added.connect(_on_card_added)
+	player_hand_root.card_removed.connect(_on_card_removed)
 
 	for card in player_hand_root.get_cards():
 		_connect_card(card)
@@ -40,10 +34,7 @@ func _ready() -> void:
 func _on_card_primed(card: CardRoot) -> void:
 	_clear_all()
 
-	primed_card = card
-	required_worth = card.get_sacrifice_cost()
-	current_worth = 0
-	is_active = true
+	session.start(card, card.get_sacrifice_cost())
 
 	for hand_card in player_hand_root.get_cards():
 		_connect_card(hand_card)
@@ -60,9 +51,9 @@ func _on_card_added(card: CardRoot) -> void:
 
 
 func _on_card_removed(card: CardRoot) -> void:
-	if selected_cards.has(card):
-		selected_cards.erase(card)
-		_update_current_worth()
+	if selection.remove_card(card):
+		_apply_selected_visual(card, false)
+		_sync_session_worth()
 		_update_state()
 
 
@@ -78,85 +69,63 @@ func _connect_card(card: CardRoot) -> void:
 
 
 func _on_card_pressed(card: CardRoot) -> void:
-	if not is_active:
+	if not selection.can_select(card, session):
 		return
 
-	if card == null:
-		return
+	selection.select_card(card, card.get_sacrifice_worth())
+	_sync_session_worth()
 
-	if card == primed_card:
-		return
-
-	if selected_cards.has(card):
-		return
-
-	if _is_requirement_met():
-		return
-
-	selected_cards.append(card)
-	current_worth += card.get_sacrifice_worth()
-
-	card.set_sacrifice_selected(true)
+	_apply_selected_visual(card, true)
 
 	sacrifice_card_selected.emit(card)
 	_update_state()
 
 
 func _on_card_right_pressed(card: CardRoot) -> void:
-	if not is_active:
+	if not session.is_active:
 		return
 
-	if card == null:
+	if not selection.has_card(card):
 		return
 
-	if not selected_cards.has(card):
-		return
+	selection.deselect_card(card)
+	_sync_session_worth()
 
-	selected_cards.erase(card)
-	_update_current_worth()
-
-	card.set_sacrifice_selected(false)
+	_apply_selected_visual(card, false)
 
 	sacrifice_card_deselected.emit(card)
 	_update_state()
 
 
-func _update_current_worth() -> void:
-	current_worth = 0
-
-	for card in selected_cards:
-		if card == null:
-			continue
-
-		current_worth += card.get_sacrifice_worth()
-
-
-func _is_requirement_met() -> bool:
-	return current_worth >= required_worth
+func _sync_session_worth() -> void:
+	session.set_current_worth(selection.current_worth)
 
 
 func _update_state() -> void:
-	sacrifice_selection_changed.emit(current_worth, required_worth)
+	sacrifice_selection_changed.emit(session.current_worth, session.required_worth)
 
-	if _is_requirement_met():
-		sacrifice_requirement_met.emit(current_worth, required_worth)
+	if session.is_requirement_met():
+		sacrifice_requirement_met.emit(session.current_worth, session.required_worth)
 	else:
-		sacrifice_requirement_unmet.emit(current_worth, required_worth)
+		sacrifice_requirement_unmet.emit(session.current_worth, session.required_worth)
 
 
 func _clear_all() -> void:
 	if player_hand_root != null:
 		for card in player_hand_root.get_cards():
-			if card == null:
-				continue
+			_apply_selected_visual(card, false)
 
-			card.set_sacrifice_selected(false)
-			card.stop_sacrifice_anticipation()
-
-	selected_cards.clear()
-	primed_card = null
-	required_worth = 0
-	current_worth = 0
-	is_active = false
+	selection.clear()
+	session.clear()
 
 	_update_state()
+
+
+func _apply_selected_visual(card: CardRoot, value: bool) -> void:
+	if card == null:
+		return
+
+	card.set_sacrifice_selected(value)
+
+	if not value:
+		card.stop_sacrifice_anticipation()

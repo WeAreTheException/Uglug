@@ -8,18 +8,14 @@ class_name SacrificeAnimationRunner
 
 @export var selected_shake_distance: float = 4.0
 @export var selected_shake_time: float = 0.045
-@export var selected_scale: Vector2 = Vector2(1.12, 1.12)
-@export var selected_scale_time: float = 0.12
 
 @export var random_start_delay_max: float = 0.12
 
 var base_position: Vector2 = Vector2.ZERO
-var base_scale: Vector2 = Vector2.ONE
 var has_base_values := false
 
 var shake_tween: Tween = null
 var delay_tween: Tween = null
-var scale_tween: Tween = null
 
 
 func play_idle(card: CardRoot) -> void:
@@ -30,8 +26,6 @@ func play_idle(card: CardRoot) -> void:
 
 	_cache_base_values(target)
 	_stop_tweens()
-
-	target.scale = base_scale
 
 	_start_delayed_shake(
 		target,
@@ -48,11 +42,6 @@ func play_selected(card: CardRoot) -> void:
 
 	_cache_base_values(target)
 	_stop_tweens()
-
-	scale_tween = create_tween()
-	scale_tween.set_trans(Tween.TRANS_CUBIC)
-	scale_tween.set_ease(Tween.EASE_OUT)
-	scale_tween.tween_property(target, "scale", selected_scale, selected_scale_time)
 
 	_start_delayed_shake(
 		target,
@@ -71,7 +60,6 @@ func stop_all(card: CardRoot) -> void:
 
 	if has_base_values:
 		target.position = base_position
-		target.scale = base_scale
 
 
 func _start_delayed_shake(
@@ -135,7 +123,6 @@ func _cache_base_values(target: Node2D) -> void:
 		return
 
 	base_position = target.position
-	base_scale = target.scale
 	has_base_values = true
 
 
@@ -147,7 +134,3 @@ func _stop_tweens() -> void:
 	if shake_tween != null:
 		shake_tween.kill()
 		shake_tween = null
-
-	if scale_tween != null:
-		scale_tween.kill()
-		scale_tween = null
