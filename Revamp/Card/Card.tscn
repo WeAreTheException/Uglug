@@ -105,7 +105,8 @@ script = ExtResource("14_1m3h3")
 sprite = NodePath("Sprite2D")
 
 [node name="Sprite2D" type="Sprite2D" parent="Actions/Hurt/HurtFeedbackHandler/HurtSprite" unique_id=2136417742]
-scale = Vector2(0.107916676, 0.10791666)
+position = Vector2(9.536743e-07, 0)
+scale = Vector2(0.12312501, 0.12312499)
 texture = ExtResource("17_7vw44")
 
 [node name="Die" type="Node" parent="Actions" unique_id=1463626010 node_paths=PackedStringArray("animation_runner")]
