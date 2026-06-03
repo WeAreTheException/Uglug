@@ -1,6 +1,8 @@
 extends Node
 class_name Hand_DragController
 
+const DRAG_LOCK_META := "hand_drag_locked"
+
 @export var held_z_index: int = 100
 @export var dragged_z_index: int = 200
 @export var drag_threshold: float = 12.0
@@ -41,8 +43,7 @@ func handle_card_pressed(card: CardRoot) -> void:
 	if not interaction_root.is_card_in_hand(card):
 		return
 
-	if held_card != null and held_card != card:
-		_set_drag_feedback(held_card, false)
+	_cancel_previous_hold(card)
 
 	held_card = card
 	dragged_card = null
@@ -52,7 +53,8 @@ func handle_card_pressed(card: CardRoot) -> void:
 	drag_offset = card.global_position - press_mouse_position
 
 	card.z_index = held_z_index
-	_set_drag_feedback(card, true)
+	card.set_meta(DRAG_LOCK_META, true)
+	card.set_drag_feedback(true)
 
 
 func handle_card_released(card: CardRoot) -> void:
@@ -62,12 +64,13 @@ func handle_card_released(card: CardRoot) -> void:
 	if held_card != card and dragged_card != card:
 		return
 
+	card.set_drag_feedback(false)
+	card.set_meta(DRAG_LOCK_META, false)
+
 	if dragged_card == card:
 		_finish_drag(card)
 	else:
 		interaction_root.arrange_cards()
-
-	_set_drag_feedback(card, false)
 
 	held_card = null
 	dragged_card = null
@@ -92,7 +95,9 @@ func _process(_delta: float) -> void:
 		return
 
 	if dragged_card == null:
-		var distance := held_card.get_global_mouse_position().distance_to(press_mouse_position)
+		var distance := held_card.get_global_mouse_position().distance_to(
+			press_mouse_position
+		)
 
 		if distance >= drag_threshold:
 			_start_drag(held_card)
@@ -117,19 +122,26 @@ func _update_dragged_card() -> void:
 	if interaction_root == null:
 		return
 
-	dragged_card.global_position = dragged_card.get_global_mouse_position() + drag_offset
-	dragged_card.z_index = dragged_z_index
+	_apply_drag_position()
 
 	var new_index := interaction_root.get_insert_index_from_global_x(
 		dragged_card.global_position.x
 	)
 
-	if new_index == last_insert_index:
-		return
+	if new_index != last_insert_index:
+		last_insert_index = new_index
+		interaction_root.move_card_to_index(dragged_card, new_index)
+		interaction_root.arrange_cards()
 
-	last_insert_index = new_index
-	interaction_root.move_card_to_index(dragged_card, new_index)
-	interaction_root.arrange_cards()
+	_apply_drag_position()
+
+
+func _apply_drag_position() -> void:
+	dragged_card.global_position = (
+		dragged_card.get_global_mouse_position() + drag_offset
+	)
+
+	dragged_card.z_index = dragged_z_index
 
 
 func _finish_drag(card: CardRoot) -> void:
@@ -139,16 +151,28 @@ func _finish_drag(card: CardRoot) -> void:
 
 func _cancel_drag_state() -> void:
 	if dragged_card != null:
+		dragged_card.set_meta(DRAG_LOCK_META, false)
+		dragged_card.set_drag_feedback(false)
 		_finish_drag(dragged_card)
 
 	if held_card != null:
-		_set_drag_feedback(held_card, false)
+		held_card.set_meta(DRAG_LOCK_META, false)
+		held_card.set_drag_feedback(false)
 
 	held_card = null
 	dragged_card = null
 	last_insert_index = -1
 
 
-func _set_drag_feedback(card: CardRoot, value: bool) -> void:
-	if card != null:
-		card.set_drag_feedback(value)
+func _cancel_previous_hold(new_card: CardRoot) -> void:
+	if held_card == null:
+		return
+
+	if held_card == new_card:
+		return
+
+	held_card.set_meta(DRAG_LOCK_META, false)
+	held_card.set_drag_feedback(false)
+
+	held_card = null
+	dragged_card = null

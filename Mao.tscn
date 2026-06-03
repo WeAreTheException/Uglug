@@ -6,7 +6,9 @@
 [ext_resource type="Resource" uid="uid://bxrcjm4w1dy82" path="res://Cards/CardPresets/Anthrax.tres" id="4_cc2no"]
 [ext_resource type="Resource" uid="uid://ci7yvhc8pfst6" path="res://Cards/CardPresets/QueenAnt.tres" id="5_1j514"]
 [ext_resource type="Resource" uid="uid://c64jbnvj0pbwk" path="res://Cards/CardPresets/AntHill.tres" id="6_at0h8"]
+[ext_resource type="Script" uid="uid://bxbqihkit6rgo" path="res://Managers/Phasemanager.gd" id="8_cc2no"]
 [ext_resource type="PackedScene" uid="uid://c0cpgrqgl3a0d" path="res://PlayerHandButtons.tscn" id="8_ql7l1"]
+[ext_resource type="Script" uid="uid://bbcig486utsir" path="res://HandPhaseApplier.gd" id="9_cc2no"]
 
 [node name="Mao" type="Node2D" unique_id=550121538]
 
@@ -22,3 +24,12 @@ position = Vector2(1104, 540)
 
 [node name="PrimeCardLocation" type="Node2D" parent="." unique_id=2143511336]
 position = Vector2(1080, 360)
+
+[node name="PhaseManager" type="Node" parent="." unique_id=658439244]
+script = ExtResource("8_cc2no")
+metadata/_custom_type_script = "uid://bxbqihkit6rgo"
+
+[node name="HandPhaseApplier" type="Node" parent="PhaseManager" unique_id=1109584642 node_paths=PackedStringArray("phase_manager", "lead_hand")]
+script = ExtResource("9_cc2no")
+phase_manager = NodePath("..")
+lead_hand = NodePath("../../PlayerHandRoot")

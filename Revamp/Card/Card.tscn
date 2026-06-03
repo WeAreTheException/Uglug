@@ -99,8 +99,11 @@ script = ExtResource("16_v34li")
 visual_target = NodePath("../../../Visuals/CardVisuals")
 metadata/_custom_type_script = "uid://jv8gks4tscbj"
 
-[node name="CardFeedback" type="Node" parent="." unique_id=824411320]
+[node name="CardFeedback" type="Node" parent="." unique_id=824411320 node_paths=PackedStringArray("card", "hover_feedback", "select_feedback")]
 script = ExtResource("8_nau7p")
+card = NodePath("..")
+hover_feedback = NodePath("Hover")
+select_feedback = NodePath("Select")
 
 [node name="Hover" type="Node" parent="CardFeedback" unique_id=659627164 node_paths=PackedStringArray("target")]
 script = ExtResource("19_v34li")

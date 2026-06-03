@@ -1,6 +1,8 @@
 extends Node
 class_name Hand_LayoutTweener
 
+const DRAG_LOCK_META := "hand_drag_locked"
+
 var active_tweens: Dictionary = {}
 
 
@@ -13,6 +15,10 @@ func tween_card(
 	move_time: float
 ) -> void:
 	if card == null:
+		return
+
+	if _is_drag_locked(card):
+		_kill_card_tween(card)
 		return
 
 	card.z_index = z_value
@@ -42,6 +48,13 @@ func kill_card_tween(card: CardRoot) -> void:
 func kill_all() -> void:
 	for card in active_tweens.keys():
 		_kill_card_tween(card)
+
+
+func _is_drag_locked(card: CardRoot) -> bool:
+	if not card.has_meta(DRAG_LOCK_META):
+		return false
+
+	return bool(card.get_meta(DRAG_LOCK_META))
 
 
 func _kill_card_tween(card: CardRoot) -> void:

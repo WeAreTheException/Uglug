@@ -54,24 +54,50 @@ func _setup_spawner() -> void:
 	if card_spawner == null:
 		return
 
-	card_spawner.configure(card_scene, starting_cards, hand_card_layer, max_hand_size, minimum_hand_size)
+	card_spawner.configure(
+		card_scene,
+		starting_cards,
+		hand_card_layer,
+		max_hand_size,
+		minimum_hand_size
+	)
 
-	card_spawner.card_added.connect(_on_card_added)
-	card_spawner.card_removed.connect(_on_card_removed)
-	card_spawner.hand_changed.connect(_on_hand_changed)
+	if not card_spawner.card_added.is_connected(_on_card_added):
+		card_spawner.card_added.connect(_on_card_added)
+
+	if not card_spawner.card_removed.is_connected(_on_card_removed):
+		card_spawner.card_removed.connect(_on_card_removed)
+
+	if not card_spawner.hand_changed.is_connected(_on_hand_changed):
+		card_spawner.hand_changed.connect(_on_hand_changed)
 
 
 func _setup_interaction() -> void:
 	if interaction_root == null:
 		return
 
-	interaction_root.setup(card_spawner, hand_layout, hand_card_layer, drag_layer, prime_location)
+	interaction_root.setup(
+		card_spawner,
+		hand_layout,
+		hand_card_layer,
+		drag_layer,
+		prime_location
+	)
 
-	interaction_root.card_primed.connect(_on_card_primed)
-	interaction_root.card_unprimed.connect(_on_card_unprimed)
-	interaction_root.prime_state_changed.connect(_on_prime_state_changed)
-	interaction_root.card_left_pressed.connect(_on_hand_card_left_pressed)
-	interaction_root.card_right_pressed.connect(_on_hand_card_right_pressed)
+	if not interaction_root.card_primed.is_connected(_on_card_primed):
+		interaction_root.card_primed.connect(_on_card_primed)
+
+	if not interaction_root.card_unprimed.is_connected(_on_card_unprimed):
+		interaction_root.card_unprimed.connect(_on_card_unprimed)
+
+	if not interaction_root.prime_state_changed.is_connected(_on_prime_state_changed):
+		interaction_root.prime_state_changed.connect(_on_prime_state_changed)
+
+	if not interaction_root.card_left_pressed.is_connected(_on_hand_card_left_pressed):
+		interaction_root.card_left_pressed.connect(_on_hand_card_left_pressed)
+
+	if not interaction_root.card_right_pressed.is_connected(_on_hand_card_right_pressed):
+		interaction_root.card_right_pressed.connect(_on_hand_card_right_pressed)
 
 
 func _setup_sacrifice_selection() -> void:
@@ -88,8 +114,15 @@ func _setup_state_machine() -> void:
 	if state_machine == null:
 		return
 
-	state_machine.setup(hand_layout, interaction_root, sort_controller, sacrifice_selection)
-	state_machine.state_changed.connect(_on_hand_state_changed)
+	state_machine.setup(
+		hand_layout,
+		interaction_root,
+		sort_controller,
+		sacrifice_selection
+	)
+
+	if not state_machine.state_changed.is_connected(_on_hand_state_changed):
+		state_machine.state_changed.connect(_on_hand_state_changed)
 
 
 func _connect_external_buttons() -> void:
@@ -100,8 +133,16 @@ func _connect_external_buttons() -> void:
 
 
 func _connect_signal(source: Object, signal_name: StringName, target: Callable) -> void:
-	if source != null and source.has_signal(signal_name) and not source.is_connected(signal_name, target):
-		source.connect(signal_name, target)
+	if source == null:
+		return
+
+	if not source.has_signal(signal_name):
+		return
+
+	if source.is_connected(signal_name, target):
+		return
+
+	source.connect(signal_name, target)
 
 
 func spawn_starting_cards() -> void:
@@ -117,8 +158,13 @@ func spawn_card(data: CardData) -> CardRoot:
 
 
 func arrange_cards() -> void:
-	if hand_layout != null and card_spawner != null:
-		hand_layout.arrange_cards(card_spawner.get_cards())
+	if hand_layout == null:
+		return
+
+	if card_spawner == null:
+		return
+
+	hand_layout.arrange_cards(card_spawner.get_cards())
 
 
 func request_prime_toggle() -> void:
@@ -137,11 +183,20 @@ func request_sort_by_mutation_count() -> void:
 
 
 func request_sacrifice() -> void:
-	if sacrifice_selection != null:
-		sacrifice_requested.emit(get_primed_card(), sacrifice_selection.get_selected_cards())
+	if sacrifice_selection == null:
+		return
+
+	sacrifice_requested.emit(
+		get_primed_card(),
+		sacrifice_selection.get_selected_cards()
+	)
 
 
 func enter_idle_state() -> void:
+	if interaction_root != null:
+		if interaction_root.can_unprime():
+			interaction_root.toggle_prime()
+
 	if state_machine != null:
 		state_machine.change_state(Hand_StateMachine.IDLE)
 
@@ -203,7 +258,11 @@ func _on_hand_card_right_pressed(card: CardRoot) -> void:
 		sacrifice_selection.handle_card_right_pressed(card)
 
 
-func _on_prime_state_changed(can_prime: bool, can_unprime: bool, text: String) -> void:
+func _on_prime_state_changed(
+	can_prime: bool,
+	can_unprime: bool,
+	text: String
+) -> void:
 	prime_state_changed.emit(can_prime, can_unprime, text)
 
 

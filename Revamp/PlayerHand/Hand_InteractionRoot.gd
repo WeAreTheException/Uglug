@@ -37,40 +37,6 @@ func setup(
 	_connect_card_spawner()
 
 
-func _setup_children(prime_location: Node2D) -> void:
-	if input_router != null:
-		input_router.setup(self)
-		input_router.card_left_pressed.connect(_on_card_left_pressed)
-		input_router.card_left_released.connect(_on_card_left_released)
-		input_router.card_right_pressed.connect(_on_card_right_pressed)
-
-	if hover_focus != null:
-		hover_focus.setup(self)
-
-	if card_layer_mover != null:
-		card_layer_mover.setup(self)
-
-	if drag_controller != null:
-		drag_controller.setup(self)
-
-	if prime_controller != null:
-		prime_controller.setup(self, prime_location)
-		prime_controller.card_primed.connect(_on_card_primed)
-		prime_controller.card_unprimed.connect(_on_card_unprimed)
-		prime_controller.prime_state_changed.connect(_on_prime_state_changed)
-
-
-func _connect_card_spawner() -> void:
-	if card_spawner == null:
-		return
-
-	card_spawner.card_added.connect(_on_card_added)
-	card_spawner.card_removed.connect(_on_card_removed)
-
-	for card in card_spawner.get_cards():
-		_bind_card(card)
-
-
 func set_drag_enabled(value: bool) -> void:
 	if drag_controller != null:
 		drag_controller.set_drag_enabled(value)
@@ -166,12 +132,13 @@ func refresh_hover_focus() -> void:
 
 func begin_drag(card: CardRoot) -> void:
 	if hand_layout != null:
-		hand_layout.set_ignored_card(card)
-
-	arrange_cards()
+		hand_layout.clear_ignored_card()
 
 	if card_layer_mover != null:
 		card_layer_mover.move_to_layer(card, drag_layer)
+
+	arrange_cards()
+	refresh_hover_focus()
 
 
 func finish_drag(card: CardRoot) -> void:
@@ -183,6 +150,40 @@ func finish_drag(card: CardRoot) -> void:
 
 	arrange_cards()
 	refresh_hover_focus()
+
+
+func _setup_children(prime_location: Node2D) -> void:
+	if input_router != null:
+		input_router.setup(self)
+		input_router.card_left_pressed.connect(_on_card_left_pressed)
+		input_router.card_left_released.connect(_on_card_left_released)
+		input_router.card_right_pressed.connect(_on_card_right_pressed)
+
+	if hover_focus != null:
+		hover_focus.setup(self)
+
+	if card_layer_mover != null:
+		card_layer_mover.setup(self)
+
+	if drag_controller != null:
+		drag_controller.setup(self)
+
+	if prime_controller != null:
+		prime_controller.setup(self, prime_location)
+		prime_controller.card_primed.connect(_on_card_primed)
+		prime_controller.card_unprimed.connect(_on_card_unprimed)
+		prime_controller.prime_state_changed.connect(_on_prime_state_changed)
+
+
+func _connect_card_spawner() -> void:
+	if card_spawner == null:
+		return
+
+	card_spawner.card_added.connect(_on_card_added)
+	card_spawner.card_removed.connect(_on_card_removed)
+
+	for card in card_spawner.get_cards():
+		_bind_card(card)
 
 
 func _bind_card(card: CardRoot) -> void:
