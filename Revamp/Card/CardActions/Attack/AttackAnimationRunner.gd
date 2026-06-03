@@ -1,6 +1,8 @@
 extends Node
 class_name AttackAnimationRunner
 
+signal impact_reached
+
 @export var animated_target: Node2D
 
 @export_category("Forward")
@@ -61,13 +63,13 @@ func play_attack(context: AttackContext) -> void:
 		direction.y *= -1.0
 
 	await _play_motion(
-	direction,
-	_get_windup_distance(difference),
-	_get_attack_distance(difference),
-	_get_windup_rotation(difference, context.attacker_owner),
-	_get_attack_rotation(difference, context.attacker_owner),
-	context.attack_animation_layer
-)
+		direction,
+		_get_windup_distance(difference),
+		_get_attack_distance(difference),
+		_get_windup_rotation(difference, context.attacker_owner),
+		_get_attack_rotation(difference, context.attacker_owner),
+		context.attack_animation_layer
+	)
 
 
 func _play_motion(
@@ -81,10 +83,14 @@ func _play_motion(
 	var original_parent: Node = animated_target.get_parent()
 	var original_index: int = animated_target.get_index()
 	var original_global_transform: Transform2D = animated_target.global_transform
+	var original_z_index: int = animated_target.z_index
 
 	if attack_animation_layer != null:
 		animated_target.reparent(attack_animation_layer)
 		animated_target.global_transform = original_global_transform
+
+	if raise_z_index_during_attack:
+		animated_target.z_index = attack_z_index
 
 	var start_position: Vector2 = animated_target.position
 	var start_scale: Vector2 = animated_target.scale
@@ -106,6 +112,8 @@ func _play_motion(
 	tween.parallel().tween_property(animated_target, "scale", attack_scale, attack_time)
 	tween.parallel().tween_property(animated_target, "rotation", start_rotation + deg_to_rad(attack_rotation_degrees), attack_time)
 
+	tween.tween_callback(_emit_impact_reached)
+
 	tween.tween_interval(hit_hold_time)
 
 	tween.set_ease(Tween.EASE_OUT)
@@ -124,6 +132,11 @@ func _play_motion(
 	animated_target.position = Vector2.ZERO
 	animated_target.scale = start_scale
 	animated_target.rotation = start_rotation
+	animated_target.z_index = original_z_index
+
+
+func _emit_impact_reached() -> void:
+	impact_reached.emit()
 
 
 func _get_direction_from_difference(difference: int) -> Vector2:

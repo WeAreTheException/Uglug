@@ -18,6 +18,9 @@ var slots_root: SlotsRoot = null
 var is_hovered := false
 var is_attacking := false
 
+var active_context: AttackContext = null
+var impact_handled := false
+
 
 func setup(source_card: CardRoot, source_slots_root: SlotsRoot) -> void:
 	card = source_card
@@ -25,6 +28,10 @@ func setup(source_card: CardRoot, source_slots_root: SlotsRoot) -> void:
 
 	if card == null:
 		return
+
+	if animation_runner != null:
+		if not animation_runner.impact_reached.is_connected(_on_impact_reached):
+			animation_runner.impact_reached.connect(_on_impact_reached)
 
 	if not card.hovered.is_connected(_on_card_hovered):
 		card.hovered.connect(_on_card_hovered)
@@ -99,24 +106,49 @@ func perform_attack() -> void:
 
 		context.target_owner = slots_root.get_owner_of_slot(context.target_slot)
 
+		active_context = context
+		impact_handled = false
+
 		attack_started.emit(context)
 
 		await animation_runner.play_attack(context)
 
-		attack_hit.emit(context)
-
-		var target_card := context.target_slot.current_card
-
-		if target_card != null and target_card.hurt != null:
-			var damage := _get_attack_damage(target_card)
-
-			var actual_damage: int = await target_card.hurt.play_hurt(damage, card)
-
-			_notify_damage_dealt(target_card, actual_damage)
+		if not impact_handled:
+			await _handle_attack_impact(context)
 
 		attack_finished.emit(context)
 
+		active_context = null
+		impact_handled = false
+
 	is_attacking = false
+
+
+func _on_impact_reached() -> void:
+	if active_context == null:
+		return
+
+	if impact_handled:
+		return
+
+	impact_handled = true
+	_handle_attack_impact(active_context)
+
+
+func _handle_attack_impact(context: AttackContext) -> void:
+	if context == null:
+		return
+
+	attack_hit.emit(context)
+
+	var target_card := context.target_slot.current_card
+
+	if target_card != null and target_card.hurt != null:
+		var damage := _get_attack_damage(target_card)
+
+		var actual_damage: int = await target_card.hurt.play_hurt(damage, card)
+
+		_notify_damage_dealt(target_card, actual_damage)
 
 
 func _get_attack_damage(target_card: CardRoot) -> int:
