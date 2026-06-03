@@ -4,6 +4,7 @@ class_name RoyalPheromones
 @export var worker_card_name: String = "Worker Ant"
 @export var attack_bonus: int = 1
 @export var health_bonus: int = 1
+@export var minimum_health_after_buff_removed: int = 1
 
 
 func refresh_board_effect(runtime: MutationRuntime) -> void:
@@ -104,4 +105,11 @@ func _remove_from_slots(runtime: MutationRuntime, slots: Array[Slot]) -> void:
 		if target_card.stats == null:
 			continue
 
+		var health_before_removal := target_card.stats.get_health()
+
 		target_card.stats.remove_modifiers_from_source(runtime)
+
+		var health_after_removal := target_card.stats.get_health()
+
+		if health_before_removal > 0 and health_after_removal <= 0:
+			target_card.stats.heal(minimum_health_after_buff_removed)
