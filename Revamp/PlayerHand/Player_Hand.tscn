@@ -37,11 +37,9 @@ hand_layout = NodePath("../Hand_Layout")
 script = ExtResource("6_7snob")
 hand = NodePath("..")
 
-[node name="Hand_SortController" type="Node" parent="." unique_id=447247999 node_paths=PackedStringArray("hand", "cost_sort_button", "mutation_sort_button")]
+[node name="Hand_SortController" type="Node" parent="." unique_id=447247999 node_paths=PackedStringArray("hand")]
 script = ExtResource("6_0ixd0")
 hand = NodePath("..")
-cost_sort_button = NodePath("")
-mutation_sort_button = NodePath("")
 
 [node name="HandModeController" type="Node" parent="." unique_id=1376543797 node_paths=PackedStringArray("hand", "hand_layout", "hand_drag_controller")]
 script = ExtResource("6_lmw24")

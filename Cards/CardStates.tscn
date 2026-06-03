@@ -9,7 +9,7 @@
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="5_nw7tq"]
 [ext_resource type="Script" uid="uid://cftnkry62jh5d" path="res://SelectAnimation.gd" id="6_eyros"]
 [ext_resource type="Script" uid="uid://bqtoohcvy57vk" path="res://SacrificeHandler.gd" id="7_5n6h6"]
-[ext_resource type="Script" uid="uid://jv8gks4tscbj" path="res://SacrificeAnimation.gd" id="8_824c0"]
+[ext_resource type="Script" uid="uid://jv8gks4tscbj" path="res://SacrificeAnimationRunner.gd" id="8_824c0"]
 [ext_resource type="Script" uid="uid://clgbwnniuqm7g" path="res://Code/Handlers/SelectHandler.gd" id="8_eyros"]
 [ext_resource type="Script" uid="uid://2atv8mfbeu07" path="res://BoardManager.gd" id="9_5n6h6"]
 

@@ -18,6 +18,7 @@ signal released(card: CardRoot)
 @export var attack: Attack
 @export var hurt: Hurt
 @export var die: Die
+@export var sacrifice: Sacrifice
 
 var slots_root: SlotsRoot = null
 
@@ -64,6 +65,20 @@ func setup_actions() -> void:
 
 	if die != null:
 		die.setup(self)
+
+
+func start_sacrifice_anticipation() -> void:
+	if sacrifice == null:
+		return
+
+	sacrifice.start_anticipation()
+
+
+func stop_sacrifice_anticipation() -> void:
+	if sacrifice == null:
+		return
+
+	sacrifice.stop_anticipation()
 
 
 func is_on_board() -> bool:

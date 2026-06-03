@@ -6,6 +6,9 @@ signal card_removed(card: CardRoot)
 signal hand_changed
 signal hand_mode_changed(mode: PhaseManager.HandMode)
 
+signal card_primed(card: CardRoot)
+signal card_unprimed(card: CardRoot)
+
 @export var card_scene: PackedScene
 @export var starting_cards: Array[CardData]
 
@@ -168,6 +171,13 @@ func sort_cards(compare_function: Callable) -> void:
 	arrange_cards()
 
 
+func get_primed_card() -> CardRoot:
+	if hand_prime_controller == null:
+		return null
+
+	return hand_prime_controller.get_primed_card()
+
+
 func get_index_of_card(card: CardRoot) -> int:
 	return current_cards.find(card)
 
@@ -207,11 +217,13 @@ func _on_selected_card_changed(_card: CardRoot) -> void:
 	_update_prime_button_state()
 
 
-func _on_card_primed(_card: CardRoot) -> void:
+func _on_card_primed(card: CardRoot) -> void:
+	card_primed.emit(card)
 	_update_prime_button_state()
 
 
-func _on_card_unprimed(_card: CardRoot) -> void:
+func _on_card_unprimed(card: CardRoot) -> void:
+	card_unprimed.emit(card)
 	_update_prime_button_state()
 
 

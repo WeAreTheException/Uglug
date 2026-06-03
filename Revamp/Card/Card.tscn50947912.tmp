@@ -26,7 +26,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g8l5j"]
 size = Vector2(144, 216)
 
-[node name="Card" type="Node2D" unique_id=1649731477 node_paths=PackedStringArray("input", "board_presence", "stats", "mutations", "card_visuals_root", "card_feedback", "attack", "hurt", "die", "sacrifice")]
+[node name="Card" type="Node2D" unique_id=1649731477 node_paths=PackedStringArray("input", "board_presence", "stats", "mutations", "card_visuals_root", "card_feedback", "attack", "hurt", "die")]
 script = ExtResource("1_hdbik")
 test_data = ExtResource("2_c3ju1")
 input = NodePath("CardInput")
@@ -38,7 +38,6 @@ card_feedback = NodePath("CardFeedback")
 attack = NodePath("Actions/Attack")
 hurt = NodePath("Actions/Hurt")
 die = NodePath("Actions/Die")
-sacrifice = NodePath("Actions/Sacrifice")
 
 [node name="CardInput" type="Area2D" parent="." unique_id=502264031]
 script = ExtResource("2_nau7p")
@@ -91,9 +90,8 @@ animation_runner = NodePath("DieAnimationRunner")
 [node name="DieAnimationRunner" type="Node" parent="Actions/Die" unique_id=695087032]
 script = ExtResource("15_jgw7k")
 
-[node name="Sacrifice" type="Node" parent="Actions" unique_id=1151363001 node_paths=PackedStringArray("animation_runner")]
+[node name="Sacrifice" type="Node" parent="Actions" unique_id=1151363001]
 script = ExtResource("15_v34li")
-animation_runner = NodePath("SacrificeAnimationRunner")
 
 [node name="SacrificeAnimationRunner" type="Node" parent="Actions/Sacrifice" unique_id=39945969 node_paths=PackedStringArray("visual_target")]
 script = ExtResource("16_v34li")
