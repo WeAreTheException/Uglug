@@ -5,6 +5,7 @@ signal hovered(card: CardRoot)
 signal unhovered(card: CardRoot)
 signal pressed(card: CardRoot)
 signal released(card: CardRoot)
+signal right_pressed(card: CardRoot)
 
 @export var test_data: CardData
 
@@ -68,17 +69,38 @@ func setup_actions() -> void:
 
 
 func start_sacrifice_anticipation() -> void:
-	if sacrifice == null:
-		return
-
-	sacrifice.start_anticipation()
+	if sacrifice != null:
+		sacrifice.start_anticipation()
 
 
 func stop_sacrifice_anticipation() -> void:
-	if sacrifice == null:
-		return
+	if sacrifice != null:
+		sacrifice.stop_anticipation()
 
-	sacrifice.stop_anticipation()
+
+func set_sacrifice_selected(value: bool) -> void:
+	if sacrifice != null:
+		sacrifice.set_selected_for_sacrifice(value)
+
+
+func get_sacrifice_worth() -> int:
+	if stats != null:
+		return stats.get_worth()
+
+	if card_data != null:
+		return card_data.worth
+
+	return 1
+
+
+func get_sacrifice_cost() -> int:
+	if stats != null:
+		return stats.get_cost()
+
+	if card_data != null:
+		return card_data.cost
+
+	return 0
 
 
 func is_on_board() -> bool:
@@ -103,6 +125,7 @@ func _connect_input() -> void:
 	input.unhovered.connect(_on_input_unhovered)
 	input.pressed.connect(_on_input_pressed)
 	input.released.connect(_on_input_released)
+	input.right_pressed.connect(_on_input_right_pressed)
 
 
 func _on_input_hovered() -> void:
@@ -119,3 +142,7 @@ func _on_input_pressed() -> void:
 
 func _on_input_released() -> void:
 	released.emit(self)
+
+
+func _on_input_right_pressed() -> void:
+	right_pressed.emit(self)

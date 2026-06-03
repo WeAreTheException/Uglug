@@ -3,48 +3,96 @@ class_name SacrificeAnimationRunner
 
 @export var visual_target: Node2D
 
-@export var shake_distance: float = 3.0
-@export var shake_time: float = 0.05
+@export var idle_shake_distance: float = 1.0
+@export var idle_shake_time: float = 0.08
+
+@export var selected_shake_distance: float = 4.0
+@export var selected_shake_time: float = 0.045
+@export var selected_scale: Vector2 = Vector2(1.12, 1.12)
+@export var selected_scale_time: float = 0.12
+
 @export var random_start_delay_max: float = 0.12
 
 var base_position: Vector2 = Vector2.ZERO
-var has_base_position := false
+var base_scale: Vector2 = Vector2.ONE
+var has_base_values := false
 
 var shake_tween: Tween = null
 var delay_tween: Tween = null
+var scale_tween: Tween = null
 
 
-func play_anticipation(card: CardRoot) -> void:
+func play_idle(card: CardRoot) -> void:
 	var target := _get_target(card)
 
 	if target == null:
 		return
 
-	_cache_base_position(target)
+	_cache_base_values(target)
 	_stop_tweens()
 
+	target.scale = base_scale
+
+	_start_delayed_shake(
+		target,
+		idle_shake_distance,
+		idle_shake_time
+	)
+
+
+func play_selected(card: CardRoot) -> void:
+	var target := _get_target(card)
+
+	if target == null:
+		return
+
+	_cache_base_values(target)
+	_stop_tweens()
+
+	scale_tween = create_tween()
+	scale_tween.set_trans(Tween.TRANS_CUBIC)
+	scale_tween.set_ease(Tween.EASE_OUT)
+	scale_tween.tween_property(target, "scale", selected_scale, selected_scale_time)
+
+	_start_delayed_shake(
+		target,
+		selected_shake_distance,
+		selected_shake_time
+	)
+
+
+func stop_all(card: CardRoot) -> void:
+	var target := _get_target(card)
+
+	_stop_tweens()
+
+	if target == null:
+		return
+
+	if has_base_values:
+		target.position = base_position
+		target.scale = base_scale
+
+
+func _start_delayed_shake(
+	target: Node2D,
+	shake_distance: float,
+	shake_time: float
+) -> void:
 	var random_delay := randf_range(0.0, random_start_delay_max)
 
 	delay_tween = create_tween()
 	delay_tween.tween_interval(random_delay)
 	delay_tween.tween_callback(func():
-		_start_loop(target)
+		_start_shake_loop(target, shake_distance, shake_time)
 	)
 
 
-func stop_anticipation(card: CardRoot) -> void:
-	var target := _get_target(card)
-
-	_stop_tweens()
-
-	if target == null:
-		return
-
-	if has_base_position:
-		target.position = base_position
-
-
-func _start_loop(target: Node2D) -> void:
+func _start_shake_loop(
+	target: Node2D,
+	shake_distance: float,
+	shake_time: float
+) -> void:
 	if target == null:
 		return
 
@@ -82,12 +130,13 @@ func _get_target(card: CardRoot) -> Node2D:
 	return card
 
 
-func _cache_base_position(target: Node2D) -> void:
-	if has_base_position:
+func _cache_base_values(target: Node2D) -> void:
+	if has_base_values:
 		return
 
 	base_position = target.position
-	has_base_position = true
+	base_scale = target.scale
+	has_base_values = true
 
 
 func _stop_tweens() -> void:
@@ -98,3 +147,7 @@ func _stop_tweens() -> void:
 	if shake_tween != null:
 		shake_tween.kill()
 		shake_tween = null
+
+	if scale_tween != null:
+		scale_tween.kill()
+		scale_tween = null
