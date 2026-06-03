@@ -15,9 +15,10 @@
 [node name="Slots" parent="." unique_id=1318716624 instance=ExtResource("1_yq750")]
 position = Vector2(120, 120)
 
-[node name="PlayerHandRoot" parent="." unique_id=371738706 instance=ExtResource("2_mi1n2")]
+[node name="PlayerHandRoot" parent="." unique_id=371738706 node_paths=PackedStringArray("prime_location") instance=ExtResource("2_mi1n2")]
 position = Vector2(720, 960)
 starting_cards = Array[ExtResource("3_d5ogx")]([ExtResource("4_cc2no"), ExtResource("5_1j514"), ExtResource("6_at0h8")])
+prime_location = NodePath("../PrimeCardLocation")
 
 [node name="PlayerHandButtons" parent="." unique_id=1099949362 instance=ExtResource("8_ql7l1")]
 position = Vector2(1104, 540)
