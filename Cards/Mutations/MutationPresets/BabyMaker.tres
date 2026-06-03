@@ -9,6 +9,6 @@ script = ExtResource("1_mxwkm")
 worker_ant_data = ExtResource("3_2ww17")
 player_hand_group = "Player Hand"
 mutation_name = "Baby Maker"
-mutation_description = "On death, give 2 workers"
+mutation_description = "On death, give player 2 workers"
 sigil_texture = ExtResource("2_vtoev")
 metadata/_custom_type_script = "uid://be8yk3djwb5oc"
