@@ -1,0 +1,117 @@
+extends Node
+class_name PendingSacrificeBoat
+
+signal pending_started(primed_card: CardRoot, cards: Array[CardRoot])
+signal pending_undone(primed_card: CardRoot, cards: Array[CardRoot])
+signal pending_taken(cards: Array[CardRoot])
+
+@export var pending_layer: Node2D
+@export var hide_cards_while_pending: bool = true
+
+var pending_primed_card: CardRoot = null
+var pending_entries: Array[Dictionary] = []
+
+
+func begin_pending(
+	primed_card: CardRoot,
+	entries: Array[Dictionary]
+) -> Array[CardRoot]:
+	if has_pending():
+		return []
+
+	pending_primed_card = primed_card
+	pending_entries = entries.duplicate(true)
+
+	var pending_cards: Array[CardRoot] = []
+
+	for entry in pending_entries:
+		var card := entry["card"] as CardRoot
+
+		if card == null:
+			continue
+
+		_prepare_card_for_pending(card)
+		pending_cards.append(card)
+
+	pending_started.emit(pending_primed_card, pending_cards)
+
+	return pending_cards
+
+
+func undo_pending() -> Array[Dictionary]:
+	var entries := pending_entries.duplicate(true)
+	var cards: Array[CardRoot] = []
+
+	for entry in entries:
+		var card := entry["card"] as CardRoot
+
+		if card == null:
+			continue
+
+		card.visible = true
+		cards.append(card)
+
+	var old_primed := pending_primed_card
+
+	_clear_pending()
+
+	pending_undone.emit(old_primed, cards)
+
+	return entries
+
+
+func take_pending_cards() -> Array[CardRoot]:
+	var cards: Array[CardRoot] = []
+
+	for entry in pending_entries:
+		var card := entry["card"] as CardRoot
+
+		if card != null:
+			cards.append(card)
+
+	_clear_pending()
+
+	pending_taken.emit(cards)
+
+	return cards
+
+
+func has_pending() -> bool:
+	return not pending_entries.is_empty()
+
+
+func get_pending_primed_card() -> CardRoot:
+	return pending_primed_card
+
+
+func _prepare_card_for_pending(card: CardRoot) -> void:
+	card.set_sacrifice_selected(false)
+	card.stop_sacrifice_anticipation()
+	card.clear_hand_feedback()
+
+	if pending_layer != null:
+		_move_card_to_layer(card, pending_layer)
+
+	if hide_cards_while_pending:
+		card.visible = false
+
+
+func _move_card_to_layer(card: CardRoot, target_layer: Node2D) -> void:
+	if card == null:
+		return
+
+	if target_layer == null:
+		return
+
+	var saved_global_transform := card.global_transform
+
+	if card.get_parent() != null:
+		card.get_parent().remove_child(card)
+
+	target_layer.add_child(card)
+	card.global_transform = saved_global_transform
+
+
+func _clear_pending() -> void:
+	pending_primed_card = null
+	pending_entries.clear()

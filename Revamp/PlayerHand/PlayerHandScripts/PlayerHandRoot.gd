@@ -9,7 +9,9 @@ signal hand_state_changed(state_name: String)
 signal card_primed(card: CardRoot)
 signal card_unprimed(card: CardRoot)
 signal prime_state_changed(can_prime: bool, can_unprime: bool, text: String)
+
 signal sacrifice_requested(primed_card: CardRoot, hand_cards: Array[CardRoot])
+signal sacrifice_selection_changed(cards: Array[CardRoot])
 
 @export var card_scene: PackedScene
 @export var starting_cards: Array[CardData]
@@ -101,8 +103,13 @@ func _setup_interaction() -> void:
 
 
 func _setup_sacrifice_selection() -> void:
-	if sacrifice_selection != null:
-		sacrifice_selection.setup(card_spawner)
+	if sacrifice_selection == null:
+		return
+
+	sacrifice_selection.setup(card_spawner)
+
+	if not sacrifice_selection.hand_sacrifice_selection_changed.is_connected(_on_sacrifice_selection_changed):
+		sacrifice_selection.hand_sacrifice_selection_changed.connect(_on_sacrifice_selection_changed)
 
 
 func _setup_sort() -> void:
@@ -183,12 +190,9 @@ func request_sort_by_mutation_count() -> void:
 
 
 func request_sacrifice() -> void:
-	if sacrifice_selection == null:
-		return
-
 	sacrifice_requested.emit(
 		get_primed_card(),
-		sacrifice_selection.get_selected_cards()
+		get_selected_sacrifice_cards()
 	)
 
 
@@ -216,6 +220,43 @@ func get_primed_card() -> CardRoot:
 		return null
 
 	return interaction_root.get_primed_card()
+
+
+func get_selected_sacrifice_cards() -> Array[CardRoot]:
+	if sacrifice_selection == null:
+		return []
+
+	return sacrifice_selection.get_selected_cards()
+
+
+func clear_sacrifice_selection() -> void:
+	if sacrifice_selection != null:
+		sacrifice_selection.clear_selection()
+
+
+func get_index_of_card(card: CardRoot) -> int:
+	if card_spawner == null:
+		return -1
+
+	return card_spawner.get_cards().find(card)
+
+
+func remove_card_from_hand(card: CardRoot) -> void:
+	if card_spawner != null:
+		card_spawner.remove_card(card)
+
+
+func restore_card_to_hand(card: CardRoot, index: int) -> void:
+	if card == null:
+		return
+
+	card.visible = true
+
+	if card_spawner == null:
+		return
+
+	card_spawner.add_card(card)
+	card_spawner.move_card_to_index(card, index)
 
 
 func _on_card_added(card: CardRoot) -> void:
@@ -256,6 +297,10 @@ func _on_hand_card_left_pressed(card: CardRoot) -> void:
 func _on_hand_card_right_pressed(card: CardRoot) -> void:
 	if sacrifice_selection != null:
 		sacrifice_selection.handle_card_right_pressed(card)
+
+
+func _on_sacrifice_selection_changed(cards: Array[CardRoot]) -> void:
+	sacrifice_selection_changed.emit(cards)
 
 
 func _on_prime_state_changed(

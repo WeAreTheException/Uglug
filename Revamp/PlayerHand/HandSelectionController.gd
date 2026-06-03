@@ -19,7 +19,8 @@ func setup(source_card_spawner: Hand_CardSpawner) -> void:
 	if card_spawner == null:
 		return
 
-	card_spawner.card_removed.connect(_on_card_removed)
+	if not card_spawner.card_removed.is_connected(_on_card_removed):
+		card_spawner.card_removed.connect(_on_card_removed)
 
 
 func set_enabled(value: bool) -> void:
@@ -107,7 +108,8 @@ func get_selected_cards() -> Array[CardRoot]:
 
 func _on_card_removed(card: CardRoot) -> void:
 	if selected_cards.has(card):
-		deselect_card(card)
+		selected_cards.erase(card)
+		_emit_selection_changed()
 
 
 func _is_card_in_hand(card: CardRoot) -> bool:
