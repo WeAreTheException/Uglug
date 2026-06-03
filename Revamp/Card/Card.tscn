@@ -26,7 +26,9 @@
 [ext_resource type="Script" uid="uid://jv8gks4tscbj" path="res://SacrificeAnimationRunner.gd" id="16_v34li"]
 [ext_resource type="Texture2D" uid="uid://cxc62tmwvs36" path="res://Art/HurtSprite.png" id="17_7vw44"]
 [ext_resource type="Script" uid="uid://ci1jrkjugh1lv" path="res://Revamp/Card/CardHoverFeedback.gd" id="19_v34li"]
+[ext_resource type="Script" uid="uid://cjg3wldaxqx21" path="res://Revamp/Card/DieAudio.gd" id="20_7vw44"]
 [ext_resource type="Script" uid="uid://7pm1mj2m7jwg" path="res://Revamp/Card/CardSelectFeedback.gd" id="20_v34li"]
+[ext_resource type="AudioStream" uid="uid://5uho8ho3dlfo" path="res://Audio/Placeholder SFX/card_death.wav" id="21_k3ell"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g8l5j"]
 size = Vector2(144, 216)
@@ -115,12 +117,17 @@ position = Vector2(9.536743e-07, 0)
 scale = Vector2(0.12312501, 0.12312499)
 texture = ExtResource("17_7vw44")
 
-[node name="Die" type="Node" parent="Actions" unique_id=1463626010 node_paths=PackedStringArray("animation_runner")]
+[node name="Die" type="Node" parent="Actions" unique_id=1463626010 node_paths=PackedStringArray("animation_runner", "death_audio")]
 script = ExtResource("14_fx0xs")
 animation_runner = NodePath("DieAnimationRunner")
+death_audio = NodePath("DieAudio")
 
 [node name="DieAnimationRunner" type="Node" parent="Actions/Die" unique_id=695087032]
 script = ExtResource("15_jgw7k")
+
+[node name="DieAudio" type="Node" parent="Actions/Die" unique_id=291526797]
+script = ExtResource("20_7vw44")
+death_sfx = ExtResource("21_k3ell")
 
 [node name="Sacrifice" type="Node" parent="Actions" unique_id=1151363001 node_paths=PackedStringArray("animation_runner", "sacrifice_select_feedback")]
 script = ExtResource("15_v34li")

@@ -5,6 +5,7 @@ signal die_started(card: CardRoot)
 signal die_finished(card: CardRoot)
 
 @export var animation_runner: DieAnimationRunner
+@export var death_audio: DeathAudio
 
 @export var enable_debug_key: bool = true
 @export var debug_key: Key = KEY_D
@@ -62,6 +63,9 @@ func play_die() -> void:
 		return
 
 	die_started.emit(card)
+
+	if death_audio != null:
+		death_audio.play_detached()
 
 	is_playing = true
 
