@@ -13,12 +13,12 @@
 [ext_resource type="Script" uid="uid://csrjk2fx52jll" path="res://Revamp/Card/CardActions/Attack/AttackTargetResolver.gd" id="10_opxhd"]
 [ext_resource type="Script" uid="uid://cf4ka1vcw1057" path="res://Revamp/Card/ShadowFeedback.gd" id="11_c3ju1"]
 [ext_resource type="Script" uid="uid://dtplnofbjxace" path="res://Revamp/Card/CardActions/Attack/AttackSequenceBuilder.gd" id="11_iynnv"]
-[ext_resource type="Script" uid="uid://bffk1pwgwmawi" path="res://Revamp/Card/HurtFeedbackHandler.gd" id="12_mvgl2"]
-[ext_resource type="Script" uid="uid://r5c1gxcq78os" path="res://Revamp/Card/HurtAudio.gd" id="12_q2sni"]
+[ext_resource type="Script" path="res://Revamp/Card/HurtFeedbackHandler.gd" id="12_mvgl2"]
+[ext_resource type="Script" path="res://Revamp/Card/HurtAudio.gd" id="12_q2sni"]
 [ext_resource type="Script" uid="uid://behvtd6jpqaj" path="res://Revamp/Card/Hurt.gd" id="12_r5dqq"]
-[ext_resource type="Script" uid="uid://3q7tforlyo6a" path="res://Revamp/Card/HurtFlash.gd" id="13_mvgl2"]
+[ext_resource type="Script" path="res://Revamp/Card/HurtFlash.gd" id="13_mvgl2"]
 [ext_resource type="Script" uid="uid://5ajbnfxgx2dx" path="res://Revamp/Card/HurtAnimationRunner.gd" id="13_opxhd"]
-[ext_resource type="Script" uid="uid://c73fc68wlpcah" path="res://Revamp/Card/HurtSprite.gd" id="14_1m3h3"]
+[ext_resource type="Script" path="res://Revamp/Card/HurtSprite.gd" id="14_1m3h3"]
 [ext_resource type="Script" uid="uid://i1xyctx2i65u" path="res://Revamp/Card/Die.gd" id="14_fx0xs"]
 [ext_resource type="AudioStream" uid="uid://dm1lem708ohqr" path="res://Audio/Placeholder SFX/card_attack_damage.wav" id="14_vnay7"]
 [ext_resource type="Script" uid="uid://crfcylmn2r5gf" path="res://Revamp/Card/DieAnimationRunner.gd" id="15_jgw7k"]
@@ -129,6 +129,12 @@ sacrifice_select_feedback = NodePath("../../CardFeedback/Select")
 script = ExtResource("16_v34li")
 visual_target = NodePath("../../../Visuals/CardVisuals")
 metadata/_custom_type_script = "uid://jv8gks4tscbj"
+
+[node name="MarkedForSacrificeFeedback" type="Node" parent="Actions/Sacrifice" unique_id=1792662883]
+
+[node name="PendingSacrificeFeedback" type="Node" parent="Actions/Sacrifice" unique_id=513482321]
+
+[node name="CommittedSacrificeFeedback" type="Node" parent="Actions/Sacrifice" unique_id=483430806]
 
 [node name="CardFeedback" type="Node" parent="." unique_id=824411320 node_paths=PackedStringArray("card", "hover_feedback", "select_feedback")]
 script = ExtResource("8_nau7p")
