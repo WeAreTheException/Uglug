@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="CardData" format=3 uid="uid://c64jbnvj0pbwk"]
+
+[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Cards/Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="1_sucw5"]
+[ext_resource type="Resource" uid="uid://cnn0fddifxool" path="res://Cards/Mutations/MutationPresets/ColonyNest.tres" id="2_krv1q"]
+[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="2_wvsyy"]
+
+[resource]
+script = ExtResource("2_wvsyy")
+name = "Ant Hill"
+health = 3
+cost = 2
+base_mutations = Array[ExtResource("1_sucw5")]([ExtResource("2_krv1q")])
+metadata/_custom_type_script = "uid://duslcpxrhurv8"
