@@ -1,53 +1,105 @@
 [gd_scene format=3 uid="uid://1wr1e57v7trd"]
 
 [ext_resource type="Script" uid="uid://cu8tygtobpls5" path="res://Revamp/PlayerHand/PlayerHandScripts/PlayerHandRoot.gd" id="1_sfirx"]
-[ext_resource type="PackedScene" uid="uid://5qb61nfrd521" path="res://Revamp/Card/Card.tscn" id="2_0ixd0"]
+[ext_resource type="PackedScene" uid="uid://5qb61nfrd521" path="res://Revamp/Card/Card.tscn" id="2_0sjxa"]
+[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="3_egog8"]
+[ext_resource type="Script" uid="uid://364yw6105xmv" path="res://Revamp/PlayerHand/Hand_CardSpawner.gd" id="3_ei7ej"]
 [ext_resource type="Script" uid="uid://1trhe4hahjjw" path="res://Revamp/PlayerHand/HandDragController.gd" id="4_02mp4"]
+[ext_resource type="Resource" uid="uid://b350kw1jayfdj" path="res://Cards/CardPresets/Draculant.tres" id="4_trvsu"]
 [ext_resource type="Script" uid="uid://d2jwgwoqd7be1" path="res://Revamp/PlayerHand/PlayerHandScripts/HandLayout.gd" id="5_02mp4"]
+[ext_resource type="Script" uid="uid://u5hivnujj7i3" path="res://Revamp/PlayerHand/Hand_ldleLayout.gd" id="5_byk4v"]
+[ext_resource type="Script" uid="uid://bdvrlucxsyypm" path="res://Revamp/PlayerHand/HandStates/HandStateMachine.gd" id="5_lmw24"]
+[ext_resource type="Resource" uid="uid://b8tgum0dpv4iv" path="res://Cards/CardPresets/Deterrant.tres" id="5_wk34g"]
 [ext_resource type="Script" uid="uid://cmkraotvrlljk" path="res://Revamp/PlayerHand/HandSortController.gd" id="6_0ixd0"]
 [ext_resource type="Script" uid="uid://o0q47cw4mhcv" path="res://Revamp/PlayerHand/HandSelectionController.gd" id="6_7snob"]
-[ext_resource type="Script" uid="uid://burlohwf87mbm" path="res://Revamp/PlayerHand/HandModeController.gd" id="6_lmw24"]
+[ext_resource type="Resource" uid="uid://dbgpqc3vdl8t" path="res://Cards/CardPresets/Duriant.tres" id="6_m7nbq"]
+[ext_resource type="Script" uid="uid://bng537lwr5kp1" path="res://Revamp/PlayerHand/Hand_PlayLayout.gd" id="6_nqn2i"]
+[ext_resource type="Resource" uid="uid://ci7yvhc8pfst6" path="res://Cards/CardPresets/QueenAnt.tres" id="7_4g7iw"]
+[ext_resource type="Script" uid="uid://bcwnrublrv4gp" path="res://Revamp/PlayerHand/Hand_LayoutExclusion.gd" id="7_h8vib"]
+[ext_resource type="Script" uid="uid://cua0dpcdd0ve" path="res://Revamp/PlayerHand/Hand_InsertIndexResolver.gd" id="8_l4pv6"]
 [ext_resource type="Script" uid="uid://q7ps8fi8b23k" path="res://Revamp/PlayerHand/HandPrimeController.gd" id="8_lmw24"]
+[ext_resource type="Script" uid="uid://cahtpfpr04v10" path="res://Revamp/PlayerHand/Hand_IdleState.gd" id="11_hr725"]
+[ext_resource type="Script" uid="uid://dav5kkdxmhw4w" path="res://Revamp/PlayerHand/Hand_PlayState.gd" id="12_minj7"]
+[ext_resource type="Script" uid="uid://bkq78l6yxxho2" path="res://Revamp/PlayerHand/Hand_SacrificeState.gd" id="13_ag06q"]
+[ext_resource type="Script" uid="uid://yhuhiapusq0g" path="res://Revamp/PlayerHand/Hand_InteractionRoot.gd" id="14_vlybu"]
+[ext_resource type="Script" uid="uid://d4kmbg1jvuago" path="res://Revamp/PlayerHand/Hand_PrimeSelection.gd" id="17_txnvk"]
+[ext_resource type="Script" uid="uid://bdnunw0165chv" path="res://Revamp/PlayerHand/Hand_PrimeMover.gd" id="19_7sjk6"]
 
-[node name="PlayerHandRoot" type="Node2D" unique_id=371738706 node_paths=PackedStringArray("hand_cards_layer", "drag_layer", "hand_layout", "hand_mode_controller", "hand_selection_controller", "hand_prime_controller")]
+[node name="PlayerHandRoot" type="Node2D" unique_id=371738706 node_paths=PackedStringArray("hand_card_layer", "drag_layer", "card_spawner", "hand_layout", "sort_controller", "state_machine", "interaction_root", "sacrifice_selection")]
 script = ExtResource("1_sfirx")
-card_scene = ExtResource("2_0ixd0")
-hand_cards_layer = NodePath("Hand_CardLayout")
+card_scene = ExtResource("2_0sjxa")
+starting_cards = Array[ExtResource("3_egog8")]([ExtResource("4_trvsu"), ExtResource("5_wk34g"), ExtResource("6_m7nbq"), ExtResource("7_4g7iw")])
+hand_card_layer = NodePath("Hand_CardLayer")
 drag_layer = NodePath("Drag_Layer")
+card_spawner = NodePath("Hand_CardSpawner")
 hand_layout = NodePath("Hand_Layout")
-hand_mode_controller = NodePath("HandModeController")
-hand_selection_controller = NodePath("Hand_SelectionController")
-hand_prime_controller = NodePath("HandPrimeController")
+sort_controller = NodePath("Hand_SortController")
+state_machine = NodePath("Hand_StateMachine")
+interaction_root = NodePath("Hand_InteractionRoot")
+sacrifice_selection = NodePath("Hand_SacrificeSelection")
 
 [node name="Drag_Layer" type="Node2D" parent="." unique_id=364693775]
 
-[node name="Hand_CardLayout" type="Node2D" parent="." unique_id=1709952561]
+[node name="Hand_CardLayer" type="Node2D" parent="." unique_id=1709952561]
 
 [node name="Hand_CardSpawner" type="Node" parent="." unique_id=979805471]
+script = ExtResource("3_ei7ej")
 
-[node name="Hand_Layout" type="Node2D" parent="." unique_id=1869482169]
+[node name="Hand_Layout" type="Node2D" parent="." unique_id=1869482169 node_paths=PackedStringArray("idle_layout", "play_layout", "layout_exclusion", "insert_index_resolver")]
 script = ExtResource("5_02mp4")
+idle_layout = NodePath("Hand_IdleLayout")
+play_layout = NodePath("Hand_PlayLayout")
+layout_exclusion = NodePath("Hand_LayoutExclusion")
+insert_index_resolver = NodePath("Hand_InsertIndexResolver")
 
-[node name="Hand_DragController" type="Node" parent="." unique_id=1839244026 node_paths=PackedStringArray("hand", "hand_layout")]
-script = ExtResource("4_02mp4")
-hand = NodePath("..")
-hand_layout = NodePath("../Hand_Layout")
+[node name="Hand_IdleLayout" type="Node2D" parent="Hand_Layout" unique_id=1708688104]
+script = ExtResource("5_byk4v")
 
-[node name="Hand_SelectionController" type="Node" parent="." unique_id=1212449443 node_paths=PackedStringArray("hand")]
-script = ExtResource("6_7snob")
-hand = NodePath("..")
+[node name="Hand_PlayLayout" type="Node2D" parent="Hand_Layout" unique_id=614443051]
+script = ExtResource("6_nqn2i")
 
-[node name="Hand_SortController" type="Node" parent="." unique_id=447247999 node_paths=PackedStringArray("hand")]
+[node name="Hand_LayoutExclusion" type="Node2D" parent="Hand_Layout" unique_id=1113843450]
+script = ExtResource("7_h8vib")
+
+[node name="Hand_InsertIndexResolver" type="Node2D" parent="Hand_Layout" unique_id=1511900978]
+script = ExtResource("8_l4pv6")
+
+[node name="Hand_SortController" type="Node" parent="." unique_id=447247999]
 script = ExtResource("6_0ixd0")
-hand = NodePath("..")
 
-[node name="HandModeController" type="Node" parent="." unique_id=1376543797 node_paths=PackedStringArray("hand", "hand_layout", "hand_drag_controller")]
-script = ExtResource("6_lmw24")
-hand = NodePath("..")
-hand_layout = NodePath("../Hand_Layout")
-hand_drag_controller = NodePath("../Hand_DragController")
+[node name="Hand_StateMachine" type="Node" parent="." unique_id=101836643 node_paths=PackedStringArray("idle_state", "play_state", "sacrifice_state")]
+script = ExtResource("5_lmw24")
+idle_state = NodePath("Hand_IdleState")
+play_state = NodePath("Hand_PlayState")
+sacrifice_state = NodePath("Hand_SacrificeState")
 
-[node name="HandPrimeController" type="Node" parent="." unique_id=1907000838 node_paths=PackedStringArray("hand", "selection_controller")]
+[node name="Hand_IdleState" type="Node" parent="Hand_StateMachine" unique_id=477928888]
+script = ExtResource("11_hr725")
+
+[node name="Hand_PlayState" type="Node" parent="Hand_StateMachine" unique_id=222848283]
+script = ExtResource("12_minj7")
+
+[node name="Hand_SacrificeState" type="Node" parent="Hand_StateMachine" unique_id=746739850]
+script = ExtResource("13_ag06q")
+
+[node name="Hand_InteractionRoot" type="Node" parent="." unique_id=1490631773 node_paths=PackedStringArray("drag_controller", "prime_controller")]
+script = ExtResource("14_vlybu")
+drag_controller = NodePath("Hand_DragController")
+prime_controller = NodePath("Hand_PrimeController")
+
+[node name="Hand_DragController" type="Node" parent="Hand_InteractionRoot" unique_id=1839244026]
+script = ExtResource("4_02mp4")
+
+[node name="Hand_PrimeController" type="Node" parent="Hand_InteractionRoot" unique_id=1907000838 node_paths=PackedStringArray("prime_selection", "prime_mover")]
 script = ExtResource("8_lmw24")
-hand = NodePath("..")
-selection_controller = NodePath("../Hand_SelectionController")
+prime_selection = NodePath("Hand_PrimeSelection")
+prime_mover = NodePath("Hand_PrimeMover")
+
+[node name="Hand_PrimeSelection" type="Node" parent="Hand_InteractionRoot/Hand_PrimeController" unique_id=122123842]
+script = ExtResource("17_txnvk")
+
+[node name="Hand_PrimeMover" type="Node" parent="Hand_InteractionRoot/Hand_PrimeController" unique_id=717276307]
+script = ExtResource("19_7sjk6")
+
+[node name="Hand_SacrificeSelection" type="Node" parent="." unique_id=1212449443]
+script = ExtResource("6_7snob")

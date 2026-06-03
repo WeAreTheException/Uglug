@@ -3,7 +3,6 @@
 [ext_resource type="PackedScene" uid="uid://b8f0lryqwcw7j" path="res://Revamp/CardVisuals/CardVisuals.tscn" id="1_2duqk"]
 [ext_resource type="Script" uid="uid://ctlcy38qx1jj2" path="res://Revamp/Card/CardScripts/CardRoot.gd" id="1_hdbik"]
 [ext_resource type="Script" uid="uid://3tw3j0h4rvc3" path="res://Revamp/Card/CardScripts/BoardPresence.gd" id="1_ivqip"]
-[ext_resource type="Resource" uid="uid://jd5rbexi4lr4" path="res://Cards/CardPresets/Persistant.tres" id="2_c3ju1"]
 [ext_resource type="Script" uid="uid://dpkom03l84r4y" path="res://Revamp/Card/CardScripts/CardStats.gd" id="2_hdbik"]
 [ext_resource type="Script" uid="uid://xlxu58fop1wg" path="res://Revamp/Card/CardScripts/CardInput.gd" id="2_nau7p"]
 [ext_resource type="Texture2D" uid="uid://di66ndoe6cgnp" path="res://Art/Ants/Antler.png" id="3_2duqk"]
@@ -28,7 +27,6 @@ size = Vector2(144, 216)
 
 [node name="Card" type="Node2D" unique_id=1649731477 node_paths=PackedStringArray("input", "board_presence", "stats", "mutations", "card_visuals_root", "card_feedback", "attack", "hurt", "die", "sacrifice")]
 script = ExtResource("1_hdbik")
-test_data = ExtResource("2_c3ju1")
 input = NodePath("CardInput")
 board_presence = NodePath("Core/BoardPresence")
 stats = NodePath("Core/CardStats")

@@ -3,9 +3,6 @@ class_name CardRoot
 
 signal hovered(card: CardRoot)
 signal unhovered(card: CardRoot)
-signal pressed(card: CardRoot)
-signal released(card: CardRoot)
-signal right_pressed(card: CardRoot)
 
 @export var test_data: CardData
 
@@ -22,7 +19,6 @@ signal right_pressed(card: CardRoot)
 @export var sacrifice: Sacrifice
 
 var slots_root: SlotsRoot = null
-
 var card_data: CardData = null
 var card_name: String = ""
 
@@ -66,6 +62,27 @@ func setup_actions() -> void:
 
 	if die != null:
 		die.setup(self)
+
+
+func set_hover_focused(value: bool) -> void:
+	if card_feedback != null:
+		card_feedback.set_hover_focused(value)
+
+
+func set_drag_feedback(value: bool) -> void:
+	if card_feedback != null:
+		card_feedback.set_drag_feedback(value)
+
+
+func set_prime_select_feedback(value: bool) -> void:
+	if card_feedback != null:
+		card_feedback.set_prime_select_feedback(value)
+
+
+func clear_hand_feedback() -> void:
+	set_hover_focused(false)
+	set_drag_feedback(false)
+	set_prime_select_feedback(false)
 
 
 func start_sacrifice_anticipation() -> void:
@@ -121,11 +138,11 @@ func _connect_input() -> void:
 	if input == null:
 		return
 
-	input.hovered.connect(_on_input_hovered)
-	input.unhovered.connect(_on_input_unhovered)
-	input.pressed.connect(_on_input_pressed)
-	input.released.connect(_on_input_released)
-	input.right_pressed.connect(_on_input_right_pressed)
+	if not input.hovered.is_connected(_on_input_hovered):
+		input.hovered.connect(_on_input_hovered)
+
+	if not input.unhovered.is_connected(_on_input_unhovered):
+		input.unhovered.connect(_on_input_unhovered)
 
 
 func _on_input_hovered() -> void:
@@ -134,15 +151,3 @@ func _on_input_hovered() -> void:
 
 func _on_input_unhovered() -> void:
 	unhovered.emit(self)
-
-
-func _on_input_pressed() -> void:
-	pressed.emit(self)
-
-
-func _on_input_released() -> void:
-	released.emit(self)
-
-
-func _on_input_right_pressed() -> void:
-	right_pressed.emit(self)

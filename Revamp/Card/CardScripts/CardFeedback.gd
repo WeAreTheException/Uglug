@@ -5,58 +5,67 @@ class_name CardFeedback
 @export var hover_feedback: CardHoverFeedback
 @export var select_feedback: CardSelectFeedback
 
-var is_hovered := false
-var is_selected := false
+var is_hover_focused := false
+var is_dragging := false
+var is_prime_selected := false
 
 
 func _ready() -> void:
 	if card == null:
 		card = get_parent() as CardRoot
 
-	if card == null:
+
+func set_hover_focused(value: bool) -> void:
+	is_hover_focused = value
+	_refresh()
+
+
+func set_drag_feedback(value: bool) -> void:
+	is_dragging = value
+	_refresh()
+
+
+func set_prime_select_feedback(value: bool) -> void:
+	is_prime_selected = value
+	_refresh()
+
+
+func clear_all() -> void:
+	is_hover_focused = false
+	is_dragging = false
+	is_prime_selected = false
+	_refresh()
+
+
+func _refresh() -> void:
+	if not _can_use_hand_feedback():
+		_apply_selected(false)
+		_apply_hover(false)
 		return
 
-	card.hovered.connect(_on_card_hovered)
-	card.unhovered.connect(_on_card_unhovered)
+	var should_select := is_dragging or is_prime_selected
+
+	_apply_selected(should_select)
+
+	if should_select:
+		_apply_hover(false, false)
+	else:
+		_apply_hover(is_hover_focused, true)
 
 
-func set_selected(value: bool) -> void:
-	if not _can_use_hand_feedback():
-		value = false
-
-	is_selected = value
-
+func _apply_selected(value: bool) -> void:
 	if select_feedback != null:
-		select_feedback.set_selected(is_selected)
+		select_feedback.set_selected(value)
 
-	if hover_feedback != null:
-		hover_feedback.set_enabled(not is_selected)
 
-	if not is_selected and is_hovered and hover_feedback != null:
+func _apply_hover(value: bool, reset_when_disabled: bool = true) -> void:
+	if hover_feedback == null:
+		return
+
+	hover_feedback.set_enabled(value, reset_when_disabled)
+
+	if value:
 		hover_feedback.play_hover()
-
-
-func _on_card_hovered(_card: CardRoot) -> void:
-	is_hovered = true
-
-	if not _can_use_hand_feedback():
-		return
-
-	if is_selected:
-		return
-
-	if hover_feedback != null:
-		hover_feedback.play_hover()
-
-
-func _on_card_unhovered(_card: CardRoot) -> void:
-	is_hovered = false
-
-	if is_selected:
-		return
-
-	if hover_feedback != null:
-		hover_feedback.play_unhover()
 
 
 func _can_use_hand_feedback() -> bool:

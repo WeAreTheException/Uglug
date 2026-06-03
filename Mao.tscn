@@ -6,44 +6,16 @@
 [ext_resource type="Resource" uid="uid://bxrcjm4w1dy82" path="res://Cards/CardPresets/Anthrax.tres" id="4_cc2no"]
 [ext_resource type="Resource" uid="uid://ci7yvhc8pfst6" path="res://Cards/CardPresets/QueenAnt.tres" id="5_1j514"]
 [ext_resource type="Resource" uid="uid://c64jbnvj0pbwk" path="res://Cards/CardPresets/AntHill.tres" id="6_at0h8"]
-[ext_resource type="Script" uid="uid://bxbqihkit6rgo" path="res://Managers/Phasemanager.gd" id="7_ftb0s"]
-[ext_resource type="Script" uid="uid://bqtoohcvy57vk" path="res://SacrificeHandler.gd" id="8_cc2no"]
 [ext_resource type="PackedScene" uid="uid://c0cpgrqgl3a0d" path="res://PlayerHandButtons.tscn" id="8_ql7l1"]
-[ext_resource type="Script" uid="uid://dkcopitw6yuw6" path="res://SacrificeSession.gd" id="9_1j514"]
-[ext_resource type="Script" uid="uid://cmuew22j0w0me" path="res://SacrificeSelection.gd" id="10_at0h8"]
-[ext_resource type="Script" uid="uid://itdeq0jhhii5" path="res://SacrificeInputBinder.gd" id="11_6ula3"]
-[ext_resource type="Script" uid="uid://d1olj4dw4wovw" path="res://SacrificeFeedbackRouter.gd" id="11_30x73"]
 
 [node name="Mao" type="Node2D" unique_id=550121538]
 
 [node name="Slots" parent="." unique_id=1318716624 instance=ExtResource("1_yq750")]
 position = Vector2(120, 120)
 
-[node name="PlayerHandRoot" parent="." unique_id=371738706 node_paths=PackedStringArray("hand_buttons_root", "prime_anchor") instance=ExtResource("2_mi1n2")]
+[node name="PlayerHandRoot" parent="." unique_id=371738706 instance=ExtResource("2_mi1n2")]
 position = Vector2(720, 960)
 starting_cards = Array[ExtResource("3_d5ogx")]([ExtResource("4_cc2no"), ExtResource("5_1j514"), ExtResource("6_at0h8")])
-hand_buttons_root = NodePath("../PlayerHandButtons")
-prime_anchor = NodePath("../PrimeCardLocation")
-
-[node name="PhaseManager" type="Node" parent="." unique_id=1588673703 node_paths=PackedStringArray("player_hand")]
-script = ExtResource("7_ftb0s")
-player_hand = NodePath("../PlayerHandRoot")
-
-[node name="SacrificeHandler" type="Node" parent="PhaseManager" unique_id=795233421 node_paths=PackedStringArray("player_hand_root")]
-script = ExtResource("8_cc2no")
-player_hand_root = NodePath("../../PlayerHandRoot")
-
-[node name="SacrificeSession" type="Node" parent="PhaseManager/SacrificeHandler" unique_id=1617253653]
-script = ExtResource("9_1j514")
-
-[node name="SacrificeSelection" type="Node" parent="PhaseManager/SacrificeHandler" unique_id=1687355812]
-script = ExtResource("10_at0h8")
-
-[node name="SacrificeInputBinder" type="Node" parent="PhaseManager/SacrificeHandler" unique_id=47272858]
-script = ExtResource("11_6ula3")
-
-[node name="SacrificeFeedbackRunner" type="Node" parent="PhaseManager/SacrificeHandler" unique_id=1084027695]
-script = ExtResource("11_30x73")
 
 [node name="PlayerHandButtons" parent="." unique_id=1099949362 instance=ExtResource("8_ql7l1")]
 position = Vector2(1104, 540)

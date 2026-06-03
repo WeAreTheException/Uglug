@@ -3,36 +3,18 @@ class_name CardInput
 
 signal hovered
 signal unhovered
-signal pressed
-signal released
-signal right_pressed
 
 var is_hovered: bool = false
-var is_pressed: bool = false
 
 
 func _ready() -> void:
 	input_pickable = true
 
-	mouse_entered.connect(_on_mouse_entered)
-	mouse_exited.connect(_on_mouse_exited)
+	if not mouse_entered.is_connected(_on_mouse_entered):
+		mouse_entered.connect(_on_mouse_entered)
 
-
-func _input(event: InputEvent) -> void:
-	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_LEFT:
-			if event.pressed:
-				if is_hovered:
-					is_pressed = true
-					pressed.emit()
-			else:
-				if is_pressed:
-					is_pressed = false
-					released.emit()
-
-		if event.button_index == MOUSE_BUTTON_RIGHT:
-			if event.pressed and is_hovered:
-				right_pressed.emit()
+	if not mouse_exited.is_connected(_on_mouse_exited):
+		mouse_exited.connect(_on_mouse_exited)
 
 
 func _on_mouse_entered() -> void:

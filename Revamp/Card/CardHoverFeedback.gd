@@ -15,10 +15,10 @@ func _ready() -> void:
 		base_scale = target.scale
 
 
-func set_enabled(value: bool) -> void:
+func set_enabled(value: bool, reset_when_disabled: bool = true) -> void:
 	is_enabled = value
 
-	if not is_enabled:
+	if not is_enabled and reset_when_disabled:
 		play_unhover()
 
 

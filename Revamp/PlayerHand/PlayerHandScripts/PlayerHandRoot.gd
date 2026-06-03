@@ -4,245 +4,242 @@ class_name PlayerHandRoot
 signal card_added(card: CardRoot)
 signal card_removed(card: CardRoot)
 signal hand_changed
-signal hand_mode_changed(mode: PhaseManager.HandMode)
+signal hand_state_changed(state_name: String)
 
 signal card_primed(card: CardRoot)
 signal card_unprimed(card: CardRoot)
+signal prime_state_changed(can_prime: bool, can_unprime: bool, text: String)
+signal sacrifice_requested(primed_card: CardRoot, hand_cards: Array[CardRoot])
 
 @export var card_scene: PackedScene
 @export var starting_cards: Array[CardData]
-
-@export var hand_cards_layer: Node2D
-@export var drag_layer: Node2D
-@export var hand_layout: HandLayout
-
-@export var hand_mode_controller: HandModeController
-@export var hand_selection_controller: HandSelectionController
-@export var hand_prime_controller: HandPrimeController
-@export var hand_buttons_root: PlayerHandButtonsRoot
-
-@export var prime_anchor: Node2D
-
 @export var max_hand_size: int = 7
 @export var minimum_hand_size: int = 3
 
-var current_cards: Array[CardRoot] = []
-var current_hand_mode: PhaseManager.HandMode = PhaseManager.HandMode.HAND_PASSIVE
+@export var hand_card_layer: Node2D
+@export var drag_layer: Node2D
+@export var prime_location: Node2D
+
+@export var prime_button_root: Node
+@export var sort_buttons_root: Node
+@export var sacrifice_button_root: Node
+
+@export var card_spawner: Hand_CardSpawner
+@export var hand_layout: Hand_Layout
+@export var sort_controller: Hand_SortController
+@export var state_machine: Hand_StateMachine
+@export var interaction_root: Hand_InteractionRoot
+@export var sacrifice_selection: Hand_SacrificeSelection
+
+@export var spawn_starting_cards_on_ready: bool = true
 
 
 func _ready() -> void:
-	_connect_hand_buttons()
-	_connect_selection()
-	_connect_prime_controller()
+	_setup_spawner()
+	_setup_interaction()
+	_setup_sacrifice_selection()
+	_setup_sort()
+	_setup_state_machine()
+	_connect_external_buttons()
 
-	spawn_starting_cards()
+	if spawn_starting_cards_on_ready:
+		spawn_starting_cards()
+
+	enter_idle_state()
 	arrange_cards()
-	set_hand_mode(current_hand_mode)
+	_emit_prime_state()
 
 
-func _connect_hand_buttons() -> void:
-	if hand_buttons_root == null:
+func _setup_spawner() -> void:
+	if card_spawner == null:
 		return
 
-	if not hand_buttons_root.prime_pressed.is_connected(_on_prime_pressed):
-		hand_buttons_root.prime_pressed.connect(_on_prime_pressed)
+	card_spawner.configure(
+		card_scene,
+		starting_cards,
+		hand_card_layer,
+		max_hand_size,
+		minimum_hand_size
+	)
+
+	card_spawner.card_added.connect(_on_card_added)
+	card_spawner.card_removed.connect(_on_card_removed)
+	card_spawner.hand_changed.connect(_on_hand_changed)
 
 
-func _connect_selection() -> void:
-	if hand_selection_controller == null:
+func _setup_interaction() -> void:
+	if interaction_root == null:
 		return
 
-	if not hand_selection_controller.selected_card_changed.is_connected(_on_selected_card_changed):
-		hand_selection_controller.selected_card_changed.connect(_on_selected_card_changed)
+	interaction_root.setup(card_spawner, hand_layout, hand_card_layer, drag_layer, prime_location)
+
+	interaction_root.card_primed.connect(_on_card_primed)
+	interaction_root.card_unprimed.connect(_on_card_unprimed)
+	interaction_root.prime_state_changed.connect(_on_prime_state_changed)
+	interaction_root.card_left_pressed.connect(_on_hand_card_left_pressed)
+	interaction_root.card_right_pressed.connect(_on_hand_card_right_pressed)
 
 
-func _connect_prime_controller() -> void:
-	if hand_prime_controller == null:
+func _setup_sacrifice_selection() -> void:
+	if sacrifice_selection != null:
+		sacrifice_selection.setup(card_spawner)
+
+
+func _setup_sort() -> void:
+	if sort_controller != null:
+		sort_controller.setup(card_spawner)
+
+
+func _setup_state_machine() -> void:
+	if state_machine == null:
 		return
 
-	if not hand_prime_controller.card_primed.is_connected(_on_card_primed):
-		hand_prime_controller.card_primed.connect(_on_card_primed)
-
-	if not hand_prime_controller.card_unprimed.is_connected(_on_card_unprimed):
-		hand_prime_controller.card_unprimed.connect(_on_card_unprimed)
+	state_machine.setup(hand_layout, interaction_root, sort_controller, sacrifice_selection)
+	state_machine.state_changed.connect(_on_hand_state_changed)
 
 
-func set_hand_mode(mode: PhaseManager.HandMode) -> void:
-	current_hand_mode = mode
+func _connect_external_buttons() -> void:
+	_connect_signal(prime_button_root, "prime_pressed", request_prime_toggle)
+	_connect_signal(sort_buttons_root, "sort_by_cost_pressed", request_sort_by_cost)
+	_connect_signal(sort_buttons_root, "sort_by_mutation_pressed", request_sort_by_mutation_count)
+	_connect_signal(sacrifice_button_root, "sacrifice_pressed", request_sacrifice)
 
-	if hand_mode_controller != null:
-		hand_mode_controller.set_hand_mode(mode)
 
-	hand_mode_changed.emit(mode)
-	arrange_cards()
-	_update_prime_button_state()
+func _connect_signal(source: Object, signal_name: StringName, target: Callable) -> void:
+	if source == null:
+		return
+
+	if not source.has_signal(signal_name):
+		return
+
+	if not source.is_connected(signal_name, target):
+		source.connect(signal_name, target)
 
 
 func spawn_starting_cards() -> void:
-	for data in starting_cards:
-		if current_cards.size() >= max_hand_size:
-			return
-
-		spawn_card(data)
+	if card_spawner != null:
+		card_spawner.spawn_starting_cards()
 
 
 func spawn_card(data: CardData) -> CardRoot:
-	if data == null:
+	if card_spawner == null:
 		return null
 
-	if card_scene == null:
-		return null
-
-	if hand_cards_layer == null:
-		return null
-
-	if is_full():
-		return null
-
-	var card := card_scene.instantiate() as CardRoot
-
-	if card == null:
-		return null
-
-	hand_cards_layer.add_child(card)
-	card.position = Vector2.ZERO
-	card.setup(data)
-
-	add_card(card)
-
-	return card
-
-
-func add_card(card: CardRoot) -> void:
-	if card == null:
-		return
-
-	if current_cards.has(card):
-		return
-
-	if is_full():
-		return
-
-	current_cards.append(card)
-
-	card_added.emit(card)
-	hand_changed.emit()
-
-	arrange_cards()
-	_update_prime_button_state()
-
-
-func remove_card(card: CardRoot) -> void:
-	if card == null:
-		return
-
-	if not current_cards.has(card):
-		return
-
-	current_cards.erase(card)
-
-	card_removed.emit(card)
-	hand_changed.emit()
-
-	arrange_cards()
-	_update_prime_button_state()
-
-
-func move_card_to_index(card: CardRoot, new_index: int) -> void:
-	if card == null:
-		return
-
-	if not current_cards.has(card):
-		return
-
-	current_cards.erase(card)
-
-	var clamped_index := clampi(new_index, 0, current_cards.size())
-	current_cards.insert(clamped_index, card)
-
-	hand_changed.emit()
-	arrange_cards()
-
-
-func sort_cards(compare_function: Callable) -> void:
-	current_cards.sort_custom(compare_function)
-
-	hand_changed.emit()
-	arrange_cards()
-
-
-func get_primed_card() -> CardRoot:
-	if hand_prime_controller == null:
-		return null
-
-	return hand_prime_controller.get_primed_card()
-
-
-func get_index_of_card(card: CardRoot) -> int:
-	return current_cards.find(card)
-
-
-func is_card_in_hand(card: CardRoot) -> bool:
-	return current_cards.has(card)
-
-
-func is_full() -> bool:
-	return current_cards.size() >= max_hand_size
-
-
-func get_hand_size() -> int:
-	return current_cards.size()
-
-
-func get_cards() -> Array[CardRoot]:
-	return current_cards.duplicate()
+	return card_spawner.spawn_card(data)
 
 
 func arrange_cards() -> void:
-	if hand_layout == null:
+	if hand_layout != null and card_spawner != null:
+		hand_layout.arrange_cards(card_spawner.get_cards())
+
+
+func request_prime_toggle() -> void:
+	if interaction_root != null:
+		interaction_root.toggle_prime()
+
+
+func request_sort_by_cost() -> void:
+	if sort_controller != null:
+		sort_controller.sort_by_cost()
+
+
+func request_sort_by_mutation_count() -> void:
+	if sort_controller != null:
+		sort_controller.sort_by_mutation_count()
+
+
+func request_sacrifice() -> void:
+	if sacrifice_selection == null:
 		return
 
-	hand_layout.arrange_cards(current_cards)
+	sacrifice_requested.emit(
+		get_primed_card(),
+		sacrifice_selection.get_selected_cards()
+	)
 
 
-func _on_prime_pressed() -> void:
-	if hand_prime_controller == null:
-		return
-
-	hand_prime_controller.toggle_prime()
-	_update_prime_button_state()
+func enter_idle_state() -> void:
+	if state_machine != null:
+		state_machine.change_state(Hand_StateMachine.IDLE)
 
 
-func _on_selected_card_changed(_card: CardRoot) -> void:
-	_update_prime_button_state()
+func enter_play_state() -> void:
+	if state_machine != null:
+		state_machine.change_state(Hand_StateMachine.PLAY)
+
+
+func enter_sacrifice_state() -> void:
+	if state_machine != null:
+		state_machine.change_state(Hand_StateMachine.SACRIFICE)
+
+
+func get_primed_card() -> CardRoot:
+	if interaction_root == null:
+		return null
+
+	return interaction_root.get_primed_card()
+
+
+func get_cards() -> Array[CardRoot]:
+	if card_spawner == null:
+		return []
+
+	return card_spawner.get_cards()
+
+
+func _on_card_added(card: CardRoot) -> void:
+	card_added.emit(card)
+
+
+func _on_card_removed(card: CardRoot) -> void:
+	card_removed.emit(card)
+
+
+func _on_hand_changed() -> void:
+	hand_changed.emit()
+	arrange_cards()
+	_emit_prime_state()
 
 
 func _on_card_primed(card: CardRoot) -> void:
 	card_primed.emit(card)
-	_update_prime_button_state()
+	enter_sacrifice_state()
+	_emit_prime_state()
 
 
 func _on_card_unprimed(card: CardRoot) -> void:
 	card_unprimed.emit(card)
-	_update_prime_button_state()
+	enter_play_state()
+	_emit_prime_state()
 
 
-func _update_prime_button_state() -> void:
-	if hand_buttons_root == null:
+func _on_hand_card_left_pressed(card: CardRoot) -> void:
+	if sacrifice_selection != null:
+		sacrifice_selection.handle_card_pressed(card)
+
+
+func _on_hand_card_right_pressed(card: CardRoot) -> void:
+	if sacrifice_selection != null:
+		sacrifice_selection.handle_card_right_pressed(card)
+
+
+func _on_prime_state_changed(can_prime: bool, can_unprime: bool, text: String) -> void:
+	prime_state_changed.emit(can_prime, can_unprime, text)
+
+
+func _on_hand_state_changed(state_name: String) -> void:
+	hand_state_changed.emit(state_name)
+	arrange_cards()
+	_emit_prime_state()
+
+
+func _emit_prime_state() -> void:
+	if interaction_root == null:
+		prime_state_changed.emit(false, false, "Prime")
 		return
 
-	if hand_prime_controller == null:
-		hand_buttons_root.set_prime_enabled(false)
-		hand_buttons_root.set_prime_text("Prime")
-		return
-
-	if hand_prime_controller.can_unprime():
-		hand_buttons_root.set_prime_enabled(true)
-		hand_buttons_root.set_prime_text("Unprime")
-		return
-
-	hand_buttons_root.set_prime_enabled(
-		hand_prime_controller.can_prime_selected_card()
+	prime_state_changed.emit(
+		interaction_root.can_prime_selected_card(),
+		interaction_root.can_unprime(),
+		interaction_root.get_prime_button_text()
 	)
-
-	hand_buttons_root.set_prime_text("Prime")

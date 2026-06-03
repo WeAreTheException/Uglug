@@ -1,31 +1,30 @@
 extends Node
-class_name HandSortController
+class_name Hand_SortController
 
-@export var hand: PlayerHandRoot
-
-@export var cost_sort_button: BaseButton
-@export var mutation_sort_button: BaseButton
+var card_spawner: Hand_CardSpawner = null
 
 @export var cost_ascending: bool = true
 @export var mutation_count_ascending: bool = true
 
+var sort_enabled: bool = true
 
-func _ready() -> void:
-	if hand == null:
-		hand = get_parent() as PlayerHandRoot
 
-	if cost_sort_button != null:
-		cost_sort_button.pressed.connect(sort_by_cost)
+func setup(source_card_spawner: Hand_CardSpawner) -> void:
+	card_spawner = source_card_spawner
 
-	if mutation_sort_button != null:
-		mutation_sort_button.pressed.connect(sort_by_mutation_count)
+
+func set_sort_enabled(value: bool) -> void:
+	sort_enabled = value
 
 
 func sort_by_cost() -> void:
-	if hand == null:
+	if not sort_enabled:
 		return
 
-	hand.sort_cards(func(a: CardRoot, b: CardRoot) -> bool:
+	if card_spawner == null:
+		return
+
+	card_spawner.sort_cards(func(a: CardRoot, b: CardRoot) -> bool:
 		var a_cost := _get_card_cost(a)
 		var b_cost := _get_card_cost(b)
 
@@ -40,10 +39,13 @@ func sort_by_cost() -> void:
 
 
 func sort_by_mutation_count() -> void:
-	if hand == null:
+	if not sort_enabled:
 		return
 
-	hand.sort_cards(func(a: CardRoot, b: CardRoot) -> bool:
+	if card_spawner == null:
+		return
+
+	card_spawner.sort_cards(func(a: CardRoot, b: CardRoot) -> bool:
 		var a_count := _get_mutation_count(a)
 		var b_count := _get_mutation_count(b)
 
@@ -61,10 +63,7 @@ func _get_card_cost(card: CardRoot) -> int:
 	if card == null:
 		return 0
 
-	if card.card_data == null:
-		return 0
-
-	return card.card_data.cost
+	return card.get_sacrifice_cost()
 
 
 func _get_mutation_count(card: CardRoot) -> int:
