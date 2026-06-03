@@ -4,6 +4,7 @@ class_name PlayerHandRoot
 signal card_added(card: CardRoot)
 signal card_removed(card: CardRoot)
 signal hand_changed
+signal hand_mode_changed(mode: PhaseManager.HandMode)
 
 @export var card_scene: PackedScene
 @export var starting_cards: Array[CardData]
@@ -12,15 +13,66 @@ signal hand_changed
 @export var drag_layer: Node2D
 @export var hand_layout: HandLayout
 
+@export var hand_mode_controller: HandModeController
+@export var hand_selection_controller: HandSelectionController
+@export var hand_prime_controller: HandPrimeController
+@export var hand_buttons_root: PlayerHandButtonsRoot
+
+@export var prime_anchor: Node2D
+
 @export var max_hand_size: int = 7
 @export var minimum_hand_size: int = 3
 
 var current_cards: Array[CardRoot] = []
+var current_hand_mode: PhaseManager.HandMode = PhaseManager.HandMode.HAND_PASSIVE
 
 
 func _ready() -> void:
+	_connect_hand_buttons()
+	_connect_selection()
+	_connect_prime_controller()
+
 	spawn_starting_cards()
 	arrange_cards()
+	set_hand_mode(current_hand_mode)
+
+
+func _connect_hand_buttons() -> void:
+	if hand_buttons_root == null:
+		return
+
+	if not hand_buttons_root.prime_pressed.is_connected(_on_prime_pressed):
+		hand_buttons_root.prime_pressed.connect(_on_prime_pressed)
+
+
+func _connect_selection() -> void:
+	if hand_selection_controller == null:
+		return
+
+	if not hand_selection_controller.selected_card_changed.is_connected(_on_selected_card_changed):
+		hand_selection_controller.selected_card_changed.connect(_on_selected_card_changed)
+
+
+func _connect_prime_controller() -> void:
+	if hand_prime_controller == null:
+		return
+
+	if not hand_prime_controller.card_primed.is_connected(_on_card_primed):
+		hand_prime_controller.card_primed.connect(_on_card_primed)
+
+	if not hand_prime_controller.card_unprimed.is_connected(_on_card_unprimed):
+		hand_prime_controller.card_unprimed.connect(_on_card_unprimed)
+
+
+func set_hand_mode(mode: PhaseManager.HandMode) -> void:
+	current_hand_mode = mode
+
+	if hand_mode_controller != null:
+		hand_mode_controller.set_hand_mode(mode)
+
+	hand_mode_changed.emit(mode)
+	arrange_cards()
+	_update_prime_button_state()
 
 
 func spawn_starting_cards() -> void:
@@ -74,6 +126,7 @@ func add_card(card: CardRoot) -> void:
 	hand_changed.emit()
 
 	arrange_cards()
+	_update_prime_button_state()
 
 
 func remove_card(card: CardRoot) -> void:
@@ -89,6 +142,7 @@ func remove_card(card: CardRoot) -> void:
 	hand_changed.emit()
 
 	arrange_cards()
+	_update_prime_button_state()
 
 
 func move_card_to_index(card: CardRoot, new_index: int) -> void:
@@ -139,3 +193,44 @@ func arrange_cards() -> void:
 		return
 
 	hand_layout.arrange_cards(current_cards)
+
+
+func _on_prime_pressed() -> void:
+	if hand_prime_controller == null:
+		return
+
+	hand_prime_controller.toggle_prime()
+	_update_prime_button_state()
+
+
+func _on_selected_card_changed(_card: CardRoot) -> void:
+	_update_prime_button_state()
+
+
+func _on_card_primed(_card: CardRoot) -> void:
+	_update_prime_button_state()
+
+
+func _on_card_unprimed(_card: CardRoot) -> void:
+	_update_prime_button_state()
+
+
+func _update_prime_button_state() -> void:
+	if hand_buttons_root == null:
+		return
+
+	if hand_prime_controller == null:
+		hand_buttons_root.set_prime_enabled(false)
+		hand_buttons_root.set_prime_text("Prime")
+		return
+
+	if hand_prime_controller.can_unprime():
+		hand_buttons_root.set_prime_enabled(true)
+		hand_buttons_root.set_prime_text("Unprime")
+		return
+
+	hand_buttons_root.set_prime_enabled(
+		hand_prime_controller.can_prime_selected_card()
+	)
+
+	hand_buttons_root.set_prime_text("Prime")
