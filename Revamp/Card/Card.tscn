@@ -11,6 +11,8 @@
 [ext_resource type="Script" uid="uid://dgdnj6214hjto" path="res://Revamp/Card/CardActions/Attack/Attack.gd" id="8_vth4y"]
 [ext_resource type="Script" uid="uid://bfsf4xd5j38lv" path="res://Revamp/Card/CardActions/Attack/AttackAnimationRunner.gd" id="9_r5dqq"]
 [ext_resource type="Script" uid="uid://csrjk2fx52jll" path="res://Revamp/Card/CardActions/Attack/AttackTargetResolver.gd" id="10_opxhd"]
+[ext_resource type="Script" uid="uid://dpe8qp13pwhyr" path="res://Revamp/Card/AttackDamageResolver.gd" id="10_orgdo"]
+[ext_resource type="Script" uid="uid://dw8ob3ldhyg5d" path="res://Revamp/Card/AttackImpactHandler.gd" id="11_4wcdt"]
 [ext_resource type="Script" uid="uid://cf4ka1vcw1057" path="res://Revamp/Card/ShadowFeedback.gd" id="11_c3ju1"]
 [ext_resource type="Script" uid="uid://dtplnofbjxace" path="res://Revamp/Card/CardActions/Attack/AttackSequenceBuilder.gd" id="11_iynnv"]
 [ext_resource type="Script" path="res://Revamp/Card/HurtFeedbackHandler.gd" id="12_mvgl2"]
@@ -65,13 +67,12 @@ script = ExtResource("5_olfje")
 
 [node name="Actions" type="Node" parent="." unique_id=857836663]
 
-[node name="Attack" type="Node" parent="Actions" unique_id=1376954352 node_paths=PackedStringArray("animation_runner", "target_resolver", "attack_sequencer")]
+[node name="Attack" type="Node" parent="Actions" unique_id=1376954352 node_paths=PackedStringArray("animation_runner", "target_resolver", "attack_sequencer", "impact_handler")]
 script = ExtResource("8_vth4y")
-enable_debug_key = null
-debug_key = null
 animation_runner = NodePath("AttackAnimationRunner")
 target_resolver = NodePath("AttackTargetResolver")
 attack_sequencer = NodePath("AttackSequencer")
+impact_handler = NodePath("AttackImpactHandler")
 
 [node name="AttackAnimationRunner" type="Node" parent="Actions/Attack" unique_id=1122768788 node_paths=PackedStringArray("animated_target")]
 script = ExtResource("9_r5dqq")
@@ -82,6 +83,13 @@ script = ExtResource("10_opxhd")
 
 [node name="AttackSequencer" type="Node" parent="Actions/Attack" unique_id=2068513187]
 script = ExtResource("11_iynnv")
+
+[node name="AttackDamageResolver" type="Node" parent="Actions/Attack" unique_id=786244814]
+script = ExtResource("10_orgdo")
+
+[node name="AttackImpactHandler" type="Node" parent="Actions/Attack" unique_id=270185402 node_paths=PackedStringArray("damage_resolver")]
+script = ExtResource("11_4wcdt")
+damage_resolver = NodePath("../AttackDamageResolver")
 
 [node name="Hurt" type="Node" parent="Actions" unique_id=1957973461 node_paths=PackedStringArray("animation_runner", "feedback_handler")]
 script = ExtResource("12_r5dqq")

@@ -8,6 +8,7 @@ signal attack_finished(context: AttackContext)
 @export var animation_runner: AttackAnimationRunner
 @export var target_resolver: AttackTargetResolver
 @export var attack_sequencer: AttackSequencer
+@export var impact_handler: AttackImpactHandler
 
 @export var enable_debug_key: bool = true
 @export var debug_key: Key = KEY_A
@@ -32,6 +33,10 @@ func setup(source_card: CardRoot, source_slots_root: SlotsRoot) -> void:
 	if animation_runner != null:
 		if not animation_runner.impact_reached.is_connected(_on_impact_reached):
 			animation_runner.impact_reached.connect(_on_impact_reached)
+
+	if impact_handler != null:
+		if not impact_handler.attack_hit.is_connected(_on_attack_hit):
+			impact_handler.attack_hit.connect(_on_attack_hit)
 
 	if not card.hovered.is_connected(_on_card_hovered):
 		card.hovered.connect(_on_card_hovered)
@@ -75,6 +80,10 @@ func perform_attack() -> void:
 		print("attack blocked: animation_runner missing")
 		return
 
+	if impact_handler == null:
+		print("attack blocked: impact_handler missing")
+		return
+
 	var attacker_slot := card.get_current_slot()
 
 	if attacker_slot == null:
@@ -114,7 +123,7 @@ func perform_attack() -> void:
 		await animation_runner.play_attack(context)
 
 		if not impact_handled:
-			await _handle_attack_impact(context)
+			await _handle_impact(context)
 
 		attack_finished.emit(context)
 
@@ -132,75 +141,15 @@ func _on_impact_reached() -> void:
 		return
 
 	impact_handled = true
-	_handle_attack_impact(active_context)
+	_handle_impact(active_context)
 
 
-func _handle_attack_impact(context: AttackContext) -> void:
-	if context == null:
-		return
+func _handle_impact(context: AttackContext) -> void:
+	await impact_handler.handle_impact(context, card)
 
+
+func _on_attack_hit(context: AttackContext) -> void:
 	attack_hit.emit(context)
-
-	var target_card := context.target_slot.current_card
-
-	if target_card != null and target_card.hurt != null:
-		var damage := _get_attack_damage(target_card)
-
-		var actual_damage: int = await target_card.hurt.play_hurt(damage, card)
-
-		_notify_damage_dealt(target_card, actual_damage)
-
-
-func _get_attack_damage(target_card: CardRoot) -> int:
-	var damage := 1
-
-	if card != null and card.stats != null:
-		damage = card.stats.get_attack()
-
-	if card == null:
-		return damage
-
-	if card.mutations == null:
-		return damage
-
-	for runtime in card.mutations.get_active_runtimes():
-		if runtime == null:
-			continue
-
-		if runtime.mutation == null:
-			continue
-
-		damage = runtime.mutation.modify_damage(
-			card,
-			target_card,
-			damage
-		)
-
-	return max(damage, 0)
-
-
-func _notify_damage_dealt(target_card: CardRoot, damage: int) -> void:
-	if damage <= 0:
-		return
-
-	if card == null:
-		return
-
-	if card.mutations == null:
-		return
-
-	for runtime in card.mutations.get_active_runtimes():
-		if runtime == null:
-			continue
-
-		if runtime.mutation == null:
-			continue
-
-		runtime.mutation.on_damage_dealt(
-			card,
-			target_card,
-			damage
-		)
 
 
 func _on_card_hovered(_card: CardRoot) -> void:
