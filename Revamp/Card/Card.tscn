@@ -13,12 +13,12 @@
 [ext_resource type="Script" uid="uid://csrjk2fx52jll" path="res://Revamp/Card/CardActions/Attack/AttackTargetResolver.gd" id="10_opxhd"]
 [ext_resource type="Script" uid="uid://cf4ka1vcw1057" path="res://Revamp/Card/ShadowFeedback.gd" id="11_c3ju1"]
 [ext_resource type="Script" uid="uid://dtplnofbjxace" path="res://Revamp/Card/CardActions/Attack/AttackSequenceBuilder.gd" id="11_iynnv"]
-[ext_resource type="Script" path="res://Revamp/Card/HurtFeedbackHandler.gd" id="12_mvgl2"]
-[ext_resource type="Script" path="res://Revamp/Card/HurtAudio.gd" id="12_q2sni"]
+[ext_resource type="Script" uid="uid://bffk1pwgwmawi" path="res://Revamp/Card/HurtFeedbackHandler.gd" id="12_mvgl2"]
+[ext_resource type="Script" uid="uid://r5c1gxcq78os" path="res://Revamp/Card/HurtAudio.gd" id="12_q2sni"]
 [ext_resource type="Script" uid="uid://behvtd6jpqaj" path="res://Revamp/Card/Hurt.gd" id="12_r5dqq"]
-[ext_resource type="Script" path="res://Revamp/Card/HurtFlash.gd" id="13_mvgl2"]
+[ext_resource type="Script" uid="uid://3q7tforlyo6a" path="res://Revamp/Card/HurtFlash.gd" id="13_mvgl2"]
 [ext_resource type="Script" uid="uid://5ajbnfxgx2dx" path="res://Revamp/Card/HurtAnimationRunner.gd" id="13_opxhd"]
-[ext_resource type="Script" path="res://Revamp/Card/HurtSprite.gd" id="14_1m3h3"]
+[ext_resource type="Script" uid="uid://c73fc68wlpcah" path="res://Revamp/Card/HurtSprite.gd" id="14_1m3h3"]
 [ext_resource type="Script" uid="uid://i1xyctx2i65u" path="res://Revamp/Card/Die.gd" id="14_fx0xs"]
 [ext_resource type="AudioStream" uid="uid://dm1lem708ohqr" path="res://Audio/Placeholder SFX/card_attack_damage.wav" id="14_vnay7"]
 [ext_resource type="Script" uid="uid://crfcylmn2r5gf" path="res://Revamp/Card/DieAnimationRunner.gd" id="15_jgw7k"]
@@ -26,7 +26,9 @@
 [ext_resource type="Script" uid="uid://jv8gks4tscbj" path="res://SacrificeAnimationRunner.gd" id="16_v34li"]
 [ext_resource type="Texture2D" uid="uid://cxc62tmwvs36" path="res://Art/HurtSprite.png" id="17_7vw44"]
 [ext_resource type="Script" uid="uid://ci1jrkjugh1lv" path="res://Revamp/Card/CardHoverFeedback.gd" id="19_v34li"]
+[ext_resource type="Script" uid="uid://cjg3wldaxqx21" path="res://Revamp/Card/DieAudio.gd" id="20_7vw44"]
 [ext_resource type="Script" uid="uid://7pm1mj2m7jwg" path="res://Revamp/Card/CardSelectFeedback.gd" id="20_v34li"]
+[ext_resource type="AudioStream" uid="uid://5uho8ho3dlfo" path="res://Audio/Placeholder SFX/card_death.wav" id="21_k3ell"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g8l5j"]
 size = Vector2(144, 216)
@@ -103,22 +105,29 @@ hurt_sfx = ExtResource("14_vnay7")
 script = ExtResource("13_mvgl2")
 visuals_root = NodePath("../../../../Visuals/CardVisuals")
 
-[node name="HurtSprite" type="Node" parent="Actions/Hurt/HurtFeedbackHandler" unique_id=1287537828 node_paths=PackedStringArray("sprite")]
+[node name="HurtSprite" type="Node" parent="Actions/Hurt/HurtFeedbackHandler" unique_id=1287537828 node_paths=PackedStringArray("sprite", "anchor")]
 script = ExtResource("14_1m3h3")
 sprite = NodePath("Sprite2D")
+hurt_texture = ExtResource("17_7vw44")
+anchor = NodePath("../../../../Visuals/CardVisuals/FeedbackSpriteAnchor")
+sprite_size = Vector2(150, 232.5)
 
 [node name="Sprite2D" type="Sprite2D" parent="Actions/Hurt/HurtFeedbackHandler/HurtSprite" unique_id=2136417742]
-visible = false
 position = Vector2(9.536743e-07, 0)
 scale = Vector2(0.12312501, 0.12312499)
 texture = ExtResource("17_7vw44")
 
-[node name="Die" type="Node" parent="Actions" unique_id=1463626010 node_paths=PackedStringArray("animation_runner")]
+[node name="Die" type="Node" parent="Actions" unique_id=1463626010 node_paths=PackedStringArray("animation_runner", "death_audio")]
 script = ExtResource("14_fx0xs")
 animation_runner = NodePath("DieAnimationRunner")
+death_audio = NodePath("DieAudio")
 
 [node name="DieAnimationRunner" type="Node" parent="Actions/Die" unique_id=695087032]
 script = ExtResource("15_jgw7k")
+
+[node name="DieAudio" type="Node" parent="Actions/Die" unique_id=291526797]
+script = ExtResource("20_7vw44")
+death_sfx = ExtResource("21_k3ell")
 
 [node name="Sacrifice" type="Node" parent="Actions" unique_id=1151363001 node_paths=PackedStringArray("animation_runner", "sacrifice_select_feedback")]
 script = ExtResource("15_v34li")
@@ -161,6 +170,8 @@ metadata/_edit_lock_ = true
 [node name="RevenAnttVisualHandler" type="Node" parent="Visuals" unique_id=434054176]
 
 [node name="CardVisuals" parent="Visuals" unique_id=1593445486 instance=ExtResource("1_2duqk")]
+
+[node name="FeedbackSpriteAnchor" type="Node2D" parent="Visuals/CardVisuals" unique_id=626068744]
 
 [node name="Shadow" type="TextureRect" parent="Visuals" unique_id=2074399658]
 modulate = Color(0.029506557, 0.029506557, 0.029506557, 1)
