@@ -43,6 +43,8 @@ func start_placement(card: CardRoot, owner: SlotRow.SlotOwner) -> void:
 
 	cancel_placement(false)
 
+	_set_hand_input_enabled(false)
+
 	placement_state.start(card, owner)
 
 	var default_slot := slot_resolver.get_default_slot(owner)
@@ -120,6 +122,7 @@ func confirm_placement() -> void:
 	placement_finished.emit(emitted_event)
 
 	placement_state.reset()
+	_set_hand_input_enabled(true)
 
 
 func cancel_placement(undo_pending_sacrifice: bool = true) -> void:
@@ -133,6 +136,7 @@ func cancel_placement(undo_pending_sacrifice: bool = true) -> void:
 		cleanup.clear_preview_feedback()
 
 	placement_state.reset()
+	_set_hand_input_enabled(true)
 
 	if undo_pending_sacrifice and sacrifice_controller != null:
 		sacrifice_controller.undo_pending_sacrifice()
@@ -150,6 +154,9 @@ func is_confirming() -> bool:
 
 func is_valid_placement_slot(slot: Slot) -> bool:
 	if slot_resolver == null:
+		return false
+
+	if placement_state == null:
 		return false
 
 	return slot_resolver.is_valid_slot(slot, placement_state.active_owner)
@@ -186,24 +193,42 @@ func _setup_children() -> void:
 
 
 func _connect_external_signals() -> void:
-	if slots_root != null:
-		slots_root.slot_hovered.connect(input_router.handle_slot_hovered)
-		slots_root.slot_unhovered.connect(input_router.handle_slot_unhovered)
-		slots_root.slot_clicked.connect(input_router.handle_slot_clicked)
+	if slots_root != null and input_router != null:
+		_connect_signal(slots_root.slot_hovered, input_router.handle_slot_hovered)
+		_connect_signal(slots_root.slot_unhovered, input_router.handle_slot_unhovered)
+		_connect_signal(slots_root.slot_clicked, input_router.handle_slot_clicked)
 
 	if sacrifice_controller != null:
-		sacrifice_controller.pending_sacrifice_started.connect(_on_pending_sacrifice_started)
-		sacrifice_controller.pending_sacrifice_undone.connect(_on_pending_sacrifice_undone)
+		_connect_signal(
+			sacrifice_controller.pending_sacrifice_started,
+			_on_pending_sacrifice_started
+		)
+
+		_connect_signal(
+			sacrifice_controller.pending_sacrifice_undone,
+			_on_pending_sacrifice_undone
+		)
 
 	if player_hand != null:
-		player_hand.card_unprimed.connect(_on_card_unprimed)
+		_connect_signal(player_hand.card_unprimed, _on_card_unprimed)
 
 
-func _on_pending_sacrifice_started(primed_card: CardRoot, _cards: Array[CardRoot]) -> void:
+func _connect_signal(source_signal: Signal, target: Callable) -> void:
+	if not source_signal.is_connected(target):
+		source_signal.connect(target)
+
+
+func _on_pending_sacrifice_started(
+	primed_card: CardRoot,
+	_cards: Array[CardRoot]
+) -> void:
 	start_placement(primed_card, placing_owner)
 
 
-func _on_pending_sacrifice_undone(_primed_card: CardRoot, _cards: Array[CardRoot]) -> void:
+func _on_pending_sacrifice_undone(
+	_primed_card: CardRoot,
+	_cards: Array[CardRoot]
+) -> void:
 	cancel_placement(false)
 
 
@@ -212,6 +237,11 @@ func _on_card_unprimed(_card: CardRoot) -> void:
 		return
 
 	cancel_placement(true)
+
+
+func _set_hand_input_enabled(value: bool) -> void:
+	if player_hand != null:
+		player_hand.set_hand_input_enabled(value)
 
 
 func _block(reason: String) -> void:

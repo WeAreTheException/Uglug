@@ -7,13 +7,24 @@ signal card_right_pressed(card: CardRoot)
 
 var interaction_root: Hand_InteractionRoot = null
 var pressed_card: CardRoot = null
+var input_enabled: bool = true
 
 
 func setup(source_interaction_root: Hand_InteractionRoot) -> void:
 	interaction_root = source_interaction_root
 
 
+func set_input_enabled(value: bool) -> void:
+	input_enabled = value
+
+	if not input_enabled:
+		pressed_card = null
+
+
 func _input(event: InputEvent) -> void:
+	if not input_enabled:
+		return
+
 	if not event is InputEventMouseButton:
 		return
 

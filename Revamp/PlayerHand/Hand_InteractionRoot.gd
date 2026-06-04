@@ -264,3 +264,7 @@ func _on_card_unprimed(card: CardRoot) -> void:
 
 func _on_prime_state_changed(can_prime: bool, can_unprime: bool, text: String) -> void:
 	prime_state_changed.emit(can_prime, can_unprime, text)
+
+func set_input_enabled(value: bool) -> void:
+	if input_router != null:
+		input_router.set_input_enabled(value)

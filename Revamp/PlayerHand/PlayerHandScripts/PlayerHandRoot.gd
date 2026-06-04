@@ -327,3 +327,7 @@ func _emit_prime_state() -> void:
 		interaction_root.can_unprime(),
 		interaction_root.get_prime_button_text()
 	)
+
+func set_hand_input_enabled(value: bool) -> void:
+	if interaction_root != null:
+		interaction_root.set_input_enabled(value)
