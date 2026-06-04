@@ -3,9 +3,8 @@ class_name SlotPlayPhaseFeedback
 
 @export var target: Node2D
 
-@export var idle_scale: Vector2 = Vector2.ONE
-@export var playable_scale: Vector2 = Vector2(1.08, 1.08)
-@export var inactive_scale: Vector2 = Vector2(0.92, 0.92)
+@export var playable_scale_multiplier: Vector2 = Vector2(1.08, 1.08)
+@export var inactive_scale_multiplier: Vector2 = Vector2(0.92, 0.92)
 
 @export var idle_alpha: float = 1.0
 @export var playable_alpha: float = 1.0
@@ -16,27 +15,56 @@ class_name SlotPlayPhaseFeedback
 var slot_feedback: SlotFeedback = null
 var tween: Tween = null
 
+var base_scale: Vector2 = Vector2.ONE
+var has_base_scale: bool = false
+
 
 func setup(source_feedback: SlotFeedback) -> void:
 	slot_feedback = source_feedback
+	_cache_base_values()
 	show_idle()
 
 
 func show_idle() -> void:
-	_apply_feedback(idle_scale, idle_alpha)
+	_apply_feedback(base_scale, idle_alpha)
 
 
 func show_playable() -> void:
-	_apply_feedback(playable_scale, playable_alpha)
+	_apply_feedback(
+		Vector2(
+			base_scale.x * playable_scale_multiplier.x,
+			base_scale.y * playable_scale_multiplier.y
+		),
+		playable_alpha
+	)
 
 
 func show_inactive() -> void:
-	_apply_feedback(inactive_scale, inactive_alpha)
+	_apply_feedback(
+		Vector2(
+			base_scale.x * inactive_scale_multiplier.x,
+			base_scale.y * inactive_scale_multiplier.y
+		),
+		inactive_alpha
+	)
+
+
+func _cache_base_values() -> void:
+	if has_base_scale:
+		return
+
+	if target == null:
+		return
+
+	base_scale = target.scale
+	has_base_scale = true
 
 
 func _apply_feedback(target_scale: Vector2, target_alpha: float) -> void:
 	if target == null:
 		return
+
+	_cache_base_values()
 
 	if tween != null:
 		tween.kill()
