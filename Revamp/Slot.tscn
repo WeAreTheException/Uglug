@@ -12,10 +12,13 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0ebxi"]
 size = Vector2(144, 216)
 
-[node name="Slot" type="Node2D" unique_id=904478857 node_paths=PackedStringArray("click_area")]
+[node name="Slot" type="Node2D" unique_id=904478857 node_paths=PackedStringArray("slot_input", "slot_presence", "slot_feedback", "card_anchor")]
 script = ExtResource("1_iym07")
 slot_index = null
-click_area = NodePath("SlotInput")
+slot_input = NodePath("SlotInput")
+slot_presence = NodePath("SlotPresence")
+slot_feedback = NodePath("SlotFeedback")
+card_anchor = NodePath("CardAnchor")
 
 [node name="SlotInput" type="Area2D" parent="." unique_id=1165660853 node_paths=PackedStringArray("click_area")]
 script = ExtResource("2_0ebxi")
@@ -30,21 +33,18 @@ script = ExtResource("3_0ebxi")
 [node name="SlotFeedback" type="Node" parent="." unique_id=675246330]
 script = ExtResource("4_npwjl")
 
-[node name="SlotPlayPhaseFeedback" type="Node" parent="SlotFeedback" unique_id=700538427 node_paths=PackedStringArray("target")]
+[node name="SlotPlayPhaseFeedback" type="Node" parent="SlotFeedback" unique_id=700538427]
 script = ExtResource("5_iike6")
-target = NodePath("")
 
-[node name="SlotPlacementPreviewFeedback" type="Node" parent="SlotFeedback" unique_id=782340900 node_paths=PackedStringArray("target")]
+[node name="SlotPlacementPreviewFeedback" type="Node" parent="SlotFeedback" unique_id=782340900]
 script = ExtResource("6_dshdd")
-target = NodePath("")
 
-[node name="SlotAttackPreviewFeedback" type="Node" parent="SlotFeedback" unique_id=734268325 node_paths=PackedStringArray("target")]
+[node name="SlotAttackPreviewFeedback" type="Node" parent="SlotFeedback" unique_id=734268325]
 script = ExtResource("7_jvbdb")
-target = NodePath("")
 
 [node name="SlotVisual" type="Sprite2D" parent="." unique_id=857403716]
 position = Vector2(0, -3.8146973e-06)
 scale = Vector2(0.8, 0.81509435)
 texture = ExtResource("2_rh202")
 
-[node name="CardAnchor" type="Node" parent="." unique_id=1149269821]
+[node name="CardAnchor" type="Node2D" parent="." unique_id=928768785]

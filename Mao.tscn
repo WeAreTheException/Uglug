@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cxkinl0mu66jc"]
 
-[ext_resource type="PackedScene" uid="uid://bw8c7m7n5yuk8" path="res://Revamp/Slots/Slots.tscn" id="1_yq750"]
+[ext_resource type="PackedScene" uid="uid://bw8c7m7n5yuk8" path="res://Revamp/Board/Slots.tscn" id="1_yq750"]
 [ext_resource type="PackedScene" uid="uid://1wr1e57v7trd" path="res://Revamp/PlayerHand/Player_Hand.tscn" id="2_mi1n2"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="3_d5ogx"]
 [ext_resource type="Resource" uid="uid://bxrcjm4w1dy82" path="res://Cards/CardPresets/Anthrax.tres" id="4_cc2no"]
@@ -41,12 +41,12 @@ lead_hand = NodePath("../../PlayerHandRoot")
 
 [node name="SacrificeController" type="Node" parent="." unique_id=1432478239 node_paths=PackedStringArray("player_hand", "requirement", "pending_boat", "committer")]
 script = ExtResource("10_1j514")
-auto_sacrifice_when_cost_met = true
-enable_undo_key = null
 player_hand = NodePath("../PlayerHandRoot")
 requirement = NodePath("SacrificeRequirement")
 pending_boat = NodePath("PendingSacrificeBoat")
 committer = NodePath("SacrificeComitter")
+auto_sacrifice_when_cost_met = true
+enable_undo_key = null
 
 [node name="SacrificeRequirement" type="Node" parent="SacrificeController" unique_id=1332384962]
 script = ExtResource("11_at0h8")
