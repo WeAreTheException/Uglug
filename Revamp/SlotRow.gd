@@ -14,6 +14,7 @@ func get_slots() -> Array[Slot]:
 
 	for child in get_children():
 		var slot := child as Slot
+
 		if slot != null:
 			slots.append(slot)
 

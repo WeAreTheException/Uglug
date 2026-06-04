@@ -3,8 +3,6 @@ class_name AttackOrderHandler
 
 signal attack_order_finished
 
-@export var slots_root: SlotsRoot
-
 @export var enable_debug_keys: bool = true
 @export var player_debug_key: Key = KEY_P
 @export var opponent_debug_key: Key = KEY_O
@@ -12,12 +10,12 @@ signal attack_order_finished
 @export var player_left_to_right: bool = true
 @export var opponent_left_to_right: bool = true
 
-var is_running := false
+var slots_root: SlotsRoot = null
+var is_running: bool = false
 
 
-func _ready() -> void:
-	if slots_root == null:
-		slots_root = get_parent() as SlotsRoot
+func setup(source_slots_root: SlotsRoot) -> void:
+	slots_root = source_slots_root
 
 
 func _input(event: InputEvent) -> void:
@@ -63,35 +61,28 @@ func run_attack_order(owner: SlotRow.SlotOwner) -> void:
 func _build_attack_entries(owner: SlotRow.SlotOwner) -> Array[Dictionary]:
 	var entries: Array[Dictionary] = []
 
-	var slots := slots_root.player_slots
-
-	if owner == SlotRow.SlotOwner.OPPONENT:
-		slots = slots_root.opponent_slots
-
-	for slot in slots:
+	for slot in slots_root.get_slots_for_owner(owner):
 		if slot == null:
 			continue
 
 		if slot.current_card == null:
 			continue
 
-		var card := slot.current_card
-
 		entries.append({
 			"slot": slot,
-			"card": card,
+			"card": slot.current_card,
 			"slot_index": slot.slot_index,
-			"priority": _get_attack_priority(card)
+			"priority": _get_attack_priority(slot.current_card)
 		})
 
 	return entries
 
 
-func _sort_attack_entries(entries: Array[Dictionary], owner: SlotRow.SlotOwner) -> void:
-	var left_to_right := player_left_to_right
-
-	if owner == SlotRow.SlotOwner.OPPONENT:
-		left_to_right = opponent_left_to_right
+func _sort_attack_entries(
+	entries: Array[Dictionary],
+	owner: SlotRow.SlotOwner
+) -> void:
+	var left_to_right := _get_left_to_right(owner)
 
 	entries.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
 		var a_priority: int = a["priority"]
@@ -110,20 +101,21 @@ func _sort_attack_entries(entries: Array[Dictionary], owner: SlotRow.SlotOwner) 
 	)
 
 
-func _get_attack_priority(card: CardRoot) -> int:
-	if card == null:
-		return 0
+func _get_left_to_right(owner: SlotRow.SlotOwner) -> bool:
+	if owner == SlotRow.SlotOwner.OPPONENT:
+		return opponent_left_to_right
 
-	if card.mutations == null:
+	return player_left_to_right
+
+
+func _get_attack_priority(card: CardRoot) -> int:
+	if card == null or card.mutations == null:
 		return 0
 
 	var total_priority := 0
 
 	for runtime in card.mutations.get_active_runtimes():
-		if runtime == null:
-			continue
-
-		if runtime.mutation == null:
+		if runtime == null or runtime.mutation == null:
 			continue
 
 		total_priority += runtime.mutation.get_attack_priority(runtime)
