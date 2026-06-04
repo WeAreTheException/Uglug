@@ -28,6 +28,7 @@
 [ext_resource type="Script" uid="uid://b855jf5mb26nq" path="res://Revamp/PlayerHand/Hand_InputRouter.gd" id="21_wk34g"]
 [ext_resource type="Script" uid="uid://b0rmpbpxe71fh" path="res://Revamp/PlayerHand/Hand_HoverFocus.gd" id="22_m7nbq"]
 [ext_resource type="Script" uid="uid://c38qoplslogll" path="res://Revamp/PlayerHand/Hand_CardLayerMover.gd" id="23_4g7iw"]
+[ext_resource type="Script" uid="uid://dj0fil2hhk7mb" path="res://Revamp/PlayerHand/Hand_PlacementRelease.gd" id="29_0pi77"]
 
 [node name="PlayerHandRoot" type="Node2D" unique_id=371738706 node_paths=PackedStringArray("hand_card_layer", "drag_layer", "card_spawner", "hand_layout", "sort_controller", "state_machine", "interaction_root", "sacrifice_selection")]
 script = ExtResource("1_sfirx")
@@ -123,3 +124,6 @@ script = ExtResource("17_txnvk")
 
 [node name="Hand_PrimeMover" type="Node" parent="Hand_PrimeController" unique_id=717276307]
 script = ExtResource("19_7sjk6")
+
+[node name="Hand_PlacementRelease" type="Node" parent="." unique_id=1208572540]
+script = ExtResource("29_0pi77")

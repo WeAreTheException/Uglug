@@ -62,7 +62,7 @@ func toggle_prime() -> void:
 		prime_controller.toggle_prime()
 
 
-func consume_primed_card(card: CardRoot) -> void:
+func consume_primed_card_silent(card: CardRoot) -> void:
 	if prime_controller == null:
 		return
 
@@ -73,8 +73,6 @@ func consume_primed_card(card: CardRoot) -> void:
 
 	if hand_layout != null:
 		hand_layout.clear_primed_card()
-
-	arrange_cards()
 
 
 func clear_prime_selection() -> void:

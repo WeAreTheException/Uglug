@@ -32,6 +32,7 @@ signal sacrifice_selection_changed(cards: Array[CardRoot])
 @export var state_machine: Hand_StateMachine
 @export var interaction_root: Hand_InteractionRoot
 @export var sacrifice_selection: Hand_SacrificeSelection
+@export var placement_release: Hand_PlacementRelease
 
 @export var spawn_starting_cards_on_ready: bool = true
 
@@ -42,6 +43,7 @@ func _ready() -> void:
 	_setup_sacrifice_selection()
 	_setup_sort()
 	_setup_state_machine()
+	_setup_placement_release()
 	_connect_external_buttons()
 
 	if spawn_starting_cards_on_ready:
@@ -137,6 +139,19 @@ func _setup_state_machine() -> void:
 		state_machine.state_changed.connect(_on_hand_state_changed)
 
 
+func _setup_placement_release() -> void:
+	if placement_release == null:
+		return
+
+	placement_release.setup(
+		card_spawner,
+		hand_layout,
+		interaction_root,
+		sacrifice_selection,
+		state_machine
+	)
+
+
 func _connect_external_buttons() -> void:
 	_connect_signal(prime_button_root, "prime_pressed", request_prime_toggle)
 	_connect_signal(sort_buttons_root, "sort_by_cost_pressed", request_sort_by_cost)
@@ -217,12 +232,10 @@ func enter_sacrifice_state() -> void:
 		state_machine.change_state(Hand_StateMachine.SACRIFICE)
 
 
-func consume_primed_card_for_placement(card: CardRoot) -> void:
-	if interaction_root != null:
-		interaction_root.consume_primed_card(card)
-
-	clear_sacrifice_selection()
-	_emit_prime_state()
+func release_primed_card_for_placement(card: CardRoot) -> void:
+	if placement_release != null:
+		placement_release.release_primed_card_for_placement(card)
+		_emit_prime_state()
 
 
 func get_primed_card() -> CardRoot:
