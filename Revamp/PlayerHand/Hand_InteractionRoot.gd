@@ -290,3 +290,7 @@ func _on_card_unprimed(card: CardRoot) -> void:
 
 func _on_prime_state_changed(can_prime: bool, can_unprime: bool, text: String) -> void:
 	prime_state_changed.emit(can_prime, can_unprime, text)
+
+func return_primed_card_to_prime_location() -> void:
+	if prime_controller != null:
+		prime_controller.return_primed_card_to_prime_location()

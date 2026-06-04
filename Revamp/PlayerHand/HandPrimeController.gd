@@ -185,3 +185,10 @@ func _emit_prime_state() -> void:
 		can_unprime(),
 		text
 	)
+
+func return_primed_card_to_prime_location() -> void:
+	if primed_card == null:
+		return
+
+	if prime_mover != null:
+		prime_mover.move_card_to_anchor(primed_card)

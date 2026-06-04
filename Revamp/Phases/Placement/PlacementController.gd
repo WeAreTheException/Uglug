@@ -20,6 +20,7 @@ signal card_placed(event: Dictionary)
 @export var placement_executor: PlacementExecutor
 @export var event_emitter: PlacementEventEmitter
 @export var cleanup: PlacementCleanup
+@export var placement_cancel: PlacementCancel
 
 @export var placing_owner: SlotRow.SlotOwner = SlotRow.SlotOwner.PLAYER
 @export var player_left_to_right: bool = true
@@ -43,8 +44,7 @@ func start_placement(card: CardRoot, owner: SlotRow.SlotOwner) -> void:
 
 	cancel_placement(false)
 
-	_set_hand_input_enabled(false)
-
+	set_hand_input_enabled(false)
 	placement_state.start(card, owner)
 
 	var default_slot := slot_resolver.get_default_slot(owner)
@@ -122,7 +122,7 @@ func confirm_placement() -> void:
 	placement_finished.emit(emitted_event)
 
 	placement_state.reset()
-	_set_hand_input_enabled(true)
+	set_hand_input_enabled(true)
 
 
 func cancel_placement(undo_pending_sacrifice: bool = true) -> void:
@@ -132,14 +132,10 @@ func cancel_placement(undo_pending_sacrifice: bool = true) -> void:
 	if not placement_state.has_active_card():
 		return
 
-	if cleanup != null:
-		cleanup.clear_preview_feedback()
-
-	placement_state.reset()
-	_set_hand_input_enabled(true)
-
-	if undo_pending_sacrifice and sacrifice_controller != null:
-		sacrifice_controller.undo_pending_sacrifice()
+	if placement_cancel != null:
+		placement_cancel.cancel_placement(undo_pending_sacrifice)
+	else:
+		_fallback_cancel_placement(undo_pending_sacrifice)
 
 	placement_cancelled.emit()
 
@@ -177,6 +173,16 @@ func get_player_hand() -> PlayerHandRoot:
 	return player_hand
 
 
+func set_hand_input_enabled(value: bool) -> void:
+	if player_hand != null:
+		player_hand.set_hand_input_enabled(value)
+
+
+func undo_pending_sacrifice() -> void:
+	if sacrifice_controller != null:
+		sacrifice_controller.undo_pending_sacrifice()
+
+
 func _setup_children() -> void:
 	for child in [
 		placement_state,
@@ -186,7 +192,8 @@ func _setup_children() -> void:
 		attack_preview_resolver,
 		placement_executor,
 		event_emitter,
-		cleanup
+		cleanup,
+		placement_cancel
 	]:
 		if child != null and child.has_method("setup"):
 			child.setup(self)
@@ -239,9 +246,20 @@ func _on_card_unprimed(_card: CardRoot) -> void:
 	cancel_placement(true)
 
 
-func _set_hand_input_enabled(value: bool) -> void:
+func _fallback_cancel_placement(undo_pending_sacrifice: bool) -> void:
+	if cleanup != null:
+		cleanup.clear_preview_feedback()
+
 	if player_hand != null:
-		player_hand.set_hand_input_enabled(value)
+		player_hand.return_primed_card_to_prime_location()
+
+	if placement_state != null:
+		placement_state.reset()
+
+	set_hand_input_enabled(true)
+
+	if undo_pending_sacrifice:
+		undo_pending_sacrifice()
 
 
 func _block(reason: String) -> void:

@@ -350,3 +350,7 @@ func _emit_prime_state() -> void:
 		interaction_root.can_unprime(),
 		interaction_root.get_prime_button_text()
 	)
+
+func return_primed_card_to_prime_location() -> void:
+	if interaction_root != null:
+		interaction_root.return_primed_card_to_prime_location()

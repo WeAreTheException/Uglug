@@ -21,6 +21,7 @@
 [ext_resource type="Script" uid="uid://s0qerh3uyaxr" path="res://Revamp/Phases/Placement/PlacementAttackPreviewResolver.gd" id="19_7gy8c"]
 [ext_resource type="Script" uid="uid://cr0n4bs5xlht6" path="res://Revamp/Phases/Placement/PlacementExecutor.gd" id="20_a1qt2"]
 [ext_resource type="Script" uid="uid://bkc07ie8mgvi" path="res://Revamp/Phases/Placement/PlacementEventEmiiter.gd" id="21_mf2my"]
+[ext_resource type="Script" uid="uid://bn1yptjjjp48x" path="res://PlacementCancel.gd" id="22_5ixgq"]
 [ext_resource type="Script" uid="uid://cu0udtj23w2ct" path="res://PlacementCleanUp.gd" id="22_venfy"]
 
 [node name="Mao" type="Node2D" unique_id=550121538]
@@ -65,7 +66,7 @@ script = ExtResource("13_6ula3")
 
 [node name="PendingSacrificeLayer" type="Node2D" parent="SacrificeController" unique_id=183134508]
 
-[node name="PlacementController" type="Node" parent="." unique_id=1405375079 node_paths=PackedStringArray("slots_root", "player_hand", "sacrifice_controller", "placement_state", "input_router", "slot_resolver", "placement_preview", "attack_preview_resolver", "placement_executor", "event_emitter", "cleanup")]
+[node name="PlacementController" type="Node" parent="." unique_id=1405375079 node_paths=PackedStringArray("slots_root", "player_hand", "sacrifice_controller", "placement_state", "input_router", "slot_resolver", "placement_preview", "attack_preview_resolver", "placement_executor", "event_emitter", "cleanup", "placement_cancel")]
 script = ExtResource("14_20kdy")
 slots_root = NodePath("../Slots")
 player_hand = NodePath("../PlayerHandRoot")
@@ -78,6 +79,7 @@ attack_preview_resolver = NodePath("PlacementAttackPreviewResolver")
 placement_executor = NodePath("PlacementExecutor")
 event_emitter = NodePath("PlacementEventEmitter")
 cleanup = NodePath("PlacementCleanup")
+placement_cancel = NodePath("PlacementCancel")
 
 [node name="PlacementState" type="Node" parent="PlacementController" unique_id=1456688179]
 script = ExtResource("15_5ixgq")
@@ -102,6 +104,9 @@ script = ExtResource("21_mf2my")
 
 [node name="PlacementCleanup" type="Node" parent="PlacementController" unique_id=1825123629]
 script = ExtResource("22_venfy")
+
+[node name="PlacementCancel" type="Node" parent="PlacementController" unique_id=1193513979]
+script = ExtResource("22_5ixgq")
 
 [node name="BoardPhaseApplier" type="Node" parent="." unique_id=940502173 node_paths=PackedStringArray("phase_manager", "slots_root")]
 script = ExtResource("17_b7h4g")

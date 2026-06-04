@@ -14,6 +14,7 @@ func clear_preview_feedback() -> void:
 
 	if controller.placement_preview != null:
 		controller.placement_preview.clear_preview()
+		controller.placement_preview.clear_cache()
 
 	if controller.attack_preview_resolver != null:
 		controller.attack_preview_resolver.clear_preview()
