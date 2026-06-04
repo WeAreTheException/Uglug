@@ -19,9 +19,7 @@ func commit_cards(cards: Array[CardRoot]) -> void:
 
 
 func _commit_card(card: CardRoot) -> void:
-	card.set_sacrifice_selected(false)
-	card.stop_sacrifice_anticipation()
-	card.clear_hand_feedback()
+	card.play_committed_sacrifice()
 
 	card_committed.emit(card)
 	card.queue_free()

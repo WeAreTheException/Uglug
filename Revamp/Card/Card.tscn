@@ -21,17 +21,19 @@
 [ext_resource type="Script" uid="uid://bisn1wu1v2n8e" path="res://Revamp/Card/AttackScreenshakeHandler.gd" id="12_xyowr"]
 [ext_resource type="Script" path="res://Revamp/Card/HurtFlash.gd" id="13_mvgl2"]
 [ext_resource type="Script" uid="uid://5ajbnfxgx2dx" path="res://Revamp/Card/HurtAnimationRunner.gd" id="13_opxhd"]
-[ext_resource type="Script" path="res://Revamp/Card/HurtSprite.gd" id="14_1m3h3"]
+[ext_resource type="Script" uid="uid://c73fc68wlpcah" path="res://Revamp/Card/HurtSprite.gd" id="14_1m3h3"]
 [ext_resource type="Script" uid="uid://i1xyctx2i65u" path="res://Revamp/Card/Die.gd" id="14_fx0xs"]
 [ext_resource type="AudioStream" uid="uid://dm1lem708ohqr" path="res://Audio/Placeholder SFX/card_attack_damage.wav" id="14_vnay7"]
 [ext_resource type="Script" uid="uid://crfcylmn2r5gf" path="res://Revamp/Card/DieAnimationRunner.gd" id="15_jgw7k"]
-[ext_resource type="Script" path="res://Revamp/Card/Sacrifice.gd" id="15_v34li"]
-[ext_resource type="Script" path="res://SacrificeAnimationRunner.gd" id="16_v34li"]
+[ext_resource type="Script" uid="uid://bsuj1ix6qd1ns" path="res://Revamp/Card/Sacrifice.gd" id="15_v34li"]
+[ext_resource type="Script" uid="uid://jv8gks4tscbj" path="res://SacrificeAnimationRunner.gd" id="16_v34li"]
 [ext_resource type="Texture2D" uid="uid://cxc62tmwvs36" path="res://Art/HurtSprite.png" id="17_7vw44"]
 [ext_resource type="Script" uid="uid://ci1jrkjugh1lv" path="res://Revamp/Card/CardHoverFeedback.gd" id="19_v34li"]
 [ext_resource type="Script" uid="uid://cjg3wldaxqx21" path="res://Revamp/Card/DieAudio.gd" id="20_7vw44"]
 [ext_resource type="Script" uid="uid://7pm1mj2m7jwg" path="res://Revamp/Card/CardSelectFeedback.gd" id="20_v34li"]
 [ext_resource type="AudioStream" uid="uid://5uho8ho3dlfo" path="res://Audio/Placeholder SFX/card_death.wav" id="21_k3ell"]
+[ext_resource type="Script" uid="uid://maqiq3kcc45q" path="res://Revamp/Card/PendingSacrificeFeedback.gd" id="27_0h522"]
+[ext_resource type="Script" uid="uid://bwf2dy46x2l01" path="res://Revamp/Card/ComittedSacrificeFeedback.gd" id="28_msnpm"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g8l5j"]
 size = Vector2(144, 216)
@@ -120,13 +122,13 @@ visuals_root = NodePath("../../../../Visuals/CardVisuals")
 
 [node name="HurtSprite" type="Node" parent="Actions/Hurt/HurtFeedbackHandler" unique_id=1287537828 node_paths=PackedStringArray("sprite", "anchor")]
 script = ExtResource("14_1m3h3")
-sprite = NodePath("Sprite2D")
+sprite = NodePath("HurtSprite")
 hurt_texture = ExtResource("17_7vw44")
 anchor = NodePath("../../../../Visuals/CardVisuals/FeedbackSpriteAnchor")
 sprite_size = Vector2(150, 232.5)
 fade_time = 0.5
 
-[node name="Sprite2D" type="Sprite2D" parent="Actions/Hurt/HurtFeedbackHandler/HurtSprite" unique_id=2136417742]
+[node name="HurtSprite" type="Sprite2D" parent="Actions/Hurt/HurtFeedbackHandler/HurtSprite" unique_id=2136417742]
 position = Vector2(9.536743e-07, 0)
 scale = Vector2(0.12312501, 0.12312499)
 texture = ExtResource("17_7vw44")
@@ -143,10 +145,12 @@ script = ExtResource("15_jgw7k")
 script = ExtResource("20_7vw44")
 death_sfx = ExtResource("21_k3ell")
 
-[node name="Sacrifice" type="Node" parent="Actions" unique_id=1151363001 node_paths=PackedStringArray("animation_runner", "sacrifice_select_feedback")]
+[node name="Sacrifice" type="Node" parent="Actions" unique_id=1151363001 node_paths=PackedStringArray("animation_runner", "sacrifice_select_feedback", "pending_sacrifice_feedback", "committed_sacrifice_feedback")]
 script = ExtResource("15_v34li")
 animation_runner = NodePath("SacrificeAnimationRunner")
 sacrifice_select_feedback = NodePath("../../CardFeedback/Select")
+pending_sacrifice_feedback = NodePath("PendingSacrificeFeedback")
+committed_sacrifice_feedback = NodePath("CommittedSacrificeFeedback")
 
 [node name="SacrificeAnimationRunner" type="Node" parent="Actions/Sacrifice" unique_id=39945969 node_paths=PackedStringArray("visual_target")]
 script = ExtResource("16_v34li")
@@ -154,9 +158,13 @@ visual_target = NodePath("../../../Visuals/CardVisuals")
 
 [node name="MarkedForSacrificeFeedback" type="Node" parent="Actions/Sacrifice" unique_id=1792662883]
 
-[node name="PendingSacrificeFeedback" type="Node" parent="Actions/Sacrifice" unique_id=513482321]
+[node name="PendingSacrificeFeedback" type="Node" parent="Actions/Sacrifice" unique_id=513482321 node_paths=PackedStringArray("target")]
+script = ExtResource("27_0h522")
+target = NodePath("../../..")
 
-[node name="CommittedSacrificeFeedback" type="Node" parent="Actions/Sacrifice" unique_id=483430806]
+[node name="CommittedSacrificeFeedback" type="Node" parent="Actions/Sacrifice" unique_id=483430806 node_paths=PackedStringArray("target")]
+script = ExtResource("28_msnpm")
+target = NodePath("../../..")
 
 [node name="CardFeedback" type="Node" parent="." unique_id=824411320 node_paths=PackedStringArray("card", "hover_feedback", "select_feedback")]
 script = ExtResource("8_nau7p")

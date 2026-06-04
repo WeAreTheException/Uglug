@@ -103,6 +103,21 @@ func set_sacrifice_selected(value: bool) -> void:
 		sacrifice.set_marked_for_sacrifice(value)
 
 
+func set_pending_sacrifice(value: bool) -> void:
+	if sacrifice != null:
+		sacrifice.set_pending_sacrifice(value)
+
+
+func play_committed_sacrifice() -> void:
+	if sacrifice != null:
+		sacrifice.play_committed_sacrifice()
+
+
+func reset_sacrifice_feedback() -> void:
+	if sacrifice != null:
+		sacrifice.reset_sacrifice_state()
+
+
 func get_sacrifice_worth() -> int:
 	if stats != null:
 		return stats.get_worth()
