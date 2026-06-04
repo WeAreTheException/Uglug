@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://c5cbf5mt6cwqc"]
+
+[ext_resource type="Texture2D" uid="uid://bkafxhbg4kvug" path="res://Sprites/CardSlot.png" id="2_rh202"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0ebxi"]
+size = Vector2(144, 216)
+
+[node name="Slot" type="Node2D" unique_id=904478857]
+
+[node name="SlotInput" type="Area2D" parent="." unique_id=1165660853]
+
+[node name="ClickArea" type="CollisionShape2D" parent="SlotInput" unique_id=2082643422]
+shape = SubResource("RectangleShape2D_0ebxi")
+
+[node name="SlotPresence" type="Node" parent="." unique_id=482267490]
+
+[node name="SlotFeedback" type="Node" parent="." unique_id=675246330]
+
+[node name="SlotPlayPhaseFeedback" type="Node" parent="SlotFeedback" unique_id=700538427]
+
+[node name="SlotPlacementPreviewFeedback" type="Node" parent="SlotFeedback" unique_id=782340900]
+
+[node name="SlotAttackPreviewFeedback" type="Node" parent="SlotFeedback" unique_id=734268325]
+
+[node name="SlotVisual" type="TextureRect" parent="." unique_id=1269706641]
+offset_left = -72.0
+offset_top = -108.0
+offset_right = 72.0
+offset_bottom = 108.0
+texture = ExtResource("2_rh202")
+expand_mode = 1
+
+[node name="CardAnchor" type="Node" parent="." unique_id=1149269821]
