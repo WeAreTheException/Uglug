@@ -30,7 +30,7 @@
 [ext_resource type="Script" uid="uid://c38qoplslogll" path="res://Revamp/PlayerHand/Hand_CardLayerMover.gd" id="23_4g7iw"]
 [ext_resource type="Script" uid="uid://dj0fil2hhk7mb" path="res://Revamp/PlayerHand/Hand_PlacementRelease.gd" id="29_0pi77"]
 
-[node name="PlayerHandRoot" type="Node2D" unique_id=371738706 node_paths=PackedStringArray("hand_card_layer", "drag_layer", "card_spawner", "hand_layout", "sort_controller", "state_machine", "interaction_root", "sacrifice_selection")]
+[node name="PlayerHandRoot" type="Node2D" unique_id=371738706 node_paths=PackedStringArray("hand_card_layer", "drag_layer", "card_spawner", "hand_layout", "sort_controller", "state_machine", "interaction_root", "sacrifice_selection", "placement_release")]
 script = ExtResource("1_sfirx")
 card_scene = ExtResource("2_0sjxa")
 starting_cards = Array[ExtResource("3_egog8")]([ExtResource("4_trvsu"), ExtResource("5_wk34g"), ExtResource("6_m7nbq"), ExtResource("7_4g7iw")])
@@ -42,6 +42,7 @@ sort_controller = NodePath("Hand_SortController")
 state_machine = NodePath("Hand_StateMachine")
 interaction_root = NodePath("Hand_InteractionRoot")
 sacrifice_selection = NodePath("Hand_SacrificeSelection")
+placement_release = NodePath("Hand_PlacementRelease")
 
 [node name="Drag_Layer" type="Node2D" parent="." unique_id=364693775]
 
