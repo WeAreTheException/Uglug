@@ -15,8 +15,6 @@
 [ext_resource type="Resource" uid="uid://dbgpqc3vdl8t" path="res://Cards/CardPresets/Duriant.tres" id="6_m7nbq"]
 [ext_resource type="Script" uid="uid://bng537lwr5kp1" path="res://Revamp/PlayerHand/Hand_PlayLayout.gd" id="6_nqn2i"]
 [ext_resource type="Resource" uid="uid://ci7yvhc8pfst6" path="res://Cards/CardPresets/QueenAnt.tres" id="7_4g7iw"]
-[ext_resource type="Script" uid="uid://bcwnrublrv4gp" path="res://Revamp/PlayerHand/Hand_LayoutExclusion.gd" id="7_h8vib"]
-[ext_resource type="Script" uid="uid://cua0dpcdd0ve" path="res://Revamp/PlayerHand/Hand_InsertIndexResolver.gd" id="8_l4pv6"]
 [ext_resource type="Script" uid="uid://q7ps8fi8b23k" path="res://Revamp/PlayerHand/HandPrimeController.gd" id="8_lmw24"]
 [ext_resource type="Script" uid="uid://cahtpfpr04v10" path="res://Revamp/PlayerHand/Hand_IdleState.gd" id="11_hr725"]
 [ext_resource type="Script" uid="uid://dav5kkdxmhw4w" path="res://Revamp/PlayerHand/Hand_PlayState.gd" id="12_minj7"]
@@ -27,8 +25,6 @@
 [ext_resource type="Script" uid="uid://bdnunw0165chv" path="res://Revamp/PlayerHand/Hand_PrimeMover.gd" id="19_7sjk6"]
 [ext_resource type="Script" uid="uid://b855jf5mb26nq" path="res://Revamp/PlayerHand/Hand_InputRouter.gd" id="21_wk34g"]
 [ext_resource type="Script" uid="uid://b0rmpbpxe71fh" path="res://Revamp/PlayerHand/Hand_HoverFocus.gd" id="22_m7nbq"]
-[ext_resource type="Script" uid="uid://c38qoplslogll" path="res://Revamp/PlayerHand/Hand_CardLayerMover.gd" id="23_4g7iw"]
-[ext_resource type="Script" uid="uid://dj0fil2hhk7mb" path="res://Revamp/PlayerHand/Hand_PlacementRelease.gd" id="29_0pi77"]
 
 [node name="PlayerHandRoot" type="Node2D" unique_id=371738706 node_paths=PackedStringArray("hand_card_layer", "drag_layer", "card_spawner", "hand_layout", "sort_controller", "state_machine", "interaction_root", "sacrifice_selection", "placement_release")]
 script = ExtResource("1_sfirx")
@@ -42,7 +38,7 @@ sort_controller = NodePath("Hand_SortController")
 state_machine = NodePath("Hand_StateMachine")
 interaction_root = NodePath("Hand_InteractionRoot")
 sacrifice_selection = NodePath("Hand_SacrificeSelection")
-placement_release = NodePath("Hand_PlacementRelease")
+placement_release = NodePath("")
 
 [node name="Drag_Layer" type="Node2D" parent="." unique_id=364693775]
 
@@ -55,8 +51,8 @@ script = ExtResource("3_ei7ej")
 script = ExtResource("5_02mp4")
 idle_layout = NodePath("Hand_IdleLayout")
 play_layout = NodePath("Hand_PlayLayout")
-layout_exclusion = NodePath("Hand_LayoutExclusion")
-insert_index_resolver = NodePath("Hand_InsertIndexResolver")
+layout_exclusion = NodePath("")
+insert_index_resolver = NodePath("")
 layout_tweener = NodePath("Hand_LayoutTweener")
 
 [node name="Hand_IdleLayout" type="Node2D" parent="Hand_Layout" unique_id=1708688104]
@@ -64,12 +60,6 @@ script = ExtResource("5_byk4v")
 
 [node name="Hand_PlayLayout" type="Node2D" parent="Hand_Layout" unique_id=614443051]
 script = ExtResource("6_nqn2i")
-
-[node name="Hand_LayoutExclusion" type="Node2D" parent="Hand_Layout" unique_id=1113843450]
-script = ExtResource("7_h8vib")
-
-[node name="Hand_InsertIndexResolver" type="Node2D" parent="Hand_Layout" unique_id=1511900978]
-script = ExtResource("8_l4pv6")
 
 [node name="Hand_LayoutTweener" type="Node2D" parent="Hand_Layout" unique_id=460038037]
 script = ExtResource("14_hl46v")
@@ -96,7 +86,7 @@ script = ExtResource("13_ag06q")
 script = ExtResource("14_vlybu")
 input_router = NodePath("Hand_InputRouter")
 hover_focus = NodePath("Hand_HoverFocus")
-card_layer_mover = NodePath("Hand_CardLayerMover")
+card_layer_mover = NodePath("")
 drag_controller = NodePath("Hand_DragController")
 prime_controller = NodePath("../Hand_PrimeController")
 
@@ -108,9 +98,6 @@ script = ExtResource("21_wk34g")
 
 [node name="Hand_HoverFocus" type="Node" parent="Hand_InteractionRoot" unique_id=29651644]
 script = ExtResource("22_m7nbq")
-
-[node name="Hand_CardLayerMover" type="Node" parent="Hand_InteractionRoot" unique_id=254770108]
-script = ExtResource("23_4g7iw")
 
 [node name="Hand_SacrificeSelection" type="Node" parent="." unique_id=1212449443]
 script = ExtResource("6_7snob")
@@ -125,6 +112,3 @@ script = ExtResource("17_txnvk")
 
 [node name="Hand_PrimeMover" type="Node" parent="Hand_PrimeController" unique_id=717276307]
 script = ExtResource("19_7sjk6")
-
-[node name="Hand_PlacementRelease" type="Node" parent="." unique_id=1208572540]
-script = ExtResource("29_0pi77")
