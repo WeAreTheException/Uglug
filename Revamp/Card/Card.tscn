@@ -18,6 +18,7 @@
 [ext_resource type="Script" path="res://Revamp/Card/HurtFeedbackHandler.gd" id="12_mvgl2"]
 [ext_resource type="Script" path="res://Revamp/Card/HurtAudio.gd" id="12_q2sni"]
 [ext_resource type="Script" uid="uid://behvtd6jpqaj" path="res://Revamp/Card/Hurt.gd" id="12_r5dqq"]
+[ext_resource type="Script" uid="uid://bisn1wu1v2n8e" path="res://Revamp/Card/AttackScreenshakeHandler.gd" id="12_xyowr"]
 [ext_resource type="Script" path="res://Revamp/Card/HurtFlash.gd" id="13_mvgl2"]
 [ext_resource type="Script" uid="uid://5ajbnfxgx2dx" path="res://Revamp/Card/HurtAnimationRunner.gd" id="13_opxhd"]
 [ext_resource type="Script" path="res://Revamp/Card/HurtSprite.gd" id="14_1m3h3"]
@@ -78,18 +79,22 @@ impact_handler = NodePath("AttackImpactHandler")
 script = ExtResource("9_r5dqq")
 animated_target = NodePath("../../../Visuals/CardVisuals")
 
-[node name="AttackTargetResolver" type="Node" parent="Actions/Attack" unique_id=1783246087]
-script = ExtResource("10_opxhd")
-
 [node name="AttackSequencer" type="Node" parent="Actions/Attack" unique_id=2068513187]
 script = ExtResource("11_iynnv")
 
-[node name="AttackDamageResolver" type="Node" parent="Actions/Attack" unique_id=786244814]
-script = ExtResource("10_orgdo")
+[node name="AttackTargetResolver" type="Node" parent="Actions/Attack" unique_id=1783246087]
+script = ExtResource("10_opxhd")
 
 [node name="AttackImpactHandler" type="Node" parent="Actions/Attack" unique_id=270185402 node_paths=PackedStringArray("damage_resolver")]
 script = ExtResource("11_4wcdt")
 damage_resolver = NodePath("../AttackDamageResolver")
+
+[node name="AttackDamageResolver" type="Node" parent="Actions/Attack" unique_id=786244814]
+script = ExtResource("10_orgdo")
+
+[node name="AttackScreenshakeHandler" type="Node" parent="Actions/Attack" unique_id=517426745 node_paths=PackedStringArray("attack")]
+script = ExtResource("12_xyowr")
+attack = NodePath("..")
 
 [node name="Hurt" type="Node" parent="Actions" unique_id=1957973461 node_paths=PackedStringArray("animation_runner", "feedback_handler")]
 script = ExtResource("12_r5dqq")
