@@ -9,6 +9,10 @@
 [ext_resource type="Script" uid="uid://bxbqihkit6rgo" path="res://Managers/Phasemanager.gd" id="8_cc2no"]
 [ext_resource type="PackedScene" uid="uid://c0cpgrqgl3a0d" path="res://PlayerHandButtons.tscn" id="8_ql7l1"]
 [ext_resource type="Script" uid="uid://bbcig486utsir" path="res://HandPhaseApplier.gd" id="9_cc2no"]
+[ext_resource type="Script" uid="uid://61l5g8wkdar3" path="res://SacrificeController.gd" id="10_1j514"]
+[ext_resource type="Script" uid="uid://ciopi88keoi3k" path="res://SacrificeRequirement.gd" id="11_at0h8"]
+[ext_resource type="Script" uid="uid://b4qvc7353obir" path="res://PendingSacrificeBoat.gd" id="12_30x73"]
+[ext_resource type="Script" uid="uid://vmy04gllke53" path="res://SacrificeCommitter.gd" id="13_6ula3"]
 
 [node name="Mao" type="Node2D" unique_id=550121538]
 
@@ -34,3 +38,24 @@ metadata/_custom_type_script = "uid://bxbqihkit6rgo"
 script = ExtResource("9_cc2no")
 phase_manager = NodePath("..")
 lead_hand = NodePath("../../PlayerHandRoot")
+
+[node name="SacrificeController" type="Node" parent="." unique_id=1432478239 node_paths=PackedStringArray("player_hand", "requirement", "pending_boat", "committer")]
+script = ExtResource("10_1j514")
+auto_sacrifice_when_cost_met = true
+enable_undo_key = null
+player_hand = NodePath("../PlayerHandRoot")
+requirement = NodePath("SacrificeRequirement")
+pending_boat = NodePath("PendingSacrificeBoat")
+committer = NodePath("SacrificeComitter")
+
+[node name="SacrificeRequirement" type="Node" parent="SacrificeController" unique_id=1332384962]
+script = ExtResource("11_at0h8")
+
+[node name="PendingSacrificeBoat" type="Node" parent="SacrificeController" unique_id=1449104389 node_paths=PackedStringArray("pending_layer")]
+script = ExtResource("12_30x73")
+pending_layer = NodePath("../PendingSacrificeLayer")
+
+[node name="SacrificeComitter" type="Node" parent="SacrificeController" unique_id=1945886437]
+script = ExtResource("13_6ula3")
+
+[node name="PendingSacrificeLayer" type="Node2D" parent="SacrificeController" unique_id=183134508]
