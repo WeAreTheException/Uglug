@@ -1,33 +1,50 @@
 [gd_scene format=3 uid="uid://c5cbf5mt6cwqc"]
 
+[ext_resource type="Script" uid="uid://ctb0sphxjf65u" path="res://Slots/Slot.gd" id="1_iym07"]
+[ext_resource type="Script" uid="uid://blakh033eae1j" path="res://Revamp/SlotInput.gd" id="2_0ebxi"]
 [ext_resource type="Texture2D" uid="uid://bkafxhbg4kvug" path="res://Sprites/CardSlot.png" id="2_rh202"]
+[ext_resource type="Script" uid="uid://cxtlbt4cyp42p" path="res://Revamp/SlotPresence.gd" id="3_0ebxi"]
+[ext_resource type="Script" uid="uid://8bb0uw27pa7v" path="res://Revamp/SlotFeedback.gd" id="4_npwjl"]
+[ext_resource type="Script" uid="uid://cifufsh3y1kgi" path="res://Revamp/SlotPlayPhaseFeedback.gd" id="5_iike6"]
+[ext_resource type="Script" uid="uid://ib588s15omow" path="res://Revamp/SlotPlacementPreviewFeedback.gd" id="6_dshdd"]
+[ext_resource type="Script" uid="uid://vydoy4hkyhm0" path="res://Revamp/SlotAttackPreviewFeedback.gd" id="7_jvbdb"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0ebxi"]
 size = Vector2(144, 216)
 
-[node name="Slot" type="Node2D" unique_id=904478857]
+[node name="Slot" type="Node2D" unique_id=904478857 node_paths=PackedStringArray("click_area")]
+script = ExtResource("1_iym07")
+slot_index = null
+click_area = NodePath("SlotInput")
 
-[node name="SlotInput" type="Area2D" parent="." unique_id=1165660853]
+[node name="SlotInput" type="Area2D" parent="." unique_id=1165660853 node_paths=PackedStringArray("click_area")]
+script = ExtResource("2_0ebxi")
+click_area = NodePath(".")
 
 [node name="ClickArea" type="CollisionShape2D" parent="SlotInput" unique_id=2082643422]
 shape = SubResource("RectangleShape2D_0ebxi")
 
 [node name="SlotPresence" type="Node" parent="." unique_id=482267490]
+script = ExtResource("3_0ebxi")
 
 [node name="SlotFeedback" type="Node" parent="." unique_id=675246330]
+script = ExtResource("4_npwjl")
 
-[node name="SlotPlayPhaseFeedback" type="Node" parent="SlotFeedback" unique_id=700538427]
+[node name="SlotPlayPhaseFeedback" type="Node" parent="SlotFeedback" unique_id=700538427 node_paths=PackedStringArray("target")]
+script = ExtResource("5_iike6")
+target = NodePath("")
 
-[node name="SlotPlacementPreviewFeedback" type="Node" parent="SlotFeedback" unique_id=782340900]
+[node name="SlotPlacementPreviewFeedback" type="Node" parent="SlotFeedback" unique_id=782340900 node_paths=PackedStringArray("target")]
+script = ExtResource("6_dshdd")
+target = NodePath("")
 
-[node name="SlotAttackPreviewFeedback" type="Node" parent="SlotFeedback" unique_id=734268325]
+[node name="SlotAttackPreviewFeedback" type="Node" parent="SlotFeedback" unique_id=734268325 node_paths=PackedStringArray("target")]
+script = ExtResource("7_jvbdb")
+target = NodePath("")
 
-[node name="SlotVisual" type="TextureRect" parent="." unique_id=1269706641]
-offset_left = -72.0
-offset_top = -108.0
-offset_right = 72.0
-offset_bottom = 108.0
+[node name="SlotVisual" type="Sprite2D" parent="." unique_id=857403716]
+position = Vector2(0, -3.8146973e-06)
+scale = Vector2(0.8, 0.81509435)
 texture = ExtResource("2_rh202")
-expand_mode = 1
 
 [node name="CardAnchor" type="Node" parent="." unique_id=1149269821]
