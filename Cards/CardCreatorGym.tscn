@@ -4,8 +4,7 @@
 [ext_resource type="Resource" uid="uid://bn1jyervrnsg" path="res://Cards/CardPresets/WorkerAnt.tres" id="2_sbsev"]
 [ext_resource type="Resource" uid="uid://b2afa5kkemf6x" path="res://Cards/CardPresets/Empowerant.tres" id="2_vg36g"]
 [ext_resource type="Resource" uid="uid://ci7yvhc8pfst6" path="res://Cards/CardPresets/QueenAnt.tres" id="3_0km5x"]
-[ext_resource type="Resource" uid="uid://b10yu2ml8hwx2" path="res://Cards/CardPresets/Stimulant.tres" id="3_vpyea"]
-[ext_resource type="Resource" uid="uid://bxrcjm4w1dy82" path="res://Cards/CardPresets/Anthrax.tres" id="5_vg36g"]
+[ext_resource type="Resource" uid="uid://bxfxi0h5itrdu" path="res://Cards/CardPresets/Lieutenant.tres" id="4_0y7n2"]
 [ext_resource type="Resource" uid="uid://d34eaw1jxirr0" path="res://Cards/CardPresets/Giant.tres" id="6_0y7n2"]
 [ext_resource type="Resource" uid="uid://bckromx6ufd8m" path="res://Cards/CardPresets/Escucheant.tres" id="6_vg36g"]
 [ext_resource type="Resource" uid="uid://dbgpqc3vdl8t" path="res://Cards/CardPresets/Duriant.tres" id="7_vg36g"]
@@ -14,14 +13,14 @@
 [ext_resource type="Resource" uid="uid://blsba5v7enbvw" path="res://Cards/CardPresets/SuperStimulant.tres" id="10_i0njb"]
 [ext_resource type="Script" uid="uid://b0pbhkjhs6hjt" path="res://Cards/ScreenshakeBrain.gd" id="13_7w5y0"]
 
-[node name="CardCreatorGym1" type="Node2D" unique_id=2045850218]
+[node name="CardCreatorGym" type="Node2D" unique_id=2045850218]
 
 [node name="Slots" parent="." unique_id=1318716624 instance=ExtResource("1_6m8xi")]
 position = Vector2(569, 296)
 player_slot_1_card = ExtResource("2_sbsev")
 player_slot_2_card = ExtResource("3_0km5x")
-player_slot_3_card = ExtResource("3_vpyea")
-player_slot_4_card = ExtResource("5_vg36g")
+player_slot_3_card = ExtResource("4_0y7n2")
+player_slot_4_card = ExtResource("6_0y7n2")
 opponent_slot_1_card = ExtResource("6_0y7n2")
 opponent_slot_4_card = ExtResource("7_vg36g")
 
