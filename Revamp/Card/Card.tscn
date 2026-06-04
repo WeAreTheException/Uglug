@@ -124,6 +124,7 @@ sprite = NodePath("Sprite2D")
 hurt_texture = ExtResource("17_7vw44")
 anchor = NodePath("../../../../Visuals/CardVisuals/FeedbackSpriteAnchor")
 sprite_size = Vector2(150, 232.5)
+fade_time = 0.5
 
 [node name="Sprite2D" type="Sprite2D" parent="Actions/Hurt/HurtFeedbackHandler/HurtSprite" unique_id=2136417742]
 position = Vector2(9.536743e-07, 0)
