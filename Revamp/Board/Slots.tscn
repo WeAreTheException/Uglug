@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://dnat5rx3mmepn" path="res://Revamp/Board/BoardMutationRefresher.gd" id="7_4xfmt"]
 [ext_resource type="Script" uid="uid://fpn7jg867ngv" path="res://Revamp/Board/BoardSlotRegistry.gd" id="7_camp5"]
 [ext_resource type="Script" uid="uid://67hlpuvgnyel" path="res://Revamp/Board/SlotPresetHandler1.gd" id="7_iq660"]
-[ext_resource type="PackedScene" uid="uid://c5cbf5mt6cwqc" path="res://Revamp/Slot.tscn" id="8_s3p7v"]
+[ext_resource type="PackedScene" uid="uid://c5cbf5mt6cwqc" path="res://Revamp/Board/Slot/Slot.tscn" id="8_s3p7v"]
 [ext_resource type="Script" uid="uid://bkk2cojo6thgb" path="res://Revamp/Board/AttackOrderHandler.gd" id="9_1gkk1"]
 [ext_resource type="Script" uid="uid://w3b8lt2epqs0" path="res://Revamp/Board/Slot/BoardQuery.gd" id="9_8cmln"]
 

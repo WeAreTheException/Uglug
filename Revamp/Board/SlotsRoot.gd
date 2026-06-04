@@ -49,9 +49,14 @@ func _setup_registry() -> void:
 	player_slots = board_slot_registry.get_slots_for_owner(SlotRow.SlotOwner.PLAYER)
 	opponent_slots = board_slot_registry.get_slots_for_owner(SlotRow.SlotOwner.OPPONENT)
 
-	board_slot_registry.slot_clicked.connect(_on_slot_clicked)
-	board_slot_registry.slot_hovered.connect(_on_slot_hovered)
-	board_slot_registry.slot_unhovered.connect(_on_slot_unhovered)
+	if not board_slot_registry.slot_clicked.is_connected(_on_slot_clicked):
+		board_slot_registry.slot_clicked.connect(_on_slot_clicked)
+
+	if not board_slot_registry.slot_hovered.is_connected(_on_slot_hovered):
+		board_slot_registry.slot_hovered.connect(_on_slot_hovered)
+
+	if not board_slot_registry.slot_unhovered.is_connected(_on_slot_unhovered):
+		board_slot_registry.slot_unhovered.connect(_on_slot_unhovered)
 
 
 func _setup_query() -> void:
@@ -77,11 +82,48 @@ func _setup_preset_handler() -> void:
 	slot_preset_handler.spawn_all_presets()
 
 
+func show_playable_slots(owner: SlotRow.SlotOwner) -> void:
+	for slot in get_slots_for_owner(owner):
+		if slot != null:
+			slot.show_playable_feedback()
+
+	var enemy_owner := get_enemy_owner(owner)
+
+	for slot in get_slots_for_owner(enemy_owner):
+		if slot != null:
+			slot.show_idle_feedback()
+
+
+func show_neutral_slots() -> void:
+	for slot in get_all_slots():
+		if slot != null:
+			slot.show_idle_feedback()
+
+
+func show_inactive_slots(owner: SlotRow.SlotOwner) -> void:
+	for slot in get_slots_for_owner(owner):
+		if slot != null:
+			slot.show_inactive_feedback()
+
+
+func clear_all_slot_feedback() -> void:
+	for slot in get_all_slots():
+		if slot != null:
+			slot.clear_all_feedback()
+
+
 func get_slots_for_owner(owner: SlotRow.SlotOwner) -> Array[Slot]:
 	if board_query == null:
 		return []
 
 	return board_query.get_slots_for_owner(owner)
+
+
+func get_all_slots() -> Array[Slot]:
+	if board_query == null:
+		return []
+
+	return board_query.get_all_slots()
 
 
 func get_empty_slots_for_owner(owner: SlotRow.SlotOwner) -> Array[Slot]:
@@ -103,6 +145,13 @@ func get_owner_of_slot(slot: Slot) -> SlotRow.SlotOwner:
 		return SlotRow.SlotOwner.PLAYER
 
 	return board_query.get_owner_of_slot(slot)
+
+
+func get_enemy_owner(owner: SlotRow.SlotOwner) -> SlotRow.SlotOwner:
+	if board_query == null:
+		return SlotRow.SlotOwner.OPPONENT
+
+	return board_query.get_enemy_owner(owner)
 
 
 func get_opposing_slot(slot: Slot) -> Slot:
@@ -148,20 +197,28 @@ func get_preset_for_slot(slot: Slot) -> CardData:
 
 func _get_player_preset(slot_index: int) -> CardData:
 	match slot_index:
-		1: return player_slot_1_card
-		2: return player_slot_2_card
-		3: return player_slot_3_card
-		4: return player_slot_4_card
+		1:
+			return player_slot_1_card
+		2:
+			return player_slot_2_card
+		3:
+			return player_slot_3_card
+		4:
+			return player_slot_4_card
 
 	return null
 
 
 func _get_opponent_preset(slot_index: int) -> CardData:
 	match slot_index:
-		1: return opponent_slot_1_card
-		2: return opponent_slot_2_card
-		3: return opponent_slot_3_card
-		4: return opponent_slot_4_card
+		1:
+			return opponent_slot_1_card
+		2:
+			return opponent_slot_2_card
+		3:
+			return opponent_slot_3_card
+		4:
+			return opponent_slot_4_card
 
 	return null
 

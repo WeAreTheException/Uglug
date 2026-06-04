@@ -7,7 +7,6 @@
 [ext_resource type="Resource" uid="uid://ci7yvhc8pfst6" path="res://Cards/CardPresets/QueenAnt.tres" id="5_1j514"]
 [ext_resource type="Resource" uid="uid://c64jbnvj0pbwk" path="res://Cards/CardPresets/AntHill.tres" id="6_at0h8"]
 [ext_resource type="Script" uid="uid://bxbqihkit6rgo" path="res://Managers/Phasemanager.gd" id="8_cc2no"]
-[ext_resource type="PackedScene" uid="uid://c0cpgrqgl3a0d" path="res://PlayerHandButtons.tscn" id="8_ql7l1"]
 [ext_resource type="Script" uid="uid://bbcig486utsir" path="res://HandPhaseApplier.gd" id="9_cc2no"]
 [ext_resource type="Script" uid="uid://61l5g8wkdar3" path="res://SacrificeController.gd" id="10_1j514"]
 [ext_resource type="Script" uid="uid://ciopi88keoi3k" path="res://SacrificeRequirement.gd" id="11_at0h8"]
@@ -16,6 +15,7 @@
 [ext_resource type="Script" uid="uid://btvwwhg7w0mf0" path="res://Revamp/Phases/Placement/PlacementController.gd" id="14_20kdy"]
 [ext_resource type="Script" uid="uid://da2laov2b2euc" path="res://PlacementState.gd" id="15_5ixgq"]
 [ext_resource type="Script" uid="uid://djwqn2nmkxiy" path="res://PlacementInputRouter.gd" id="16_8ve8k"]
+[ext_resource type="Script" uid="uid://dp6gve6tfarqs" path="res://Revamp/Phases/BoardPhaseApplier.gd" id="17_b7h4g"]
 [ext_resource type="Script" uid="uid://dwpn84vwakw8r" path="res://Revamp/Phases/Placement/PlacementSlotResolver.gd" id="17_oekep"]
 [ext_resource type="Script" uid="uid://bue7fsscegegk" path="res://Revamp/Phases/Placement/PlacementPreview.gd" id="18_n5v11"]
 [ext_resource type="Script" uid="uid://s0qerh3uyaxr" path="res://Revamp/Phases/Placement/PlacementAttackPreviewResolver.gd" id="19_7gy8c"]
@@ -32,9 +32,6 @@ position = Vector2(120, 120)
 position = Vector2(720, 960)
 starting_cards = Array[ExtResource("3_d5ogx")]([ExtResource("4_cc2no"), ExtResource("5_1j514"), ExtResource("6_at0h8")])
 prime_location = NodePath("../PrimeCardLocation")
-
-[node name="PlayerHandButtons" parent="." unique_id=1099949362 instance=ExtResource("8_ql7l1")]
-position = Vector2(1104, 540)
 
 [node name="PrimeCardLocation" type="Node2D" parent="." unique_id=2143511336]
 position = Vector2(1080, 360)
@@ -105,3 +102,8 @@ script = ExtResource("21_mf2my")
 
 [node name="PlacementCleanup" type="Node" parent="PlacementController" unique_id=1825123629]
 script = ExtResource("22_venfy")
+
+[node name="BoardPhaseApplier" type="Node" parent="." unique_id=940502173 node_paths=PackedStringArray("phase_manager", "slots_root")]
+script = ExtResource("17_b7h4g")
+phase_manager = NodePath("../PhaseManager")
+slots_root = NodePath("../Slots")
