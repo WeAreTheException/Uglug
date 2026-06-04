@@ -7,7 +7,6 @@ signal prime_state_changed(can_prime: bool, can_unprime: bool, text: String)
 
 @export var prime_selection: Hand_PrimeSelection
 @export var prime_mover: Hand_PrimeMover
-
 @export var prime_on_card_press: bool = true
 
 var interaction_root: Hand_InteractionRoot = null
@@ -95,7 +94,6 @@ func prime_selected_card() -> void:
 		return
 
 	prime_selection.clear_selection()
-
 	primed_card = selected_card
 
 	if prime_mover != null:
@@ -116,6 +114,17 @@ func unprime_card() -> void:
 	_emit_prime_state()
 
 
+func consume_primed_card(card: CardRoot) -> void:
+	if card == null:
+		return
+
+	if primed_card != card:
+		return
+
+	primed_card = null
+	_emit_prime_state()
+
+
 func clear_selection() -> void:
 	if prime_selection != null:
 		prime_selection.clear_selection()
@@ -132,7 +141,6 @@ func forget_card(card: CardRoot) -> void:
 
 	if primed_card == card:
 		primed_card = null
-		card_unprimed.emit(card)
 
 	_emit_prime_state()
 

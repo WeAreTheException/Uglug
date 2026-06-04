@@ -37,6 +37,11 @@ func setup(
 	_connect_card_spawner()
 
 
+func set_input_enabled(value: bool) -> void:
+	if input_router != null:
+		input_router.set_input_enabled(value)
+
+
 func set_drag_enabled(value: bool) -> void:
 	if drag_controller != null:
 		drag_controller.set_drag_enabled(value)
@@ -55,6 +60,21 @@ func set_prime_action_enabled(value: bool) -> void:
 func toggle_prime() -> void:
 	if prime_controller != null:
 		prime_controller.toggle_prime()
+
+
+func consume_primed_card(card: CardRoot) -> void:
+	if prime_controller == null:
+		return
+
+	if prime_controller.get_primed_card() != card:
+		return
+
+	prime_controller.consume_primed_card(card)
+
+	if hand_layout != null:
+		hand_layout.clear_primed_card()
+
+	arrange_cards()
 
 
 func clear_prime_selection() -> void:
@@ -203,6 +223,11 @@ func _on_card_added(card: CardRoot) -> void:
 
 
 func _on_card_removed(card: CardRoot) -> void:
+	var was_primed := false
+
+	if prime_controller != null:
+		was_primed = prime_controller.get_primed_card() == card
+
 	if hover_focus != null:
 		hover_focus.forget_card(card)
 
@@ -211,6 +236,9 @@ func _on_card_removed(card: CardRoot) -> void:
 
 	if prime_controller != null:
 		prime_controller.forget_card(card)
+
+	if was_primed and hand_layout != null:
+		hand_layout.clear_primed_card()
 
 	refresh_hover_focus()
 
@@ -264,7 +292,3 @@ func _on_card_unprimed(card: CardRoot) -> void:
 
 func _on_prime_state_changed(can_prime: bool, can_unprime: bool, text: String) -> void:
 	prime_state_changed.emit(can_prime, can_unprime, text)
-
-func set_input_enabled(value: bool) -> void:
-	if input_router != null:
-		input_router.set_input_enabled(value)

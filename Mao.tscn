@@ -55,7 +55,6 @@ requirement = NodePath("SacrificeRequirement")
 pending_boat = NodePath("PendingSacrificeBoat")
 committer = NodePath("SacrificeComitter")
 auto_sacrifice_when_cost_met = true
-enable_undo_key = null
 
 [node name="SacrificeRequirement" type="Node" parent="SacrificeController" unique_id=1332384962]
 script = ExtResource("11_at0h8")

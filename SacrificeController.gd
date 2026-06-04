@@ -20,6 +20,7 @@ signal sacrifice_blocked(reason: String)
 @export var enable_undo_key: bool = true
 
 var is_processing: bool = false
+var is_committing: bool = false
 
 
 func _ready() -> void:
@@ -62,6 +63,9 @@ func request_sacrifice() -> void:
 
 
 func undo_pending_sacrifice() -> void:
+	if is_committing:
+		return
+
 	if pending_boat == null:
 		return
 
@@ -93,12 +97,19 @@ func commit_pending_sacrifice() -> void:
 	if pending_boat == null:
 		return
 
+	if not pending_boat.has_pending():
+		return
+
 	if committer == null:
 		sacrifice_blocked.emit("Missing SacrificeCommitter.")
 		return
 
+	is_committing = true
+
 	var cards := pending_boat.take_pending_cards()
 	committer.commit_cards(cards)
+
+	is_committing = false
 
 	sacrifice_committed.emit(cards)
 	_update_requirement_state()
@@ -177,6 +188,9 @@ func _on_selection_changed(_cards: Array[CardRoot]) -> void:
 
 
 func _on_card_unprimed(_card: CardRoot) -> void:
+	if is_committing:
+		return
+
 	undo_pending_sacrifice()
 
 	if player_hand != null:

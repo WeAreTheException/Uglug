@@ -33,7 +33,7 @@ func confirm_placement(
 	if not placed:
 		return {}
 
-	_remove_card_from_hand(card)
+	_consume_card_from_hand(card)
 	_move_card_to_board_layer(card, slot, board)
 	_snap_card_to_slot(card, slot)
 
@@ -47,11 +47,15 @@ func _assign_card_to_slot(card: CardRoot, slot: Slot) -> bool:
 	return slot.assign_card(card)
 
 
-func _remove_card_from_hand(card: CardRoot) -> void:
+func _consume_card_from_hand(card: CardRoot) -> void:
 	var hand := controller.get_player_hand()
 
-	if hand != null:
-		hand.remove_card_from_hand(card)
+	if hand == null:
+		return
+
+	hand.consume_primed_card_for_placement(card)
+	hand.remove_card_from_hand(card)
+	hand.enter_play_state()
 
 
 func _move_card_to_board_layer(card: CardRoot, slot: Slot, board: SlotsRoot) -> void:

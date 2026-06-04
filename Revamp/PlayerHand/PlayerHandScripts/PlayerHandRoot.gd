@@ -52,6 +52,11 @@ func _ready() -> void:
 	_emit_prime_state()
 
 
+func set_hand_input_enabled(value: bool) -> void:
+	if interaction_root != null:
+		interaction_root.set_input_enabled(value)
+
+
 func _setup_spawner() -> void:
 	if card_spawner == null:
 		return
@@ -165,10 +170,7 @@ func spawn_card(data: CardData) -> CardRoot:
 
 
 func arrange_cards() -> void:
-	if hand_layout == null:
-		return
-
-	if card_spawner == null:
+	if hand_layout == null or card_spawner == null:
 		return
 
 	hand_layout.arrange_cards(card_spawner.get_cards())
@@ -213,6 +215,14 @@ func enter_play_state() -> void:
 func enter_sacrifice_state() -> void:
 	if state_machine != null:
 		state_machine.change_state(Hand_StateMachine.SACRIFICE)
+
+
+func consume_primed_card_for_placement(card: CardRoot) -> void:
+	if interaction_root != null:
+		interaction_root.consume_primed_card(card)
+
+	clear_sacrifice_selection()
+	_emit_prime_state()
 
 
 func get_primed_card() -> CardRoot:
@@ -327,7 +337,3 @@ func _emit_prime_state() -> void:
 		interaction_root.can_unprime(),
 		interaction_root.get_prime_button_text()
 	)
-
-func set_hand_input_enabled(value: bool) -> void:
-	if interaction_root != null:
-		interaction_root.set_input_enabled(value)
