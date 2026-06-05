@@ -11,14 +11,23 @@ func on_card_added(card: CardRoot) -> void:
 	root.refresh_hover_focus()
 
 func on_card_removed(card: CardRoot) -> void:
+	var removed_card_was_primed := false
+
+	if root.prime_controller != null:
+		removed_card_was_primed = root.prime_controller.get_primed_card() == card
+
 	if root.hover_focus != null:
 		root.hover_focus.forget_card(card)
+
 	if root.drag_controller != null:
 		root.drag_controller.forget_card(card)
+
 	if root.prime_controller != null:
 		root.prime_controller.forget_card(card)
-	if root.hand_layout != null:
+
+	if removed_card_was_primed and root.hand_layout != null:
 		root.hand_layout.clear_primed_card()
+
 	root.refresh_hover_focus()
 
 func on_card_hovered(card: CardRoot) -> void:
