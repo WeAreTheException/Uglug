@@ -8,18 +8,18 @@
 [ext_resource type="Resource" uid="uid://c64jbnvj0pbwk" path="res://Cards/CardPresets/AntHill.tres" id="6_at0h8"]
 [ext_resource type="Script" uid="uid://bxbqihkit6rgo" path="res://Managers/Phasemanager.gd" id="8_cc2no"]
 [ext_resource type="Script" uid="uid://bbcig486utsir" path="res://HandPhaseApplier.gd" id="9_cc2no"]
-[ext_resource type="Script" uid="uid://61l5g8wkdar3" path="res://SacrificeController.gd" id="10_1j514"]
+[ext_resource type="Script" uid="uid://b38dslna3xak" path="res://SacrificeController.gd" id="10_1j514"]
 [ext_resource type="Script" uid="uid://ciopi88keoi3k" path="res://SacrificeRequirement.gd" id="11_at0h8"]
 [ext_resource type="Script" uid="uid://b4qvc7353obir" path="res://PendingSacrificeBoat.gd" id="12_30x73"]
 [ext_resource type="Script" uid="uid://vmy04gllke53" path="res://SacrificeCommitter.gd" id="13_6ula3"]
-[ext_resource type="Script" uid="uid://btvwwhg7w0mf0" path="res://Revamp/Phases/Placement/PlacementController.gd" id="14_20kdy"]
-[ext_resource type="Script" uid="uid://da2laov2b2euc" path="res://Revamp/Phases/Placement/PlacementState.gd" id="15_5ixgq"]
-[ext_resource type="Script" uid="uid://djwqn2nmkxiy" path="res://Revamp/Phases/Placement/PlacementInputRouter.gd" id="16_8ve8k"]
+[ext_resource type="Script" uid="uid://dnikkosq1o0kr" path="res://Revamp/Placement/PlacementScripts/PlacementController.gd" id="13_ubws4"]
+[ext_resource type="Script" uid="uid://cvkghlt7xdj22" path="res://Revamp/Placement/PlacementScripts/PlacementState.gd" id="14_5sdof"]
+[ext_resource type="Script" uid="uid://dsut7kstdcc6u" path="res://Revamp/Placement/PlacementScripts/PlacementInputRouter.gd" id="15_20kdy"]
+[ext_resource type="Script" uid="uid://6ycktn6tay80" path="res://Revamp/Placement/PlacementScripts/PlacementPreview.gd" id="16_5ixgq"]
+[ext_resource type="Script" uid="uid://yc6i5trydgut" path="res://Revamp/Placement/PlacementScripts/PlacementExecutor.gd" id="17_8ve8k"]
 [ext_resource type="Script" uid="uid://dp6gve6tfarqs" path="res://Revamp/Phases/BoardPhaseApplier.gd" id="17_b7h4g"]
-[ext_resource type="Script" uid="uid://bue7fsscegegk" path="res://Revamp/Phases/Placement/PlacementPreview.gd" id="18_n5v11"]
-[ext_resource type="Script" uid="uid://cr0n4bs5xlht6" path="res://Revamp/Phases/Placement/PlacementExecutor.gd" id="20_a1qt2"]
-[ext_resource type="Script" uid="uid://bkc07ie8mgvi" path="res://Revamp/Phases/Placement/PlacementEventEmiiter.gd" id="21_mf2my"]
-[ext_resource type="Script" uid="uid://bn1yptjjjp48x" path="res://Revamp/Phases/Placement/PlacementCancel.gd" id="22_5ixgq"]
+[ext_resource type="Script" uid="uid://c18hwqs033t7x" path="res://Revamp/Placement/PlacementScripts/PlacementEventEmitter.gd" id="18_oekep"]
+[ext_resource type="Script" uid="uid://cmcxm3mp7ljvv" path="res://Revamp/Placement/PlacementScripts/PlacementCancel.gd" id="19_n5v11"]
 
 [node name="Mao" type="Node2D" unique_id=550121538]
 
@@ -63,38 +63,35 @@ script = ExtResource("13_6ula3")
 
 [node name="PendingSacrificeLayer" type="Node2D" parent="SacrificeController" unique_id=183134508]
 
-[node name="PlacementController" type="Node" parent="." unique_id=1405375079 node_paths=PackedStringArray("slots_root", "player_hand", "sacrifice_controller", "placement_state", "input_router", "slot_resolver", "placement_preview", "attack_preview_resolver", "placement_executor", "event_emitter", "cleanup", "placement_cancel")]
-script = ExtResource("14_20kdy")
+[node name="PlacementController" type="Node" parent="." unique_id=1405375079 node_paths=PackedStringArray("slots_root", "player_hand", "sacrifice_controller", "placement_state", "input_router", "placement_preview", "placement_executor", "event_emitter", "placement_cancel")]
+script = ExtResource("13_ubws4")
 slots_root = NodePath("../Slots")
 player_hand = NodePath("../PlayerHandRoot")
 sacrifice_controller = NodePath("../SacrificeController")
 placement_state = NodePath("PlacementState")
 input_router = NodePath("PlacementInputRouter")
-slot_resolver = NodePath("")
 placement_preview = NodePath("PlacementPreview")
-attack_preview_resolver = NodePath("")
 placement_executor = NodePath("PlacementExecutor")
 event_emitter = NodePath("PlacementEventEmitter")
-cleanup = NodePath("")
 placement_cancel = NodePath("PlacementCancel")
 
 [node name="PlacementState" type="Node" parent="PlacementController" unique_id=1456688179]
-script = ExtResource("15_5ixgq")
+script = ExtResource("14_5sdof")
 
 [node name="PlacementInputRouter" type="Node" parent="PlacementController" unique_id=1643686806]
-script = ExtResource("16_8ve8k")
+script = ExtResource("15_20kdy")
 
 [node name="PlacementPreview" type="Node" parent="PlacementController" unique_id=1774818153]
-script = ExtResource("18_n5v11")
+script = ExtResource("16_5ixgq")
 
 [node name="PlacementExecutor" type="Node" parent="PlacementController" unique_id=988574054]
-script = ExtResource("20_a1qt2")
+script = ExtResource("17_8ve8k")
 
 [node name="PlacementEventEmitter" type="Node" parent="PlacementController" unique_id=1389290294]
-script = ExtResource("21_mf2my")
+script = ExtResource("18_oekep")
 
 [node name="PlacementCancel" type="Node" parent="PlacementController" unique_id=1193513979]
-script = ExtResource("22_5ixgq")
+script = ExtResource("19_n5v11")
 
 [node name="BoardPhaseApplier" type="Node" parent="." unique_id=940502173 node_paths=PackedStringArray("phase_manager", "slots_root")]
 script = ExtResource("17_b7h4g")
