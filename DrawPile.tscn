@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://crtedlwll5ies"]
+
+[ext_resource type="Texture2D" uid="uid://dgceyq4phwwts" path="res://Art/AntBack/WarriorDeck.png" id="1_6wpjd"]
+[ext_resource type="Script" uid="uid://81epbrf50uvm" path="res://Revamp/DeckSystem/DrawPile/DrawPileRoot.gd" id="1_isg76"]
+[ext_resource type="Script" uid="uid://dj1s1sblqqdur" path="res://Revamp/DeckSystem/DrawPile/DrawPileView.gd" id="2_0cqek"]
+[ext_resource type="Script" uid="uid://ci40hpt06shx5" path="res://Revamp/DeckSystem/DrawPile/DrawPileInstance.gd" id="2_tgpo1"]
+[ext_resource type="Script" uid="uid://dh26pvg5wdy5n" path="res://Revamp/DeckSystem/DrawPile/DrawPileCounter.gd" id="3_tgpo1"]
+
+[node name="DrawPile" type="Node2D" unique_id=399983247 node_paths=PackedStringArray("instance", "view", "counter")]
+script = ExtResource("1_isg76")
+instance = NodePath("DrawPileInstance")
+view = NodePath("DrawPileView")
+counter = NodePath("DrawPileCounter")
+
+[node name="DrawPileInstance" type="Node" parent="." unique_id=1336461163]
+script = ExtResource("2_tgpo1")
+
+[node name="DrawPileView" type="Node2D" parent="." unique_id=643317441 node_paths=PackedStringArray("visible_root")]
+script = ExtResource("2_0cqek")
+visible_root = NodePath("../DrawPileVisuals")
+
+[node name="DrawPileCounter" type="Node" parent="." unique_id=2141459973]
+script = ExtResource("3_tgpo1")
+
+[node name="DrawPileVisuals" type="Node2D" parent="." unique_id=2076575418]
+
+[node name="CardBack" type="TextureRect" parent="DrawPileVisuals" unique_id=1109728031]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -600.0
+offset_top = -930.0
+offset_right = 600.0
+offset_bottom = 930.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_6wpjd")

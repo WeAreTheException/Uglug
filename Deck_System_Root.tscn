@@ -1,0 +1,61 @@
+[gd_scene format=3 uid="uid://coux8hd7esj7g"]
+
+[ext_resource type="Script" uid="uid://di51d8f300q06" path="res://Revamp/DeckSystem/MatchSetup/DeckSystemRoot.gd" id="1_aossy"]
+[ext_resource type="PackedScene" uid="uid://crtedlwll5ies" path="res://DrawPile.tscn" id="1_hbww1"]
+[ext_resource type="PackedScene" uid="uid://cktoqlj781g24" path="res://Revamp/DeckSystem/WorkerPile/WorkerPile.tscn" id="1_ornpd"]
+[ext_resource type="Script" uid="uid://pih0yw03lamd" path="res://Revamp/DeckSystem/MatchSetup/MatchDeckSetup.gd" id="2_6mf6k"]
+[ext_resource type="PackedScene" uid="uid://bgcvrahr1hhjr" path="res://Revamp/DeckSystem/DiscardPile/DiscardPile.tscn" id="2_bat4r"]
+[ext_resource type="Script" uid="uid://dk3gfwlv0tpwb" path="res://Revamp/DeckSystem/Deck/DeckDefinition.gd" id="3_0rkmb"]
+[ext_resource type="Script" uid="uid://0j2jvy0gsxo7" path="res://Revamp/DeckSystem/MatchSetup/MatchSeedConfig.gd" id="3_cynwi"]
+[ext_resource type="Script" uid="uid://bpn8hs1dqauri" path="res://Revamp/DeckSystem/MatchSetup/MatchDeckModeConfig.gd" id="4_cynwi"]
+[ext_resource type="Script" uid="uid://dkg05dbx5h8bd" path="res://Revamp/DeckSystem/Deck/ClassDefinition.gd" id="4_ingbf"]
+[ext_resource type="Script" uid="uid://dutbidhjeof0i" path="res://Revamp/DeckSystem/Deck/PlayerDeckLoadout.gd" id="5_uqw47"]
+[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Cards/Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="6_76pa1"]
+[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="7_sc7fg"]
+
+[sub_resource type="Resource" id="Resource_mc56m"]
+script = ExtResource("4_ingbf")
+metadata/_custom_type_script = "uid://dkg05dbx5h8bd"
+
+[sub_resource type="Resource" id="Resource_df8sh"]
+script = ExtResource("5_uqw47")
+metadata/_custom_type_script = "uid://dutbidhjeof0i"
+
+[sub_resource type="Resource" id="Resource_vatma"]
+script = ExtResource("5_uqw47")
+metadata/_custom_type_script = "uid://dutbidhjeof0i"
+
+[sub_resource type="Resource" id="Resource_iwgew"]
+script = ExtResource("7_sc7fg")
+metadata/_custom_type_script = "uid://duslcpxrhurv8"
+
+[node name="DeckSystemRoot" type="Node2D" unique_id=93691211 node_paths=PackedStringArray("match_setup", "player_one_draw_pile", "player_two_draw_pile", "worker_source")]
+script = ExtResource("1_aossy")
+match_setup = NodePath("MatchSetup/MatchDeckSetup")
+player_one_draw_pile = NodePath("DrawPile")
+player_two_draw_pile = NodePath("DrawPile")
+worker_source = NodePath("WorkerPile")
+build_on_ready = true
+
+[node name="MatchSetup" type="Node" parent="." unique_id=1387449267]
+
+[node name="MatchDeckSetup" type="Node" parent="MatchSetup" unique_id=744234767 node_paths=PackedStringArray("mode_config", "seed_config")]
+script = ExtResource("2_6mf6k")
+mode_config = NodePath("../MatchDeckModeConfig")
+seed_config = NodePath("../MatchSeedConfig")
+classic_class = SubResource("Resource_mc56m")
+player_one_loadout = SubResource("Resource_df8sh")
+player_two_loadout = SubResource("Resource_vatma")
+
+[node name="MatchSeedConfig" type="Node" parent="MatchSetup" unique_id=2122245150]
+script = ExtResource("3_cynwi")
+
+[node name="MatchDeckModeConfig" type="Node" parent="MatchSetup" unique_id=496893894]
+script = ExtResource("4_cynwi")
+
+[node name="WorkerPile" parent="." unique_id=1079172040 instance=ExtResource("1_ornpd")]
+worker_card = SubResource("Resource_iwgew")
+
+[node name="DrawPile" parent="." unique_id=399983247 instance=ExtResource("1_hbww1")]
+
+[node name="DiscardPile" parent="." unique_id=407807974 instance=ExtResource("2_bat4r")]

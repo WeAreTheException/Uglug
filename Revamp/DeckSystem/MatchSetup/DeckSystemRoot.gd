@@ -1,0 +1,75 @@
+extends Node
+class_name DeckSystemRoot
+
+signal match_decks_built
+signal starting_hands_dealt
+
+@export var player_one_hand: PlayerHandRoot
+@export var player_two_hand: PlayerHandRoot
+@export var match_setup: MatchDeckSetup
+@export var player_one_draw_pile: DrawPileRoot
+@export var player_two_draw_pile: DrawPileRoot
+@export var worker_source: WorkerSource
+@export var build_on_ready: bool = false
+
+
+func _ready() -> void:
+	if match_setup != null:
+		match_setup.setup(self)
+	if build_on_ready:
+		build_match_decks()
+
+
+func build_match_decks() -> void:
+	if match_setup == null:
+		return
+
+	var result := match_setup.build_match_decks()
+	if result.is_empty():
+		return
+
+	player_one_draw_pile.setup_with_cards(result["p1_draw_pile"])
+	player_two_draw_pile.setup_with_cards(result["p2_draw_pile"])
+	match_decks_built.emit()
+	_deal_starting_hand(player_one_hand, result["p1_starting_hand"])
+	_deal_starting_hand(player_two_hand, result["p2_starting_hand"])
+	starting_hands_dealt.emit()
+
+
+func draw_warrior_for_player_one() -> void:
+	_draw_to_hand(player_one_draw_pile, player_one_hand)
+
+
+func draw_warrior_for_player_two() -> void:
+	_draw_to_hand(player_two_draw_pile, player_two_hand)
+
+
+func draw_worker_for_player_one() -> void:
+	_spawn_worker_to_hand(player_one_hand)
+
+
+func draw_worker_for_player_two() -> void:
+	_spawn_worker_to_hand(player_two_hand)
+
+
+func _deal_starting_hand(hand: PlayerHandRoot, cards: Array[CardData]) -> void:
+	if hand == null:
+		return
+	for card_data in cards:
+		hand.spawn_card(card_data)
+
+
+func _draw_to_hand(draw_pile: DrawPileRoot, hand: PlayerHandRoot) -> void:
+	if draw_pile == null or hand == null:
+		return
+	var card_data := draw_pile.draw_card()
+	if card_data != null:
+		hand.spawn_card(card_data)
+
+
+func _spawn_worker_to_hand(hand: PlayerHandRoot) -> void:
+	if worker_source == null or hand == null:
+		return
+	var worker := worker_source.get_worker_card()
+	if worker != null:
+		hand.spawn_card(worker)

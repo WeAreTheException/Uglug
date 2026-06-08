@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://bgcvrahr1hhjr"]
+
+[ext_resource type="Script" uid="uid://b0x7wwvre1gko" path="res://Revamp/DeckSystem/DiscardPile/DeathPile.gd" id="1_gvmy7"]
+[ext_resource type="Script" uid="uid://070jymp56enr" path="res://Revamp/DeckSystem/DiscardPile/DiscardPileRoot.gd" id="1_mc0mo"]
+[ext_resource type="Script" uid="uid://c2dbs2syck686" path="res://Revamp/DeckSystem/DiscardPile/SacrificePile.gd" id="3_k2hm1"]
+
+[node name="DiscardPile" type="Node2D" unique_id=407807974 node_paths=PackedStringArray("death_pile", "sacrifice_pile")]
+script = ExtResource("1_mc0mo")
+death_pile = NodePath("Deathpile")
+sacrifice_pile = NodePath("SacrificePile")
+
+[node name="Deathpile" type="Node" parent="." unique_id=919705903]
+script = ExtResource("1_gvmy7")
+
+[node name="SacrificePile" type="Node" parent="." unique_id=1015918828]
+script = ExtResource("3_k2hm1")
+
+[node name="DiscardPileVisuals" type="Node" parent="." unique_id=272443389]
