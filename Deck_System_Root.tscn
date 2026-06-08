@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://bpn8hs1dqauri" path="res://Revamp/DeckSystem/MatchSetup/MatchDeckModeConfig.gd" id="4_cynwi"]
 [ext_resource type="Script" uid="uid://dutbidhjeof0i" path="res://Revamp/DeckSystem/Deck/PlayerDeckLoadout.gd" id="5_uqw47"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="7_sc7fg"]
+[ext_resource type="Script" uid="uid://brab1p6vhbisa" path="res://DeckSystemDebugInput.gd" id="12_0rkmb"]
 [ext_resource type="PackedScene" uid="uid://1wr1e57v7trd" path="res://Revamp/PlayerHand/Player_Hand.tscn" id="13_ingbf"]
 
 [sub_resource type="Resource" id="Resource_iwgew"]
@@ -61,3 +62,7 @@ starting_cards = Array[ExtResource("7_sc7fg")]([])
 [node name="PlayerHandRoot2" parent="." unique_id=1046376156 instance=ExtResource("13_ingbf")]
 position = Vector2(1296, 0)
 starting_cards = Array[ExtResource("7_sc7fg")]([])
+
+[node name="Node" type="Node" parent="." unique_id=1904816924 node_paths=PackedStringArray("deck_system_root")]
+script = ExtResource("12_0rkmb")
+deck_system_root = NodePath("..")
