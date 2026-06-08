@@ -16,6 +16,7 @@ signal starting_hands_dealt
 func _ready() -> void:
 	if match_setup != null:
 		match_setup.setup(self)
+
 	if build_on_ready:
 		build_match_decks()
 
@@ -25,14 +26,26 @@ func build_match_decks() -> void:
 		return
 
 	var result := match_setup.build_match_decks()
+
 	if result.is_empty():
 		return
 
-	player_one_draw_pile.setup_with_cards(result["p1_draw_pile"])
-	player_two_draw_pile.setup_with_cards(result["p2_draw_pile"])
+	var p1_draw := _to_card_data_array(result["p1_draw_pile"])
+	var p2_draw := _to_card_data_array(result["p2_draw_pile"])
+	var p1_start := _to_card_data_array(result["p1_starting_hand"])
+	var p2_start := _to_card_data_array(result["p2_starting_hand"])
+
+	if player_one_draw_pile != null:
+		player_one_draw_pile.setup_with_cards(p1_draw)
+
+	if player_two_draw_pile != null:
+		player_two_draw_pile.setup_with_cards(p2_draw)
+
 	match_decks_built.emit()
-	_deal_starting_hand(player_one_hand, result["p1_starting_hand"])
-	_deal_starting_hand(player_two_hand, result["p2_starting_hand"])
+
+	_deal_starting_hand(player_one_hand, p1_start)
+	_deal_starting_hand(player_two_hand, p2_start)
+
 	starting_hands_dealt.emit()
 
 
@@ -55,6 +68,7 @@ func draw_worker_for_player_two() -> void:
 func _deal_starting_hand(hand: PlayerHandRoot, cards: Array[CardData]) -> void:
 	if hand == null:
 		return
+
 	for card_data in cards:
 		hand.spawn_card(card_data)
 
@@ -62,7 +76,9 @@ func _deal_starting_hand(hand: PlayerHandRoot, cards: Array[CardData]) -> void:
 func _draw_to_hand(draw_pile: DrawPileRoot, hand: PlayerHandRoot) -> void:
 	if draw_pile == null or hand == null:
 		return
+
 	var card_data := draw_pile.draw_card()
+
 	if card_data != null:
 		hand.spawn_card(card_data)
 
@@ -70,6 +86,20 @@ func _draw_to_hand(draw_pile: DrawPileRoot, hand: PlayerHandRoot) -> void:
 func _spawn_worker_to_hand(hand: PlayerHandRoot) -> void:
 	if worker_source == null or hand == null:
 		return
+
 	var worker := worker_source.get_worker_card()
+
 	if worker != null:
 		hand.spawn_card(worker)
+
+
+func _to_card_data_array(source: Array) -> Array[CardData]:
+	var result: Array[CardData] = []
+
+	for item in source:
+		var card_data := item as CardData
+
+		if card_data != null:
+			result.append(card_data)
+
+	return result

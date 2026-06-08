@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="DeckDefinition" format=3 uid="uid://tl3fw51tp3sg"]
+
+[ext_resource type="Script" uid="uid://cjj3kdqxwkg4g" path="res://Revamp/DeckSystem/Deck/DeckEntry.gd" id="1_1o8w7"]
+[ext_resource type="Resource" uid="uid://kmwnulcu4tml" path="res://Cards/CardPresets/Antler.tres" id="2_106yo"]
+[ext_resource type="Script" uid="uid://dk3gfwlv0tpwb" path="res://Revamp/DeckSystem/Deck/DeckDefinition.gd" id="2_tanvt"]
+[ext_resource type="Resource" uid="uid://di7qn14ht770q" path="res://Revamp/DeckSystem/Data/UglugClassicStartingHand.tres" id="3_106yo"]
+[ext_resource type="Resource" uid="uid://bxfxi0h5itrdu" path="res://Cards/CardPresets/Lieutenant.tres" id="3_qbfal"]
+
+[sub_resource type="Resource" id="Resource_qbfal"]
+script = ExtResource("1_1o8w7")
+card_data = ExtResource("2_106yo")
+amount = 2
+metadata/_custom_type_script = "uid://cjj3kdqxwkg4g"
+
+[sub_resource type="Resource" id="Resource_dfkt1"]
+script = ExtResource("1_1o8w7")
+card_data = ExtResource("3_qbfal")
+amount = 2
+metadata/_custom_type_script = "uid://cjj3kdqxwkg4g"
+
+[resource]
+script = ExtResource("2_tanvt")
+deck_id = "uglug_classic"
+display_name = "Uglug Classic"
+entries = Array[ExtResource("1_1o8w7")]([SubResource("Resource_qbfal"), SubResource("Resource_dfkt1")])
+starting_hand = ExtResource("3_106yo")
+metadata/_custom_type_script = "uid://dk3gfwlv0tpwb"

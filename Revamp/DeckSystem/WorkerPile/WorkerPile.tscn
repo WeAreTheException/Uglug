@@ -2,17 +2,12 @@
 
 [ext_resource type="Texture2D" uid="uid://cgs5k6p3mggyf" path="res://Art/Ants/AntSprite.png" id="1_ifauf"]
 [ext_resource type="Script" uid="uid://be3ya854p2xh" path="res://Revamp/DeckSystem/WorkerPile/WorkerSource.gd" id="2_ickr5"]
-[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Cards/Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="2_mhn3j"]
-[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="3_jxdh7"]
+[ext_resource type="Resource" uid="uid://bn1jyervrnsg" path="res://Cards/CardPresets/WorkerAnt.tres" id="2_mhn3j"]
 [ext_resource type="Script" uid="uid://cff6om1fvlyac" path="res://Revamp/DeckSystem/WorkerPile/WorkerPileView.gd" id="4_mhn3j"]
-
-[sub_resource type="Resource" id="Resource_mhn3j"]
-script = ExtResource("3_jxdh7")
-metadata/_custom_type_script = "uid://duslcpxrhurv8"
 
 [node name="WorkerPile" type="Node2D" unique_id=1079172040 node_paths=PackedStringArray("view")]
 script = ExtResource("2_ickr5")
-worker_card = SubResource("Resource_mhn3j")
+worker_card = ExtResource("2_mhn3j")
 view = NodePath("WorkerPileView")
 
 [node name="WorkerSource" type="Node" parent="." unique_id=305378732]

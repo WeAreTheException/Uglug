@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ClassDefinition" format=3 uid="uid://c7vei0jvnmga0"]
+
+[ext_resource type="Script" uid="uid://dk3gfwlv0tpwb" path="res://Revamp/DeckSystem/Deck/DeckDefinition.gd" id="1_l3job"]
+[ext_resource type="Script" uid="uid://dkg05dbx5h8bd" path="res://Revamp/DeckSystem/Deck/ClassDefinition.gd" id="2_8g2hw"]
+[ext_resource type="Resource" uid="uid://tl3fw51tp3sg" path="res://Revamp/DeckSystem/Data/Decks/UglugClassicDeck.tres" id="2_p8we1"]
+[ext_resource type="Resource" uid="uid://b57a4bhi6bmq4" path="res://Revamp/DeckSystem/Data/Decks/UglugClassicPureRandomSplit.tres" id="4_ndpdt"]
+
+[resource]
+script = ExtResource("2_8g2hw")
+class_id = "uglug_classic"
+default_deck = ExtResource("2_p8we1")
+split_rules = ExtResource("4_ndpdt")
+metadata/_custom_type_script = "uid://dkg05dbx5h8bd"

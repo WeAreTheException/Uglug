@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="StartingHandRecipe" format=3 uid="uid://di7qn14ht770q"]
+
+[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="1_kfc0r"]
+[ext_resource type="Script" uid="uid://ckysxojcj6pel" path="res://Revamp/DeckSystem/StartingHand/StartingHandRecipe.gd" id="2_ufnhu"]
+
+[resource]
+script = ExtResource("2_ufnhu")
+metadata/_custom_type_script = "uid://ckysxojcj6pel"

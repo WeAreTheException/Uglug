@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="DeckSplitRules" format=3 uid="uid://b57a4bhi6bmq4"]
+
+[ext_resource type="Script" uid="uid://2wh2bscostxd" path="res://Revamp/DeckSystem/Deck/DeckSplitRules.gd" id="1_54r6u"]
+
+[resource]
+script = ExtResource("1_54r6u")
+metadata/_custom_type_script = "uid://2wh2bscostxd"
