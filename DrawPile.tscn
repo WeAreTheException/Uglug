@@ -6,6 +6,9 @@
 [ext_resource type="Script" uid="uid://ci40hpt06shx5" path="res://Revamp/DeckSystem/DrawPile/DrawPileInstance.gd" id="2_tgpo1"]
 [ext_resource type="Script" uid="uid://dh26pvg5wdy5n" path="res://Revamp/DeckSystem/DrawPile/DrawPileCounter.gd" id="3_tgpo1"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0cqek"]
+size = Vector2(144, 216)
+
 [node name="DrawPile" type="Node2D" unique_id=399983247 node_paths=PackedStringArray("instance", "view", "counter")]
 script = ExtResource("1_isg76")
 instance = NodePath("DrawPileInstance")
@@ -30,10 +33,16 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -600.0
-offset_top = -930.0
-offset_right = 600.0
-offset_bottom = 930.0
+offset_left = -72.0
+offset_top = -108.0
+offset_right = 72.0
+offset_bottom = 108.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("1_6wpjd")
+expand_mode = 1
+
+[node name="DrawPileInput" type="Area2D" parent="." unique_id=1468180507]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DrawPileInput" unique_id=1678849248]
+shape = SubResource("RectangleShape2D_0cqek")
