@@ -28,11 +28,4 @@ func _refresh_slot(slot: Slot) -> void:
 	if card.mutations == null:
 		return
 
-	for runtime in card.mutations.get_active_runtimes():
-		if runtime == null:
-			continue
-
-		if runtime.mutation == null:
-			continue
-
-		runtime.mutation.refresh_board_effect(runtime)
+	card.mutations.refresh_board_effects()
