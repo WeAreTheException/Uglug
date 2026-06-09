@@ -5,6 +5,8 @@
 [ext_resource type="PackedScene" uid="uid://1wr1e57v7trd" path="res://Revamp/PlayerHand/Player_Hand.tscn" id="2_mi1n2"]
 [ext_resource type="Resource" uid="uid://bn1jyervrnsg" path="res://Cards/CardPresets/WorkerAnt.tres" id="3_20kdy"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="3_d5ogx"]
+[ext_resource type="Resource" uid="uid://mnht3u87f5og" path="res://Cards/CardPresets/Pregnant.tres" id="3_oekep"]
+[ext_resource type="Resource" uid="uid://dbgpqc3vdl8t" path="res://Cards/CardPresets/Duriant.tres" id="4_8ve8k"]
 [ext_resource type="Resource" uid="uid://bxrcjm4w1dy82" path="res://Cards/CardPresets/Anthrax.tres" id="4_cc2no"]
 [ext_resource type="Resource" uid="uid://ci7yvhc8pfst6" path="res://Cards/CardPresets/QueenAnt.tres" id="5_1j514"]
 [ext_resource type="Resource" uid="uid://c64jbnvj0pbwk" path="res://Cards/CardPresets/AntHill.tres" id="6_at0h8"]
@@ -23,14 +25,16 @@
 [ext_resource type="Script" uid="uid://dp6gve6tfarqs" path="res://Revamp/Phases/BoardPhaseApplier.gd" id="17_b7h4g"]
 [ext_resource type="Script" uid="uid://c18hwqs033t7x" path="res://Revamp/Placement/PlacementScripts/PlacementEventEmitter.gd" id="18_oekep"]
 [ext_resource type="Script" uid="uid://cmcxm3mp7ljvv" path="res://Revamp/Placement/PlacementScripts/PlacementCancel.gd" id="19_n5v11"]
+[ext_resource type="Script" uid="uid://c8kehpt5chfx3" path="res://Revamp/PlayerHand/CardEffectSpawnRouter.gd" id="26_n5v11"]
 
 [node name="Mao" type="Node2D" unique_id=550121538]
 
 [node name="Slots" parent="." unique_id=1318716624 instance=ExtResource("1_yq750")]
 position = Vector2(120, 120)
 player_slot_1_card = ExtResource("2_5sdof")
+player_slot_2_card = ExtResource("3_oekep")
 player_slot_3_card = ExtResource("3_20kdy")
-player_slot_4_card = ExtResource("3_20kdy")
+player_slot_4_card = ExtResource("4_8ve8k")
 opponent_slot_1_card = ExtResource("7_n5v11")
 opponent_slot_2_card = ExtResource("3_20kdy")
 opponent_slot_3_card = ExtResource("3_20kdy")
@@ -107,3 +111,8 @@ script = ExtResource("19_n5v11")
 script = ExtResource("17_b7h4g")
 phase_manager = NodePath("../PhaseManager")
 slots_root = NodePath("../Slots")
+
+[node name="CardEffectSpawnrouter" type="Node" parent="." unique_id=1854042398 node_paths=PackedStringArray("player_hand", "card_effect_spawn_router")]
+script = ExtResource("26_n5v11")
+player_hand = NodePath("../PlayerHandRoot")
+card_effect_spawn_router = NodePath(".")

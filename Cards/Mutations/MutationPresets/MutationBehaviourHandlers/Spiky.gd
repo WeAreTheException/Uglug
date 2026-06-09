@@ -7,12 +7,37 @@ class_name Spiky
 func on_damaged(
 	card: CardRoot,
 	attacker: CardRoot,
-	_damage: int
+	damage: int
+) -> void:
+	await _counter_attack(card, attacker, damage)
+
+
+func on_damaged_context(_runtime: MutationRuntime, context: DamageContext) -> void:
+	if context == null:
+		return
+
+	await _counter_attack(
+		context.target_card,
+		context.source_card,
+		context.actual_damage
+	)
+
+
+func _counter_attack(
+	card: CardRoot,
+	attacker: CardRoot,
+	damage: int
 ) -> void:
 	if card == null:
 		return
 
 	if attacker == null:
+		return
+
+	if damage <= 0:
+		return
+
+	if counter_damage <= 0:
 		return
 
 	if attacker.hurt == null:
