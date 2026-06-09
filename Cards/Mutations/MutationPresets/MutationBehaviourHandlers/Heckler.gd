@@ -39,17 +39,30 @@ func refresh_board_effect(runtime: MutationRuntime) -> void:
 	if opposing_card.stats == null:
 		return
 
-	var modifier := StatModifier.new()
-	modifier.stat_name = "attack"
-	modifier.amount = attack_debuff
-	modifier.source = runtime
-	modifier.is_active = true
+	_apply_debuff(runtime, opposing_card)
 
-	opposing_card.stats.add_modifier(modifier)
+
+func refresh_board_context(runtime: MutationRuntime) -> void:
+	refresh_board_effect(runtime)
 
 
 func on_left_board(runtime: MutationRuntime) -> void:
 	_remove_debuff(runtime)
+
+
+func on_left_board_context(runtime: MutationRuntime) -> void:
+	_remove_debuff(runtime)
+
+
+func _apply_debuff(runtime: MutationRuntime, target_card: CardRoot) -> void:
+	var modifier := StatModifier.new()
+	modifier.stat_name = "attack"
+	modifier.amount = attack_debuff
+	modifier.duration_type = StatModifier.DurationType.AURA
+	modifier.source = runtime
+	modifier.is_active = true
+
+	target_card.stats.add_modifier(modifier)
 
 
 func _remove_debuff(runtime: MutationRuntime) -> void:
