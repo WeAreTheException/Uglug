@@ -3,169 +3,95 @@ class_name CardRoot
 
 signal hovered(card: CardRoot)
 signal unhovered(card: CardRoot)
+signal placed(card: CardRoot, slot: Slot)
+signal left_board(card: CardRoot)
+signal attack_started(context: AttackContext)
+signal attack_hit(context: AttackContext)
+signal attack_finished(context: AttackContext)
+signal damaged(context: DamageContext)
+signal died(context: DeathContext)
 
 @export var test_data: CardData
-
-@export var input: CardInput
-@export var board_presence: BoardPresence
-@export var stats: CardStats
-@export var mutations: CardMutations
-@export var card_visuals_root: CardVisualsRoot
-@export var card_feedback: CardFeedback
-
-@export var attack: Attack
-@export var hurt: Hurt
-@export var die: Die
-@export var sacrifice: Sacrifice
+@export var visuals_root: CardVisualsRoot
+@export var functionality_root: CardFunctionalityRoot
+@export var feedback_root: CardFeedbackRoot
 
 var slots_root: SlotsRoot = null
 var card_data: CardData = null
 var card_name: String = ""
 
-
 func _ready() -> void:
-	_connect_input()
-	setup_actions()
-
+	_setup_roots()
 	if test_data != null:
 		setup(test_data)
-
 
 func setup(data: CardData) -> void:
 	if data == null:
 		return
-
 	card_data = data
 	card_name = data.name
-
-	if stats != null:
-		stats.setup_from_data(data)
-
-	if mutations != null:
-		mutations.setup_from_data(data, self)
-
-	if card_visuals_root != null:
-		card_visuals_root.setup_from_card(self)
-
+	if functionality_root != null:
+		functionality_root.setup_from_card(self)
+		functionality_root.setup_from_data(data)
+	if visuals_root != null:
+		visuals_root.setup_from_card(self)
+	if feedback_root != null:
+		feedback_root.setup_from_card(self)
 
 func setup_board_context(new_slots_root: SlotsRoot) -> void:
 	slots_root = new_slots_root
-	setup_actions()
+	if functionality_root != null:
+		functionality_root.setup_board_context(new_slots_root)
 
+func enter_slot(slot: Slot) -> bool:
+	if functionality_root == null:
+		return false
+	var success := functionality_root.enter_slot(slot)
+	if success:
+		placed.emit(self, slot)
+		if feedback_root != null:
+			feedback_root.play_placed()
+	return success
 
-func setup_actions() -> void:
-	if attack != null:
-		attack.setup(self, slots_root)
+func leave_slot(reason: String = CardLeaveReason.NONE) -> void:
+	if functionality_root != null:
+		functionality_root.leave_slot(reason)
+	left_board.emit(self)
 
-	if hurt != null:
-		hurt.setup(self)
+func perform_attack() -> void:
+	if functionality_root != null:
+		await functionality_root.perform_attack()
 
-	if die != null:
-		die.setup(self)
+func receive_damage(context: DamageContext) -> int:
+	if functionality_root == null:
+		return 0
+	var amount: int = await functionality_root.receive_damage(context)
+	if context != null and amount > 0:
+		damaged.emit(context)
+	return amount
 
-	if sacrifice != null:
-		sacrifice.setup(self)
-
-
-func set_hover_focused(value: bool) -> void:
-	if card_feedback != null:
-		card_feedback.set_hover_focused(value)
-
-
-func set_drag_feedback(value: bool) -> void:
-	if card_feedback != null:
-		card_feedback.set_drag_feedback(value)
-
-
-func set_prime_select_feedback(value: bool) -> void:
-	if card_feedback != null:
-		card_feedback.set_prime_select_feedback(value)
-
-
-func clear_hand_feedback() -> void:
-	set_hover_focused(false)
-	set_drag_feedback(false)
-	set_prime_select_feedback(false)
-
-
-func start_sacrifice_anticipation() -> void:
-	if sacrifice != null:
-		sacrifice.start_anticipation()
-
-
-func stop_sacrifice_anticipation() -> void:
-	if sacrifice != null:
-		sacrifice.stop_anticipation()
-
-
-func set_sacrifice_selected(value: bool) -> void:
-	if sacrifice != null:
-		sacrifice.set_marked_for_sacrifice(value)
-
-
-func set_pending_sacrifice(value: bool) -> void:
-	if sacrifice != null:
-		sacrifice.set_pending_sacrifice(value)
-
-
-func play_committed_sacrifice() -> void:
-	if sacrifice != null:
-		sacrifice.play_committed_sacrifice()
-
-
-func reset_sacrifice_feedback() -> void:
-	if sacrifice != null:
-		sacrifice.reset_sacrifice_state()
-
-
-func get_sacrifice_worth() -> int:
-	if stats != null:
-		return stats.get_worth()
-
-	if card_data != null:
-		return card_data.worth
-
-	return 1
-
-
-func get_sacrifice_cost() -> int:
-	if stats != null:
-		return stats.get_cost()
-
-	if card_data != null:
-		return card_data.cost
-
-	return 0
-
+func die(context: DeathContext = null) -> void:
+	if functionality_root != null:
+		await functionality_root.die(context)
+	if context != null:
+		died.emit(context)
 
 func is_on_board() -> bool:
-	if board_presence == null:
-		return false
-
-	return board_presence.is_on_board()
-
+	return functionality_root != null and functionality_root.is_on_board()
 
 func get_current_slot() -> Slot:
-	if board_presence == null:
-		return null
+	return null if functionality_root == null else functionality_root.get_current_slot()
 
-	return board_presence.current_slot
+func get_sacrifice_worth() -> int:
+	return 1 if functionality_root == null else functionality_root.get_worth()
 
+func get_sacrifice_cost() -> int:
+	return 0 if functionality_root == null else functionality_root.get_cost()
 
-func _connect_input() -> void:
-	if input == null:
-		return
-
-	if not input.hovered.is_connected(_on_input_hovered):
-		input.hovered.connect(_on_input_hovered)
-
-	if not input.unhovered.is_connected(_on_input_unhovered):
-		input.unhovered.connect(_on_input_unhovered)
-
-
-func _on_input_hovered() -> void:
-	hovered.emit(self)
-
-
-func _on_input_unhovered() -> void:
-	unhovered.emit(self)
+func _setup_roots() -> void:
+	if functionality_root != null:
+		functionality_root.setup_from_card(self)
+	if visuals_root != null:
+		visuals_root.setup_from_card(self)
+	if feedback_root != null:
+		feedback_root.setup_from_card(self)

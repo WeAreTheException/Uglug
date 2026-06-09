@@ -1,0 +1,122 @@
+[gd_scene format=3 uid="uid://cqmtvyyqr67q2"]
+
+[ext_resource type="Script" uid="uid://c317k3ig4aoxg" path="res://Revamp/Card/CardFeedback/ScaleFeedback.gd" id="2_hgin3"]
+[ext_resource type="Script" uid="uid://dky1ptblaym2b" path="res://Revamp/Card/CardFeedback/PositionFeedback.gd" id="3_32pb0"]
+[ext_resource type="Script" uid="uid://cf4ka1vcw1057" path="res://Revamp/Card/CardFeedback/ShadowFeedback.gd" id="4_gc0va"]
+[ext_resource type="Script" uid="uid://nff0halionfg" path="res://Revamp/card_revamp_new_scripts_only/Feedback/ShakeFeedback.gd" id="5_2452h"]
+[ext_resource type="Script" uid="uid://dw3br1bc5uyjh" path="res://Revamp/card_revamp_new_scripts_only/Feedback/FlashFeedback.gd" id="6_ha78r"]
+[ext_resource type="Script" uid="uid://bghqo1ucqxqb2" path="res://Revamp/card_revamp_new_scripts_only/Feedback/AudioFeedback.gd" id="7_14tls"]
+[ext_resource type="Script" uid="uid://ci1jrkjugh1lv" path="res://Revamp/Card/CardFeedback/CardHoverFeedback.gd" id="8_k2pnx"]
+[ext_resource type="Script" uid="uid://7pm1mj2m7jwg" path="res://Revamp/Card/CardFeedback/CardSelectFeedback.gd" id="9_6f3fl"]
+[ext_resource type="Script" uid="uid://bfgn6k52jsbio" path="res://Revamp/card_revamp_new_scripts_only/Feedback/AttackFeedback.gd" id="10_j7m7g"]
+[ext_resource type="Script" uid="uid://dq27uix8wpeks" path="res://Revamp/card_revamp_new_scripts_only/Feedback/HurtFeedback.gd" id="11_rwff6"]
+[ext_resource type="Script" uid="uid://ce7ed6ho3ba02" path="res://Revamp/card_revamp_new_scripts_only/Feedback/DeathFeedback.gd" id="12_6f3fl"]
+[ext_resource type="Script" uid="uid://11wovnbglprd" path="res://Revamp/card_revamp_new_scripts_only/Feedback/SacrificeFeedback.gd" id="13_j7m7g"]
+
+[sub_resource type="GDScript" id="GDScript_6f3fl"]
+script/source = "extends Node
+class_name CardFeedbackRoot
+
+@export var scale_feedback: ScaleFeedback
+@export var position_feedback: PositionFeedback
+@export var shadow_feedback: ShadowFeedback
+@export var shake_feedback: ShakeFeedback
+@export var flash_feedback: FlashFeedback
+@export var audio_feedback: AudioFeedback
+@export var hover_feedback: CardHoverFeedback
+@export var select_feedback: CardSelectFeedback
+@export var attack_feedback: AttackFeedback
+@export var hurt_feedback: HurtFeedback
+@export var death_feedback: DeathFeedback
+@export var sacrifice_feedback: SacrificeFeedback
+
+var card: CardRoot = null
+
+func setup_from_card(source_card: CardRoot) -> void:
+	card = source_card
+	_setup_children()
+
+func play_hover(value: bool) -> void:
+	if hover_feedback != null:
+		hover_feedback.play(value)
+
+func play_select(value: bool) -> void:
+	if select_feedback != null:
+		select_feedback.play(value)
+
+func play_placed() -> void:
+	if position_feedback != null:
+		position_feedback.reset()
+
+func play_attack(context: AttackContext) -> void:
+	if attack_feedback != null:
+		await attack_feedback.play(context)
+
+func play_hurt(context: DamageContext) -> void:
+	if hurt_feedback != null:
+		await hurt_feedback.play(context)
+
+func play_death(context: DeathContext) -> void:
+	if death_feedback != null:
+		await death_feedback.play(context)
+
+func play_sacrifice_idle() -> void:
+	if sacrifice_feedback != null:
+		sacrifice_feedback.play_idle()
+
+func play_sacrifice_selected() -> void:
+	if sacrifice_feedback != null:
+		sacrifice_feedback.play_selected()
+
+func play_sacrifice_committed() -> void:
+	if sacrifice_feedback != null:
+		sacrifice_feedback.play_committed()
+
+func stop_sacrifice_feedback() -> void:
+	if sacrifice_feedback != null:
+		sacrifice_feedback.stop()
+
+func _setup_children() -> void:
+	for child in get_children():
+		if child.has_method(\"setup_feedback_root\"):
+			child.setup_feedback_root(self)
+"
+
+[node name="CardFeedback" type="Node2D" unique_id=149069413]
+script = SubResource("GDScript_6f3fl")
+
+[node name="ScaleFeedback" type="Node" parent="." unique_id=683347919]
+script = ExtResource("2_hgin3")
+
+[node name="PositionFeedback" type="Node" parent="." unique_id=1963387271]
+script = ExtResource("3_32pb0")
+
+[node name="ShadowFeedback" type="Node" parent="." unique_id=1280503201]
+script = ExtResource("4_gc0va")
+
+[node name="ShakeFeedback" type="Node" parent="." unique_id=1268266656]
+script = ExtResource("5_2452h")
+
+[node name="FlashFeedback" type="Node" parent="." unique_id=1726519134]
+script = ExtResource("6_ha78r")
+
+[node name="AudioFeedback" type="Node" parent="." unique_id=1343186988]
+script = ExtResource("7_14tls")
+
+[node name="HoverFeedback" type="Node" parent="." unique_id=1449793527]
+script = ExtResource("8_k2pnx")
+
+[node name="SelectFeedback" type="Node" parent="." unique_id=494812558]
+script = ExtResource("9_6f3fl")
+
+[node name="AttackFeedback" type="Node" parent="." unique_id=1220690801]
+script = ExtResource("10_j7m7g")
+
+[node name="HurtFeedback" type="Node" parent="." unique_id=1653667798]
+script = ExtResource("11_rwff6")
+
+[node name="DeathFeedback" type="Node" parent="." unique_id=1475497888]
+script = ExtResource("12_6f3fl")
+
+[node name="SacrificeFeedback" type="Node" parent="." unique_id=1985845775]
+script = ExtResource("13_j7m7g")

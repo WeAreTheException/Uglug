@@ -5,156 +5,67 @@ signal attack_started(context: AttackContext)
 signal attack_hit(context: AttackContext)
 signal attack_finished(context: AttackContext)
 
-@export var animation_runner: AttackAnimationRunner
 @export var target_resolver: AttackTargetResolver
 @export var attack_sequencer: AttackSequencer
 @export var impact_handler: AttackImpactHandler
 
-@export var enable_debug_key: bool = true
-@export var debug_key: Key = KEY_A
-
 var card: CardRoot = null
 var slots_root: SlotsRoot = null
-
-var is_hovered := false
 var is_attacking := false
-
-var active_context: AttackContext = null
-var impact_handled := false
-
 
 func setup(source_card: CardRoot, source_slots_root: SlotsRoot) -> void:
 	card = source_card
 	slots_root = source_slots_root
-
-	if card == null:
-		return
-
-	if animation_runner != null:
-		if not animation_runner.impact_reached.is_connected(_on_impact_reached):
-			animation_runner.impact_reached.connect(_on_impact_reached)
-
 	if impact_handler != null:
+		impact_handler.setup(card)
 		if not impact_handler.attack_hit.is_connected(_on_attack_hit):
 			impact_handler.attack_hit.connect(_on_attack_hit)
 
-	if not card.hovered.is_connected(_on_card_hovered):
-		card.hovered.connect(_on_card_hovered)
-
-	if not card.unhovered.is_connected(_on_card_unhovered):
-		card.unhovered.connect(_on_card_unhovered)
-
-
-func _input(event: InputEvent) -> void:
-	if not enable_debug_key:
-		return
-
-	if not is_hovered:
-		return
-
-	if event is InputEventKey and event.pressed and not event.echo:
-		if event.keycode == debug_key:
-			perform_attack()
-
-
 func perform_attack() -> void:
-	if is_attacking:
+	if not _can_attack():
 		return
-
-	if card == null:
-		return
-
-	if slots_root == null:
-		print("attack blocked: slots_root missing")
-		return
-
-	if attack_sequencer == null:
-		print("attack blocked: attack_sequencer missing")
-		return
-
-	if target_resolver == null:
-		print("attack blocked: target_resolver missing")
-		return
-
-	if animation_runner == null:
-		print("attack blocked: animation_runner missing")
-		return
-
-	if impact_handler == null:
-		print("attack blocked: impact_handler missing")
-		return
-
 	var attacker_slot := card.get_current_slot()
-
-	if attacker_slot == null:
-		print("attack blocked: attacker slot missing")
+	var steps := attack_sequencer.build_steps(card)
+	if steps.is_empty():
 		return
-
-	var sequence := attack_sequencer.build_sequence(card)
-
-	if sequence.is_empty():
-		return
-
 	is_attacking = true
-
-	for attack_event in sequence:
-		var context := AttackContext.new()
-
-		context.attacker_card = card
-		context.attacker_slot = attacker_slot
-		context.attacker_owner = slots_root.get_owner_of_slot(attacker_slot)
-		context.attack_animation_layer = slots_root.attack_animation_layer
-
-		context.attack_event = attack_event
-		context.origin_slot = attacker_slot
-
+	for step in steps:
+		if not is_instance_valid(card):
+			break
+		var context := _make_context(attacker_slot, step)
 		target_resolver.resolve_target(slots_root, context)
-
 		if context.target_slot == null:
 			continue
-
 		context.target_owner = slots_root.get_owner_of_slot(context.target_slot)
-
-		active_context = context
-		impact_handled = false
-
 		attack_started.emit(context)
-
-		await animation_runner.play_attack(context)
-
-		if not impact_handled:
-			await _handle_impact(context)
-
+		card.attack_started.emit(context)
+		if card.feedback_root != null:
+			await card.feedback_root.play_attack(context)
+		await impact_handler.handle_impact(context)
 		attack_finished.emit(context)
-
-		active_context = null
-		impact_handled = false
-
+		card.attack_finished.emit(context)
 	is_attacking = false
 
+func _can_attack() -> bool:
+	if is_attacking or card == null or slots_root == null:
+		return false
+	if attack_sequencer == null or target_resolver == null:
+		return false
+	if impact_handler == null:
+		return false
+	return card.get_current_slot() != null
 
-func _on_impact_reached() -> void:
-	if active_context == null:
-		return
-
-	if impact_handled:
-		return
-
-	impact_handled = true
-	_handle_impact(active_context)
-
-
-func _handle_impact(context: AttackContext) -> void:
-	await impact_handler.handle_impact(context, card)
-
+func _make_context(slot: Slot, step: AttackStep) -> AttackContext:
+	var context := AttackContext.new()
+	context.attacker_card = card
+	context.attacker_slot = slot
+	context.attacker_owner = slots_root.get_owner_of_slot(slot)
+	context.attack_animation_layer = slots_root.attack_animation_layer
+	context.origin_slot = slot
+	context.setup_step(step)
+	return context
 
 func _on_attack_hit(context: AttackContext) -> void:
 	attack_hit.emit(context)
-
-
-func _on_card_hovered(_card: CardRoot) -> void:
-	is_hovered = true
-
-
-func _on_card_unhovered(_card: CardRoot) -> void:
-	is_hovered = false
+	if card != null:
+		card.attack_hit.emit(context)

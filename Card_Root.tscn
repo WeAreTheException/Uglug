@@ -1,3 +1,18 @@
 [gd_scene format=3 uid="uid://cj87mvabptf0w"]
 
-[node name="CardRoot" type="Node2D" unique_id=1227694999]
+[ext_resource type="PackedScene" uid="uid://cqmtvyyqr67q2" path="res://Revamp/Card_Feedback.tscn" id="1_7hbv4"]
+[ext_resource type="Script" uid="uid://ctlcy38qx1jj2" path="res://Revamp/Card/CardScripts/CardRoot.gd" id="1_mrs1q"]
+[ext_resource type="PackedScene" uid="uid://idmmgqiuh65v" path="res://Revamp/Card_Functionality.tscn" id="2_l1tc1"]
+[ext_resource type="PackedScene" uid="uid://b8f0lryqwcw7j" path="res://Revamp/CardVisuals/CardVisuals.tscn" id="3_mrs1q"]
+
+[node name="CardRoot" type="Node2D" unique_id=1227694999 node_paths=PackedStringArray("visuals_root", "functionality_root", "feedback_root")]
+script = ExtResource("1_mrs1q")
+visuals_root = NodePath("CardVisualsRoot")
+functionality_root = NodePath("CardFunctionalityRoot")
+feedback_root = NodePath("CardFeedback")
+
+[node name="CardFeedback" parent="." unique_id=149069413 instance=ExtResource("1_7hbv4")]
+
+[node name="CardFunctionalityRoot" parent="." unique_id=722902130 instance=ExtResource("2_l1tc1")]
+
+[node name="CardVisualsRoot" parent="." unique_id=1593445486 instance=ExtResource("3_mrs1q")]

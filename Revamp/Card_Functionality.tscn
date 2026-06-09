@@ -1,11 +1,30 @@
 [gd_scene format=3 uid="uid://idmmgqiuh65v"]
 
+[ext_resource type="Script" uid="uid://chelabnhiina8" path="res://Revamp/card_revamp_new_scripts_only/Functionality/CardFunctionalityRoot.gd" id="1_nmhjy"]
 [ext_resource type="Script" uid="uid://xlxu58fop1wg" path="res://Revamp/Card/CardScripts/CardInput.gd" id="1_q82mk"]
+[ext_resource type="Script" uid="uid://unthb61sw2ld" path="res://Revamp/card_revamp_new_scripts_only/Functionality/CardState.gd" id="3_1j7w2"]
+[ext_resource type="Script" uid="uid://3tw3j0h4rvc3" path="res://Revamp/Card/CardScripts/BoardPresence.gd" id="4_khfdd"]
+[ext_resource type="Script" uid="uid://dpkom03l84r4y" path="res://Revamp/Card/CardScripts/CardStats.gd" id="5_nrtgt"]
+[ext_resource type="Script" uid="uid://cbbim8d3qcxf6" path="res://Revamp/Card/CardScripts/CardMutations.gd" id="6_d5kfa"]
+[ext_resource type="Script" uid="uid://dgdnj6214hjto" path="res://Revamp/Card/CardActions/Attack/Attack.gd" id="7_s7gl5"]
+[ext_resource type="Script" uid="uid://behvtd6jpqaj" path="res://Revamp/Card/CardActions/Hurt.gd" id="8_mjwg4"]
+[ext_resource type="Script" uid="uid://bsuj1ix6qd1ns" path="res://Revamp/Card/Sacrifice.gd" id="9_d5kfa"]
+[ext_resource type="Script" uid="uid://i1xyctx2i65u" path="res://Revamp/Card/CardActions/Die.gd" id="10_s7gl5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bw0qm"]
 size = Vector2(144, 216)
 
-[node name="CardFunctionalityRoot" type="Node2D" unique_id=722902130]
+[node name="CardFunctionalityRoot" type="Node2D" unique_id=722902130 node_paths=PackedStringArray("input", "state", "board_presence", "stats", "mutations", "attack", "hurt", "die_action", "sacrifice")]
+script = ExtResource("1_nmhjy")
+input = NodePath("CardInput")
+state = NodePath("CardState")
+board_presence = NodePath("BoardPrescene")
+stats = NodePath("CardStats")
+mutations = NodePath("CardMutations")
+attack = NodePath("Attack")
+hurt = NodePath("Hurt")
+die_action = NodePath("Die")
+sacrifice = NodePath("Sacrifice")
 
 [node name="CardInput" type="Area2D" parent="." unique_id=1713443222]
 script = ExtResource("1_q82mk")
@@ -14,17 +33,25 @@ script = ExtResource("1_q82mk")
 shape = SubResource("RectangleShape2D_bw0qm")
 
 [node name="CardState" type="Node" parent="." unique_id=2136314001]
+script = ExtResource("3_1j7w2")
 
 [node name="BoardPrescene" type="Node" parent="." unique_id=1152666458]
+script = ExtResource("4_khfdd")
 
 [node name="CardStats" type="Node" parent="." unique_id=1549893915]
+script = ExtResource("5_nrtgt")
 
 [node name="CardMutations" type="Node" parent="." unique_id=1452086436]
+script = ExtResource("6_d5kfa")
 
 [node name="Attack" type="Node" parent="." unique_id=836282579]
+script = ExtResource("7_s7gl5")
 
 [node name="Hurt" type="Node" parent="." unique_id=2081858970]
+script = ExtResource("8_mjwg4")
 
 [node name="Sacrifice" type="Node" parent="." unique_id=186456843]
+script = ExtResource("9_d5kfa")
 
 [node name="Die" type="Node" parent="." unique_id=655289853]
+script = ExtResource("10_s7gl5")

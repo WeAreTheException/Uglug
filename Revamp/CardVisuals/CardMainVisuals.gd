@@ -1,46 +1,25 @@
-extends Node2D
+extends Node
 class_name CardMainVisuals
 
 @export var ant_sprite: Sprite2D
+@export var background_sprite: Sprite2D
+@export var name_label: Label
 
-@export var card_image: Sprite2D
-@export var card_shadow: Sprite2D
-@export var card_border: Sprite2D
-@export var card_fog: Sprite2D
-
+func setup_from_data(data: CardData) -> void:
+	if data == null:
+		return
+	set_ant_texture(data.ant_texture)
+	set_background_texture(data.background_texture)
+	set_card_name(data.name)
 
 func set_ant_texture(texture: Texture2D) -> void:
-	if ant_sprite == null:
-		return
-
-	if texture != null:
+	if ant_sprite != null:
 		ant_sprite.texture = texture
 
-
 func set_background_texture(texture: Texture2D) -> void:
-	if card_image == null:
-		return
+	if background_sprite != null:
+		background_sprite.texture = texture
 
-	if texture != null:
-		card_image.texture = texture
-
-
-func set_shadow_texture(texture: Texture2D) -> void:
-	if card_shadow == null:
-		return
-
-	card_shadow.texture = texture
-	card_shadow.visible = texture != null
-
-
-func set_border_texture(texture: Texture2D) -> void:
-	if card_border == null:
-		return
-
-	card_border.texture = texture
-	card_border.visible = texture != null
-
-
-func set_fog_visible(value: bool) -> void:
-	if card_fog != null:
-		card_fog.visible = value
+func set_card_name(value: String) -> void:
+	if name_label != null:
+		name_label.text = value

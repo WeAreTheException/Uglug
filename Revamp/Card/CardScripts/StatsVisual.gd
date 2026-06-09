@@ -1,81 +1,64 @@
-extends Node2D
+extends Node
 class_name StatsVisuals
 
-@export var attack: Sprite2D
-@export var health: Sprite2D
-@export var cost: Array[Sprite2D]
-@export var name_label: RichTextLabel
-
-@export var attack_textures: Array[Texture2D]
-@export var health_textures: Array[Texture2D]
+@export var attack_label: Label
+@export var health_label: Label
+@export var cost_label: Label
+@export var worth_label: Label
+@export var name_label: Label
 
 var stats: CardStats = null
 
-
 func setup_from_stats(source_stats: CardStats, card_name: String) -> void:
-	if source_stats == null:
-		return
-
+	_disconnect_stats()
 	stats = source_stats
-
-	update_name(card_name)
-
-	if not stats.attack_changed.is_connected(update_attack):
-		stats.attack_changed.connect(update_attack)
-
-	if not stats.health_changed.is_connected(update_health):
-		stats.health_changed.connect(update_health)
-
-	if not stats.cost_changed.is_connected(update_cost):
-		stats.cost_changed.connect(update_cost)
-
-	update_attack(stats.get_attack())
-	update_health(stats.get_health())
-	update_cost(stats.get_cost())
-
-
-func update_name(value: String) -> void:
-	if name_label == null:
+	if name_label != null:
+		name_label.text = card_name
+	if stats == null:
 		return
+	_connect_stats()
+	_refresh_all()
 
-	name_label.text = value
+func _connect_stats() -> void:
+	if not stats.attack_changed.is_connected(_on_attack_changed):
+		stats.attack_changed.connect(_on_attack_changed)
+	if not stats.health_changed.is_connected(_on_health_changed):
+		stats.health_changed.connect(_on_health_changed)
+	if not stats.cost_changed.is_connected(_on_cost_changed):
+		stats.cost_changed.connect(_on_cost_changed)
+	if not stats.worth_changed.is_connected(_on_worth_changed):
+		stats.worth_changed.connect(_on_worth_changed)
 
-
-func update_attack(value: int) -> void:
-	if attack == null:
+func _disconnect_stats() -> void:
+	if stats == null:
 		return
+	if stats.attack_changed.is_connected(_on_attack_changed):
+		stats.attack_changed.disconnect(_on_attack_changed)
+	if stats.health_changed.is_connected(_on_health_changed):
+		stats.health_changed.disconnect(_on_health_changed)
+	if stats.cost_changed.is_connected(_on_cost_changed):
+		stats.cost_changed.disconnect(_on_cost_changed)
+	if stats.worth_changed.is_connected(_on_worth_changed):
+		stats.worth_changed.disconnect(_on_worth_changed)
 
-	if value <= 0:
-		attack.texture = null
-		return
+func _refresh_all() -> void:
+	_on_attack_changed(stats.get_attack())
+	_on_health_changed(stats.get_health())
+	_on_cost_changed(stats.get_cost())
+	_on_worth_changed(stats.get_worth())
 
-	var index := value - 1
+func _on_attack_changed(value: int) -> void:
+	if attack_label != null:
+		attack_label.text = str(value)
 
-	if index >= 0 and index < attack_textures.size():
-		attack.texture = attack_textures[index]
-	else:
-		attack.texture = null
+func _on_health_changed(value: int) -> void:
+	if health_label != null:
+		health_label.text = str(value)
 
+func _on_cost_changed(value: int) -> void:
+	if cost_label != null:
+		cost_label.text = str(value)
 
-func update_health(value: int) -> void:
-	if health == null:
-		return
-
-	if value <= 0:
-		health.texture = null
-		return
-
-	var index := value - 1
-
-	if index >= 0 and index < health_textures.size():
-		health.texture = health_textures[index]
-	else:
-		health.texture = null
-
-
-func update_cost(value: int) -> void:
-	for i in range(cost.size()):
-		if cost[i] == null:
-			continue
-
-		cost[i].visible = i < value
+func _on_worth_changed(value: int) -> void:
+	if worth_label != null:
+		worth_label.text = str(value)
