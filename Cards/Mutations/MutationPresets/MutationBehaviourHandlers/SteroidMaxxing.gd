@@ -27,16 +27,21 @@ func refresh_board_effect(runtime: MutationRuntime) -> void:
 		return
 
 	var owner := source_card.slots_root.get_owner_of_slot(source_slot)
-	var ally_slots := source_card.slots_root.player_slots
-
-	if owner == SlotRow.SlotOwner.OPPONENT:
-		ally_slots = source_card.slots_root.opponent_slots
+	var ally_slots := source_card.slots_root.get_slots_for_owner(owner)
 
 	for slot in ally_slots:
 		_apply_to_ally(runtime, source_card, slot)
 
 
+func refresh_board_context(runtime: MutationRuntime) -> void:
+	refresh_board_effect(runtime)
+
+
 func on_left_board(runtime: MutationRuntime) -> void:
+	_remove_buffs(runtime)
+
+
+func on_left_board_context(runtime: MutationRuntime) -> void:
 	_remove_buffs(runtime)
 
 
@@ -45,12 +50,6 @@ func _apply_to_ally(
 	source_card: CardRoot,
 	slot: Slot
 ) -> void:
-	if runtime == null:
-		return
-
-	if source_card == null:
-		return
-
 	if slot == null:
 		return
 
@@ -68,6 +67,7 @@ func _apply_to_ally(
 	var modifier := StatModifier.new()
 	modifier.stat_name = "attack"
 	modifier.amount = attack_bonus
+	modifier.duration_type = StatModifier.DurationType.AURA
 	modifier.source = runtime
 	modifier.is_active = true
 

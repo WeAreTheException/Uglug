@@ -30,23 +30,25 @@ func refresh_board_effect(runtime: MutationRuntime) -> void:
 		return
 
 	var owner := queen.slots_root.get_owner_of_slot(queen_slot)
-	var ally_slots := queen.slots_root.player_slots
-
-	if owner == SlotRow.SlotOwner.OPPONENT:
-		ally_slots = queen.slots_root.opponent_slots
+	var ally_slots := queen.slots_root.get_slots_for_owner(owner)
 
 	for slot in ally_slots:
 		_apply_to_worker(runtime, slot)
+
+
+func refresh_board_context(runtime: MutationRuntime) -> void:
+	refresh_board_effect(runtime)
 
 
 func on_left_board(runtime: MutationRuntime) -> void:
 	_remove_buffs(runtime)
 
 
-func _apply_to_worker(runtime: MutationRuntime, slot: Slot) -> void:
-	if runtime == null:
-		return
+func on_left_board_context(runtime: MutationRuntime) -> void:
+	_remove_buffs(runtime)
 
+
+func _apply_to_worker(runtime: MutationRuntime, slot: Slot) -> void:
 	if slot == null:
 		return
 
@@ -61,19 +63,27 @@ func _apply_to_worker(runtime: MutationRuntime, slot: Slot) -> void:
 	if target_card.card_name != worker_card_name:
 		return
 
-	var attack_modifier := StatModifier.new()
-	attack_modifier.stat_name = "attack"
-	attack_modifier.amount = attack_bonus
-	attack_modifier.source = runtime
-	attack_modifier.is_active = true
-	target_card.stats.add_modifier(attack_modifier)
+	_add_modifier(runtime, target_card, "attack", attack_bonus)
+	_add_modifier(runtime, target_card, "health", health_bonus)
 
-	var health_modifier := StatModifier.new()
-	health_modifier.stat_name = "health"
-	health_modifier.amount = health_bonus
-	health_modifier.source = runtime
-	health_modifier.is_active = true
-	target_card.stats.add_modifier(health_modifier)
+
+func _add_modifier(
+	runtime: MutationRuntime,
+	target_card: CardRoot,
+	stat_name: String,
+	amount: int
+) -> void:
+	if amount == 0:
+		return
+
+	var modifier := StatModifier.new()
+	modifier.stat_name = stat_name
+	modifier.amount = amount
+	modifier.duration_type = StatModifier.DurationType.AURA
+	modifier.source = runtime
+	modifier.is_active = true
+
+	target_card.stats.add_modifier(modifier)
 
 
 func _remove_buffs(runtime: MutationRuntime) -> void:
