@@ -4,7 +4,7 @@
 [ext_resource type="Resource" uid="uid://bckromx6ufd8m" path="res://Cards/CardPresets/Escucheant.tres" id="2_5sdof"]
 [ext_resource type="PackedScene" uid="uid://1wr1e57v7trd" path="res://Revamp/PlayerHand/Player_Hand.tscn" id="2_mi1n2"]
 [ext_resource type="Resource" uid="uid://d1n1fhj8y5tq" path="res://Cards/CardPresets/Initiant.tres" id="3_5ixgq"]
-[ext_resource type="Resource" path="res://Cards/CardPresets/Eliminant.tres" id="3_20kdy"]
+[ext_resource type="Resource" uid="uid://cbi6p6yl00o3p" path="res://Cards/CardPresets/Eliminant.tres" id="3_20kdy"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="3_d5ogx"]
 [ext_resource type="Resource" uid="uid://bxrcjm4w1dy82" path="res://Cards/CardPresets/Anthrax.tres" id="4_cc2no"]
 [ext_resource type="Resource" uid="uid://ci7yvhc8pfst6" path="res://Cards/CardPresets/QueenAnt.tres" id="5_1j514"]

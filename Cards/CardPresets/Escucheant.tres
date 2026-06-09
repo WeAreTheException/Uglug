@@ -8,10 +8,11 @@
 [resource]
 script = ExtResource("2_ag7g0")
 name = "Escucheant"
+card_type = 1
 attack = 1
 health = 2
 cost = 1
 ant_texture = ExtResource("2_vs5mf")
-deck_amount = 2
 base_mutations = Array[ExtResource("1_8gjhy")]([ExtResource("3_vs5mf")])
+deck_amount = 2
 metadata/_custom_type_script = "uid://duslcpxrhurv8"
