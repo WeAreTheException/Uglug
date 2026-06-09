@@ -6,10 +6,7 @@ const LEFT := "LEFT"
 const RIGHT := "RIGHT"
 
 
-func resolve_target(
-	slots_root: SlotsRoot,
-	context: AttackContext
-) -> void:
+func resolve_target(slots_root: SlotsRoot, context: AttackContext) -> void:
 	if slots_root == null:
 		return
 
@@ -20,11 +17,7 @@ func resolve_target(
 		return
 
 	var owner := slots_root.get_owner_of_slot(context.origin_slot)
-
-	var enemy_owner := SlotRow.SlotOwner.OPPONENT
-
-	if owner == SlotRow.SlotOwner.OPPONENT:
-		enemy_owner = SlotRow.SlotOwner.PLAYER
+	var enemy_owner := slots_root.get_enemy_owner(owner)
 
 	match context.attack_event:
 		FORWARD:
@@ -48,9 +41,7 @@ func resolve_target(
 	_apply_mutation_target_modifiers(context)
 
 
-func _apply_mutation_target_modifiers(
-	context: AttackContext
-) -> void:
+func _apply_mutation_target_modifiers(context: AttackContext) -> void:
 	if context == null:
 		return
 
@@ -60,14 +51,4 @@ func _apply_mutation_target_modifiers(
 	if context.attacker_card.mutations == null:
 		return
 
-	for runtime in context.attacker_card.mutations.get_active_runtimes():
-		if runtime == null:
-			continue
-
-		if runtime.mutation == null:
-			continue
-
-		runtime.mutation.modify_attack_target(
-			runtime,
-			context
-		)
+	context.attacker_card.mutations.modify_attack_target(context)

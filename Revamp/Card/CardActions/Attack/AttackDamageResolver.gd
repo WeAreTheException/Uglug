@@ -14,20 +14,7 @@ func get_attack_damage(attacker: CardRoot, target_card: CardRoot) -> int:
 	if attacker.mutations == null:
 		return max(damage, 0)
 
-	for runtime in attacker.mutations.get_active_runtimes():
-		if runtime == null:
-			continue
-
-		if runtime.mutation == null:
-			continue
-
-		damage = runtime.mutation.modify_damage(
-			attacker,
-			target_card,
-			damage
-		)
-
-	return max(damage, 0)
+	return attacker.mutations.modify_outgoing_damage(target_card, damage)
 
 
 func notify_damage_dealt(
@@ -44,15 +31,4 @@ func notify_damage_dealt(
 	if attacker.mutations == null:
 		return
 
-	for runtime in attacker.mutations.get_active_runtimes():
-		if runtime == null:
-			continue
-
-		if runtime.mutation == null:
-			continue
-
-		runtime.mutation.on_damage_dealt(
-			attacker,
-			target_card,
-			damage
-		)
+	attacker.mutations.notify_damage_dealt(target_card, damage)
