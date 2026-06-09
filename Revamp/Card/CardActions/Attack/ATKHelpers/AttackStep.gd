@@ -7,8 +7,8 @@ const RIGHT := "RIGHT"
 
 @export var direction: String = FORWARD
 @export var source_type: String = MutationSource.BASE
-@export var source: Object = null
 
+var source: Object = null
 var attacker_card: CardRoot = null
 var origin_slot: Slot = null
 var target_slot: Slot = null
