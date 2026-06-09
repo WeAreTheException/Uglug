@@ -1,10 +1,10 @@
-[gd_resource type="Resource" script_class="Mutation" format=3 uid="uid://bk7bftdp5178x"]
+[gd_resource type="Resource" script_class="MeFirst" format=3 uid="uid://bk7bftdp5178x"]
 
-[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Cards/Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="1_gd5im"]
+[ext_resource type="Script" uid="uid://cvp5qldv7cg3" path="res://Cards/Mutations/MutationPresets/MutationBehaviourHandlers/MeFirst.gd" id="1_fj8ub"]
 [ext_resource type="Texture2D" uid="uid://crhbxyec480s3" path="res://Art/Mutations/Initiant_Sigil.PNG" id="2_fj8ub"]
 
 [resource]
-script = ExtResource("1_gd5im")
+script = ExtResource("1_fj8ub")
 mutation_name = "Me First"
 mutation_description = "Always attack first"
 sigil_texture = ExtResource("2_fj8ub")

@@ -68,11 +68,13 @@ func _build_attack_entries(owner: SlotRow.SlotOwner) -> Array[Dictionary]:
 		if slot.current_card == null:
 			continue
 
+		var card := slot.current_card
+
 		entries.append({
 			"slot": slot,
-			"card": slot.current_card,
+			"card": card,
 			"slot_index": slot.slot_index,
-			"priority": _get_attack_priority(slot.current_card)
+			"priority": _get_attack_priority(card)
 		})
 
 	return entries
@@ -109,15 +111,10 @@ func _get_left_to_right(owner: SlotRow.SlotOwner) -> bool:
 
 
 func _get_attack_priority(card: CardRoot) -> int:
-	if card == null or card.mutations == null:
+	if card == null:
 		return 0
 
-	var total_priority := 0
+	if card.mutations == null:
+		return 0
 
-	for runtime in card.mutations.get_active_runtimes():
-		if runtime == null or runtime.mutation == null:
-			continue
-
-		total_priority += runtime.mutation.get_attack_priority(runtime)
-
-	return total_priority
+	return card.mutations.get_attack_priority()

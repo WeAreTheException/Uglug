@@ -92,6 +92,21 @@ func tick_turn_durations() -> void:
 	mutations_changed.emit()
 
 
+func get_attack_priority() -> int:
+	var total_priority := 0
+
+	for runtime in get_active_runtimes():
+		if runtime == null:
+			continue
+
+		if runtime.mutation == null:
+			continue
+
+		total_priority += runtime.mutation.get_attack_priority(runtime)
+
+	return total_priority
+
+
 func build_attack_events() -> Array[String]:
 	var events: Array[String] = []
 
