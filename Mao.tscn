@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://cxkinl0mu66jc"]
 
 [ext_resource type="PackedScene" uid="uid://bw8c7m7n5yuk8" path="res://Revamp/Board/Slots.tscn" id="1_yq750"]
+[ext_resource type="Resource" uid="uid://jd5rbexi4lr4" path="res://Cards/CardPresets/Persistant.tres" id="2_5sdof"]
 [ext_resource type="PackedScene" uid="uid://1wr1e57v7trd" path="res://Revamp/PlayerHand/Player_Hand.tscn" id="2_mi1n2"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="3_d5ogx"]
 [ext_resource type="Resource" uid="uid://bxrcjm4w1dy82" path="res://Cards/CardPresets/Anthrax.tres" id="4_cc2no"]
@@ -8,7 +9,7 @@
 [ext_resource type="Resource" uid="uid://c64jbnvj0pbwk" path="res://Cards/CardPresets/AntHill.tres" id="6_at0h8"]
 [ext_resource type="Script" uid="uid://bxbqihkit6rgo" path="res://Managers/Phasemanager.gd" id="8_cc2no"]
 [ext_resource type="Script" uid="uid://bbcig486utsir" path="res://HandPhaseApplier.gd" id="9_cc2no"]
-[ext_resource type="Script" uid="uid://b38dslna3xak" path="res://SacrificeController.gd" id="10_1j514"]
+[ext_resource type="Script" uid="uid://61l5g8wkdar3" path="res://SacrificeController.gd" id="10_1j514"]
 [ext_resource type="Script" uid="uid://ciopi88keoi3k" path="res://SacrificeRequirement.gd" id="11_at0h8"]
 [ext_resource type="Script" uid="uid://b4qvc7353obir" path="res://PendingSacrificeBoat.gd" id="12_30x73"]
 [ext_resource type="Script" uid="uid://vmy04gllke53" path="res://SacrificeCommitter.gd" id="13_6ula3"]
@@ -25,6 +26,7 @@
 
 [node name="Slots" parent="." unique_id=1318716624 instance=ExtResource("1_yq750")]
 position = Vector2(120, 120)
+player_slot_1_card = ExtResource("2_5sdof")
 
 [node name="PlayerHandRoot" parent="." unique_id=371738706 node_paths=PackedStringArray("prime_location") instance=ExtResource("2_mi1n2")]
 position = Vector2(720, 960)
