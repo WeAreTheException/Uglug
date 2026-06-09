@@ -10,7 +10,7 @@ signal slot_unhovered(slot: Slot)
 
 @export var board_slot_registry: BoardSlotRegistry
 @export var board_query: BoardQuery
-@export var board_mutation_refresher: BoardMutationRefresher
+@export var board_refresh_coordinator: BoardRefreshCoordinator
 @export var slot_preset_handler: SlotPresetHandler1
 @export var attack_order_handler: AttackOrderHandler
 
@@ -35,7 +35,7 @@ var opponent_slots: Array[Slot] = []
 func _ready() -> void:
 	_setup_registry()
 	_setup_query()
-	_setup_mutation_refresher()
+	_setup_refresh_coordinator()
 	_setup_attack_order_handler()
 	_setup_preset_handler()
 
@@ -64,9 +64,9 @@ func _setup_query() -> void:
 		board_query.setup(board_slot_registry)
 
 
-func _setup_mutation_refresher() -> void:
-	if board_mutation_refresher != null:
-		board_mutation_refresher.setup(board_query)
+func _setup_refresh_coordinator() -> void:
+	if board_refresh_coordinator != null:
+		board_refresh_coordinator.setup(board_query)
 
 
 func _setup_attack_order_handler() -> void:
@@ -84,32 +84,25 @@ func _setup_preset_handler() -> void:
 
 func show_playable_slots(owner: SlotRow.SlotOwner) -> void:
 	for slot in get_slots_for_owner(owner):
-		if slot != null:
-			slot.show_playable_feedback()
+		slot.show_playable_feedback()
 
-	var enemy_owner := get_enemy_owner(owner)
-
-	for slot in get_slots_for_owner(enemy_owner):
-		if slot != null:
-			slot.show_idle_feedback()
+	for slot in get_slots_for_owner(get_enemy_owner(owner)):
+		slot.show_idle_feedback()
 
 
 func show_neutral_slots() -> void:
 	for slot in get_all_slots():
-		if slot != null:
-			slot.show_idle_feedback()
+		slot.show_idle_feedback()
 
 
 func show_inactive_slots(owner: SlotRow.SlotOwner) -> void:
 	for slot in get_slots_for_owner(owner):
-		if slot != null:
-			slot.show_inactive_feedback()
+		slot.show_inactive_feedback()
 
 
 func clear_all_slot_feedback() -> void:
 	for slot in get_all_slots():
-		if slot != null:
-			slot.clear_all_feedback()
+		slot.clear_all_feedback()
 
 
 func get_slots_for_owner(owner: SlotRow.SlotOwner) -> Array[Slot]:
@@ -168,19 +161,20 @@ func get_adjacent_enemy_slots(slot: Slot) -> Array[Slot]:
 	return board_query.get_adjacent_enemy_slots(slot)
 
 
-func get_first_empty_slot_in_order(
-	owner: SlotRow.SlotOwner,
-	left_to_right: bool
-) -> Slot:
+func get_first_empty_slot_in_order(owner: SlotRow.SlotOwner, left_to_right: bool) -> Slot:
 	if board_query == null:
 		return null
 
 	return board_query.get_first_empty_slot_in_order(owner, left_to_right)
 
 
+func refresh_board_effects() -> void:
+	if board_refresh_coordinator != null:
+		board_refresh_coordinator.refresh_board_effects()
+
+
 func refresh_board_mutations() -> void:
-	if board_mutation_refresher != null:
-		board_mutation_refresher.refresh_board_mutations()
+	refresh_board_effects()
 
 
 func get_preset_for_slot(slot: Slot) -> CardData:
@@ -196,31 +190,31 @@ func get_preset_for_slot(slot: Slot) -> CardData:
 
 
 func _get_player_preset(slot_index: int) -> CardData:
-	match slot_index:
-		1:
-			return player_slot_1_card
-		2:
-			return player_slot_2_card
-		3:
-			return player_slot_3_card
-		4:
-			return player_slot_4_card
+	var cards: Array[CardData] = [
+		player_slot_1_card,
+		player_slot_2_card,
+		player_slot_3_card,
+		player_slot_4_card
+	]
 
-	return null
+	if slot_index < 1 or slot_index > cards.size():
+		return null
+
+	return cards[slot_index - 1]
 
 
 func _get_opponent_preset(slot_index: int) -> CardData:
-	match slot_index:
-		1:
-			return opponent_slot_1_card
-		2:
-			return opponent_slot_2_card
-		3:
-			return opponent_slot_3_card
-		4:
-			return opponent_slot_4_card
+	var cards: Array[CardData] = [
+		opponent_slot_1_card,
+		opponent_slot_2_card,
+		opponent_slot_3_card,
+		opponent_slot_4_card
+	]
 
-	return null
+	if slot_index < 1 or slot_index > cards.size():
+		return null
+
+	return cards[slot_index - 1]
 
 
 func _on_slot_clicked(slot: Slot) -> void:

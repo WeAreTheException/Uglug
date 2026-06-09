@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://cqmtvyyqr67q2"]
+
+[node name="CardFeedback" type="Node2D" unique_id=149069413]
+
+[node name="ScaleFeedback" type="Node" parent="." unique_id=683347919]
+
+[node name="PositionFeedback" type="Node" parent="." unique_id=1963387271]
+
+[node name="ShadowFeedback" type="Node" parent="." unique_id=1280503201]
+
+[node name="ShakeFeedback" type="Node" parent="." unique_id=1268266656]
+
+[node name="FlashFeedback" type="Node" parent="." unique_id=1726519134]
+
+[node name="AudioFeedback" type="Node" parent="." unique_id=1343186988]
+
+[node name="HoverFeedback" type="Node" parent="." unique_id=1449793527]
+
+[node name="SelectFeedback" type="Node" parent="." unique_id=494812558]
+
+[node name="AttackFeedback" type="Node" parent="." unique_id=1220690801]
+
+[node name="HurtFeedback" type="Node" parent="." unique_id=1653667798]
+
+[node name="DeathFeedback" type="Node" parent="." unique_id=1475497888]
+
+[node name="SacrificeFeedback" type="Node" parent="." unique_id=1985845775]

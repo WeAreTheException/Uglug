@@ -10,13 +10,12 @@
 [ext_resource type="Script" uid="uid://bkk2cojo6thgb" path="res://Revamp/Board/AttackOrderHandler.gd" id="9_1gkk1"]
 [ext_resource type="Script" uid="uid://w3b8lt2epqs0" path="res://Revamp/Board/Slot/BoardQuery.gd" id="9_8cmln"]
 
-[node name="Slots" type="Node2D" unique_id=1318716624 node_paths=PackedStringArray("player_row", "opponent_row", "board_slot_registry", "board_query", "board_mutation_refresher", "slot_preset_handler", "attack_order_handler", "attack_animation_layer")]
+[node name="Slots" type="Node2D" unique_id=1318716624 node_paths=PackedStringArray("player_row", "opponent_row", "board_slot_registry", "board_query", "slot_preset_handler", "attack_order_handler", "attack_animation_layer")]
 script = ExtResource("1_vhubw")
-player_row = NodePath("BoardCardsLayer/PlayerRow")
-opponent_row = NodePath("BoardCardsLayer/OpponentRow")
+player_row = NodePath("PlayerRow")
+opponent_row = NodePath("OpponentRow")
 board_slot_registry = NodePath("BoardSlotRegistry")
 board_query = NodePath("BoardQuery")
-board_mutation_refresher = NodePath("BoardMutationRefresher")
 slot_preset_handler = NodePath("SlotPresetHandler")
 attack_order_handler = NodePath("AttackOrderHandler")
 card_scene = ExtResource("5_1gkk1")
@@ -24,46 +23,44 @@ attack_animation_layer = NodePath("AttackAnimationLayer")
 
 [node name="BoardCardsLayer" type="Node2D" parent="." unique_id=1962797662]
 
-[node name="OpponentRow" type="Node2D" parent="BoardCardsLayer" unique_id=211964924]
+[node name="OpponentRow" type="Node2D" parent="." unique_id=211964924]
 position = Vector2(348, 108)
 script = ExtResource("2_2k41x")
 slot_owner = 1
 metadata/_edit_lock_ = true
 
-[node name="OP_Slot1" parent="BoardCardsLayer/OpponentRow" unique_id=904478857 instance=ExtResource("8_s3p7v")]
+[node name="OP_Slot1" parent="OpponentRow" unique_id=904478857 instance=ExtResource("8_s3p7v")]
 position = Vector2(-276, 0)
-slot_index = 1
 
-[node name="OP_Slot2" parent="BoardCardsLayer/OpponentRow" unique_id=473262665 instance=ExtResource("8_s3p7v")]
+[node name="OP_Slot2" parent="OpponentRow" unique_id=473262665 instance=ExtResource("8_s3p7v")]
 position = Vector2(-96, 0)
 slot_index = 2
 
-[node name="OP_Slot3" parent="BoardCardsLayer/OpponentRow" unique_id=1512716607 instance=ExtResource("8_s3p7v")]
+[node name="OP_Slot3" parent="OpponentRow" unique_id=1512716607 instance=ExtResource("8_s3p7v")]
 position = Vector2(84, 0)
 slot_index = 3
 
-[node name="OP_Slot4" parent="BoardCardsLayer/OpponentRow" unique_id=1059621107 instance=ExtResource("8_s3p7v")]
+[node name="OP_Slot4" parent="OpponentRow" unique_id=1059621107 instance=ExtResource("8_s3p7v")]
 position = Vector2(264, 0)
 slot_index = 4
 
-[node name="PlayerRow" type="Node2D" parent="BoardCardsLayer" unique_id=604740611]
+[node name="PlayerRow" type="Node2D" parent="." unique_id=604740611]
 position = Vector2(336, 360)
 script = ExtResource("2_2k41x")
 metadata/_edit_lock_ = true
 
-[node name="PL_Slot1" parent="BoardCardsLayer/PlayerRow" unique_id=1917887040 instance=ExtResource("8_s3p7v")]
+[node name="PL_Slot1" parent="PlayerRow" unique_id=1917887040 instance=ExtResource("8_s3p7v")]
 position = Vector2(-264, 0)
-slot_index = 1
 
-[node name="PL_Slot2" parent="BoardCardsLayer/PlayerRow" unique_id=834395941 instance=ExtResource("8_s3p7v")]
+[node name="PL_Slot2" parent="PlayerRow" unique_id=834395941 instance=ExtResource("8_s3p7v")]
 position = Vector2(-84, 0)
 slot_index = 2
 
-[node name="PL_Slot3" parent="BoardCardsLayer/PlayerRow" unique_id=1594803539 instance=ExtResource("8_s3p7v")]
+[node name="PL_Slot3" parent="PlayerRow" unique_id=1594803539 instance=ExtResource("8_s3p7v")]
 position = Vector2(96, 0)
 slot_index = 3
 
-[node name="PL_Slot4" parent="BoardCardsLayer/PlayerRow" unique_id=1471414213 instance=ExtResource("8_s3p7v")]
+[node name="PL_Slot4" parent="PlayerRow" unique_id=1471414213 instance=ExtResource("8_s3p7v")]
 position = Vector2(276, 0)
 slot_index = 4
 
@@ -78,7 +75,7 @@ script = ExtResource("7_iq660")
 [node name="BoardSlotRegistry" type="Node" parent="." unique_id=181927702]
 script = ExtResource("7_camp5")
 
-[node name="BoardMutationRefresher" type="Node" parent="." unique_id=644829086]
+[node name="BoardRefreshCoordinator" type="Node" parent="." unique_id=644829086]
 script = ExtResource("7_4xfmt")
 
 [node name="BoardQuery" type="Node" parent="." unique_id=35437107]

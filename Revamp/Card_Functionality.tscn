@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://idmmgqiuh65v"]
+
+[ext_resource type="Script" uid="uid://xlxu58fop1wg" path="res://Revamp/Card/CardScripts/CardInput.gd" id="1_q82mk"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bw0qm"]
+size = Vector2(144, 216)
+
+[node name="CardFunctionalityRoot" type="Node2D" unique_id=722902130]
+
+[node name="CardInput" type="Area2D" parent="." unique_id=1713443222]
+script = ExtResource("1_q82mk")
+
+[node name="CardCollider" type="CollisionShape2D" parent="CardInput" unique_id=87135427]
+shape = SubResource("RectangleShape2D_bw0qm")
+
+[node name="CardState" type="Node" parent="." unique_id=2136314001]
+
+[node name="BoardPrescene" type="Node" parent="." unique_id=1152666458]
+
+[node name="CardStats" type="Node" parent="." unique_id=1549893915]
+
+[node name="CardMutations" type="Node" parent="." unique_id=1452086436]
+
+[node name="Attack" type="Node" parent="." unique_id=836282579]
+
+[node name="Hurt" type="Node" parent="." unique_id=2081858970]
+
+[node name="Sacrifice" type="Node" parent="." unique_id=186456843]
+
+[node name="Die" type="Node" parent="." unique_id=655289853]
