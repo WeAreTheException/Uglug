@@ -3,12 +3,10 @@
 [ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Cards/Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="1_cjpcm"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="2_djvnq"]
 [ext_resource type="Texture2D" uid="uid://y5olf4lrdtdx" path="res://Art/AntBack/GreenAnt.png" id="2_kpl6p"]
-[ext_resource type="Resource" path="res://Cards/Mutations/MutationPresets/MobMentality.tres" id="3_kpl6p"]
 
 [resource]
 script = ExtResource("2_djvnq")
 rarity = 2
 cost = 4
 ant_texture = ExtResource("2_kpl6p")
-base_mutations = Array[ExtResource("1_cjpcm")]([ExtResource("3_kpl6p")])
 metadata/_custom_type_script = "uid://duslcpxrhurv8"

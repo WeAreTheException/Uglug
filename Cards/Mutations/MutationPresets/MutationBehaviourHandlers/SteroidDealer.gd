@@ -2,91 +2,105 @@ extends Mutation
 class_name SteroidDealer
 
 @export var attack_bonus: int = 1
+@export var health_bonus: int = 1
 
 
 func refresh_board_effect(runtime: MutationRuntime) -> void:
-	if runtime == null:
+	_clear(runtime)
+
+	var source_card := runtime.owner_card if runtime != null else null
+
+	if source_card == null:
 		return
 
-	_remove_buffs(runtime)
-
-	var card := runtime.owner_card
-
-	if card == null:
+	if not source_card.is_on_board():
 		return
 
-	if not card.is_on_board():
+	if source_card.slots_root == null:
 		return
 
-	if card.slots_root == null:
+	var source_slot := source_card.get_current_slot()
+
+	if source_slot == null:
 		return
 
-	var current_slot := card.get_current_slot()
+	var owner := source_card.slots_root.get_owner_of_slot(source_slot)
+	var left := source_card.slots_root.get_slot(owner, source_slot.slot_index - 1)
+	var right := source_card.slots_root.get_slot(owner, source_slot.slot_index + 1)
 
-	if current_slot == null:
-		return
+	_apply_to_slot(runtime, left)
+	_apply_to_slot(runtime, right)
 
-	var owner := card.slots_root.get_owner_of_slot(current_slot)
 
-	_apply_to_adjacent_slot(runtime, card.slots_root.get_slot(owner, current_slot.slot_index - 1))
-	_apply_to_adjacent_slot(runtime, card.slots_root.get_slot(owner, current_slot.slot_index + 1))
+func refresh_board_context(runtime: MutationRuntime) -> void:
+	refresh_board_effect(runtime)
 
 
 func on_left_board(runtime: MutationRuntime) -> void:
-	_remove_buffs(runtime)
+	_clear(runtime)
 
 
-func _apply_to_adjacent_slot(runtime: MutationRuntime, slot: Slot) -> void:
-	if runtime == null:
-		return
+func on_left_board_context(runtime: MutationRuntime) -> void:
+	_clear(runtime)
 
+
+func _apply_to_slot(runtime: MutationRuntime, slot: Slot) -> void:
 	if slot == null:
 		return
 
-	var target_card := slot.current_card
+	var target := slot.current_card
 
-	if target_card == null:
+	if target == null:
 		return
 
-	if target_card.stats == null:
+	if target.stats == null:
+		return
+
+	_add_modifier(runtime, target, "attack", attack_bonus)
+	_add_modifier(runtime, target, "health", health_bonus)
+
+
+func _add_modifier(
+	runtime: MutationRuntime,
+	target: CardRoot,
+	stat_name: String,
+	amount: int
+) -> void:
+	if amount == 0:
 		return
 
 	var modifier := StatModifier.new()
-	modifier.stat_name = "attack"
-	modifier.amount = attack_bonus
+	modifier.stat_name = stat_name
+	modifier.amount = amount
+	modifier.duration_type = StatModifier.DurationType.AURA
 	modifier.source = runtime
 	modifier.is_active = true
 
-	target_card.stats.add_modifier(modifier)
+	target.stats.add_modifier(modifier)
 
 
-func _remove_buffs(runtime: MutationRuntime) -> void:
+func _clear(runtime: MutationRuntime) -> void:
 	if runtime == null:
 		return
 
-	var card := runtime.owner_card
+	var source_card := runtime.owner_card
 
-	if card == null:
+	if source_card == null:
 		return
 
-	if card.slots_root == null:
+	if source_card.slots_root == null:
 		return
 
-	_remove_from_slots(runtime, card.slots_root.player_slots)
-	_remove_from_slots(runtime, card.slots_root.opponent_slots)
-
-
-func _remove_from_slots(runtime: MutationRuntime, slots: Array[Slot]) -> void:
-	for slot in slots:
+	for slot in source_card.slots_root.get_all_slots():
 		if slot == null:
 			continue
 
-		var target_card := slot.current_card
+		var card := slot.current_card
 
-		if target_card == null:
+		if card == null:
 			continue
 
-		if target_card.stats == null:
+		if card.stats == null:
 			continue
 
-		target_card.stats.remove_modifiers_from_source(runtime)
+		card.stats.remove_modifiers_from_source(runtime)
