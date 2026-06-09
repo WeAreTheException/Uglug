@@ -14,7 +14,6 @@ signal hurt_finished(card: CardRoot, damage: int)
 @export var debug_key: Key = KEY_H
 
 var card: CardRoot = null
-
 var is_hovered := false
 var is_playing := false
 
@@ -49,36 +48,49 @@ func play_hurt(
 	attacker: CardRoot = null,
 	trigger_damaged_mutations: bool = true
 ) -> int:
+	var context := DamageContext.new()
+	context.setup(attacker, card, amount)
+	context.can_trigger_damaged = trigger_damaged_mutations
+	context.can_trigger_damage_dealt = true
+
+	return await receive_damage(context)
+
+
+func receive_damage(context: DamageContext) -> int:
 	if is_playing:
 		return 0
 
 	if card == null:
 		return 0
 
-	var final_damage := amount
-
-	if trigger_damaged_mutations:
-		final_damage = _modify_incoming_damage(final_damage, attacker)
-
-	final_damage = max(final_damage, 0)
-
-	if final_damage <= 0:
+	if context == null:
 		return 0
 
-	hurt_started.emit(card, final_damage)
+	context.target_card = card
+	context.target_slot = card.get_current_slot()
+
+	if context.source_card != null:
+		context.source_slot = context.source_card.get_current_slot()
+
+	_apply_incoming_damage_modifiers(context)
+
+	if context.final_damage <= 0:
+		return 0
+
+	hurt_started.emit(card, context.final_damage)
 
 	if feedback_handler != null:
 		feedback_handler.play(card)
 
 	if change_health_on_hurt and card.stats != null:
-		card.stats.take_damage(final_damage)
+		card.stats.take_damage(context.final_damage)
+		context.actual_damage = context.final_damage
 
-		if trigger_damaged_mutations:
-			_notify_damaged_mutations(attacker, final_damage)
+	_notify_damaged_mutations(context)
 
 	if animation_runner == null:
 		print("hurt blocked: animation_runner missing")
-		return final_damage
+		return context.actual_damage
 
 	is_playing = true
 
@@ -90,56 +102,40 @@ func play_hurt(
 
 	is_playing = false
 
-	hurt_finished.emit(card, final_damage)
+	hurt_finished.emit(card, context.actual_damage)
 
-	return final_damage
-
-
-func _modify_incoming_damage(amount: int, attacker: CardRoot) -> int:
-	if card == null:
-		return amount
-
-	if card.mutations == null:
-		return amount
-
-	var result := amount
-
-	for runtime in card.mutations.get_active_runtimes():
-		if runtime == null:
-			continue
-
-		if runtime.mutation == null:
-			continue
-
-		result = runtime.mutation.modify_incoming_damage(
-			runtime,
-			card,
-			attacker,
-			result
-		)
-
-	return result
+	return context.actual_damage
 
 
-func _notify_damaged_mutations(attacker: CardRoot, amount: int) -> void:
+func _apply_incoming_damage_modifiers(context: DamageContext) -> void:
 	if card == null:
 		return
 
 	if card.mutations == null:
 		return
 
-	for runtime in card.mutations.get_active_runtimes():
-		if runtime == null:
-			continue
+	var damage := card.mutations.modify_incoming_damage(
+		context.source_card,
+		context.final_damage
+	)
 
-		if runtime.mutation == null:
-			continue
+	context.set_final_damage(damage)
 
-		runtime.mutation.on_damaged(
-			card,
-			attacker,
-			amount
-		)
+
+func _notify_damaged_mutations(context: DamageContext) -> void:
+	if not context.can_trigger_damaged:
+		return
+
+	if card == null:
+		return
+
+	if card.mutations == null:
+		return
+
+	card.mutations.notify_damaged(
+		context.source_card,
+		context.actual_damage
+	)
 
 
 func _on_card_hovered(_card: CardRoot) -> void:

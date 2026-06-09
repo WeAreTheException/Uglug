@@ -9,6 +9,7 @@
 [ext_resource type="Resource" uid="uid://b10yu2ml8hwx2" path="res://Cards/CardPresets/Stimulant.tres" id="4_8ve8k"]
 [ext_resource type="Resource" uid="uid://bxrcjm4w1dy82" path="res://Cards/CardPresets/Anthrax.tres" id="4_cc2no"]
 [ext_resource type="Resource" uid="uid://ci7yvhc8pfst6" path="res://Cards/CardPresets/QueenAnt.tres" id="5_1j514"]
+[ext_resource type="Resource" uid="uid://bn1jyervrnsg" path="res://Cards/CardPresets/WorkerAnt.tres" id="5_oekep"]
 [ext_resource type="Resource" uid="uid://c64jbnvj0pbwk" path="res://Cards/CardPresets/AntHill.tres" id="6_at0h8"]
 [ext_resource type="Script" uid="uid://bxbqihkit6rgo" path="res://Managers/Phasemanager.gd" id="8_cc2no"]
 [ext_resource type="Script" uid="uid://bbcig486utsir" path="res://HandPhaseApplier.gd" id="9_cc2no"]
@@ -32,7 +33,11 @@ position = Vector2(120, 120)
 player_slot_1_card = ExtResource("2_20kdy")
 player_slot_2_card = ExtResource("3_5ixgq")
 player_slot_3_card = ExtResource("4_8ve8k")
+player_slot_4_card = ExtResource("5_oekep")
 opponent_slot_1_card = ExtResource("2_5sdof")
+opponent_slot_2_card = ExtResource("4_cc2no")
+opponent_slot_3_card = ExtResource("5_1j514")
+opponent_slot_4_card = ExtResource("5_oekep")
 
 [node name="PlayerHandRoot" parent="." unique_id=371738706 node_paths=PackedStringArray("prime_location") instance=ExtResource("2_mi1n2")]
 position = Vector2(720, 960)
