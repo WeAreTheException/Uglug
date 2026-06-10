@@ -10,6 +10,7 @@ class_name MainMenuRoot
 @export var connection_handler: MultiplayerConnectionHandler
 @export var lobby_host_handler: LobbyHostHandler
 @export var lobby_browser: LobbyBrowser
+@export var map_spawn_locations: MapSpawnLocations
 @export var status_label: Label
 
 
@@ -40,6 +41,8 @@ func _ready() -> void:
 
 	lobby_browser.browse_started.connect(_on_lobby_browse_started)
 	lobby_browser.lobbies_updated.connect(_on_lobbies_updated)
+
+	_test_spawn_locations()
 
 
 func _on_host_pressed() -> void:
@@ -106,6 +109,14 @@ func _on_lobby_browse_started() -> void:
 func _on_lobbies_updated(lobbies: Array) -> void:
 	print("Lobbies found: ", lobbies.size())
 	_set_status("Connected. Lobbies found: " + str(lobbies.size()))
+
+
+func _test_spawn_locations() -> void:
+	if map_spawn_locations == null:
+		print("Spawn test failed: MapSpawnLocations not assigned.")
+		return
+
+	map_spawn_locations.print_spawn_debug()
 
 
 func _set_status(text: String) -> void:

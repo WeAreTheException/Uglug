@@ -7,8 +7,9 @@
 [ext_resource type="PackedScene" uid="uid://n0rxxqny4h76" path="res://Scenes/MainMenu/CreateLobbyPopup.tscn" id="3_vapy7"]
 [ext_resource type="Script" uid="uid://cp172vtbwkgig" path="res://Scenes/MainMenu/LobbyHostHandler.gd" id="6_vapy7"]
 [ext_resource type="Script" uid="uid://dbfgquxv0g107" path="res://Scenes/MainMenu/LobbyBrowser.gd" id="7_8qovt"]
+[ext_resource type="Script" uid="uid://bwrb55hwbu538" path="res://Scenes/MainMenu/MapSpawnLocations.gd" id="8_0hjx5"]
 
-[node name="MainMenu" type="Control" unique_id=930422600 node_paths=PackedStringArray("map_visual", "lobby_icon_layer", "host_button", "join_random_button", "create_lobby_popup", "join_private_popup", "connection_handler", "lobby_host_handler", "lobby_browser", "status_label")]
+[node name="MainMenu" type="Control" unique_id=930422600 node_paths=PackedStringArray("map_visual", "lobby_icon_layer", "host_button", "join_random_button", "create_lobby_popup", "join_private_popup", "connection_handler", "lobby_host_handler", "lobby_browser", "map_spawn_locations", "status_label")]
 layout_mode = 3
 anchors_preset = 0
 scale = Vector2(0.950005, 1.0128386)
@@ -22,6 +23,7 @@ join_private_popup = NodePath("JoinPrivatePopup")
 connection_handler = NodePath("MultiplayerConnectionHandler")
 lobby_host_handler = NodePath("LobbyHostHandler")
 lobby_browser = NodePath("LobbyBrowser")
+map_spawn_locations = NodePath("MapSpawnLocations")
 status_label = NodePath("StatusLabel")
 
 [node name="MapVisual" type="TextureRect" parent="." unique_id=1786858430]
@@ -29,6 +31,7 @@ layout_mode = 0
 offset_right = 2019.9895
 offset_bottom = 1065.3228
 texture = ExtResource("2_kpx3y")
+metadata/_edit_lock_ = true
 
 [node name="LobbyIconLayer" type="Control" parent="." unique_id=1375438820]
 anchors_preset = 0
@@ -54,6 +57,7 @@ theme_override_font_sizes/font_size = 50
 text = "Join Random"
 
 [node name="CreateLobbyPopup" parent="." unique_id=1274345075 instance=ExtResource("3_vapy7")]
+visible = false
 layout_mode = 0
 offset_left = 715.7857
 offset_top = 355.43668
@@ -92,3 +96,40 @@ script = ExtResource("6_vapy7")
 
 [node name="LobbyBrowser" type="Node" parent="." unique_id=1407150262]
 script = ExtResource("7_8qovt")
+
+[node name="MapSpawnLocations" type="Node" parent="." unique_id=1318795435 node_paths=PackedStringArray("spawn_points")]
+script = ExtResource("8_0hjx5")
+spawn_points = [NodePath("SpawnPoint0"), NodePath("SpawnPoint1"), NodePath("SpawnPoint2"), NodePath("SpawnPoint3"), NodePath("SpawnPoint4"), NodePath("SpawnPoint5"), NodePath("SpawnPoint6"), NodePath("SpawnPoint7"), NodePath("SpawnPoint8"), NodePath("SpawnPoint9"), NodePath("SpawnPoint10")]
+
+[node name="SpawnPoint0" type="Marker2D" parent="MapSpawnLocations" unique_id=169911074]
+position = Vector2(180, 360)
+
+[node name="SpawnPoint10" type="Marker2D" parent="MapSpawnLocations" unique_id=1494263541]
+position = Vector2(180, 360)
+
+[node name="SpawnPoint1" type="Marker2D" parent="MapSpawnLocations" unique_id=1434628324]
+position = Vector2(429, 578)
+
+[node name="SpawnPoint2" type="Marker2D" parent="MapSpawnLocations" unique_id=1681557423]
+position = Vector2(361, 234)
+
+[node name="SpawnPoint3" type="Marker2D" parent="MapSpawnLocations" unique_id=1997368559]
+position = Vector2(989, 310)
+
+[node name="SpawnPoint4" type="Marker2D" parent="MapSpawnLocations" unique_id=1609837674]
+position = Vector2(865, 505)
+
+[node name="SpawnPoint5" type="Marker2D" parent="MapSpawnLocations" unique_id=1311747272]
+position = Vector2(1063, 703)
+
+[node name="SpawnPoint6" type="Marker2D" parent="MapSpawnLocations" unique_id=2047540224]
+position = Vector2(478, 883)
+
+[node name="SpawnPoint7" type="Marker2D" parent="MapSpawnLocations" unique_id=767613874]
+position = Vector2(1311, 234)
+
+[node name="SpawnPoint8" type="Marker2D" parent="MapSpawnLocations" unique_id=1354403194]
+position = Vector2(1741, 769)
+
+[node name="SpawnPoint9" type="Marker2D" parent="MapSpawnLocations" unique_id=23526976]
+position = Vector2(1516, 436)
