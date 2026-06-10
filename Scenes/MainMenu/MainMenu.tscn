@@ -1,0 +1,84 @@
+[gd_scene format=3 uid="uid://c14yrjk60cmg1"]
+
+[ext_resource type="Script" uid="uid://cfsbl06ahe2c3" path="res://Scenes/MainMenu/MainMenu.gd" id="1_sg7ab"]
+[ext_resource type="Texture2D" uid="uid://cqv0rmj0hhsdx" path="res://Scenes/MainMenu/WorldMap.jpg" id="2_kpx3y"]
+[ext_resource type="Script" uid="uid://30ojatnmofq6" path="res://Scenes/MainMenu/MultiplayerConnectionHandler.gd" id="3_kpx3y"]
+[ext_resource type="Texture2D" uid="uid://6jo7btq8htsp" path="res://Scenes/MainMenu/UglugUIMockup.png" id="3_ua038"]
+[ext_resource type="PackedScene" uid="uid://n0rxxqny4h76" path="res://Scenes/MainMenu/CreateLobbyPopup.tscn" id="3_vapy7"]
+
+[node name="MainMenu" type="Control" unique_id=930422600 node_paths=PackedStringArray("map_visual", "lobby_icon_layer", "host_button", "join_random_button", "create_lobby_popup", "join_private_popup", "connection_handler", "status_label")]
+layout_mode = 3
+anchors_preset = 0
+scale = Vector2(0.950005, 1.0128386)
+script = ExtResource("1_sg7ab")
+map_visual = NodePath("MapVisual")
+lobby_icon_layer = NodePath("LobbyIconLayer")
+host_button = NodePath("HostButton")
+join_random_button = NodePath("JoinRandomButton")
+create_lobby_popup = NodePath("CreateLobbyPopup")
+join_private_popup = NodePath("JoinPrivatePopup")
+connection_handler = NodePath("MultiplayerConnectionHandler")
+status_label = NodePath("StatusLabel")
+
+[node name="MapVisual" type="TextureRect" parent="." unique_id=1786858430]
+layout_mode = 0
+offset_right = 2019.9895
+offset_bottom = 1065.3228
+texture = ExtResource("2_kpx3y")
+
+[node name="LobbyIconLayer" type="Control" parent="." unique_id=1375438820]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="HostButton" type="Button" parent="." unique_id=823107261]
+layout_mode = 0
+offset_left = 53.683933
+offset_top = 933.02136
+offset_right = 379.99805
+offset_bottom = 1025.8298
+theme_override_font_sizes/font_size = 50
+text = "Host"
+
+[node name="JoinRandomButton" type="Button" parent="." unique_id=1103684519]
+layout_mode = 0
+offset_left = 53.68393
+offset_top = 822.441
+offset_right = 379.99805
+offset_bottom = 915.24945
+theme_override_font_sizes/font_size = 50
+text = "Join Random"
+
+[node name="CreateLobbyPopup" parent="." unique_id=1274345075 instance=ExtResource("3_vapy7")]
+layout_mode = 0
+offset_left = 715.7857
+offset_top = 355.43668
+offset_right = 1322.7856
+offset_bottom = 694.43665
+pivot_offset = Vector2(303.15637, 169.81976)
+
+[node name="JoinPrivatePopup" type="PanelContainer" parent="." unique_id=129386457]
+visible = false
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="MultiplayerConnectionHandler" type="Node" parent="." unique_id=272675719]
+script = ExtResource("3_kpx3y")
+
+[node name="Ref" type="Sprite2D" parent="." unique_id=143623933]
+visible = false
+modulate = Color(1, 1, 1, 0.15686275)
+position = Vector2(2536.8286, 1243.0411)
+scale = Vector2(1.3830584, 1.3830583)
+texture = ExtResource("3_ua038")
+metadata/_edit_lock_ = true
+
+[node name="StatusLabel" type="Label" parent="." unique_id=1864151879]
+layout_mode = 0
+offset_left = 1476.8342
+offset_right = 2021.8342
+offset_bottom = 137.0
+theme_override_font_sizes/font_size = 50
+text = "Connecting"
+autowrap_mode = 2
