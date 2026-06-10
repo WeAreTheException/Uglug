@@ -5,8 +5,10 @@
 [ext_resource type="Script" uid="uid://30ojatnmofq6" path="res://Scenes/MainMenu/MultiplayerConnectionHandler.gd" id="3_kpx3y"]
 [ext_resource type="Texture2D" uid="uid://6jo7btq8htsp" path="res://Scenes/MainMenu/UglugUIMockup.png" id="3_ua038"]
 [ext_resource type="PackedScene" uid="uid://n0rxxqny4h76" path="res://Scenes/MainMenu/CreateLobbyPopup.tscn" id="3_vapy7"]
+[ext_resource type="Script" uid="uid://cp172vtbwkgig" path="res://Scenes/MainMenu/LobbyHostHandler.gd" id="6_vapy7"]
+[ext_resource type="Script" uid="uid://dbfgquxv0g107" path="res://Scenes/MainMenu/LobbyBrowser.gd" id="7_8qovt"]
 
-[node name="MainMenu" type="Control" unique_id=930422600 node_paths=PackedStringArray("map_visual", "lobby_icon_layer", "host_button", "join_random_button", "create_lobby_popup", "join_private_popup", "connection_handler", "status_label")]
+[node name="MainMenu" type="Control" unique_id=930422600 node_paths=PackedStringArray("map_visual", "lobby_icon_layer", "host_button", "join_random_button", "create_lobby_popup", "join_private_popup", "connection_handler", "lobby_host_handler", "lobby_browser", "status_label")]
 layout_mode = 3
 anchors_preset = 0
 scale = Vector2(0.950005, 1.0128386)
@@ -18,6 +20,8 @@ join_random_button = NodePath("JoinRandomButton")
 create_lobby_popup = NodePath("CreateLobbyPopup")
 join_private_popup = NodePath("JoinPrivatePopup")
 connection_handler = NodePath("MultiplayerConnectionHandler")
+lobby_host_handler = NodePath("LobbyHostHandler")
+lobby_browser = NodePath("LobbyBrowser")
 status_label = NodePath("StatusLabel")
 
 [node name="MapVisual" type="TextureRect" parent="." unique_id=1786858430]
@@ -82,3 +86,9 @@ offset_bottom = 137.0
 theme_override_font_sizes/font_size = 50
 text = "Connecting"
 autowrap_mode = 2
+
+[node name="LobbyHostHandler" type="Node" parent="." unique_id=1268490218]
+script = ExtResource("6_vapy7")
+
+[node name="LobbyBrowser" type="Node" parent="." unique_id=1407150262]
+script = ExtResource("7_8qovt")
