@@ -1,0 +1,68 @@
+[gd_scene format=3 uid="uid://c14yrjk60cmg1"]
+
+[ext_resource type="Script" uid="uid://cfsbl06ahe2c3" path="res://Scenes/MainMenu/MainMenu.gd" id="1_7b88o"]
+[ext_resource type="Texture2D" uid="uid://cqv0rmj0hhsdx" path="res://Scenes/MainMenu/WorldMap.jpg" id="2_y6pe6"]
+[ext_resource type="Texture2D" uid="uid://6jo7btq8htsp" path="res://Scenes/MainMenu/UglugUIMockup.png" id="3_xn1v8"]
+
+[node name="Main_Menu" type="Control" unique_id=930422600 node_paths=PackedStringArray("map_visual", "lobby_icon_layer", "host_button", "join_random_button", "create_lobby_popup", "join_private_popup")]
+layout_mode = 3
+anchors_preset = 0
+scale = Vector2(0.950005, 1.0128386)
+script = ExtResource("1_7b88o")
+map_visual = NodePath("MapVisual")
+lobby_icon_layer = NodePath("LobbyIconLayer")
+host_button = NodePath("HostButton")
+join_random_button = NodePath("JoinRandomButton")
+create_lobby_popup = NodePath("CreateLobbyPopup")
+join_private_popup = NodePath("JoinPrivatePopup")
+
+[node name="MapVisual" type="TextureRect" parent="." unique_id=1786858430]
+layout_mode = 0
+offset_right = 2019.9895
+offset_bottom = 1065.3228
+texture = ExtResource("2_y6pe6")
+
+[node name="LobbyIconLayer" type="Control" parent="." unique_id=1375438820]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="HostButton" type="Button" parent="." unique_id=823107261]
+layout_mode = 0
+offset_left = 53.683933
+offset_top = 933.02136
+offset_right = 379.99805
+offset_bottom = 1025.8298
+theme_override_font_sizes/font_size = 50
+text = "Host"
+
+[node name="JoinRandomButton" type="Button" parent="." unique_id=1103684519]
+layout_mode = 0
+offset_left = 53.68393
+offset_top = 822.441
+offset_right = 379.99805
+offset_bottom = 915.24945
+theme_override_font_sizes/font_size = 50
+text = "Join Random"
+
+[node name="CreateLobbyPopup" type="PanelContainer" parent="." unique_id=1717817236]
+visible = false
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="JoinPrivatePopup" type="PanelContainer" parent="." unique_id=129386457]
+visible = false
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="MultiplayerMenuController" type="Node" parent="." unique_id=272675719]
+
+[node name="Ref" type="Sprite2D" parent="." unique_id=143623933]
+visible = false
+modulate = Color(1, 1, 1, 0.15686275)
+position = Vector2(2536.8286, 1243.0411)
+scale = Vector2(1.3830584, 1.3830583)
+texture = ExtResource("3_xn1v8")
+metadata/_edit_lock_ = true
