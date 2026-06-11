@@ -15,6 +15,8 @@ class_name MainMenuRoot
 @export var lobby_icon_spawner: LobbyIconSpawner
 @export var status_label: Label
 
+var current_lobbies: Array = []
+
 
 func _ready() -> void:
 	create_lobby_popup.visible = false
@@ -61,7 +63,7 @@ func _on_host_pressed() -> void:
 
 
 func _on_join_random_pressed() -> void:
-	_set_status("Join Random not implemented yet.")
+	lobby_join_handler.join_random_lobby(current_lobbies)
 
 
 func _on_connection_started() -> void:
@@ -120,6 +122,7 @@ func _on_lobby_browse_started() -> void:
 
 
 func _on_lobbies_updated(lobbies: Array) -> void:
+	current_lobbies = lobbies
 	print("Joinable lobbies found: ", lobbies.size())
 	lobby_icon_spawner.update_lobbies(lobbies)
 
