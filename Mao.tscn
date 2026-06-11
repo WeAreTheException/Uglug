@@ -25,6 +25,7 @@
 [ext_resource type="Script" uid="uid://c18hwqs033t7x" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementEventEmitter.gd" id="18_oekep"]
 [ext_resource type="Script" uid="uid://cmcxm3mp7ljvv" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementCancel.gd" id="19_n5v11"]
 [ext_resource type="Script" uid="uid://difytxi1dyr27" path="res://MatchFlowRoot.gd" id="25_oekep"]
+[ext_resource type="Script" uid="uid://c6ap2csjp7k81" path="res://MatchTurnOrderState.gd" id="26_n5v11"]
 
 [node name="Mao" type="Node2D" unique_id=550121538]
 
@@ -113,7 +114,11 @@ slots_root = NodePath("../Slots")
 
 [node name="CardEffectSpawnrouter" type="Node" parent="." unique_id=1854042398]
 
-[node name="MatchFlowRoot" type="Node" parent="." unique_id=1707594948]
+[node name="MatchFlowRoot" type="Node" parent="." unique_id=1707594948 node_paths=PackedStringArray("turn_order_state")]
 script = ExtResource("25_oekep")
+turn_order_state = NodePath("MatchTurnOrderState")
+
+[node name="MatchTurnOrderState" type="Node" parent="MatchFlowRoot" unique_id=708809136]
+script = ExtResource("26_n5v11")
 
 [node name="Node2" type="Node" parent="." unique_id=1333215538]

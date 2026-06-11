@@ -17,9 +17,12 @@ enum MatchState {
 	ROUND_END
 }
 
+@export var turn_order_state: MatchTurnOrderState
+
 @export var start_on_ready: bool = true
 @export var enable_debug_keys: bool = true
 @export var advance_debug_key: Key = KEY_M
+@export var swap_control_debug_key: Key = KEY_TAB
 
 var current_state: MatchState = MatchState.NONE
 var current_round: int = 0
@@ -27,6 +30,9 @@ var is_running: bool = false
 
 
 func _ready() -> void:
+	if turn_order_state != null:
+		turn_order_state.setup_for_match()
+
 	if start_on_ready:
 		start_match()
 
@@ -39,6 +45,9 @@ func _input(event: InputEvent) -> void:
 		if event.keycode == advance_debug_key:
 			advance_debug_state()
 
+		if event.keycode == swap_control_debug_key:
+			swap_controlled_owner()
+
 
 func start_match() -> void:
 	if is_running:
@@ -46,6 +55,9 @@ func start_match() -> void:
 
 	is_running = true
 	current_round = 1
+
+	if turn_order_state != null:
+		turn_order_state.setup_for_round(current_round)
 
 	round_changed.emit(current_round)
 	set_state(MatchState.ROUND_INTRO)
@@ -56,9 +68,18 @@ func set_state(new_state: MatchState) -> void:
 		return
 
 	current_state = new_state
+	_apply_active_owner_for_state(current_state)
+
 	match_state_changed.emit(current_state)
 
-	print("MATCH STATE: ", get_state_name(current_state))
+	print(
+		"MATCH STATE: ",
+		get_state_name(current_state),
+		" | ACTIVE: ",
+		get_active_owner_name(),
+		" | CONTROLLED: ",
+		get_controlled_owner_name()
+	)
 
 
 func advance_debug_state() -> void:
@@ -102,8 +123,24 @@ func advance_debug_state() -> void:
 
 func advance_round() -> void:
 	current_round += 1
+
+	if turn_order_state != null:
+		turn_order_state.setup_for_round(current_round)
+
 	round_changed.emit(current_round)
 	set_state(MatchState.ROUND_INTRO)
+
+
+func swap_controlled_owner() -> void:
+	if turn_order_state == null:
+		return
+
+	turn_order_state.swap_controlled_owner()
+
+	print(
+		"CONTROLLED OWNER: ",
+		get_controlled_owner_name()
+	)
 
 
 func get_state_name(state: MatchState) -> String:
@@ -130,3 +167,43 @@ func get_state_name(state: MatchState) -> String:
 			return "ROUND_END"
 
 	return "UNKNOWN"
+
+
+func get_active_owner_name() -> String:
+	if turn_order_state == null:
+		return "NONE"
+
+	return turn_order_state.get_owner_name(turn_order_state.active_owner)
+
+
+func get_controlled_owner_name() -> String:
+	if turn_order_state == null:
+		return "NONE"
+
+	return turn_order_state.get_owner_name(turn_order_state.controlled_owner)
+
+
+func _apply_active_owner_for_state(state: MatchState) -> void:
+	if turn_order_state == null:
+		return
+
+	match state:
+		MatchState.LEAD_PLACEMENT:
+			turn_order_state.set_active_owner(
+				turn_order_state.lead_placement_owner
+			)
+
+		MatchState.RESPONSE_PLACEMENT:
+			turn_order_state.set_active_owner(
+				turn_order_state.response_placement_owner
+			)
+
+		MatchState.COMBAT:
+			turn_order_state.set_active_owner(
+				turn_order_state.attacking_first_owner
+			)
+
+		_:
+			turn_order_state.set_active_owner(
+				turn_order_state.attacking_first_owner
+			)
