@@ -13,6 +13,8 @@ var pending_password := ""
 
 
 func _ready() -> void:
+	randomize()
+
 	if not GDSync.lobby_created.is_connected(_on_lobby_created):
 		GDSync.lobby_created.connect(_on_lobby_created)
 
@@ -39,7 +41,6 @@ func create_lobby(is_private: bool, passcode: String, spawn_id: int) -> void:
 
 	var tags := {
 		"display_name": _get_display_name(),
-		"is_private": is_private,
 		"spawn_id": spawn_id
 	}
 
@@ -70,8 +71,10 @@ func _on_lobby_join_failed(lobby_name: String, error: int) -> void:
 
 
 func _build_lobby_name() -> String:
-	var id := str(Time.get_unix_time_from_system()).right(6)
-	return "Uglug_" + str(GDSync.get_client_id()) + "_" + id
+	var client_id := str(GDSync.get_client_id())
+	var random_id := str(randi_range(1000, 9999))
+
+	return "Uglug" + client_id + random_id
 
 
 func _get_display_name() -> String:

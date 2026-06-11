@@ -72,7 +72,7 @@ func _on_connection_succeeded() -> void:
 	host_button.disabled = false
 	join_random_button.disabled = false
 	lobby_browser.start_browsing()
-	_set_status("Connected. Browsing lobbies...")
+	_set_status("Connected to GD-Sync.")
 
 
 func _on_connection_failed(error: int) -> void:
@@ -120,9 +120,8 @@ func _on_lobby_browse_started() -> void:
 
 
 func _on_lobbies_updated(lobbies: Array) -> void:
-	print("Lobbies found: ", lobbies.size())
+	print("Joinable lobbies found: ", lobbies.size())
 	lobby_icon_spawner.update_lobbies(lobbies)
-	_set_status("Connected. Lobbies found: " + str(lobbies.size()))
 
 
 func _on_lobby_icon_clicked(lobby_info: Dictionary) -> void:
@@ -142,6 +141,7 @@ func _on_lobby_join_started(lobby_name: String) -> void:
 
 
 func _on_public_lobby_join_succeeded(lobby_name: String) -> void:
+	lobby_browser.stop_browsing()
 	_set_status("Joined lobby: " + lobby_name)
 
 
