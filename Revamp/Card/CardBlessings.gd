@@ -4,6 +4,7 @@ class_name CardBlessings
 signal blessing_added(blessing: Blessing)
 signal blessing_removed(blessing: Blessing)
 signal blessings_cleared
+signal death_handled_by_blessing(blessing: Blessing)
 
 @export var card: CardRoot
 
@@ -65,6 +66,30 @@ func clear_blessings() -> void:
 		remove_blessing(blessing)
 
 	blessings_cleared.emit()
+
+
+func handle_card_would_die(
+	was_hand_sacrifice: bool = false,
+	was_discard: bool = false
+) -> bool:
+	var context := BlessingDeathContext.new()
+	context.setup(card, was_hand_sacrifice, was_discard)
+
+	for blessing in active_blessings.duplicate():
+		if blessing == null:
+			continue
+
+		var handled: bool = blessing.on_card_would_die(context)
+
+		if handled:
+			death_handled_by_blessing.emit(blessing)
+
+			if blessing.should_remove_after_death_response():
+				remove_blessing(blessing)
+
+			return true
+
+	return false
 
 
 func has_blessing_id(blessing_id: String) -> bool:
