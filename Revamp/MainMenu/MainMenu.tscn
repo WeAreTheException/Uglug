@@ -1,21 +1,22 @@
 [gd_scene format=3 uid="uid://c14yrjk60cmg1"]
 
-[ext_resource type="Script" uid="uid://cfsbl06ahe2c3" path="res://Scenes/MainMenu/MainMenu.gd" id="1_sg7ab"]
-[ext_resource type="Texture2D" uid="uid://cqv0rmj0hhsdx" path="res://Scenes/MainMenu/WorldMap.jpg" id="2_kpx3y"]
-[ext_resource type="Script" uid="uid://30ojatnmofq6" path="res://Scenes/MainMenu/MultiplayerConnectionHandler.gd" id="3_kpx3y"]
-[ext_resource type="Texture2D" uid="uid://6jo7btq8htsp" path="res://Scenes/MainMenu/UglugUIMockup.png" id="3_ua038"]
-[ext_resource type="PackedScene" uid="uid://n0rxxqny4h76" path="res://Scenes/MainMenu/CreateLobbyPopup.tscn" id="3_vapy7"]
-[ext_resource type="PackedScene" uid="uid://dw6pojo7xhmdk" path="res://Scenes/MainMenu/JoinPrivatePopup.tscn" id="4_ah1a3"]
-[ext_resource type="Script" uid="uid://cp172vtbwkgig" path="res://Scenes/MainMenu/LobbyHostHandler.gd" id="6_vapy7"]
-[ext_resource type="Script" uid="uid://dbfgquxv0g107" path="res://Scenes/MainMenu/LobbyBrowser.gd" id="7_8qovt"]
-[ext_resource type="Script" uid="uid://bwrb55hwbu538" path="res://Scenes/MainMenu/MapSpawnLocations.gd" id="8_0hjx5"]
-[ext_resource type="Script" uid="uid://eyushf5joraa" path="res://Scenes/MainMenu/LobbyIconSpawner.gd" id="9_fv0xt"]
-[ext_resource type="PackedScene" uid="uid://cabei6nqd27sy" path="res://Scenes/MainMenu/LobbyColonyIcon.tscn" id="10_sng02"]
-[ext_resource type="Script" uid="uid://bxdiyd7i25fw4" path="res://Scenes/MainMenu/LobbyJoinHandler.gd" id="11_lic31"]
-[ext_resource type="Script" uid="uid://dnitutk6wh3uo" path="res://Scenes/MainMenu/LobbyDebugHandler.gd" id="12_56wdt"]
-[ext_resource type="Script" uid="uid://bhnvcq27dv42" path="res://Scenes/MainMenu/LobbyLeaveHandler.gd" id="13_k2pwb"]
-[ext_resource type="Script" uid="uid://b3jnngb37qq0g" path="res://Scenes/MainMenu/SteamPlayerIdentity.gd" id="15_gkjg1"]
-[ext_resource type="Script" uid="uid://doscvmerviyvy" path="res://Scenes/MainMenu/SteamManager.gd" id="16_ee4eu"]
+[ext_resource type="Script" uid="uid://cfsbl06ahe2c3" path="res://Revamp/MainMenu/MainMenu.gd" id="1_sg7ab"]
+[ext_resource type="Texture2D" uid="uid://cqv0rmj0hhsdx" path="res://Revamp/MainMenu/WorldMap.jpg" id="2_kpx3y"]
+[ext_resource type="Script" uid="uid://30ojatnmofq6" path="res://Revamp/MainMenu/MultiplayerConnectionHandler.gd" id="3_kpx3y"]
+[ext_resource type="Texture2D" uid="uid://6jo7btq8htsp" path="res://Revamp/MainMenu/UglugUIMockup.png" id="3_ua038"]
+[ext_resource type="PackedScene" uid="uid://n0rxxqny4h76" path="res://Revamp/MainMenu/CreateLobbyPopup.tscn" id="3_vapy7"]
+[ext_resource type="PackedScene" uid="uid://dw6pojo7xhmdk" path="res://Revamp/MainMenu/JoinPrivatePopup.tscn" id="4_ah1a3"]
+[ext_resource type="Script" uid="uid://cp172vtbwkgig" path="res://Revamp/MainMenu/LobbyHostHandler.gd" id="6_vapy7"]
+[ext_resource type="Script" uid="uid://dbfgquxv0g107" path="res://Revamp/MainMenu/LobbyBrowser.gd" id="7_8qovt"]
+[ext_resource type="Script" uid="uid://bwrb55hwbu538" path="res://Revamp/MainMenu/MapSpawnLocations.gd" id="8_0hjx5"]
+[ext_resource type="Script" uid="uid://eyushf5joraa" path="res://Revamp/MainMenu/LobbyIconSpawner.gd" id="9_fv0xt"]
+[ext_resource type="PackedScene" uid="uid://cabei6nqd27sy" path="res://Revamp/MainMenu/LobbyColonyIcon.tscn" id="10_sng02"]
+[ext_resource type="Script" uid="uid://bxdiyd7i25fw4" path="res://Revamp/MainMenu/LobbyJoinHandler.gd" id="11_lic31"]
+[ext_resource type="Script" uid="uid://dnitutk6wh3uo" path="res://Revamp/MainMenu/LobbyDebugHandler.gd" id="12_56wdt"]
+[ext_resource type="Script" uid="uid://bhnvcq27dv42" path="res://Revamp/MainMenu/LobbyLeaveHandler.gd" id="13_k2pwb"]
+[ext_resource type="Script" uid="uid://b3jnngb37qq0g" path="res://Revamp/MainMenu/SteamPlayerIdentity.gd" id="15_gkjg1"]
+[ext_resource type="Script" uid="uid://doscvmerviyvy" path="res://Revamp/MainMenu/SteamManager.gd" id="16_ee4eu"]
+[ext_resource type="Script" uid="uid://0n3iy5pn6osa" path="res://Revamp/MainMenu/MatchStartHandler.gd" id="17_txptg"]
 
 [node name="MainMenu" type="Control" unique_id=930422600 node_paths=PackedStringArray("map_visual", "lobby_icon_layer", "host_button", "join_random_button", "create_lobby_popup", "join_private_popup", "connection_handler", "lobby_host_handler", "lobby_browser", "lobby_join_handler", "lobby_leave_handler", "map_spawn_locations", "lobby_icon_spawner", "status_label")]
 layout_mode = 3
@@ -163,3 +164,7 @@ script = ExtResource("13_k2pwb")
 
 [node name="LobbyDebugHandler" type="Node" parent="." unique_id=1598052194]
 script = ExtResource("12_56wdt")
+
+[node name="MatchStartHandler" type="Node" parent="." unique_id=380011741]
+script = ExtResource("17_txptg")
+game_scene_path = "uid://di3vk7d3rf8r8"

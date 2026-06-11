@@ -1,20 +1,20 @@
-[gd_scene format=3 uid="uid://n0rxxqny4h76"]
+[gd_scene format=3 uid="uid://dw6pojo7xhmdk"]
 
-[ext_resource type="Script" uid="uid://clb1fqdlblev1" path="res://Scenes/MainMenu/CreateLobbyPopup.gd" id="1_m4i7p"]
+[ext_resource type="Script" uid="uid://bxww4ptycn2xx" path="res://Revamp/MainMenu/JoinPrivatePopup.gd" id="1_3pehx"]
 
-[node name="CreateLobbyPopup" type="Control" unique_id=1459111363 node_paths=PackedStringArray("private_toggle", "passcode_root", "digit_one", "digit_two", "digit_three", "create_button", "close_button")]
+[node name="JoinPrivatePopup" type="Control" unique_id=1459111363 node_paths=PackedStringArray("digit_one", "digit_two", "digit_three", "enter_button", "close_button", "incorrect_password_label", "lobby_no_longer_exists_label")]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 607.0
 offset_bottom = 339.0
-script = ExtResource("1_m4i7p")
-private_toggle = NodePath("PrivateToggle")
-passcode_root = NodePath("PasscodeRoot")
+script = ExtResource("1_3pehx")
 digit_one = NodePath("PasscodeRoot/DigitOne")
 digit_two = NodePath("PasscodeRoot/DigitTwo")
 digit_three = NodePath("PasscodeRoot/DigitThree")
-create_button = NodePath("CreateButton")
+enter_button = NodePath("EnterButton")
 close_button = NodePath("CloseButton")
+incorrect_password_label = NodePath("IncorrectPasswordLabel")
+lobby_no_longer_exists_label = NodePath("LobbyNoLongerExistsLabel")
 
 [node name="Panel" type="Panel" parent="." unique_id=170280430]
 layout_mode = 0
@@ -22,22 +22,30 @@ offset_right = 607.0
 offset_bottom = 339.0
 metadata/_edit_lock_ = true
 
-[node name="PrivateToggle" type="CheckBox" parent="." unique_id=1227030580]
+[node name="IncorrectPasswordLabel" type="Label" parent="." unique_id=291854846]
+visible = false
 layout_mode = 0
-offset_left = 175.0
-offset_top = 250.0
-offset_right = 199.0
-offset_bottom = 274.72223
-scale = Vector2(3.6, 3.6)
-
-[node name="PrivateLabel" type="Label" parent="." unique_id=1879191596]
-layout_mode = 0
-offset_left = 261.0
-offset_top = 265.0
-offset_right = 403.0
-offset_bottom = 320.0
+offset_left = 116.0
+offset_top = 259.0
+offset_right = 487.0
+offset_bottom = 314.0
+pivot_offset = Vector2(186, 28)
+theme_override_colors/font_color = Color(1, 0, 0, 1)
 theme_override_font_sizes/font_size = 40
-text = "Private"
+text = "Incorrect Password"
+vertical_alignment = 1
+
+[node name="LobbyNoLongerExistsLabel" type="Label" parent="." unique_id=2027421260]
+visible = false
+layout_mode = 0
+offset_left = 79.0
+offset_top = 259.0
+offset_right = 527.0
+offset_bottom = 314.0
+pivot_offset = Vector2(186, 28)
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_font_sizes/font_size = 40
+text = "Lobby No Longer Exists"
 vertical_alignment = 1
 
 [node name="PasscodeRoot" type="Control" parent="." unique_id=900074981]
@@ -72,7 +80,7 @@ offset_bottom = 250.0
 theme_override_font_sizes/font_size = 70
 text = "0"
 
-[node name="CreateButton" type="Button" parent="." unique_id=904278123]
+[node name="EnterButton" type="Button" parent="." unique_id=904278123]
 layout_mode = 0
 offset_left = 122.0
 offset_top = 25.0
@@ -80,7 +88,7 @@ offset_right = 488.0
 offset_bottom = 112.0
 pivot_offset = Vector2(183, 43)
 theme_override_font_sizes/font_size = 50
-text = "Create"
+text = "Enter"
 metadata/_edit_lock_ = true
 
 [node name="CloseButton" type="Button" parent="." unique_id=1057942256]

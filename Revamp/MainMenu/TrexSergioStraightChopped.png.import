@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cqv0rmj0hhsdx"
-path="res://.godot/imported/WorldMap.jpg-8b14e7a1deae348daf8c4b1c2f79fcae.ctex"
+uid="uid://tc7xrxphc1m5"
+path="res://.godot/imported/TrexSergioStraightChopped.png-50319b07d429def3a1192aba188a41f2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Scenes/MainMenu/WorldMap.jpg"
-dest_files=["res://.godot/imported/WorldMap.jpg-8b14e7a1deae348daf8c4b1c2f79fcae.ctex"]
+source_file="res://Revamp/MainMenu/TrexSergioStraightChopped.png"
+dest_files=["res://.godot/imported/TrexSergioStraightChopped.png-50319b07d429def3a1192aba188a41f2.ctex"]
 
 [params]
 

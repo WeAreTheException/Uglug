@@ -15,6 +15,7 @@ class_name MainMenuRoot
 @export var map_spawn_locations: MapSpawnLocations
 @export var lobby_icon_spawner: LobbyIconSpawner
 @export var status_label: Label
+@export var match_start_handler: MatchStartHandler
 
 var current_lobbies: Array = []
 var pending_private_lobby_info: Dictionary = {}
@@ -25,6 +26,8 @@ var hosted_lobby_name := ""
 func _ready() -> void:
 	create_lobby_popup.visible = false
 	join_private_popup.visible = false
+	match_start_handler.match_start_requested.connect(_on_match_start_requested)
+	match_start_handler.match_start_failed.connect(_on_match_start_failed)
 
 	if map_visual != null:
 		map_visual.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -240,6 +243,7 @@ func _on_lobby_leave_completed() -> void:
 	lobby_icon_spawner.update_lobbies(current_lobbies)
 	lobby_browser.start_browsing()
 	_set_status("Connected to GD-Sync.")
+	match_start_handler.reset()
 
 
 func _get_lobbies_for_map(own_lobby_info: Dictionary) -> Array:
@@ -275,3 +279,18 @@ func _set_status(text: String) -> void:
 		return
 
 	status_label.text = text
+
+func _on_match_start_requested() -> void:
+	host_button.disabled = true
+	join_random_button.disabled = true
+	create_lobby_popup.visible = false
+	join_private_popup.visible = false
+	lobby_browser.stop_browsing()
+	_set_status("Starting match...")
+
+
+func _on_match_start_failed(reason: String) -> void:
+	host_button.disabled = false
+	join_random_button.disabled = false
+	lobby_browser.start_browsing()
+	_set_status(reason)
