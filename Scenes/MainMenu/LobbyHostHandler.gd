@@ -26,7 +26,7 @@ func _ready() -> void:
 		GDSync.lobby_join_failed.connect(_on_lobby_join_failed)
 
 
-func create_lobby(is_private: bool, passcode: String) -> void:
+func create_lobby(is_private: bool, passcode: String, spawn_id: int) -> void:
 	var lobby_name := _build_lobby_name()
 	pending_password = passcode if is_private else ""
 
@@ -40,7 +40,7 @@ func create_lobby(is_private: bool, passcode: String) -> void:
 	var tags := {
 		"display_name": _get_display_name(),
 		"is_private": is_private,
-		"spawn_id": 0
+		"spawn_id": spawn_id
 	}
 
 	GDSync.lobby_create(

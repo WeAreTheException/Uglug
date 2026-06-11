@@ -19,6 +19,9 @@ func _ready() -> void:
 	create_lobby_popup.visible = false
 	join_private_popup.visible = false
 
+	if map_visual != null:
+		map_visual.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
 	host_button.disabled = true
 	join_random_button.disabled = true
 
@@ -74,8 +77,10 @@ func _on_connection_failed(error: int) -> void:
 
 
 func _on_create_lobby_requested(is_private: bool, passcode: String) -> void:
-	_set_status("Creating lobby...")
-	lobby_host_handler.create_lobby(is_private, passcode)
+	var spawn_id := map_spawn_locations.get_random_spawn_id()
+
+	_set_status("Creating lobby at spawn " + str(spawn_id) + "...")
+	lobby_host_handler.create_lobby(is_private, passcode, spawn_id)
 
 
 func _on_lobby_create_started() -> void:

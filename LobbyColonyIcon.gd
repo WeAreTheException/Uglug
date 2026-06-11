@@ -18,7 +18,11 @@ var feedback_tween: Tween
 
 
 func _ready() -> void:
+	input_pickable = true
 	base_scale = scale
+
+	if name_label != null:
+		name_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 	input_event.connect(_on_input_event)
 	mouse_entered.connect(_on_mouse_entered)
@@ -31,7 +35,8 @@ func setup(source_lobby_info: Dictionary) -> void:
 	var display_name: String = lobby_info.get("display_name", "Unknown")
 	var is_private: bool = lobby_info.get("is_private", false)
 
-	name_label.text = display_name + "'s Game"
+	if name_label != null:
+		name_label.text = display_name + "'s Game"
 
 	if is_private:
 		_set_private_visual()
@@ -61,7 +66,6 @@ func _play_click_ripple() -> void:
 	feedback_tween = create_tween()
 	feedback_tween.set_trans(Tween.TRANS_BACK)
 	feedback_tween.set_ease(Tween.EASE_OUT)
-
 	feedback_tween.tween_property(self, "scale", base_scale * click_ripple_scale, click_ripple_time)
 	feedback_tween.tween_property(self, "scale", base_scale * hover_scale, click_ripple_time)
 
