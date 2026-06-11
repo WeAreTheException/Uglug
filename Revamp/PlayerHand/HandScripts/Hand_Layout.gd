@@ -3,11 +3,13 @@ class_name Hand_Layout
 
 enum LayoutMode {
 	IDLE,
-	PLAY
+	PLAY,
+	BLESSING
 }
 
 @export var idle_layout: Hand_IdleLayout
 @export var play_layout: Hand_PlayLayout
+@export var blessing_layout: Hand_BlessingLayout
 @export var layout_tweener: Hand_LayoutTweener
 
 @export var move_time: float = 0.15
@@ -57,20 +59,20 @@ func get_insert_index_from_global_x(global_x: float, cards: Array[CardRoot]) -> 
 
 
 func _arrange_card(card: CardRoot, index: int, count: int) -> void:
-	var card_spacing := _get_card_spacing()
-	var total_width := card_spacing * float(count - 1)
-	var start_x := -total_width / 2.0
-	var x_pos := start_x + card_spacing * index
-	var normalized_x := clampf(x_pos / hand_width_reference, -1.0, 1.0)
-	var y_pos := -(1.0 - normalized_x * normalized_x) * _get_curve_height()
-	var target_position := global_position + Vector2(x_pos, y_pos)
-	var rotation_degrees := normalized_x * _get_max_rotation_degrees()
+	var card_spacing: float = _get_card_spacing()
+	var total_width: float = card_spacing * float(count - 1)
+	var start_x: float = -total_width / 2.0
+	var x_pos: float = start_x + card_spacing * index
+	var normalized_x: float = clampf(x_pos / hand_width_reference, -1.0, 1.0)
+	var y_pos: float = -(1.0 - normalized_x * normalized_x) * _get_curve_height()
+	var target_position: Vector2 = global_position + Vector2(x_pos, y_pos)
+	var target_rotation: float = normalized_x * _get_max_rotation_degrees()
 
 	if layout_tweener != null:
 		layout_tweener.tween_card(
 			card,
 			target_position,
-			rotation_degrees,
+			target_rotation,
 			_get_target_scale(),
 			normal_z_start + index,
 			move_time
@@ -88,8 +90,12 @@ func _get_layout_cards(cards: Array[CardRoot]) -> Array[CardRoot]:
 
 
 func _get_active_layout() -> Node:
-	if current_mode == LayoutMode.PLAY:
-		return play_layout
+	match current_mode:
+		LayoutMode.PLAY:
+			return play_layout
+
+		LayoutMode.BLESSING:
+			return blessing_layout
 
 	return idle_layout
 
