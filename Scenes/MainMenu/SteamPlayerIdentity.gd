@@ -1,19 +1,17 @@
 extends Node
 class_name SteamPlayerIdentity
 
+@export var steam_manager: SteamManager
+
 
 func get_display_name(fallback_name: String) -> String:
-	if not Engine.has_singleton("Steam"):
+	if steam_manager == null:
 		return fallback_name
 
-	var steam = Engine.get_singleton("Steam")
-
-	if not steam.has_method("getPersonaName"):
+	if not steam_manager.steam_enabled:
 		return fallback_name
 
-	var steam_name: String = steam.getPersonaName()
-
-	if steam_name.strip_edges() == "":
+	if steam_manager.steam_name.strip_edges() == "":
 		return fallback_name
 
-	return steam_name
+	return steam_manager.steam_name
