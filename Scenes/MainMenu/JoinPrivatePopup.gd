@@ -11,8 +11,8 @@ signal close_requested
 @export var close_button: Button
 @export var incorrect_password_label: Label
 
-@export var flash_time := 0.12
-@export var flash_count := 4
+@export var flash_time := 0.15
+@export var flash_count := 3
 
 var digits := [0, 0, 0]
 var flash_tween: Tween
@@ -43,7 +43,7 @@ func close() -> void:
 	_hide_incorrect_password()
 
 
-func show_incorrect_password() -> void:
+func flash_incorrect_password() -> void:
 	if incorrect_password_label == null:
 		return
 
@@ -56,7 +56,7 @@ func show_incorrect_password() -> void:
 	flash_tween = create_tween()
 
 	for i in range(flash_count):
-		flash_tween.tween_property(incorrect_password_label, "modulate:a", 0.2, flash_time)
+		flash_tween.tween_property(incorrect_password_label, "modulate:a", 0.0, flash_time)
 		flash_tween.tween_property(incorrect_password_label, "modulate:a", 1.0, flash_time)
 
 
@@ -67,7 +67,6 @@ func _on_digit_pressed(index: int) -> void:
 		digits[index] = 0
 
 	_update_digit_text()
-	_hide_incorrect_password()
 
 
 func _on_enter_pressed() -> void:

@@ -17,9 +17,9 @@ class_name MainMenuRoot
 @export var status_label: Label
 
 var current_lobbies: Array = []
+var pending_private_lobby_info: Dictionary = {}
 var is_hosting_lobby := false
 var hosted_lobby_name := ""
-var pending_private_lobby_info: Dictionary = {}
 
 
 func _ready() -> void:
@@ -43,6 +43,9 @@ func _ready() -> void:
 	connection_handler.start_connection()
 
 	create_lobby_popup.create_requested.connect(_on_create_lobby_requested)
+
+	join_private_popup.enter_requested.connect(_on_private_passcode_entered)
+	join_private_popup.close_requested.connect(_on_private_popup_closed)
 
 	lobby_host_handler.lobby_create_started.connect(_on_lobby_create_started)
 	lobby_host_handler.lobby_create_succeeded.connect(_on_lobby_create_succeeded)
@@ -166,13 +169,29 @@ func _on_lobby_icon_clicked(lobby_info: Dictionary) -> void:
 	if is_private:
 		pending_private_lobby_info = lobby_info
 		join_private_popup.open()
-	return
+		return
 
 	if is_hosting_lobby:
 		print("Leaving hosted lobby before joining another lobby.")
 		lobby_leave_handler.leave_lobby()
 
 	lobby_join_handler.join_public_lobby(lobby_info)
+
+
+func _on_private_passcode_entered(passcode: String) -> void:
+	if pending_private_lobby_info.is_empty():
+		print("No private lobby selected.")
+		return
+
+	if is_hosting_lobby:
+		print("Leaving hosted lobby before joining private lobby.")
+		lobby_leave_handler.leave_lobby()
+
+	lobby_join_handler.join_private_lobby(pending_private_lobby_info, passcode)
+
+
+func _on_private_popup_closed() -> void:
+	pending_private_lobby_info = {}
 
 
 func _on_lobby_join_started(lobby_name: String) -> void:
@@ -182,6 +201,8 @@ func _on_lobby_join_started(lobby_name: String) -> void:
 
 
 func _on_public_lobby_join_succeeded(lobby_name: String) -> void:
+	pending_private_lobby_info = {}
+	join_private_popup.close()
 	lobby_browser.stop_browsing()
 	_set_status("Joined lobby: " + lobby_name)
 
@@ -189,6 +210,11 @@ func _on_public_lobby_join_succeeded(lobby_name: String) -> void:
 func _on_public_lobby_join_failed(lobby_name: String, error: int) -> void:
 	host_button.disabled = false
 	join_random_button.disabled = false
+
+	if error == ENUMS.LOBBY_JOIN_ERROR.INCORRECT_PASSWORD:
+		join_private_popup.flash_incorrect_password()
+		return
+
 	_set_status("Failed to join lobby: " + lobby_name + " Error: " + str(error))
 
 
@@ -238,26 +264,9 @@ func _test_spawn_locations() -> void:
 
 	map_spawn_locations.print_spawn_debug()
 
+
 func _set_status(text: String) -> void:
 	if status_label == null:
 		return
 
 	status_label.text = text
-
-func _on_private_passcode_entered(passcode: String) -> void:
-	if pending_private_lobby_info.is_empty():
-		print("No private lobby selected.")
-		return
-
-	join_private_popup.close()
-
-	if is_hosting_lobby:
-		print("Leaving hosted lobby before joining private lobby.")
-		lobby_leave_handler.leave_lobby()
-
-	lobby_join_handler.join_private_lobby(pending_private_lobby_info, passcode)
-	pending_private_lobby_info = {}
-
-
-func _on_private_popup_closed() -> void:
-	pending_private_lobby_info = {}
