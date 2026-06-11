@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://xlxu58fop1wg" path="res://Revamp/Card/CardScripts/CardInput.gd" id="2_nau7p"]
 [ext_resource type="Texture2D" uid="uid://di66ndoe6cgnp" path="res://Art/Ants/Antler.png" id="3_2duqk"]
 [ext_resource type="Script" uid="uid://cbbim8d3qcxf6" path="res://Revamp/Card/CardScripts/CardMutations.gd" id="5_olfje"]
+[ext_resource type="Script" uid="uid://cf62cxsjcrsoo" path="res://Revamp/Card/CardBlessings.gd" id="6_2su1i"]
 [ext_resource type="Script" uid="uid://db1lyj46ylxcb" path="res://Revamp/Card/CardFeedback/CardFeedback.gd" id="8_nau7p"]
 [ext_resource type="Script" uid="uid://dgdnj6214hjto" path="res://Revamp/Card/CardActions/Attack/Attack.gd" id="8_vth4y"]
 [ext_resource type="Script" uid="uid://bfsf4xd5j38lv" path="res://Revamp/Card/CardActions/Attack/AttackAnimationRunner.gd" id="9_r5dqq"]
@@ -67,6 +68,10 @@ script = ExtResource("2_hdbik")
 
 [node name="CardMutations" type="Node" parent="Core" unique_id=1430961326]
 script = ExtResource("5_olfje")
+
+[node name="CardBlessings" type="Node" parent="Core" unique_id=871610046 node_paths=PackedStringArray("card")]
+script = ExtResource("6_2su1i")
+card = NodePath("../..")
 
 [node name="Actions" type="Node" parent="." unique_id=857836663]
 

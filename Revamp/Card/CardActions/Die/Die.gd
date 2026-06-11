@@ -17,6 +17,8 @@ var is_hovered := false
 var is_playing := false
 var has_died := false
 
+var blessing_lookup: CardBlessingLookupHelper = CardBlessingLookupHelper.new()
+
 
 func setup(source_card: CardRoot) -> void:
 	card = source_card
@@ -64,6 +66,9 @@ func die_with_context(context: DeathContext) -> void:
 	if context == null:
 		return
 
+	if _try_handle_death_with_blessing():
+		return
+
 	has_died = true
 
 	if context.should_trigger_death_mutations:
@@ -91,6 +96,15 @@ func die_with_context(context: DeathContext) -> void:
 
 	if context.should_free_card and is_instance_valid(card):
 		card.queue_free()
+
+
+func _try_handle_death_with_blessing() -> bool:
+	var card_blessings := blessing_lookup.get_card_blessings(card)
+
+	if card_blessings == null:
+		return false
+
+	return card_blessings.handle_card_would_die(false, false)
 
 
 func _remove_card_from_board() -> void:

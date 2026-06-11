@@ -8,7 +8,7 @@ enum MatchState {
 	NONE,
 	ROUND_INTRO,
 	AUTO_DRAW,
-	REVENANT,
+	BLESSING,
 	BUFF,
 	LEAD_PLACEMENT,
 	RESPONSE_PLACEMENT,
@@ -18,6 +18,7 @@ enum MatchState {
 }
 
 @export var turn_order_state: MatchTurnOrderState
+@export var deck_system_root: DeckSystemRoot
 
 @export var start_on_ready: bool = true
 @export var enable_debug_keys: bool = true
@@ -27,6 +28,11 @@ enum MatchState {
 var current_state: MatchState = MatchState.NONE
 var current_round: int = 0
 var is_running: bool = false
+var has_built_starting_hands: bool = false
+
+var state_name_helper: MatchStateNameHelper = MatchStateNameHelper.new()
+var state_advance_helper: MatchStateAdvanceHelper = MatchStateAdvanceHelper.new()
+var active_owner_helper: MatchActiveOwnerResolverHelper = MatchActiveOwnerResolverHelper.new()
 
 
 func _ready() -> void:
@@ -41,12 +47,19 @@ func _input(event: InputEvent) -> void:
 	if not enable_debug_keys:
 		return
 
-	if event is InputEventKey and event.pressed and not event.echo:
-		if event.keycode == advance_debug_key:
-			advance_debug_state()
+	if not event is InputEventKey:
+		return
 
-		if event.keycode == swap_control_debug_key:
-			swap_controlled_owner()
+	var key_event := event as InputEventKey
+
+	if not key_event.pressed or key_event.echo:
+		return
+
+	if key_event.keycode == advance_debug_key:
+		advance_debug_state()
+
+	if key_event.keycode == swap_control_debug_key:
+		swap_controlled_owner()
 
 
 func start_match() -> void:
@@ -55,12 +68,14 @@ func start_match() -> void:
 
 	is_running = true
 	current_round = 1
+	has_built_starting_hands = false
 
 	if turn_order_state != null:
 		turn_order_state.setup_for_round(current_round)
 
 	round_changed.emit(current_round)
 	set_state(MatchState.ROUND_INTRO)
+	_build_starting_hands_once()
 
 
 func set_state(new_state: MatchState) -> void:
@@ -68,57 +83,27 @@ func set_state(new_state: MatchState) -> void:
 		return
 
 	current_state = new_state
-	_apply_active_owner_for_state(current_state)
+	apply_active_owner_for_current_state()
 
 	match_state_changed.emit(current_state)
-
-	print(
-		"MATCH STATE: ",
-		get_state_name(current_state),
-		" | ACTIVE: ",
-		get_active_owner_name(),
-		" | CONTROLLED: ",
-		get_controlled_owner_name()
-	)
+	_print_current_state()
 
 
 func advance_debug_state() -> void:
-	match current_state:
-		MatchState.NONE:
-			start_match()
+	if state_advance_helper.should_advance_round(current_state):
+		advance_round()
+		return
 
-		MatchState.ROUND_INTRO:
-			set_state(MatchState.AUTO_DRAW)
+	if current_state == MatchState.NONE:
+		start_match()
+		return
 
-		MatchState.AUTO_DRAW:
-			if current_round == 1:
-				set_state(MatchState.REVENANT)
-			else:
-				set_state(MatchState.BUFF)
+	var next_state: MatchState = state_advance_helper.get_next_state(
+		current_state,
+		current_round
+	)
 
-		MatchState.REVENANT:
-			set_state(MatchState.LEAD_PLACEMENT)
-
-		MatchState.BUFF:
-			set_state(MatchState.LEAD_PLACEMENT)
-
-		MatchState.LEAD_PLACEMENT:
-			set_state(MatchState.RESPONSE_PLACEMENT)
-
-		MatchState.RESPONSE_PLACEMENT:
-			set_state(MatchState.COMBAT)
-
-		MatchState.COMBAT:
-			if current_round == 1:
-				set_state(MatchState.DOMINANT_REVEAL)
-			else:
-				set_state(MatchState.ROUND_END)
-
-		MatchState.DOMINANT_REVEAL:
-			set_state(MatchState.ROUND_END)
-
-		MatchState.ROUND_END:
-			advance_round()
+	set_state(next_state)
 
 
 func advance_round() -> void:
@@ -144,29 +129,7 @@ func swap_controlled_owner() -> void:
 
 
 func get_state_name(state: MatchState) -> String:
-	match state:
-		MatchState.NONE:
-			return "NONE"
-		MatchState.ROUND_INTRO:
-			return "ROUND_INTRO"
-		MatchState.AUTO_DRAW:
-			return "AUTO_DRAW"
-		MatchState.REVENANT:
-			return "REVENANT"
-		MatchState.BUFF:
-			return "BUFF"
-		MatchState.LEAD_PLACEMENT:
-			return "LEAD_PLACEMENT"
-		MatchState.RESPONSE_PLACEMENT:
-			return "RESPONSE_PLACEMENT"
-		MatchState.COMBAT:
-			return "COMBAT"
-		MatchState.DOMINANT_REVEAL:
-			return "DOMINANT_REVEAL"
-		MatchState.ROUND_END:
-			return "ROUND_END"
-
-	return "UNKNOWN"
+	return state_name_helper.get_state_name(state)
 
 
 func get_active_owner_name() -> String:
@@ -183,27 +146,32 @@ func get_controlled_owner_name() -> String:
 	return turn_order_state.get_owner_name(turn_order_state.controlled_owner)
 
 
-func _apply_active_owner_for_state(state: MatchState) -> void:
-	if turn_order_state == null:
+func apply_active_owner_for_current_state() -> void:
+	active_owner_helper.apply_active_owner_for_state(
+		current_state,
+		turn_order_state
+	)
+
+
+func _build_starting_hands_once() -> void:
+	if has_built_starting_hands:
 		return
 
-	match state:
-		MatchState.LEAD_PLACEMENT:
-			turn_order_state.set_active_owner(
-				turn_order_state.lead_placement_owner
-			)
+	has_built_starting_hands = true
 
-		MatchState.RESPONSE_PLACEMENT:
-			turn_order_state.set_active_owner(
-				turn_order_state.response_placement_owner
-			)
+	if deck_system_root == null:
+		print("starting hand skipped: deck_system_root missing")
+		return
 
-		MatchState.COMBAT:
-			turn_order_state.set_active_owner(
-				turn_order_state.attacking_first_owner
-			)
+	deck_system_root.build_match_decks()
 
-		_:
-			turn_order_state.set_active_owner(
-				turn_order_state.attacking_first_owner
-			)
+
+func _print_current_state() -> void:
+	print(
+		"MATCH STATE: ",
+		get_state_name(current_state),
+		" | ACTIVE: ",
+		get_active_owner_name(),
+		" | CONTROLLED: ",
+		get_controlled_owner_name()
+	)
