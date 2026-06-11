@@ -20,10 +20,8 @@ metadata/_custom_type_script = "uid://dutbidhjeof0i"
 script = ExtResource("5_uqw47")
 metadata/_custom_type_script = "uid://dutbidhjeof0i"
 
-[node name="DeckSystemRoot" type="Node2D" unique_id=93691211 node_paths=PackedStringArray("player_one_hand", "player_two_hand", "match_setup", "player_one_draw_pile", "player_two_draw_pile", "worker_source")]
+[node name="DeckSystemRoot" type="Node2D" unique_id=93691211 node_paths=PackedStringArray("match_setup", "player_one_draw_pile", "player_two_draw_pile", "worker_source")]
 script = ExtResource("1_aossy")
-player_one_hand = NodePath("PlayerHandRoot")
-player_two_hand = NodePath("PlayerHandRoot2")
 match_setup = NodePath("MatchSetup/MatchDeckSetup")
 player_one_draw_pile = NodePath("DrawPile")
 player_two_draw_pile = NodePath("DrawPile2")

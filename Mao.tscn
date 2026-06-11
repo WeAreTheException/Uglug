@@ -3,7 +3,6 @@
 [ext_resource type="PackedScene" uid="uid://bw8c7m7n5yuk8" path="res://Revamp/Board/Slots.tscn" id="1_yq750"]
 [ext_resource type="PackedScene" uid="uid://1wr1e57v7trd" path="res://Revamp/PlayerHand/Player_Hand.tscn" id="2_mi1n2"]
 [ext_resource type="Resource" uid="uid://kmwnulcu4tml" path="res://Cards/CardPresets/Antler.tres" id="3_20kdy"]
-[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="3_d5ogx"]
 [ext_resource type="Resource" uid="uid://jd5rbexi4lr4" path="res://Cards/CardPresets/Persistant.tres" id="4_5ixgq"]
 [ext_resource type="Resource" uid="uid://dbgpqc3vdl8t" path="res://Cards/CardPresets/Duriant.tres" id="4_oekep"]
 [ext_resource type="Resource" uid="uid://dkobsikajvmmf" path="res://Cards/CardPresets/TestCardPresets/PersistAntler.tres" id="5_8ve8k"]
@@ -46,12 +45,10 @@ opponent_slot_4_card = ExtResource("5_8ve8k")
 
 [node name="PlayerHAnd" parent="." unique_id=371738706 node_paths=PackedStringArray("prime_location") instance=ExtResource("2_mi1n2")]
 position = Vector2(720, 960)
-starting_cards = Array[ExtResource("3_d5ogx")]([])
 prime_location = NodePath("../PrimeCardLocation")
 
 [node name="OpponenetHAnd" parent="." unique_id=1415383407 node_paths=PackedStringArray("prime_location") instance=ExtResource("2_mi1n2")]
 position = Vector2(1188, 708)
-starting_cards = Array[ExtResource("3_d5ogx")]([])
 prime_location = NodePath("../PrimeCardLocation")
 
 [node name="PrimeCardLocation" type="Node2D" parent="." unique_id=2143511336]
