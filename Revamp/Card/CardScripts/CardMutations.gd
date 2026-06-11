@@ -107,30 +107,48 @@ func get_attack_priority() -> int:
 	return total_priority
 
 
-func build_attack_events() -> Array[String]:
-	var events: Array[String] = []
-
-	for runtime in get_active_runtimes():
-		runtime.mutation.add_attack_events(runtime, events)
-
-	if events.is_empty():
-		events.append(AttackSequencer.FORWARD)
-
-	for runtime in get_active_runtimes():
-		events = runtime.mutation.modify_attack_sequence(runtime, events)
-
-	return events
-
-
 func build_attack_steps() -> Array[AttackStep]:
 	var steps: Array[AttackStep] = []
 
-	for event in build_attack_events():
-		var step := AttackStep.new()
-		step.setup(event, MutationSource.BASE, null)
-		steps.append(step)
+	steps.append(_make_base_attack_step())
+
+	for runtime in get_active_runtimes():
+		if runtime == null:
+			continue
+
+		if runtime.mutation == null:
+			continue
+
+		runtime.mutation.add_attack_steps(runtime, steps)
+
+	for runtime in get_active_runtimes():
+		if runtime == null:
+			continue
+
+		if runtime.mutation == null:
+			continue
+
+		steps = runtime.mutation.modify_attack_steps(runtime, steps)
+
+	if steps.is_empty():
+		steps.append(_make_base_attack_step())
 
 	return steps
+
+
+func build_attack_events() -> Array[String]:
+	var events: Array[String] = []
+
+	for step in build_attack_steps():
+		if step == null:
+			continue
+
+		events.append(step.direction)
+
+	if events.is_empty():
+		events.append(AttackStep.FORWARD)
+
+	return events
 
 
 func modify_attack_target(context: AttackContext) -> void:
@@ -190,3 +208,10 @@ func refresh_board_effects() -> void:
 func notify_left_board() -> void:
 	for runtime in get_active_runtimes():
 		runtime.mutation.on_left_board(runtime)
+
+
+func _make_base_attack_step() -> AttackStep:
+	var step := AttackStep.new()
+	step.setup(AttackStep.FORWARD, MutationSource.BASE, null)
+
+	return step
