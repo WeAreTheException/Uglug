@@ -10,13 +10,11 @@ signal lobby_clicked(lobby_info: Dictionary)
 @export var lock_sprite: Sprite2D
 @export var private_tooltip: Label
 
-@export var player_icon_scale := Vector2(2.0, 2.0)
 @export var hover_scale := 1.12
 @export var hover_tween_time := 0.12
 @export var click_ripple_scale := 1.28
 @export var click_ripple_time := 0.18
 
-var steam_identity: SteamPlayerIdentity
 var lobby_info: Dictionary = {}
 var base_scale := Vector2.ONE
 var feedback_tween: Tween
@@ -52,8 +50,6 @@ func setup(source_lobby_info: Dictionary) -> void:
 	if name_label != null:
 		name_label.text = display_name + "'s Game"
 
-	_update_player_icon()
-
 	if is_private_lobby:
 		_set_private_visual()
 	else:
@@ -61,24 +57,6 @@ func setup(source_lobby_info: Dictionary) -> void:
 
 	if is_own_lobby:
 		_disable_own_lobby_feedback()
-
-
-func _update_player_icon() -> void:
-	if player_icon == null:
-		return
-
-	var steam_id: int = int(lobby_info.get("steam_id", 0))
-
-	if steam_identity == null:
-		return
-
-	var avatar_texture := steam_identity.get_avatar_texture_for_steam_id(steam_id)
-
-	if avatar_texture == null:
-		return
-
-	player_icon.texture = avatar_texture
-	player_icon.scale = player_icon_scale
 
 
 func _on_mouse_entered() -> void:

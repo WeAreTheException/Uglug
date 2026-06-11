@@ -115,22 +115,6 @@ steam_identity = NodePath("../SteamPlayerIdentity")
 [node name="LobbyBrowser" type="Node" parent="." unique_id=1407150262]
 script = ExtResource("7_8qovt")
 
-[node name="LobbyIconSpawner" type="Node" parent="." unique_id=1021935390 node_paths=PackedStringArray("lobby_icon_layer", "map_spawn_locations", "steam_identity")]
-script = ExtResource("9_fv0xt")
-lobby_icon_scene = ExtResource("10_sng02")
-lobby_icon_layer = NodePath("../LobbyIconLayer")
-map_spawn_locations = NodePath("../MapSpawnLocations")
-steam_identity = NodePath("../SteamPlayerIdentity")
-
-[node name="LobbyJoinHandler" type="Node" parent="." unique_id=1720122272]
-script = ExtResource("11_lic31")
-
-[node name="LobbyLeaveHandler" type="Node" parent="." unique_id=871460161]
-script = ExtResource("13_k2pwb")
-
-[node name="LobbyDebugHandler" type="Node" parent="." unique_id=1598052194]
-script = ExtResource("12_56wdt")
-
 [node name="MapSpawnLocations" type="Node" parent="." unique_id=1318795435 node_paths=PackedStringArray("spawn_points")]
 script = ExtResource("8_0hjx5")
 spawn_points = [NodePath("SpawnPoint0"), NodePath("SpawnPoint1"), NodePath("SpawnPoint2"), NodePath("SpawnPoint3"), NodePath("SpawnPoint4"), NodePath("SpawnPoint5"), NodePath("SpawnPoint6"), NodePath("SpawnPoint7"), NodePath("SpawnPoint8"), NodePath("SpawnPoint9")]
@@ -164,3 +148,18 @@ position = Vector2(1741, 769)
 
 [node name="SpawnPoint9" type="Marker2D" parent="MapSpawnLocations" unique_id=23526976]
 position = Vector2(1516, 436)
+
+[node name="LobbyIconSpawner" type="Node" parent="." unique_id=1021935390 node_paths=PackedStringArray("lobby_icon_layer", "map_spawn_locations")]
+script = ExtResource("9_fv0xt")
+lobby_icon_scene = ExtResource("10_sng02")
+lobby_icon_layer = NodePath("../LobbyIconLayer")
+map_spawn_locations = NodePath("../MapSpawnLocations")
+
+[node name="LobbyJoinHandler" type="Node" parent="." unique_id=1720122272]
+script = ExtResource("11_lic31")
+
+[node name="LobbyLeaveHandler" type="Node" parent="." unique_id=871460161]
+script = ExtResource("13_k2pwb")
+
+[node name="LobbyDebugHandler" type="Node" parent="." unique_id=1598052194]
+script = ExtResource("12_56wdt")

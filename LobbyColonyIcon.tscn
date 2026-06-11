@@ -17,7 +17,6 @@ colony_visual = NodePath("ColonyAreaVisual")
 bounce_feedback = NodePath("BounceRoot")
 lock_sprite = NodePath("LockSprite")
 private_tooltip = NodePath("PrivateToolTip")
-player_icon_scale = Vector2(1, 1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=67214986]
 position = Vector2(72.5, 71)
