@@ -24,8 +24,9 @@
 [ext_resource type="Script" uid="uid://dp6gve6tfarqs" path="res://Revamp/Phases/BoardPhaseApplier.gd" id="17_b7h4g"]
 [ext_resource type="Script" uid="uid://c18hwqs033t7x" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementEventEmitter.gd" id="18_oekep"]
 [ext_resource type="Script" uid="uid://cmcxm3mp7ljvv" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementCancel.gd" id="19_n5v11"]
-[ext_resource type="Script" uid="uid://difytxi1dyr27" path="res://MatchFlowRoot.gd" id="25_oekep"]
-[ext_resource type="Script" uid="uid://c6ap2csjp7k81" path="res://MatchTurnOrderState.gd" id="26_n5v11"]
+[ext_resource type="Script" uid="uid://difytxi1dyr27" path="res://Revamp/MatchFlow/MatchFlowRoot.gd" id="25_oekep"]
+[ext_resource type="Script" uid="uid://c6ap2csjp7k81" path="res://Revamp/MatchFlow/MatchTurnOrderState.gd" id="26_n5v11"]
+[ext_resource type="Script" uid="uid://e0tr3sanyo1r" path="res://Revamp/MatchFlow/MatchAnnouncementDisplay.gd" id="27_7gy8c"]
 
 [node name="Mao" type="Node2D" unique_id=550121538]
 
@@ -122,3 +123,29 @@ turn_order_state = NodePath("MatchTurnOrderState")
 script = ExtResource("26_n5v11")
 
 [node name="Node2" type="Node" parent="." unique_id=1333215538]
+
+[node name="MatchFlowUI" type="Node2D" parent="." unique_id=1660901840]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="MatchFlowUI" unique_id=1511141763]
+
+[node name="MatchAnnouncementDisplay" type="Control" parent="MatchFlowUI/CanvasLayer" unique_id=866682808 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "round_label", "message_label")]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("27_7gy8c")
+match_flow_root = NodePath("../../../MatchFlowRoot")
+turn_order_state = NodePath("../../../MatchFlowRoot/MatchTurnOrderState")
+round_label = NodePath("RoundLabel")
+message_label = NodePath("MessageLabel")
+
+[node name="RoundLabel" type="Label" parent="MatchFlowUI/CanvasLayer/MatchAnnouncementDisplay" unique_id=1682652415]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 612.0
+
+[node name="MessageLabel" type="Label" parent="MatchFlowUI/CanvasLayer/MatchAnnouncementDisplay" unique_id=286669320]
+layout_mode = 0
+offset_top = 708.0
+offset_right = 1920.0
+offset_bottom = 1080.0
