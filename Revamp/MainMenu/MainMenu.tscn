@@ -18,7 +18,7 @@
 [ext_resource type="Script" uid="uid://doscvmerviyvy" path="res://Revamp/MainMenu/SteamManager.gd" id="16_ee4eu"]
 [ext_resource type="Script" uid="uid://0n3iy5pn6osa" path="res://Revamp/MainMenu/MatchStartHandler.gd" id="17_txptg"]
 
-[node name="MainMenu" type="Control" unique_id=930422600 node_paths=PackedStringArray("map_visual", "lobby_icon_layer", "host_button", "join_random_button", "create_lobby_popup", "join_private_popup", "connection_handler", "lobby_host_handler", "lobby_browser", "lobby_join_handler", "lobby_leave_handler", "map_spawn_locations", "lobby_icon_spawner", "status_label")]
+[node name="MainMenu" type="Control" unique_id=930422600 node_paths=PackedStringArray("map_visual", "lobby_icon_layer", "host_button", "join_random_button", "create_lobby_popup", "join_private_popup", "connection_handler", "lobby_host_handler", "lobby_browser", "lobby_join_handler", "lobby_leave_handler", "map_spawn_locations", "lobby_icon_spawner", "status_label", "match_start_handler")]
 layout_mode = 3
 anchors_preset = 0
 scale = Vector2(0.950005, 1.0128386)
@@ -37,6 +37,7 @@ lobby_leave_handler = NodePath("LobbyLeaveHandler")
 map_spawn_locations = NodePath("MapSpawnLocations")
 lobby_icon_spawner = NodePath("LobbyIconSpawner")
 status_label = NodePath("StatusLabel")
+match_start_handler = NodePath("MatchStartHandler")
 
 [node name="MapVisual" type="TextureRect" parent="." unique_id=1786858430]
 layout_mode = 0
