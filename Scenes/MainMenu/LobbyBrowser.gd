@@ -50,8 +50,6 @@ func _on_lobbies_received(raw_lobbies: Array) -> void:
 		if not raw_lobby is Dictionary:
 			continue
 
-		print("RAW LOBBY: ", raw_lobby)
-
 		if not _is_joinable_lobby(raw_lobby):
 			continue
 
