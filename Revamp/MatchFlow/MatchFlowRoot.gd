@@ -85,8 +85,8 @@ func set_state(new_state: MatchState) -> void:
 	current_state = new_state
 	apply_active_owner_for_current_state()
 
-	match_state_changed.emit(current_state)
 	_print_current_state()
+	match_state_changed.emit(current_state)
 
 
 func advance_debug_state() -> void:

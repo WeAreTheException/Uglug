@@ -69,6 +69,23 @@ func get_left_to_right(owner: SlotRow.SlotOwner) -> bool:
 func get_preview_move_time() -> float:
 	return 0.08 if config == null else config.preview_move_time
 
+func set_active_owner(owner: SlotRow.SlotOwner) -> void:
+	if config != null:
+		config.placing_owner = owner
+
+	print("PLACEMENT OWNER SET: ", _get_owner_name(owner))
+
+
+func _get_owner_name(owner: SlotRow.SlotOwner) -> String:
+	match owner:
+		SlotRow.SlotOwner.PLAYER:
+			return "P1"
+
+		SlotRow.SlotOwner.OPPONENT:
+			return "P2"
+
+	return "UNKNOWN"
+	
 func get_placing_owner() -> SlotRow.SlotOwner:
 	return SlotRow.SlotOwner.PLAYER if config == null else config.placing_owner
 
