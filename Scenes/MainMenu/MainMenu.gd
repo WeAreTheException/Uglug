@@ -10,6 +10,7 @@ class_name MainMenuRoot
 @export var connection_handler: MultiplayerConnectionHandler
 @export var lobby_host_handler: LobbyHostHandler
 @export var lobby_browser: LobbyBrowser
+@export var lobby_join_handler: LobbyJoinHandler
 @export var map_spawn_locations: MapSpawnLocations
 @export var lobby_icon_spawner: LobbyIconSpawner
 @export var status_label: Label
@@ -40,13 +41,17 @@ func _ready() -> void:
 	lobby_host_handler.lobby_create_started.connect(_on_lobby_create_started)
 	lobby_host_handler.lobby_create_succeeded.connect(_on_lobby_create_succeeded)
 	lobby_host_handler.lobby_create_failed.connect(_on_lobby_create_failed)
-	lobby_host_handler.lobby_join_succeeded.connect(_on_lobby_join_succeeded)
-	lobby_host_handler.lobby_join_failed.connect(_on_lobby_join_failed)
+	lobby_host_handler.lobby_join_succeeded.connect(_on_host_lobby_join_succeeded)
+	lobby_host_handler.lobby_join_failed.connect(_on_host_lobby_join_failed)
 
 	lobby_browser.browse_started.connect(_on_lobby_browse_started)
 	lobby_browser.lobbies_updated.connect(_on_lobbies_updated)
 
 	lobby_icon_spawner.lobby_icon_clicked.connect(_on_lobby_icon_clicked)
+
+	lobby_join_handler.join_started.connect(_on_lobby_join_started)
+	lobby_join_handler.join_succeeded.connect(_on_public_lobby_join_succeeded)
+	lobby_join_handler.join_failed.connect(_on_public_lobby_join_failed)
 
 	_test_spawn_locations()
 
@@ -100,11 +105,11 @@ func _on_lobby_create_failed(lobby_name: String, error: int) -> void:
 	_set_status("Lobby creation failed: " + lobby_name + " Error: " + str(error))
 
 
-func _on_lobby_join_succeeded(lobby_name: String) -> void:
+func _on_host_lobby_join_succeeded(lobby_name: String) -> void:
 	_set_status("Joined own lobby: " + lobby_name)
 
 
-func _on_lobby_join_failed(lobby_name: String, error: int) -> void:
+func _on_host_lobby_join_failed(lobby_name: String, error: int) -> void:
 	host_button.disabled = false
 	join_random_button.disabled = false
 	_set_status("Created lobby but failed to join: " + lobby_name + " Error: " + str(error))
@@ -121,8 +126,29 @@ func _on_lobbies_updated(lobbies: Array) -> void:
 
 
 func _on_lobby_icon_clicked(lobby_info: Dictionary) -> void:
-	print("Clicked lobby: ", lobby_info)
-	_set_status("Clicked lobby: " + str(lobby_info.get("lobby_name", "")))
+	var is_private: bool = lobby_info.get("is_private", false)
+
+	if is_private:
+		_set_status("Private lobby join not implemented yet.")
+		return
+
+	lobby_join_handler.join_public_lobby(lobby_info)
+
+
+func _on_lobby_join_started(lobby_name: String) -> void:
+	host_button.disabled = true
+	join_random_button.disabled = true
+	_set_status("Joining lobby: " + lobby_name)
+
+
+func _on_public_lobby_join_succeeded(lobby_name: String) -> void:
+	_set_status("Joined lobby: " + lobby_name)
+
+
+func _on_public_lobby_join_failed(lobby_name: String, error: int) -> void:
+	host_button.disabled = false
+	join_random_button.disabled = false
+	_set_status("Failed to join lobby: " + lobby_name + " Error: " + str(error))
 
 
 func _test_spawn_locations() -> void:

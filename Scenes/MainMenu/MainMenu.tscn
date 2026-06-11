@@ -10,8 +10,9 @@
 [ext_resource type="Script" uid="uid://bwrb55hwbu538" path="res://Scenes/MainMenu/MapSpawnLocations.gd" id="8_0hjx5"]
 [ext_resource type="Script" uid="uid://eyushf5joraa" path="res://Scenes/MainMenu/LobbyIconSpawner.gd" id="9_fv0xt"]
 [ext_resource type="PackedScene" uid="uid://cabei6nqd27sy" path="res://LobbyColonyIcon.tscn" id="10_sng02"]
+[ext_resource type="Script" uid="uid://bxdiyd7i25fw4" path="res://Scenes/MainMenu/LobbyJoinHandler.gd" id="11_lic31"]
 
-[node name="MainMenu" type="Control" unique_id=930422600 node_paths=PackedStringArray("map_visual", "lobby_icon_layer", "host_button", "join_random_button", "create_lobby_popup", "join_private_popup", "connection_handler", "lobby_host_handler", "lobby_browser", "map_spawn_locations", "lobby_icon_spawner", "status_label")]
+[node name="MainMenu" type="Control" unique_id=930422600 node_paths=PackedStringArray("map_visual", "lobby_icon_layer", "host_button", "join_random_button", "create_lobby_popup", "join_private_popup", "connection_handler", "lobby_host_handler", "lobby_browser", "lobby_join_handler", "map_spawn_locations", "lobby_icon_spawner", "status_label")]
 layout_mode = 3
 anchors_preset = 0
 scale = Vector2(0.950005, 1.0128386)
@@ -25,6 +26,7 @@ join_private_popup = NodePath("JoinPrivatePopup")
 connection_handler = NodePath("MultiplayerConnectionHandler")
 lobby_host_handler = NodePath("LobbyHostHandler")
 lobby_browser = NodePath("LobbyBrowser")
+lobby_join_handler = NodePath("LobbyJoinHandler")
 map_spawn_locations = NodePath("MapSpawnLocations")
 lobby_icon_spawner = NodePath("LobbyIconSpawner")
 status_label = NodePath("StatusLabel")
@@ -139,3 +141,6 @@ script = ExtResource("9_fv0xt")
 lobby_icon_scene = ExtResource("10_sng02")
 lobby_icon_layer = NodePath("../LobbyIconLayer")
 map_spawn_locations = NodePath("../MapSpawnLocations")
+
+[node name="LobbyJoinHandler" type="Node" parent="." unique_id=1720122272]
+script = ExtResource("11_lic31")

@@ -1,0 +1,45 @@
+extends Node
+class_name LobbyJoinHandler
+
+signal join_started(lobby_name: String)
+signal join_succeeded(lobby_name: String)
+signal join_failed(lobby_name: String, error: int)
+
+var pending_lobby_name := ""
+
+
+func _ready() -> void:
+	if not GDSync.lobby_joined.is_connected(_on_lobby_joined):
+		GDSync.lobby_joined.connect(_on_lobby_joined)
+
+	if not GDSync.lobby_join_failed.is_connected(_on_lobby_join_failed):
+		GDSync.lobby_join_failed.connect(_on_lobby_join_failed)
+
+
+func join_public_lobby(lobby_info: Dictionary) -> void:
+	var lobby_name: String = lobby_info.get("lobby_name", "")
+
+	if lobby_name == "":
+		join_failed.emit("", -1)
+		return
+
+	pending_lobby_name = lobby_name
+	join_started.emit(lobby_name)
+
+	GDSync.lobby_join(lobby_name, "")
+
+
+func _on_lobby_joined(lobby_name: String) -> void:
+	if pending_lobby_name != "" and lobby_name != pending_lobby_name:
+		return
+
+	pending_lobby_name = ""
+	join_succeeded.emit(lobby_name)
+
+
+func _on_lobby_join_failed(lobby_name: String, error: int) -> void:
+	if pending_lobby_name != "" and lobby_name != pending_lobby_name:
+		return
+
+	pending_lobby_name = ""
+	join_failed.emit(lobby_name, error)
