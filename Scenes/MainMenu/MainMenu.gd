@@ -81,7 +81,9 @@ func _on_connection_started() -> void:
 
 
 func _on_connection_succeeded() -> void:
+	host_button.text = "Host"
 	host_button.disabled = false
+	join_random_button.visible = true
 	join_random_button.disabled = false
 	lobby_browser.start_browsing()
 	_set_status("Connected to GD-Sync.")
@@ -117,13 +119,15 @@ func _on_lobby_create_failed(lobby_name: String, error: int) -> void:
 	_set_status("Lobby creation failed: " + lobby_name + " Error: " + str(error))
 
 
-func _on_host_lobby_join_succeeded(lobby_name: String) -> void:
+func _on_host_lobby_join_succeeded(lobby_name: String, lobby_info: Dictionary) -> void:
 	is_hosting_lobby = true
 	hosted_lobby_name = lobby_name
 
-	host_button.text = "Close Lobby"
+	host_button.text = "Leave Lobby"
 	host_button.disabled = false
 	join_random_button.visible = false
+
+	lobby_icon_spawner.update_lobbies(_get_lobbies_for_map(lobby_info))
 
 	_set_status("Hosting lobby.")
 
@@ -141,7 +145,11 @@ func _on_lobby_browse_started() -> void:
 func _on_lobbies_updated(lobbies: Array) -> void:
 	current_lobbies = lobbies
 	print("Joinable lobbies found: ", lobbies.size())
-	lobby_icon_spawner.update_lobbies(lobbies)
+
+	if is_hosting_lobby:
+		lobby_icon_spawner.update_lobbies(_get_lobbies_for_map(lobby_host_handler.pending_lobby_info))
+	else:
+		lobby_icon_spawner.update_lobbies(current_lobbies)
 
 
 func _on_lobby_icon_clicked(lobby_info: Dictionary) -> void:
@@ -179,7 +187,7 @@ func _on_public_lobby_join_failed(lobby_name: String, error: int) -> void:
 
 func _on_lobby_leave_requested() -> void:
 	host_button.disabled = true
-	_set_status("Closing lobby...")
+	_set_status("Leaving lobby...")
 
 
 func _on_lobby_leave_completed() -> void:
@@ -191,8 +199,25 @@ func _on_lobby_leave_completed() -> void:
 	join_random_button.visible = true
 	join_random_button.disabled = false
 
+	lobby_icon_spawner.update_lobbies(current_lobbies)
 	lobby_browser.start_browsing()
 	_set_status("Connected to GD-Sync.")
+
+
+func _get_lobbies_for_map(own_lobby_info: Dictionary) -> Array:
+	var lobbies := current_lobbies.duplicate()
+
+	if own_lobby_info.is_empty():
+		return lobbies
+
+	var own_lobby_name: String = own_lobby_info.get("lobby_name", "")
+
+	for lobby in lobbies:
+		if lobby.get("lobby_name", "") == own_lobby_name:
+			return lobbies
+
+	lobbies.append(own_lobby_info)
+	return lobbies
 
 
 func _test_spawn_locations() -> void:
