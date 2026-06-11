@@ -21,6 +21,10 @@ signal sacrifice_selection_changed(cards: Array[CardRoot])
 @export var drag_layer: Node2D
 @export var prime_location: Node2D
 
+@export var prime_button_root: Node
+@export var sort_buttons_root: Node
+@export var sacrifice_button_root: Node
+
 @export var card_spawner: Hand_CardSpawner
 @export var hand_layout: Hand_Layout
 @export var sort_controller: Hand_SortController
@@ -34,10 +38,6 @@ var setup_helper := HandRootSetupHelper.new()
 var callbacks := HandRootCallbacksHelper.new()
 var placement_release := HandPlacementReleaseHelper.new()
 
-@export var prime_button_root: Node
-@export var sort_buttons_root: Node
-@export var sacrifice_button_root: Node
-
 
 func _ready() -> void:
 	callbacks.setup(self)
@@ -47,7 +47,6 @@ func _ready() -> void:
 		spawn_starting_cards()
 
 	enter_idle_state()
-	arrange_cards()
 	emit_prime_state()
 
 
@@ -69,8 +68,13 @@ func spawn_card(data: CardData) -> CardRoot:
 
 
 func arrange_cards() -> void:
-	if hand_layout != null and card_spawner != null:
-		hand_layout.arrange_cards(card_spawner.get_cards())
+	if hand_layout == null:
+		return
+
+	if card_spawner == null:
+		return
+
+	hand_layout.arrange_cards(card_spawner.get_cards())
 
 
 func request_prime_toggle() -> void:
@@ -102,15 +106,21 @@ func enter_idle_state() -> void:
 	if state_machine != null:
 		state_machine.change_state(Hand_StateMachine.IDLE)
 
+	arrange_cards()
+
 
 func enter_play_state() -> void:
 	if state_machine != null:
 		state_machine.change_state(Hand_StateMachine.PLAY)
 
+	arrange_cards()
+
 
 func enter_sacrifice_state() -> void:
 	if state_machine != null:
 		state_machine.change_state(Hand_StateMachine.SACRIFICE)
+
+	arrange_cards()
 
 
 func enter_blessing_state() -> void:
@@ -119,6 +129,8 @@ func enter_blessing_state() -> void:
 
 	if state_machine != null:
 		state_machine.change_state(Hand_StateMachine.BLESSING)
+
+	arrange_cards()
 
 
 func release_primed_card_for_placement(card: CardRoot) -> void:

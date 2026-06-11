@@ -34,6 +34,7 @@ sort_controller = NodePath("Hand_SortController")
 state_machine = NodePath("Hand_StateMachine")
 interaction_root = NodePath("Hand_InteractionRoot")
 sacrifice_selection = NodePath("Hand_SacrificeSelection")
+spawn_starting_cards_on_ready = false
 
 [node name="Drag_Layer" type="Node2D" parent="." unique_id=364693775]
 
@@ -61,9 +62,6 @@ script = ExtResource("12_0pi77")
 [node name="Hand_BlessingLayout" type="Node2D" parent="Hand_Layout" unique_id=139527391]
 script = ExtResource("8_egog8")
 
-[node name="Hand_SortController" type="Node" parent="." unique_id=447247999]
-script = ExtResource("13_vr0u0")
-
 [node name="Hand_StateMachine" type="Node" parent="." unique_id=101836643 node_paths=PackedStringArray("idle_state", "play_state", "sacrifice_state", "blessing_state")]
 script = ExtResource("14_osyj2")
 idle_state = NodePath("Hand_IdleState")
@@ -82,6 +80,9 @@ script = ExtResource("17_nwl14")
 
 [node name="Hand_BlessingState" type="Node" parent="Hand_StateMachine" unique_id=2117909623]
 script = ExtResource("14_b4cb6")
+
+[node name="Hand_SortController" type="Node" parent="." unique_id=447247999]
+script = ExtResource("13_vr0u0")
 
 [node name="Hand_InteractionRoot" type="Node" parent="." unique_id=1490631773 node_paths=PackedStringArray("input_router", "hover_focus", "drag_controller", "prime_controller")]
 script = ExtResource("18_phdwp")

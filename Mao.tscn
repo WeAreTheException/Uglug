@@ -64,10 +64,11 @@ position = Vector2(1080, 360)
 script = ExtResource("8_cc2no")
 metadata/_custom_type_script = "uid://bxbqihkit6rgo"
 
-[node name="HandPhaseApplier" type="Node" parent="PhaseManager" unique_id=1109584642 node_paths=PackedStringArray("phase_manager", "lead_hand")]
+[node name="HandPhaseApplier" type="Node" parent="PhaseManager" unique_id=1109584642 node_paths=PackedStringArray("phase_manager", "lead_hand", "response_hand")]
 script = ExtResource("9_cc2no")
 phase_manager = NodePath("..")
 lead_hand = NodePath("../../PlayerHAnd")
+response_hand = NodePath("../../OpponenetHAnd")
 
 [node name="SacrificeController" type="Node" parent="." unique_id=1432478239 node_paths=PackedStringArray("player_hand", "requirement", "pending_boat", "committer")]
 script = ExtResource("10_1j514")
@@ -138,7 +139,6 @@ script = ExtResource("26_n5v11")
 script = ExtResource("24_oekep")
 match_flow_root = NodePath("..")
 phase_manager = NodePath("../../PhaseManager")
-blessing_uses_buff_phase = true
 
 [node name="BlessingSelectionState" type="Node" parent="MatchFlowRoot" unique_id=1333215538]
 script = ExtResource("25_n5v11")
