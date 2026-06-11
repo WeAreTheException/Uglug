@@ -19,6 +19,7 @@ var lobby_info: Dictionary = {}
 var base_scale := Vector2.ONE
 var feedback_tween: Tween
 var is_private_lobby := false
+var is_own_lobby := false
 
 
 func _ready() -> void:
@@ -42,6 +43,9 @@ func setup(source_lobby_info: Dictionary) -> void:
 
 	var display_name: String = lobby_info.get("display_name", "Unknown")
 	is_private_lobby = lobby_info.get("is_private", false)
+	is_own_lobby = lobby_info.get("is_own_lobby", false)
+
+	input_pickable = not is_own_lobby
 
 	if name_label != null:
 		name_label.text = display_name + "'s Game"
@@ -51,8 +55,14 @@ func setup(source_lobby_info: Dictionary) -> void:
 	else:
 		_set_public_visual()
 
+	if is_own_lobby:
+		_disable_own_lobby_feedback()
+
 
 func _on_mouse_entered() -> void:
+	if is_own_lobby:
+		return
+
 	_tween_scale(base_scale * hover_scale)
 
 	if is_private_lobby and private_tooltip != null:
@@ -60,6 +70,9 @@ func _on_mouse_entered() -> void:
 
 
 func _on_mouse_exited() -> void:
+	if is_own_lobby:
+		return
+
 	_tween_scale(base_scale)
 
 	if private_tooltip != null:
@@ -67,6 +80,9 @@ func _on_mouse_exited() -> void:
 
 
 func _on_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
+	if is_own_lobby:
+		return
+
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 			_play_click_ripple()
@@ -120,3 +136,17 @@ func _set_private_visual() -> void:
 
 	if colony_visual != null:
 		colony_visual.modulate = Color(0.65, 0.65, 0.65, 1.0)
+
+
+func _disable_own_lobby_feedback() -> void:
+	if feedback_tween != null:
+		feedback_tween.kill()
+		feedback_tween = null
+
+	scale = base_scale
+
+	if bounce_feedback != null:
+		bounce_feedback.stop_bounce()
+
+	if private_tooltip != null:
+		private_tooltip.visible = false

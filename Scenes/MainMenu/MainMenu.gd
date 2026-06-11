@@ -210,13 +210,17 @@ func _get_lobbies_for_map(own_lobby_info: Dictionary) -> Array:
 	if own_lobby_info.is_empty():
 		return lobbies
 
-	var own_lobby_name: String = own_lobby_info.get("lobby_name", "")
+	var own_lobby := own_lobby_info.duplicate()
+	own_lobby["is_own_lobby"] = true
 
-	for lobby in lobbies:
-		if lobby.get("lobby_name", "") == own_lobby_name:
+	var own_lobby_name: String = own_lobby.get("lobby_name", "")
+
+	for i in range(lobbies.size()):
+		if lobbies[i].get("lobby_name", "") == own_lobby_name:
+			lobbies[i] = own_lobby
 			return lobbies
 
-	lobbies.append(own_lobby_info)
+	lobbies.append(own_lobby)
 	return lobbies
 
 
