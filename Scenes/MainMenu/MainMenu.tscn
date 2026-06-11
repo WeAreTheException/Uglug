@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://30ojatnmofq6" path="res://Scenes/MainMenu/MultiplayerConnectionHandler.gd" id="3_kpx3y"]
 [ext_resource type="Texture2D" uid="uid://6jo7btq8htsp" path="res://Scenes/MainMenu/UglugUIMockup.png" id="3_ua038"]
 [ext_resource type="PackedScene" uid="uid://n0rxxqny4h76" path="res://Scenes/MainMenu/CreateLobbyPopup.tscn" id="3_vapy7"]
+[ext_resource type="PackedScene" uid="uid://dw6pojo7xhmdk" path="res://Scenes/MainMenu/JoinPrivatePopup.tscn" id="4_ah1a3"]
 [ext_resource type="Script" uid="uid://cp172vtbwkgig" path="res://Scenes/MainMenu/LobbyHostHandler.gd" id="6_vapy7"]
 [ext_resource type="Script" uid="uid://dbfgquxv0g107" path="res://Scenes/MainMenu/LobbyBrowser.gd" id="7_8qovt"]
 [ext_resource type="Script" uid="uid://bwrb55hwbu538" path="res://Scenes/MainMenu/MapSpawnLocations.gd" id="8_0hjx5"]
@@ -70,11 +71,13 @@ offset_right = 1322.7856
 offset_bottom = 694.43665
 pivot_offset = Vector2(303.15637, 169.81976)
 
-[node name="JoinPrivatePopup" type="PanelContainer" parent="." unique_id=129386457]
+[node name="JoinPrivatePopup" parent="." unique_id=1459111363 instance=ExtResource("4_ah1a3")]
 visible = false
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = 715.78577
+offset_top = 355.4367
+offset_right = 1322.7858
+offset_bottom = 694.4367
 
 [node name="MultiplayerConnectionHandler" type="Node" parent="." unique_id=272675719]
 script = ExtResource("3_kpx3y")

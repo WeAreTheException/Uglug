@@ -163,7 +163,7 @@ func _on_lobby_icon_clicked(lobby_info: Dictionary) -> void:
 	var is_private: bool = lobby_info.get("is_private", false)
 
 	if is_private:
-		_set_status("Private lobby join not implemented yet.")
+		join_private_popup.visible = true
 		return
 
 	if is_hosting_lobby:
