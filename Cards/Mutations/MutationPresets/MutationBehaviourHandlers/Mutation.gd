@@ -16,37 +16,16 @@ func replaces_base_attack_step(_runtime: MutationRuntime) -> bool:
 
 func add_attack_steps(
 	_runtime: MutationRuntime,
-	steps: Array[AttackStep]
+	_steps: Array[AttackStep]
 ) -> void:
-	var events: Array[String] = []
-	add_attack_events(_runtime, events)
-
-	for event in events:
-		var step := AttackStep.new()
-		step.setup(event, MutationSource.MUTATION, self)
-		steps.append(step)
+	pass
 
 
 func modify_attack_steps(
-	runtime: MutationRuntime,
+	_runtime: MutationRuntime,
 	steps: Array[AttackStep]
 ) -> Array[AttackStep]:
-	var events: Array[String] = []
-
-	for step in steps:
-		if step != null:
-			events.append(step.direction)
-
-	events = modify_attack_sequence(runtime, events)
-
-	var result: Array[AttackStep] = []
-
-	for event in events:
-		var step := AttackStep.new()
-		step.setup(event, MutationSource.BASE, null)
-		result.append(step)
-
-	return result
+	return steps
 
 
 func modify_attack_target_context(
@@ -133,20 +112,6 @@ func refresh_board_context(runtime: MutationRuntime) -> void:
 
 func on_left_board_context(runtime: MutationRuntime) -> void:
 	on_left_board(runtime)
-
-
-func add_attack_events(
-	_runtime: MutationRuntime,
-	_events: Array[String]
-) -> void:
-	pass
-
-
-func modify_attack_sequence(
-	_runtime: MutationRuntime,
-	sequence: Array[String]
-) -> Array[String]:
-	return sequence
 
 
 func modify_attack_target(

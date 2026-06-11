@@ -66,7 +66,7 @@ func _flip_side_steps(steps: Array[AttackStep]) -> Array[AttackStep]:
 
 func _copy_step_with_flipped_direction(source_step: AttackStep) -> AttackStep:
 	var new_step := AttackStep.new()
-	var direction := source_step.direction
+	var direction: String = source_step.direction
 
 	if direction == LEFT:
 		direction = RIGHT
