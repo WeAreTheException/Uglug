@@ -63,8 +63,27 @@ func _arrange_card(card: CardRoot, index: int, count: int) -> void:
 	var total_width: float = card_spacing * float(count - 1)
 	var start_x: float = -total_width / 2.0
 	var x_pos: float = start_x + card_spacing * index
-	var normalized_x: float = clampf(x_pos / hand_width_reference, -1.0, 1.0)
-	var y_pos: float = -(1.0 - normalized_x * normalized_x) * _get_curve_height()
+
+	var normalization_width: float = hand_width_reference
+
+	if current_mode == LayoutMode.BLESSING:
+		normalization_width = max(total_width / 2.0, 1.0)
+
+	var normalized_x: float = clampf(
+		x_pos / normalization_width,
+		-1.0,
+		1.0
+	)
+
+	var y_pos: float = 0.0
+
+	if current_mode == LayoutMode.BLESSING:
+		y_pos = (1.0 - normalized_x * normalized_x) * _get_curve_height()
+	else:
+		y_pos = -(1.0 - normalized_x * normalized_x) * _get_curve_height()
+
+	y_pos += _get_y_offset()
+
 	var target_position: Vector2 = global_position + Vector2(x_pos, y_pos)
 	var target_rotation: float = normalized_x * _get_max_rotation_degrees()
 
@@ -118,3 +137,13 @@ func _get_max_rotation_degrees() -> float:
 func _get_target_scale() -> Vector2:
 	var layout := _get_active_layout()
 	return layout.target_scale if layout != null else Vector2.ONE
+
+
+func _get_y_offset() -> float:
+	if current_mode != LayoutMode.BLESSING:
+		return 0.0
+
+	if blessing_layout == null:
+		return 0.0
+
+	return blessing_layout.y_offset

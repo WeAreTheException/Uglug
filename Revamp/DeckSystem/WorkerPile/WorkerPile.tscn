@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://be3ya854p2xh" path="res://Revamp/DeckSystem/WorkerPile/WorkerSource.gd" id="2_ickr5"]
 [ext_resource type="Resource" uid="uid://bn1jyervrnsg" path="res://Cards/CardPresets/WorkerAnt.tres" id="2_mhn3j"]
-[ext_resource type="Texture2D" uid="uid://dgceyq4phwwts" path="res://Art/AntBack/WarriorDeck.png" id="4_ickr5"]
 [ext_resource type="Script" uid="uid://cff6om1fvlyac" path="res://Revamp/DeckSystem/WorkerPile/WorkerPileView.gd" id="4_mhn3j"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5bt0e"]
@@ -32,7 +31,6 @@ offset_right = 72.0
 offset_bottom = 108.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("4_ickr5")
 expand_mode = 1
 
 [node name="DrawPileInput" type="Area2D" parent="." unique_id=2089502837]
