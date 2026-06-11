@@ -6,7 +6,10 @@ signal lobby_clicked(lobby_info: Dictionary)
 @export var name_label: Label
 @export var player_icon: Sprite2D
 @export var colony_visual: CanvasItem
-@export var bounce_root: Node2D
+@export var bounce_feedback: LobbyBounceFeedback
+@export var lock_sprite: Sprite2D
+@export var private_tooltip: Label
+
 @export var hover_scale := 1.12
 @export var hover_tween_time := 0.12
 @export var click_ripple_scale := 1.28
@@ -15,6 +18,7 @@ signal lobby_clicked(lobby_info: Dictionary)
 var lobby_info: Dictionary = {}
 var base_scale := Vector2.ONE
 var feedback_tween: Tween
+var is_private_lobby := false
 
 
 func _ready() -> void:
@@ -23,6 +27,10 @@ func _ready() -> void:
 
 	if name_label != null:
 		name_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+	if private_tooltip != null:
+		private_tooltip.visible = false
+		private_tooltip.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 	input_event.connect(_on_input_event)
 	mouse_entered.connect(_on_mouse_entered)
@@ -33,12 +41,12 @@ func setup(source_lobby_info: Dictionary) -> void:
 	lobby_info = source_lobby_info
 
 	var display_name: String = lobby_info.get("display_name", "Unknown")
-	var is_private: bool = lobby_info.get("is_private", false)
+	is_private_lobby = lobby_info.get("is_private", false)
 
 	if name_label != null:
 		name_label.text = display_name + "'s Game"
 
-	if is_private:
+	if is_private_lobby:
 		_set_private_visual()
 	else:
 		_set_public_visual()
@@ -47,9 +55,15 @@ func setup(source_lobby_info: Dictionary) -> void:
 func _on_mouse_entered() -> void:
 	_tween_scale(base_scale * hover_scale)
 
+	if is_private_lobby and private_tooltip != null:
+		private_tooltip.visible = true
+
 
 func _on_mouse_exited() -> void:
 	_tween_scale(base_scale)
+
+	if private_tooltip != null:
+		private_tooltip.visible = false
 
 
 func _on_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
@@ -81,16 +95,28 @@ func _tween_scale(target_scale: Vector2) -> void:
 
 
 func _set_public_visual() -> void:
-	if bounce_root != null:
-		bounce_root.visible = true
+	if bounce_feedback != null:
+		bounce_feedback.start_bounce()
+
+	if lock_sprite != null:
+		lock_sprite.visible = false
+
+	if private_tooltip != null:
+		private_tooltip.visible = false
 
 	if colony_visual != null:
 		colony_visual.modulate = Color.WHITE
 
 
 func _set_private_visual() -> void:
-	if bounce_root != null:
-		bounce_root.visible = false
+	if bounce_feedback != null:
+		bounce_feedback.start_bounce()
+
+	if lock_sprite != null:
+		lock_sprite.visible = true
+
+	if private_tooltip != null:
+		private_tooltip.visible = false
 
 	if colony_visual != null:
 		colony_visual.modulate = Color(0.65, 0.65, 0.65, 1.0)
