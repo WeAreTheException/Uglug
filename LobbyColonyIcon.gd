@@ -110,7 +110,7 @@ func _set_public_visual() -> void:
 
 func _set_private_visual() -> void:
 	if bounce_feedback != null:
-		bounce_feedback.start_bounce()
+		bounce_feedback.stop_bounce()
 
 	if lock_sprite != null:
 		lock_sprite.visible = true

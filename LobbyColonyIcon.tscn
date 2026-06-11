@@ -8,12 +8,15 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_td5jp"]
 size = Vector2(145, 142)
 
-[node name="LobbyColonyIcon" type="Area2D" unique_id=316670724 node_paths=PackedStringArray("name_label", "player_icon", "colony_visual")]
+[node name="LobbyColonyIcon" type="Area2D" unique_id=316670724 node_paths=PackedStringArray("name_label", "player_icon", "colony_visual", "bounce_feedback", "lock_sprite", "private_tooltip")]
 z_index = 20
 script = ExtResource("1_7kys0")
-name_label = NodePath("NameLabel")
-player_icon = NodePath("PlayerIcon")
+name_label = NodePath("BounceRoot/NameLabel")
+player_icon = NodePath("BounceRoot/PlayerIcon")
 colony_visual = NodePath("ColonyAreaVisual")
+bounce_feedback = NodePath("BounceRoot")
+lock_sprite = NodePath("LockSprite")
+private_tooltip = NodePath("PrivateToolTip")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=67214986]
 position = Vector2(72.5, 71)
@@ -21,18 +24,18 @@ shape = SubResource("RectangleShape2D_td5jp")
 
 [node name="ColonyAreaVisual" type="Polygon2D" parent="." unique_id=1617616787]
 
-[node name="PlayerIcon" type="Sprite2D" parent="." unique_id=1623511095]
+[node name="BounceRoot" type="Node2D" parent="." unique_id=1137112386]
+script = ExtResource("3_5upnk")
+
+[node name="PlayerIcon" type="Sprite2D" parent="BounceRoot" unique_id=1623511095]
 position = Vector2(72.75, 71.25001)
 scale = Vector2(0.12041667, 0.07607528)
 texture = ExtResource("2_pw6qh")
 
-[node name="NameLabel" type="Label" parent="." unique_id=1184373755]
+[node name="NameLabel" type="Label" parent="BounceRoot" unique_id=1184373755]
 offset_right = 145.0
 offset_bottom = 23.0
 text = "PlayerName"
-
-[node name="BounceRoot" type="Node2D" parent="." unique_id=1137112386]
-script = ExtResource("3_5upnk")
 
 [node name="LockSprite" type="Sprite2D" parent="." unique_id=520031428]
 visible = false
