@@ -10,6 +10,7 @@ signal close_requested
 @export var enter_button: Button
 @export var close_button: Button
 @export var incorrect_password_label: Label
+@export var lobby_no_longer_exists_label: Label
 
 @export var flash_time := 0.15
 @export var flash_count := 3
@@ -21,8 +22,7 @@ var flash_tween: Tween
 func _ready() -> void:
 	visible = false
 
-	if incorrect_password_label != null:
-		incorrect_password_label.visible = false
+	_hide_error_labels()
 
 	digit_one.pressed.connect(_on_digit_pressed.bind(0))
 	digit_two.pressed.connect(_on_digit_pressed.bind(1))
@@ -35,29 +35,20 @@ func _ready() -> void:
 
 func open() -> void:
 	visible = true
-	_hide_incorrect_password()
+	_hide_error_labels()
 
 
 func close() -> void:
 	visible = false
-	_hide_incorrect_password()
+	_hide_error_labels()
 
 
 func flash_incorrect_password() -> void:
-	if incorrect_password_label == null:
-		return
+	_flash_label(incorrect_password_label)
 
-	if flash_tween != null:
-		flash_tween.kill()
 
-	incorrect_password_label.visible = true
-	incorrect_password_label.modulate.a = 1.0
-
-	flash_tween = create_tween()
-
-	for i in range(flash_count):
-		flash_tween.tween_property(incorrect_password_label, "modulate:a", 0.0, flash_time)
-		flash_tween.tween_property(incorrect_password_label, "modulate:a", 1.0, flash_time)
+func flash_lobby_no_longer_exists() -> void:
+	_flash_label(lobby_no_longer_exists_label)
 
 
 func _on_digit_pressed(index: int) -> void:
@@ -88,7 +79,26 @@ func _update_digit_text() -> void:
 	digit_three.text = str(digits[2])
 
 
-func _hide_incorrect_password() -> void:
+func _flash_label(label: Label) -> void:
+	if label == null:
+		return
+
+	_hide_error_labels()
+
+	if flash_tween != null:
+		flash_tween.kill()
+
+	label.visible = true
+	label.modulate.a = 1.0
+
+	flash_tween = create_tween()
+
+	for i in range(flash_count):
+		flash_tween.tween_property(label, "modulate:a", 0.0, flash_time)
+		flash_tween.tween_property(label, "modulate:a", 1.0, flash_time)
+
+
+func _hide_error_labels() -> void:
 	if flash_tween != null:
 		flash_tween.kill()
 		flash_tween = null
@@ -96,3 +106,7 @@ func _hide_incorrect_password() -> void:
 	if incorrect_password_label != null:
 		incorrect_password_label.visible = false
 		incorrect_password_label.modulate.a = 1.0
+
+	if lobby_no_longer_exists_label != null:
+		lobby_no_longer_exists_label.visible = false
+		lobby_no_longer_exists_label.modulate.a = 1.0

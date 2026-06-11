@@ -107,7 +107,7 @@ script = ExtResource("7_8qovt")
 
 [node name="MapSpawnLocations" type="Node" parent="." unique_id=1318795435 node_paths=PackedStringArray("spawn_points")]
 script = ExtResource("8_0hjx5")
-spawn_points = [NodePath("SpawnPoint0"), NodePath("SpawnPoint1"), NodePath("SpawnPoint2"), NodePath("SpawnPoint3"), NodePath("SpawnPoint4"), NodePath("SpawnPoint5"), NodePath("SpawnPoint6"), NodePath("SpawnPoint7"), NodePath("SpawnPoint8"), NodePath("SpawnPoint9"), null]
+spawn_points = [NodePath("SpawnPoint0"), NodePath("SpawnPoint1"), NodePath("SpawnPoint2"), NodePath("SpawnPoint3"), NodePath("SpawnPoint4"), NodePath("SpawnPoint5"), NodePath("SpawnPoint6"), NodePath("SpawnPoint7"), NodePath("SpawnPoint8"), NodePath("SpawnPoint9")]
 
 [node name="SpawnPoint0" type="Marker2D" parent="MapSpawnLocations" unique_id=169911074]
 position = Vector2(180, 360)

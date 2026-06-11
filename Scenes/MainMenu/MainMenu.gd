@@ -215,6 +215,11 @@ func _on_public_lobby_join_failed(lobby_name: String, error: int) -> void:
 		join_private_popup.flash_incorrect_password()
 		return
 
+	if error == ENUMS.LOBBY_JOIN_ERROR.LOBBY_DOES_NOT_EXIST:
+		join_private_popup.flash_lobby_no_longer_exists()
+		pending_private_lobby_info = {}
+		return
+
 	_set_status("Failed to join lobby: " + lobby_name + " Error: " + str(error))
 
 

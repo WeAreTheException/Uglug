@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bxww4ptycn2xx" path="res://Scenes/MainMenu/JoinPrivatePopup.gd" id="1_3pehx"]
 
-[node name="JoinPrivatePopup" type="Control" unique_id=1459111363 node_paths=PackedStringArray("digit_one", "digit_two", "digit_three", "enter_button", "close_button", "incorrect_password_label")]
+[node name="JoinPrivatePopup" type="Control" unique_id=1459111363 node_paths=PackedStringArray("digit_one", "digit_two", "digit_three", "enter_button", "close_button", "incorrect_password_label", "lobby_no_longer_exists_label")]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 607.0
@@ -14,6 +14,7 @@ digit_three = NodePath("PasscodeRoot/DigitThree")
 enter_button = NodePath("EnterButton")
 close_button = NodePath("CloseButton")
 incorrect_password_label = NodePath("IncorrectPasswordLabel")
+lobby_no_longer_exists_label = NodePath("LobbyNoLongerExistsLabel")
 
 [node name="Panel" type="Panel" parent="." unique_id=170280430]
 layout_mode = 0
@@ -32,6 +33,19 @@ pivot_offset = Vector2(186, 28)
 theme_override_colors/font_color = Color(1, 0, 0, 1)
 theme_override_font_sizes/font_size = 40
 text = "Incorrect Password"
+vertical_alignment = 1
+
+[node name="LobbyNoLongerExistsLabel" type="Label" parent="." unique_id=2027421260]
+visible = false
+layout_mode = 0
+offset_left = 79.0
+offset_top = 259.0
+offset_right = 527.0
+offset_bottom = 314.0
+pivot_offset = Vector2(186, 28)
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_font_sizes/font_size = 40
+text = "Lobby No Longer Exists"
 vertical_alignment = 1
 
 [node name="PasscodeRoot" type="Control" parent="." unique_id=900074981]

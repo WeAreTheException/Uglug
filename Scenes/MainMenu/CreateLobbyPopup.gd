@@ -12,7 +12,7 @@ signal close_requested
 @export var create_button: Button
 @export var close_button: Button
 
-var digits := [1, 1, 1]
+var digits := [0, 0, 0]
 
 
 func _ready() -> void:
