@@ -14,6 +14,7 @@
 [ext_resource type="Script" uid="uid://bxdiyd7i25fw4" path="res://Scenes/MainMenu/LobbyJoinHandler.gd" id="11_lic31"]
 [ext_resource type="Script" uid="uid://dnitutk6wh3uo" path="res://Scenes/MainMenu/LobbyDebugHandler.gd" id="12_56wdt"]
 [ext_resource type="Script" uid="uid://bhnvcq27dv42" path="res://Scenes/MainMenu/LobbyLeaveHandler.gd" id="13_k2pwb"]
+[ext_resource type="Script" uid="uid://b3jnngb37qq0g" path="res://Scenes/MainMenu/SteamPlayerIdentity.gd" id="15_gkjg1"]
 
 [node name="MainMenu" type="Control" unique_id=930422600 node_paths=PackedStringArray("map_visual", "lobby_icon_layer", "host_button", "join_random_button", "create_lobby_popup", "join_private_popup", "connection_handler", "lobby_host_handler", "lobby_browser", "lobby_join_handler", "lobby_leave_handler", "map_spawn_locations", "lobby_icon_spawner", "status_label")]
 layout_mode = 3
@@ -99,8 +100,9 @@ theme_override_font_sizes/font_size = 50
 text = "Connecting"
 autowrap_mode = 2
 
-[node name="LobbyHostHandler" type="Node" parent="." unique_id=1268490218]
+[node name="LobbyHostHandler" type="Node" parent="." unique_id=1268490218 node_paths=PackedStringArray("steam_identity")]
 script = ExtResource("6_vapy7")
+steam_identity = NodePath("../SteamPlayerIdentity")
 
 [node name="LobbyBrowser" type="Node" parent="." unique_id=1407150262]
 script = ExtResource("7_8qovt")
@@ -153,3 +155,6 @@ script = ExtResource("13_k2pwb")
 
 [node name="LobbyDebugHandler" type="Node" parent="." unique_id=1598052194]
 script = ExtResource("12_56wdt")
+
+[node name="SteamPlayerIdentity" type="Node" parent="." unique_id=1003308169]
+script = ExtResource("15_gkjg1")
