@@ -2,7 +2,7 @@ extends Control
 class_name MainMenuRoot
 
 @export var map_visual: TextureRect
-@export var lobby_icon_layer: Control
+@export var lobby_icon_layer: Node2D
 @export var host_button: Button
 @export var join_random_button: Button
 @export var create_lobby_popup: CreateLobbyPopup
@@ -11,6 +11,7 @@ class_name MainMenuRoot
 @export var lobby_host_handler: LobbyHostHandler
 @export var lobby_browser: LobbyBrowser
 @export var map_spawn_locations: MapSpawnLocations
+@export var lobby_icon_spawner: LobbyIconSpawner
 @export var status_label: Label
 
 
@@ -41,6 +42,8 @@ func _ready() -> void:
 
 	lobby_browser.browse_started.connect(_on_lobby_browse_started)
 	lobby_browser.lobbies_updated.connect(_on_lobbies_updated)
+
+	lobby_icon_spawner.lobby_icon_clicked.connect(_on_lobby_icon_clicked)
 
 	_test_spawn_locations()
 
@@ -108,7 +111,13 @@ func _on_lobby_browse_started() -> void:
 
 func _on_lobbies_updated(lobbies: Array) -> void:
 	print("Lobbies found: ", lobbies.size())
+	lobby_icon_spawner.update_lobbies(lobbies)
 	_set_status("Connected. Lobbies found: " + str(lobbies.size()))
+
+
+func _on_lobby_icon_clicked(lobby_info: Dictionary) -> void:
+	print("Clicked lobby: ", lobby_info)
+	_set_status("Clicked lobby: " + str(lobby_info.get("lobby_name", "")))
 
 
 func _test_spawn_locations() -> void:

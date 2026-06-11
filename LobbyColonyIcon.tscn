@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://cabei6nqd27sy"]
+
+[ext_resource type="Script" uid="uid://c6hd6n5l1b36g" path="res://LobbyColonyIcon.gd" id="1_7kys0"]
+[ext_resource type="Texture2D" uid="uid://cxc62tmwvs36" path="res://Art/HurtSprite.png" id="2_pw6qh"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_td5jp"]
+size = Vector2(145, 142)
+
+[node name="LobbyColonyIcon" type="Area2D" unique_id=316670724 node_paths=PackedStringArray("name_label", "player_icon", "colony_visual", "bounce_root")]
+z_index = 20
+script = ExtResource("1_7kys0")
+name_label = NodePath("NameLabel")
+player_icon = NodePath("PlayerIcon")
+colony_visual = NodePath("ColonyAreaVisual")
+bounce_root = NodePath("BounceRoot")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=67214986]
+position = Vector2(72.5, 71)
+shape = SubResource("RectangleShape2D_td5jp")
+
+[node name="ColonyAreaVisual" type="Polygon2D" parent="." unique_id=1617616787]
+
+[node name="PlayerIcon" type="Sprite2D" parent="." unique_id=1623511095]
+position = Vector2(72.75, 71.25001)
+scale = Vector2(0.12041667, 0.07607528)
+texture = ExtResource("2_pw6qh")
+
+[node name="NameLabel" type="Label" parent="." unique_id=1184373755]
+offset_right = 145.0
+offset_bottom = 23.0
+text = "PlayerName"
+
+[node name="BounceRoot" type="Node2D" parent="." unique_id=1137112386]

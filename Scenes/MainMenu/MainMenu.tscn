@@ -8,14 +8,16 @@
 [ext_resource type="Script" uid="uid://cp172vtbwkgig" path="res://Scenes/MainMenu/LobbyHostHandler.gd" id="6_vapy7"]
 [ext_resource type="Script" uid="uid://dbfgquxv0g107" path="res://Scenes/MainMenu/LobbyBrowser.gd" id="7_8qovt"]
 [ext_resource type="Script" uid="uid://bwrb55hwbu538" path="res://Scenes/MainMenu/MapSpawnLocations.gd" id="8_0hjx5"]
+[ext_resource type="Script" uid="uid://eyushf5joraa" path="res://Scenes/MainMenu/LobbyIconSpawner.gd" id="9_fv0xt"]
+[ext_resource type="PackedScene" uid="uid://cabei6nqd27sy" path="res://LobbyColonyIcon.tscn" id="10_sng02"]
 
-[node name="MainMenu" type="Control" unique_id=930422600 node_paths=PackedStringArray("map_visual", "lobby_icon_layer", "host_button", "join_random_button", "create_lobby_popup", "join_private_popup", "connection_handler", "lobby_host_handler", "lobby_browser", "map_spawn_locations", "status_label")]
+[node name="MainMenu" type="Control" unique_id=930422600 node_paths=PackedStringArray("map_visual", "lobby_icon_layer", "host_button", "join_random_button", "create_lobby_popup", "join_private_popup", "connection_handler", "lobby_host_handler", "lobby_browser", "map_spawn_locations", "lobby_icon_spawner", "status_label")]
 layout_mode = 3
 anchors_preset = 0
 scale = Vector2(0.950005, 1.0128386)
 script = ExtResource("1_sg7ab")
 map_visual = NodePath("MapVisual")
-lobby_icon_layer = NodePath("LobbyIconLayer")
+lobby_icon_layer = NodePath("")
 host_button = NodePath("HostButton")
 join_random_button = NodePath("JoinRandomButton")
 create_lobby_popup = NodePath("CreateLobbyPopup")
@@ -24,6 +26,7 @@ connection_handler = NodePath("MultiplayerConnectionHandler")
 lobby_host_handler = NodePath("LobbyHostHandler")
 lobby_browser = NodePath("LobbyBrowser")
 map_spawn_locations = NodePath("MapSpawnLocations")
+lobby_icon_spawner = NodePath("LobbyIconSpawner")
 status_label = NodePath("StatusLabel")
 
 [node name="MapVisual" type="TextureRect" parent="." unique_id=1786858430]
@@ -33,10 +36,7 @@ offset_bottom = 1065.3228
 texture = ExtResource("2_kpx3y")
 metadata/_edit_lock_ = true
 
-[node name="LobbyIconLayer" type="Control" parent="." unique_id=1375438820]
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="LobbyIconLayer" type="Node2D" parent="." unique_id=894064762]
 
 [node name="HostButton" type="Button" parent="." unique_id=823107261]
 layout_mode = 0
@@ -133,3 +133,9 @@ position = Vector2(1741, 769)
 
 [node name="SpawnPoint9" type="Marker2D" parent="MapSpawnLocations" unique_id=23526976]
 position = Vector2(1516, 436)
+
+[node name="LobbyIconSpawner" type="Node" parent="." unique_id=1021935390 node_paths=PackedStringArray("lobby_icon_layer", "map_spawn_locations")]
+script = ExtResource("9_fv0xt")
+lobby_icon_scene = ExtResource("10_sng02")
+lobby_icon_layer = NodePath("../LobbyIconLayer")
+map_spawn_locations = NodePath("../MapSpawnLocations")
