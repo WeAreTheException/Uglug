@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bxww4ptycn2xx" path="res://Scenes/MainMenu/JoinPrivatePopup.gd" id="1_3pehx"]
 
-[node name="JoinPrivatePopup" type="Control" unique_id=1459111363 node_paths=PackedStringArray("digit_one", "digit_two", "digit_three", "enter_button", "close_button")]
+[node name="JoinPrivatePopup" type="Control" unique_id=1459111363 node_paths=PackedStringArray("digit_one", "digit_two", "digit_three", "enter_button", "close_button", "incorrect_password_label")]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 607.0
@@ -13,6 +13,7 @@ digit_two = NodePath("PasscodeRoot/DigitTwo")
 digit_three = NodePath("PasscodeRoot/DigitThree")
 enter_button = NodePath("EnterButton")
 close_button = NodePath("CloseButton")
+incorrect_password_label = NodePath("IncorrectPasswordLabel")
 
 [node name="Panel" type="Panel" parent="." unique_id=170280430]
 layout_mode = 0

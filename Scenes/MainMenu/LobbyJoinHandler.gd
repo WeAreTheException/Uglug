@@ -31,6 +31,19 @@ func join_public_lobby(lobby_info: Dictionary) -> void:
 	GDSync.lobby_join(lobby_name, "")
 
 
+func join_private_lobby(lobby_info: Dictionary, passcode: String) -> void:
+	var lobby_name: String = lobby_info.get("lobby_name", "")
+
+	if lobby_name == "":
+		join_failed.emit("", -1)
+		return
+
+	pending_lobby_name = lobby_name
+	join_started.emit(lobby_name)
+
+	GDSync.lobby_join(lobby_name, passcode)
+
+
 func join_random_lobby(lobbies: Array) -> void:
 	var public_lobbies := []
 

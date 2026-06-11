@@ -6,7 +6,7 @@ class_name MainMenuRoot
 @export var host_button: Button
 @export var join_random_button: Button
 @export var create_lobby_popup: CreateLobbyPopup
-@export var join_private_popup: Control
+@export var join_private_popup: JoinPrivatePopup
 @export var connection_handler: MultiplayerConnectionHandler
 @export var lobby_host_handler: LobbyHostHandler
 @export var lobby_browser: LobbyBrowser
@@ -19,6 +19,7 @@ class_name MainMenuRoot
 var current_lobbies: Array = []
 var is_hosting_lobby := false
 var hosted_lobby_name := ""
+var pending_private_lobby_info: Dictionary = {}
 
 
 func _ready() -> void:
@@ -163,8 +164,9 @@ func _on_lobby_icon_clicked(lobby_info: Dictionary) -> void:
 	var is_private: bool = lobby_info.get("is_private", false)
 
 	if is_private:
-		join_private_popup.visible = true
-		return
+		pending_private_lobby_info = lobby_info
+		join_private_popup.open()
+	return
 
 	if is_hosting_lobby:
 		print("Leaving hosted lobby before joining another lobby.")
@@ -236,9 +238,26 @@ func _test_spawn_locations() -> void:
 
 	map_spawn_locations.print_spawn_debug()
 
-
 func _set_status(text: String) -> void:
 	if status_label == null:
 		return
 
 	status_label.text = text
+
+func _on_private_passcode_entered(passcode: String) -> void:
+	if pending_private_lobby_info.is_empty():
+		print("No private lobby selected.")
+		return
+
+	join_private_popup.close()
+
+	if is_hosting_lobby:
+		print("Leaving hosted lobby before joining private lobby.")
+		lobby_leave_handler.leave_lobby()
+
+	lobby_join_handler.join_private_lobby(pending_private_lobby_info, passcode)
+	pending_private_lobby_info = {}
+
+
+func _on_private_popup_closed() -> void:
+	pending_private_lobby_info = {}
