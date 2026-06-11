@@ -13,7 +13,6 @@ signal die_finished(card: CardRoot)
 @export var free_card_after_death: bool = true
 
 var card: CardRoot = null
-
 var is_hovered := false
 var is_playing := false
 var has_died := false
@@ -45,6 +44,14 @@ func _input(event: InputEvent) -> void:
 
 
 func play_die() -> void:
+	var context := DeathContext.new()
+	context.setup(card)
+	context.should_free_card = free_card_after_death
+
+	await die_with_context(context)
+
+
+func die_with_context(context: DeathContext) -> void:
 	if is_playing:
 		return
 
@@ -54,9 +61,13 @@ func play_die() -> void:
 	if card == null:
 		return
 
+	if context == null:
+		return
+
 	has_died = true
 
-	_notify_death_mutations()
+	if context.should_trigger_death_mutations:
+		_notify_death_mutations()
 
 	if animation_runner == null:
 		print("die blocked: animation_runner missing")
@@ -73,11 +84,12 @@ func play_die() -> void:
 
 	is_playing = false
 
-	_remove_card_from_board()
+	if context.should_remove_from_board:
+		_remove_card_from_board()
 
 	die_finished.emit(card)
 
-	if free_card_after_death and is_instance_valid(card):
+	if context.should_free_card and is_instance_valid(card):
 		card.queue_free()
 
 
@@ -102,14 +114,7 @@ func _notify_death_mutations() -> void:
 	if card.mutations == null:
 		return
 
-	for runtime in card.mutations.get_active_runtimes():
-		if runtime == null:
-			continue
-
-		if runtime.mutation == null:
-			continue
-
-		runtime.mutation.on_death(card)
+	card.mutations.notify_death()
 
 
 func _on_card_hovered(_card: CardRoot) -> void:

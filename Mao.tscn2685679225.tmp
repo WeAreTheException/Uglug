@@ -1,0 +1,112 @@
+[gd_scene format=3 uid="uid://cxkinl0mu66jc"]
+
+[ext_resource type="PackedScene" uid="uid://bw8c7m7n5yuk8" path="res://Revamp/Board/Slots.tscn" id="1_yq750"]
+[ext_resource type="Resource" uid="uid://bkvgy3ptdrbuj" path="res://Cards/CardPresets/TestCardPresets/AntlerAntler.tres" id="2_5sdof"]
+[ext_resource type="PackedScene" uid="uid://1wr1e57v7trd" path="res://Revamp/PlayerHand/Player_Hand.tscn" id="2_mi1n2"]
+[ext_resource type="Resource" uid="uid://kmwnulcu4tml" path="res://Cards/CardPresets/Antler.tres" id="3_20kdy"]
+[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="3_d5ogx"]
+[ext_resource type="Resource" uid="uid://dbgpqc3vdl8t" path="res://Cards/CardPresets/Duriant.tres" id="4_8ve8k"]
+[ext_resource type="Resource" uid="uid://bxrcjm4w1dy82" path="res://Cards/CardPresets/Anthrax.tres" id="4_cc2no"]
+[ext_resource type="Resource" uid="uid://ci7yvhc8pfst6" path="res://Cards/CardPresets/QueenAnt.tres" id="5_1j514"]
+[ext_resource type="Resource" uid="uid://c64jbnvj0pbwk" path="res://Cards/CardPresets/AntHill.tres" id="6_at0h8"]
+[ext_resource type="Resource" uid="uid://jd5rbexi4lr4" path="res://Cards/CardPresets/Persistant.tres" id="7_n5v11"]
+[ext_resource type="Script" uid="uid://bxbqihkit6rgo" path="res://Managers/Phasemanager.gd" id="8_cc2no"]
+[ext_resource type="Script" uid="uid://bbcig486utsir" path="res://HandPhaseApplier.gd" id="9_cc2no"]
+[ext_resource type="Script" uid="uid://61l5g8wkdar3" path="res://SacrificeController.gd" id="10_1j514"]
+[ext_resource type="Script" uid="uid://ciopi88keoi3k" path="res://SacrificeRequirement.gd" id="11_at0h8"]
+[ext_resource type="Script" uid="uid://b4qvc7353obir" path="res://PendingSacrificeBoat.gd" id="12_30x73"]
+[ext_resource type="Script" uid="uid://vmy04gllke53" path="res://SacrificeCommitter.gd" id="13_6ula3"]
+[ext_resource type="Script" uid="uid://dnikkosq1o0kr" path="res://Revamp/Placement/PlacementScripts/PlacementController.gd" id="13_ubws4"]
+[ext_resource type="Script" uid="uid://cvkghlt7xdj22" path="res://Revamp/Placement/PlacementScripts/PlacementState.gd" id="14_5sdof"]
+[ext_resource type="Script" uid="uid://dsut7kstdcc6u" path="res://Revamp/Placement/PlacementScripts/PlacementInputRouter.gd" id="15_20kdy"]
+[ext_resource type="Script" uid="uid://6ycktn6tay80" path="res://Revamp/Placement/PlacementScripts/PlacementPreview.gd" id="16_5ixgq"]
+[ext_resource type="Script" uid="uid://yc6i5trydgut" path="res://Revamp/Placement/PlacementScripts/PlacementExecutor.gd" id="17_8ve8k"]
+[ext_resource type="Script" uid="uid://dp6gve6tfarqs" path="res://Revamp/Phases/BoardPhaseApplier.gd" id="17_b7h4g"]
+[ext_resource type="Script" uid="uid://c18hwqs033t7x" path="res://Revamp/Placement/PlacementScripts/PlacementEventEmitter.gd" id="18_oekep"]
+[ext_resource type="Script" uid="uid://cmcxm3mp7ljvv" path="res://Revamp/Placement/PlacementScripts/PlacementCancel.gd" id="19_n5v11"]
+
+[node name="Mao" type="Node2D" unique_id=550121538]
+
+[node name="Slots" parent="." unique_id=1318716624 instance=ExtResource("1_yq750")]
+position = Vector2(120, 120)
+player_slot_1_card = ExtResource("3_20kdy")
+player_slot_2_card = ExtResource("2_5sdof")
+player_slot_3_card = ExtResource("7_n5v11")
+opponent_slot_1_card = ExtResource("3_20kdy")
+opponent_slot_2_card = ExtResource("2_5sdof")
+opponent_slot_3_card = ExtResource("7_n5v11")
+opponent_slot_4_card = ExtResource("4_8ve8k")
+
+[node name="PlayerHandRoot" parent="." unique_id=371738706 node_paths=PackedStringArray("prime_location") instance=ExtResource("2_mi1n2")]
+position = Vector2(720, 960)
+starting_cards = Array[ExtResource("3_d5ogx")]([ExtResource("4_cc2no"), ExtResource("5_1j514"), ExtResource("6_at0h8")])
+prime_location = NodePath("../PrimeCardLocation")
+
+[node name="PrimeCardLocation" type="Node2D" parent="." unique_id=2143511336]
+position = Vector2(1080, 360)
+
+[node name="PhaseManager" type="Node" parent="." unique_id=658439244]
+script = ExtResource("8_cc2no")
+metadata/_custom_type_script = "uid://bxbqihkit6rgo"
+
+[node name="HandPhaseApplier" type="Node" parent="PhaseManager" unique_id=1109584642 node_paths=PackedStringArray("phase_manager", "lead_hand")]
+script = ExtResource("9_cc2no")
+phase_manager = NodePath("..")
+lead_hand = NodePath("../../PlayerHandRoot")
+
+[node name="SacrificeController" type="Node" parent="." unique_id=1432478239 node_paths=PackedStringArray("player_hand", "requirement", "pending_boat", "committer")]
+script = ExtResource("10_1j514")
+player_hand = NodePath("../PlayerHandRoot")
+requirement = NodePath("SacrificeRequirement")
+pending_boat = NodePath("PendingSacrificeBoat")
+committer = NodePath("SacrificeComitter")
+auto_sacrifice_when_cost_met = true
+
+[node name="SacrificeRequirement" type="Node" parent="SacrificeController" unique_id=1332384962]
+script = ExtResource("11_at0h8")
+
+[node name="PendingSacrificeBoat" type="Node" parent="SacrificeController" unique_id=1449104389 node_paths=PackedStringArray("pending_layer")]
+script = ExtResource("12_30x73")
+pending_layer = NodePath("../PendingSacrificeLayer")
+
+[node name="SacrificeComitter" type="Node" parent="SacrificeController" unique_id=1945886437]
+script = ExtResource("13_6ula3")
+
+[node name="PendingSacrificeLayer" type="Node2D" parent="SacrificeController" unique_id=183134508]
+
+[node name="PlacementController" type="Node" parent="." unique_id=1405375079 node_paths=PackedStringArray("slots_root", "player_hand", "sacrifice_controller", "placement_state", "input_router", "placement_preview", "placement_executor", "event_emitter", "placement_cancel")]
+script = ExtResource("13_ubws4")
+slots_root = NodePath("../Slots")
+player_hand = NodePath("../PlayerHandRoot")
+sacrifice_controller = NodePath("../SacrificeController")
+placement_state = NodePath("PlacementState")
+input_router = NodePath("PlacementInputRouter")
+placement_preview = NodePath("PlacementPreview")
+placement_executor = NodePath("PlacementExecutor")
+event_emitter = NodePath("PlacementEventEmitter")
+placement_cancel = NodePath("PlacementCancel")
+
+[node name="PlacementState" type="Node" parent="PlacementController" unique_id=1456688179]
+script = ExtResource("14_5sdof")
+
+[node name="PlacementInputRouter" type="Node" parent="PlacementController" unique_id=1643686806]
+script = ExtResource("15_20kdy")
+
+[node name="PlacementPreview" type="Node" parent="PlacementController" unique_id=1774818153]
+script = ExtResource("16_5ixgq")
+
+[node name="PlacementExecutor" type="Node" parent="PlacementController" unique_id=988574054]
+script = ExtResource("17_8ve8k")
+
+[node name="PlacementEventEmitter" type="Node" parent="PlacementController" unique_id=1389290294]
+script = ExtResource("18_oekep")
+
+[node name="PlacementCancel" type="Node" parent="PlacementController" unique_id=1193513979]
+script = ExtResource("19_n5v11")
+
+[node name="BoardPhaseApplier" type="Node" parent="." unique_id=940502173 node_paths=PackedStringArray("phase_manager", "slots_root")]
+script = ExtResource("17_b7h4g")
+phase_manager = NodePath("../PhaseManager")
+slots_root = NodePath("../Slots")
+
+[node name="CardEffectSpawnrouter" type="Node" parent="." unique_id=1854042398]

@@ -30,15 +30,7 @@ func leave_slot(card: CardRoot) -> void:
 	if current_slot == null:
 		return
 
-	if card != null and card.mutations != null:
-		for runtime in card.mutations.get_all_runtimes():
-			if runtime == null:
-				continue
-
-			if runtime.mutation == null:
-				continue
-
-			runtime.mutation.on_left_board(runtime)
+	_notify_left_board(card)
 
 	var old_slots_root: SlotsRoot = null
 
@@ -52,3 +44,13 @@ func leave_slot(card: CardRoot) -> void:
 
 	if old_slots_root != null:
 		old_slots_root.refresh_board_mutations()
+
+
+func _notify_left_board(card: CardRoot) -> void:
+	if card == null:
+		return
+
+	if card.mutations == null:
+		return
+
+	card.mutations.notify_left_board()

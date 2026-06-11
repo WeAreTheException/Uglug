@@ -10,18 +10,108 @@ func get_attack_priority(_runtime: MutationRuntime) -> int:
 	return 0
 
 
-func add_attack_events(
+func replaces_base_attack_step(_runtime: MutationRuntime) -> bool:
+	return false
+
+
+func add_attack_steps(
 	_runtime: MutationRuntime,
-	_events: Array[String]
+	_steps: Array[AttackStep]
 ) -> void:
 	pass
 
 
-func modify_attack_sequence(
+func modify_attack_steps(
 	_runtime: MutationRuntime,
-	sequence: Array[String]
-) -> Array[String]:
-	return sequence
+	steps: Array[AttackStep]
+) -> Array[AttackStep]:
+	return steps
+
+
+func modify_attack_target_context(
+	runtime: MutationRuntime,
+	context: AttackContext
+) -> void:
+	modify_attack_target(runtime, context)
+
+
+func modify_outgoing_damage_context(
+	_runtime: MutationRuntime,
+	context: DamageContext
+) -> void:
+	if context == null:
+		return
+
+	context.set_final_damage(
+		modify_damage(
+			context.source_card,
+			context.target_card,
+			context.final_damage
+		)
+	)
+
+
+func modify_incoming_damage_context(
+	runtime: MutationRuntime,
+	context: DamageContext
+) -> void:
+	if context == null:
+		return
+
+	context.set_final_damage(
+		modify_incoming_damage(
+			runtime,
+			context.target_card,
+			context.source_card,
+			context.final_damage
+		)
+	)
+
+
+func on_damage_dealt_context(
+	_runtime: MutationRuntime,
+	context: DamageContext
+) -> void:
+	if context == null:
+		return
+
+	on_damage_dealt(
+		context.source_card,
+		context.target_card,
+		context.actual_damage
+	)
+
+
+func on_damaged_context(
+	_runtime: MutationRuntime,
+	context: DamageContext
+) -> void:
+	if context == null:
+		return
+
+	on_damaged(
+		context.target_card,
+		context.source_card,
+		context.actual_damage
+	)
+
+
+func on_death_context(
+	_runtime: MutationRuntime,
+	context: DeathContext
+) -> void:
+	if context == null:
+		return
+
+	on_death(context.dead_card)
+
+
+func refresh_board_context(runtime: MutationRuntime) -> void:
+	refresh_board_effect(runtime)
+
+
+func on_left_board_context(runtime: MutationRuntime) -> void:
+	on_left_board(runtime)
 
 
 func modify_attack_target(

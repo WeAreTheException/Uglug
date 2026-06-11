@@ -1,23 +1,54 @@
 extends Mutation
 class_name Lifesteal
 
-@export var heal_amount: int = 1
+@export var health_gain_amount: int = 1
+@export var gain_based_on_damage_dealt: bool = false
 
 
-func modify_damage(
+func on_damage_dealt(
 	card: CardRoot,
 	_target: CardRoot,
 	damage: int
-) -> int:
+) -> void:
 	if card == null:
-		return damage
+		return
 
 	if card.stats == null:
-		return damage
+		return
 
 	if damage <= 0:
-		return damage
+		return
 
-	card.stats.heal(heal_amount)
+	var final_gain := health_gain_amount
 
-	return damage
+	if gain_based_on_damage_dealt:
+		final_gain = damage
+
+	_add_health_gain(card, final_gain)
+
+
+func on_damage_dealt_context(
+	_runtime: MutationRuntime,
+	context: DamageContext
+) -> void:
+	if context == null:
+		return
+
+	on_damage_dealt(
+		context.source_card,
+		context.target_card,
+		context.actual_damage
+	)
+
+
+func _add_health_gain(card: CardRoot, amount: int) -> void:
+	if amount <= 0:
+		return
+
+	var modifier := StatModifier.new()
+	modifier.stat_name = "health"
+	modifier.amount = amount
+	modifier.duration_type = StatModifier.DurationType.PERMANENT
+	modifier.source = self
+
+	card.stats.add_modifier(modifier)

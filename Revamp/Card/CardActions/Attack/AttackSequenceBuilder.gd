@@ -6,34 +6,84 @@ const LEFT := "LEFT"
 const RIGHT := "RIGHT"
 
 
-func build_sequence(card: CardRoot) -> Array[String]:
-	var sequence: Array[String] = []
+func build_steps(card: CardRoot) -> Array[AttackStep]:
+	return build_steps_with_order(card, true)
 
+
+func build_steps_with_order(
+	card: CardRoot,
+	left_to_right: bool
+) -> Array[AttackStep]:
+	var steps: Array[AttackStep] = _get_base_steps(card)
+
+	if not left_to_right:
+		steps = _flip_side_steps(steps)
+
+	return steps
+
+
+func build_sequence(card: CardRoot) -> Array[String]:
+	var result: Array[String] = []
+
+	for step in build_steps(card):
+		if step == null:
+			continue
+
+		result.append(step.direction)
+
+	if result.is_empty():
+		result.append(FORWARD)
+
+	return result
+
+
+func _get_base_steps(card: CardRoot) -> Array[AttackStep]:
 	if card == null:
-		return [FORWARD]
+		return [_make_base_step(FORWARD)]
 
 	if card.mutations == null:
-		return [FORWARD]
+		return [_make_base_step(FORWARD)]
 
-	for runtime in card.mutations.get_active_runtimes():
-		if runtime == null:
+	var steps: Array[AttackStep] = card.mutations.build_attack_steps()
+
+	if steps.is_empty():
+		steps.append(_make_base_step(FORWARD))
+
+	return steps
+
+
+func _flip_side_steps(steps: Array[AttackStep]) -> Array[AttackStep]:
+	var result: Array[AttackStep] = []
+
+	for step in steps:
+		if step == null:
 			continue
 
-		if runtime.mutation == null:
-			continue
+		result.append(_copy_step_with_flipped_direction(step))
 
-		runtime.mutation.add_attack_events(runtime, sequence)
+	return result
 
-	if sequence.is_empty():
-		sequence.append(FORWARD)
 
-	for runtime in card.mutations.get_active_runtimes():
-		if runtime == null:
-			continue
+func _copy_step_with_flipped_direction(source_step: AttackStep) -> AttackStep:
+	var new_step := AttackStep.new()
+	var direction: String = source_step.direction
 
-		if runtime.mutation == null:
-			continue
+	if direction == LEFT:
+		direction = RIGHT
+	elif direction == RIGHT:
+		direction = LEFT
 
-		sequence = runtime.mutation.modify_attack_sequence(runtime, sequence)
+	new_step.setup(
+		direction,
+		source_step.source_type,
+		source_step.source
+	)
 
-	return sequence
+	return new_step
+
+
+func _make_base_step(direction: String) -> AttackStep:
+	var step := AttackStep.new()
+	step.setup(direction, MutationSource.BASE, null)
+
+	return step

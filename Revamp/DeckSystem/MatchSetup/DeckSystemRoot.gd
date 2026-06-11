@@ -12,6 +12,10 @@ signal starting_hands_dealt
 @export var worker_source: WorkerSource
 @export var build_on_ready: bool = false
 
+@export var animate_starting_hand_deal: bool = true
+@export var starting_hand_start_delay: float = 0.25
+@export var starting_hand_card_delay: float = 0.12
+
 
 func _ready() -> void:
 	if match_setup != null:
@@ -43,10 +47,12 @@ func build_match_decks() -> void:
 
 	match_decks_built.emit()
 
-	_deal_starting_hand(player_one_hand, p1_start)
-	_deal_starting_hand(player_two_hand, p2_start)
-
-	starting_hands_dealt.emit()
+	if animate_starting_hand_deal:
+		_deal_starting_hands_animated(p1_start, p2_start)
+	else:
+		_deal_starting_hand(player_one_hand, p1_start)
+		_deal_starting_hand(player_two_hand, p2_start)
+		starting_hands_dealt.emit()
 
 
 func draw_warrior_for_player_one() -> void:
@@ -65,12 +71,42 @@ func draw_worker_for_player_two() -> void:
 	_spawn_worker_to_hand(player_two_hand)
 
 
+func _deal_starting_hands_animated(
+	p1_cards: Array[CardData],
+	p2_cards: Array[CardData]
+) -> void:
+	await get_tree().create_timer(starting_hand_start_delay).timeout
+
+	var max_count: int = max(p1_cards.size(), p2_cards.size())
+
+	for i in max_count:
+		if i < p1_cards.size():
+			_spawn_starting_card(player_one_hand, p1_cards[i])
+
+		if i < p2_cards.size():
+			_spawn_starting_card(player_two_hand, p2_cards[i])
+
+		await get_tree().create_timer(starting_hand_card_delay).timeout
+
+	starting_hands_dealt.emit()
+
+
 func _deal_starting_hand(hand: PlayerHandRoot, cards: Array[CardData]) -> void:
 	if hand == null:
 		return
 
 	for card_data in cards:
-		hand.spawn_card(card_data)
+		_spawn_starting_card(hand, card_data)
+
+
+func _spawn_starting_card(hand: PlayerHandRoot, card_data: CardData) -> void:
+	if hand == null:
+		return
+
+	if card_data == null:
+		return
+
+	hand.spawn_card(card_data)
 
 
 func _draw_to_hand(draw_pile: DrawPileRoot, hand: PlayerHandRoot) -> void:

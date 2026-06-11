@@ -1,14 +1,7 @@
-[gd_resource type="Resource" script_class="CardData" format=3 uid="uid://b2afa5kkemf6x"]
+[gd_resource type="Resource" script_class="MobMentality" format=3 uid="uid://c2bo8r00gukg4"]
 
-[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Cards/Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="1_2815j"]
-[ext_resource type="Texture2D" uid="uid://c4v3je4ncss3j" path="res://Art/WorkerAnt_Test_Alpha.png" id="2_507xh"]
-[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="2_mtjox"]
-[ext_resource type="Resource" uid="uid://bqxd6swy88edw" path="res://Cards/Mutations/MutationPresets/MobMentality.tres" id="3_507xh"]
+[ext_resource type="Script" uid="uid://ceyng8aj5mtue" path="res://Cards/Mutations/MutationPresets/MutationBehaviourHandlers/MobMentality.gd" id="1_uw3m4"]
 
 [resource]
-script = ExtResource("2_mtjox")
-name = "Empowerant"
-cost = 3
-ant_texture = ExtResource("2_507xh")
-base_mutations = Array[ExtResource("1_2815j")]([ExtResource("3_507xh")])
+script = ExtResource("1_uw3m4")
 metadata/_custom_type_script = "uid://duslcpxrhurv8"

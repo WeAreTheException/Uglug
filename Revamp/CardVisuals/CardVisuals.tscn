@@ -263,10 +263,10 @@ scale = Vector2(0.14727725, 0.14345993)
 
 [node name="Name" type="RichTextLabel" parent="SubViewport/Visuals/StatsVisual" unique_id=37488759]
 anchors_preset = -1
-offset_left = -78.0
-offset_top = -103.0
-offset_right = 78.0
-offset_bottom = -78.0
+offset_left = -80.0
+offset_top = -126.25
+offset_right = 76.0
+offset_bottom = -101.25
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/default_color = Color(0.16206557, 0.1620656, 0.16206557, 1)

@@ -9,7 +9,6 @@
 [ext_resource type="Resource" uid="uid://c7vei0jvnmga0" path="res://Revamp/DeckSystem/Data/UglugClassicClass.tres" id="3_sc7fg"]
 [ext_resource type="Script" uid="uid://bpn8hs1dqauri" path="res://Revamp/DeckSystem/MatchSetup/MatchDeckModeConfig.gd" id="4_cynwi"]
 [ext_resource type="Script" uid="uid://dutbidhjeof0i" path="res://Revamp/DeckSystem/Deck/PlayerDeckLoadout.gd" id="5_uqw47"]
-[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="7_sc7fg"]
 [ext_resource type="Script" uid="uid://brab1p6vhbisa" path="res://DeckSystemDebugInput.gd" id="12_0rkmb"]
 [ext_resource type="PackedScene" uid="uid://1wr1e57v7trd" path="res://Revamp/PlayerHand/Player_Hand.tscn" id="13_ingbf"]
 
@@ -21,10 +20,8 @@ metadata/_custom_type_script = "uid://dutbidhjeof0i"
 script = ExtResource("5_uqw47")
 metadata/_custom_type_script = "uid://dutbidhjeof0i"
 
-[node name="DeckSystemRoot" type="Node2D" unique_id=93691211 node_paths=PackedStringArray("player_one_hand", "player_two_hand", "match_setup", "player_one_draw_pile", "player_two_draw_pile", "worker_source")]
+[node name="DeckSystemRoot" type="Node2D" unique_id=93691211 node_paths=PackedStringArray("match_setup", "player_one_draw_pile", "player_two_draw_pile", "worker_source")]
 script = ExtResource("1_aossy")
-player_one_hand = NodePath("PlayerHandRoot")
-player_two_hand = NodePath("PlayerHandRoot2")
 match_setup = NodePath("MatchSetup/MatchDeckSetup")
 player_one_draw_pile = NodePath("DrawPile")
 player_two_draw_pile = NodePath("DrawPile2")
@@ -43,6 +40,7 @@ player_two_loadout = SubResource("Resource_0rkmb")
 
 [node name="MatchSeedConfig" type="Node" parent="MatchSetup" unique_id=2122245150]
 script = ExtResource("3_cynwi")
+randomize_on_ready = true
 
 [node name="MatchDeckModeConfig" type="Node" parent="MatchSetup" unique_id=496893894]
 script = ExtResource("4_cynwi")
@@ -57,12 +55,10 @@ script = ExtResource("4_cynwi")
 
 [node name="PlayerHandRoot" parent="." unique_id=371738706 instance=ExtResource("13_ingbf")]
 position = Vector2(1212, 732)
-starting_cards = Array[ExtResource("7_sc7fg")]([])
 
 [node name="PlayerHandRoot2" parent="." unique_id=1046376156 instance=ExtResource("13_ingbf")]
 position = Vector2(1296, 0)
-starting_cards = Array[ExtResource("7_sc7fg")]([])
 
-[node name="Node" type="Node" parent="." unique_id=1904816924 node_paths=PackedStringArray("deck_system_root")]
+[node name="DeckSystemDebugInput" type="Node" parent="." unique_id=1904816924 node_paths=PackedStringArray("deck_system_root")]
 script = ExtResource("12_0rkmb")
 deck_system_root = NodePath("..")

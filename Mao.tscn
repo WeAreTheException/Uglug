@@ -2,33 +2,53 @@
 
 [ext_resource type="PackedScene" uid="uid://bw8c7m7n5yuk8" path="res://Revamp/Board/Slots.tscn" id="1_yq750"]
 [ext_resource type="PackedScene" uid="uid://1wr1e57v7trd" path="res://Revamp/PlayerHand/Player_Hand.tscn" id="2_mi1n2"]
-[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="3_d5ogx"]
-[ext_resource type="Resource" uid="uid://bxrcjm4w1dy82" path="res://Cards/CardPresets/Anthrax.tres" id="4_cc2no"]
-[ext_resource type="Resource" uid="uid://ci7yvhc8pfst6" path="res://Cards/CardPresets/QueenAnt.tres" id="5_1j514"]
-[ext_resource type="Resource" uid="uid://c64jbnvj0pbwk" path="res://Cards/CardPresets/AntHill.tres" id="6_at0h8"]
+[ext_resource type="Resource" uid="uid://kmwnulcu4tml" path="res://Cards/CardPresets/Antler.tres" id="3_20kdy"]
+[ext_resource type="Resource" uid="uid://jd5rbexi4lr4" path="res://Cards/CardPresets/Persistant.tres" id="4_5ixgq"]
+[ext_resource type="Resource" uid="uid://dbgpqc3vdl8t" path="res://Cards/CardPresets/Duriant.tres" id="4_oekep"]
+[ext_resource type="Resource" uid="uid://dkobsikajvmmf" path="res://Cards/CardPresets/TestCardPresets/PersistAntler.tres" id="5_8ve8k"]
 [ext_resource type="Script" uid="uid://bxbqihkit6rgo" path="res://Managers/Phasemanager.gd" id="8_cc2no"]
 [ext_resource type="Script" uid="uid://bbcig486utsir" path="res://HandPhaseApplier.gd" id="9_cc2no"]
-[ext_resource type="Script" uid="uid://b38dslna3xak" path="res://SacrificeController.gd" id="10_1j514"]
+[ext_resource type="Script" uid="uid://61l5g8wkdar3" path="res://SacrificeController.gd" id="10_1j514"]
 [ext_resource type="Script" uid="uid://ciopi88keoi3k" path="res://SacrificeRequirement.gd" id="11_at0h8"]
 [ext_resource type="Script" uid="uid://b4qvc7353obir" path="res://PendingSacrificeBoat.gd" id="12_30x73"]
 [ext_resource type="Script" uid="uid://vmy04gllke53" path="res://SacrificeCommitter.gd" id="13_6ula3"]
-[ext_resource type="Script" uid="uid://dnikkosq1o0kr" path="res://Revamp/Placement/PlacementScripts/PlacementController.gd" id="13_ubws4"]
-[ext_resource type="Script" uid="uid://cvkghlt7xdj22" path="res://Revamp/Placement/PlacementScripts/PlacementState.gd" id="14_5sdof"]
-[ext_resource type="Script" uid="uid://dsut7kstdcc6u" path="res://Revamp/Placement/PlacementScripts/PlacementInputRouter.gd" id="15_20kdy"]
-[ext_resource type="Script" uid="uid://6ycktn6tay80" path="res://Revamp/Placement/PlacementScripts/PlacementPreview.gd" id="16_5ixgq"]
-[ext_resource type="Script" uid="uid://yc6i5trydgut" path="res://Revamp/Placement/PlacementScripts/PlacementExecutor.gd" id="17_8ve8k"]
+[ext_resource type="Script" uid="uid://dnikkosq1o0kr" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementController.gd" id="13_ubws4"]
+[ext_resource type="Script" uid="uid://cvkghlt7xdj22" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementState.gd" id="14_5sdof"]
+[ext_resource type="Script" uid="uid://dsut7kstdcc6u" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementInputRouter.gd" id="15_20kdy"]
+[ext_resource type="Script" uid="uid://6ycktn6tay80" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementPreview.gd" id="16_5ixgq"]
+[ext_resource type="Script" uid="uid://yc6i5trydgut" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementExecutor.gd" id="17_8ve8k"]
 [ext_resource type="Script" uid="uid://dp6gve6tfarqs" path="res://Revamp/Phases/BoardPhaseApplier.gd" id="17_b7h4g"]
-[ext_resource type="Script" uid="uid://c18hwqs033t7x" path="res://Revamp/Placement/PlacementScripts/PlacementEventEmitter.gd" id="18_oekep"]
-[ext_resource type="Script" uid="uid://cmcxm3mp7ljvv" path="res://Revamp/Placement/PlacementScripts/PlacementCancel.gd" id="19_n5v11"]
+[ext_resource type="Script" uid="uid://c18hwqs033t7x" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementEventEmitter.gd" id="18_oekep"]
+[ext_resource type="Script" uid="uid://cmcxm3mp7ljvv" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementCancel.gd" id="19_n5v11"]
+[ext_resource type="Script" uid="uid://difytxi1dyr27" path="res://Revamp/MatchFlow/MatchFlowRoot.gd" id="25_oekep"]
+[ext_resource type="Script" uid="uid://c6ap2csjp7k81" path="res://Revamp/MatchFlow/MatchTurnOrderState.gd" id="26_n5v11"]
+[ext_resource type="Script" uid="uid://e0tr3sanyo1r" path="res://Revamp/MatchFlow/MatchAnnouncementDisplay.gd" id="27_7gy8c"]
+[ext_resource type="PackedScene" uid="uid://coux8hd7esj7g" path="res://Deck_System_Root.tscn" id="28_a1qt2"]
 
 [node name="Mao" type="Node2D" unique_id=550121538]
 
+[node name="Deck" parent="." unique_id=93691211 node_paths=PackedStringArray("player_one_hand", "player_two_hand") instance=ExtResource("28_a1qt2")]
+position = Vector2(1476, 588)
+player_one_hand = NodePath("../PlayerHAnd")
+player_two_hand = NodePath("../OpponenetHAnd")
+
 [node name="Slots" parent="." unique_id=1318716624 instance=ExtResource("1_yq750")]
 position = Vector2(120, 120)
+player_slot_1_card = ExtResource("4_oekep")
+player_slot_2_card = ExtResource("4_oekep")
+player_slot_3_card = ExtResource("4_oekep")
+player_slot_4_card = ExtResource("4_oekep")
+opponent_slot_1_card = ExtResource("3_20kdy")
+opponent_slot_2_card = ExtResource("4_5ixgq")
+opponent_slot_3_card = ExtResource("5_8ve8k")
+opponent_slot_4_card = ExtResource("5_8ve8k")
 
-[node name="PlayerHandRoot" parent="." unique_id=371738706 node_paths=PackedStringArray("prime_location") instance=ExtResource("2_mi1n2")]
+[node name="PlayerHAnd" parent="." unique_id=371738706 node_paths=PackedStringArray("prime_location") instance=ExtResource("2_mi1n2")]
 position = Vector2(720, 960)
-starting_cards = Array[ExtResource("3_d5ogx")]([ExtResource("4_cc2no"), ExtResource("5_1j514"), ExtResource("6_at0h8")])
+prime_location = NodePath("../PrimeCardLocation")
+
+[node name="OpponenetHAnd" parent="." unique_id=1415383407 node_paths=PackedStringArray("prime_location") instance=ExtResource("2_mi1n2")]
+position = Vector2(1188, 708)
 prime_location = NodePath("../PrimeCardLocation")
 
 [node name="PrimeCardLocation" type="Node2D" parent="." unique_id=2143511336]
@@ -41,11 +61,11 @@ metadata/_custom_type_script = "uid://bxbqihkit6rgo"
 [node name="HandPhaseApplier" type="Node" parent="PhaseManager" unique_id=1109584642 node_paths=PackedStringArray("phase_manager", "lead_hand")]
 script = ExtResource("9_cc2no")
 phase_manager = NodePath("..")
-lead_hand = NodePath("../../PlayerHandRoot")
+lead_hand = NodePath("../../PlayerHAnd")
 
 [node name="SacrificeController" type="Node" parent="." unique_id=1432478239 node_paths=PackedStringArray("player_hand", "requirement", "pending_boat", "committer")]
 script = ExtResource("10_1j514")
-player_hand = NodePath("../PlayerHandRoot")
+player_hand = NodePath("../PlayerHAnd")
 requirement = NodePath("SacrificeRequirement")
 pending_boat = NodePath("PendingSacrificeBoat")
 committer = NodePath("SacrificeComitter")
@@ -66,7 +86,7 @@ script = ExtResource("13_6ula3")
 [node name="PlacementController" type="Node" parent="." unique_id=1405375079 node_paths=PackedStringArray("slots_root", "player_hand", "sacrifice_controller", "placement_state", "input_router", "placement_preview", "placement_executor", "event_emitter", "placement_cancel")]
 script = ExtResource("13_ubws4")
 slots_root = NodePath("../Slots")
-player_hand = NodePath("../PlayerHandRoot")
+player_hand = NodePath("../PlayerHAnd")
 sacrifice_controller = NodePath("../SacrificeController")
 placement_state = NodePath("PlacementState")
 input_router = NodePath("PlacementInputRouter")
@@ -97,3 +117,43 @@ script = ExtResource("19_n5v11")
 script = ExtResource("17_b7h4g")
 phase_manager = NodePath("../PhaseManager")
 slots_root = NodePath("../Slots")
+
+[node name="CardEffectSpawnrouter" type="Node" parent="." unique_id=1854042398]
+
+[node name="MatchFlowRoot" type="Node" parent="." unique_id=1707594948 node_paths=PackedStringArray("turn_order_state")]
+script = ExtResource("25_oekep")
+turn_order_state = NodePath("MatchTurnOrderState")
+
+[node name="MatchTurnOrderState" type="Node" parent="MatchFlowRoot" unique_id=708809136]
+script = ExtResource("26_n5v11")
+
+[node name="Node2" type="Node" parent="." unique_id=1333215538]
+
+[node name="MatchFlowUI" type="Node2D" parent="." unique_id=1660901840]
+metadata/_edit_lock_ = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="MatchFlowUI" unique_id=1511141763]
+
+[node name="MatchAnnouncementDisplay" type="Control" parent="MatchFlowUI/CanvasLayer" unique_id=866682808 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "round_label", "message_label")]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("27_7gy8c")
+match_flow_root = NodePath("../../../MatchFlowRoot")
+turn_order_state = NodePath("../../../MatchFlowRoot/MatchTurnOrderState")
+round_label = NodePath("RoundLabel")
+message_label = NodePath("MessageLabel")
+
+[node name="RoundLabel" type="Label" parent="MatchFlowUI/CanvasLayer/MatchAnnouncementDisplay" unique_id=1682652415]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 612.0
+metadata/_edit_lock_ = true
+
+[node name="MessageLabel" type="Label" parent="MatchFlowUI/CanvasLayer/MatchAnnouncementDisplay" unique_id=286669320]
+layout_mode = 0
+offset_top = 708.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+metadata/_edit_lock_ = true

@@ -61,52 +61,43 @@ func perform_attack() -> void:
 	if is_attacking:
 		return
 
-	if card == null:
+	if not _can_attack():
 		return
 
-	if slots_root == null:
-		print("attack blocked: slots_root missing")
+	var starting_slot: Slot = card.get_current_slot()
+
+	if starting_slot == null:
 		return
 
-	if attack_sequencer == null:
-		print("attack blocked: attack_sequencer missing")
-		return
+	var attacker_owner: SlotRow.SlotOwner = slots_root.get_owner_of_slot(starting_slot)
+	var left_to_right: bool = _get_left_to_right(attacker_owner)
+	var steps: Array[AttackStep] = attack_sequencer.build_steps_with_order(
+		card,
+		left_to_right
+	)
 
-	if target_resolver == null:
-		print("attack blocked: target_resolver missing")
-		return
-
-	if animation_runner == null:
-		print("attack blocked: animation_runner missing")
-		return
-
-	if impact_handler == null:
-		print("attack blocked: impact_handler missing")
-		return
-
-	var attacker_slot := card.get_current_slot()
-
-	if attacker_slot == null:
-		print("attack blocked: attacker slot missing")
-		return
-
-	var sequence := attack_sequencer.build_sequence(card)
-
-	if sequence.is_empty():
+	if steps.is_empty():
 		return
 
 	is_attacking = true
 
-	for attack_event in sequence:
-		var context := AttackContext.new()
+	for step in steps:
+		if step == null:
+			continue
 
-		context.attacker_card = card
-		context.attacker_slot = attacker_slot
-		context.attacker_owner = slots_root.get_owner_of_slot(attacker_slot)
-		context.attack_animation_layer = slots_root.attack_animation_layer
+		if not _can_continue_attack_sequence():
+			break
 
-		context.attack_event = attack_event
-		context.origin_slot = attacker_slot
+		var attacker_slot: Slot = card.get_current_slot()
+
+		if attacker_slot == null:
+			break
+
+		var context: AttackContext = _build_context(
+			step,
+			attacker_slot,
+			attacker_owner
+		)
 
 		target_resolver.resolve_target(slots_root, context)
 
@@ -122,7 +113,7 @@ func perform_attack() -> void:
 
 		await animation_runner.play_attack(context)
 
-		if not impact_handled:
+		if not impact_handled and _can_continue_attack_sequence():
 			await _handle_impact(context)
 
 		attack_finished.emit(context)
@@ -133,11 +124,85 @@ func perform_attack() -> void:
 	is_attacking = false
 
 
+func _can_attack() -> bool:
+	if card == null:
+		return false
+
+	if slots_root == null:
+		print("attack blocked: slots_root missing")
+		return false
+
+	if attack_sequencer == null:
+		print("attack blocked: attack_sequencer missing")
+		return false
+
+	if target_resolver == null:
+		print("attack blocked: target_resolver missing")
+		return false
+
+	if animation_runner == null:
+		print("attack blocked: animation_runner missing")
+		return false
+
+	if impact_handler == null:
+		print("attack blocked: impact_handler missing")
+		return false
+
+	return true
+
+
+func _can_continue_attack_sequence() -> bool:
+	if card == null:
+		return false
+
+	if not is_instance_valid(card):
+		return false
+
+	if card.stats != null and card.stats.is_dead():
+		return false
+
+	if card.get_current_slot() == null:
+		return false
+
+	return true
+
+
+func _get_left_to_right(slot_owner: SlotRow.SlotOwner) -> bool:
+	if slots_root == null:
+		return true
+
+	if slots_root.attack_order_handler == null:
+		return true
+
+	return slots_root.attack_order_handler.get_left_to_right(slot_owner)
+
+
+func _build_context(
+	step: AttackStep,
+	attacker_slot: Slot,
+	attacker_owner: SlotRow.SlotOwner
+) -> AttackContext:
+	var context := AttackContext.new()
+
+	context.setup_from_step(
+		card,
+		attacker_slot,
+		attacker_owner,
+		step,
+		slots_root.attack_animation_layer
+	)
+
+	return context
+
+
 func _on_impact_reached() -> void:
 	if active_context == null:
 		return
 
 	if impact_handled:
+		return
+
+	if not _can_continue_attack_sequence():
 		return
 
 	impact_handled = true
