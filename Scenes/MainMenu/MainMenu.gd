@@ -128,6 +128,7 @@ func _on_host_lobby_join_succeeded(lobby_name: String, lobby_info: Dictionary) -
 	join_random_button.visible = false
 
 	lobby_icon_spawner.update_lobbies(_get_lobbies_for_map(lobby_info))
+	lobby_browser.start_browsing()
 
 	_set_status("Hosting lobby.")
 

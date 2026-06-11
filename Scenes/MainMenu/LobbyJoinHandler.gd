@@ -35,18 +35,13 @@ func join_random_lobby(lobbies: Array) -> void:
 	var public_lobbies := []
 
 	for lobby_info in lobbies:
-		var is_private: bool = lobby_info.get("is_private", false)
-		var is_open: bool = lobby_info.get("is_open", false)
-		var player_count: int = lobby_info.get("player_count", 0)
-		var player_limit: int = lobby_info.get("player_limit", 2)
-
-		if is_private:
+		if lobby_info.get("is_private", false):
 			continue
 
-		if not is_open:
+		if not lobby_info.get("is_open", false):
 			continue
 
-		if player_count >= player_limit:
+		if lobby_info.get("player_count", 0) >= lobby_info.get("player_limit", 2):
 			continue
 
 		public_lobbies.append(lobby_info)
@@ -55,12 +50,14 @@ func join_random_lobby(lobbies: Array) -> void:
 		join_failed.emit("", -2)
 		return
 
-	var selected_lobby: Dictionary = public_lobbies.pick_random()
-	join_public_lobby(selected_lobby)
+	join_public_lobby(public_lobbies.pick_random())
 
 
 func _on_lobby_joined(lobby_name: String) -> void:
-	if pending_lobby_name != "" and lobby_name != pending_lobby_name:
+	if pending_lobby_name == "":
+		return
+
+	if lobby_name != pending_lobby_name:
 		return
 
 	pending_lobby_name = ""
@@ -68,7 +65,10 @@ func _on_lobby_joined(lobby_name: String) -> void:
 
 
 func _on_lobby_join_failed(lobby_name: String, error: int) -> void:
-	if pending_lobby_name != "" and lobby_name != pending_lobby_name:
+	if pending_lobby_name == "":
+		return
+
+	if lobby_name != pending_lobby_name:
 		return
 
 	pending_lobby_name = ""

@@ -22,17 +22,22 @@ func _ready() -> void:
 
 
 func start_browsing() -> void:
-	if is_browsing:
+	is_browsing = true
+
+	if refresh_timer == null:
 		return
 
-	is_browsing = true
+	if refresh_timer.is_stopped():
+		refresh_timer.start()
+
 	request_lobbies()
-	refresh_timer.start()
 
 
 func stop_browsing() -> void:
 	is_browsing = false
-	refresh_timer.stop()
+
+	if refresh_timer != null:
+		refresh_timer.stop()
 
 
 func request_lobbies() -> void:
@@ -60,13 +65,8 @@ func _on_lobbies_received(raw_lobbies: Array) -> void:
 
 func _is_joinable_lobby(raw_lobby: Dictionary) -> bool:
 	var is_open: bool = raw_lobby.get("Open", false)
-	var player_count: int = raw_lobby.get("PlayerCount", 0)
-	var player_limit: int = raw_lobby.get("PlayerLimit", 2)
 
 	if not is_open:
-		return false
-
-	if player_count >= player_limit:
 		return false
 
 	return true
