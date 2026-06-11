@@ -18,6 +18,7 @@ enum MatchState {
 }
 
 @export var turn_order_state: MatchTurnOrderState
+@export var deck_system_root: DeckSystemRoot
 
 @export var start_on_ready: bool = true
 @export var enable_debug_keys: bool = true
@@ -27,6 +28,7 @@ enum MatchState {
 var current_state: MatchState = MatchState.NONE
 var current_round: int = 0
 var is_running: bool = false
+var has_built_starting_hands: bool = false
 
 
 func _ready() -> void:
@@ -55,12 +57,14 @@ func start_match() -> void:
 
 	is_running = true
 	current_round = 1
+	has_built_starting_hands = false
 
 	if turn_order_state != null:
 		turn_order_state.setup_for_round(current_round)
 
 	round_changed.emit(current_round)
 	set_state(MatchState.ROUND_INTRO)
+	_build_starting_hands_once()
 
 
 func set_state(new_state: MatchState) -> void:
@@ -88,13 +92,13 @@ func advance_debug_state() -> void:
 			start_match()
 
 		MatchState.ROUND_INTRO:
-			set_state(MatchState.AUTO_DRAW)
-
-		MatchState.AUTO_DRAW:
 			if current_round == 1:
 				set_state(MatchState.REVENANT)
 			else:
-				set_state(MatchState.BUFF)
+				set_state(MatchState.AUTO_DRAW)
+
+		MatchState.AUTO_DRAW:
+			set_state(MatchState.BUFF)
 
 		MatchState.REVENANT:
 			set_state(MatchState.LEAD_PLACEMENT)
@@ -181,6 +185,19 @@ func get_controlled_owner_name() -> String:
 		return "NONE"
 
 	return turn_order_state.get_owner_name(turn_order_state.controlled_owner)
+
+
+func _build_starting_hands_once() -> void:
+	if has_built_starting_hands:
+		return
+
+	has_built_starting_hands = true
+
+	if deck_system_root == null:
+		print("starting hand skipped: deck_system_root missing")
+		return
+
+	deck_system_root.build_match_decks()
 
 
 func _apply_active_owner_for_state(state: MatchState) -> void:
