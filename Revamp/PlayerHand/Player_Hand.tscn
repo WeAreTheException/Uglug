@@ -64,11 +64,12 @@ script = ExtResource("8_egog8")
 [node name="Hand_SortController" type="Node" parent="." unique_id=447247999]
 script = ExtResource("13_vr0u0")
 
-[node name="Hand_StateMachine" type="Node" parent="." unique_id=101836643 node_paths=PackedStringArray("idle_state", "play_state", "sacrifice_state")]
+[node name="Hand_StateMachine" type="Node" parent="." unique_id=101836643 node_paths=PackedStringArray("idle_state", "play_state", "sacrifice_state", "blessing_state")]
 script = ExtResource("14_osyj2")
 idle_state = NodePath("Hand_IdleState")
 play_state = NodePath("Hand_PlayState")
 sacrifice_state = NodePath("Hand_SacrificeState")
+blessing_state = NodePath("Hand_BlessingState")
 
 [node name="Hand_IdleState" type="Node" parent="Hand_StateMachine" unique_id=477928888]
 script = ExtResource("15_7io4m")
