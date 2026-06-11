@@ -16,14 +16,15 @@
 [ext_resource type="Script" uid="uid://ciopi88keoi3k" path="res://SacrificeRequirement.gd" id="11_at0h8"]
 [ext_resource type="Script" uid="uid://b4qvc7353obir" path="res://PendingSacrificeBoat.gd" id="12_30x73"]
 [ext_resource type="Script" uid="uid://vmy04gllke53" path="res://SacrificeCommitter.gd" id="13_6ula3"]
-[ext_resource type="Script" uid="uid://dnikkosq1o0kr" path="res://Revamp/Placement/PlacementScripts/PlacementController.gd" id="13_ubws4"]
-[ext_resource type="Script" uid="uid://cvkghlt7xdj22" path="res://Revamp/Placement/PlacementScripts/PlacementState.gd" id="14_5sdof"]
-[ext_resource type="Script" uid="uid://dsut7kstdcc6u" path="res://Revamp/Placement/PlacementScripts/PlacementInputRouter.gd" id="15_20kdy"]
-[ext_resource type="Script" uid="uid://6ycktn6tay80" path="res://Revamp/Placement/PlacementScripts/PlacementPreview.gd" id="16_5ixgq"]
-[ext_resource type="Script" uid="uid://yc6i5trydgut" path="res://Revamp/Placement/PlacementScripts/PlacementExecutor.gd" id="17_8ve8k"]
+[ext_resource type="Script" uid="uid://dnikkosq1o0kr" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementController.gd" id="13_ubws4"]
+[ext_resource type="Script" uid="uid://cvkghlt7xdj22" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementState.gd" id="14_5sdof"]
+[ext_resource type="Script" uid="uid://dsut7kstdcc6u" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementInputRouter.gd" id="15_20kdy"]
+[ext_resource type="Script" uid="uid://6ycktn6tay80" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementPreview.gd" id="16_5ixgq"]
+[ext_resource type="Script" uid="uid://yc6i5trydgut" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementExecutor.gd" id="17_8ve8k"]
 [ext_resource type="Script" uid="uid://dp6gve6tfarqs" path="res://Revamp/Phases/BoardPhaseApplier.gd" id="17_b7h4g"]
-[ext_resource type="Script" uid="uid://c18hwqs033t7x" path="res://Revamp/Placement/PlacementScripts/PlacementEventEmitter.gd" id="18_oekep"]
-[ext_resource type="Script" uid="uid://cmcxm3mp7ljvv" path="res://Revamp/Placement/PlacementScripts/PlacementCancel.gd" id="19_n5v11"]
+[ext_resource type="Script" uid="uid://c18hwqs033t7x" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementEventEmitter.gd" id="18_oekep"]
+[ext_resource type="Script" uid="uid://cmcxm3mp7ljvv" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementCancel.gd" id="19_n5v11"]
+[ext_resource type="Script" uid="uid://difytxi1dyr27" path="res://MatchFlowRoot.gd" id="25_oekep"]
 
 [node name="Mao" type="Node2D" unique_id=550121538]
 
@@ -111,3 +112,8 @@ phase_manager = NodePath("../PhaseManager")
 slots_root = NodePath("../Slots")
 
 [node name="CardEffectSpawnrouter" type="Node" parent="." unique_id=1854042398]
+
+[node name="MatchFlowRoot" type="Node" parent="." unique_id=1707594948]
+script = ExtResource("25_oekep")
+
+[node name="Node2" type="Node" parent="." unique_id=1333215538]
