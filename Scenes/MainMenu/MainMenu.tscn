@@ -10,7 +10,7 @@
 [ext_resource type="Script" uid="uid://dbfgquxv0g107" path="res://Scenes/MainMenu/LobbyBrowser.gd" id="7_8qovt"]
 [ext_resource type="Script" uid="uid://bwrb55hwbu538" path="res://Scenes/MainMenu/MapSpawnLocations.gd" id="8_0hjx5"]
 [ext_resource type="Script" uid="uid://eyushf5joraa" path="res://Scenes/MainMenu/LobbyIconSpawner.gd" id="9_fv0xt"]
-[ext_resource type="PackedScene" uid="uid://cabei6nqd27sy" path="res://LobbyColonyIcon.tscn" id="10_sng02"]
+[ext_resource type="PackedScene" uid="uid://cabei6nqd27sy" path="res://Scenes/MainMenu/LobbyColonyIcon.tscn" id="10_sng02"]
 [ext_resource type="Script" uid="uid://bxdiyd7i25fw4" path="res://Scenes/MainMenu/LobbyJoinHandler.gd" id="11_lic31"]
 [ext_resource type="Script" uid="uid://dnitutk6wh3uo" path="res://Scenes/MainMenu/LobbyDebugHandler.gd" id="12_56wdt"]
 [ext_resource type="Script" uid="uid://bhnvcq27dv42" path="res://Scenes/MainMenu/LobbyLeaveHandler.gd" id="13_k2pwb"]

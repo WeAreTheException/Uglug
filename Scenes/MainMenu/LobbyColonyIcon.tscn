@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://cabei6nqd27sy"]
 
-[ext_resource type="Script" uid="uid://c6hd6n5l1b36g" path="res://LobbyColonyIcon.gd" id="1_7kys0"]
+[ext_resource type="Script" uid="uid://c6hd6n5l1b36g" path="res://Scenes/MainMenu/LobbyColonyIcon.gd" id="1_7kys0"]
 [ext_resource type="Texture2D" uid="uid://cxc62tmwvs36" path="res://Art/HurtSprite.png" id="2_pw6qh"]
-[ext_resource type="Script" uid="uid://dv43dd1ulrin2" path="res://LobbyBounceFeedback.gd" id="3_5upnk"]
+[ext_resource type="Script" uid="uid://dv43dd1ulrin2" path="res://Scenes/MainMenu/LobbyBounceFeedback.gd" id="3_5upnk"]
 [ext_resource type="Texture2D" uid="uid://clnfhl8kmi81h" path="res://Scenes/MainMenu/PlaceholderLockSprite.png" id="3_34jfq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_td5jp"]
