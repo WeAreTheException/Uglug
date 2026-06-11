@@ -63,6 +63,6 @@ starting_cards = Array[ExtResource("7_sc7fg")]([])
 position = Vector2(1296, 0)
 starting_cards = Array[ExtResource("7_sc7fg")]([])
 
-[node name="Node" type="Node" parent="." unique_id=1904816924 node_paths=PackedStringArray("deck_system_root")]
+[node name="DeckSystemDebugInput" type="Node" parent="." unique_id=1904816924 node_paths=PackedStringArray("deck_system_root")]
 script = ExtResource("12_0rkmb")
 deck_system_root = NodePath("..")
