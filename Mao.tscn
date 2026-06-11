@@ -20,6 +20,7 @@
 [ext_resource type="Script" uid="uid://dp6gve6tfarqs" path="res://Revamp/Phases/BoardPhaseApplier.gd" id="17_b7h4g"]
 [ext_resource type="Script" uid="uid://c18hwqs033t7x" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementEventEmitter.gd" id="18_oekep"]
 [ext_resource type="Script" uid="uid://cmcxm3mp7ljvv" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementCancel.gd" id="19_n5v11"]
+[ext_resource type="Script" uid="uid://bmc4688qk3cow" path="res://Revamp/MatchFlow/MatchFlowBridge.gd" id="24_oekep"]
 [ext_resource type="Script" uid="uid://difytxi1dyr27" path="res://Revamp/MatchFlow/MatchFlowRoot.gd" id="25_oekep"]
 [ext_resource type="Script" uid="uid://c6ap2csjp7k81" path="res://Revamp/MatchFlow/MatchTurnOrderState.gd" id="26_n5v11"]
 [ext_resource type="Script" uid="uid://e0tr3sanyo1r" path="res://Revamp/MatchFlow/MatchAnnouncementDisplay.gd" id="27_7gy8c"]
@@ -127,6 +128,11 @@ deck_system_root = NodePath("../Deck")
 
 [node name="MatchTurnOrderState" type="Node" parent="MatchFlowRoot" unique_id=708809136]
 script = ExtResource("26_n5v11")
+
+[node name="MatchFlowBridge" type="Node" parent="MatchFlowRoot" unique_id=1064403000 node_paths=PackedStringArray("match_flow_root", "phase_manager")]
+script = ExtResource("24_oekep")
+match_flow_root = NodePath("..")
+phase_manager = NodePath("../../PhaseManager")
 
 [node name="Node2" type="Node" parent="." unique_id=1333215538]
 
