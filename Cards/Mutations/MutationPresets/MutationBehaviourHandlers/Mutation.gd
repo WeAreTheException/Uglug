@@ -10,9 +10,16 @@ func get_attack_priority(_runtime: MutationRuntime) -> int:
 	return 0
 
 
-func add_attack_steps(runtime: MutationRuntime, steps: Array[AttackStep]) -> void:
+func replaces_base_attack_step(_runtime: MutationRuntime) -> bool:
+	return false
+
+
+func add_attack_steps(
+	_runtime: MutationRuntime,
+	steps: Array[AttackStep]
+) -> void:
 	var events: Array[String] = []
-	add_attack_events(runtime, events)
+	add_attack_events(_runtime, events)
 
 	for event in events:
 		var step := AttackStep.new()
@@ -50,7 +57,7 @@ func modify_attack_target_context(
 
 
 func modify_outgoing_damage_context(
-	runtime: MutationRuntime,
+	_runtime: MutationRuntime,
 	context: DamageContext
 ) -> void:
 	if context == null:
@@ -110,7 +117,10 @@ func on_damaged_context(
 	)
 
 
-func on_death_context(_runtime: MutationRuntime, context: DeathContext) -> void:
+func on_death_context(
+	_runtime: MutationRuntime,
+	context: DeathContext
+) -> void:
 	if context == null:
 		return
 
@@ -125,7 +135,10 @@ func on_left_board_context(runtime: MutationRuntime) -> void:
 	on_left_board(runtime)
 
 
-func add_attack_events(_runtime: MutationRuntime, _events: Array[String]) -> void:
+func add_attack_events(
+	_runtime: MutationRuntime,
+	_events: Array[String]
+) -> void:
 	pass
 
 
@@ -136,7 +149,10 @@ func modify_attack_sequence(
 	return sequence
 
 
-func modify_attack_target(_runtime: MutationRuntime, _context: AttackContext) -> void:
+func modify_attack_target(
+	_runtime: MutationRuntime,
+	_context: AttackContext
+) -> void:
 	pass
 
 
@@ -148,15 +164,27 @@ func on_death(_card: CardRoot) -> void:
 	pass
 
 
-func on_damaged(_card: CardRoot, _attacker: CardRoot, _damage: int) -> void:
+func on_damaged(
+	_card: CardRoot,
+	_attacker: CardRoot,
+	_damage: int
+) -> void:
 	pass
 
 
-func on_damage_dealt(_card: CardRoot, _target: CardRoot, _damage: int) -> void:
+func on_damage_dealt(
+	_card: CardRoot,
+	_target: CardRoot,
+	_damage: int
+) -> void:
 	pass
 
 
-func modify_damage(_card: CardRoot, _target: CardRoot, damage: int) -> int:
+func modify_damage(
+	_card: CardRoot,
+	_target: CardRoot,
+	damage: int
+) -> int:
 	return damage
 
 
@@ -177,9 +205,15 @@ func on_left_board(_runtime: MutationRuntime) -> void:
 	pass
 
 
-func get_attack_target(_card: CardRoot, target: CardRoot) -> CardRoot:
+func get_attack_target(
+	_card: CardRoot,
+	target: CardRoot
+) -> CardRoot:
 	return target
 
 
-func get_attack_targets(_card: CardRoot, targets: Array[CardRoot]) -> Array[CardRoot]:
+func get_attack_targets(
+	_card: CardRoot,
+	targets: Array[CardRoot]
+) -> Array[CardRoot]:
 	return targets

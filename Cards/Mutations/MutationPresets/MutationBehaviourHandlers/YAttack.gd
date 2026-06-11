@@ -5,22 +5,22 @@ class_name YAttack
 @export var attack_right: bool = true
 
 
-func modify_attack_steps(
-	_runtime: MutationRuntime,
-	_steps: Array[AttackStep]
-) -> Array[AttackStep]:
-	var result: Array[AttackStep] = []
+func replaces_base_attack_step(_runtime: MutationRuntime) -> bool:
+	return true
 
+
+func add_attack_steps(
+	_runtime: MutationRuntime,
+	steps: Array[AttackStep]
+) -> void:
 	if attack_left:
-		result.append(_make_step(AttackStep.LEFT))
+		steps.append(_make_step(AttackStep.LEFT))
 
 	if attack_right:
-		result.append(_make_step(AttackStep.RIGHT))
+		steps.append(_make_step(AttackStep.RIGHT))
 
-	if result.is_empty():
-		result.append(_make_step(AttackStep.FORWARD))
-
-	return result
+	if not attack_left and not attack_right:
+		steps.append(_make_step(AttackStep.FORWARD))
 
 
 func _make_step(direction: String) -> AttackStep:

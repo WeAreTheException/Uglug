@@ -30,7 +30,7 @@ func _input(event: InputEvent) -> void:
 			run_attack_order(SlotRow.SlotOwner.OPPONENT)
 
 
-func run_attack_order(owner: SlotRow.SlotOwner) -> void:
+func run_attack_order(slot_owner: SlotRow.SlotOwner) -> void:
 	if is_running:
 		return
 
@@ -40,8 +40,8 @@ func run_attack_order(owner: SlotRow.SlotOwner) -> void:
 
 	is_running = true
 
-	var entries := _build_attack_entries(owner)
-	_sort_attack_entries(entries, owner)
+	var entries := _build_attack_entries(slot_owner)
+	_sort_attack_entries(entries, slot_owner)
 
 	for entry in entries:
 		var card := entry["card"] as CardRoot
@@ -58,10 +58,17 @@ func run_attack_order(owner: SlotRow.SlotOwner) -> void:
 	attack_order_finished.emit()
 
 
-func _build_attack_entries(owner: SlotRow.SlotOwner) -> Array[Dictionary]:
+func get_left_to_right(slot_owner: SlotRow.SlotOwner) -> bool:
+	if slot_owner == SlotRow.SlotOwner.OPPONENT:
+		return opponent_left_to_right
+
+	return player_left_to_right
+
+
+func _build_attack_entries(slot_owner: SlotRow.SlotOwner) -> Array[Dictionary]:
 	var entries: Array[Dictionary] = []
 
-	for slot in slots_root.get_slots_for_owner(owner):
+	for slot in slots_root.get_slots_for_owner(slot_owner):
 		if slot == null:
 			continue
 
@@ -82,9 +89,9 @@ func _build_attack_entries(owner: SlotRow.SlotOwner) -> Array[Dictionary]:
 
 func _sort_attack_entries(
 	entries: Array[Dictionary],
-	owner: SlotRow.SlotOwner
+	slot_owner: SlotRow.SlotOwner
 ) -> void:
-	var left_to_right := _get_left_to_right(owner)
+	var left_to_right := get_left_to_right(slot_owner)
 
 	entries.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
 		var a_priority: int = a["priority"]
@@ -101,13 +108,6 @@ func _sort_attack_entries(
 
 		return a_slot_index > b_slot_index
 	)
-
-
-func _get_left_to_right(owner: SlotRow.SlotOwner) -> bool:
-	if owner == SlotRow.SlotOwner.OPPONENT:
-		return opponent_left_to_right
-
-	return player_left_to_right
 
 
 func _get_attack_priority(card: CardRoot) -> int:

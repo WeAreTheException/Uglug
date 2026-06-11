@@ -110,7 +110,8 @@ func get_attack_priority() -> int:
 func build_attack_steps() -> Array[AttackStep]:
 	var steps: Array[AttackStep] = []
 
-	steps.append(_make_base_attack_step())
+	if not _should_replace_base_attack():
+		steps.append(_make_base_attack_step())
 
 	for runtime in get_active_runtimes():
 		if runtime == null:
@@ -153,6 +154,12 @@ func build_attack_events() -> Array[String]:
 
 func modify_attack_target(context: AttackContext) -> void:
 	for runtime in get_active_runtimes():
+		if runtime == null:
+			continue
+
+		if runtime.mutation == null:
+			continue
+
 		runtime.mutation.modify_attack_target(runtime, context)
 
 
@@ -160,6 +167,12 @@ func modify_outgoing_damage(target_card: CardRoot, damage: int) -> int:
 	var result := damage
 
 	for runtime in get_active_runtimes():
+		if runtime == null:
+			continue
+
+		if runtime.mutation == null:
+			continue
+
 		result = runtime.mutation.modify_damage(owner_card, target_card, result)
 
 	return max(result, 0)
@@ -170,6 +183,12 @@ func notify_damage_dealt(target_card: CardRoot, damage: int) -> void:
 		return
 
 	for runtime in get_active_runtimes():
+		if runtime == null:
+			continue
+
+		if runtime.mutation == null:
+			continue
+
 		runtime.mutation.on_damage_dealt(owner_card, target_card, damage)
 
 
@@ -177,6 +196,12 @@ func modify_incoming_damage(attacker: CardRoot, damage: int) -> int:
 	var result := damage
 
 	for runtime in get_active_runtimes():
+		if runtime == null:
+			continue
+
+		if runtime.mutation == null:
+			continue
+
 		result = runtime.mutation.modify_incoming_damage(
 			runtime,
 			owner_card,
@@ -192,22 +217,60 @@ func notify_damaged(attacker: CardRoot, damage: int) -> void:
 		return
 
 	for runtime in get_active_runtimes():
+		if runtime == null:
+			continue
+
+		if runtime.mutation == null:
+			continue
+
 		runtime.mutation.on_damaged(owner_card, attacker, damage)
 
 
 func notify_death() -> void:
 	for runtime in get_active_runtimes():
+		if runtime == null:
+			continue
+
+		if runtime.mutation == null:
+			continue
+
 		runtime.mutation.on_death(owner_card)
 
 
 func refresh_board_effects() -> void:
 	for runtime in get_active_runtimes():
+		if runtime == null:
+			continue
+
+		if runtime.mutation == null:
+			continue
+
 		runtime.mutation.refresh_board_effect(runtime)
 
 
 func notify_left_board() -> void:
 	for runtime in get_active_runtimes():
+		if runtime == null:
+			continue
+
+		if runtime.mutation == null:
+			continue
+
 		runtime.mutation.on_left_board(runtime)
+
+
+func _should_replace_base_attack() -> bool:
+	for runtime in get_active_runtimes():
+		if runtime == null:
+			continue
+
+		if runtime.mutation == null:
+			continue
+
+		if runtime.mutation.replaces_base_attack_step(runtime):
+			return true
+
+	return false
 
 
 func _make_base_attack_step() -> AttackStep:

@@ -16,10 +16,11 @@ func resolve_target(slots_root: SlotsRoot, context: AttackContext) -> void:
 	if context.origin_slot == null:
 		return
 
-	var owner := slots_root.get_owner_of_slot(context.origin_slot)
-	var enemy_owner := slots_root.get_enemy_owner(owner)
+	var slot_owner: SlotRow.SlotOwner = slots_root.get_owner_of_slot(context.origin_slot)
+	var enemy_owner: SlotRow.SlotOwner = slots_root.get_enemy_owner(slot_owner)
+	var direction: String = context.get_attack_direction()
 
-	match context.attack_event:
+	match direction:
 		FORWARD:
 			context.target_slot = slots_root.get_slot(
 				enemy_owner,
@@ -36,6 +37,12 @@ func resolve_target(slots_root: SlotsRoot, context: AttackContext) -> void:
 			context.target_slot = slots_root.get_slot(
 				enemy_owner,
 				context.origin_slot.slot_index + 1
+			)
+
+		_:
+			context.target_slot = slots_root.get_slot(
+				enemy_owner,
+				context.origin_slot.slot_index
 			)
 
 	_apply_mutation_target_modifiers(context)
