@@ -1,0 +1,47 @@
+extends RefCounted
+class_name MatchStateAdvanceHelper
+
+
+func should_advance_round(state: MatchFlowRoot.MatchState) -> bool:
+	return state == MatchFlowRoot.MatchState.ROUND_END
+
+
+func get_next_state(
+	state: MatchFlowRoot.MatchState,
+	round_number: int
+) -> MatchFlowRoot.MatchState:
+	match state:
+		MatchFlowRoot.MatchState.NONE:
+			return MatchFlowRoot.MatchState.ROUND_INTRO
+
+		MatchFlowRoot.MatchState.ROUND_INTRO:
+			if round_number == 1:
+				return MatchFlowRoot.MatchState.REVENANT
+
+			return MatchFlowRoot.MatchState.AUTO_DRAW
+
+		MatchFlowRoot.MatchState.AUTO_DRAW:
+			return MatchFlowRoot.MatchState.BUFF
+
+		MatchFlowRoot.MatchState.REVENANT:
+			return MatchFlowRoot.MatchState.LEAD_PLACEMENT
+
+		MatchFlowRoot.MatchState.BUFF:
+			return MatchFlowRoot.MatchState.LEAD_PLACEMENT
+
+		MatchFlowRoot.MatchState.LEAD_PLACEMENT:
+			return MatchFlowRoot.MatchState.RESPONSE_PLACEMENT
+
+		MatchFlowRoot.MatchState.RESPONSE_PLACEMENT:
+			return MatchFlowRoot.MatchState.COMBAT
+
+		MatchFlowRoot.MatchState.COMBAT:
+			if round_number == 1:
+				return MatchFlowRoot.MatchState.DOMINANT_REVEAL
+
+			return MatchFlowRoot.MatchState.ROUND_END
+
+		MatchFlowRoot.MatchState.DOMINANT_REVEAL:
+			return MatchFlowRoot.MatchState.ROUND_END
+
+	return state
