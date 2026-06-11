@@ -27,7 +27,7 @@
 [ext_resource type="Script" uid="uid://c6ap2csjp7k81" path="res://Revamp/MatchFlow/MatchTurnOrderState.gd" id="26_n5v11"]
 [ext_resource type="Script" uid="uid://e0tr3sanyo1r" path="res://Revamp/MatchFlow/MatchAnnouncementDisplay.gd" id="27_7gy8c"]
 [ext_resource type="PackedScene" uid="uid://coux8hd7esj7g" path="res://Deck_System_Root.tscn" id="28_a1qt2"]
-[ext_resource type="Resource" uid="uid://ddrcgbsfvr81d" path="res://Revamp/Blessings/Revenant.tres" id="28_venfy"]
+[ext_resource type="Script" uid="uid://cxocxcwx2vx5e" path="res://Revamp/Blessings/BlessingFlowHandler.gd" id="28_mf2my"]
 
 [node name="Mao" type="Node2D" unique_id=550121538]
 
@@ -52,7 +52,7 @@ position = Vector2(720, 960)
 prime_location = NodePath("../PrimeCardLocation")
 
 [node name="OpponenetHAnd" parent="." unique_id=1415383407 node_paths=PackedStringArray("prime_location") instance=ExtResource("2_mi1n2")]
-position = Vector2(1080, 600)
+position = Vector2(1188, 708)
 prime_location = NodePath("../PrimeCardLocation")
 
 [node name="PrimeCardLocation" type="Node2D" parent="." unique_id=2143511336]
@@ -62,11 +62,10 @@ position = Vector2(1080, 360)
 script = ExtResource("8_cc2no")
 metadata/_custom_type_script = "uid://bxbqihkit6rgo"
 
-[node name="HandPhaseApplier" type="Node" parent="PhaseManager" unique_id=1109584642 node_paths=PackedStringArray("phase_manager", "lead_hand", "response_hand")]
+[node name="HandPhaseApplier" type="Node" parent="PhaseManager" unique_id=1109584642 node_paths=PackedStringArray("phase_manager", "lead_hand")]
 script = ExtResource("9_cc2no")
 phase_manager = NodePath("..")
 lead_hand = NodePath("../../PlayerHAnd")
-response_hand = NodePath("../../OpponenetHAnd")
 
 [node name="SacrificeController" type="Node" parent="." unique_id=1432478239 node_paths=PackedStringArray("player_hand", "requirement", "pending_boat", "committer")]
 script = ExtResource("10_1j514")
@@ -137,7 +136,6 @@ script = ExtResource("26_n5v11")
 script = ExtResource("24_oekep")
 match_flow_root = NodePath("..")
 phase_manager = NodePath("../../PhaseManager")
-blessing_uses_buff_phase = true
 
 [node name="BlessingSelectionState" type="Node" parent="MatchFlowRoot" unique_id=1333215538]
 script = ExtResource("25_n5v11")
@@ -176,8 +174,5 @@ offset_right = 1920.0
 offset_bottom = 1080.0
 metadata/_edit_lock_ = true
 
-[node name="BlessingFlowHandler" type="Node" parent="." unique_id=1112610546 node_paths=PackedStringArray("match_flow_root", "selection_state")]
-script = ExtResource("26_7gy8c")
-match_flow_root = NodePath("../MatchFlowRoot")
-selection_state = NodePath("../MatchFlowRoot/BlessingSelectionState")
-blessing_to_apply = ExtResource("28_venfy")
+[node name="BlessingFlowHandler" type="Node" parent="." unique_id=1112610546]
+script = ExtResource("28_mf2my")

@@ -15,9 +15,10 @@ func _ready() -> void:
 func randomize_seed() -> int:
 	var rng := RandomNumberGenerator.new()
 	rng.randomize()
+
 	seed_value = rng.randi()
 	seed_changed.emit(seed_value)
-	print("MATCH SEED: ", seed_value)
+
 	return seed_value
 
 

@@ -26,7 +26,7 @@ func apply_phase(phase: PhaseManager.Phase) -> void:
 			_set_both_idle()
 
 		PhaseManager.Phase.BUFF:
-			_set_both_idle()
+			_set_both_blessing()
 
 		PhaseManager.Phase.LEAD_PLAY:
 			_set_lead_playing()
@@ -44,6 +44,14 @@ func _set_both_idle() -> void:
 
 	if response_hand != null:
 		response_hand.enter_idle_state()
+
+
+func _set_both_blessing() -> void:
+	if lead_hand != null:
+		lead_hand.enter_blessing_state()
+
+	if response_hand != null:
+		response_hand.enter_blessing_state()
 
 
 func _set_lead_playing() -> void:
