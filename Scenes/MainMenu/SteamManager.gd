@@ -28,7 +28,7 @@ func initialize_steam() -> void:
 	steam_enabled = true
 	steam_id = Steam.getSteamID()
 	steam_name = Steam.getPersonaName()
-	steam_avatar_texture = _load_steam_avatar_texture(steam_id)
+	steam_avatar_texture = get_avatar_texture_for_steam_id(steam_id)
 
 	print("SteamManager: Steam initialized")
 	print("SteamManager: Steam ID = ", steam_id)
@@ -36,11 +36,14 @@ func initialize_steam() -> void:
 	print("SteamManager: Steam avatar loaded = ", steam_avatar_texture != null)
 
 
-func _load_steam_avatar_texture(target_steam_id: int) -> Texture2D:
+func get_avatar_texture_for_steam_id(target_steam_id: int) -> Texture2D:
+	if not steam_enabled:
+		return null
+
 	var avatar_handle: int = Steam.getMediumFriendAvatar(target_steam_id)
 
 	if avatar_handle <= 0:
-		print("SteamManager: Avatar handle unavailable")
+		print("SteamManager: Avatar handle unavailable for ", target_steam_id)
 		return null
 
 	var image_size: Dictionary = Steam.getImageSize(avatar_handle)
@@ -48,14 +51,14 @@ func _load_steam_avatar_texture(target_steam_id: int) -> Texture2D:
 	var height: int = image_size.get("height", 0)
 
 	if width <= 0 or height <= 0:
-		print("SteamManager: Avatar image size invalid")
+		print("SteamManager: Avatar image size invalid for ", target_steam_id)
 		return null
 
 	var image_response: Dictionary = Steam.getImageRGBA(avatar_handle)
 	var image_data: PackedByteArray = image_response.get("buffer", PackedByteArray())
 
 	if image_data.is_empty():
-		print("SteamManager: Avatar image data empty")
+		print("SteamManager: Avatar image data empty for ", target_steam_id)
 		return null
 
 	var image := Image.create_from_data(
@@ -65,9 +68,5 @@ func _load_steam_avatar_texture(target_steam_id: int) -> Texture2D:
 		Image.FORMAT_RGBA8,
 		image_data
 	)
-
-	if image == null:
-		print("SteamManager: Failed to create avatar image")
-		return null
 
 	return ImageTexture.create_from_image(image)

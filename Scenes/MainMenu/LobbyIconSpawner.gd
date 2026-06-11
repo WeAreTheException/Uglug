@@ -6,6 +6,7 @@ signal lobby_icon_clicked(lobby_info: Dictionary)
 @export var lobby_icon_scene: PackedScene
 @export var lobby_icon_layer: Node2D
 @export var map_spawn_locations: MapSpawnLocations
+@export var steam_identity: SteamPlayerIdentity
 
 var spawned_icons := {}
 
@@ -35,6 +36,8 @@ func _spawn_lobby_icon(lobby_info: Dictionary) -> void:
 	var icon := lobby_icon_scene.instantiate() as LobbyColonyIcon
 	if icon == null:
 		return
+
+	icon.steam_identity = steam_identity
 
 	var spawn_id: int = lobby_info.get("spawn_id", 0)
 	icon.global_position = map_spawn_locations.get_spawn_position(spawn_id)

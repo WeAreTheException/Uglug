@@ -85,5 +85,6 @@ func _convert_lobby(raw_lobby: Dictionary) -> Dictionary:
 		"display_name": tags.get("display_name", "Unknown Player"),
 		"is_private": has_password,
 		"has_password": has_password,
+		"steam_id": int(tags.get("steam_id", 0)),
 		"spawn_id": tags.get("spawn_id", 0)
 	}

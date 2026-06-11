@@ -17,11 +17,21 @@ func get_display_name(fallback_name: String) -> String:
 	return steam_manager.steam_name
 
 
-func get_avatar_texture() -> Texture2D:
+func get_steam_id() -> int:
+	if steam_manager == null:
+		return 0
+
+	if not steam_manager.steam_enabled:
+		return 0
+
+	return steam_manager.steam_id
+
+
+func get_avatar_texture_for_steam_id(steam_id: int) -> Texture2D:
 	if steam_manager == null:
 		return null
 
-	if not steam_manager.steam_enabled:
+	if steam_id <= 0:
 		return null
 
-	return steam_manager.steam_avatar_texture
+	return steam_manager.get_avatar_texture_for_steam_id(steam_id)
