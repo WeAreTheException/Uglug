@@ -8,7 +8,7 @@ enum MatchState {
 	NONE,
 	ROUND_INTRO,
 	AUTO_DRAW,
-	REVENANT,
+	BLESSING,
 	BUFF,
 	LEAD_PLACEMENT,
 	RESPONSE_PLACEMENT,
@@ -94,14 +94,14 @@ func advance_debug_state() -> void:
 		advance_round()
 		return
 
+	if current_state == MatchState.NONE:
+		start_match()
+		return
+
 	var next_state: MatchState = state_advance_helper.get_next_state(
 		current_state,
 		current_round
 	)
-
-	if current_state == MatchState.NONE:
-		start_match()
-		return
 
 	set_state(next_state)
 

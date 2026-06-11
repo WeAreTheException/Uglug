@@ -20,8 +20,10 @@
 [ext_resource type="Script" uid="uid://dp6gve6tfarqs" path="res://Revamp/Phases/BoardPhaseApplier.gd" id="17_b7h4g"]
 [ext_resource type="Script" uid="uid://c18hwqs033t7x" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementEventEmitter.gd" id="18_oekep"]
 [ext_resource type="Script" uid="uid://cmcxm3mp7ljvv" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementCancel.gd" id="19_n5v11"]
-[ext_resource type="Script" uid="uid://bmc4688qk3cow" path="res://Revamp/MatchFlow/MatchFlowBridge.gd" id="24_oekep"]
+[ext_resource type="Script" uid="uid://bmc4688qk3cow" path="res://Revamp/MatchFlow/MatchPhaseBridge.gd" id="24_oekep"]
+[ext_resource type="Script" uid="uid://c0jbty6yowib5" path="res://Revamp/MatchFlow/Blessing/BlessingSelectionState.gd" id="25_n5v11"]
 [ext_resource type="Script" uid="uid://difytxi1dyr27" path="res://Revamp/MatchFlow/MatchFlowRoot.gd" id="25_oekep"]
+[ext_resource type="Script" uid="uid://q2nybrneyr7f" path="res://Revamp/MatchFlow/Blessing/BlessingFlowHandler.gd" id="26_7gy8c"]
 [ext_resource type="Script" uid="uid://c6ap2csjp7k81" path="res://Revamp/MatchFlow/MatchTurnOrderState.gd" id="26_n5v11"]
 [ext_resource type="Script" uid="uid://e0tr3sanyo1r" path="res://Revamp/MatchFlow/MatchAnnouncementDisplay.gd" id="27_7gy8c"]
 [ext_resource type="PackedScene" uid="uid://coux8hd7esj7g" path="res://Deck_System_Root.tscn" id="28_a1qt2"]
@@ -134,7 +136,15 @@ script = ExtResource("24_oekep")
 match_flow_root = NodePath("..")
 phase_manager = NodePath("../../PhaseManager")
 
-[node name="Node2" type="Node" parent="." unique_id=1333215538]
+[node name="BlessingSelectionState" type="Node" parent="MatchFlowRoot" unique_id=1333215538]
+script = ExtResource("25_n5v11")
+
+[node name="BlessingFlowHandler" type="Node" parent="MatchFlowRoot" unique_id=47668461 node_paths=PackedStringArray("match_flow_root", "selection_state")]
+script = ExtResource("26_7gy8c")
+match_flow_root = NodePath("..")
+selection_state = NodePath("../BlessingSelectionState")
+
+[node name="Node4" type="Node" parent="." unique_id=1230555798]
 
 [node name="MatchFlowUI" type="Node2D" parent="." unique_id=1660901840]
 metadata/_edit_lock_ = true

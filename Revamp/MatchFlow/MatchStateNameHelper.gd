@@ -13,8 +13,8 @@ func get_state_name(state: MatchFlowRoot.MatchState) -> String:
 		MatchFlowRoot.MatchState.AUTO_DRAW:
 			return "AUTO_DRAW"
 
-		MatchFlowRoot.MatchState.REVENANT:
-			return "REVENANT"
+		MatchFlowRoot.MatchState.BLESSING:
+			return "BLESSING"
 
 		MatchFlowRoot.MatchState.BUFF:
 			return "BUFF"

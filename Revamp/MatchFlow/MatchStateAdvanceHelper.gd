@@ -16,14 +16,14 @@ func get_next_state(
 
 		MatchFlowRoot.MatchState.ROUND_INTRO:
 			if round_number == 1:
-				return MatchFlowRoot.MatchState.REVENANT
+				return MatchFlowRoot.MatchState.BLESSING
 
 			return MatchFlowRoot.MatchState.AUTO_DRAW
 
 		MatchFlowRoot.MatchState.AUTO_DRAW:
 			return MatchFlowRoot.MatchState.BUFF
 
-		MatchFlowRoot.MatchState.REVENANT:
+		MatchFlowRoot.MatchState.BLESSING:
 			return MatchFlowRoot.MatchState.LEAD_PLACEMENT
 
 		MatchFlowRoot.MatchState.BUFF:

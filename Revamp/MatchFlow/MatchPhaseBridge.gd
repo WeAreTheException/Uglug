@@ -5,7 +5,7 @@ class_name MatchPhaseBridge
 @export var phase_manager: PhaseManager
 @export var apply_current_state_on_ready: bool = true
 
-@export var revenant_uses_buff_phase: bool = false
+@export var blessing_uses_buff_phase: bool = false
 @export var dominant_reveal_uses_attack_phase: bool = false
 
 
@@ -37,8 +37,8 @@ func _get_phase_for_match_state(
 		MatchFlowRoot.MatchState.AUTO_DRAW:
 			return PhaseManager.Phase.DRAW
 
-		MatchFlowRoot.MatchState.REVENANT:
-			if revenant_uses_buff_phase:
+		MatchFlowRoot.MatchState.BLESSING:
+			if blessing_uses_buff_phase:
 				return PhaseManager.Phase.BUFF
 
 			return PhaseManager.Phase.DRAW
