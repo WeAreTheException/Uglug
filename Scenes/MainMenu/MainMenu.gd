@@ -11,11 +11,14 @@ class_name MainMenuRoot
 @export var lobby_host_handler: LobbyHostHandler
 @export var lobby_browser: LobbyBrowser
 @export var lobby_join_handler: LobbyJoinHandler
+@export var lobby_leave_handler: LobbyLeaveHandler
 @export var map_spawn_locations: MapSpawnLocations
 @export var lobby_icon_spawner: LobbyIconSpawner
 @export var status_label: Label
 
 var current_lobbies: Array = []
+var is_hosting_lobby := false
+var hosted_lobby_name := ""
 
 
 func _ready() -> void:
@@ -55,10 +58,17 @@ func _ready() -> void:
 	lobby_join_handler.join_succeeded.connect(_on_public_lobby_join_succeeded)
 	lobby_join_handler.join_failed.connect(_on_public_lobby_join_failed)
 
+	lobby_leave_handler.leave_requested.connect(_on_lobby_leave_requested)
+	lobby_leave_handler.leave_completed.connect(_on_lobby_leave_completed)
+
 	_test_spawn_locations()
 
 
 func _on_host_pressed() -> void:
+	if is_hosting_lobby:
+		lobby_leave_handler.leave_lobby()
+		return
+
 	create_lobby_popup.visible = true
 
 
@@ -108,7 +118,14 @@ func _on_lobby_create_failed(lobby_name: String, error: int) -> void:
 
 
 func _on_host_lobby_join_succeeded(lobby_name: String) -> void:
-	_set_status("Joined own lobby: " + lobby_name)
+	is_hosting_lobby = true
+	hosted_lobby_name = lobby_name
+
+	host_button.text = "Close Lobby"
+	host_button.disabled = false
+	join_random_button.visible = false
+
+	_set_status("Hosting lobby.")
 
 
 func _on_host_lobby_join_failed(lobby_name: String, error: int) -> void:
@@ -128,6 +145,12 @@ func _on_lobbies_updated(lobbies: Array) -> void:
 
 
 func _on_lobby_icon_clicked(lobby_info: Dictionary) -> void:
+	var lobby_name: String = lobby_info.get("lobby_name", "")
+
+	if is_hosting_lobby and lobby_name == hosted_lobby_name:
+		print("Clicked own lobby. Ignoring join request.")
+		return
+
 	var is_private: bool = lobby_info.get("is_private", false)
 
 	if is_private:
@@ -152,6 +175,24 @@ func _on_public_lobby_join_failed(lobby_name: String, error: int) -> void:
 	host_button.disabled = false
 	join_random_button.disabled = false
 	_set_status("Failed to join lobby: " + lobby_name + " Error: " + str(error))
+
+
+func _on_lobby_leave_requested() -> void:
+	host_button.disabled = true
+	_set_status("Closing lobby...")
+
+
+func _on_lobby_leave_completed() -> void:
+	is_hosting_lobby = false
+	hosted_lobby_name = ""
+
+	host_button.text = "Host"
+	host_button.disabled = false
+	join_random_button.visible = true
+	join_random_button.disabled = false
+
+	lobby_browser.start_browsing()
+	_set_status("Connected to GD-Sync.")
 
 
 func _test_spawn_locations() -> void:

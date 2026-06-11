@@ -12,8 +12,9 @@
 [ext_resource type="PackedScene" uid="uid://cabei6nqd27sy" path="res://LobbyColonyIcon.tscn" id="10_sng02"]
 [ext_resource type="Script" uid="uid://bxdiyd7i25fw4" path="res://Scenes/MainMenu/LobbyJoinHandler.gd" id="11_lic31"]
 [ext_resource type="Script" uid="uid://dnitutk6wh3uo" path="res://Scenes/MainMenu/LobbyDebugHandler.gd" id="12_56wdt"]
+[ext_resource type="Script" uid="uid://bhnvcq27dv42" path="res://Scenes/MainMenu/LobbyLeaveHandler.gd" id="13_k2pwb"]
 
-[node name="MainMenu" type="Control" unique_id=930422600 node_paths=PackedStringArray("map_visual", "lobby_icon_layer", "host_button", "join_random_button", "create_lobby_popup", "join_private_popup", "connection_handler", "lobby_host_handler", "lobby_browser", "lobby_join_handler", "map_spawn_locations", "lobby_icon_spawner", "status_label")]
+[node name="MainMenu" type="Control" unique_id=930422600 node_paths=PackedStringArray("map_visual", "lobby_icon_layer", "host_button", "join_random_button", "create_lobby_popup", "join_private_popup", "connection_handler", "lobby_host_handler", "lobby_browser", "lobby_join_handler", "lobby_leave_handler", "map_spawn_locations", "lobby_icon_spawner")]
 layout_mode = 3
 anchors_preset = 0
 scale = Vector2(0.950005, 1.0128386)
@@ -28,9 +29,9 @@ connection_handler = NodePath("MultiplayerConnectionHandler")
 lobby_host_handler = NodePath("LobbyHostHandler")
 lobby_browser = NodePath("LobbyBrowser")
 lobby_join_handler = NodePath("LobbyJoinHandler")
+lobby_leave_handler = NodePath("LobbyLeaveHandler")
 map_spawn_locations = NodePath("MapSpawnLocations")
 lobby_icon_spawner = NodePath("LobbyIconSpawner")
-status_label = NodePath("StatusLabel")
 
 [node name="MapVisual" type="TextureRect" parent="." unique_id=1786858430]
 layout_mode = 0
@@ -102,7 +103,7 @@ script = ExtResource("7_8qovt")
 
 [node name="MapSpawnLocations" type="Node" parent="." unique_id=1318795435 node_paths=PackedStringArray("spawn_points")]
 script = ExtResource("8_0hjx5")
-spawn_points = [NodePath("SpawnPoint0"), NodePath("SpawnPoint1"), NodePath("SpawnPoint2"), NodePath("SpawnPoint3"), NodePath("SpawnPoint4"), NodePath("SpawnPoint5"), NodePath("SpawnPoint6"), NodePath("SpawnPoint7"), NodePath("SpawnPoint8"), NodePath("SpawnPoint9"), NodePath("")]
+spawn_points = [NodePath("SpawnPoint0"), NodePath("SpawnPoint1"), NodePath("SpawnPoint2"), NodePath("SpawnPoint3"), NodePath("SpawnPoint4"), NodePath("SpawnPoint5"), NodePath("SpawnPoint6"), NodePath("SpawnPoint7"), NodePath("SpawnPoint8"), NodePath("SpawnPoint9"), null]
 
 [node name="SpawnPoint0" type="Marker2D" parent="MapSpawnLocations" unique_id=169911074]
 position = Vector2(180, 360)
@@ -142,6 +143,9 @@ map_spawn_locations = NodePath("../MapSpawnLocations")
 
 [node name="LobbyJoinHandler" type="Node" parent="." unique_id=1720122272]
 script = ExtResource("11_lic31")
+
+[node name="LobbyLeaveHandler" type="Node" parent="." unique_id=871460161]
+script = ExtResource("13_k2pwb")
 
 [node name="LobbyDebugHandler" type="Node" parent="." unique_id=1598052194]
 script = ExtResource("12_56wdt")
