@@ -34,6 +34,7 @@ func _ready() -> void:
 func create_lobby(is_private: bool, passcode: String, spawn_id: int) -> void:
 	var lobby_name := _build_lobby_name()
 	var display_name := _get_display_name()
+	var steam_id := _get_steam_id()
 
 	pending_lobby_name = lobby_name
 	pending_password = passcode if is_private else ""
@@ -47,6 +48,7 @@ func create_lobby(is_private: bool, passcode: String, spawn_id: int) -> void:
 		"display_name": display_name,
 		"is_private": is_private,
 		"has_password": is_private,
+		"steam_id": steam_id,
 		"spawn_id": spawn_id
 	}
 
@@ -59,6 +61,7 @@ func create_lobby(is_private: bool, passcode: String, spawn_id: int) -> void:
 
 	var tags := {
 		"display_name": display_name,
+		"steam_id": steam_id,
 		"spawn_id": spawn_id
 	}
 
@@ -121,3 +124,10 @@ func _get_display_name() -> String:
 		return fallback_name
 
 	return steam_identity.get_display_name(fallback_name)
+
+
+func _get_steam_id() -> int:
+	if steam_identity == null:
+		return 0
+
+	return steam_identity.get_steam_id()
