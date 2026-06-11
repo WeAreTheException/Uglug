@@ -166,6 +166,10 @@ func _on_lobby_icon_clicked(lobby_info: Dictionary) -> void:
 		_set_status("Private lobby join not implemented yet.")
 		return
 
+	if is_hosting_lobby:
+		print("Leaving hosted lobby before joining another lobby.")
+		lobby_leave_handler.leave_lobby()
+
 	lobby_join_handler.join_public_lobby(lobby_info)
 
 
