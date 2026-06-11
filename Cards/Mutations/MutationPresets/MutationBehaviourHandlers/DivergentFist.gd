@@ -2,19 +2,6 @@ extends Mutation
 class_name DivergentFist
 
 
-func modify_attack_sequence(
-	_runtime: MutationRuntime,
-	sequence: Array[String]
-) -> Array[String]:
-	var new_sequence: Array[String] = []
-
-	for attack_event in sequence:
-		new_sequence.append(attack_event)
-		new_sequence.append(attack_event)
-
-	return new_sequence
-
-
 func modify_attack_steps(
 	_runtime: MutationRuntime,
 	steps: Array[AttackStep]
@@ -42,6 +29,7 @@ func modify_attack_steps(
 
 func _copy_step(source_step: AttackStep) -> AttackStep:
 	var new_step := AttackStep.new()
+
 	new_step.setup(
 		source_step.direction,
 		MutationSource.MUTATION,
