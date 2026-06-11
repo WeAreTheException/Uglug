@@ -64,12 +64,12 @@ func perform_attack() -> void:
 	if not _can_attack():
 		return
 
-	var attacker_slot: Slot = card.get_current_slot()
+	var starting_slot: Slot = card.get_current_slot()
 
-	if attacker_slot == null:
+	if starting_slot == null:
 		return
 
-	var attacker_owner: SlotRow.SlotOwner = slots_root.get_owner_of_slot(attacker_slot)
+	var attacker_owner: SlotRow.SlotOwner = slots_root.get_owner_of_slot(starting_slot)
 	var left_to_right: bool = _get_left_to_right(attacker_owner)
 	var steps: Array[AttackStep] = attack_sequencer.build_steps_with_order(
 		card,
@@ -84,6 +84,14 @@ func perform_attack() -> void:
 	for step in steps:
 		if step == null:
 			continue
+
+		if not _can_continue_attack_sequence():
+			break
+
+		var attacker_slot: Slot = card.get_current_slot()
+
+		if attacker_slot == null:
+			break
 
 		var context: AttackContext = _build_context(
 			step,
@@ -105,7 +113,7 @@ func perform_attack() -> void:
 
 		await animation_runner.play_attack(context)
 
-		if not impact_handled:
+		if not impact_handled and _can_continue_attack_sequence():
 			await _handle_impact(context)
 
 		attack_finished.emit(context)
@@ -138,6 +146,22 @@ func _can_attack() -> bool:
 
 	if impact_handler == null:
 		print("attack blocked: impact_handler missing")
+		return false
+
+	return true
+
+
+func _can_continue_attack_sequence() -> bool:
+	if card == null:
+		return false
+
+	if not is_instance_valid(card):
+		return false
+
+	if card.stats != null and card.stats.is_dead():
+		return false
+
+	if card.get_current_slot() == null:
 		return false
 
 	return true
@@ -176,6 +200,9 @@ func _on_impact_reached() -> void:
 		return
 
 	if impact_handled:
+		return
+
+	if not _can_continue_attack_sequence():
 		return
 
 	impact_handled = true
