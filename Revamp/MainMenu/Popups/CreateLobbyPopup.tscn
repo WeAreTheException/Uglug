@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://n0rxxqny4h76"]
 
-[ext_resource type="Script" uid="uid://clb1fqdlblev1" path="res://Revamp/MainMenu/CreateLobbyPopup.gd" id="1_m4i7p"]
+[ext_resource type="Script" uid="uid://clb1fqdlblev1" path="res://Revamp/MainMenu/Popups/CreateLobbyPopup.gd" id="1_m4i7p"]
 
 [node name="CreateLobbyPopup" type="Control" unique_id=1459111363 node_paths=PackedStringArray("private_toggle", "passcode_root", "digit_one", "digit_two", "digit_three", "create_button", "close_button")]
 layout_mode = 3

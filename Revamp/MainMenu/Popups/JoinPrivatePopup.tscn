@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dw6pojo7xhmdk"]
 
-[ext_resource type="Script" uid="uid://bxww4ptycn2xx" path="res://Revamp/MainMenu/JoinPrivatePopup.gd" id="1_3pehx"]
+[ext_resource type="Script" uid="uid://bxww4ptycn2xx" path="res://Revamp/MainMenu/Popups/JoinPrivatePopup.gd" id="1_3pehx"]
 
 [node name="JoinPrivatePopup" type="Control" unique_id=1459111363 node_paths=PackedStringArray("digit_one", "digit_two", "digit_three", "enter_button", "close_button", "incorrect_password_label", "lobby_no_longer_exists_label")]
 layout_mode = 3

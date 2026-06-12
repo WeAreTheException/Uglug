@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://di3vk7d3rf8r8"]
 
-[ext_resource type="Texture2D" uid="uid://tc7xrxphc1m5" path="res://Revamp/MainMenu/TrexSergioStraightChopped.png" id="1_oobr3"]
+[ext_resource type="Texture2D" uid="uid://tc7xrxphc1m5" path="res://Revamp/MainMenu/PlaceholderArt/TrexSergioStraightChopped.png" id="1_oobr3"]
 
 [node name="PlaceholderGameScene" type="Node2D" unique_id=570317736]
 
