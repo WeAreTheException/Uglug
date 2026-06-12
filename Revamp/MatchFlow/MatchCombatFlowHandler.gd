@@ -7,11 +7,12 @@ signal combat_flow_finished
 @export var match_flow_root: MatchFlowRoot
 @export var turn_order_state: MatchTurnOrderState
 @export var slots_root: SlotsRoot
+@export var anticipation_feedback: AttackAnticipationFeedbackHandler
 
+@export var use_attack_anticipation: bool = true
 @export var print_debug: bool = true
 
 var is_running: bool = false
-var stop_requested: bool = false
 
 
 func _ready() -> void:
@@ -20,9 +21,6 @@ func _ready() -> void:
 
 	if not match_flow_root.match_state_changed.is_connected(_on_match_state_changed):
 		match_flow_root.match_state_changed.connect(_on_match_state_changed)
-
-	if not match_flow_root.match_ended.is_connected(_on_match_ended):
-		match_flow_root.match_ended.connect(_on_match_ended)
 
 
 func _on_match_state_changed(state: MatchFlowRoot.MatchState) -> void:
@@ -43,7 +41,6 @@ func begin_combat_flow() -> void:
 		return
 
 	is_running = true
-	stop_requested = false
 
 	if match_flow_root != null:
 		match_flow_root.lock_transition()
@@ -58,8 +55,10 @@ func begin_combat_flow() -> void:
 
 	await _run_owner_attack_order(first_owner)
 
-	if not stop_requested:
+	if not _is_game_ended():
 		await _run_owner_attack_order(second_owner)
+
+	_stop_all_anticipation()
 
 	if print_debug:
 		print("COMBAT FLOW FINISHED")
@@ -73,7 +72,7 @@ func begin_combat_flow() -> void:
 
 
 func _run_owner_attack_order(owner: SlotRow.SlotOwner) -> void:
-	if stop_requested:
+	if _is_game_ended():
 		return
 
 	var attack_order_handler := _get_attack_order_handler()
@@ -84,25 +83,45 @@ func _run_owner_attack_order(owner: SlotRow.SlotOwner) -> void:
 	if print_debug:
 		print("COMBAT ATTACK ORDER: ", _get_owner_name(owner))
 
+	_start_anticipation(owner)
+
 	attack_order_handler.run_attack_order(owner)
 
 	while attack_order_handler.is_running:
-		if stop_requested:
-			attack_order_handler.request_stop()
-
 		await get_tree().process_frame
 
+	_stop_anticipation(owner)
 
-func _on_match_ended(
-	_winner: SlotRow.SlotOwner,
-	_final_score: int
-) -> void:
-	stop_requested = true
 
-	var attack_order_handler := _get_attack_order_handler()
+func _start_anticipation(owner: SlotRow.SlotOwner) -> void:
+	if not use_attack_anticipation:
+		return
 
-	if attack_order_handler != null:
-		attack_order_handler.request_stop()
+	if anticipation_feedback == null:
+		return
+
+	anticipation_feedback.start_for_owner(owner)
+
+
+func _stop_anticipation(owner: SlotRow.SlotOwner) -> void:
+	if anticipation_feedback == null:
+		return
+
+	anticipation_feedback.stop_for_owner(owner)
+
+
+func _stop_all_anticipation() -> void:
+	if anticipation_feedback == null:
+		return
+
+	anticipation_feedback.stop_all()
+
+
+func _is_game_ended() -> bool:
+	if match_flow_root == null:
+		return false
+
+	return match_flow_root.current_state == MatchFlowRoot.MatchState.GAME_END
 
 
 func _get_attack_order_handler() -> AttackOrderHandler:

@@ -7,7 +7,7 @@ signal attacking_first_owner_changed(owner: SlotRow.SlotOwner)
 
 @export var starting_attacking_first_owner: SlotRow.SlotOwner = SlotRow.SlotOwner.PLAYER
 @export var starting_controlled_owner: SlotRow.SlotOwner = SlotRow.SlotOwner.PLAYER
-@export var flip_attacking_first_each_round: bool = false
+@export var flip_attacking_first_each_round: bool = true
 
 var attacking_first_owner: SlotRow.SlotOwner = SlotRow.SlotOwner.PLAYER
 var lead_placement_owner: SlotRow.SlotOwner = SlotRow.SlotOwner.PLAYER
@@ -26,9 +26,8 @@ func setup_for_match() -> void:
 func setup_for_round(round_number: int) -> void:
 	var next_attacking_owner := starting_attacking_first_owner
 
-	if flip_attacking_first_each_round:
-		if round_number % 2 == 0:
-			next_attacking_owner = get_opposing_owner(starting_attacking_first_owner)
+	if flip_attacking_first_each_round and round_number % 2 == 0:
+		next_attacking_owner = get_opposing_owner(starting_attacking_first_owner)
 
 	_apply_attacking_first_owner(next_attacking_owner)
 	set_active_owner(attacking_first_owner)
