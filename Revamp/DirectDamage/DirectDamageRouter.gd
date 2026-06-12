@@ -50,11 +50,21 @@ func request_direct_damage(
 		amount
 	)
 
+	await _resolve_direct_damage(context)
+
+
+func _resolve_direct_damage(context: DirectDamageContext) -> void:
+	if context == null:
+		return
+
+	if context.amount <= 0:
+		return
+
 	direct_damage_requested.emit(
-		attacker,
-		attacker_owner,
-		target_slot,
-		amount
+		context.attacker,
+		context.attacker_owner,
+		context.target_slot,
+		context.amount
 	)
 
 	var interceptor := _find_direct_damage_interceptor(context)
@@ -70,8 +80,16 @@ func _apply_interception(
 	context: DirectDamageContext,
 	interceptor: CardRoot
 ) -> void:
+	if not _is_live_card(interceptor):
+		_apply_score_damage(context)
+		return
+
+	var health_before: int = _get_card_health(interceptor)
+	var overflow: int = max(context.amount - health_before, 0)
+
 	context.was_intercepted = true
 	context.interceptor_card = interceptor
+	context.ignore_interceptor(interceptor)
 
 	if print_debug:
 		print(
@@ -97,6 +115,19 @@ func _apply_interception(
 		)
 
 	direct_damage_intercepted.emit(interceptor, context.amount)
+
+	if overflow > 0:
+		var overflow_context := DirectDamageContext.new()
+		overflow_context.setup(
+			context.attacker,
+			context.attacker_owner,
+			context.defender_owner,
+			context.target_slot,
+			overflow
+		)
+		overflow_context.copy_ignored_interceptors_from(context)
+
+		await _resolve_direct_damage(overflow_context)
 
 
 func _apply_score_damage(context: DirectDamageContext) -> void:
@@ -149,16 +180,62 @@ func _find_direct_damage_interceptor(
 
 		var card := slot.current_card
 
-		if card == null:
+		if not _can_card_intercept(card, context):
 			continue
 
-		if card.mutations == null:
-			continue
-
-		if card.mutations.can_intercept_direct_damage(context):
-			return card
+		return card
 
 	return null
+
+
+func _can_card_intercept(
+	card: CardRoot,
+	context: DirectDamageContext
+) -> bool:
+	if not _is_live_card(card):
+		return false
+
+	if context.is_interceptor_ignored(card):
+		return false
+
+	if card.mutations == null:
+		return false
+
+	return card.mutations.can_intercept_direct_damage(context)
+
+
+func _is_live_card(card: CardRoot) -> bool:
+	if card == null:
+		return false
+
+	if not is_instance_valid(card):
+		return false
+
+	if card.stats == null:
+		return true
+
+	if card.stats.has_method("is_dead"):
+		return not card.stats.is_dead()
+
+	return true
+
+
+func _get_card_health(card: CardRoot) -> int:
+	if card == null:
+		return 0
+
+	if card.stats == null:
+		return 0
+
+	if card.stats.has_method("get_health"):
+		return int(card.stats.get_health())
+
+	var raw_health: Variant = card.stats.get("health")
+
+	if raw_health is int:
+		return int(raw_health)
+
+	return 0
 
 
 func _get_defender_owner(target_slot: Slot) -> SlotRow.SlotOwner:

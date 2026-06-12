@@ -2,9 +2,8 @@
 
 [ext_resource type="PackedScene" uid="uid://bw8c7m7n5yuk8" path="res://Revamp/Board/Slots.tscn" id="1_yq750"]
 [ext_resource type="PackedScene" uid="uid://1wr1e57v7trd" path="res://Revamp/PlayerHand/Player_Hand.tscn" id="2_mi1n2"]
-[ext_resource type="Resource" uid="uid://dbgpqc3vdl8t" path="res://Cards/CardPresets/Duriant.tres" id="3_mf2my"]
+[ext_resource type="Resource" uid="uid://b1dt5378u5ga8" path="res://Cards/CardPresets/Sustain/Guardiant.tres" id="3_bvqua"]
 [ext_resource type="Resource" uid="uid://b6naofddvwrc1" path="res://Cards/CardPresets/Penetrant.tres" id="3_venfy"]
-[ext_resource type="Resource" uid="uid://mnht3u87f5og" path="res://Cards/CardPresets/Pregnant.tres" id="4_3a8w1"]
 [ext_resource type="Resource" uid="uid://0c6lqenucx25" path="res://Cards/CardPresets/StraightChops/Aviant.tres" id="4_bvqua"]
 [ext_resource type="Script" uid="uid://bxbqihkit6rgo" path="res://Managers/Phasemanager.gd" id="8_cc2no"]
 [ext_resource type="Script" uid="uid://bbcig486utsir" path="res://HandPhaseApplier.gd" id="9_cc2no"]
@@ -39,24 +38,24 @@
 [node name="Mao" type="Node2D" unique_id=550121538]
 
 [node name="Deck" parent="." unique_id=93691211 node_paths=PackedStringArray("player_one_hand", "player_two_hand") instance=ExtResource("28_a1qt2")]
-position = Vector2(1476, 588)
+position = Vector2(1836, 492)
 player_one_hand = NodePath("../PlayerHAnd")
 player_two_hand = NodePath("../OpponenetHAnd")
 
 [node name="Slots" parent="." unique_id=1318716624 node_paths=PackedStringArray("direct_damage_router") instance=ExtResource("1_yq750")]
-position = Vector2(120, 120)
-player_slot_1_card = ExtResource("3_venfy")
-player_slot_2_card = ExtResource("4_bvqua")
-opponent_slot_1_card = ExtResource("4_3a8w1")
-opponent_slot_2_card = ExtResource("3_mf2my")
+position = Vector2(588, 252)
+player_slot_1_card = ExtResource("4_bvqua")
+player_slot_2_card = ExtResource("3_venfy")
+opponent_slot_1_card = ExtResource("3_bvqua")
+opponent_slot_4_card = ExtResource("3_bvqua")
 direct_damage_router = NodePath("../DirectDamageRouter")
 
 [node name="PlayerHAnd" parent="." unique_id=371738706 node_paths=PackedStringArray("prime_location") instance=ExtResource("2_mi1n2")]
-position = Vector2(720, 960)
+position = Vector2(300, 960)
 prime_location = NodePath("../PrimeCardLocation")
 
 [node name="OpponenetHAnd" parent="." unique_id=1415383407 node_paths=PackedStringArray("prime_location") instance=ExtResource("2_mi1n2")]
-position = Vector2(1080, 600)
+position = Vector2(312, 240)
 prime_location = NodePath("../PrimeCardLocation")
 
 [node name="PrimeCardLocation" type="Node2D" parent="." unique_id=2143511336]
