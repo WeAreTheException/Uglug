@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://bw8c7m7n5yuk8" path="res://Revamp/Board/Slots.tscn" id="1_yq750"]
 [ext_resource type="PackedScene" uid="uid://1wr1e57v7trd" path="res://Revamp/PlayerHand/Player_Hand.tscn" id="2_mi1n2"]
-[ext_resource type="Resource" uid="uid://kmwnulcu4tml" path="res://Cards/CardPresets/Antler.tres" id="3_20kdy"]
+[ext_resource type="Resource" uid="uid://dbgpqc3vdl8t" path="res://Cards/CardPresets/Duriant.tres" id="3_mf2my"]
 [ext_resource type="Resource" uid="uid://ci7yvhc8pfst6" path="res://Cards/CardPresets/QueenAnt.tres" id="4_7gy8c"]
 [ext_resource type="Script" uid="uid://bxbqihkit6rgo" path="res://Managers/Phasemanager.gd" id="8_cc2no"]
 [ext_resource type="Script" uid="uid://bbcig486utsir" path="res://HandPhaseApplier.gd" id="9_cc2no"]
@@ -28,6 +28,7 @@
 [ext_resource type="Script" uid="uid://dxj656ms4qeq4" path="res://Revamp/MatchFlow/MatchDominantRevealHandler.gd" id="27_a1qt2"]
 [ext_resource type="Script" uid="uid://myowbycyd18l" path="res://Revamp/MatchFlow/MatchPlacementFlowHandler.gd" id="27_mf2my"]
 [ext_resource type="PackedScene" uid="uid://coux8hd7esj7g" path="res://Deck_System_Root.tscn" id="28_a1qt2"]
+[ext_resource type="Script" uid="uid://b50mccoppp1lb" path="res://Revamp/MatchFlow/MatchAutoDrawHandler.gd" id="28_mf2my"]
 
 [node name="Mao" type="Node2D" unique_id=550121538]
 
@@ -38,7 +39,7 @@ player_two_hand = NodePath("../OpponenetHAnd")
 
 [node name="Slots" parent="." unique_id=1318716624 instance=ExtResource("1_yq750")]
 position = Vector2(120, 120)
-player_slot_1_card = ExtResource("3_20kdy")
+player_slot_2_card = ExtResource("3_mf2my")
 opponent_slot_1_card = ExtResource("4_7gy8c")
 
 [node name="PlayerHAnd" parent="." unique_id=371738706 node_paths=PackedStringArray("prime_location") instance=ExtResource("2_mi1n2")]
@@ -156,6 +157,11 @@ slots_root = NodePath("../../Slots")
 [node name="MatchDominantRevealHandler" type="Node" parent="MatchFlowRoot" unique_id=1122772169 node_paths=PackedStringArray("match_flow_root")]
 script = ExtResource("27_a1qt2")
 match_flow_root = NodePath("..")
+
+[node name="MatchAutoDrawHandler" type="Node" parent="MatchFlowRoot" unique_id=833003799 node_paths=PackedStringArray("match_flow_root", "deck_system_root")]
+script = ExtResource("28_mf2my")
+match_flow_root = NodePath("..")
+deck_system_root = NodePath("../../Deck")
 
 [node name="MatchFlowUI" type="Node2D" parent="." unique_id=1660901840]
 metadata/_edit_lock_ = true

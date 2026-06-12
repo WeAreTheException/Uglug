@@ -40,6 +40,9 @@ func begin_combat_flow() -> void:
 
 	is_running = true
 
+	if match_flow_root != null:
+		match_flow_root.lock_transition()
+
 	var first_owner: SlotRow.SlotOwner = _get_attacking_first_owner()
 	var second_owner: SlotRow.SlotOwner = _get_opposing_owner(first_owner)
 
@@ -51,12 +54,15 @@ func begin_combat_flow() -> void:
 	await _run_owner_attack_order(first_owner)
 	await _run_owner_attack_order(second_owner)
 
-	is_running = false
-
 	if print_debug:
 		print("COMBAT FLOW FINISHED")
 
 	combat_flow_finished.emit()
+
+	if match_flow_root != null:
+		match_flow_root.unlock_transition()
+
+	is_running = false
 
 
 func _run_owner_attack_order(owner: SlotRow.SlotOwner) -> void:
