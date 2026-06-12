@@ -35,6 +35,9 @@ func setup(source_card: CardRoot, source_slots_root: SlotsRoot) -> void:
 			animation_runner.impact_reached.connect(_on_impact_reached)
 
 	if impact_handler != null:
+		if slots_root != null:
+			impact_handler.setup(slots_root.direct_damage_router)
+
 		if not impact_handler.attack_hit.is_connected(_on_attack_hit):
 			impact_handler.attack_hit.connect(_on_attack_hit)
 

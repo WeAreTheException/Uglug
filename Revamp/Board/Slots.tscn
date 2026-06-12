@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bw8c7m7n5yuk8"]
 
 [ext_resource type="Script" uid="uid://bukeona4oyi7j" path="res://Revamp/Board/SlotsRoot.gd" id="1_vhubw"]
-[ext_resource type="Script" uid="uid://dylxhiaox4q0u" path="res://Revamp/SlotRow.gd" id="2_2k41x"]
+[ext_resource type="Script" uid="uid://dylxhiaox4q0u" path="res://Revamp/Board/SlotRow.gd" id="2_2k41x"]
 [ext_resource type="PackedScene" uid="uid://5qb61nfrd521" path="res://Revamp/Card/Card.tscn" id="5_1gkk1"]
 [ext_resource type="Script" uid="uid://dnat5rx3mmepn" path="res://Revamp/Board/BoardMutationRefresher.gd" id="7_4xfmt"]
 [ext_resource type="Script" uid="uid://fpn7jg867ngv" path="res://Revamp/Board/BoardSlotRegistry.gd" id="7_camp5"]

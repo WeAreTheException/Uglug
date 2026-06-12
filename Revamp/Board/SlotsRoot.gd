@@ -28,6 +28,8 @@ signal slot_unhovered(slot: Slot)
 @export var opponent_slot_3_card: CardData
 @export var opponent_slot_4_card: CardData
 
+@export var direct_damage_router: DirectDamageRouter
+
 var player_slots: Array[Slot] = []
 var opponent_slots: Array[Slot] = []
 

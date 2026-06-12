@@ -29,6 +29,7 @@
 [ext_resource type="Script" uid="uid://myowbycyd18l" path="res://Revamp/MatchFlow/MatchPlacementFlowHandler.gd" id="27_mf2my"]
 [ext_resource type="PackedScene" uid="uid://coux8hd7esj7g" path="res://Deck_System_Root.tscn" id="28_a1qt2"]
 [ext_resource type="Script" uid="uid://b50mccoppp1lb" path="res://Revamp/MatchFlow/MatchAutoDrawHandler.gd" id="28_mf2my"]
+[ext_resource type="Script" uid="uid://cq06khkyy84o5" path="res://Revamp/DirectDamageRouter.gd" id="30_venfy"]
 
 [node name="Mao" type="Node2D" unique_id=550121538]
 
@@ -37,10 +38,13 @@ position = Vector2(1476, 588)
 player_one_hand = NodePath("../PlayerHAnd")
 player_two_hand = NodePath("../OpponenetHAnd")
 
-[node name="Slots" parent="." unique_id=1318716624 instance=ExtResource("1_yq750")]
+[node name="Slots" parent="." unique_id=1318716624 node_paths=PackedStringArray("direct_damage_router") instance=ExtResource("1_yq750")]
 position = Vector2(120, 120)
 player_slot_1_card = ExtResource("3_mf2my")
+player_slot_2_card = ExtResource("4_7gy8c")
 opponent_slot_1_card = ExtResource("4_7gy8c")
+opponent_slot_3_card = ExtResource("3_mf2my")
+direct_damage_router = NodePath("../DirectDamageRouter")
 
 [node name="PlayerHAnd" parent="." unique_id=371738706 node_paths=PackedStringArray("prime_location") instance=ExtResource("2_mi1n2")]
 position = Vector2(720, 960)
@@ -190,3 +194,6 @@ offset_top = 708.0
 offset_right = 1920.0
 offset_bottom = 1080.0
 metadata/_edit_lock_ = true
+
+[node name="DirectDamageRouter" type="Node" parent="." unique_id=396013123]
+script = ExtResource("30_venfy")
