@@ -4,6 +4,7 @@ class_name SlotFeedback
 @export var play_phase_feedback: SlotPlayPhaseFeedback
 @export var placement_preview_feedback: SlotPlacementPreviewFeedback
 @export var attack_preview_feedback: SlotAttackPreviewFeedback
+@export var damaged_feedback: SlotDamagedFeedback
 
 var slot: Slot = null
 
@@ -19,6 +20,9 @@ func setup(source_slot: Slot) -> void:
 
 	if attack_preview_feedback != null:
 		attack_preview_feedback.setup(self)
+
+	if damaged_feedback != null:
+		damaged_feedback.setup(self)
 
 	show_idle()
 
@@ -46,6 +50,11 @@ func show_placement_preview(value: bool) -> void:
 func show_attack_preview(value: bool) -> void:
 	if attack_preview_feedback != null:
 		attack_preview_feedback.set_previewed(value)
+
+
+func show_damaged() -> void:
+	if damaged_feedback != null:
+		damaged_feedback.play_feedback()
 
 
 func clear_preview_feedback() -> void:

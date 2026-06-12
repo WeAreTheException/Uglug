@@ -32,7 +32,6 @@ metadata/_edit_lock_ = true
 
 [node name="OP_Slot1" parent="BoardCardsLayer/OpponentRow" unique_id=904478857 instance=ExtResource("8_s3p7v")]
 position = Vector2(-276, 0)
-slot_index = 1
 
 [node name="OP_Slot2" parent="BoardCardsLayer/OpponentRow" unique_id=473262665 instance=ExtResource("8_s3p7v")]
 position = Vector2(-96, 0)
@@ -53,7 +52,6 @@ metadata/_edit_lock_ = true
 
 [node name="PL_Slot1" parent="BoardCardsLayer/PlayerRow" unique_id=1917887040 instance=ExtResource("8_s3p7v")]
 position = Vector2(-264, 0)
-slot_index = 1
 
 [node name="PL_Slot2" parent="BoardCardsLayer/PlayerRow" unique_id=834395941 instance=ExtResource("8_s3p7v")]
 position = Vector2(-84, 0)

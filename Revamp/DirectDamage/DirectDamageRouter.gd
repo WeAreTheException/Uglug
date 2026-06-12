@@ -15,6 +15,7 @@ signal direct_damage_applied(
 )
 
 @export var score_state: MatchScoreState
+@export var slots_root: SlotsRoot
 @export var print_debug: bool = true
 
 
@@ -47,6 +48,9 @@ func request_direct_damage(
 		target_slot,
 		amount
 	)
+
+	if slots_root != null:
+		slots_root.show_direct_damage_feedback(target_slot)
 
 	if score_state == null:
 		return
