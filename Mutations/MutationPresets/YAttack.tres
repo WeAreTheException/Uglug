@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="YAttack" format=3 uid="uid://ceeskmu01vy5g"]
+
+[ext_resource type="Script" uid="uid://cm2da67ckyqv6" path="res://Mutations/MutationPresets/MutationBehaviourHandlers/YAttack.gd" id="1_rfusl"]
+[ext_resource type="Texture2D" uid="uid://cxfrhckwspi6a" path="res://Art/Mutations/Antlers_Sigil.PNG" id="2_am46v"]
+
+[resource]
+script = ExtResource("1_rfusl")
+mutation_name = "Y Attack"
+mutation_description = "Attacks both slots adjacent to the opposing slot"
+sigil_texture = ExtResource("2_am46v")

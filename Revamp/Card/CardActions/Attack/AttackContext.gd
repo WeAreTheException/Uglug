@@ -14,6 +14,9 @@ var target_owner: SlotRow.SlotOwner = SlotRow.SlotOwner.OPPONENT
 
 var attack_animation_layer: Node2D = null
 
+var force_direct_damage: bool = false
+var carries_over_direct_damage: bool = false
+
 
 func setup_from_step(
 	new_attacker_card: CardRoot,
@@ -31,6 +34,9 @@ func setup_from_step(
 
 	origin_slot = new_attacker_slot
 	attack_animation_layer = animation_layer
+
+	force_direct_damage = false
+	carries_over_direct_damage = false
 
 
 func get_attack_direction() -> String:

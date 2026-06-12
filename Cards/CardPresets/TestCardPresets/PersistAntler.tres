@@ -1,8 +1,8 @@
 [gd_resource type="Resource" script_class="CardData" format=3 uid="uid://dkobsikajvmmf"]
 
-[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Cards/Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="1_8hb2n"]
-[ext_resource type="Resource" uid="uid://ceeskmu01vy5g" path="res://Cards/Mutations/MutationPresets/YAttack.tres" id="2_4veyl"]
-[ext_resource type="Resource" uid="uid://dcgqrr05c2pyg" path="res://Cards/Mutations/MutationPresets/DivergentFist.tres" id="2_82p4g"]
+[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="1_8hb2n"]
+[ext_resource type="Resource" uid="uid://ceeskmu01vy5g" path="res://Mutations/MutationPresets/YAttack.tres" id="2_4veyl"]
+[ext_resource type="Resource" uid="uid://dcgqrr05c2pyg" path="res://Mutations/MutationPresets/DivergentFist.tres" id="2_82p4g"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="2_jx8v2"]
 
 [resource]

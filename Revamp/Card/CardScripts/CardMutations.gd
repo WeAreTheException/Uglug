@@ -2,6 +2,11 @@ extends Node
 class_name CardMutations
 
 signal mutations_changed
+signal mutation_activation_started(runtime: MutationRuntime)
+signal mutation_activation_finished(runtime: MutationRuntime)
+signal mutation_struck(runtime: MutationRuntime)
+signal mutation_death_started(runtime: MutationRuntime)
+signal mutation_death_finished(runtime: MutationRuntime)
 
 @export var max_mutations: int = 3
 
@@ -18,15 +23,19 @@ func setup_from_data(data: CardData, new_owner_card: CardRoot) -> void:
 		return
 
 	for mutation in data.base_mutations:
-		add_mutation(mutation, owner_card)
+		add_mutation(mutation, owner_card, true)
 
 	for mutation in data.additional_mutations:
-		add_mutation(mutation, owner_card)
+		add_mutation(mutation, owner_card, false)
 
 	mutations_changed.emit()
 
 
-func add_mutation(mutation: Mutation, target_card: CardRoot) -> bool:
+func add_mutation(
+	mutation: Mutation,
+	target_card: CardRoot,
+	is_base: bool = false
+) -> bool:
 	if mutation == null:
 		return false
 
@@ -35,6 +44,7 @@ func add_mutation(mutation: Mutation, target_card: CardRoot) -> bool:
 
 	var runtime := MutationRuntime.new()
 	runtime.setup(mutation, target_card)
+	runtime.is_base_mutation = is_base
 
 	mutation_runtimes.append(runtime)
 	mutations_changed.emit()
@@ -84,6 +94,21 @@ func get_active_mutations() -> Array[Mutation]:
 	return result
 
 
+func get_inheritable_mutations() -> Array[Mutation]:
+	var result: Array[Mutation] = []
+
+	for runtime in mutation_runtimes:
+		if runtime == null:
+			continue
+
+		if not runtime.can_be_inherited():
+			continue
+
+		result.append(runtime.mutation)
+
+	return result
+
+
 func tick_turn_durations() -> void:
 	for runtime in mutation_runtimes:
 		if runtime != null:
@@ -96,9 +121,6 @@ func get_attack_priority() -> int:
 	var total_priority := 0
 
 	for runtime in get_active_runtimes():
-		if runtime == null:
-			continue
-
 		if runtime.mutation == null:
 			continue
 
@@ -114,18 +136,12 @@ func build_attack_steps() -> Array[AttackStep]:
 		steps.append(_make_base_attack_step())
 
 	for runtime in get_active_runtimes():
-		if runtime == null:
-			continue
-
 		if runtime.mutation == null:
 			continue
 
 		runtime.mutation.add_attack_steps(runtime, steps)
 
 	for runtime in get_active_runtimes():
-		if runtime == null:
-			continue
-
 		if runtime.mutation == null:
 			continue
 
@@ -152,118 +168,163 @@ func build_attack_events() -> Array[String]:
 	return events
 
 
-func modify_attack_target(context: AttackContext) -> void:
+func notify_attack_sequence_started(context: AttackContext) -> void:
 	for runtime in get_active_runtimes():
-		if runtime == null:
-			continue
-
 		if runtime.mutation == null:
 			continue
 
-		runtime.mutation.modify_attack_target(runtime, context)
+		mutation_activation_started.emit(runtime)
+		runtime.mutation.on_attack_sequence_started_context(runtime, context)
+
+
+func notify_attack_sequence_finished(context: AttackContext) -> void:
+	for runtime in get_active_runtimes():
+		if runtime.mutation == null:
+			continue
+
+		runtime.mutation.on_attack_sequence_finished_context(runtime, context)
+		mutation_activation_finished.emit(runtime)
+
+
+func modify_attack_target(context: AttackContext) -> void:
+	for runtime in get_active_runtimes():
+		if runtime.mutation == null:
+			continue
+
+		runtime.mutation.modify_attack_target_context(runtime, context)
 
 
 func modify_outgoing_damage(target_card: CardRoot, damage: int) -> int:
-	var result := damage
+	var context := DamageContext.new()
+	context.setup(owner_card, target_card, damage)
 
 	for runtime in get_active_runtimes():
-		if runtime == null:
-			continue
-
 		if runtime.mutation == null:
 			continue
 
-		result = runtime.mutation.modify_damage(owner_card, target_card, result)
+		runtime.mutation.modify_outgoing_damage_context(runtime, context)
 
-	return max(result, 0)
+	return max(context.final_damage, 0)
 
 
 func notify_damage_dealt(target_card: CardRoot, damage: int) -> void:
 	if damage <= 0:
 		return
 
-	for runtime in get_active_runtimes():
-		if runtime == null:
-			continue
+	var context := DamageContext.new()
+	context.setup(owner_card, target_card, damage)
+	context.actual_damage = damage
 
+	for runtime in get_active_runtimes():
 		if runtime.mutation == null:
 			continue
 
-		runtime.mutation.on_damage_dealt(owner_card, target_card, damage)
+		runtime.mutation.on_damage_dealt_context(runtime, context)
 
 
 func modify_incoming_damage(attacker: CardRoot, damage: int) -> int:
-	var result := damage
+	var context := DamageContext.new()
+	context.setup(attacker, owner_card, damage)
 
 	for runtime in get_active_runtimes():
-		if runtime == null:
-			continue
-
 		if runtime.mutation == null:
 			continue
 
-		result = runtime.mutation.modify_incoming_damage(
-			runtime,
-			owner_card,
-			attacker,
-			result
-		)
+		runtime.mutation.modify_incoming_damage_context(runtime, context)
 
-	return max(result, 0)
+	return max(context.final_damage, 0)
+
+
+func notify_struck(context: DamageContext) -> void:
+	if context == null:
+		return
+
+	for runtime in get_active_runtimes():
+		if runtime.mutation == null:
+			continue
+
+		mutation_struck.emit(runtime)
+		runtime.mutation.on_struck_context(runtime, context)
 
 
 func notify_damaged(attacker: CardRoot, damage: int) -> void:
 	if damage <= 0:
 		return
 
-	for runtime in get_active_runtimes():
-		if runtime == null:
-			continue
+	var context := DamageContext.new()
+	context.setup(attacker, owner_card, damage)
+	context.actual_damage = damage
 
+	for runtime in get_active_runtimes():
 		if runtime.mutation == null:
 			continue
 
-		runtime.mutation.on_damaged(owner_card, attacker, damage)
+		await runtime.mutation.on_damaged_context(runtime, context)
+
+
+func can_intercept_direct_damage(context: DirectDamageContext) -> bool:
+	for runtime in get_active_runtimes():
+		if runtime.mutation == null:
+			continue
+
+		if runtime.mutation.can_intercept_direct_damage_context(runtime, context):
+			return true
+
+	return false
+
+
+func notify_direct_damage_intercepted(context: DirectDamageContext) -> void:
+	for runtime in get_active_runtimes():
+		if runtime.mutation == null:
+			continue
+
+		runtime.mutation.on_direct_damage_intercepted_context(runtime, context)
 
 
 func notify_death() -> void:
 	for runtime in get_active_runtimes():
-		if runtime == null:
-			continue
-
 		if runtime.mutation == null:
 			continue
 
 		runtime.mutation.on_death(owner_card)
 
 
-func refresh_board_effects() -> void:
+func notify_death_started(context: DeathContext) -> void:
 	for runtime in get_active_runtimes():
-		if runtime == null:
-			continue
-
 		if runtime.mutation == null:
 			continue
 
-		runtime.mutation.refresh_board_effect(runtime)
+		mutation_death_started.emit(runtime)
+		runtime.mutation.on_death_started_context(runtime, context)
+
+
+func notify_death_finished(context: DeathContext) -> void:
+	for runtime in get_active_runtimes():
+		if runtime.mutation == null:
+			continue
+
+		runtime.mutation.on_death_finished_context(runtime, context)
+		mutation_death_finished.emit(runtime)
+
+
+func refresh_board_effects() -> void:
+	for runtime in get_active_runtimes():
+		if runtime.mutation == null:
+			continue
+
+		runtime.mutation.refresh_board_context(runtime)
 
 
 func notify_left_board() -> void:
 	for runtime in get_active_runtimes():
-		if runtime == null:
-			continue
-
 		if runtime.mutation == null:
 			continue
 
-		runtime.mutation.on_left_board(runtime)
+		runtime.mutation.on_left_board_context(runtime)
 
 
 func _should_replace_base_attack() -> bool:
 	for runtime in get_active_runtimes():
-		if runtime == null:
-			continue
-
 		if runtime.mutation == null:
 			continue
 

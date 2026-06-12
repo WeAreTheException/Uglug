@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="CardData" format=3 uid="uid://d1n1fhj8y5tq"]
 
-[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Cards/Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="1_cnk5k"]
-[ext_resource type="Resource" uid="uid://bk7bftdp5178x" path="res://Cards/Mutations/MutationPresets/MeFirst.tres" id="2_73u0c"]
+[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="1_cnk5k"]
+[ext_resource type="Resource" uid="uid://bk7bftdp5178x" path="res://Mutations/MutationPresets/MeFirst.tres" id="2_73u0c"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="2_m35vo"]
 [ext_resource type="Texture2D" uid="uid://c4v3je4ncss3j" path="res://Art/WorkerAnt_Test_Alpha.png" id="2_yjp4r"]
 

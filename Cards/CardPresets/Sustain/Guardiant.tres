@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="CardData" format=3 uid="uid://b1dt5378u5ga8"]
+
+[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="1_qjmbu"]
+[ext_resource type="Texture2D" uid="uid://y5olf4lrdtdx" path="res://Art/AntBack/GreenAnt.png" id="2_2qaih"]
+[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="2_dsrx4"]
+[ext_resource type="Resource" uid="uid://qpp1tjh0bk7v" path="res://Mutations/MutationPresets/SustainMutations/RedRiot.tres" id="2_hkonq"]
+
+[resource]
+script = ExtResource("2_dsrx4")
+card_id = "guardiant"
+name = "Guardiant"
+rarity = 1
+card_type = 1
+health = 6
+worth = 2
+ant_texture = ExtResource("2_2qaih")
+base_mutations = Array[ExtResource("1_qjmbu")]([ExtResource("2_hkonq")])
+metadata/_custom_type_script = "uid://duslcpxrhurv8"

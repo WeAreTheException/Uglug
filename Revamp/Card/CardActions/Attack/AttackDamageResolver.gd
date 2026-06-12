@@ -2,6 +2,10 @@ extends Node
 class_name AttackDamageResolver
 
 
+func get_direct_damage(attacker: CardRoot) -> int:
+	return get_attack_damage(attacker, null)
+
+
 func get_attack_damage(attacker: CardRoot, target_card: CardRoot) -> int:
 	var damage := 1
 

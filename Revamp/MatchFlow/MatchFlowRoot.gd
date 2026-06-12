@@ -3,6 +3,7 @@ class_name MatchFlowRoot
 
 signal match_state_changed(state: MatchState)
 signal round_changed(round_number: int)
+signal match_ended(winner: SlotRow.SlotOwner, final_score: int)
 
 enum MatchState {
 	NONE,
@@ -14,21 +15,29 @@ enum MatchState {
 	RESPONSE_PLACEMENT,
 	COMBAT,
 	DOMINANT_REVEAL,
-	ROUND_END
+	ROUND_END,
+	GAME_END
 }
 
 @export var turn_order_state: MatchTurnOrderState
 @export var deck_system_root: DeckSystemRoot
+@export var score_state: MatchScoreState
 
 @export var start_on_ready: bool = true
 @export var enable_debug_keys: bool = true
 @export var advance_debug_key: Key = KEY_M
 @export var swap_control_debug_key: Key = KEY_TAB
+@export var print_debug: bool = true
 
 var current_state: MatchState = MatchState.NONE
 var current_round: int = 0
 var is_running: bool = false
 var has_built_starting_hands: bool = false
+var transition_lock_count: int = 0
+
+var has_match_winner: bool = false
+var match_winner: SlotRow.SlotOwner = SlotRow.SlotOwner.PLAYER
+var final_score: int = 0
 
 var state_name_helper: MatchStateNameHelper = MatchStateNameHelper.new()
 var state_advance_helper: MatchStateAdvanceHelper = MatchStateAdvanceHelper.new()
@@ -38,6 +47,8 @@ var active_owner_helper: MatchActiveOwnerResolverHelper = MatchActiveOwnerResolv
 func _ready() -> void:
 	if turn_order_state != null:
 		turn_order_state.setup_for_match()
+
+	_connect_score_state()
 
 	if start_on_ready:
 		start_match()
@@ -69,6 +80,12 @@ func start_match() -> void:
 	is_running = true
 	current_round = 1
 	has_built_starting_hands = false
+	transition_lock_count = 0
+	has_match_winner = false
+	final_score = 0
+
+	if score_state != null:
+		score_state.reset_score()
 
 	if turn_order_state != null:
 		turn_order_state.setup_for_round(current_round)
@@ -82,14 +99,55 @@ func set_state(new_state: MatchState) -> void:
 	if current_state == new_state:
 		return
 
+	if current_state == MatchState.GAME_END:
+		return
+
 	current_state = new_state
 	apply_active_owner_for_current_state()
 
-	match_state_changed.emit(current_state)
 	_print_current_state()
+	match_state_changed.emit(current_state)
+
+
+func end_match(
+	winner: SlotRow.SlotOwner,
+	score: int
+) -> void:
+	if has_match_winner:
+		return
+
+	has_match_winner = true
+	match_winner = winner
+	final_score = score
+	is_running = false
+	transition_lock_count = 0
+
+	current_state = MatchState.GAME_END
+	apply_active_owner_for_current_state()
+
+	if print_debug:
+		print(
+			"MATCH ENDED | WINNER: ",
+			_get_owner_name(match_winner),
+			" | SCORE: ",
+			final_score
+		)
+
+	match_state_changed.emit(current_state)
+	match_ended.emit(match_winner, final_score)
 
 
 func advance_debug_state() -> void:
+	if current_state == MatchState.GAME_END:
+		if print_debug:
+			print("MATCH ADVANCE BLOCKED: game ended")
+		return
+
+	if is_transition_locked():
+		if print_debug:
+			print("MATCH ADVANCE BLOCKED: transition locked")
+		return
+
 	if state_advance_helper.should_advance_round(current_state):
 		advance_round()
 		return
@@ -107,6 +165,14 @@ func advance_debug_state() -> void:
 
 
 func advance_round() -> void:
+	if current_state == MatchState.GAME_END:
+		return
+
+	if is_transition_locked():
+		if print_debug:
+			print("ROUND ADVANCE BLOCKED: transition locked")
+		return
+
 	current_round += 1
 
 	if turn_order_state != null:
@@ -116,16 +182,26 @@ func advance_round() -> void:
 	set_state(MatchState.ROUND_INTRO)
 
 
+func lock_transition() -> void:
+	transition_lock_count += 1
+
+
+func unlock_transition() -> void:
+	transition_lock_count = max(transition_lock_count - 1, 0)
+
+
+func is_transition_locked() -> bool:
+	return transition_lock_count > 0
+
+
 func swap_controlled_owner() -> void:
 	if turn_order_state == null:
 		return
 
 	turn_order_state.swap_controlled_owner()
 
-	print(
-		"CONTROLLED OWNER: ",
-		get_controlled_owner_name()
-	)
+	if print_debug:
+		print("CONTROLLED OWNER: ", get_controlled_owner_name())
 
 
 func get_state_name(state: MatchState) -> String:
@@ -153,6 +229,21 @@ func apply_active_owner_for_current_state() -> void:
 	)
 
 
+func _connect_score_state() -> void:
+	if score_state == null:
+		return
+
+	if not score_state.threshold_reached.is_connected(_on_score_threshold_reached):
+		score_state.threshold_reached.connect(_on_score_threshold_reached)
+
+
+func _on_score_threshold_reached(
+	winner: SlotRow.SlotOwner,
+	score: int
+) -> void:
+	end_match(winner, score)
+
+
 func _build_starting_hands_once() -> void:
 	if has_built_starting_hands:
 		return
@@ -160,13 +251,17 @@ func _build_starting_hands_once() -> void:
 	has_built_starting_hands = true
 
 	if deck_system_root == null:
-		print("starting hand skipped: deck_system_root missing")
+		if print_debug:
+			print("starting hand skipped: deck_system_root missing")
 		return
 
 	deck_system_root.build_match_decks()
 
 
 func _print_current_state() -> void:
+	if not print_debug:
+		return
+
 	print(
 		"MATCH STATE: ",
 		get_state_name(current_state),
@@ -175,3 +270,13 @@ func _print_current_state() -> void:
 		" | CONTROLLED: ",
 		get_controlled_owner_name()
 	)
+
+
+func _get_owner_name(owner: SlotRow.SlotOwner) -> String:
+	if turn_order_state != null:
+		return turn_order_state.get_owner_name(owner)
+
+	if owner == SlotRow.SlotOwner.PLAYER:
+		return "P1"
+
+	return "P2"

@@ -1,20 +1,20 @@
 [gd_scene format=3 uid="uid://c5cbf5mt6cwqc"]
 
 [ext_resource type="Script" uid="uid://ctb0sphxjf65u" path="res://Slots/Slot.gd" id="1_iym07"]
-[ext_resource type="Script" uid="uid://blakh033eae1j" path="res://Revamp/SlotInput.gd" id="2_0ebxi"]
+[ext_resource type="Script" uid="uid://blakh033eae1j" path="res://Revamp/Board/SlotInput.gd" id="2_0ebxi"]
 [ext_resource type="Texture2D" uid="uid://bkafxhbg4kvug" path="res://Sprites/CardSlot.png" id="2_rh202"]
-[ext_resource type="Script" uid="uid://cxtlbt4cyp42p" path="res://Revamp/SlotPresence.gd" id="3_0ebxi"]
-[ext_resource type="Script" uid="uid://8bb0uw27pa7v" path="res://Revamp/SlotFeedback.gd" id="4_npwjl"]
-[ext_resource type="Script" uid="uid://cifufsh3y1kgi" path="res://Revamp/SlotPlayPhaseFeedback.gd" id="5_iike6"]
-[ext_resource type="Script" uid="uid://ib588s15omow" path="res://Revamp/SlotPlacementPreviewFeedback.gd" id="6_dshdd"]
-[ext_resource type="Script" uid="uid://vydoy4hkyhm0" path="res://Revamp/SlotAttackPreviewFeedback.gd" id="7_jvbdb"]
+[ext_resource type="Script" uid="uid://cxtlbt4cyp42p" path="res://Revamp/Board/SlotPresence.gd" id="3_0ebxi"]
+[ext_resource type="Script" uid="uid://8bb0uw27pa7v" path="res://Revamp/Board/SlotFeedback.gd" id="4_npwjl"]
+[ext_resource type="Script" uid="uid://cifufsh3y1kgi" path="res://Revamp/Board/SlotPlayPhaseFeedback.gd" id="5_iike6"]
+[ext_resource type="Script" uid="uid://ib588s15omow" path="res://Revamp/Board/SlotPlacementPreviewFeedback.gd" id="6_dshdd"]
+[ext_resource type="Script" uid="uid://vydoy4hkyhm0" path="res://Revamp/Board/SlotAttackPreviewFeedback.gd" id="7_jvbdb"]
+[ext_resource type="Script" uid="uid://b8p1hjr1y54ms" path="res://Revamp/Board/Slot/SlotDamagedFeedback.gd" id="8_g8crw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0ebxi"]
 size = Vector2(144, 216)
 
 [node name="Slot" type="Node2D" unique_id=904478857 node_paths=PackedStringArray("slot_input", "slot_presence", "slot_feedback", "card_anchor")]
 script = ExtResource("1_iym07")
-slot_index = null
 slot_input = NodePath("SlotInput")
 slot_presence = NodePath("SlotPresence")
 slot_feedback = NodePath("SlotFeedback")
@@ -30,11 +30,12 @@ shape = SubResource("RectangleShape2D_0ebxi")
 [node name="SlotPresence" type="Node" parent="." unique_id=482267490]
 script = ExtResource("3_0ebxi")
 
-[node name="SlotFeedback" type="Node" parent="." unique_id=675246330 node_paths=PackedStringArray("play_phase_feedback", "placement_preview_feedback", "attack_preview_feedback")]
+[node name="SlotFeedback" type="Node" parent="." unique_id=675246330 node_paths=PackedStringArray("play_phase_feedback", "placement_preview_feedback", "attack_preview_feedback", "damaged_feedback")]
 script = ExtResource("4_npwjl")
 play_phase_feedback = NodePath("SlotPlayPhaseFeedback")
 placement_preview_feedback = NodePath("SlotPlacementPreviewFeedback")
 attack_preview_feedback = NodePath("SlotAttackPreviewFeedback")
+damaged_feedback = NodePath("SlotDamagedFeedback")
 
 [node name="SlotPlayPhaseFeedback" type="Node" parent="SlotFeedback" unique_id=700538427 node_paths=PackedStringArray("target")]
 script = ExtResource("5_iike6")
@@ -47,6 +48,11 @@ target = NodePath("../../SlotVisual")
 [node name="SlotAttackPreviewFeedback" type="Node" parent="SlotFeedback" unique_id=734268325 node_paths=PackedStringArray("target")]
 script = ExtResource("7_jvbdb")
 target = NodePath("../../SlotVisual")
+
+[node name="SlotDamagedFeedback" type="Node" parent="SlotFeedback" unique_id=562468357 node_paths=PackedStringArray("animated_target")]
+script = ExtResource("8_g8crw")
+animated_target = NodePath("../../SlotVisual")
+expand_time = 0.09
 
 [node name="SlotVisual" type="Sprite2D" parent="." unique_id=857403716]
 position = Vector2(0, -3.8146973e-06)

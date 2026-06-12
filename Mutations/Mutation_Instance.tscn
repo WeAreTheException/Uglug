@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://ds5ifcwkxw6ri"]
+
+[ext_resource type="Script" path="res://UseButton.gd" id="1_3soah"]
+[ext_resource type="Script" uid="uid://cuhu2a3qwu5nv" path="res://Mutations/MutationInstance.gd" id="1_75087"]
+[ext_resource type="Texture2D" uid="uid://cxfrhckwspi6a" path="res://Art/Mutations/Antlers_Sigil.PNG" id="3_h2fld"]
+
+[sub_resource type="Resource" id="Resource_q5f8s"]
+metadata/__load_path__ = "res://Mutations/ToolTip/MutationToolTip.tscn"
+
+[node name="MutationInstance" type="Node2D" unique_id=1349463859]
+script = ExtResource("1_75087")
+tooltip_scene = SubResource("Resource_q5f8s")
+tooltip_offset = Vector2(40, 100)
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1508765694]
+position = Vector2(128, 233.99997)
+scale = Vector2(0.21333332, 0.13763437)
+texture = ExtResource("3_h2fld")
+
+[node name="UseButton" type="Button" parent="." unique_id=1790421165]
+offset_left = 64.0
+offset_top = 256.0
+offset_right = 192.0
+offset_bottom = 320.0
+text = "Apply"
+script = ExtResource("1_3soah")

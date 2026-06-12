@@ -55,6 +55,22 @@ func build_match_decks() -> void:
 		starting_hands_dealt.emit()
 
 
+func draw_warrior_for_owner(owner: SlotRow.SlotOwner) -> void:
+	if owner == SlotRow.SlotOwner.OPPONENT:
+		draw_warrior_for_player_two()
+		return
+
+	draw_warrior_for_player_one()
+
+
+func draw_worker_for_owner(owner: SlotRow.SlotOwner) -> void:
+	if owner == SlotRow.SlotOwner.OPPONENT:
+		draw_worker_for_player_two()
+		return
+
+	draw_worker_for_player_one()
+
+
 func draw_warrior_for_player_one() -> void:
 	_draw_to_hand(player_one_draw_pile, player_one_hand)
 

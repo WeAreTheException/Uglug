@@ -42,19 +42,25 @@ signal impact_reached
 @export var raise_z_index_during_attack: bool = true
 @export var attack_z_index: int = 100
 
+var attack_is_active := false
+var original_parent: Node = null
+var original_index := 0
+var original_z_index := 0
+var start_position := Vector2.ZERO
+var start_scale := Vector2.ONE
+var start_rotation := 0.0
+
 
 func play_attack(context: AttackContext) -> void:
-	if animated_target == null:
+	await play_to_impact(context)
+	await play_return()
+
+
+func play_to_impact(context: AttackContext) -> void:
+	if not _can_play(context):
 		return
 
-	if context == null:
-		return
-
-	if context.attacker_slot == null:
-		return
-
-	if context.target_slot == null:
-		return
+	_store_start_state(context.attack_animation_layer)
 
 	var difference: int = context.target_slot.slot_index - context.attacker_slot.slot_index
 	var direction: Vector2 = _get_direction_from_difference(difference)
@@ -62,28 +68,82 @@ func play_attack(context: AttackContext) -> void:
 	if context.attacker_owner == SlotRow.SlotOwner.OPPONENT:
 		direction.y *= -1.0
 
-	await _play_motion(
-		direction,
-		_get_windup_distance(difference),
-		_get_attack_distance(difference),
-		_get_windup_rotation(difference, context.attacker_owner),
-		_get_attack_rotation(difference, context.attacker_owner),
-		context.attack_animation_layer
-	)
+	var windup_position: Vector2 = start_position - direction * _get_windup_distance(difference)
+	var attack_position: Vector2 = start_position + direction * _get_attack_distance(difference)
+
+	var tween: Tween = create_tween()
+	tween.set_trans(Tween.TRANS_SINE)
+
+	tween.set_ease(Tween.EASE_OUT)
+	tween.tween_property(animated_target, "position", windup_position, windup_time)
+	tween.parallel().tween_property(animated_target, "scale", windup_scale, windup_time)
+	tween.parallel().tween_property(animated_target, "rotation", start_rotation + deg_to_rad(_get_windup_rotation(difference, context.attacker_owner)), windup_time)
+
+	tween.set_ease(Tween.EASE_IN)
+	tween.tween_property(animated_target, "position", attack_position, attack_time)
+	tween.parallel().tween_property(animated_target, "scale", attack_scale, attack_time)
+	tween.parallel().tween_property(animated_target, "rotation", start_rotation + deg_to_rad(_get_attack_rotation(difference, context.attacker_owner)), attack_time)
+
+	await tween.finished
+
+	impact_reached.emit()
 
 
-func _play_motion(
-	direction: Vector2,
-	windup_distance: float,
-	attack_distance: float,
-	windup_rotation_degrees: float,
-	attack_rotation_degrees: float,
-	attack_animation_layer: Node2D = null
-) -> void:
-	var original_parent: Node = animated_target.get_parent()
-	var original_index: int = animated_target.get_index()
+func play_return() -> void:
+	if not attack_is_active:
+		return
+
+	if not _is_animated_target_valid():
+		attack_is_active = false
+		return
+
+	if hit_hold_time > 0.0:
+		await get_tree().create_timer(hit_hold_time).timeout
+
+	if not _is_animated_target_valid():
+		attack_is_active = false
+		return
+
+	var tween: Tween = create_tween()
+	tween.set_trans(Tween.TRANS_SINE)
+	tween.set_ease(Tween.EASE_OUT)
+
+	tween.tween_property(animated_target, "position", start_position, return_time)
+	tween.parallel().tween_property(animated_target, "scale", start_scale, return_time)
+	tween.parallel().tween_property(animated_target, "rotation", start_rotation, return_time)
+
+	await tween.finished
+
+	_restore_start_state()
+	attack_is_active = false
+
+
+func _can_play(context: AttackContext) -> bool:
+	if animated_target == null:
+		return false
+
+	if not is_instance_valid(animated_target):
+		return false
+
+	if context == null:
+		return false
+
+	if context.attacker_slot == null:
+		return false
+
+	if context.target_slot == null:
+		return false
+
+	return true
+
+
+func _store_start_state(attack_animation_layer: Node2D) -> void:
+	attack_is_active = true
+	original_parent = animated_target.get_parent()
+	original_index = animated_target.get_index()
+	original_z_index = animated_target.z_index
+
 	var original_global_transform: Transform2D = animated_target.global_transform
-	var original_z_index: int = animated_target.z_index
 
 	if attack_animation_layer != null:
 		animated_target.reparent(attack_animation_layer)
@@ -92,41 +152,22 @@ func _play_motion(
 	if raise_z_index_during_attack:
 		animated_target.z_index = attack_z_index
 
-	var start_position: Vector2 = animated_target.position
-	var start_scale: Vector2 = animated_target.scale
-	var start_rotation: float = animated_target.rotation
+	start_position = animated_target.position
+	start_scale = animated_target.scale
+	start_rotation = animated_target.rotation
 
-	var windup_position: Vector2 = start_position - direction * windup_distance
-	var attack_position: Vector2 = start_position + direction * attack_distance
 
-	var tween: Tween = create_tween()
-	tween.set_trans(Tween.TRANS_SINE)
+func _restore_start_state() -> void:
+	if not _is_animated_target_valid():
+		return
 
-	tween.set_ease(Tween.EASE_OUT)
-	tween.tween_property(animated_target, "position", windup_position, windup_time)
-	tween.parallel().tween_property(animated_target, "scale", windup_scale, windup_time)
-	tween.parallel().tween_property(animated_target, "rotation", start_rotation + deg_to_rad(windup_rotation_degrees), windup_time)
-
-	tween.set_ease(Tween.EASE_IN)
-	tween.tween_property(animated_target, "position", attack_position, attack_time)
-	tween.parallel().tween_property(animated_target, "scale", attack_scale, attack_time)
-	tween.parallel().tween_property(animated_target, "rotation", start_rotation + deg_to_rad(attack_rotation_degrees), attack_time)
-
-	tween.tween_callback(_emit_impact_reached)
-
-	tween.tween_interval(hit_hold_time)
-
-	tween.set_ease(Tween.EASE_OUT)
-	tween.tween_property(animated_target, "position", start_position, return_time)
-	tween.parallel().tween_property(animated_target, "scale", start_scale, return_time)
-	tween.parallel().tween_property(animated_target, "rotation", start_rotation, return_time)
-
-	await tween.finished
-
-	if attack_animation_layer != null and original_parent != null:
+	if original_parent != null and is_instance_valid(original_parent):
 		var return_global_transform: Transform2D = animated_target.global_transform
 		animated_target.reparent(original_parent)
-		original_parent.move_child(animated_target, original_index)
+
+		var safe_index: int = min(original_index, original_parent.get_child_count() - 1)
+		original_parent.move_child(animated_target, safe_index)
+
 		animated_target.global_transform = return_global_transform
 
 	animated_target.position = Vector2.ZERO
@@ -135,8 +176,11 @@ func _play_motion(
 	animated_target.z_index = original_z_index
 
 
-func _emit_impact_reached() -> void:
-	impact_reached.emit()
+func _is_animated_target_valid() -> bool:
+	if animated_target == null:
+		return false
+
+	return is_instance_valid(animated_target)
 
 
 func _get_direction_from_difference(difference: int) -> Vector2:
