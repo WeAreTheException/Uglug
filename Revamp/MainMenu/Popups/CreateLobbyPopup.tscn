@@ -1,0 +1,92 @@
+[gd_scene format=3 uid="uid://n0rxxqny4h76"]
+
+[ext_resource type="Script" uid="uid://clb1fqdlblev1" path="res://Revamp/MainMenu/Popups/CreateLobbyPopup.gd" id="1_m4i7p"]
+
+[node name="CreateLobbyPopup" type="Control" unique_id=1459111363 node_paths=PackedStringArray("private_toggle", "passcode_root", "digit_one", "digit_two", "digit_three", "create_button", "close_button")]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 607.0
+offset_bottom = 339.0
+script = ExtResource("1_m4i7p")
+private_toggle = NodePath("PrivateToggle")
+passcode_root = NodePath("PasscodeRoot")
+digit_one = NodePath("PasscodeRoot/DigitOne")
+digit_two = NodePath("PasscodeRoot/DigitTwo")
+digit_three = NodePath("PasscodeRoot/DigitThree")
+create_button = NodePath("CreateButton")
+close_button = NodePath("CloseButton")
+
+[node name="Panel" type="Panel" parent="." unique_id=170280430]
+layout_mode = 0
+offset_right = 607.0
+offset_bottom = 339.0
+metadata/_edit_lock_ = true
+
+[node name="PrivateToggle" type="CheckBox" parent="." unique_id=1227030580]
+layout_mode = 0
+offset_left = 175.0
+offset_top = 250.0
+offset_right = 199.0
+offset_bottom = 274.72223
+scale = Vector2(3.6, 3.6)
+
+[node name="PrivateLabel" type="Label" parent="." unique_id=1879191596]
+layout_mode = 0
+offset_left = 261.0
+offset_top = 265.0
+offset_right = 403.0
+offset_bottom = 320.0
+theme_override_font_sizes/font_size = 40
+text = "Private"
+vertical_alignment = 1
+
+[node name="PasscodeRoot" type="Control" parent="." unique_id=900074981]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="DigitOne" type="Button" parent="PasscodeRoot" unique_id=2083605640]
+layout_mode = 0
+offset_left = 77.0
+offset_top = 143.0
+offset_right = 227.0
+offset_bottom = 250.0
+theme_override_font_sizes/font_size = 70
+text = "0"
+
+[node name="DigitTwo" type="Button" parent="PasscodeRoot" unique_id=1910409502]
+layout_mode = 0
+offset_left = 227.0
+offset_top = 143.0
+offset_right = 377.0
+offset_bottom = 250.0
+theme_override_font_sizes/font_size = 70
+text = "0"
+
+[node name="DigitThree" type="Button" parent="PasscodeRoot" unique_id=294742125]
+layout_mode = 0
+offset_left = 377.0
+offset_top = 143.0
+offset_right = 527.0
+offset_bottom = 250.0
+theme_override_font_sizes/font_size = 70
+text = "0"
+
+[node name="CreateButton" type="Button" parent="." unique_id=904278123]
+layout_mode = 0
+offset_left = 122.0
+offset_top = 25.0
+offset_right = 488.0
+offset_bottom = 112.0
+pivot_offset = Vector2(183, 43)
+theme_override_font_sizes/font_size = 50
+text = "Create"
+metadata/_edit_lock_ = true
+
+[node name="CloseButton" type="Button" parent="." unique_id=1057942256]
+layout_mode = 0
+offset_right = 76.5
+offset_bottom = 75.0
+theme_override_font_sizes/font_size = 30
+text = "X"
+metadata/_edit_lock_ = true
