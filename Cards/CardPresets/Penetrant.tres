@@ -2,11 +2,17 @@
 
 [ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Cards/Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="1_cjpcm"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="2_djvnq"]
-[ext_resource type="Texture2D" uid="uid://y5olf4lrdtdx" path="res://Art/AntBack/GreenAnt.png" id="2_kpl6p"]
+[ext_resource type="Texture2D" uid="uid://dqynxdcij0qpn" path="res://Art/Ants/Giant.png" id="2_kpl6p"]
+[ext_resource type="Texture2D" uid="uid://c1g17ytfxes43" path="res://Art/Mutations/Penetrant_Sigil.PNG" id="3_kpl6p"]
 
 [resource]
 script = ExtResource("2_djvnq")
+card_id = "pentrant"
+name = "Penetrant"
 rarity = 2
+attack = 3
 cost = 4
+background_texture = ExtResource("3_kpl6p")
 ant_texture = ExtResource("2_kpl6p")
+base_mutations = Array[ExtResource("1_cjpcm")]([null])
 metadata/_custom_type_script = "uid://duslcpxrhurv8"
