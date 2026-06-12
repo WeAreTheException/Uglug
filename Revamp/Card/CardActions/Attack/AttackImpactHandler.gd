@@ -25,10 +25,12 @@ func handle_impact(context: AttackContext, attacker: CardRoot) -> void:
 
 	if context.force_direct_damage:
 		await _request_direct_damage(context, attacker, _get_direct_damage(attacker))
+		await _resolve_death_if_needed(attacker)
 		return
 
 	if target_card == null:
 		await _request_direct_damage(context, attacker, _get_direct_damage(attacker))
+		await _resolve_death_if_needed(attacker)
 		return
 
 	if target_card.hurt == null:
@@ -50,6 +52,7 @@ func handle_impact(context: AttackContext, attacker: CardRoot) -> void:
 		await _request_direct_damage(context, attacker, overflow)
 
 	await _resolve_death_if_needed(target_card)
+	await _resolve_death_if_needed(attacker)
 
 
 func _play_hurt_without_auto_death(

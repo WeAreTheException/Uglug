@@ -117,7 +117,7 @@ func on_damaged_context(
 	if context == null:
 		return
 
-	on_damaged(
+	await on_damaged(
 		context.target_card,
 		context.source_card,
 		context.actual_damage

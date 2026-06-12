@@ -112,7 +112,7 @@ func show_attack_preview(value: bool) -> void:
 
 func show_damaged_feedback() -> void:
 	if slot_feedback != null:
-		slot_feedback.show_damaged()
+		await slot_feedback.show_damaged()
 
 
 func clear_preview_feedback() -> void:

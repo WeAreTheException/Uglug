@@ -259,7 +259,7 @@ func notify_damaged(attacker: CardRoot, damage: int) -> void:
 		if runtime.mutation == null:
 			continue
 
-		runtime.mutation.on_damaged_context(runtime, context)
+		await runtime.mutation.on_damaged_context(runtime, context)
 
 
 func can_intercept_direct_damage(context: DirectDamageContext) -> bool:

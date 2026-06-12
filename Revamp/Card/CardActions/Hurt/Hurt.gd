@@ -88,7 +88,7 @@ func receive_damage(context: DamageContext) -> int:
 	if damage_apply_delay > 0.0:
 		await get_tree().create_timer(damage_apply_delay).timeout
 
-	_apply_damage(context)
+	await _apply_damage(context)
 	damage_applied.emit(context)
 
 	if animation_runner != null:
@@ -138,7 +138,7 @@ func _apply_damage(context: DamageContext) -> void:
 	context.actual_damage = max(health_before - health_after, 0)
 
 	if context.actual_damage > 0:
-		_notify_damaged_mutations(context)
+		await _notify_damaged_mutations(context)
 
 
 func _resolve_death_if_needed() -> void:
@@ -195,7 +195,7 @@ func _notify_damaged_mutations(context: DamageContext) -> void:
 	if card.mutations == null:
 		return
 
-	card.mutations.notify_damaged(
+	await card.mutations.notify_damaged(
 		context.source_card,
 		context.actual_damage
 	)
