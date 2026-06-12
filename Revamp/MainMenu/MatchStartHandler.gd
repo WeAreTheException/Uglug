@@ -45,6 +45,8 @@ func _start_match() -> void:
 	match_start_requested.emit()
 
 	print("Starting match: ", game_scene_path)
+	GDSync.lobby_set_tag("state", "in_game")
+	GDSync.lobby_set_tag("joinable", false)
 	GDSync.change_scene(game_scene_path)
 
 

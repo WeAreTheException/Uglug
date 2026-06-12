@@ -65,8 +65,15 @@ func _on_lobbies_received(raw_lobbies: Array) -> void:
 
 func _is_joinable_lobby(raw_lobby: Dictionary) -> bool:
 	var is_open: bool = raw_lobby.get("Open", false)
+	var tags: Dictionary = raw_lobby.get("Tags", {})
 
 	if not is_open:
+		return false
+
+	if tags.get("state", "menu") == "in_game":
+		return false
+
+	if tags.get("joinable", true) == false:
 		return false
 
 	return true
