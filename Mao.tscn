@@ -3,7 +3,8 @@
 [ext_resource type="PackedScene" uid="uid://bw8c7m7n5yuk8" path="res://Revamp/Board/Slots.tscn" id="1_yq750"]
 [ext_resource type="PackedScene" uid="uid://1wr1e57v7trd" path="res://Revamp/PlayerHand/Player_Hand.tscn" id="2_mi1n2"]
 [ext_resource type="Resource" uid="uid://dbgpqc3vdl8t" path="res://Cards/CardPresets/Duriant.tres" id="3_mf2my"]
-[ext_resource type="Resource" uid="uid://ci7yvhc8pfst6" path="res://Cards/CardPresets/QueenAnt.tres" id="4_7gy8c"]
+[ext_resource type="Resource" uid="uid://dwpj7bg5ognwt" path="res://Cards/CardPresets/Samurant.tres" id="4_bvqua"]
+[ext_resource type="Resource" uid="uid://b1dt5378u5ga8" path="res://Cards/CardPresets/Sustain/Guardiant.tres" id="5_bvqua"]
 [ext_resource type="Script" uid="uid://bxbqihkit6rgo" path="res://Managers/Phasemanager.gd" id="8_cc2no"]
 [ext_resource type="Script" uid="uid://bbcig486utsir" path="res://HandPhaseApplier.gd" id="9_cc2no"]
 [ext_resource type="Script" uid="uid://61l5g8wkdar3" path="res://SacrificeController.gd" id="10_1j514"]
@@ -41,10 +42,11 @@ player_two_hand = NodePath("../OpponenetHAnd")
 
 [node name="Slots" parent="." unique_id=1318716624 node_paths=PackedStringArray("direct_damage_router") instance=ExtResource("1_yq750")]
 position = Vector2(120, 120)
-player_slot_1_card = ExtResource("3_mf2my")
-player_slot_2_card = ExtResource("4_7gy8c")
-opponent_slot_1_card = ExtResource("4_7gy8c")
+player_slot_3_card = ExtResource("5_bvqua")
+opponent_slot_1_card = ExtResource("4_bvqua")
+opponent_slot_2_card = ExtResource("3_mf2my")
 opponent_slot_3_card = ExtResource("3_mf2my")
+opponent_slot_4_card = ExtResource("3_mf2my")
 direct_damage_router = NodePath("../DirectDamageRouter")
 
 [node name="PlayerHAnd" parent="." unique_id=371738706 node_paths=PackedStringArray("prime_location") instance=ExtResource("2_mi1n2")]

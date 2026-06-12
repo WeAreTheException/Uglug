@@ -24,7 +24,7 @@ func handle_impact(context: AttackContext, attacker: CardRoot) -> void:
 	var target_card := context.target_slot.current_card
 
 	if target_card == null:
-		_request_direct_damage(context, attacker, 1)
+		_request_direct_damage(context, attacker)
 		return
 
 	if target_card.hurt == null:
@@ -50,11 +50,15 @@ func handle_impact(context: AttackContext, attacker: CardRoot) -> void:
 
 func _request_direct_damage(
 	context: AttackContext,
-	attacker: CardRoot,
-	amount: int
+	attacker: CardRoot
 ) -> void:
 	if direct_damage_router == null:
 		return
+
+	var amount := 1
+
+	if damage_resolver != null:
+		amount = damage_resolver.get_direct_damage(attacker)
 
 	direct_damage_router.request_direct_damage(
 		attacker,

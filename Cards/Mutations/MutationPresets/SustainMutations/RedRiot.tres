@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="RedRiot" format=3 uid="uid://qpp1tjh0bk7v"]
+
+[ext_resource type="Script" uid="uid://cqbai1u4ojnrw" path="res://Cards/Mutations/MutationPresets/MutationBehaviourHandlers/RedRiot.gd" id="1_31jfg"]
+[ext_resource type="Texture2D" uid="uid://52i5rsrcuyfc" path="res://Art/Mutations/Guardiant_Sigil.PNG" id="2_dg4vj"]
+
+[resource]
+script = ExtResource("1_31jfg")
+sigil_texture = ExtResource("2_dg4vj")
+metadata/_custom_type_script = "uid://be8yk3djwb5oc"

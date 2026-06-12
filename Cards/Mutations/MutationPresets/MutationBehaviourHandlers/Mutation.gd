@@ -105,6 +105,18 @@ func on_death_context(
 
 	on_death(context.dead_card)
 
+func can_intercept_direct_damage_context(
+	_runtime: MutationRuntime,
+	_context: DirectDamageContext
+) -> bool:
+	return false
+
+
+func on_direct_damage_intercepted_context(
+	_runtime: MutationRuntime,
+	_context: DirectDamageContext
+) -> void:
+	pass
 
 func refresh_board_context(runtime: MutationRuntime) -> void:
 	refresh_board_effect(runtime)
