@@ -76,12 +76,12 @@ card = NodePath("../..")
 
 [node name="Actions" type="Node" parent="." unique_id=857836663]
 
-[node name="Attack" type="Node" parent="Actions" unique_id=1376954352 node_paths=PackedStringArray("animation_runner", "target_resolver", "attack_sequencer", "impact_handler")]
+[node name="Attack" type="Node" parent="Actions" unique_id=1376954352 node_paths=PackedStringArray("animation_runner", "target_resolver", "attack_sequencer", "exchange_runner")]
 script = ExtResource("8_vth4y")
 animation_runner = NodePath("AttackAnimationRunner")
 target_resolver = NodePath("AttackTargetResolver")
 attack_sequencer = NodePath("AttackSequencer")
-impact_handler = NodePath("AttackExchangeRunner/AttackImpactHandler")
+exchange_runner = NodePath("AttackExchangeRunner")
 
 [node name="AttackAnimationRunner" type="Node" parent="Actions/Attack" unique_id=1122768788 node_paths=PackedStringArray("animated_target")]
 script = ExtResource("9_r5dqq")

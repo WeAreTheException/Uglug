@@ -8,7 +8,7 @@ signal attack_finished(context: AttackContext)
 @export var animation_runner: AttackAnimationRunner
 @export var target_resolver: AttackTargetResolver
 @export var attack_sequencer: AttackSequencer
-@export var impact_handler: AttackImpactHandler
+@export var exchange_runner: AttackExchangeRunner
 
 @export var enable_debug_key: bool = true
 @export var debug_key: Key = KEY_A
@@ -19,9 +19,6 @@ var slots_root: SlotsRoot = null
 var is_hovered := false
 var is_attacking := false
 
-var active_context: AttackContext = null
-var impact_handled := false
-
 
 func setup(source_card: CardRoot, source_slots_root: SlotsRoot) -> void:
 	card = source_card
@@ -30,16 +27,12 @@ func setup(source_card: CardRoot, source_slots_root: SlotsRoot) -> void:
 	if card == null:
 		return
 
-	if animation_runner != null:
-		if not animation_runner.impact_reached.is_connected(_on_impact_reached):
-			animation_runner.impact_reached.connect(_on_impact_reached)
-
-	if impact_handler != null:
+	if exchange_runner != null:
 		if slots_root != null:
-			impact_handler.setup(slots_root.direct_damage_router)
+			exchange_runner.setup(slots_root.direct_damage_router)
 
-		if not impact_handler.attack_hit.is_connected(_on_attack_hit):
-			impact_handler.attack_hit.connect(_on_attack_hit)
+		if not exchange_runner.exchange_hit.is_connected(_on_exchange_hit):
+			exchange_runner.exchange_hit.connect(_on_exchange_hit)
 
 	if not card.hovered.is_connected(_on_card_hovered):
 		card.hovered.connect(_on_card_hovered)
@@ -74,10 +67,7 @@ func perform_attack() -> void:
 
 	var attacker_owner: SlotRow.SlotOwner = slots_root.get_owner_of_slot(starting_slot)
 	var left_to_right: bool = _get_left_to_right(attacker_owner)
-	var steps: Array[AttackStep] = attack_sequencer.build_steps_with_order(
-		card,
-		left_to_right
-	)
+	var steps: Array[AttackStep] = attack_sequencer.build_steps_with_order(card, left_to_right)
 
 	if steps.is_empty():
 		return
@@ -91,16 +81,10 @@ func perform_attack() -> void:
 		if not _can_continue_attack_sequence():
 			break
 
-		var attacker_slot: Slot = card.get_current_slot()
+		var context: AttackContext = _build_context_for_step(step, attacker_owner)
 
-		if attacker_slot == null:
+		if context == null:
 			break
-
-		var context: AttackContext = _build_context(
-			step,
-			attacker_slot,
-			attacker_owner
-		)
 
 		target_resolver.resolve_target(slots_root, context)
 
@@ -109,20 +93,21 @@ func perform_attack() -> void:
 
 		context.target_owner = slots_root.get_owner_of_slot(context.target_slot)
 
-		active_context = context
-		impact_handled = false
-
 		attack_started.emit(context)
 
-		await animation_runner.play_attack(context)
+		await animation_runner.play_to_impact(context)
 
-		if not impact_handled and _can_continue_attack_sequence():
-			await _handle_impact(context)
+		var exchange: AttackExchangeContext = exchange_runner.build_exchange(context)
+
+		if _can_play_return_animation():
+			await animation_runner.play_return()
+
+		await exchange_runner.resolve_exchange(exchange)
 
 		attack_finished.emit(context)
 
-		active_context = null
-		impact_handled = false
+		if not _can_continue_attack_sequence():
+			break
 
 	is_attacking = false
 
@@ -147,8 +132,8 @@ func _can_attack() -> bool:
 		print("attack blocked: animation_runner missing")
 		return false
 
-	if impact_handler == null:
-		print("attack blocked: impact_handler missing")
+	if exchange_runner == null:
+		print("attack blocked: exchange_runner missing")
 		return false
 
 	return true
@@ -161,10 +146,26 @@ func _can_continue_attack_sequence() -> bool:
 	if not is_instance_valid(card):
 		return false
 
+	if card.die != null and card.die.is_unavailable_for_combat():
+		return false
+
 	if card.stats != null and card.stats.is_dead():
 		return false
 
 	if card.get_current_slot() == null:
+		return false
+
+	return true
+
+
+func _can_play_return_animation() -> bool:
+	if card == null:
+		return false
+
+	if not is_instance_valid(card):
+		return false
+
+	if animation_runner == null:
 		return false
 
 	return true
@@ -180,11 +181,15 @@ func _get_left_to_right(slot_owner: SlotRow.SlotOwner) -> bool:
 	return slots_root.attack_order_handler.get_left_to_right(slot_owner)
 
 
-func _build_context(
+func _build_context_for_step(
 	step: AttackStep,
-	attacker_slot: Slot,
 	attacker_owner: SlotRow.SlotOwner
 ) -> AttackContext:
+	var attacker_slot: Slot = card.get_current_slot()
+
+	if attacker_slot == null:
+		return null
+
 	var context := AttackContext.new()
 
 	context.setup_from_step(
@@ -198,26 +203,14 @@ func _build_context(
 	return context
 
 
-func _on_impact_reached() -> void:
-	if active_context == null:
+func _on_exchange_hit(exchange: AttackExchangeContext) -> void:
+	if exchange == null:
 		return
 
-	if impact_handled:
+	if exchange.attack_context == null:
 		return
 
-	if not _can_continue_attack_sequence():
-		return
-
-	impact_handled = true
-	_handle_impact(active_context)
-
-
-func _handle_impact(context: AttackContext) -> void:
-	await impact_handler.handle_impact(context, card)
-
-
-func _on_attack_hit(context: AttackContext) -> void:
-	attack_hit.emit(context)
+	attack_hit.emit(exchange.attack_context)
 
 
 func _on_card_hovered(_card: CardRoot) -> void:
