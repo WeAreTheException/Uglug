@@ -1,8 +1,7 @@
 [gd_resource type="Resource" script_class="CardData" format=3 uid="uid://dbgpqc3vdl8t"]
 
-[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Cards/Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="1_1tbc1"]
+[ext_resource type="Script" path="res://Cards/Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="1_1tbc1"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="2_2hy2u"]
-[ext_resource type="Resource" uid="uid://dko3ngpbogrv1" path="res://Cards/Mutations/MutationPresets/Spiky.tres" id="2_gigdl"]
 [ext_resource type="Texture2D" uid="uid://b8a1gr84h2iie" path="res://Art/Ants/WorkerAnt_Standalone.png" id="2_ktjsc"]
 
 [resource]
@@ -13,6 +12,5 @@ attack = 1
 health = 3
 cost = 1
 ant_texture = ExtResource("2_ktjsc")
-base_mutations = Array[ExtResource("1_1tbc1")]([ExtResource("2_gigdl")])
 deck_amount = 2
 metadata/_custom_type_script = "uid://duslcpxrhurv8"

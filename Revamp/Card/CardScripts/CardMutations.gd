@@ -225,7 +225,29 @@ func notify_damaged(attacker: CardRoot, damage: int) -> void:
 
 		runtime.mutation.on_damaged(owner_card, attacker, damage)
 
+func can_intercept_direct_damage(context: DirectDamageContext) -> bool:
+	for runtime in get_active_runtimes():
+		if runtime == null:
+			continue
 
+		if runtime.mutation == null:
+			continue
+
+		if runtime.mutation.can_intercept_direct_damage_context(runtime, context):
+			return true
+
+	return false
+
+
+func notify_direct_damage_intercepted(context: DirectDamageContext) -> void:
+	for runtime in get_active_runtimes():
+		if runtime == null:
+			continue
+
+		if runtime.mutation == null:
+			continue
+
+		runtime.mutation.on_direct_damage_intercepted_context(runtime, context)
 func notify_death() -> void:
 	for runtime in get_active_runtimes():
 		if runtime == null:

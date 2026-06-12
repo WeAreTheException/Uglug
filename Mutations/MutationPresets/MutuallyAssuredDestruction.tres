@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="MutuallyAssuredDestruction" format=3 uid="uid://d6umheqx0qia"]
+
+[ext_resource type="Script" uid="uid://dxe3govrgh7uw" path="res://Mutations/MutationPresets/MutationBehaviourHandlers/MutuallyAssuredDestruction.gd" id="1_8i8l7"]
+[ext_resource type="Texture2D" uid="uid://btcjfpehdqul6" path="res://Art/Mutations/Anthrax_Sigil.PNG" id="2_86185"]
+
+[resource]
+script = ExtResource("1_8i8l7")
+mutation_name = "MutuallyAssuredDestruction"
+mutation_description = "Kills the card that killed it"
+sigil_texture = ExtResource("2_86185")
+metadata/_custom_type_script = "uid://be8yk3djwb5oc"

@@ -1,14 +1,10 @@
 [gd_resource type="Resource" script_class="CardData" format=3 uid="uid://dkobsikajvmmf"]
 
-[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Cards/Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="1_8hb2n"]
-[ext_resource type="Resource" uid="uid://ceeskmu01vy5g" path="res://Cards/Mutations/MutationPresets/YAttack.tres" id="2_4veyl"]
-[ext_resource type="Resource" uid="uid://dcgqrr05c2pyg" path="res://Cards/Mutations/MutationPresets/DivergentFist.tres" id="2_82p4g"]
+[ext_resource type="Script" path="res://Cards/Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="1_8hb2n"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="2_jx8v2"]
 
 [resource]
 script = ExtResource("2_jx8v2")
 name = "PersistAntler"
 attack = 1
-base_mutations = Array[ExtResource("1_8hb2n")]([ExtResource("2_82p4g")])
-additional_mutations = Array[ExtResource("1_8hb2n")]([ExtResource("2_4veyl")])
 metadata/_custom_type_script = "uid://duslcpxrhurv8"

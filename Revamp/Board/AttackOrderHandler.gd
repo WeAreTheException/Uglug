@@ -12,6 +12,7 @@ signal attack_order_finished
 
 var slots_root: SlotsRoot = null
 var is_running: bool = false
+var stop_requested: bool = false
 
 
 func setup(source_slots_root: SlotsRoot) -> void:
@@ -22,12 +23,19 @@ func _input(event: InputEvent) -> void:
 	if not enable_debug_keys:
 		return
 
-	if event is InputEventKey and event.pressed and not event.echo:
-		if event.keycode == player_debug_key:
-			run_attack_order(SlotRow.SlotOwner.PLAYER)
+	if not event is InputEventKey:
+		return
 
-		if event.keycode == opponent_debug_key:
-			run_attack_order(SlotRow.SlotOwner.OPPONENT)
+	var key_event := event as InputEventKey
+
+	if not key_event.pressed or key_event.echo:
+		return
+
+	if key_event.keycode == player_debug_key:
+		run_attack_order(SlotRow.SlotOwner.PLAYER)
+
+	if key_event.keycode == opponent_debug_key:
+		run_attack_order(SlotRow.SlotOwner.OPPONENT)
 
 
 func run_attack_order(slot_owner: SlotRow.SlotOwner) -> void:
@@ -39,12 +47,16 @@ func run_attack_order(slot_owner: SlotRow.SlotOwner) -> void:
 		return
 
 	is_running = true
+	stop_requested = false
 
 	var entries := _build_attack_entries(slot_owner)
 	_sort_attack_entries(entries, slot_owner)
 
 	for entry in entries:
-		var card := entry["card"] as CardRoot
+		if stop_requested:
+			break
+
+		var card: CardRoot = _get_valid_card_from_entry(entry)
 
 		if card == null:
 			continue
@@ -56,6 +68,10 @@ func run_attack_order(slot_owner: SlotRow.SlotOwner) -> void:
 
 	is_running = false
 	attack_order_finished.emit()
+
+
+func request_stop() -> void:
+	stop_requested = true
 
 
 func get_left_to_right(slot_owner: SlotRow.SlotOwner) -> bool:
@@ -79,12 +95,34 @@ func _build_attack_entries(slot_owner: SlotRow.SlotOwner) -> Array[Dictionary]:
 
 		entries.append({
 			"slot": slot,
-			"card": card,
 			"slot_index": slot.slot_index,
 			"priority": _get_attack_priority(card)
 		})
 
 	return entries
+
+
+func _get_valid_card_from_entry(entry: Dictionary) -> CardRoot:
+	if not entry.has("slot"):
+		return null
+
+	var slot := entry["slot"] as Slot
+
+	if slot == null:
+		return null
+
+	if not is_instance_valid(slot):
+		return null
+
+	var card := slot.current_card
+
+	if card == null:
+		return null
+
+	if not is_instance_valid(card):
+		return null
+
+	return card
 
 
 func _sort_attack_entries(
@@ -112,6 +150,9 @@ func _sort_attack_entries(
 
 func _get_attack_priority(card: CardRoot) -> int:
 	if card == null:
+		return 0
+
+	if not is_instance_valid(card):
 		return 0
 
 	if card.mutations == null:

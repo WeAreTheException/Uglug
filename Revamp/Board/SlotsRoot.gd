@@ -28,6 +28,8 @@ signal slot_unhovered(slot: Slot)
 @export var opponent_slot_3_card: CardData
 @export var opponent_slot_4_card: CardData
 
+@export var direct_damage_router: DirectDamageRouter
+
 var player_slots: Array[Slot] = []
 var opponent_slots: Array[Slot] = []
 
@@ -233,3 +235,7 @@ func _on_slot_hovered(slot: Slot) -> void:
 
 func _on_slot_unhovered(slot: Slot) -> void:
 	slot_unhovered.emit(slot)
+
+func show_direct_damage_feedback(slot: Slot) -> void:
+	if slot != null:
+		slot.show_damaged_feedback()

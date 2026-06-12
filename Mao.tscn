@@ -1,11 +1,10 @@
-[gd_scene format=3 uid="uid://cxkinl0mu66jc"]
+[gd_scene format=3 uid="uid://hbyxts155x0r"]
 
 [ext_resource type="PackedScene" uid="uid://bw8c7m7n5yuk8" path="res://Revamp/Board/Slots.tscn" id="1_yq750"]
 [ext_resource type="PackedScene" uid="uid://1wr1e57v7trd" path="res://Revamp/PlayerHand/Player_Hand.tscn" id="2_mi1n2"]
-[ext_resource type="Resource" uid="uid://kmwnulcu4tml" path="res://Cards/CardPresets/Antler.tres" id="3_20kdy"]
-[ext_resource type="Resource" uid="uid://jd5rbexi4lr4" path="res://Cards/CardPresets/Persistant.tres" id="4_5ixgq"]
-[ext_resource type="Resource" uid="uid://dbgpqc3vdl8t" path="res://Cards/CardPresets/Duriant.tres" id="4_oekep"]
-[ext_resource type="Resource" uid="uid://dkobsikajvmmf" path="res://Cards/CardPresets/TestCardPresets/PersistAntler.tres" id="5_8ve8k"]
+[ext_resource type="Resource" uid="uid://b1dt5378u5ga8" path="res://Cards/CardPresets/Sustain/Guardiant.tres" id="3_bvqua"]
+[ext_resource type="Resource" uid="uid://b6naofddvwrc1" path="res://Cards/CardPresets/Penetrant.tres" id="3_venfy"]
+[ext_resource type="Resource" uid="uid://0c6lqenucx25" path="res://Cards/CardPresets/StraightChops/Aviant.tres" id="4_bvqua"]
 [ext_resource type="Script" uid="uid://bxbqihkit6rgo" path="res://Managers/Phasemanager.gd" id="8_cc2no"]
 [ext_resource type="Script" uid="uid://bbcig486utsir" path="res://HandPhaseApplier.gd" id="9_cc2no"]
 [ext_resource type="Script" uid="uid://61l5g8wkdar3" path="res://SacrificeController.gd" id="10_1j514"]
@@ -20,39 +19,43 @@
 [ext_resource type="Script" uid="uid://dp6gve6tfarqs" path="res://Revamp/Phases/BoardPhaseApplier.gd" id="17_b7h4g"]
 [ext_resource type="Script" uid="uid://c18hwqs033t7x" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementEventEmitter.gd" id="18_oekep"]
 [ext_resource type="Script" uid="uid://cmcxm3mp7ljvv" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementCancel.gd" id="19_n5v11"]
+[ext_resource type="Script" uid="uid://dhe454wat35an" path="res://Revamp/MatchFlow/MatchCombatFlowHandler.gd" id="24_n5v11"]
 [ext_resource type="Script" uid="uid://bmc4688qk3cow" path="res://Revamp/MatchFlow/MatchPhaseBridge.gd" id="24_oekep"]
 [ext_resource type="Script" uid="uid://c0jbty6yowib5" path="res://Revamp/MatchFlow/Blessing/BlessingSelectionState.gd" id="25_n5v11"]
 [ext_resource type="Script" uid="uid://difytxi1dyr27" path="res://Revamp/MatchFlow/MatchFlowRoot.gd" id="25_oekep"]
 [ext_resource type="Script" uid="uid://q2nybrneyr7f" path="res://Revamp/MatchFlow/Blessing/BlessingFlowHandler.gd" id="26_7gy8c"]
 [ext_resource type="Script" uid="uid://c6ap2csjp7k81" path="res://Revamp/MatchFlow/MatchTurnOrderState.gd" id="26_n5v11"]
 [ext_resource type="Script" uid="uid://e0tr3sanyo1r" path="res://Revamp/MatchFlow/MatchAnnouncementDisplay.gd" id="27_7gy8c"]
+[ext_resource type="Script" uid="uid://dxj656ms4qeq4" path="res://Revamp/MatchFlow/MatchDominantRevealHandler.gd" id="27_a1qt2"]
+[ext_resource type="Script" uid="uid://myowbycyd18l" path="res://Revamp/MatchFlow/MatchPlacementFlowHandler.gd" id="27_mf2my"]
 [ext_resource type="PackedScene" uid="uid://coux8hd7esj7g" path="res://Deck_System_Root.tscn" id="28_a1qt2"]
-[ext_resource type="Resource" uid="uid://ddrcgbsfvr81d" path="res://Revamp/Blessings/Revenant.tres" id="28_venfy"]
+[ext_resource type="Script" uid="uid://b50mccoppp1lb" path="res://Revamp/MatchFlow/MatchAutoDrawHandler.gd" id="28_mf2my"]
+[ext_resource type="Script" uid="uid://cq06khkyy84o5" path="res://Revamp/DirectDamage/DirectDamageRouter.gd" id="30_venfy"]
+[ext_resource type="Script" uid="uid://c5j44dhlx1div" path="res://Revamp/DirectDamage/MatchScoreState.gd" id="31_3a8w1"]
+[ext_resource type="Script" uid="uid://cn5xfv13wsg1x" path="res://Revamp/MatchFlow/PostGameTransitionHandler.gd" id="34_f3uds"]
+[ext_resource type="Script" uid="uid://cau0ky5b3kabf" path="res://Revamp/Board/AttackAnticipationFeedbackHandler.gd" id="35_wop7f"]
 
 [node name="Mao" type="Node2D" unique_id=550121538]
 
 [node name="Deck" parent="." unique_id=93691211 node_paths=PackedStringArray("player_one_hand", "player_two_hand") instance=ExtResource("28_a1qt2")]
-position = Vector2(1476, 588)
+position = Vector2(1836, 492)
 player_one_hand = NodePath("../PlayerHAnd")
 player_two_hand = NodePath("../OpponenetHAnd")
 
-[node name="Slots" parent="." unique_id=1318716624 instance=ExtResource("1_yq750")]
-position = Vector2(120, 120)
-player_slot_1_card = ExtResource("4_oekep")
-player_slot_2_card = ExtResource("4_oekep")
-player_slot_3_card = ExtResource("4_oekep")
-player_slot_4_card = ExtResource("4_oekep")
-opponent_slot_1_card = ExtResource("3_20kdy")
-opponent_slot_2_card = ExtResource("4_5ixgq")
-opponent_slot_3_card = ExtResource("5_8ve8k")
-opponent_slot_4_card = ExtResource("5_8ve8k")
+[node name="Slots" parent="." unique_id=1318716624 node_paths=PackedStringArray("direct_damage_router") instance=ExtResource("1_yq750")]
+position = Vector2(588, 252)
+player_slot_1_card = ExtResource("4_bvqua")
+player_slot_2_card = ExtResource("3_venfy")
+opponent_slot_1_card = ExtResource("3_bvqua")
+opponent_slot_4_card = ExtResource("3_bvqua")
+direct_damage_router = NodePath("../DirectDamageRouter")
 
 [node name="PlayerHAnd" parent="." unique_id=371738706 node_paths=PackedStringArray("prime_location") instance=ExtResource("2_mi1n2")]
-position = Vector2(720, 960)
+position = Vector2(300, 960)
 prime_location = NodePath("../PrimeCardLocation")
 
 [node name="OpponenetHAnd" parent="." unique_id=1415383407 node_paths=PackedStringArray("prime_location") instance=ExtResource("2_mi1n2")]
-position = Vector2(1080, 600)
+position = Vector2(312, 240)
 prime_location = NodePath("../PrimeCardLocation")
 
 [node name="PrimeCardLocation" type="Node2D" parent="." unique_id=2143511336]
@@ -125,27 +128,63 @@ slots_root = NodePath("../Slots")
 
 [node name="CardEffectSpawnrouter" type="Node" parent="." unique_id=1854042398]
 
-[node name="MatchFlowRoot" type="Node" parent="." unique_id=1707594948 node_paths=PackedStringArray("turn_order_state", "deck_system_root")]
+[node name="MatchFlowRoot" type="Node" parent="." unique_id=1707594948 node_paths=PackedStringArray("turn_order_state", "deck_system_root", "score_state")]
 script = ExtResource("25_oekep")
 turn_order_state = NodePath("MatchTurnOrderState")
 deck_system_root = NodePath("../Deck")
+score_state = NodePath("MatchScoreState")
 
 [node name="MatchTurnOrderState" type="Node" parent="MatchFlowRoot" unique_id=708809136]
 script = ExtResource("26_n5v11")
 
-[node name="MatchFlowBridge" type="Node" parent="MatchFlowRoot" unique_id=1064403000 node_paths=PackedStringArray("match_flow_root", "phase_manager")]
+[node name="MatchPhaseBridge" type="Node" parent="MatchFlowRoot" unique_id=1064403000 node_paths=PackedStringArray("match_flow_root", "phase_manager")]
 script = ExtResource("24_oekep")
 match_flow_root = NodePath("..")
 phase_manager = NodePath("../../PhaseManager")
-blessing_uses_buff_phase = true
 
 [node name="BlessingSelectionState" type="Node" parent="MatchFlowRoot" unique_id=1333215538]
 script = ExtResource("25_n5v11")
 
-[node name="BlessingFlowHandler" type="Node" parent="MatchFlowRoot" unique_id=47668461]
+[node name="BlessingFlowHandler" type="Node" parent="MatchFlowRoot" unique_id=47668461 node_paths=PackedStringArray("match_flow_root", "selection_state")]
 script = ExtResource("26_7gy8c")
+match_flow_root = NodePath("..")
+selection_state = NodePath("../BlessingSelectionState")
 
-[node name="Node4" type="Node" parent="." unique_id=1230555798]
+[node name="MatchPlacementFlowHandler" type="Node" parent="MatchFlowRoot" unique_id=1230555798 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "placement_controller")]
+script = ExtResource("27_mf2my")
+match_flow_root = NodePath("..")
+turn_order_state = NodePath("../MatchTurnOrderState")
+placement_controller = NodePath("../../PlacementController")
+
+[node name="MatchCombatFlowHandler" type="Node" parent="MatchFlowRoot" unique_id=1772524559 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "slots_root", "anticipation_feedback")]
+script = ExtResource("24_n5v11")
+match_flow_root = NodePath("..")
+turn_order_state = NodePath("../MatchTurnOrderState")
+slots_root = NodePath("../../Slots")
+anticipation_feedback = NodePath("../AttackAnticipationFeedbackHandler")
+
+[node name="MatchDominantRevealHandler" type="Node" parent="MatchFlowRoot" unique_id=1122772169 node_paths=PackedStringArray("match_flow_root")]
+script = ExtResource("27_a1qt2")
+match_flow_root = NodePath("..")
+
+[node name="MatchAutoDrawHandler" type="Node" parent="MatchFlowRoot" unique_id=833003799 node_paths=PackedStringArray("match_flow_root", "deck_system_root")]
+script = ExtResource("28_mf2my")
+match_flow_root = NodePath("..")
+deck_system_root = NodePath("../../Deck")
+
+[node name="MatchScoreState" type="Node" parent="MatchFlowRoot" unique_id=1110463725]
+script = ExtResource("31_3a8w1")
+
+[node name="PostGameTransitionHandler" type="Node" parent="MatchFlowRoot" unique_id=327167645 node_paths=PackedStringArray("match_flow_root")]
+script = ExtResource("34_f3uds")
+match_flow_root = NodePath("..")
+post_game_scene_path = "uid://bhhfwt6y6l505"
+
+[node name="AttackAnticipationFeedbackHandler" type="Node" parent="MatchFlowRoot" unique_id=1452981444 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "slots_root")]
+script = ExtResource("35_wop7f")
+match_flow_root = NodePath("..")
+turn_order_state = NodePath("../MatchTurnOrderState")
+slots_root = NodePath("../../Slots")
 
 [node name="MatchFlowUI" type="Node2D" parent="." unique_id=1660901840]
 metadata/_edit_lock_ = true
@@ -176,8 +215,7 @@ offset_right = 1920.0
 offset_bottom = 1080.0
 metadata/_edit_lock_ = true
 
-[node name="BlessingFlowHandler" type="Node" parent="." unique_id=1112610546 node_paths=PackedStringArray("match_flow_root", "selection_state")]
-script = ExtResource("26_7gy8c")
-match_flow_root = NodePath("../MatchFlowRoot")
-selection_state = NodePath("../MatchFlowRoot/BlessingSelectionState")
-blessing_to_apply = ExtResource("28_venfy")
+[node name="DirectDamageRouter" type="Node" parent="." unique_id=396013123 node_paths=PackedStringArray("score_state", "slots_root")]
+script = ExtResource("30_venfy")
+score_state = NodePath("../MatchFlowRoot/MatchScoreState")
+slots_root = NodePath("../Slots")

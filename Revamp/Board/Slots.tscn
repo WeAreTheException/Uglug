@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bw8c7m7n5yuk8"]
 
 [ext_resource type="Script" uid="uid://bukeona4oyi7j" path="res://Revamp/Board/SlotsRoot.gd" id="1_vhubw"]
-[ext_resource type="Script" uid="uid://dylxhiaox4q0u" path="res://Revamp/SlotRow.gd" id="2_2k41x"]
+[ext_resource type="Script" uid="uid://dylxhiaox4q0u" path="res://Revamp/Board/SlotRow.gd" id="2_2k41x"]
 [ext_resource type="PackedScene" uid="uid://5qb61nfrd521" path="res://Revamp/Card/Card.tscn" id="5_1gkk1"]
 [ext_resource type="Script" uid="uid://dnat5rx3mmepn" path="res://Revamp/Board/BoardMutationRefresher.gd" id="7_4xfmt"]
 [ext_resource type="Script" uid="uid://fpn7jg867ngv" path="res://Revamp/Board/BoardSlotRegistry.gd" id="7_camp5"]
@@ -32,7 +32,6 @@ metadata/_edit_lock_ = true
 
 [node name="OP_Slot1" parent="BoardCardsLayer/OpponentRow" unique_id=904478857 instance=ExtResource("8_s3p7v")]
 position = Vector2(-276, 0)
-slot_index = 1
 
 [node name="OP_Slot2" parent="BoardCardsLayer/OpponentRow" unique_id=473262665 instance=ExtResource("8_s3p7v")]
 position = Vector2(-96, 0)
@@ -53,7 +52,6 @@ metadata/_edit_lock_ = true
 
 [node name="PL_Slot1" parent="BoardCardsLayer/PlayerRow" unique_id=1917887040 instance=ExtResource("8_s3p7v")]
 position = Vector2(-264, 0)
-slot_index = 1
 
 [node name="PL_Slot2" parent="BoardCardsLayer/PlayerRow" unique_id=834395941 instance=ExtResource("8_s3p7v")]
 position = Vector2(-84, 0)
@@ -71,6 +69,8 @@ slot_index = 4
 
 [node name="AttackOrderHandler" type="Node" parent="." unique_id=381521499]
 script = ExtResource("9_1gkk1")
+player_left_to_right = false
+opponent_left_to_right = false
 
 [node name="SlotPresetHandler" type="Node" parent="." unique_id=920475702]
 script = ExtResource("7_iq660")

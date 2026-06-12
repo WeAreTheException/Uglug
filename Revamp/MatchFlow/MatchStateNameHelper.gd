@@ -34,4 +34,7 @@ func get_state_name(state: MatchFlowRoot.MatchState) -> String:
 		MatchFlowRoot.MatchState.ROUND_END:
 			return "ROUND_END"
 
+		MatchFlowRoot.MatchState.GAME_END:
+			return "GAME_END"
+
 	return "UNKNOWN"

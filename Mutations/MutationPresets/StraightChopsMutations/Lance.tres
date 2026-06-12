@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Lance" format=3 uid="uid://dp3xgqtqwogy3"]
+
+[ext_resource type="Script" uid="uid://btsv3api5eug3" path="res://Mutations/MutationPresets/MutationBehaviourHandlers/Lance.gd" id="1_sm1fb"]
+[ext_resource type="Texture2D" uid="uid://c1g17ytfxes43" path="res://Art/Mutations/Penetrant_Sigil.PNG" id="2_sm1fb"]
+
+[resource]
+script = ExtResource("1_sm1fb")
+mutation_name = "Lance"
+mutation_description = "Extra Damage carries over to opponenet"
+sigil_texture = ExtResource("2_sm1fb")
+metadata/_custom_type_script = "uid://be8yk3djwb5oc"

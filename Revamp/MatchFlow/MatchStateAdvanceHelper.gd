@@ -44,4 +44,7 @@ func get_next_state(
 		MatchFlowRoot.MatchState.DOMINANT_REVEAL:
 			return MatchFlowRoot.MatchState.ROUND_END
 
+		MatchFlowRoot.MatchState.GAME_END:
+			return MatchFlowRoot.MatchState.GAME_END
+
 	return state
