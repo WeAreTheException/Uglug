@@ -15,28 +15,28 @@
 [ext_resource type="Script" uid="uid://bhnvcq27dv42" path="res://Revamp/MainMenu/LobbyLeaveHandler.gd" id="13_k2pwb"]
 [ext_resource type="Script" uid="uid://b3jnngb37qq0g" path="res://Revamp/MainMenu/SteamPlayerIdentity.gd" id="15_gkjg1"]
 [ext_resource type="Script" uid="uid://doscvmerviyvy" path="res://Revamp/MainMenu/SteamManager.gd" id="16_ee4eu"]
+[ext_resource type="Script" uid="uid://duf1d5ys1xr02" path="res://Revamp/MainMenu/MainMenuStateManager.gd" id="17_rkoxl"]
 [ext_resource type="Script" uid="uid://0n3iy5pn6osa" path="res://Revamp/MainMenu/MatchStartHandler.gd" id="17_txptg"]
+[ext_resource type="Script" uid="uid://c2tqypi7g0at8" path="res://Revamp/MainMenu/MainMenuButtonState.gd" id="18_vqc14"]
+[ext_resource type="Script" uid="uid://oxsy2au04ba" path="res://Revamp/MainMenu/MainMenuPrivateJoinFlow.gd" id="19_qbcpn"]
+[ext_resource type="Script" uid="uid://dv2jhtprx4yfu" path="res://Revamp/MainMenu/MainMenuLobbyFlow.gd" id="20_fqpy5"]
 
-[node name="MainMenu" type="Control" unique_id=930422600 node_paths=PackedStringArray("map_visual", "lobby_icon_layer", "host_button", "join_random_button", "create_lobby_popup", "join_private_popup", "connection_handler", "lobby_host_handler", "lobby_browser", "lobby_join_handler", "lobby_leave_handler", "map_spawn_locations", "lobby_icon_spawner", "status_label", "match_start_handler")]
+[node name="MainMenu" type="Control" unique_id=930422600 node_paths=PackedStringArray("map_visual", "create_lobby_popup", "join_private_popup", "connection_handler", "lobby_browser", "lobby_icon_spawner", "state_manager", "button_state", "lobby_flow", "map_spawn_locations", "status_label")]
 layout_mode = 3
 anchors_preset = 0
 scale = Vector2(0.950005, 1.0128386)
 script = ExtResource("1_sg7ab")
 map_visual = NodePath("MapVisual")
-lobby_icon_layer = NodePath("LobbyIconLayer")
-host_button = NodePath("HostButton")
-join_random_button = NodePath("JoinRandomButton")
 create_lobby_popup = NodePath("CreateLobbyPopup")
 join_private_popup = NodePath("JoinPrivatePopup")
 connection_handler = NodePath("MultiplayerConnectionHandler")
-lobby_host_handler = NodePath("LobbyHostHandler")
 lobby_browser = NodePath("LobbyBrowser")
-lobby_join_handler = NodePath("LobbyJoinHandler")
-lobby_leave_handler = NodePath("LobbyLeaveHandler")
-map_spawn_locations = NodePath("MapSpawnLocations")
 lobby_icon_spawner = NodePath("LobbyIconSpawner")
+state_manager = NodePath("MainMenuStateManager")
+button_state = NodePath("MainMenuButtonState")
+lobby_flow = NodePath("MainMenuLobbyFlow")
+map_spawn_locations = NodePath("MapSpawnLocations")
 status_label = NodePath("StatusLabel")
-match_start_handler = NodePath("MatchStartHandler")
 
 [node name="MapVisual" type="TextureRect" parent="." unique_id=1786858430]
 layout_mode = 0
@@ -160,3 +160,30 @@ position = Vector2(1741, 769)
 
 [node name="SpawnPoint9" type="Marker2D" parent="MapSpawnLocations" unique_id=23526976]
 position = Vector2(1516, 436)
+
+[node name="MainMenuStateManager" type="Node" parent="." unique_id=1495236512]
+script = ExtResource("17_rkoxl")
+
+[node name="MainMenuButtonState" type="Node" parent="." unique_id=447115821 node_paths=PackedStringArray("host_button", "join_random_button", "state_manager")]
+script = ExtResource("18_vqc14")
+host_button = NodePath("../HostButton")
+join_random_button = NodePath("../JoinRandomButton")
+state_manager = NodePath("../MainMenuStateManager")
+
+[node name="MainMenuPrivateJoinFlow" type="Node" parent="." unique_id=131687310 node_paths=PackedStringArray("join_private_popup")]
+script = ExtResource("19_qbcpn")
+join_private_popup = NodePath("../JoinPrivatePopup")
+
+[node name="MainMenuLobbyFlow" type="Node" parent="." unique_id=1252765303 node_paths=PackedStringArray("create_lobby_popup", "join_private_popup", "state_manager", "lobby_host_handler", "lobby_browser", "lobby_join_handler", "lobby_leave_handler", "private_join_flow", "match_start_handler", "map_spawn_locations", "lobby_icon_spawner")]
+script = ExtResource("20_fqpy5")
+create_lobby_popup = NodePath("../CreateLobbyPopup")
+join_private_popup = NodePath("../JoinPrivatePopup")
+state_manager = NodePath("../MainMenuStateManager")
+lobby_host_handler = NodePath("../LobbyHostHandler")
+lobby_browser = NodePath("../LobbyBrowser")
+lobby_join_handler = NodePath("../LobbyJoinHandler")
+lobby_leave_handler = NodePath("../LobbyLeaveHandler")
+private_join_flow = NodePath("../MainMenuPrivateJoinFlow")
+match_start_handler = NodePath("../MatchStartHandler")
+map_spawn_locations = NodePath("../MapSpawnLocations")
+lobby_icon_spawner = NodePath("../LobbyIconSpawner")
