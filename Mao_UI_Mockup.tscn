@@ -1,0 +1,501 @@
+[gd_scene format=3 uid="uid://rir2t85e314a"]
+
+[ext_resource type="PackedScene" uid="uid://coux8hd7esj7g" path="res://Deck_System_Root.tscn" id="1_7kt8c"]
+[ext_resource type="PackedScene" uid="uid://bw8c7m7n5yuk8" path="res://Revamp/Board/Slots.tscn" id="2_kkk5q"]
+[ext_resource type="Resource" uid="uid://0c6lqenucx25" path="res://Cards/CardPresets/StraightChops/Aviant.tres" id="3_i3li4"]
+[ext_resource type="Resource" uid="uid://b6naofddvwrc1" path="res://Cards/CardPresets/Penetrant.tres" id="4_snvix"]
+[ext_resource type="Resource" uid="uid://b1dt5378u5ga8" path="res://Cards/CardPresets/Sustain/Guardiant.tres" id="5_m6w7e"]
+[ext_resource type="PackedScene" uid="uid://1wr1e57v7trd" path="res://Revamp/PlayerHand/Player_Hand.tscn" id="6_0y26d"]
+[ext_resource type="Script" uid="uid://bxbqihkit6rgo" path="res://Managers/Phasemanager.gd" id="7_grhre"]
+[ext_resource type="Script" uid="uid://bbcig486utsir" path="res://HandPhaseApplier.gd" id="8_s7tvq"]
+[ext_resource type="Script" uid="uid://61l5g8wkdar3" path="res://SacrificeController.gd" id="9_ff4c1"]
+[ext_resource type="Script" uid="uid://ciopi88keoi3k" path="res://SacrificeRequirement.gd" id="10_eaoai"]
+[ext_resource type="Script" uid="uid://b4qvc7353obir" path="res://PendingSacrificeBoat.gd" id="11_mraqy"]
+[ext_resource type="Script" uid="uid://vmy04gllke53" path="res://SacrificeCommitter.gd" id="12_csxqs"]
+[ext_resource type="Script" uid="uid://dnikkosq1o0kr" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementController.gd" id="13_mnw5g"]
+[ext_resource type="Script" uid="uid://cvkghlt7xdj22" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementState.gd" id="14_tyauq"]
+[ext_resource type="Script" uid="uid://dsut7kstdcc6u" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementInputRouter.gd" id="15_renw3"]
+[ext_resource type="Script" uid="uid://6ycktn6tay80" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementPreview.gd" id="16_fvds2"]
+[ext_resource type="Script" uid="uid://yc6i5trydgut" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementExecutor.gd" id="17_l8c0q"]
+[ext_resource type="Script" uid="uid://c18hwqs033t7x" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementEventEmitter.gd" id="18_if7da"]
+[ext_resource type="Script" uid="uid://cmcxm3mp7ljvv" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementCancel.gd" id="19_mpelt"]
+[ext_resource type="Script" uid="uid://dp6gve6tfarqs" path="res://Revamp/Phases/BoardPhaseApplier.gd" id="20_fblqo"]
+[ext_resource type="Script" uid="uid://difytxi1dyr27" path="res://Revamp/MatchFlow/MatchFlowRoot.gd" id="21_avyra"]
+[ext_resource type="Script" uid="uid://c6ap2csjp7k81" path="res://Revamp/MatchFlow/MatchTurnOrderState.gd" id="22_v57ij"]
+[ext_resource type="Script" uid="uid://bmc4688qk3cow" path="res://Revamp/MatchFlow/MatchPhaseBridge.gd" id="23_gtrhx"]
+[ext_resource type="Script" uid="uid://c0jbty6yowib5" path="res://Revamp/MatchFlow/Blessing/BlessingSelectionState.gd" id="24_2dkfk"]
+[ext_resource type="Script" uid="uid://q2nybrneyr7f" path="res://Revamp/MatchFlow/Blessing/BlessingFlowHandler.gd" id="25_3sfp8"]
+[ext_resource type="Script" uid="uid://myowbycyd18l" path="res://Revamp/MatchFlow/MatchPlacementFlowHandler.gd" id="26_b8rkq"]
+[ext_resource type="Script" uid="uid://dhe454wat35an" path="res://Revamp/MatchFlow/MatchCombatFlowHandler.gd" id="27_jxdyu"]
+[ext_resource type="Script" uid="uid://dxj656ms4qeq4" path="res://Revamp/MatchFlow/MatchDominantRevealHandler.gd" id="28_qiqdv"]
+[ext_resource type="Script" uid="uid://b50mccoppp1lb" path="res://Revamp/MatchFlow/MatchAutoDrawHandler.gd" id="29_3ibsw"]
+[ext_resource type="Script" uid="uid://c5j44dhlx1div" path="res://Revamp/DirectDamage/MatchScoreState.gd" id="30_5vlri"]
+[ext_resource type="Script" uid="uid://cn5xfv13wsg1x" path="res://Revamp/MatchFlow/PostGameTransitionHandler.gd" id="31_t4ybe"]
+[ext_resource type="Script" uid="uid://cau0ky5b3kabf" path="res://Revamp/Board/AttackAnticipationFeedbackHandler.gd" id="32_8hpk7"]
+[ext_resource type="Script" uid="uid://e0tr3sanyo1r" path="res://Revamp/MatchFlow/MatchAnnouncementDisplay.gd" id="33_q4frj"]
+[ext_resource type="Script" uid="uid://cq06khkyy84o5" path="res://Revamp/DirectDamage/DirectDamageRouter.gd" id="34_bcuf6"]
+[ext_resource type="PackedScene" uid="uid://cufp1may3b8l4" path="res://Scenes/card.tscn" id="35_wmbu0"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wop7f"]
+bg_color = Color(0.13, 0.122394994, 0.11829999, 0.5764706)
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3vc3c"]
+bg_color = Color(0.16169998, 0.77, 0.50640327, 0.47843137)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.2392, 0.92, 0.54556006, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ygb55"]
+bg_color = Color(0.47, 0.1175, 0.17625012, 0.42352942)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.8291633, 0.14043778, 0.35698447, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i8ogu"]
+bg_color = Color(0.07300001, 0.091, 0.1, 0.6862745)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.792, 0.9, 0.8964, 0.6313726)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fobm3"]
+bg_color = Color(0.44, 0.1584, 0.21941335, 0.81960785)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nllv1"]
+bg_color = Color(0.16924527, 0.1692453, 0.16924527, 0.9098039)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u26di"]
+bg_color = Color(0.86036915, 0.8603692, 0.8603691, 1)
+corner_radius_top_left = 25
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_feejq"]
+bg_color = Color(0.85882354, 0.85882354, 0.85882354, 1)
+
+[node name="Mao" type="Node2D" unique_id=550121538]
+
+[node name="Deck" parent="." unique_id=93691211 node_paths=PackedStringArray("player_one_hand", "player_two_hand") instance=ExtResource("1_7kt8c")]
+position = Vector2(1836, 492)
+player_one_hand = NodePath("../PlayerHAnd")
+player_two_hand = NodePath("../OpponenetHAnd")
+
+[node name="Slots" parent="." unique_id=1318716624 node_paths=PackedStringArray("direct_damage_router") instance=ExtResource("2_kkk5q")]
+position = Vector2(544, 256)
+scale = Vector2(1.12, 1.12)
+player_slot_1_card = ExtResource("3_i3li4")
+player_slot_2_card = ExtResource("4_snvix")
+opponent_slot_1_card = ExtResource("5_m6w7e")
+opponent_slot_4_card = ExtResource("5_m6w7e")
+direct_damage_router = NodePath("../DirectDamageRouter")
+
+[node name="PlayerHAnd" parent="." unique_id=371738706 node_paths=PackedStringArray("prime_location") instance=ExtResource("6_0y26d")]
+position = Vector2(934, 992)
+prime_location = NodePath("../PrimeCardLocation")
+
+[node name="OpponenetHAnd" parent="." unique_id=1415383407 node_paths=PackedStringArray("prime_location") instance=ExtResource("6_0y26d")]
+visible = false
+position = Vector2(923, 188)
+prime_location = NodePath("../PrimeCardLocation")
+
+[node name="PrimeCardLocation" type="Node2D" parent="." unique_id=2143511336]
+position = Vector2(415.99997, 538)
+scale = Vector2(1.3, 1.3)
+skew = 0.05235988
+
+[node name="PhaseManager" type="Node" parent="." unique_id=658439244]
+script = ExtResource("7_grhre")
+metadata/_custom_type_script = "uid://bxbqihkit6rgo"
+
+[node name="HandPhaseApplier" type="Node" parent="PhaseManager" unique_id=1109584642 node_paths=PackedStringArray("phase_manager", "lead_hand", "response_hand")]
+script = ExtResource("8_s7tvq")
+phase_manager = NodePath("..")
+lead_hand = NodePath("../../PlayerHAnd")
+response_hand = NodePath("../../OpponenetHAnd")
+
+[node name="SacrificeController" type="Node" parent="." unique_id=1432478239 node_paths=PackedStringArray("player_hand", "requirement", "pending_boat", "committer")]
+script = ExtResource("9_ff4c1")
+player_hand = NodePath("../PlayerHAnd")
+requirement = NodePath("SacrificeRequirement")
+pending_boat = NodePath("PendingSacrificeBoat")
+committer = NodePath("SacrificeComitter")
+auto_sacrifice_when_cost_met = true
+
+[node name="SacrificeRequirement" type="Node" parent="SacrificeController" unique_id=1332384962]
+script = ExtResource("10_eaoai")
+
+[node name="PendingSacrificeBoat" type="Node" parent="SacrificeController" unique_id=1449104389 node_paths=PackedStringArray("pending_layer")]
+script = ExtResource("11_mraqy")
+pending_layer = NodePath("../PendingSacrificeLayer")
+
+[node name="SacrificeComitter" type="Node" parent="SacrificeController" unique_id=1945886437]
+script = ExtResource("12_csxqs")
+
+[node name="PendingSacrificeLayer" type="Node2D" parent="SacrificeController" unique_id=183134508]
+
+[node name="PlacementController" type="Node" parent="." unique_id=1405375079 node_paths=PackedStringArray("slots_root", "player_hand", "sacrifice_controller", "placement_state", "input_router", "placement_preview", "placement_executor", "event_emitter", "placement_cancel")]
+script = ExtResource("13_mnw5g")
+slots_root = NodePath("../Slots")
+player_hand = NodePath("../PlayerHAnd")
+sacrifice_controller = NodePath("../SacrificeController")
+placement_state = NodePath("PlacementState")
+input_router = NodePath("PlacementInputRouter")
+placement_preview = NodePath("PlacementPreview")
+placement_executor = NodePath("PlacementExecutor")
+event_emitter = NodePath("PlacementEventEmitter")
+placement_cancel = NodePath("PlacementCancel")
+
+[node name="PlacementState" type="Node" parent="PlacementController" unique_id=1456688179]
+script = ExtResource("14_tyauq")
+
+[node name="PlacementInputRouter" type="Node" parent="PlacementController" unique_id=1643686806]
+script = ExtResource("15_renw3")
+
+[node name="PlacementPreview" type="Node" parent="PlacementController" unique_id=1774818153]
+script = ExtResource("16_fvds2")
+
+[node name="PlacementExecutor" type="Node" parent="PlacementController" unique_id=988574054]
+script = ExtResource("17_l8c0q")
+
+[node name="PlacementEventEmitter" type="Node" parent="PlacementController" unique_id=1389290294]
+script = ExtResource("18_if7da")
+
+[node name="PlacementCancel" type="Node" parent="PlacementController" unique_id=1193513979]
+script = ExtResource("19_mpelt")
+
+[node name="BoardPhaseApplier" type="Node" parent="." unique_id=940502173 node_paths=PackedStringArray("phase_manager", "slots_root")]
+script = ExtResource("20_fblqo")
+phase_manager = NodePath("../PhaseManager")
+slots_root = NodePath("../Slots")
+
+[node name="CardEffectSpawnrouter" type="Node" parent="." unique_id=1854042398]
+
+[node name="MatchFlowRoot" type="Node" parent="." unique_id=1707594948 node_paths=PackedStringArray("turn_order_state", "deck_system_root", "score_state")]
+script = ExtResource("21_avyra")
+turn_order_state = NodePath("MatchTurnOrderState")
+deck_system_root = NodePath("../Deck")
+score_state = NodePath("MatchScoreState")
+
+[node name="MatchTurnOrderState" type="Node" parent="MatchFlowRoot" unique_id=708809136]
+script = ExtResource("22_v57ij")
+
+[node name="MatchPhaseBridge" type="Node" parent="MatchFlowRoot" unique_id=1064403000 node_paths=PackedStringArray("match_flow_root", "phase_manager")]
+script = ExtResource("23_gtrhx")
+match_flow_root = NodePath("..")
+phase_manager = NodePath("../../PhaseManager")
+
+[node name="BlessingSelectionState" type="Node" parent="MatchFlowRoot" unique_id=1333215538]
+script = ExtResource("24_2dkfk")
+
+[node name="BlessingFlowHandler" type="Node" parent="MatchFlowRoot" unique_id=47668461 node_paths=PackedStringArray("match_flow_root", "selection_state")]
+script = ExtResource("25_3sfp8")
+match_flow_root = NodePath("..")
+selection_state = NodePath("../BlessingSelectionState")
+
+[node name="MatchPlacementFlowHandler" type="Node" parent="MatchFlowRoot" unique_id=1230555798 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "placement_controller")]
+script = ExtResource("26_b8rkq")
+match_flow_root = NodePath("..")
+turn_order_state = NodePath("../MatchTurnOrderState")
+placement_controller = NodePath("../../PlacementController")
+
+[node name="MatchCombatFlowHandler" type="Node" parent="MatchFlowRoot" unique_id=1772524559 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "slots_root", "anticipation_feedback")]
+script = ExtResource("27_jxdyu")
+match_flow_root = NodePath("..")
+turn_order_state = NodePath("../MatchTurnOrderState")
+slots_root = NodePath("../../Slots")
+anticipation_feedback = NodePath("../AttackAnticipationFeedbackHandler")
+
+[node name="MatchDominantRevealHandler" type="Node" parent="MatchFlowRoot" unique_id=1122772169 node_paths=PackedStringArray("match_flow_root")]
+script = ExtResource("28_qiqdv")
+match_flow_root = NodePath("..")
+
+[node name="MatchAutoDrawHandler" type="Node" parent="MatchFlowRoot" unique_id=833003799 node_paths=PackedStringArray("match_flow_root", "deck_system_root")]
+script = ExtResource("29_3ibsw")
+match_flow_root = NodePath("..")
+deck_system_root = NodePath("../../Deck")
+
+[node name="MatchScoreState" type="Node" parent="MatchFlowRoot" unique_id=1110463725]
+script = ExtResource("30_5vlri")
+
+[node name="PostGameTransitionHandler" type="Node" parent="MatchFlowRoot" unique_id=327167645 node_paths=PackedStringArray("match_flow_root")]
+script = ExtResource("31_t4ybe")
+match_flow_root = NodePath("..")
+post_game_scene_path = "uid://bhhfwt6y6l505"
+
+[node name="AttackAnticipationFeedbackHandler" type="Node" parent="MatchFlowRoot" unique_id=1452981444 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "slots_root")]
+script = ExtResource("32_8hpk7")
+match_flow_root = NodePath("..")
+turn_order_state = NodePath("../MatchTurnOrderState")
+slots_root = NodePath("../../Slots")
+
+[node name="MatchFlowUI" type="Node2D" parent="." unique_id=1660901840]
+metadata/_edit_lock_ = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="MatchFlowUI" unique_id=1511141763]
+
+[node name="MatchAnnouncementDisplay" type="Control" parent="MatchFlowUI/CanvasLayer" unique_id=866682808 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "round_label", "message_label")]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("33_q4frj")
+match_flow_root = NodePath("../../../MatchFlowRoot")
+turn_order_state = NodePath("../../../MatchFlowRoot/MatchTurnOrderState")
+round_label = NodePath("RoundLabel")
+message_label = NodePath("MessageLabel")
+
+[node name="RoundLabel" type="Label" parent="MatchFlowUI/CanvasLayer/MatchAnnouncementDisplay" unique_id=1682652415]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 612.0
+metadata/_edit_lock_ = true
+
+[node name="MessageLabel" type="Label" parent="MatchFlowUI/CanvasLayer/MatchAnnouncementDisplay" unique_id=286669320]
+layout_mode = 0
+offset_top = 708.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+metadata/_edit_lock_ = true
+
+[node name="DirectDamageRouter" type="Node" parent="." unique_id=396013123 node_paths=PackedStringArray("score_state", "slots_root")]
+script = ExtResource("34_bcuf6")
+score_state = NodePath("../MatchFlowRoot/MatchScoreState")
+slots_root = NodePath("../Slots")
+
+[node name="PlayerIcon" parent="." unique_id=1832133933 instance=ExtResource("35_wmbu0")]
+position = Vector2(320, 160)
+rotation = 0.2617994
+scale = Vector2(0.85, 0.85)
+
+[node name="EnemyIcon" parent="." unique_id=1236981440 instance=ExtResource("35_wmbu0")]
+modulate = Color(0.9428946, 0, 0.10008567, 1)
+position = Vector2(1535.9999, 159.99995)
+rotation = -0.2617994
+scale = Vector2(0.85, 0.85)
+
+[node name="Panel2" type="Panel" parent="." unique_id=1168116615]
+offset_left = 480.0
+offset_top = 64.0
+offset_right = 1376.0
+offset_bottom = 160.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_wop7f")
+
+[node name="Panel3" type="Panel" parent="." unique_id=345289095]
+offset_left = 1376.0
+offset_top = 781.0
+offset_right = 1568.0
+offset_bottom = 909.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_wop7f")
+
+[node name="TuggaPips" type="Node2D" parent="." unique_id=75379635]
+position = Vector2(934, 96)
+
+[node name="TuggaPlayer6" type="Panel" parent="TuggaPips" unique_id=950414789]
+offset_left = -389.99994
+offset_right = -349.99994
+offset_bottom = 40.0
+rotation = 0.7853982
+theme_override_styles/panel = SubResource("StyleBoxFlat_3vc3c")
+
+[node name="TuggaPlayer7" type="Panel" parent="TuggaPips" unique_id=282101570]
+offset_left = -329.7157
+offset_right = -289.7157
+offset_bottom = 40.0
+rotation = 0.7853982
+theme_override_styles/panel = SubResource("StyleBoxFlat_3vc3c")
+
+[node name="TuggaPlayer8" type="Panel" parent="TuggaPips" unique_id=950813110]
+offset_left = -265.7157
+offset_right = -225.7157
+offset_bottom = 40.0
+rotation = 0.7853982
+theme_override_styles/panel = SubResource("StyleBoxFlat_3vc3c")
+
+[node name="TuggaPlayer9" type="Panel" parent="TuggaPips" unique_id=900703387]
+offset_left = -201.7157
+offset_right = -161.7157
+offset_bottom = 40.0
+rotation = 0.7853982
+theme_override_styles/panel = SubResource("StyleBoxFlat_3vc3c")
+
+[node name="TuggaPlayer10" type="Panel" parent="TuggaPips" unique_id=1010473991]
+offset_left = -134.0
+offset_right = -94.0
+offset_bottom = 40.0
+rotation = 0.7853982
+theme_override_styles/panel = SubResource("StyleBoxFlat_3vc3c")
+
+[node name="TuggaPips2" type="Node2D" parent="." unique_id=1933608912]
+position = Vector2(934, 96)
+
+[node name="TuggaPlayer11" type="Panel" parent="TuggaPips2" unique_id=1504667370]
+offset_left = 118.28427
+offset_right = 158.28427
+offset_bottom = 40.000008
+rotation = 0.7853982
+theme_override_styles/panel = SubResource("StyleBoxFlat_ygb55")
+
+[node name="TuggaPlayer12" type="Panel" parent="TuggaPips2" unique_id=257609144]
+offset_left = 178.56851
+offset_right = 218.56851
+offset_bottom = 40.000008
+rotation = 0.7853982
+theme_override_styles/panel = SubResource("StyleBoxFlat_ygb55")
+
+[node name="TuggaPlayer13" type="Panel" parent="TuggaPips2" unique_id=245568084]
+offset_left = 242.56851
+offset_right = 282.5685
+offset_bottom = 40.000008
+rotation = 0.7853982
+theme_override_styles/panel = SubResource("StyleBoxFlat_ygb55")
+
+[node name="TuggaPlayer14" type="Panel" parent="TuggaPips2" unique_id=773398096]
+offset_left = 306.5685
+offset_right = 346.5685
+offset_bottom = 40.000008
+rotation = 0.7853982
+theme_override_styles/panel = SubResource("StyleBoxFlat_ygb55")
+
+[node name="TuggaPlayer15" type="Panel" parent="TuggaPips2" unique_id=190850003]
+offset_left = 374.2842
+offset_right = 414.2842
+offset_bottom = 40.000008
+rotation = 0.7853982
+theme_override_styles/panel = SubResource("StyleBoxFlat_ygb55")
+
+[node name="Panel" type="Panel" parent="." unique_id=1528674750]
+offset_left = 928.0001
+offset_top = 64.00001
+offset_right = 1008.0001
+offset_bottom = 144.0
+rotation = 0.7853982
+theme_override_styles/panel = SubResource("StyleBoxFlat_i8ogu")
+
+[node name="Label" type="Label" parent="." unique_id=479953719]
+offset_left = 1408.0
+offset_top = 781.0
+offset_right = 1536.0
+offset_bottom = 815.0
+pivot_offset = Vector2(48, 0)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "PHASE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="." unique_id=2031232148]
+offset_left = 1408.0
+offset_top = 815.0
+offset_right = 1535.0
+offset_bottom = 903.0
+pivot_offset = Vector2(63.5, 0)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 64
+text = "1:33"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Panel4" type="Panel" parent="." unique_id=1823279190]
+offset_left = 1376.0
+offset_top = 704.0
+offset_right = 1568.0
+offset_bottom = 768.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_fobm3")
+
+[node name="Label3" type="Label" parent="." unique_id=1047290073]
+offset_left = 1376.0
+offset_top = 717.0
+offset_right = 1568.0
+offset_bottom = 767.0
+pivot_offset = Vector2(48, 0)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 36
+text = "END TURN"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Panel5" type="Panel" parent="." unique_id=54881881]
+offset_left = 416.0
+offset_top = 864.0
+offset_right = 576.0
+offset_bottom = 904.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_nllv1")
+
+[node name="Label4" type="Label" parent="." unique_id=1097370125]
+offset_left = 416.0
+offset_top = 864.0
+offset_right = 576.0
+offset_bottom = 904.0
+pivot_offset = Vector2(48, 0)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 18
+text = "COST"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Panel6" type="Panel" parent="." unique_id=455262409]
+offset_left = 416.0
+offset_top = 913.0
+offset_right = 576.0
+offset_bottom = 953.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_nllv1")
+
+[node name="Label5" type="Label" parent="." unique_id=1611082797]
+offset_left = 416.0
+offset_top = 913.0
+offset_right = 576.0
+offset_bottom = 953.0
+pivot_offset = Vector2(48, 0)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 18
+text = "MUTATION"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Panel7" type="Panel" parent="." unique_id=1825270731]
+offset_left = 544.0
+offset_top = 800.0
+offset_right = 1312.0
+offset_bottom = 834.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_nllv1")
+
+[node name="Label6" type="Label" parent="." unique_id=1225518750]
+offset_left = 544.0
+offset_top = 800.0
+offset_right = 1312.0
+offset_bottom = 832.0
+pivot_offset = Vector2(48, 0)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 18
+text = "P1 ATTACKS FIRST"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Panel8" type="Panel" parent="." unique_id=1096888281]
+offset_left = 544.0
+offset_top = 512.0
+offset_right = 1280.0
+offset_bottom = 524.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_u26di")
+
+[node name="Panel" type="Panel" parent="Panel8" unique_id=1489501921]
+layout_mode = 0
+offset_left = 736.0001
+offset_top = -14.0
+offset_right = 760.0001
+offset_bottom = 10.0
+rotation = 0.7853982
+pivot_offset = Vector2(0, 12)
+theme_override_styles/panel = SubResource("StyleBoxFlat_feejq")
