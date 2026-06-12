@@ -11,6 +11,7 @@ signal combat_flow_finished
 @export var print_debug: bool = true
 
 var is_running: bool = false
+var stop_requested: bool = false
 
 
 func _ready() -> void:
@@ -19,6 +20,9 @@ func _ready() -> void:
 
 	if not match_flow_root.match_state_changed.is_connected(_on_match_state_changed):
 		match_flow_root.match_state_changed.connect(_on_match_state_changed)
+
+	if not match_flow_root.match_ended.is_connected(_on_match_ended):
+		match_flow_root.match_ended.connect(_on_match_ended)
 
 
 func _on_match_state_changed(state: MatchFlowRoot.MatchState) -> void:
@@ -39,6 +43,7 @@ func begin_combat_flow() -> void:
 		return
 
 	is_running = true
+	stop_requested = false
 
 	if match_flow_root != null:
 		match_flow_root.lock_transition()
@@ -52,7 +57,9 @@ func begin_combat_flow() -> void:
 	combat_flow_started.emit(first_owner)
 
 	await _run_owner_attack_order(first_owner)
-	await _run_owner_attack_order(second_owner)
+
+	if not stop_requested:
+		await _run_owner_attack_order(second_owner)
 
 	if print_debug:
 		print("COMBAT FLOW FINISHED")
@@ -66,6 +73,9 @@ func begin_combat_flow() -> void:
 
 
 func _run_owner_attack_order(owner: SlotRow.SlotOwner) -> void:
+	if stop_requested:
+		return
+
 	var attack_order_handler := _get_attack_order_handler()
 
 	if attack_order_handler == null:
@@ -77,7 +87,22 @@ func _run_owner_attack_order(owner: SlotRow.SlotOwner) -> void:
 	attack_order_handler.run_attack_order(owner)
 
 	while attack_order_handler.is_running:
+		if stop_requested:
+			attack_order_handler.request_stop()
+
 		await get_tree().process_frame
+
+
+func _on_match_ended(
+	_winner: SlotRow.SlotOwner,
+	_final_score: int
+) -> void:
+	stop_requested = true
+
+	var attack_order_handler := _get_attack_order_handler()
+
+	if attack_order_handler != null:
+		attack_order_handler.request_stop()
 
 
 func _get_attack_order_handler() -> AttackOrderHandler:

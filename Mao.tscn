@@ -33,6 +33,7 @@
 [ext_resource type="Script" uid="uid://b50mccoppp1lb" path="res://Revamp/MatchFlow/MatchAutoDrawHandler.gd" id="28_mf2my"]
 [ext_resource type="Script" uid="uid://cq06khkyy84o5" path="res://Revamp/DirectDamage/DirectDamageRouter.gd" id="30_venfy"]
 [ext_resource type="Script" uid="uid://c5j44dhlx1div" path="res://Revamp/DirectDamage/MatchScoreState.gd" id="31_3a8w1"]
+[ext_resource type="Script" uid="uid://cn5xfv13wsg1x" path="res://Revamp/MatchFlow/PostGameTransitionHandler.gd" id="34_f3uds"]
 
 [node name="Mao" type="Node2D" unique_id=550121538]
 
@@ -127,10 +128,11 @@ slots_root = NodePath("../Slots")
 
 [node name="CardEffectSpawnrouter" type="Node" parent="." unique_id=1854042398]
 
-[node name="MatchFlowRoot" type="Node" parent="." unique_id=1707594948 node_paths=PackedStringArray("turn_order_state", "deck_system_root")]
+[node name="MatchFlowRoot" type="Node" parent="." unique_id=1707594948 node_paths=PackedStringArray("turn_order_state", "deck_system_root", "score_state")]
 script = ExtResource("25_oekep")
 turn_order_state = NodePath("MatchTurnOrderState")
 deck_system_root = NodePath("../Deck")
+score_state = NodePath("../MatchScoreState")
 
 [node name="MatchTurnOrderState" type="Node" parent="MatchFlowRoot" unique_id=708809136]
 script = ExtResource("26_n5v11")
@@ -206,3 +208,8 @@ slots_root = NodePath("../Slots")
 [node name="MatchScoreState" type="Node" parent="." unique_id=1110463725]
 script = ExtResource("31_3a8w1")
 win_threshold = 1
+
+[node name="PostGameTransitionHandler" type="Node" parent="." unique_id=327167645 node_paths=PackedStringArray("match_flow_root")]
+script = ExtResource("34_f3uds")
+match_flow_root = NodePath("../MatchFlowRoot")
+post_game_scene_path = "uid://bhhfwt6y6l505"
