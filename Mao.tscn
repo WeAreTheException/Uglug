@@ -25,6 +25,7 @@
 [ext_resource type="Script" uid="uid://q2nybrneyr7f" path="res://Revamp/MatchFlow/Blessing/BlessingFlowHandler.gd" id="26_7gy8c"]
 [ext_resource type="Script" uid="uid://c6ap2csjp7k81" path="res://Revamp/MatchFlow/MatchTurnOrderState.gd" id="26_n5v11"]
 [ext_resource type="Script" uid="uid://e0tr3sanyo1r" path="res://Revamp/MatchFlow/MatchAnnouncementDisplay.gd" id="27_7gy8c"]
+[ext_resource type="Script" uid="uid://dxj656ms4qeq4" path="res://Revamp/MatchFlow/MatchDominantRevealHandler.gd" id="27_a1qt2"]
 [ext_resource type="Script" uid="uid://myowbycyd18l" path="res://Revamp/MatchFlow/MatchPlacementFlowHandler.gd" id="27_mf2my"]
 [ext_resource type="PackedScene" uid="uid://coux8hd7esj7g" path="res://Deck_System_Root.tscn" id="28_a1qt2"]
 
@@ -151,6 +152,10 @@ script = ExtResource("24_n5v11")
 match_flow_root = NodePath("..")
 turn_order_state = NodePath("../MatchTurnOrderState")
 slots_root = NodePath("../../Slots")
+
+[node name="MatchDominantRevealHandler" type="Node" parent="MatchFlowRoot" unique_id=1122772169 node_paths=PackedStringArray("match_flow_root")]
+script = ExtResource("27_a1qt2")
+match_flow_root = NodePath("..")
 
 [node name="MatchFlowUI" type="Node2D" parent="." unique_id=1660901840]
 metadata/_edit_lock_ = true

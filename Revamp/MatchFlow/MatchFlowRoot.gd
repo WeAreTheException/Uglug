@@ -29,6 +29,7 @@ var current_state: MatchState = MatchState.NONE
 var current_round: int = 0
 var is_running: bool = false
 var has_built_starting_hands: bool = false
+var transition_lock_count: int = 0
 
 var state_name_helper: MatchStateNameHelper = MatchStateNameHelper.new()
 var state_advance_helper: MatchStateAdvanceHelper = MatchStateAdvanceHelper.new()
@@ -69,6 +70,7 @@ func start_match() -> void:
 	is_running = true
 	current_round = 1
 	has_built_starting_hands = false
+	transition_lock_count = 0
 
 	if turn_order_state != null:
 		turn_order_state.setup_for_round(current_round)
@@ -90,6 +92,10 @@ func set_state(new_state: MatchState) -> void:
 
 
 func advance_debug_state() -> void:
+	if is_transition_locked():
+		print("MATCH ADVANCE BLOCKED: transition locked")
+		return
+
 	if state_advance_helper.should_advance_round(current_state):
 		advance_round()
 		return
@@ -107,6 +113,10 @@ func advance_debug_state() -> void:
 
 
 func advance_round() -> void:
+	if is_transition_locked():
+		print("ROUND ADVANCE BLOCKED: transition locked")
+		return
+
 	current_round += 1
 
 	if turn_order_state != null:
@@ -114,6 +124,18 @@ func advance_round() -> void:
 
 	round_changed.emit(current_round)
 	set_state(MatchState.ROUND_INTRO)
+
+
+func lock_transition() -> void:
+	transition_lock_count += 1
+
+
+func unlock_transition() -> void:
+	transition_lock_count = max(transition_lock_count - 1, 0)
+
+
+func is_transition_locked() -> bool:
+	return transition_lock_count > 0
 
 
 func swap_controlled_owner() -> void:
