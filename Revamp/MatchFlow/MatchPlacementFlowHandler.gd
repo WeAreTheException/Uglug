@@ -53,11 +53,10 @@ func _get_response_owner() -> SlotRow.SlotOwner:
 
 
 func _get_owner_name(owner: SlotRow.SlotOwner) -> String:
-	match owner:
-		SlotRow.SlotOwner.PLAYER:
-			return "P1"
+	if turn_order_state != null:
+		return turn_order_state.get_owner_name(owner)
 
-		SlotRow.SlotOwner.OPPONENT:
-			return "P2"
+	if owner == SlotRow.SlotOwner.PLAYER:
+		return "P1"
 
-	return "UNKNOWN"
+	return "P2"

@@ -71,14 +71,6 @@ func draw_worker_for_owner(owner: SlotRow.SlotOwner) -> void:
 	draw_worker_for_player_one()
 
 
-func draw_warriors_for_owner(
-	owner: SlotRow.SlotOwner,
-	amount: int
-) -> void:
-	for i in amount:
-		draw_warrior_for_owner(owner)
-
-
 func draw_warrior_for_player_one() -> void:
 	_draw_to_hand(player_one_draw_pile, player_one_hand)
 

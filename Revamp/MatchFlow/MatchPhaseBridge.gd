@@ -5,7 +5,7 @@ class_name MatchPhaseBridge
 @export var phase_manager: PhaseManager
 @export var apply_current_state_on_ready: bool = true
 
-@export var blessing_uses_buff_phase: bool = false
+@export var blessing_uses_buff_phase: bool = true
 @export var dominant_reveal_uses_attack_phase: bool = false
 
 

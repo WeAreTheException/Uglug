@@ -24,6 +24,7 @@ enum MatchState {
 @export var enable_debug_keys: bool = true
 @export var advance_debug_key: Key = KEY_M
 @export var swap_control_debug_key: Key = KEY_TAB
+@export var print_debug: bool = true
 
 var current_state: MatchState = MatchState.NONE
 var current_round: int = 0
@@ -93,7 +94,8 @@ func set_state(new_state: MatchState) -> void:
 
 func advance_debug_state() -> void:
 	if is_transition_locked():
-		print("MATCH ADVANCE BLOCKED: transition locked")
+		if print_debug:
+			print("MATCH ADVANCE BLOCKED: transition locked")
 		return
 
 	if state_advance_helper.should_advance_round(current_state):
@@ -114,7 +116,8 @@ func advance_debug_state() -> void:
 
 func advance_round() -> void:
 	if is_transition_locked():
-		print("ROUND ADVANCE BLOCKED: transition locked")
+		if print_debug:
+			print("ROUND ADVANCE BLOCKED: transition locked")
 		return
 
 	current_round += 1
@@ -144,10 +147,8 @@ func swap_controlled_owner() -> void:
 
 	turn_order_state.swap_controlled_owner()
 
-	print(
-		"CONTROLLED OWNER: ",
-		get_controlled_owner_name()
-	)
+	if print_debug:
+		print("CONTROLLED OWNER: ", get_controlled_owner_name())
 
 
 func get_state_name(state: MatchState) -> String:
@@ -182,13 +183,17 @@ func _build_starting_hands_once() -> void:
 	has_built_starting_hands = true
 
 	if deck_system_root == null:
-		print("starting hand skipped: deck_system_root missing")
+		if print_debug:
+			print("starting hand skipped: deck_system_root missing")
 		return
 
 	deck_system_root.build_match_decks()
 
 
 func _print_current_state() -> void:
+	if not print_debug:
+		return
+
 	print(
 		"MATCH STATE: ",
 		get_state_name(current_state),

@@ -132,7 +132,6 @@ script = ExtResource("26_n5v11")
 script = ExtResource("24_oekep")
 match_flow_root = NodePath("..")
 phase_manager = NodePath("../../PhaseManager")
-blessing_uses_buff_phase = true
 
 [node name="BlessingSelectionState" type="Node" parent="MatchFlowRoot" unique_id=1333215538]
 script = ExtResource("25_n5v11")
