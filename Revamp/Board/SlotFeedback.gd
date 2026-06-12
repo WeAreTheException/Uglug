@@ -53,8 +53,12 @@ func show_attack_preview(value: bool) -> void:
 
 
 func show_damaged() -> void:
+	await play_damaged()
+
+
+func play_damaged() -> void:
 	if damaged_feedback != null:
-		damaged_feedback.play_feedback()
+		await damaged_feedback.play_feedback()
 
 
 func clear_preview_feedback() -> void:

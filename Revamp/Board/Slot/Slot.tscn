@@ -52,6 +52,7 @@ target = NodePath("../../SlotVisual")
 [node name="SlotDamagedFeedback" type="Node" parent="SlotFeedback" unique_id=562468357 node_paths=PackedStringArray("animated_target")]
 script = ExtResource("8_g8crw")
 animated_target = NodePath("../../SlotVisual")
+expand_time = 0.09
 
 [node name="SlotVisual" type="Sprite2D" parent="." unique_id=857403716]
 position = Vector2(0, -3.8146973e-06)

@@ -1,7 +1,10 @@
 extends Node
 class_name SlotDamagedFeedback
 
+signal feedback_finished
+
 @export var animated_target: Node2D
+@export var feedback_delay: float = 0.08
 @export var expand_scale: Vector2 = Vector2(1.16, 1.16)
 @export var expand_time: float = 0.055
 @export var return_time: float = 0.09
@@ -24,6 +27,14 @@ func play_feedback() -> void:
 	var target := _get_target()
 
 	if target == null:
+		feedback_finished.emit()
+		return
+
+	if feedback_delay > 0.0:
+		await get_tree().create_timer(feedback_delay).timeout
+
+	if target == null or not is_instance_valid(target):
+		feedback_finished.emit()
 		return
 
 	if active_tween != null:
@@ -49,6 +60,11 @@ func play_feedback() -> void:
 		base_scale,
 		return_time
 	)
+
+	await active_tween.finished
+
+	active_tween = null
+	feedback_finished.emit()
 
 
 func _get_target() -> Node2D:

@@ -20,6 +20,7 @@
 [ext_resource type="Script" uid="uid://r5c1gxcq78os" path="res://Revamp/Card/CardActions/Hurt/HurtAudio.gd" id="12_q2sni"]
 [ext_resource type="Script" uid="uid://behvtd6jpqaj" path="res://Revamp/Card/CardActions/Hurt/Hurt.gd" id="12_r5dqq"]
 [ext_resource type="Script" uid="uid://bisn1wu1v2n8e" path="res://Revamp/Card/CardActions/Attack/AttackScreenshakeHandler.gd" id="12_xyowr"]
+[ext_resource type="Script" uid="uid://qquetc5t8lud" path="res://Revamp/Card/CardActions/Attack/AttackExchangeRunner.gd" id="13_0dedl"]
 [ext_resource type="Script" uid="uid://3q7tforlyo6a" path="res://Revamp/Card/CardActions/Hurt/HurtFlash.gd" id="13_mvgl2"]
 [ext_resource type="Script" uid="uid://5ajbnfxgx2dx" path="res://Revamp/Card/CardActions/Hurt/HurtAnimationRunner.gd" id="13_opxhd"]
 [ext_resource type="Script" uid="uid://c73fc68wlpcah" path="res://Revamp/Card/CardActions/Hurt/HurtSprite.gd" id="14_1m3h3"]
@@ -68,6 +69,7 @@ script = ExtResource("2_hdbik")
 
 [node name="CardMutations" type="Node" parent="Core" unique_id=1430961326]
 script = ExtResource("5_olfje")
+max_mutations = null
 
 [node name="CardBlessings" type="Node" parent="Core" unique_id=871610046 node_paths=PackedStringArray("card")]
 script = ExtResource("6_2su1i")
@@ -75,12 +77,12 @@ card = NodePath("../..")
 
 [node name="Actions" type="Node" parent="." unique_id=857836663]
 
-[node name="Attack" type="Node" parent="Actions" unique_id=1376954352 node_paths=PackedStringArray("animation_runner", "target_resolver", "attack_sequencer", "impact_handler")]
+[node name="Attack" type="Node" parent="Actions" unique_id=1376954352 node_paths=PackedStringArray("animation_runner", "target_resolver", "attack_sequencer", "exchange_runner")]
 script = ExtResource("8_vth4y")
 animation_runner = NodePath("AttackAnimationRunner")
 target_resolver = NodePath("AttackTargetResolver")
 attack_sequencer = NodePath("AttackSequencer")
-impact_handler = NodePath("AttackImpactHandler")
+exchange_runner = NodePath("AttackExchangeRunner")
 
 [node name="AttackAnimationRunner" type="Node" parent="Actions/Attack" unique_id=1122768788 node_paths=PackedStringArray("animated_target")]
 script = ExtResource("9_r5dqq")
@@ -92,10 +94,6 @@ script = ExtResource("11_iynnv")
 [node name="AttackTargetResolver" type="Node" parent="Actions/Attack" unique_id=1783246087]
 script = ExtResource("10_opxhd")
 
-[node name="AttackImpactHandler" type="Node" parent="Actions/Attack" unique_id=270185402 node_paths=PackedStringArray("damage_resolver")]
-script = ExtResource("11_4wcdt")
-damage_resolver = NodePath("../AttackDamageResolver")
-
 [node name="AttackDamageResolver" type="Node" parent="Actions/Attack" unique_id=786244814]
 script = ExtResource("10_orgdo")
 
@@ -103,10 +101,20 @@ script = ExtResource("10_orgdo")
 script = ExtResource("12_xyowr")
 attack = NodePath("..")
 
+[node name="AttackExchangeRunner" type="Node" parent="Actions/Attack" unique_id=1954056787 node_paths=PackedStringArray("impact_handler")]
+script = ExtResource("13_0dedl")
+impact_handler = NodePath("AttackImpactHandler")
+metadata/_custom_type_script = "uid://qquetc5t8lud"
+
+[node name="AttackImpactHandler" type="Node" parent="Actions/Attack/AttackExchangeRunner" unique_id=270185402 node_paths=PackedStringArray("damage_resolver")]
+script = ExtResource("11_4wcdt")
+damage_resolver = NodePath("../../AttackDamageResolver")
+
 [node name="Hurt" type="Node" parent="Actions" unique_id=1957973461 node_paths=PackedStringArray("animation_runner", "feedback_handler")]
 script = ExtResource("12_r5dqq")
 animation_runner = NodePath("HurtAnimationRunner")
 feedback_handler = NodePath("HurtFeedbackHandler")
+damage_apply_delay = 0.13
 
 [node name="HurtAnimationRunner" type="Node" parent="Actions/Hurt" unique_id=2097473369]
 script = ExtResource("13_opxhd")

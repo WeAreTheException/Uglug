@@ -237,5 +237,7 @@ func _on_slot_unhovered(slot: Slot) -> void:
 	slot_unhovered.emit(slot)
 
 func show_direct_damage_feedback(slot: Slot) -> void:
-	if slot != null:
-		slot.show_damaged_feedback()
+	if slot == null:
+		return
+
+	await slot.show_damaged_feedback()
