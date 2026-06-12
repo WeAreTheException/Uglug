@@ -76,7 +76,8 @@ func _run_owner_attack_order(owner: SlotRow.SlotOwner) -> void:
 
 	attack_order_handler.run_attack_order(owner)
 
-	await attack_order_handler.attack_order_finished
+	while attack_order_handler.is_running:
+		await get_tree().process_frame
 
 
 func _get_attack_order_handler() -> AttackOrderHandler:

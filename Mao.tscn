@@ -39,7 +39,7 @@ player_two_hand = NodePath("../OpponenetHAnd")
 
 [node name="Slots" parent="." unique_id=1318716624 instance=ExtResource("1_yq750")]
 position = Vector2(120, 120)
-player_slot_2_card = ExtResource("3_mf2my")
+player_slot_1_card = ExtResource("3_mf2my")
 opponent_slot_1_card = ExtResource("4_7gy8c")
 
 [node name="PlayerHAnd" parent="." unique_id=371738706 node_paths=PackedStringArray("prime_location") instance=ExtResource("2_mi1n2")]
