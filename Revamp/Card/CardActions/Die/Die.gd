@@ -15,6 +15,7 @@ signal die_finished(card: CardRoot)
 var card: CardRoot = null
 var is_hovered := false
 var is_playing := false
+var is_dying := false
 var has_died := false
 
 var blessing_lookup: CardBlessingLookupHelper = CardBlessingLookupHelper.new()
@@ -69,33 +70,47 @@ func die_with_context(context: DeathContext) -> void:
 	if _try_handle_death_with_blessing():
 		return
 
-	has_died = true
+	_start_death_state()
+
+	die_started.emit(card)
 
 	if context.should_trigger_death_mutations:
 		_notify_death_mutations()
 
-	if animation_runner == null:
-		print("die blocked: animation_runner missing")
-		return
-
-	die_started.emit(card)
-
 	if death_audio != null:
 		death_audio.play_detached()
 
-	is_playing = true
-
-	await animation_runner.play(card)
-
-	is_playing = false
+	if animation_runner != null:
+		await animation_runner.play(card)
+	else:
+		print("die blocked: animation_runner missing")
 
 	if context.should_remove_from_board:
 		_remove_card_from_board()
+
+	is_playing = false
+	is_dying = false
 
 	die_finished.emit(card)
 
 	if context.should_free_card and is_instance_valid(card):
 		card.queue_free()
+
+
+func is_unavailable_for_combat() -> bool:
+	if has_died:
+		return true
+
+	if is_dying:
+		return true
+
+	return false
+
+
+func _start_death_state() -> void:
+	has_died = true
+	is_dying = true
+	is_playing = true
 
 
 func _try_handle_death_with_blessing() -> bool:
