@@ -69,6 +69,8 @@ slot_index = 4
 
 [node name="AttackOrderHandler" type="Node" parent="." unique_id=381521499]
 script = ExtResource("9_1gkk1")
+player_left_to_right = false
+opponent_left_to_right = false
 
 [node name="SlotPresetHandler" type="Node" parent="." unique_id=920475702]
 script = ExtResource("7_iq660")

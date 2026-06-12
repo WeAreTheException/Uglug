@@ -181,8 +181,10 @@ script = ExtResource("34_f3uds")
 match_flow_root = NodePath("..")
 post_game_scene_path = "uid://bhhfwt6y6l505"
 
-[node name="AttackAnticipationFeedbackHandler" type="Node" parent="MatchFlowRoot" unique_id=1452981444 node_paths=PackedStringArray("slots_root")]
+[node name="AttackAnticipationFeedbackHandler" type="Node" parent="MatchFlowRoot" unique_id=1452981444 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "slots_root")]
 script = ExtResource("35_wop7f")
+match_flow_root = NodePath("..")
+turn_order_state = NodePath("../MatchTurnOrderState")
 slots_root = NodePath("../../Slots")
 
 [node name="MatchFlowUI" type="Node2D" parent="." unique_id=1660901840]

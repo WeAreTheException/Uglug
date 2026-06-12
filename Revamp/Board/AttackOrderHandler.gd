@@ -56,7 +56,7 @@ func run_attack_order(slot_owner: SlotRow.SlotOwner) -> void:
 		if stop_requested:
 			break
 
-		var card := entry["card"] as CardRoot
+		var card: CardRoot = _get_valid_card_from_entry(entry)
 
 		if card == null:
 			continue
@@ -95,12 +95,34 @@ func _build_attack_entries(slot_owner: SlotRow.SlotOwner) -> Array[Dictionary]:
 
 		entries.append({
 			"slot": slot,
-			"card": card,
 			"slot_index": slot.slot_index,
 			"priority": _get_attack_priority(card)
 		})
 
 	return entries
+
+
+func _get_valid_card_from_entry(entry: Dictionary) -> CardRoot:
+	if not entry.has("slot"):
+		return null
+
+	var slot := entry["slot"] as Slot
+
+	if slot == null:
+		return null
+
+	if not is_instance_valid(slot):
+		return null
+
+	var card := slot.current_card
+
+	if card == null:
+		return null
+
+	if not is_instance_valid(card):
+		return null
+
+	return card
 
 
 func _sort_attack_entries(
@@ -128,6 +150,9 @@ func _sort_attack_entries(
 
 func _get_attack_priority(card: CardRoot) -> int:
 	if card == null:
+		return 0
+
+	if not is_instance_valid(card):
 		return 0
 
 	if card.mutations == null:
