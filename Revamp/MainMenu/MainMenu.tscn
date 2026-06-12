@@ -19,9 +19,12 @@
 [ext_resource type="Script" uid="uid://0n3iy5pn6osa" path="res://Revamp/MainMenu/MatchStartHandler.gd" id="17_txptg"]
 [ext_resource type="Script" uid="uid://c2tqypi7g0at8" path="res://Revamp/MainMenu/MainMenuButtonState.gd" id="18_vqc14"]
 [ext_resource type="Script" uid="uid://oxsy2au04ba" path="res://Revamp/MainMenu/MainMenuPrivateJoinFlow.gd" id="19_qbcpn"]
-[ext_resource type="Script" uid="uid://dv2jhtprx4yfu" path="res://Revamp/MainMenu/MainMenuLobbyFlow.gd" id="20_fqpy5"]
+[ext_resource type="Script" uid="uid://diedfguwyfmqt" path="res://Revamp/MainMenu/MainMenuMapFlow.gd" id="21_iph7y"]
+[ext_resource type="Script" uid="uid://ngrnetyjwstc" path="res://Revamp/MainMenu/MainMenuHostFlow.gd" id="22_bhtdf"]
+[ext_resource type="Script" uid="uid://gxga134umft0" path="res://Revamp/MainMenu/MainMenuJoinFlow.gd" id="23_2klqk"]
+[ext_resource type="Script" uid="uid://b6lm7l0gmvual" path="res://Revamp/MainMenu/MainMenuMatchFlow.gd" id="24_fsqeg"]
 
-[node name="MainMenu" type="Control" unique_id=930422600 node_paths=PackedStringArray("map_visual", "create_lobby_popup", "join_private_popup", "connection_handler", "lobby_browser", "lobby_icon_spawner", "state_manager", "button_state", "lobby_flow", "map_spawn_locations", "status_label")]
+[node name="MainMenu" type="Control" unique_id=930422600 node_paths=PackedStringArray("map_visual", "create_lobby_popup", "join_private_popup", "connection_handler", "lobby_browser", "state_manager", "button_state", "host_flow", "join_flow", "match_flow", "map_flow", "map_spawn_locations", "status_label")]
 layout_mode = 3
 anchors_preset = 0
 scale = Vector2(0.950005, 1.0128386)
@@ -31,12 +34,59 @@ create_lobby_popup = NodePath("CreateLobbyPopup")
 join_private_popup = NodePath("JoinPrivatePopup")
 connection_handler = NodePath("MultiplayerConnectionHandler")
 lobby_browser = NodePath("LobbyBrowser")
-lobby_icon_spawner = NodePath("LobbyIconSpawner")
 state_manager = NodePath("MainMenuStateManager")
 button_state = NodePath("MainMenuButtonState")
-lobby_flow = NodePath("MainMenuLobbyFlow")
+host_flow = NodePath("MainMenuHostFlow")
+join_flow = NodePath("MainMenuJoinFlow")
+match_flow = NodePath("MainMenuMatchFlow")
+map_flow = NodePath("MainMenuMapFlow")
 map_spawn_locations = NodePath("MapSpawnLocations")
 status_label = NodePath("StatusLabel")
+
+[node name="MainMenuStateManager" type="Node" parent="." unique_id=1495236512]
+script = ExtResource("17_rkoxl")
+
+[node name="MainMenuHostFlow" type="Node" parent="." unique_id=1527214552 node_paths=PackedStringArray("create_lobby_popup", "state_manager", "lobby_host_handler", "lobby_leave_handler", "lobby_browser", "map_spawn_locations", "map_flow")]
+script = ExtResource("22_bhtdf")
+create_lobby_popup = NodePath("../CreateLobbyPopup")
+state_manager = NodePath("../MainMenuStateManager")
+lobby_host_handler = NodePath("../LobbyHostHandler")
+lobby_leave_handler = NodePath("../LobbyLeaveHandler")
+lobby_browser = NodePath("../LobbyBrowser")
+map_spawn_locations = NodePath("../MapSpawnLocations")
+map_flow = NodePath("../MainMenuMapFlow")
+
+[node name="MainMenuJoinFlow" type="Node" parent="." unique_id=250779615 node_paths=PackedStringArray("state_manager", "lobby_join_handler", "lobby_leave_handler", "lobby_browser", "private_join_flow", "map_flow")]
+script = ExtResource("23_2klqk")
+state_manager = NodePath("../MainMenuStateManager")
+lobby_join_handler = NodePath("../LobbyJoinHandler")
+lobby_leave_handler = NodePath("../LobbyLeaveHandler")
+lobby_browser = NodePath("../LobbyBrowser")
+private_join_flow = NodePath("../MainMenuPrivateJoinFlow")
+map_flow = NodePath("../MainMenuMapFlow")
+
+[node name="MainMenuMatchFlow" type="Node" parent="." unique_id=1996561095 node_paths=PackedStringArray("create_lobby_popup", "join_private_popup", "state_manager", "lobby_browser", "match_start_handler")]
+script = ExtResource("24_fsqeg")
+create_lobby_popup = NodePath("../CreateLobbyPopup")
+join_private_popup = NodePath("../JoinPrivatePopup")
+state_manager = NodePath("../MainMenuStateManager")
+lobby_browser = NodePath("../LobbyBrowser")
+match_start_handler = NodePath("../MatchStartHandler")
+
+[node name="MainMenuMapFlow" type="Node" parent="." unique_id=1224288934 node_paths=PackedStringArray("state_manager", "lobby_icon_spawner")]
+script = ExtResource("21_iph7y")
+state_manager = NodePath("../MainMenuStateManager")
+lobby_icon_spawner = NodePath("../LobbyIconSpawner")
+
+[node name="MainMenuPrivateJoinFlow" type="Node" parent="." unique_id=131687310 node_paths=PackedStringArray("join_private_popup")]
+script = ExtResource("19_qbcpn")
+join_private_popup = NodePath("../JoinPrivatePopup")
+
+[node name="MainMenuButtonState" type="Node" parent="." unique_id=447115821 node_paths=PackedStringArray("host_button", "join_random_button", "state_manager")]
+script = ExtResource("18_vqc14")
+host_button = NodePath("../HostButton")
+join_random_button = NodePath("../JoinRandomButton")
+state_manager = NodePath("../MainMenuStateManager")
 
 [node name="MapVisual" type="TextureRect" parent="." unique_id=1786858430]
 layout_mode = 0
@@ -160,30 +210,3 @@ position = Vector2(1741, 769)
 
 [node name="SpawnPoint9" type="Marker2D" parent="MapSpawnLocations" unique_id=23526976]
 position = Vector2(1516, 436)
-
-[node name="MainMenuStateManager" type="Node" parent="." unique_id=1495236512]
-script = ExtResource("17_rkoxl")
-
-[node name="MainMenuButtonState" type="Node" parent="." unique_id=447115821 node_paths=PackedStringArray("host_button", "join_random_button", "state_manager")]
-script = ExtResource("18_vqc14")
-host_button = NodePath("../HostButton")
-join_random_button = NodePath("../JoinRandomButton")
-state_manager = NodePath("../MainMenuStateManager")
-
-[node name="MainMenuPrivateJoinFlow" type="Node" parent="." unique_id=131687310 node_paths=PackedStringArray("join_private_popup")]
-script = ExtResource("19_qbcpn")
-join_private_popup = NodePath("../JoinPrivatePopup")
-
-[node name="MainMenuLobbyFlow" type="Node" parent="." unique_id=1252765303 node_paths=PackedStringArray("create_lobby_popup", "join_private_popup", "state_manager", "lobby_host_handler", "lobby_browser", "lobby_join_handler", "lobby_leave_handler", "private_join_flow", "match_start_handler", "map_spawn_locations", "lobby_icon_spawner")]
-script = ExtResource("20_fqpy5")
-create_lobby_popup = NodePath("../CreateLobbyPopup")
-join_private_popup = NodePath("../JoinPrivatePopup")
-state_manager = NodePath("../MainMenuStateManager")
-lobby_host_handler = NodePath("../LobbyHostHandler")
-lobby_browser = NodePath("../LobbyBrowser")
-lobby_join_handler = NodePath("../LobbyJoinHandler")
-lobby_leave_handler = NodePath("../LobbyLeaveHandler")
-private_join_flow = NodePath("../MainMenuPrivateJoinFlow")
-match_start_handler = NodePath("../MatchStartHandler")
-map_spawn_locations = NodePath("../MapSpawnLocations")
-lobby_icon_spawner = NodePath("../LobbyIconSpawner")

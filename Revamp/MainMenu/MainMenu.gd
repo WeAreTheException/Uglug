@@ -6,10 +6,12 @@ class_name MainMenuRoot
 @export var join_private_popup: JoinPrivatePopup
 @export var connection_handler: MultiplayerConnectionHandler
 @export var lobby_browser: LobbyBrowser
-@export var lobby_icon_spawner: LobbyIconSpawner
 @export var state_manager: MainMenuStateManager
 @export var button_state: MainMenuButtonState
-@export var lobby_flow: MainMenuLobbyFlow
+@export var host_flow: MainMenuHostFlow
+@export var join_flow: MainMenuJoinFlow
+@export var match_flow: MainMenuMatchFlow
+@export var map_flow: MainMenuMapFlow
 @export var map_spawn_locations: MapSpawnLocations
 @export var status_label: Label
 
@@ -24,8 +26,8 @@ func _ready() -> void:
 	state_manager.set_state(MainMenuStateManager.MenuState.CONNECTING)
 	_set_status("Connecting to GD-Sync...")
 
-	button_state.host_pressed.connect(_on_host_pressed)
-	button_state.join_random_pressed.connect(_on_join_random_pressed)
+	button_state.host_pressed.connect(host_flow.handle_host_pressed)
+	button_state.join_random_pressed.connect(join_flow.handle_join_random_pressed)
 
 	connection_handler.connection_started.connect(_on_connection_started)
 	connection_handler.connection_succeeded.connect(_on_connection_succeeded)
@@ -33,21 +35,17 @@ func _ready() -> void:
 	connection_handler.start_connection()
 
 	lobby_browser.browse_started.connect(_on_lobby_browse_started)
-	lobby_browser.lobbies_updated.connect(_on_lobbies_updated)
+	lobby_browser.lobbies_updated.connect(map_flow.handle_lobbies_updated)
 
-	lobby_icon_spawner.lobby_icon_clicked.connect(_on_lobby_icon_clicked)
+	map_flow.public_lobby_clicked.connect(join_flow.handle_public_lobby_clicked)
+	map_flow.private_lobby_clicked.connect(join_flow.handle_private_lobby_clicked)
+	map_flow.own_lobby_clicked.connect(_on_own_lobby_clicked)
 
-	lobby_flow.status_requested.connect(_set_status)
+	host_flow.status_requested.connect(_set_status)
+	join_flow.status_requested.connect(_set_status)
+	match_flow.status_requested.connect(_set_status)
 
 	_test_spawn_locations()
-
-
-func _on_host_pressed() -> void:
-	lobby_flow.handle_host_pressed()
-
-
-func _on_join_random_pressed() -> void:
-	lobby_flow.handle_join_random_pressed()
 
 
 func _on_connection_started() -> void:
@@ -70,12 +68,8 @@ func _on_lobby_browse_started() -> void:
 	print("Browsing lobbies...")
 
 
-func _on_lobbies_updated(lobbies: Array) -> void:
-	lobby_flow.handle_lobbies_updated(lobbies)
-
-
-func _on_lobby_icon_clicked(lobby_info: Dictionary) -> void:
-	lobby_flow.handle_lobby_icon_clicked(lobby_info)
+func _on_own_lobby_clicked(_lobby_info: Dictionary) -> void:
+	print("Clicked own lobby. Ignoring join request.")
 
 
 func _test_spawn_locations() -> void:
