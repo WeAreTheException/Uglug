@@ -205,3 +205,4 @@ slots_root = NodePath("../Slots")
 
 [node name="MatchScoreState" type="Node" parent="." unique_id=1110463725]
 script = ExtResource("31_3a8w1")
+win_threshold = 1
