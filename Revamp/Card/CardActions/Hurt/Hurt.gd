@@ -3,11 +3,15 @@ class_name Hurt
 
 signal hurt_started(card: CardRoot, damage: int)
 signal hurt_finished(card: CardRoot, damage: int)
+signal damage_applied(context: DamageContext)
 
 @export var animation_runner: HurtAnimationRunner
 @export var feedback_handler: HurtFeedbackHandler
 
 @export var change_health_on_hurt: bool = true
+@export var resolve_death_on_hurt_finish: bool = true
+@export var play_zero_damage_feedback: bool = true
+@export var damage_apply_delay: float = 0.08
 @export var default_damage_amount: int = 1
 
 @export var enable_debug_key: bool = true
@@ -66,15 +70,13 @@ func receive_damage(context: DamageContext) -> int:
 	if context == null:
 		return 0
 
-	context.target_card = card
-	context.target_slot = card.get_current_slot()
+	is_playing = true
 
-	if context.source_card != null:
-		context.source_slot = context.source_card.get_current_slot()
-
+	_prepare_context(context)
 	_apply_incoming_damage_modifiers(context)
 
-	if context.final_damage <= 0:
+	if context.final_damage <= 0 and not play_zero_damage_feedback:
+		is_playing = false
 		return 0
 
 	hurt_started.emit(card, context.final_damage)
@@ -82,29 +84,79 @@ func receive_damage(context: DamageContext) -> int:
 	if feedback_handler != null:
 		feedback_handler.play(card)
 
-	if change_health_on_hurt and card.stats != null:
-		card.stats.take_damage(context.final_damage)
-		context.actual_damage = context.final_damage
+	if damage_apply_delay > 0.0:
+		await get_tree().create_timer(damage_apply_delay).timeout
 
-	_notify_damaged_mutations(context)
+	_apply_damage(context)
+	damage_applied.emit(context)
 
-	if animation_runner == null:
+	if animation_runner != null:
+		await animation_runner.play(card)
+	else:
 		print("hurt blocked: animation_runner missing")
-		return context.actual_damage
 
-	is_playing = true
-
-	await animation_runner.play(card)
-
-	if card.stats != null and card.stats.is_dead():
-		if card.die != null:
-			await card.die.play_die()
+	if resolve_death_on_hurt_finish:
+		await _resolve_death_if_needed()
 
 	is_playing = false
-
 	hurt_finished.emit(card, context.actual_damage)
 
 	return context.actual_damage
+
+
+func _prepare_context(context: DamageContext) -> void:
+	context.target_card = card
+	context.target_slot = card.get_current_slot()
+
+	if context.source_card != null:
+		context.source_slot = context.source_card.get_current_slot()
+
+
+func _apply_damage(context: DamageContext) -> void:
+	if not change_health_on_hurt:
+		context.actual_damage = 0
+		return
+
+	if card == null:
+		context.actual_damage = 0
+		return
+
+	if card.stats == null:
+		context.actual_damage = 0
+		return
+
+	if context.final_damage <= 0:
+		context.actual_damage = 0
+		return
+
+	var health_before: int = card.stats.get_health()
+
+	card.stats.take_damage(context.final_damage)
+
+	var health_after: int = card.stats.get_health()
+	context.actual_damage = max(health_before - health_after, 0)
+
+	if context.actual_damage > 0:
+		_notify_damaged_mutations(context)
+
+
+func _resolve_death_if_needed() -> void:
+	if card == null:
+		return
+
+	if not is_instance_valid(card):
+		return
+
+	if card.stats == null:
+		return
+
+	if not card.stats.is_dead():
+		return
+
+	if card.die == null:
+		return
+
+	await card.die.play_die()
 
 
 func _apply_incoming_damage_modifiers(context: DamageContext) -> void:
