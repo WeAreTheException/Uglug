@@ -207,7 +207,6 @@ slots_root = NodePath("../Slots")
 
 [node name="MatchScoreState" type="Node" parent="." unique_id=1110463725]
 script = ExtResource("31_3a8w1")
-win_threshold = 1
 
 [node name="PostGameTransitionHandler" type="Node" parent="." unique_id=327167645 node_paths=PackedStringArray("match_flow_root")]
 script = ExtResource("34_f3uds")
