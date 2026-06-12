@@ -28,6 +28,34 @@ func modify_attack_steps(
 	return steps
 
 
+func on_attack_sequence_started_context(
+	_runtime: MutationRuntime,
+	_context: AttackContext
+) -> void:
+	pass
+
+
+func on_attack_sequence_finished_context(
+	_runtime: MutationRuntime,
+	_context: AttackContext
+) -> void:
+	pass
+
+
+func on_struck_context(
+	_runtime: MutationRuntime,
+	context: DamageContext
+) -> void:
+	if context == null:
+		return
+
+	on_struck(
+		context.target_card,
+		context.source_card,
+		context.final_damage
+	)
+
+
 func modify_attack_target_context(
 	runtime: MutationRuntime,
 	context: AttackContext
@@ -96,6 +124,16 @@ func on_damaged_context(
 	)
 
 
+func on_death_started_context(
+	_runtime: MutationRuntime,
+	context: DeathContext
+) -> void:
+	if context == null:
+		return
+
+	on_death_started(context.dead_card)
+
+
 func on_death_context(
 	_runtime: MutationRuntime,
 	context: DeathContext
@@ -104,6 +142,17 @@ func on_death_context(
 		return
 
 	on_death(context.dead_card)
+
+
+func on_death_finished_context(
+	_runtime: MutationRuntime,
+	context: DeathContext
+) -> void:
+	if context == null:
+		return
+
+	on_death_finished(context.dead_card)
+
 
 func can_intercept_direct_damage_context(
 	_runtime: MutationRuntime,
@@ -117,6 +166,7 @@ func on_direct_damage_intercepted_context(
 	_context: DirectDamageContext
 ) -> void:
 	pass
+
 
 func refresh_board_context(runtime: MutationRuntime) -> void:
 	refresh_board_effect(runtime)
@@ -137,7 +187,23 @@ func mutation_attack(_card: CardRoot) -> bool:
 	return false
 
 
+func on_struck(
+	_card: CardRoot,
+	_attacker: CardRoot,
+	_damage: int
+) -> void:
+	pass
+
+
+func on_death_started(_card: CardRoot) -> void:
+	pass
+
+
 func on_death(_card: CardRoot) -> void:
+	pass
+
+
+func on_death_finished(_card: CardRoot) -> void:
 	pass
 
 

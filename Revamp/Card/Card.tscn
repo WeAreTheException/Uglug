@@ -69,6 +69,7 @@ script = ExtResource("2_hdbik")
 
 [node name="CardMutations" type="Node" parent="Core" unique_id=1430961326]
 script = ExtResource("5_olfje")
+max_mutations = null
 
 [node name="CardBlessings" type="Node" parent="Core" unique_id=871610046 node_paths=PackedStringArray("card")]
 script = ExtResource("6_2su1i")

@@ -2,9 +2,12 @@
 
 [ext_resource type="PackedScene" uid="uid://bw8c7m7n5yuk8" path="res://Revamp/Board/Slots.tscn" id="1_yq750"]
 [ext_resource type="PackedScene" uid="uid://1wr1e57v7trd" path="res://Revamp/PlayerHand/Player_Hand.tscn" id="2_mi1n2"]
-[ext_resource type="Resource" uid="uid://b1dt5378u5ga8" path="res://Cards/CardPresets/Sustain/Guardiant.tres" id="3_bvqua"]
+[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="3_3vc3c"]
 [ext_resource type="Resource" uid="uid://b6naofddvwrc1" path="res://Cards/CardPresets/Penetrant.tres" id="3_venfy"]
-[ext_resource type="Resource" uid="uid://0c6lqenucx25" path="res://Cards/CardPresets/StraightChops/Aviant.tres" id="4_bvqua"]
+[ext_resource type="Texture2D" uid="uid://c4v3je4ncss3j" path="res://Art/WorkerAnt_Test_Alpha.png" id="4_ygb55"]
+[ext_resource type="Resource" uid="uid://d6umheqx0qia" path="res://Mutations/MutationPresets/MutuallyAssuredDestruction.tres" id="5_i8ogu"]
+[ext_resource type="Resource" uid="uid://dbjblwbjebny6" path="res://Cards/CardPresets/TestCardPresets/SpikyGuardiant.tres" id="5_wop7f"]
+[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="6_fobm3"]
 [ext_resource type="Script" uid="uid://bxbqihkit6rgo" path="res://Managers/Phasemanager.gd" id="8_cc2no"]
 [ext_resource type="Script" uid="uid://bbcig486utsir" path="res://HandPhaseApplier.gd" id="9_cc2no"]
 [ext_resource type="Script" uid="uid://61l5g8wkdar3" path="res://SacrificeController.gd" id="10_1j514"]
@@ -35,6 +38,15 @@
 [ext_resource type="Script" uid="uid://cn5xfv13wsg1x" path="res://Revamp/MatchFlow/PostGameTransitionHandler.gd" id="34_f3uds"]
 [ext_resource type="Script" uid="uid://cau0ky5b3kabf" path="res://Revamp/Board/AttackAnticipationFeedbackHandler.gd" id="35_wop7f"]
 
+[sub_resource type="Resource" id="Resource_nllv1"]
+script = ExtResource("6_fobm3")
+name = "Anthrax"
+attack = 1
+cost = 2
+ant_texture = ExtResource("4_ygb55")
+base_mutations = Array[ExtResource("3_3vc3c")]([ExtResource("5_i8ogu")])
+metadata/_custom_type_script = "uid://duslcpxrhurv8"
+
 [node name="Mao" type="Node2D" unique_id=550121538]
 
 [node name="Deck" parent="." unique_id=93691211 node_paths=PackedStringArray("player_one_hand", "player_two_hand") instance=ExtResource("28_a1qt2")]
@@ -42,12 +54,12 @@ position = Vector2(1836, 492)
 player_one_hand = NodePath("../PlayerHAnd")
 player_two_hand = NodePath("../OpponenetHAnd")
 
-[node name="Slots" parent="." unique_id=1318716624 node_paths=PackedStringArray("direct_damage_router") instance=ExtResource("1_yq750")]
+[node name="Board" parent="." unique_id=1318716624 node_paths=PackedStringArray("direct_damage_router") instance=ExtResource("1_yq750")]
 position = Vector2(588, 252)
-player_slot_1_card = ExtResource("4_bvqua")
-player_slot_2_card = ExtResource("3_venfy")
-opponent_slot_1_card = ExtResource("3_bvqua")
-opponent_slot_4_card = ExtResource("3_bvqua")
+player_slot_1_card = ExtResource("5_wop7f")
+player_slot_2_card = ExtResource("5_wop7f")
+opponent_slot_1_card = SubResource("Resource_nllv1")
+opponent_slot_2_card = ExtResource("3_venfy")
 direct_damage_router = NodePath("../DirectDamageRouter")
 
 [node name="PlayerHAnd" parent="." unique_id=371738706 node_paths=PackedStringArray("prime_location") instance=ExtResource("2_mi1n2")]
@@ -93,7 +105,7 @@ script = ExtResource("13_6ula3")
 
 [node name="PlacementController" type="Node" parent="." unique_id=1405375079 node_paths=PackedStringArray("slots_root", "player_hand", "sacrifice_controller", "placement_state", "input_router", "placement_preview", "placement_executor", "event_emitter", "placement_cancel")]
 script = ExtResource("13_ubws4")
-slots_root = NodePath("../Slots")
+slots_root = NodePath("../Board")
 player_hand = NodePath("../PlayerHAnd")
 sacrifice_controller = NodePath("../SacrificeController")
 placement_state = NodePath("PlacementState")
@@ -124,7 +136,7 @@ script = ExtResource("19_n5v11")
 [node name="BoardPhaseApplier" type="Node" parent="." unique_id=940502173 node_paths=PackedStringArray("phase_manager", "slots_root")]
 script = ExtResource("17_b7h4g")
 phase_manager = NodePath("../PhaseManager")
-slots_root = NodePath("../Slots")
+slots_root = NodePath("../Board")
 
 [node name="CardEffectSpawnrouter" type="Node" parent="." unique_id=1854042398]
 
@@ -160,7 +172,7 @@ placement_controller = NodePath("../../PlacementController")
 script = ExtResource("24_n5v11")
 match_flow_root = NodePath("..")
 turn_order_state = NodePath("../MatchTurnOrderState")
-slots_root = NodePath("../../Slots")
+slots_root = NodePath("../../Board")
 anticipation_feedback = NodePath("../AttackAnticipationFeedbackHandler")
 
 [node name="MatchDominantRevealHandler" type="Node" parent="MatchFlowRoot" unique_id=1122772169 node_paths=PackedStringArray("match_flow_root")]
@@ -184,7 +196,7 @@ post_game_scene_path = "uid://bhhfwt6y6l505"
 script = ExtResource("35_wop7f")
 match_flow_root = NodePath("..")
 turn_order_state = NodePath("../MatchTurnOrderState")
-slots_root = NodePath("../../Slots")
+slots_root = NodePath("../../Board")
 
 [node name="MatchFlowUI" type="Node2D" parent="." unique_id=1660901840]
 metadata/_edit_lock_ = true
@@ -218,4 +230,4 @@ metadata/_edit_lock_ = true
 [node name="DirectDamageRouter" type="Node" parent="." unique_id=396013123 node_paths=PackedStringArray("score_state", "slots_root")]
 script = ExtResource("30_venfy")
 score_state = NodePath("../MatchFlowRoot/MatchScoreState")
-slots_root = NodePath("../Slots")
+slots_root = NodePath("../Board")

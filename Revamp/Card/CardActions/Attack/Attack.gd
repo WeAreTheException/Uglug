@@ -74,6 +74,9 @@ func perform_attack() -> void:
 
 	is_attacking = true
 
+	var sequence_started := false
+	var sequence_context: AttackContext = null
+
 	for step in steps:
 		if step == null:
 			continue
@@ -93,6 +96,11 @@ func perform_attack() -> void:
 
 		context.target_owner = slots_root.get_owner_of_slot(context.target_slot)
 
+		if not sequence_started:
+			_notify_attack_sequence_started(context)
+			sequence_started = true
+			sequence_context = context
+
 		attack_started.emit(context)
 
 		await animation_runner.play_to_impact(context)
@@ -108,6 +116,9 @@ func perform_attack() -> void:
 
 		if not _can_continue_attack_sequence():
 			break
+
+	if sequence_started:
+		_notify_attack_sequence_finished(sequence_context)
 
 	is_attacking = false
 
@@ -201,6 +212,32 @@ func _build_context_for_step(
 	)
 
 	return context
+
+
+func _notify_attack_sequence_started(context: AttackContext) -> void:
+	if card == null:
+		return
+
+	if not is_instance_valid(card):
+		return
+
+	if card.mutations == null:
+		return
+
+	card.mutations.notify_attack_sequence_started(context)
+
+
+func _notify_attack_sequence_finished(context: AttackContext) -> void:
+	if card == null:
+		return
+
+	if not is_instance_valid(card):
+		return
+
+	if card.mutations == null:
+		return
+
+	card.mutations.notify_attack_sequence_finished(context)
 
 
 func _on_exchange_hit(exchange: AttackExchangeContext) -> void:

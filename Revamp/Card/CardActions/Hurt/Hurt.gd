@@ -74,6 +74,7 @@ func receive_damage(context: DamageContext) -> int:
 
 	_prepare_context(context)
 	_apply_incoming_damage_modifiers(context)
+	_notify_struck_mutations(context)
 
 	if context.final_damage <= 0 and not play_zero_damage_feedback:
 		is_playing = false
@@ -172,6 +173,16 @@ func _apply_incoming_damage_modifiers(context: DamageContext) -> void:
 	)
 
 	context.set_final_damage(damage)
+
+
+func _notify_struck_mutations(context: DamageContext) -> void:
+	if card == null:
+		return
+
+	if card.mutations == null:
+		return
+
+	card.mutations.notify_struck(context)
 
 
 func _notify_damaged_mutations(context: DamageContext) -> void:

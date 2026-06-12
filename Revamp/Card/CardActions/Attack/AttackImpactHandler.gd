@@ -24,42 +24,73 @@ func handle_impact(context: AttackContext, attacker: CardRoot) -> void:
 	var target_card := context.target_slot.current_card
 
 	if context.force_direct_damage:
-		await _request_direct_damage(
-			context,
-			attacker,
-			_get_direct_damage(attacker)
-		)
+		await _request_direct_damage(context, attacker, _get_direct_damage(attacker))
 		return
 
 	if target_card == null:
-		await _request_direct_damage(
-			context,
-			attacker,
-			_get_direct_damage(attacker)
-		)
+		await _request_direct_damage(context, attacker, _get_direct_damage(attacker))
 		return
 
 	if target_card.hurt == null:
 		return
 
 	var damage: int = _get_attack_damage(attacker, target_card)
-	var health_before: int = _get_card_health(target_card)
-	var overflow: int = max(damage - health_before, 0)
-
-	var actual_damage: int = await target_card.hurt.play_hurt(
+	var actual_damage: int = await _play_hurt_without_auto_death(
+		target_card,
 		damage,
 		attacker
 	)
 
 	if damage_resolver != null:
-		damage_resolver.notify_damage_dealt(
-			attacker,
-			target_card,
-			actual_damage
-		)
+		damage_resolver.notify_damage_dealt(attacker, target_card, actual_damage)
+
+	var overflow: int = max(damage - actual_damage, 0)
 
 	if context.carries_over_direct_damage and overflow > 0:
 		await _request_direct_damage(context, attacker, overflow)
+
+	await _resolve_death_if_needed(target_card)
+
+
+func _play_hurt_without_auto_death(
+	target_card: CardRoot,
+	damage: int,
+	attacker: CardRoot
+) -> int:
+	if target_card == null:
+		return 0
+
+	if target_card.hurt == null:
+		return 0
+
+	var original_resolve_death := target_card.hurt.resolve_death_on_hurt_finish
+	target_card.hurt.resolve_death_on_hurt_finish = false
+
+	var actual_damage: int = await target_card.hurt.play_hurt(damage, attacker)
+
+	if is_instance_valid(target_card) and target_card.hurt != null:
+		target_card.hurt.resolve_death_on_hurt_finish = original_resolve_death
+
+	return actual_damage
+
+
+func _resolve_death_if_needed(target_card: CardRoot) -> void:
+	if target_card == null:
+		return
+
+	if not is_instance_valid(target_card):
+		return
+
+	if target_card.stats == null:
+		return
+
+	if not target_card.stats.is_dead():
+		return
+
+	if target_card.die == null:
+		return
+
+	await target_card.die.play_die()
 
 
 func _get_attack_damage(attacker: CardRoot, target_card: CardRoot) -> int:
@@ -93,21 +124,3 @@ func _request_direct_damage(
 		context.target_slot,
 		amount
 	)
-
-
-func _get_card_health(card: CardRoot) -> int:
-	if card == null:
-		return 0
-
-	if card.stats == null:
-		return 0
-
-	if card.stats.has_method("get_health"):
-		return int(card.stats.get_health())
-
-	var raw_health: Variant = card.stats.get("health")
-
-	if raw_health is int:
-		return int(raw_health)
-
-	return 0

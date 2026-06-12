@@ -73,6 +73,7 @@ func die_with_context(context: DeathContext) -> void:
 	_start_death_state()
 
 	die_started.emit(card)
+	_notify_death_started(context)
 
 	if context.should_trigger_death_mutations:
 		_notify_death_mutations()
@@ -91,6 +92,7 @@ func die_with_context(context: DeathContext) -> void:
 	is_playing = false
 	is_dying = false
 
+	_notify_death_finished(context)
 	die_finished.emit(card)
 
 	if context.should_free_card and is_instance_valid(card):
@@ -136,6 +138,16 @@ func _remove_card_from_board() -> void:
 		current_slot.clear_card()
 
 
+func _notify_death_started(context: DeathContext) -> void:
+	if card == null:
+		return
+
+	if card.mutations == null:
+		return
+
+	card.mutations.notify_death_started(context)
+
+
 func _notify_death_mutations() -> void:
 	if card == null:
 		return
@@ -144,6 +156,16 @@ func _notify_death_mutations() -> void:
 		return
 
 	card.mutations.notify_death()
+
+
+func _notify_death_finished(context: DeathContext) -> void:
+	if card == null:
+		return
+
+	if card.mutations == null:
+		return
+
+	card.mutations.notify_death_finished(context)
 
 
 func _on_card_hovered(_card: CardRoot) -> void:
