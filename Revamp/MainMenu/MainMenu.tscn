@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://cfsbl06ahe2c3" path="res://Revamp/MainMenu/MainMenu.gd" id="1_sg7ab"]
 [ext_resource type="Texture2D" uid="uid://cqv0rmj0hhsdx" path="res://Revamp/MainMenu/WorldMap.jpg" id="2_kpx3y"]
 [ext_resource type="Script" uid="uid://30ojatnmofq6" path="res://Revamp/MainMenu/MultiplayerConnectionHandler.gd" id="3_kpx3y"]
-[ext_resource type="Texture2D" uid="uid://6jo7btq8htsp" path="res://Revamp/MainMenu/UglugUIMockup.png" id="3_ua038"]
 [ext_resource type="PackedScene" uid="uid://n0rxxqny4h76" path="res://Revamp/MainMenu/CreateLobbyPopup.tscn" id="3_vapy7"]
 [ext_resource type="PackedScene" uid="uid://dw6pojo7xhmdk" path="res://Revamp/MainMenu/JoinPrivatePopup.tscn" id="4_ah1a3"]
 [ext_resource type="Script" uid="uid://cp172vtbwkgig" path="res://Revamp/MainMenu/LobbyHostHandler.gd" id="6_vapy7"]
@@ -92,14 +91,6 @@ steam_manager = NodePath("../SteamManager")
 
 [node name="MultiplayerConnectionHandler" type="Node" parent="." unique_id=272675719]
 script = ExtResource("3_kpx3y")
-
-[node name="Ref" type="Sprite2D" parent="." unique_id=143623933]
-visible = false
-modulate = Color(1, 1, 1, 0.15686275)
-position = Vector2(2536.8286, 1243.0411)
-scale = Vector2(1.3830584, 1.3830583)
-texture = ExtResource("3_ua038")
-metadata/_edit_lock_ = true
 
 [node name="StatusLabel" type="Label" parent="." unique_id=1864151879]
 layout_mode = 0
