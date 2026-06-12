@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="MobMentality" format=3 uid="uid://c2bo8r00gukg4"]
 
-[ext_resource type="Script" uid="uid://ceyng8aj5mtue" path="res://Cards/Mutations/MutationPresets/MutationBehaviourHandlers/MobMentality.gd" id="1_uw3m4"]
+[ext_resource type="Script" uid="uid://ceyng8aj5mtue" path="res://Mutations/MutationPresets/MutationBehaviourHandlers/MobMentality.gd" id="1_uw3m4"]
 
 [resource]
 script = ExtResource("1_uw3m4")

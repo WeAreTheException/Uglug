@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="Heckler" format=3 uid="uid://qm2l2rlbwj77"]
 
-[ext_resource type="Script" uid="uid://br01femvlgf1w" path="res://Cards/Mutations/MutationPresets/MutationBehaviourHandlers/Heckler.gd" id="1_1b8os"]
+[ext_resource type="Script" uid="uid://br01femvlgf1w" path="res://Mutations/MutationPresets/MutationBehaviourHandlers/Heckler.gd" id="1_1b8os"]
 [ext_resource type="Texture2D" uid="uid://4ke0ic3q6kg" path="res://Art/Mutations/Deterrant_Sigil.PNG" id="2_ixqe1"]
 
 [resource]

@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="Lifesteal" format=3 uid="uid://njutef00oac8"]
 
-[ext_resource type="Script" uid="uid://ceh5iwcgmycl6" path="res://Cards/Mutations/MutationPresets/MutationBehaviourHandlers/LifeSteal.gd" id="1_occ1b"]
+[ext_resource type="Script" uid="uid://ceh5iwcgmycl6" path="res://Mutations/MutationPresets/MutationBehaviourHandlers/LifeSteal.gd" id="1_occ1b"]
 [ext_resource type="Texture2D" uid="uid://dysykkevjmrhp" path="res://Art/Mutations/Draculant_Sigil.PNG" id="2_a74kf"]
 
 [resource]
