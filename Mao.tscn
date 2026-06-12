@@ -29,7 +29,8 @@
 [ext_resource type="Script" uid="uid://myowbycyd18l" path="res://Revamp/MatchFlow/MatchPlacementFlowHandler.gd" id="27_mf2my"]
 [ext_resource type="PackedScene" uid="uid://coux8hd7esj7g" path="res://Deck_System_Root.tscn" id="28_a1qt2"]
 [ext_resource type="Script" uid="uid://b50mccoppp1lb" path="res://Revamp/MatchFlow/MatchAutoDrawHandler.gd" id="28_mf2my"]
-[ext_resource type="Script" uid="uid://cq06khkyy84o5" path="res://Revamp/DirectDamageRouter.gd" id="30_venfy"]
+[ext_resource type="Script" uid="uid://cq06khkyy84o5" path="res://Revamp/DirectDamage/DirectDamageRouter.gd" id="30_venfy"]
+[ext_resource type="Script" uid="uid://c5j44dhlx1div" path="res://Revamp/DirectDamage/MatchScoreState.gd" id="31_3a8w1"]
 
 [node name="Mao" type="Node2D" unique_id=550121538]
 
@@ -195,5 +196,9 @@ offset_right = 1920.0
 offset_bottom = 1080.0
 metadata/_edit_lock_ = true
 
-[node name="DirectDamageRouter" type="Node" parent="." unique_id=396013123]
+[node name="DirectDamageRouter" type="Node" parent="." unique_id=396013123 node_paths=PackedStringArray("score_state")]
 script = ExtResource("30_venfy")
+score_state = NodePath("../MatchScoreState")
+
+[node name="MatchScoreState" type="Node" parent="." unique_id=1110463725]
+script = ExtResource("31_3a8w1")
