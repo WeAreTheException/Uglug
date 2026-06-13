@@ -1,31 +1,23 @@
 extends Mutation
 class_name BabyMaker
 
-@export var worker_ant_data: CardData
 @export var amount_to_spawn: int = 2
-@export var player_hand_group: String = "player_hand"
+@export var respect_hand_limit: bool = false
 
 
 func on_death(card: CardRoot) -> void:
 	if card == null:
 		return
 
-	if worker_ant_data == null:
+	if not is_instance_valid(card):
 		return
 
-	var tree := card.get_tree()
-
-	if tree == null:
+	if card.deck_system_root == null:
+		print("BabyMaker blocked: card.deck_system_root missing")
 		return
 
-	var hand := tree.get_first_node_in_group(player_hand_group) as PlayerHandRoot
-
-	if hand == null:
-		print("BabyMaker blocked: no PlayerHandRoot found in group: ", player_hand_group)
-		return
-
-	for i in amount_to_spawn:
-		if hand.is_full():
-			return
-
-		hand.spawn_card(worker_ant_data)
+	card.deck_system_root.spawn_workers_from_effect_for_card_owner(
+		card,
+		amount_to_spawn,
+		respect_hand_limit
+	)

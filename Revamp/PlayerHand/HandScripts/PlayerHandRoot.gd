@@ -38,6 +38,8 @@ var setup_helper := HandRootSetupHelper.new()
 var callbacks := HandRootCallbacksHelper.new()
 var placement_release := HandPlacementReleaseHelper.new()
 
+var deck_system_root: DeckSystemRoot = null
+
 
 func _ready() -> void:
 	callbacks.setup(self)
@@ -50,6 +52,10 @@ func _ready() -> void:
 	emit_prime_state()
 
 
+func setup_deck_system_context(new_deck_system_root: DeckSystemRoot) -> void:
+	deck_system_root = new_deck_system_root
+
+
 func set_hand_input_enabled(value: bool) -> void:
 	if interaction_root != null:
 		interaction_root.set_input_enabled(value)
@@ -58,13 +64,17 @@ func set_hand_input_enabled(value: bool) -> void:
 func spawn_starting_cards() -> void:
 	if card_spawner != null:
 		card_spawner.spawn_starting_cards()
+		_setup_all_spawned_card_contexts()
 
 
 func spawn_card(data: CardData) -> CardRoot:
 	if card_spawner == null:
 		return null
 
-	return card_spawner.spawn_card(data)
+	var card: CardRoot = card_spawner.spawn_card(data)
+	_setup_spawned_card_context(card)
+
+	return card
 
 
 func spawn_card_from_effect(
@@ -80,6 +90,8 @@ func spawn_card_from_effect(
 		spawned_card = card_spawner.spawn_card_ignoring_limit(data)
 	else:
 		spawned_card = card_spawner.spawn_card(data)
+
+	_setup_spawned_card_context(spawned_card)
 
 	if spawned_card != null:
 		arrange_cards()
@@ -236,6 +248,7 @@ func restore_card_to_hand(card: CardRoot, index: int) -> void:
 	card.visible = true
 	card_spawner.add_card(card)
 	card_spawner.move_card_to_index(card, index)
+	_setup_spawned_card_context(card)
 
 
 func emit_prime_state() -> void:
@@ -248,3 +261,22 @@ func emit_prime_state() -> void:
 		interaction_root.can_unprime(),
 		interaction_root.get_prime_button_text()
 	)
+
+
+func _setup_all_spawned_card_contexts() -> void:
+	if card_spawner == null:
+		return
+
+	for card: CardRoot in card_spawner.get_cards():
+		_setup_spawned_card_context(card)
+
+
+func _setup_spawned_card_context(card: CardRoot) -> void:
+	if card == null:
+		return
+
+	if not is_instance_valid(card):
+		return
+
+	if deck_system_root != null:
+		card.setup_deck_system_context(deck_system_root)

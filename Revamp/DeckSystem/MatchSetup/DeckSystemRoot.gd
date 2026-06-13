@@ -21,6 +21,8 @@ func _ready() -> void:
 	if match_setup != null:
 		match_setup.setup(self)
 
+	_setup_hand_contexts()
+
 	if build_on_ready:
 		build_match_decks()
 
@@ -28,6 +30,8 @@ func _ready() -> void:
 func build_match_decks() -> void:
 	if match_setup == null:
 		return
+
+	_setup_hand_contexts()
 
 	var result: Dictionary = match_setup.build_match_decks()
 
@@ -134,6 +138,14 @@ func spawn_workers_from_effect_for_card_owner(
 			spawned_cards.append(spawned_card)
 
 	return spawned_cards
+
+
+func _setup_hand_contexts() -> void:
+	if player_one_hand != null:
+		player_one_hand.setup_deck_system_context(self)
+
+	if player_two_hand != null:
+		player_two_hand.setup_deck_system_context(self)
 
 
 func _get_hand_for_card_owner(source_card: CardRoot) -> PlayerHandRoot:

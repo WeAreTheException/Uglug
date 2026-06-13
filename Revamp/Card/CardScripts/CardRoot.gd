@@ -22,6 +22,7 @@ signal unhovered(card: CardRoot)
 @export var starts_as_revenant_for_debug: bool = false
 
 var slots_root: SlotsRoot = null
+var deck_system_root: DeckSystemRoot = null
 var card_data: CardData = null
 var card_name: String = ""
 var runtime_id: String = ""
@@ -42,7 +43,7 @@ func setup(data: CardData) -> void:
 	card_data = data
 	card_name = data.name
 	_ensure_runtime_id()
-	
+
 	if starts_as_revenant_for_debug:
 		mark_revenant()
 		print("REVENANT DEBUG: ", card_name, " is_revenant = ", is_revenant())
@@ -55,6 +56,10 @@ func setup(data: CardData) -> void:
 
 	if card_visuals_root != null:
 		card_visuals_root.setup_from_card(self)
+
+
+func setup_deck_system_context(new_deck_system_root: DeckSystemRoot) -> void:
+	deck_system_root = new_deck_system_root
 
 
 func get_runtime_id() -> String:
@@ -181,6 +186,28 @@ func get_current_slot() -> Slot:
 	return board_presence.current_slot
 
 
+func set_revenant(value: bool) -> void:
+	if runtime_state == null:
+		return
+
+	runtime_state.set_revenant(value)
+
+
+func mark_revenant() -> void:
+	set_revenant(true)
+
+
+func clear_revenant() -> void:
+	set_revenant(false)
+
+
+func is_revenant() -> bool:
+	if runtime_state == null:
+		return false
+
+	return runtime_state.has_revenant()
+
+
 func _ensure_runtime_id() -> void:
 	if runtime_id != "":
 		return
@@ -210,24 +237,3 @@ func _on_input_hovered() -> void:
 
 func _on_input_unhovered() -> void:
 	unhovered.emit(self)
-
-func set_revenant(value: bool) -> void:
-	if runtime_state == null:
-		return
-
-	runtime_state.set_revenant(value)
-
-
-func mark_revenant() -> void:
-	set_revenant(true)
-
-
-func clear_revenant() -> void:
-	set_revenant(false)
-
-
-func is_revenant() -> bool:
-	if runtime_state == null:
-		return false
-
-	return runtime_state.has_revenant()

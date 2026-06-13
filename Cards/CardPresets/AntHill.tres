@@ -9,6 +9,6 @@ script = ExtResource("2_wvsyy")
 name = "Ant Hill"
 health = 3
 cost = 2
-deck_amount = 2
 base_mutations = Array[ExtResource("1_sucw5")]([ExtResource("2_krv1q")])
+deck_amount = 2
 metadata/_custom_type_script = "uid://duslcpxrhurv8"
