@@ -31,6 +31,7 @@
 [ext_resource type="Script" uid="uid://e0tr3sanyo1r" path="res://Revamp/MatchFlow/MatchAnnouncementDisplay.gd" id="27_7gy8c"]
 [ext_resource type="Script" uid="uid://dxj656ms4qeq4" path="res://Revamp/MatchFlow/MatchDominantRevealHandler.gd" id="27_a1qt2"]
 [ext_resource type="Script" uid="uid://myowbycyd18l" path="res://Revamp/MatchFlow/MatchPlacementFlowHandler.gd" id="27_mf2my"]
+[ext_resource type="Script" uid="uid://crpvi6u42w8yj" path="res://BuffFlowHandler.gd" id="28_5f7hr"]
 [ext_resource type="Script" uid="uid://gc48h0ccwqjp" path="res://BuffSelectionState.gd" id="28_8y4qw"]
 [ext_resource type="PackedScene" uid="uid://coux8hd7esj7g" path="res://Deck_System_Root.tscn" id="28_a1qt2"]
 [ext_resource type="Script" uid="uid://b50mccoppp1lb" path="res://Revamp/MatchFlow/MatchAutoDrawHandler.gd" id="28_mf2my"]
@@ -178,6 +179,10 @@ phase_manager = NodePath("../../PhaseManager")
 script = ExtResource("28_8y4qw")
 debug_card = NodePath("../../Card")
 debug_replacement_card = NodePath("../../Card2")
+
+[node name="BuffFlowHandler" type="Node" parent="MatchFlowRoot" unique_id=237451156 node_paths=PackedStringArray("match_flow_root")]
+script = ExtResource("28_5f7hr")
+match_flow_root = NodePath("..")
 
 [node name="BlessingSelectionState" type="Node" parent="MatchFlowRoot" unique_id=1333215538]
 script = ExtResource("25_n5v11")
