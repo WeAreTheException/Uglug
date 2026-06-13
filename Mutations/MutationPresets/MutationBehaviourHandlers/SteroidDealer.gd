@@ -3,14 +3,21 @@ class_name SteroidDealer
 
 @export var attack_bonus: int = 1
 @export var health_bonus: int = 1
+@export var minimum_health_after_buff_removed: int = 1
 
 
 func refresh_board_effect(runtime: MutationRuntime) -> void:
+	if runtime == null:
+		return
+
 	_clear(runtime)
 
-	var source_card := runtime.owner_card if runtime != null else null
+	var source_card: CardRoot = runtime.owner_card
 
 	if source_card == null:
+		return
+
+	if not is_instance_valid(source_card):
 		return
 
 	if not source_card.is_on_board():
@@ -19,14 +26,14 @@ func refresh_board_effect(runtime: MutationRuntime) -> void:
 	if source_card.slots_root == null:
 		return
 
-	var source_slot := source_card.get_current_slot()
+	var source_slot: Slot = source_card.get_current_slot()
 
 	if source_slot == null:
 		return
 
-	var owner := source_card.slots_root.get_owner_of_slot(source_slot)
-	var left := source_card.slots_root.get_slot(owner, source_slot.slot_index - 1)
-	var right := source_card.slots_root.get_slot(owner, source_slot.slot_index + 1)
+	var owner: SlotRow.SlotOwner = source_card.slots_root.get_owner_of_slot(source_slot)
+	var left: Slot = source_card.slots_root.get_slot(owner, source_slot.slot_index - 1)
+	var right: Slot = source_card.slots_root.get_slot(owner, source_slot.slot_index + 1)
 
 	_apply_to_slot(runtime, left)
 	_apply_to_slot(runtime, right)
@@ -48,9 +55,12 @@ func _apply_to_slot(runtime: MutationRuntime, slot: Slot) -> void:
 	if slot == null:
 		return
 
-	var target := slot.current_card
+	var target: CardRoot = slot.current_card
 
 	if target == null:
+		return
+
+	if not is_instance_valid(target):
 		return
 
 	if target.stats == null:
@@ -83,24 +93,37 @@ func _clear(runtime: MutationRuntime) -> void:
 	if runtime == null:
 		return
 
-	var source_card := runtime.owner_card
+	var source_card: CardRoot = runtime.owner_card
 
 	if source_card == null:
+		return
+
+	if not is_instance_valid(source_card):
 		return
 
 	if source_card.slots_root == null:
 		return
 
-	for slot in source_card.slots_root.get_all_slots():
+	for slot: Slot in source_card.slots_root.get_all_slots():
 		if slot == null:
 			continue
 
-		var card := slot.current_card
+		var card: CardRoot = slot.current_card
 
 		if card == null:
+			continue
+
+		if not is_instance_valid(card):
 			continue
 
 		if card.stats == null:
 			continue
 
+		var health_before_removal: int = card.stats.get_health()
+
 		card.stats.remove_modifiers_from_source(runtime)
+
+		var health_after_removal: int = card.stats.get_health()
+
+		if health_before_removal > 0 and health_after_removal <= 0:
+			card.stats.heal(minimum_health_after_buff_removed)
