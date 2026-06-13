@@ -21,6 +21,7 @@ signal unhovered(card: CardRoot)
 var slots_root: SlotsRoot = null
 var card_data: CardData = null
 var card_name: String = ""
+var runtime_id: String = ""
 
 
 func _ready() -> void:
@@ -37,6 +38,7 @@ func setup(data: CardData) -> void:
 
 	card_data = data
 	card_name = data.name
+	_ensure_runtime_id()
 
 	if stats != null:
 		stats.setup_from_data(data)
@@ -46,6 +48,26 @@ func setup(data: CardData) -> void:
 
 	if card_visuals_root != null:
 		card_visuals_root.setup_from_card(self)
+
+
+func get_runtime_id() -> String:
+	_ensure_runtime_id()
+	return runtime_id
+
+
+func can_receive_buff_mutation(mutation: Mutation) -> bool:
+	if mutations == null:
+		return false
+
+	return mutations.can_add_buff_mutation(mutation)
+
+
+func add_buff_mutation(mutation: Mutation) -> bool:
+	if mutations == null:
+		print("CardRoot buff blocked: mutations missing")
+		return false
+
+	return mutations.add_buff_mutation(mutation)
 
 
 func setup_board_context(new_slots_root: SlotsRoot) -> void:
@@ -150,6 +172,18 @@ func get_current_slot() -> Slot:
 		return null
 
 	return board_presence.current_slot
+
+
+func _ensure_runtime_id() -> void:
+	if runtime_id != "":
+		return
+
+	var base_id := "card"
+
+	if card_data != null:
+		base_id = card_data.get_safe_card_id()
+
+	runtime_id = base_id + "_" + str(Time.get_ticks_usec()) + "_" + str(randi())
 
 
 func _connect_input() -> void:

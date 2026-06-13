@@ -122,6 +122,14 @@ func enter_sacrifice_state() -> void:
 
 	arrange_cards()
 
+func enter_buff_state() -> void:
+	if interaction_root != null and interaction_root.can_unprime():
+		interaction_root.toggle_prime()
+
+	if state_machine != null:
+		state_machine.change_state(Hand_StateMachine.BUFF)
+
+	arrange_cards()
 
 func enter_blessing_state() -> void:
 	if interaction_root != null and interaction_root.can_unprime():

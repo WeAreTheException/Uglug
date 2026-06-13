@@ -26,9 +26,31 @@ func setup_from_data(data: CardData, new_owner_card: CardRoot) -> void:
 		add_mutation(mutation, owner_card, true)
 
 	for mutation in data.additional_mutations:
-		add_mutation(mutation, owner_card, false)
+		add_buff_mutation(mutation)
 
 	mutations_changed.emit()
+
+
+func can_add_buff_mutation(mutation: Mutation) -> bool:
+	if mutation == null:
+		return false
+
+	if mutation_runtimes.size() >= max_mutations:
+		return false
+
+	return true
+
+
+func add_buff_mutation(mutation: Mutation) -> bool:
+	if mutation == null:
+		print("CardMutations buff blocked: mutation is null")
+		return false
+
+	if mutation_runtimes.size() >= max_mutations:
+		print("CardMutations buff blocked: max mutations reached")
+		return false
+
+	return add_mutation(mutation, owner_card, false)
 
 
 func add_mutation(

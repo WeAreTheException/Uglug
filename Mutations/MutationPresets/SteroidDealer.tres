@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_ymi7s")
+health_bonus = 0
 mutation_name = "Steroid Dealer"
 mutation_description = "Buff BOTH adjacent slots +1DMG"
 sigil_texture = ExtResource("2_renrx")
