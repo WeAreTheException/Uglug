@@ -36,11 +36,12 @@
 [ext_resource type="AudioStream" uid="uid://5uho8ho3dlfo" path="res://Audio/Placeholder SFX/card_death.wav" id="21_k3ell"]
 [ext_resource type="Script" uid="uid://maqiq3kcc45q" path="res://Revamp/Card/CardActions/Sacrifice/PendingSacrificeFeedback.gd" id="27_0h522"]
 [ext_resource type="Script" uid="uid://bwf2dy46x2l01" path="res://Revamp/Card/CardActions/Sacrifice/ComittedSacrificeFeedback.gd" id="28_msnpm"]
+[ext_resource type="Script" uid="uid://b727ujf6ycv3o" path="res://Revamp/Card/CardRuntimeState.gd" id="37_raks6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g8l5j"]
 size = Vector2(144, 216)
 
-[node name="Card" type="Node2D" unique_id=1649731477 node_paths=PackedStringArray("input", "board_presence", "stats", "mutations", "card_visuals_root", "card_feedback", "attack", "hurt", "die", "sacrifice")]
+[node name="Card" type="Node2D" unique_id=1649731477 node_paths=PackedStringArray("input", "board_presence", "stats", "mutations", "card_visuals_root", "card_feedback", "attack", "hurt", "die", "sacrifice", "runtime_state")]
 script = ExtResource("1_hdbik")
 input = NodePath("CardInput")
 board_presence = NodePath("Core/BoardPresence")
@@ -52,6 +53,7 @@ attack = NodePath("Actions/Attack")
 hurt = NodePath("Actions/Hurt")
 die = NodePath("Actions/Die")
 sacrifice = NodePath("Actions/Sacrifice")
+runtime_state = NodePath("CardRuntimeState")
 
 [node name="CardInput" type="Area2D" parent="." unique_id=502264031]
 script = ExtResource("2_nau7p")
@@ -216,3 +218,6 @@ offset_right = 72.0
 offset_bottom = 131.0
 texture = ExtResource("3_2duqk")
 expand_mode = 1
+
+[node name="CardRuntimeState" type="Node" parent="." unique_id=16229587]
+script = ExtResource("37_raks6")

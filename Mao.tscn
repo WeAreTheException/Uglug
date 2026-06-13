@@ -46,6 +46,7 @@
 [ext_resource type="Resource" uid="uid://b4sniy31fo50g" path="res://Mutations/MutationPresets/TouchOfDeath.tres" id="44_cyp03"]
 [ext_resource type="Texture2D" uid="uid://c8kf7vqpx34gh" path="res://Art/Mutations/Duriant_Sigil.PNG" id="44_lyfvt"]
 [ext_resource type="Resource" uid="uid://bckromx6ufd8m" path="res://Cards/CardPresets/Escucheant.tres" id="48_cyp03"]
+[ext_resource type="PackedScene" uid="uid://5qb61nfrd521" path="res://Revamp/Card/Card.tscn" id="50_5f7hr"]
 [ext_resource type="Script" uid="uid://b0a7u0d6w3wt5" path="res://BuffCardSelectionHandler.gd" id="51_3j6fp"]
 [ext_resource type="Script" uid="uid://btx34g1cs7nhy" path="res://BuffMutationApplyHandler.gd" id="52_72iem"]
 [ext_resource type="Script" uid="uid://dbw5dxwuc5h4h" path="res://BuffCardStagingHandler.gd" id="53_nmm8s"]
@@ -73,6 +74,7 @@ direct_damage_router = NodePath("../DirectDamageRouter")
 [node name="PlayerHAnd" parent="." unique_id=371738706 node_paths=PackedStringArray("prime_location") instance=ExtResource("2_mi1n2")]
 position = Vector2(300, 960)
 prime_location = NodePath("../PrimeCardLocation")
+spawn_starting_cards_on_ready = true
 
 [node name="OpponenetHAnd" parent="." unique_id=1415383407 node_paths=PackedStringArray("prime_location") instance=ExtResource("2_mi1n2")]
 position = Vector2(312, 240)
@@ -302,3 +304,8 @@ player_one_hand = NodePath("../PlayerHAnd")
 player_two_hand = NodePath("../OpponenetHAnd")
 consume_rotation_degrees = -20.0
 power_scale = Vector2(2, 2)
+
+[node name="Card" parent="." unique_id=1649731477 instance=ExtResource("50_5f7hr")]
+position = Vector2(1400, 600)
+test_data = ExtResource("48_cyp03")
+starts_as_revenant_for_debug = true
