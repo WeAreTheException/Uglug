@@ -17,6 +17,8 @@ signal unhovered(card: CardRoot)
 @export var hurt: Hurt
 @export var die: Die
 @export var sacrifice: Sacrifice
+@export var debug_buff_mutation: Mutation
+@export var enable_debug_buff_test: bool = false
 
 var slots_root: SlotsRoot = null
 var card_data: CardData = null
@@ -29,7 +31,11 @@ func _ready() -> void:
 
 	if test_data != null:
 		setup(test_data)
-
+	
+	if enable_debug_buff_test and debug_buff_mutation != null:
+		print("Can add buff: ", can_receive_buff_mutation(debug_buff_mutation))
+		print("Add buff: ", add_buff_mutation(debug_buff_mutation))
+		print("Mutation count: ", mutations.get_all_runtimes().size())
 
 func setup(data: CardData) -> void:
 	if data == null:
@@ -151,6 +157,19 @@ func get_current_slot() -> Slot:
 
 	return board_presence.current_slot
 
+func can_receive_buff_mutation(mutation: Mutation) -> bool:
+	if mutations == null:
+		return false
+
+	return mutations.can_add_buff_mutation(mutation)
+
+
+func add_buff_mutation(mutation: Mutation) -> bool:
+	if mutations == null:
+		print("CardRoot buff blocked: mutations missing")
+		return false
+
+	return mutations.add_buff_mutation(mutation)
 
 func _connect_input() -> void:
 	if input == null:
