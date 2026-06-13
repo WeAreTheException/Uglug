@@ -8,10 +8,11 @@ signal buff_applied(card: CardRoot, mutation: Mutation)
 @export var turn_order_state: MatchTurnOrderState
 @export var staging_handler: BuffCardStagingHandler
 
+@export var return_delay_after_buff: float = 0.35
+
 @export var enable_debug_confirm_key: bool = true
 @export var debug_confirm_key: Key = KEY_ENTER
 @export var print_debug: bool = true
-@export var return_delay_after_buff: float = 0.35
 
 var is_active: bool = false
 var has_confirmed: bool = false
@@ -55,10 +56,7 @@ func confirm_buff() -> bool:
 		print("Buff confirm blocked: already confirmed")
 		return false
 
-	if buff_flow_handler == null:
-		return false
-
-	if selection_state == null:
+	if buff_flow_handler == null or selection_state == null:
 		return false
 
 	if staging_handler == null:
@@ -66,7 +64,6 @@ func confirm_buff() -> bool:
 		return false
 
 	var mutation := buff_flow_handler.get_active_reward_mutation()
-
 	if mutation == null:
 		print("Buff confirm blocked: no reward mutation")
 		return false
@@ -83,6 +80,7 @@ func confirm_buff() -> bool:
 		return false
 
 	has_confirmed = true
+	staging_handler.set_hand_input_enabled(false)
 
 	await staging_handler.play_consume_rotation()
 
@@ -96,6 +94,7 @@ func confirm_buff() -> bool:
 	if not applied:
 		print("Buff apply blocked: add failed")
 		has_confirmed = false
+		staging_handler.set_hand_input_enabled(true)
 		return false
 
 	buff_applied.emit(card, mutation)
@@ -105,7 +104,6 @@ func confirm_buff() -> bool:
 		print("BUFF APPLIED CARD ID: ", card.get_runtime_id())
 
 	await _finish_after_apply()
-
 	return true
 
 

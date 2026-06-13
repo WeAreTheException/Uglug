@@ -76,8 +76,6 @@ func stage_card(card: CardRoot) -> void:
 	if staging_layer != null:
 		layer_mover.move_to_layer(card, staging_layer)
 
-	_set_hand_input_enabled(false)
-
 	card.z_index = staged_z_index
 
 	if active_tween != null:
@@ -87,26 +85,9 @@ func stage_card(card: CardRoot) -> void:
 	active_tween.set_trans(Tween.TRANS_CUBIC)
 	active_tween.set_ease(Tween.EASE_OUT)
 
-	active_tween.parallel().tween_property(
-		card,
-		"global_position",
-		buff_card_location.global_position,
-		move_time
-	)
-
-	active_tween.parallel().tween_property(
-		card,
-		"rotation_degrees",
-		staged_rotation_degrees,
-		move_time
-	)
-
-	active_tween.parallel().tween_property(
-		card,
-		"scale",
-		staged_scale,
-		move_time
-	)
+	active_tween.parallel().tween_property(card, "global_position", buff_card_location.global_position, move_time)
+	active_tween.parallel().tween_property(card, "rotation_degrees", staged_rotation_degrees, move_time)
+	active_tween.parallel().tween_property(card, "scale", staged_scale, move_time)
 
 	if print_debug:
 		print("BUFF CARD STAGED: ", card.card_name)
@@ -128,76 +109,26 @@ func play_consume_rotation() -> void:
 	active_tween.set_trans(Tween.TRANS_CUBIC)
 	active_tween.set_ease(Tween.EASE_IN_OUT)
 
-	active_tween.parallel().tween_property(
-		selected_card,
-		"rotation_degrees",
-		consume_rotation_degrees,
-		consume_rotation_time
-	)
-	active_tween.parallel().tween_property(
-		selected_card,
-		"global_position",
-		left_position,
-		consume_rotation_time
-	)
+	active_tween.parallel().tween_property(selected_card, "rotation_degrees", consume_rotation_degrees, consume_rotation_time)
+	active_tween.parallel().tween_property(selected_card, "global_position", left_position, consume_rotation_time)
 
-	active_tween.tween_property(
-		selected_card,
-		"rotation_degrees",
-		-consume_rotation_degrees,
-		consume_rotation_time
-	)
-	active_tween.parallel().tween_property(
-		selected_card,
-		"global_position",
-		right_position,
-		consume_rotation_time
-	)
+	active_tween.tween_property(selected_card, "rotation_degrees", -consume_rotation_degrees, consume_rotation_time)
+	active_tween.parallel().tween_property(selected_card, "global_position", right_position, consume_rotation_time)
 
-	active_tween.tween_property(
-		selected_card,
-		"rotation_degrees",
-		consume_rotation_degrees,
-		consume_rotation_time
-	)
-	active_tween.parallel().tween_property(
-		selected_card,
-		"global_position",
-		left_position,
-		consume_rotation_time
-	)
+	active_tween.tween_property(selected_card, "rotation_degrees", consume_rotation_degrees, consume_rotation_time)
+	active_tween.parallel().tween_property(selected_card, "global_position", left_position, consume_rotation_time)
 
-	active_tween.tween_property(
-		selected_card,
-		"rotation_degrees",
-		staged_rotation_degrees,
-		consume_rotation_time
-	)
-	active_tween.parallel().tween_property(
-		selected_card,
-		"global_position",
-		center_position,
-		consume_rotation_time
-	)
+	active_tween.tween_property(selected_card, "rotation_degrees", staged_rotation_degrees, consume_rotation_time)
+	active_tween.parallel().tween_property(selected_card, "global_position", center_position, consume_rotation_time)
 
-	active_tween.parallel().tween_property(
-		selected_card,
-		"scale",
-		consume_scale,
-		consume_rotation_time * 4.0
-	)
+	active_tween.parallel().tween_property(selected_card, "scale", consume_scale, consume_rotation_time * 4.0)
 
 	await active_tween.finished
-
-	if print_debug:
-		print("BUFF CONSUME ROTATION FINISHED: ", selected_card.card_name)
-
 	consume_approach_finished.emit(selected_card)
 
 
 func play_power_tremble() -> void:
 	if selected_card == null:
-		print("Buff power tremble blocked: no staged card")
 		return
 
 	if active_tween != null:
@@ -207,49 +138,17 @@ func play_power_tremble() -> void:
 	active_tween.set_trans(Tween.TRANS_SINE)
 	active_tween.set_ease(Tween.EASE_IN_OUT)
 
-	active_tween.tween_property(
-		selected_card,
-		"scale",
-		power_scale,
-		power_tremble_step_time
-	)
-
+	active_tween.tween_property(selected_card, "scale", power_scale, power_tremble_step_time)
 	power_tremble_midpoint.emit(selected_card)
 
 	for i in power_tremble_cycles:
-		active_tween.tween_property(
-			selected_card,
-			"rotation_degrees",
-			power_tremble_rotation,
-			power_tremble_step_time
-		)
+		active_tween.tween_property(selected_card, "rotation_degrees", power_tremble_rotation, power_tremble_step_time)
+		active_tween.tween_property(selected_card, "rotation_degrees", -power_tremble_rotation, power_tremble_step_time)
 
-		active_tween.tween_property(
-			selected_card,
-			"rotation_degrees",
-			-power_tremble_rotation,
-			power_tremble_step_time
-		)
-
-	active_tween.tween_property(
-		selected_card,
-		"rotation_degrees",
-		staged_rotation_degrees,
-		power_tremble_step_time
-	)
-
-	active_tween.tween_property(
-		selected_card,
-		"scale",
-		staged_scale,
-		power_tremble_step_time
-	)
+	active_tween.tween_property(selected_card, "rotation_degrees", staged_rotation_degrees, power_tremble_step_time)
+	active_tween.tween_property(selected_card, "scale", staged_scale, power_tremble_step_time)
 
 	await active_tween.finished
-
-	if print_debug:
-		print("BUFF POWER TREMBLE FINISHED: ", selected_card.card_name)
-
 	power_tremble_finished.emit(selected_card)
 
 
@@ -261,32 +160,61 @@ func get_staged_card() -> CardRoot:
 	return selected_card
 
 
+func set_hand_input_enabled(value: bool) -> void:
+	_set_hand_input_enabled(value)
+
+
+func _return_selected_card_to_hand(restore_input: bool) -> void:
+	if active_tween != null:
+		active_tween.kill()
+
+	if selected_card == null or not is_instance_valid(selected_card):
+		if restore_input:
+			_set_hand_input_enabled(true)
+		return
+
+	active_tween = create_tween()
+	active_tween.set_trans(Tween.TRANS_CUBIC)
+	active_tween.set_ease(Tween.EASE_OUT)
+
+	active_tween.parallel().tween_property(selected_card, "global_position", selected_card_original_global_transform.origin, return_time)
+	active_tween.parallel().tween_property(selected_card, "rotation", selected_card_original_global_transform.get_rotation(), return_time)
+	active_tween.parallel().tween_property(selected_card, "scale", selected_card_original_global_transform.get_scale(), return_time)
+
+	await active_tween.finished
+
+	if selected_card_original_parent != null:
+		layer_mover.move_to_layer(selected_card, selected_card_original_parent as Node2D)
+
+	_clear_selected_card_refs()
+
+	if restore_input:
+		_set_hand_input_enabled(true)
+
+
 func _unstage_selected_card(restore_input: bool) -> void:
 	if active_tween != null:
 		active_tween.kill()
-		active_tween = null
 
 	if selected_card != null and is_instance_valid(selected_card):
 		selected_card.global_transform = selected_card_original_global_transform
 
 		if selected_card_original_parent != null:
-			layer_mover.move_to_layer(
-				selected_card,
-				selected_card_original_parent as Node2D
-			)
+			layer_mover.move_to_layer(selected_card, selected_card_original_parent as Node2D)
+
+	_clear_selected_card_refs()
 
 	if restore_input:
 		_set_hand_input_enabled(true)
 
+
+func _clear_selected_card_refs() -> void:
 	selected_card = null
 	selected_card_original_parent = null
 	selected_card_original_index = -1
 
 
-func _on_selection_changed(
-	_slot_owner: SlotRow.SlotOwner,
-	card: CardRoot
-) -> void:
+func _on_selection_changed(_slot_owner: SlotRow.SlotOwner, card: CardRoot) -> void:
 	if buff_flow_handler == null:
 		return
 
@@ -310,53 +238,3 @@ func _set_hand_input_enabled(value: bool) -> void:
 
 	if player_two_hand != null:
 		player_two_hand.set_hand_input_enabled(value)
-
-func _return_selected_card_to_hand(restore_input: bool) -> void:
-	if active_tween != null:
-		active_tween.kill()
-		active_tween = null
-
-	if selected_card == null or not is_instance_valid(selected_card):
-		if restore_input:
-			_set_hand_input_enabled(true)
-		return
-
-	active_tween = create_tween()
-	active_tween.set_trans(Tween.TRANS_CUBIC)
-	active_tween.set_ease(Tween.EASE_OUT)
-
-	active_tween.parallel().tween_property(
-		selected_card,
-		"global_position",
-		selected_card_original_global_transform.origin,
-		return_time
-	)
-
-	active_tween.parallel().tween_property(
-		selected_card,
-		"rotation",
-		selected_card_original_global_transform.get_rotation(),
-		return_time
-	)
-
-	active_tween.parallel().tween_property(
-		selected_card,
-		"scale",
-		selected_card_original_global_transform.get_scale(),
-		return_time
-	)
-
-	await active_tween.finished
-
-	if selected_card_original_parent != null:
-		layer_mover.move_to_layer(
-			selected_card,
-			selected_card_original_parent as Node2D
-		)
-
-	selected_card = null
-	selected_card_original_parent = null
-	selected_card_original_index = -1
-
-	if restore_input:
-		_set_hand_input_enabled(true)
