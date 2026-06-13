@@ -7,11 +7,13 @@ const IDLE := "Idle"
 const PLAY := "Play"
 const SACRIFICE := "Sacrifice"
 const BLESSING := "Blessing"
+const BUFF := "Buff"
 
 @export var idle_state: Hand_IdleState
 @export var play_state: Hand_PlayState
 @export var sacrifice_state: Hand_SacrificeState
 @export var blessing_state: Hand_BlessingState
+@export var buff_state: Hand_BuffState
 
 var current_state_name: String = ""
 
@@ -54,6 +56,14 @@ func setup(
 			sacrifice_selection
 		)
 
+	if buff_state != null:
+		buff_state.setup(
+			hand_layout,
+			interaction_root,
+			sort_controller,
+			sacrifice_selection
+		)
+
 
 func change_state(state_name: String) -> void:
 	if current_state_name == state_name:
@@ -77,5 +87,9 @@ func change_state(state_name: String) -> void:
 		BLESSING:
 			if blessing_state != null:
 				blessing_state.enter()
+
+		BUFF:
+			if buff_state != null:
+				buff_state.enter()
 
 	state_changed.emit(current_state_name)
