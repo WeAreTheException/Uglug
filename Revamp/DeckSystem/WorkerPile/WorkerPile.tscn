@@ -37,3 +37,5 @@ expand_mode = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DrawPileInput" unique_id=57660532]
 shape = SubResource("RectangleShape2D_5bt0e")
+
+[node name="WorkerSpawnEffectHandler" type="Node" parent="." unique_id=814292559]
