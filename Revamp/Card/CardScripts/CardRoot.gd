@@ -17,12 +17,11 @@ signal unhovered(card: CardRoot)
 @export var hurt: Hurt
 @export var die: Die
 @export var sacrifice: Sacrifice
-@export var debug_buff_mutation: Mutation
-@export var enable_debug_buff_test: bool = false
 
 var slots_root: SlotsRoot = null
 var card_data: CardData = null
 var card_name: String = ""
+var runtime_id: String = ""
 
 
 func _ready() -> void:
@@ -31,11 +30,7 @@ func _ready() -> void:
 
 	if test_data != null:
 		setup(test_data)
-	
-	if enable_debug_buff_test and debug_buff_mutation != null:
-		print("Can add buff: ", can_receive_buff_mutation(debug_buff_mutation))
-		print("Add buff: ", add_buff_mutation(debug_buff_mutation))
-		print("Mutation count: ", mutations.get_all_runtimes().size())
+
 
 func setup(data: CardData) -> void:
 	if data == null:
@@ -43,6 +38,7 @@ func setup(data: CardData) -> void:
 
 	card_data = data
 	card_name = data.name
+	_ensure_runtime_id()
 
 	if stats != null:
 		stats.setup_from_data(data)
@@ -52,6 +48,26 @@ func setup(data: CardData) -> void:
 
 	if card_visuals_root != null:
 		card_visuals_root.setup_from_card(self)
+
+
+func get_runtime_id() -> String:
+	_ensure_runtime_id()
+	return runtime_id
+
+
+func can_receive_buff_mutation(mutation: Mutation) -> bool:
+	if mutations == null:
+		return false
+
+	return mutations.can_add_buff_mutation(mutation)
+
+
+func add_buff_mutation(mutation: Mutation) -> bool:
+	if mutations == null:
+		print("CardRoot buff blocked: mutations missing")
+		return false
+
+	return mutations.add_buff_mutation(mutation)
 
 
 func setup_board_context(new_slots_root: SlotsRoot) -> void:
@@ -157,19 +173,18 @@ func get_current_slot() -> Slot:
 
 	return board_presence.current_slot
 
-func can_receive_buff_mutation(mutation: Mutation) -> bool:
-	if mutations == null:
-		return false
 
-	return mutations.can_add_buff_mutation(mutation)
+func _ensure_runtime_id() -> void:
+	if runtime_id != "":
+		return
 
+	var base_id := "card"
 
-func add_buff_mutation(mutation: Mutation) -> bool:
-	if mutations == null:
-		print("CardRoot buff blocked: mutations missing")
-		return false
+	if card_data != null:
+		base_id = card_data.get_safe_card_id()
 
-	return mutations.add_buff_mutation(mutation)
+	runtime_id = base_id + "_" + str(Time.get_ticks_usec()) + "_" + str(randi())
+
 
 func _connect_input() -> void:
 	if input == null:
