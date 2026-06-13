@@ -10,9 +10,12 @@ func refresh_board_effect(runtime: MutationRuntime) -> void:
 
 	_remove_debuff(runtime)
 
-	var card := runtime.owner_card
+	var card: CardRoot = runtime.owner_card
 
 	if card == null:
+		return
+
+	if not is_instance_valid(card):
 		return
 
 	if not card.is_on_board():
@@ -21,19 +24,22 @@ func refresh_board_effect(runtime: MutationRuntime) -> void:
 	if card.slots_root == null:
 		return
 
-	var current_slot := card.get_current_slot()
+	var current_slot: Slot = card.get_current_slot()
 
 	if current_slot == null:
 		return
 
-	var opposing_slot := card.slots_root.get_opposing_slot(current_slot)
+	var opposing_slot: Slot = card.slots_root.get_opposing_slot(current_slot)
 
 	if opposing_slot == null:
 		return
 
-	var opposing_card := opposing_slot.current_card
+	var opposing_card: CardRoot = opposing_slot.current_card
 
 	if opposing_card == null:
+		return
+
+	if not is_instance_valid(opposing_card):
 		return
 
 	if opposing_card.stats == null:
@@ -55,6 +61,12 @@ func on_left_board_context(runtime: MutationRuntime) -> void:
 
 
 func _apply_debuff(runtime: MutationRuntime, target_card: CardRoot) -> void:
+	if target_card == null:
+		return
+
+	if target_card.stats == null:
+		return
+
 	var modifier := StatModifier.new()
 	modifier.stat_name = "attack"
 	modifier.amount = attack_debuff
@@ -69,9 +81,12 @@ func _remove_debuff(runtime: MutationRuntime) -> void:
 	if runtime == null:
 		return
 
-	var card := runtime.owner_card
+	var card: CardRoot = runtime.owner_card
 
 	if card == null:
+		return
+
+	if not is_instance_valid(card):
 		return
 
 	if card.slots_root == null:
@@ -82,13 +97,16 @@ func _remove_debuff(runtime: MutationRuntime) -> void:
 
 
 func _remove_from_slots(runtime: MutationRuntime, slots: Array[Slot]) -> void:
-	for slot in slots:
+	for slot: Slot in slots:
 		if slot == null:
 			continue
 
-		var target_card := slot.current_card
+		var target_card: CardRoot = slot.current_card
 
 		if target_card == null:
+			continue
+
+		if not is_instance_valid(target_card):
 			continue
 
 		if target_card.stats == null:

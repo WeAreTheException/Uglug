@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="3_3vc3c"]
 [ext_resource type="Resource" uid="uid://b1dt5378u5ga8" path="res://Revamp/CardPresets/Sustain/Guardiant.tres" id="3_ufjv4"]
 [ext_resource type="Resource" uid="uid://dbgpqc3vdl8t" path="res://Revamp/CardPresets/Duriant.tres" id="4_qqxe6"]
+[ext_resource type="Resource" uid="uid://ci7yvhc8pfst6" path="res://Revamp/CardPresets/QueenAnt.tres" id="4_vcbui"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="6_qb8ua"]
 [ext_resource type="Resource" uid="uid://bxrcjm4w1dy82" path="res://Revamp/CardPresets/Anthrax.tres" id="7_qb8ua"]
 [ext_resource type="Resource" uid="uid://bn1jyervrnsg" path="res://Revamp/CardPresets/WorkerAnt.tres" id="7_ufjv4"]
@@ -75,8 +76,11 @@ player_two_hand = NodePath("../OpponenetHAnd")
 
 [node name="Board" parent="." unique_id=1318716624 node_paths=PackedStringArray("direct_damage_router") instance=ExtResource("1_yq750")]
 position = Vector2(588, 252)
+player_slot_1_card = ExtResource("7_ufjv4")
+player_slot_2_card = ExtResource("4_vcbui")
 opponent_slot_1_card = ExtResource("3_ufjv4")
 opponent_slot_2_card = ExtResource("4_qqxe6")
+opponent_slot_3_card = ExtResource("7_ufjv4")
 direct_damage_router = NodePath("../DirectDamageRouter")
 
 [node name="PlayerHAnd" parent="." unique_id=371738706 node_paths=PackedStringArray("prime_location") instance=ExtResource("2_mi1n2")]
