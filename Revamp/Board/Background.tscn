@@ -1,0 +1,105 @@
+[gd_scene format=3 uid="uid://cvdlgiknngjmw"]
+
+[ext_resource type="Texture2D" uid="uid://bywsxsbxaq45y" path="res://Art/Background/BG_Sky.jpg" id="1_efcvh"]
+[ext_resource type="Shader" uid="uid://n3l4egojry4s" path="res://Balatro.gdshader" id="2_b10xy"]
+[ext_resource type="Texture2D" uid="uid://baa2em8y1tn0b" path="res://Art/Background/BG_Mountain.png" id="3_06tnx"]
+[ext_resource type="Shader" uid="uid://ck3gs6whq2t57" path="res://Cards/AntSway.gdshader" id="4_06tnx"]
+[ext_resource type="Texture2D" uid="uid://cshh70gh05gts" path="res://Art/Background/BG_Fog.png" id="4_k61qs"]
+[ext_resource type="Texture2D" uid="uid://cmxhq7qe848n1" path="res://Art/Background/BG_Ground.png" id="5_ou7fi"]
+[ext_resource type="Texture2D" uid="uid://bf24kb68hu0jr" path="res://Art/Background/BG_AtmosPersp.png" id="6_hcsqr"]
+[ext_resource type="Texture2D" uid="uid://7ekuxdrk3yyj" path="res://Art/Background/BG_Treeline.png" id="7_33ddm"]
+[ext_resource type="Texture2D" uid="uid://t7xaf0ur302a" path="res://Art/Background/BG_Trees.png" id="8_hmkl7"]
+[ext_resource type="Texture2D" uid="uid://bq163o0yr7tcm" path="res://Art/Background/BG_Yello.jpg" id="9_ac0qm"]
+[ext_resource type="PackedScene" uid="uid://rir2t85e314a" path="res://Mao_UI_Mockup.tscn" id="10_nib0g"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_c3ppa"]
+shader = ExtResource("2_b10xy")
+shader_parameter/spin_rotation_speed = 10.0
+shader_parameter/move_speed = 2.2
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/colour_1 = Color(0.93349034, 0.895479, 0.6746896, 1)
+shader_parameter/colour_2 = Color(0.4267342, 0.6453628, 0.18135464, 1)
+shader_parameter/colour_3 = Color(0.034355212, 0.14039797, 0.15485853, 1)
+shader_parameter/contrast = 2.23
+shader_parameter/lighting = 0.4
+shader_parameter/spin_amount = 0.25
+shader_parameter/pixel_filter = 1000.0
+shader_parameter/is_rotating = false
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_k61qs"]
+shader = ExtResource("4_06tnx")
+shader_parameter/waveAmplitude = 0.1250000059375
+shader_parameter/correctVertex = true
+shader_parameter/waveFrequency = 27.7630013187425
+shader_parameter/verticalWave = true
+shader_parameter/keepTransparency = true
+shader_parameter/useTime = true
+shader_parameter/waveSpeed = 1.0000000475
+shader_parameter/progress = 0.0
+shader_parameter/firstHalf = 0.5
+shader_parameter/secondHalf = 0.5
+shader_parameter/freezeFirstHalf = false
+shader_parameter/freezeSecondHalf = false
+
+[node name="Background" type="Node2D" unique_id=40767625]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2113234373]
+
+[node name="Sky" type="TextureRect" parent="CanvasLayer" unique_id=1594964411]
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("1_efcvh")
+expand_mode = 1
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=1914754656]
+modulate = Color(1, 1, 1, 0.27450982)
+material = SubResource("ShaderMaterial_c3ppa")
+offset_right = 1920.0
+offset_bottom = 1080.0
+
+[node name="Mountain" type="TextureRect" parent="CanvasLayer" unique_id=1222108314]
+modulate = Color(1, 1, 1, 0.50980395)
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("3_06tnx")
+expand_mode = 1
+
+[node name="Fog" type="TextureRect" parent="CanvasLayer" unique_id=1384886466]
+material = SubResource("ShaderMaterial_k61qs")
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("4_k61qs")
+expand_mode = 1
+
+[node name="Ground" type="TextureRect" parent="CanvasLayer" unique_id=972830880]
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("5_ou7fi")
+expand_mode = 1
+
+[node name="AtmosPersp" type="TextureRect" parent="CanvasLayer" unique_id=1813313288]
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("6_hcsqr")
+expand_mode = 1
+
+[node name="Treeline" type="TextureRect" parent="CanvasLayer" unique_id=981161675]
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("7_33ddm")
+expand_mode = 1
+
+[node name="Trees" type="TextureRect" parent="CanvasLayer" unique_id=772493415]
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("8_hmkl7")
+expand_mode = 1
+
+[node name="Yello" type="TextureRect" parent="CanvasLayer" unique_id=1532333371]
+modulate = Color(1, 1, 1, 0.105882354)
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("9_ac0qm")
+expand_mode = 1
+
+[node name="Mao" parent="CanvasLayer" unique_id=550121538 instance=ExtResource("10_nib0g")]
