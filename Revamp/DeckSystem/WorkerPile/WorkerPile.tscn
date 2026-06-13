@@ -14,8 +14,6 @@ worker_card = ExtResource("2_mhn3j")
 view = NodePath("WorkerPileView")
 
 [node name="WorkerSource" type="Node" parent="." unique_id=305378732]
-script = ExtResource("2_ickr5")
-worker_card = ExtResource("2_mhn3j")
 
 [node name="WorkerPileView" type="Node" parent="." unique_id=231030872]
 script = ExtResource("4_mhn3j")
@@ -41,6 +39,5 @@ expand_mode = 1
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DrawPileInput" unique_id=57660532]
 shape = SubResource("RectangleShape2D_5bt0e")
 
-[node name="WorkerSpawnEffectHandler" type="Node" parent="." unique_id=814292559 node_paths=PackedStringArray("worker_source")]
+[node name="WorkerSpawnEffectHandler" type="Node" parent="." unique_id=814292559]
 script = ExtResource("4_ickr5")
-worker_source = NodePath("../WorkerSource")
