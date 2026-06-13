@@ -3,8 +3,6 @@
 [ext_resource type="PackedScene" uid="uid://bw8c7m7n5yuk8" path="res://Revamp/Board/Slots.tscn" id="1_yq750"]
 [ext_resource type="PackedScene" uid="uid://1wr1e57v7trd" path="res://Revamp/PlayerHand/Player_Hand.tscn" id="2_mi1n2"]
 [ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="3_3vc3c"]
-[ext_resource type="Resource" uid="uid://mnht3u87f5og" path="res://Cards/CardPresets/Pregnant.tres" id="3_72iem"]
-[ext_resource type="Resource" uid="uid://c64jbnvj0pbwk" path="res://Cards/CardPresets/AntHill.tres" id="4_nmm8s"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="6_qb8ua"]
 [ext_resource type="Resource" uid="uid://bn1jyervrnsg" path="res://Cards/CardPresets/WorkerAnt.tres" id="7_ufjv4"]
 [ext_resource type="Script" uid="uid://bxbqihkit6rgo" path="res://Managers/Phasemanager.gd" id="8_cc2no"]
@@ -75,8 +73,8 @@ direct_damage_router = NodePath("../DirectDamageRouter")
 
 [node name="PlayerHAnd" parent="." unique_id=371738706 node_paths=PackedStringArray("prime_location") instance=ExtResource("2_mi1n2")]
 position = Vector2(300, 960)
-starting_cards = Array[ExtResource("6_qb8ua")]([ExtResource("7_ufjv4"), ExtResource("7_ufjv4"), ExtResource("7_ufjv4"), ExtResource("3_72iem"), ExtResource("4_nmm8s"), null])
-max_hand_size = 10
+starting_cards = Array[ExtResource("6_qb8ua")]([ExtResource("7_ufjv4"), ExtResource("7_ufjv4")])
+max_hand_size = 6
 prime_location = NodePath("../PrimeCardLocation")
 
 [node name="OpponenetHAnd" parent="." unique_id=1415383407 node_paths=PackedStringArray("prime_location") instance=ExtResource("2_mi1n2")]
