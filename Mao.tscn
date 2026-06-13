@@ -37,6 +37,14 @@
 [ext_resource type="Script" uid="uid://c5j44dhlx1div" path="res://Revamp/DirectDamage/MatchScoreState.gd" id="31_3a8w1"]
 [ext_resource type="Script" uid="uid://cn5xfv13wsg1x" path="res://Revamp/MatchFlow/PostGameTransitionHandler.gd" id="34_f3uds"]
 [ext_resource type="Script" uid="uid://cau0ky5b3kabf" path="res://Revamp/Board/AttackAnticipationFeedbackHandler.gd" id="35_wop7f"]
+[ext_resource type="Script" uid="uid://djtnl5koe1f0x" path="res://BuffDatabase.gd" id="38_i8ogu"]
+[ext_resource type="Resource" uid="uid://b6afw5yomddli" path="res://Mutations/MutationPresets/Shield.tres" id="40_2ph70"]
+[ext_resource type="Resource" uid="uid://njutef00oac8" path="res://Mutations/MutationPresets/LifeSteal.tres" id="41_2ph70"]
+[ext_resource type="Script" uid="uid://csuhdu8m5bmcv" path="res://Mutations/MutationPresets/MutationBehaviourHandlers/Spiky.gd" id="43_2ph70"]
+[ext_resource type="Resource" uid="uid://bqxd6swy88edw" path="res://Mutations/MutationPresets/MobMentality.tres" id="43_31d2k"]
+[ext_resource type="Resource" uid="uid://cnn0fddifxool" path="res://Mutations/MutationPresets/ColonyNest.tres" id="44_3jt7k"]
+[ext_resource type="Resource" uid="uid://b4sniy31fo50g" path="res://Mutations/MutationPresets/TouchOfDeath.tres" id="44_cyp03"]
+[ext_resource type="Texture2D" uid="uid://c8kf7vqpx34gh" path="res://Art/Mutations/Duriant_Sigil.PNG" id="44_lyfvt"]
 
 [sub_resource type="Resource" id="Resource_nllv1"]
 script = ExtResource("6_fobm3")
@@ -46,6 +54,13 @@ cost = 2
 ant_texture = ExtResource("4_ygb55")
 base_mutations = Array[ExtResource("3_3vc3c")]([ExtResource("5_i8ogu")])
 metadata/_custom_type_script = "uid://duslcpxrhurv8"
+
+[sub_resource type="Resource" id="Resource_cyp03"]
+script = ExtResource("43_2ph70")
+mutation_name = "Spiky"
+mutation_description = "Deals 1DMG to card that attacked it"
+sigil_texture = ExtResource("44_lyfvt")
+metadata/_custom_type_script = "uid://be8yk3djwb5oc"
 
 [node name="Mao" type="Node2D" unique_id=550121538]
 
@@ -232,3 +247,8 @@ metadata/_edit_lock_ = true
 script = ExtResource("30_venfy")
 score_state = NodePath("../MatchFlowRoot/MatchScoreState")
 slots_root = NodePath("../Board")
+
+[node name="BuffDatabase" type="Node" parent="." unique_id=1175133697]
+script = ExtResource("38_i8ogu")
+buff_pool = Array[ExtResource("3_3vc3c")]([ExtResource("43_31d2k"), ExtResource("40_2ph70"), ExtResource("41_2ph70"), null])
+forbidden_mutations = Array[ExtResource("3_3vc3c")]([SubResource("Resource_cyp03"), ExtResource("44_cyp03"), ExtResource("44_3jt7k"), null])
