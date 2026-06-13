@@ -5,6 +5,11 @@ signal card_added(card: CardRoot)
 signal card_removed(card: CardRoot)
 signal hand_changed
 
+@export var enable_debug_spawn_test: bool = false
+@export var debug_spawn_card: CardData
+@export var debug_normal_spawn_key: Key = KEY_Y
+@export var debug_effect_spawn_key: Key = KEY_U
+
 var card_scene: PackedScene = null
 var starting_cards: Array[CardData] = []
 var card_parent: Node2D = null
@@ -29,6 +34,21 @@ func configure(
 	minimum_hand_size = new_minimum_hand_size
 
 
+func _input(event: InputEvent) -> void:
+	if not enable_debug_spawn_test:
+		return
+
+	if debug_spawn_card == null:
+		return
+
+	if event is InputEventKey and event.pressed and not event.echo:
+		if event.keycode == debug_normal_spawn_key:
+			spawn_card(debug_spawn_card)
+
+		if event.keycode == debug_effect_spawn_key:
+			spawn_card_ignoring_limit(debug_spawn_card)
+
+
 func spawn_starting_cards() -> void:
 	for data in starting_cards:
 		spawn_card(data)
@@ -38,13 +58,11 @@ func spawn_card(data: CardData) -> CardRoot:
 	if store.size() >= max_hand_size:
 		return null
 
-	var card := factory.create_card(card_scene, data, card_parent)
+	return _spawn_card_internal(data)
 
-	if card == null:
-		return null
 
-	add_card(card)
-	return card
+func spawn_card_ignoring_limit(data: CardData) -> CardRoot:
+	return _spawn_card_internal(data)
 
 
 func add_card(card: CardRoot) -> void:
@@ -83,3 +101,16 @@ func is_card_in_hand(card: CardRoot) -> bool:
 
 func get_card_count() -> int:
 	return store.size()
+
+
+func _spawn_card_internal(data: CardData) -> CardRoot:
+	if data == null:
+		return null
+
+	var card: CardRoot = factory.create_card(card_scene, data, card_parent)
+
+	if card == null:
+		return null
+
+	add_card(card)
+	return card
