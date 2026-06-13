@@ -18,8 +18,6 @@ var is_playing := false
 var is_dying := false
 var has_died := false
 
-var blessing_lookup: CardBlessingLookupHelper = CardBlessingLookupHelper.new()
-
 
 func setup(source_card: CardRoot) -> void:
 	card = source_card
@@ -67,8 +65,7 @@ func die_with_context(context: DeathContext) -> void:
 	if context == null:
 		return
 
-	if _try_handle_death_with_blessing():
-		return
+	var should_return_to_hand := _should_return_revenant_to_hand(context)
 
 	_start_death_state()
 
@@ -86,7 +83,7 @@ func die_with_context(context: DeathContext) -> void:
 	else:
 		print("die blocked: animation_runner missing")
 
-	if context.should_remove_from_board:
+	if context.should_remove_from_board and not should_return_to_hand:
 		_remove_card_from_board()
 
 	is_playing = false
@@ -94,6 +91,10 @@ func die_with_context(context: DeathContext) -> void:
 
 	_notify_death_finished(context)
 	die_finished.emit(card)
+
+	if should_return_to_hand:
+		_return_revenant_to_hand()
+		return
 
 	if context.should_free_card and is_instance_valid(card):
 		card.queue_free()
@@ -115,13 +116,47 @@ func _start_death_state() -> void:
 	is_playing = true
 
 
-func _try_handle_death_with_blessing() -> bool:
-	var card_blessings := blessing_lookup.get_card_blessings(card)
-
-	if card_blessings == null:
+func _should_return_revenant_to_hand(context: DeathContext) -> bool:
+	if card == null:
 		return false
 
-	return card_blessings.handle_card_would_die(false, false)
+	if context == null:
+		return false
+
+	if not card.is_revenant():
+		return false
+
+	return true
+
+
+func _return_revenant_to_hand() -> void:
+	if card == null:
+		return
+
+	if not is_instance_valid(card):
+		return
+
+	var target_hand: PlayerHandRoot = null
+
+	if card.deck_system_root != null:
+		target_hand = card.deck_system_root.get_hand_for_card_owner(card)
+
+	if target_hand == null:
+		print("REVENANT RETURN BLOCKED: target hand missing")
+		return
+
+	if card.board_presence != null and card.board_presence.is_on_board():
+		card.board_presence.leave_slot(card)
+	else:
+		_remove_card_from_board()
+
+	target_hand.return_existing_card_to_hand(card)
+
+	has_died = false
+	is_dying = false
+	is_playing = false
+
+	print("REVENANT RETURNED TO HAND: ", card.card_name)
 
 
 func _remove_card_from_board() -> void:
