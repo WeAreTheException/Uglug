@@ -1,6 +1,8 @@
 extends Node
 class_name BuffPhaseAnimationHandler
 
+signal reward_delivery_finished
+
 @export_group("Reward Display")
 @export var larvae_reward_scene: PackedScene
 @export var larvae_draggers_scene: PackedScene
@@ -86,6 +88,8 @@ func _spawn_and_animate_reward(mutation: Mutation) -> void:
 
 	if print_debug:
 		print("BUFF REWARD DISPLAY READY")
+
+	reward_delivery_finished.emit()
 
 
 func _spawn_draggers(parent: Node) -> LarvaeDraggers:

@@ -44,16 +44,13 @@
 [ext_resource type="Script" uid="uid://cau0ky5b3kabf" path="res://Revamp/Board/AttackAnticipationFeedbackHandler.gd" id="35_wop7f"]
 [ext_resource type="Script" uid="uid://djtnl5koe1f0x" path="res://BuffDatabase.gd" id="38_i8ogu"]
 [ext_resource type="Resource" uid="uid://b6afw5yomddli" path="res://Mutations/MutationPresets/Shield.tres" id="40_2ph70"]
-[ext_resource type="Resource" uid="uid://njutef00oac8" path="res://Mutations/MutationPresets/LifeSteal.tres" id="41_2ph70"]
 [ext_resource type="Resource" uid="uid://ceeskmu01vy5g" path="res://Mutations/MutationPresets/YAttack.tres" id="41_8y4qw"]
 [ext_resource type="Resource" uid="uid://cyutbyh2av6iv" path="res://Mutations/MutationPresets/SteroidDealer.tres" id="42_lyfvt"]
 [ext_resource type="Script" uid="uid://csuhdu8m5bmcv" path="res://Mutations/MutationPresets/MutationBehaviourHandlers/Spiky.gd" id="43_2ph70"]
 [ext_resource type="Resource" uid="uid://cnn0fddifxool" path="res://Mutations/MutationPresets/ColonyNest.tres" id="44_3jt7k"]
 [ext_resource type="Resource" uid="uid://b4sniy31fo50g" path="res://Mutations/MutationPresets/TouchOfDeath.tres" id="44_cyp03"]
 [ext_resource type="Texture2D" uid="uid://c8kf7vqpx34gh" path="res://Art/Mutations/Duriant_Sigil.PNG" id="44_lyfvt"]
-[ext_resource type="PackedScene" uid="uid://5qb61nfrd521" path="res://Revamp/Card/Card.tscn" id="47_31d2k"]
-[ext_resource type="Resource" uid="uid://bckromx6ufd8m" path="res://Cards/CardPresets/Escucheant.tres" id="48_cyp03"]
-[ext_resource type="Resource" uid="uid://bxfxi0h5itrdu" path="res://Cards/CardPresets/Lieutenant.tres" id="49_cyp03"]
+[ext_resource type="Script" uid="uid://b0a7u0d6w3wt5" path="res://BuffCardSelectionHandler.gd" id="51_3j6fp"]
 
 [sub_resource type="Resource" id="Resource_nllv1"]
 script = ExtResource("6_fobm3")
@@ -181,8 +178,8 @@ phase_manager = NodePath("../../PhaseManager")
 
 [node name="BuffSelectionState" type="Node" parent="MatchFlowRoot" unique_id=421083113 node_paths=PackedStringArray("debug_card", "debug_replacement_card")]
 script = ExtResource("28_8y4qw")
-debug_card = NodePath("../../Card")
-debug_replacement_card = NodePath("../../Card2")
+debug_card = NodePath("")
+debug_replacement_card = NodePath("")
 
 [node name="BuffFlowHandler" type="Node" parent="MatchFlowRoot" unique_id=237451156 node_paths=PackedStringArray("match_flow_root", "buff_database", "animation_handler")]
 script = ExtResource("28_5f7hr")
@@ -270,6 +267,17 @@ offset_right = 1920.0
 offset_bottom = 1080.0
 metadata/_edit_lock_ = true
 
+[node name="ChoosCardForBuffLabel" type="Label" parent="MatchFlowUI/CanvasLayer" unique_id=331567794]
+visible = false
+offset_left = 77.0
+offset_top = 584.0
+offset_right = 513.0
+offset_bottom = 716.0
+theme_override_font_sizes/font_size = 30
+text = "Choose one of your warriors to consume the larvae and gain its powers"
+horizontal_alignment = 1
+autowrap_mode = 2
+
 [node name="DirectDamageRouter" type="Node" parent="." unique_id=396013123 node_paths=PackedStringArray("score_state", "slots_root")]
 script = ExtResource("30_venfy")
 score_state = NodePath("../MatchFlowRoot/MatchScoreState")
@@ -282,16 +290,11 @@ forbidden_mutations = Array[ExtResource("3_3vc3c")]([SubResource("Resource_cyp03
 print_debug = false
 run_smoke_test_on_ready = false
 
-[node name="Card" parent="." unique_id=1649731477 instance=ExtResource("47_31d2k")]
-visible = false
-position = Vector2(331, 404)
-test_data = ExtResource("48_cyp03")
-debug_buff_mutation = ExtResource("41_2ph70")
-enable_debug_buff_test = true
-
-[node name="Card2" parent="." unique_id=41946507 instance=ExtResource("47_31d2k")]
-visible = false
-position = Vector2(494, 404)
-test_data = ExtResource("49_cyp03")
-debug_buff_mutation = ExtResource("41_2ph70")
-enable_debug_buff_test = true
+[node name="BuffCardSelectionHandler" type="Node" parent="." unique_id=1583935419 node_paths=PackedStringArray("buff_flow_handler", "selection_state", "turn_order_state", "player_one_hand", "player_two_hand", "instruction_label")]
+script = ExtResource("51_3j6fp")
+buff_flow_handler = NodePath("../MatchFlowRoot/BuffFlowHandler")
+selection_state = NodePath("../MatchFlowRoot/BuffSelectionState")
+turn_order_state = NodePath("../MatchFlowRoot/MatchTurnOrderState")
+player_one_hand = NodePath("../PlayerHAnd")
+player_two_hand = NodePath("../OpponenetHAnd")
+instruction_label = NodePath("../MatchFlowUI/CanvasLayer/ChoosCardForBuffLabel")
