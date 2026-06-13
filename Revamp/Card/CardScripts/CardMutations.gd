@@ -208,6 +208,22 @@ func notify_attack_sequence_finished(context: AttackContext) -> void:
 		mutation_activation_finished.emit(runtime)
 
 
+func notify_placed(
+	slot: Slot,
+	owner: SlotRow.SlotOwner
+) -> void:
+	for runtime in get_active_runtimes():
+		if runtime.mutation == null:
+			continue
+
+		runtime.mutation.on_placed_context(
+			runtime,
+			owner_card,
+			slot,
+			owner
+		)
+
+
 func modify_attack_target(context: AttackContext) -> void:
 	for runtime in get_active_runtimes():
 		if runtime.mutation == null:

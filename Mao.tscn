@@ -3,7 +3,11 @@
 [ext_resource type="PackedScene" uid="uid://bw8c7m7n5yuk8" path="res://Revamp/Board/Slots.tscn" id="1_yq750"]
 [ext_resource type="PackedScene" uid="uid://1wr1e57v7trd" path="res://Revamp/PlayerHand/Player_Hand.tscn" id="2_mi1n2"]
 [ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="3_3vc3c"]
+[ext_resource type="Resource" uid="uid://b1dt5378u5ga8" path="res://Revamp/CardPresets/Sustain/Guardiant.tres" id="3_ufjv4"]
+[ext_resource type="Resource" uid="uid://dbgpqc3vdl8t" path="res://Revamp/CardPresets/Duriant.tres" id="4_qqxe6"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="6_qb8ua"]
+[ext_resource type="Resource" uid="uid://bxrcjm4w1dy82" path="res://Revamp/CardPresets/Anthrax.tres" id="7_qb8ua"]
+[ext_resource type="Resource" uid="uid://0c6lqenucx25" path="res://Revamp/CardPresets/StraightChops/Aviant.tres" id="7_qqxe6"]
 [ext_resource type="Resource" uid="uid://bn1jyervrnsg" path="res://Revamp/CardPresets/WorkerAnt.tres" id="7_ufjv4"]
 [ext_resource type="Script" uid="uid://bxbqihkit6rgo" path="res://Managers/Phasemanager.gd" id="8_cc2no"]
 [ext_resource type="Script" uid="uid://bbcig486utsir" path="res://HandPhaseApplier.gd" id="9_cc2no"]
@@ -69,11 +73,13 @@ player_two_hand = NodePath("../OpponenetHAnd")
 
 [node name="Board" parent="." unique_id=1318716624 node_paths=PackedStringArray("direct_damage_router") instance=ExtResource("1_yq750")]
 position = Vector2(588, 252)
+opponent_slot_1_card = ExtResource("3_ufjv4")
+opponent_slot_2_card = ExtResource("4_qqxe6")
 direct_damage_router = NodePath("../DirectDamageRouter")
 
 [node name="PlayerHAnd" parent="." unique_id=371738706 node_paths=PackedStringArray("prime_location") instance=ExtResource("2_mi1n2")]
 position = Vector2(300, 960)
-starting_cards = Array[ExtResource("6_qb8ua")]([ExtResource("7_ufjv4"), ExtResource("7_ufjv4")])
+starting_cards = Array[ExtResource("6_qb8ua")]([ExtResource("7_ufjv4"), ExtResource("7_ufjv4"), ExtResource("7_ufjv4"), ExtResource("7_qb8ua"), ExtResource("7_qqxe6")])
 max_hand_size = 6
 prime_location = NodePath("../PrimeCardLocation")
 

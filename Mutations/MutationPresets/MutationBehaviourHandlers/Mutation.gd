@@ -42,6 +42,15 @@ func on_attack_sequence_finished_context(
 	pass
 
 
+func on_placed_context(
+	_runtime: MutationRuntime,
+	card: CardRoot,
+	slot: Slot,
+	owner: SlotRow.SlotOwner
+) -> void:
+	on_placed(card, slot, owner)
+
+
 func on_struck_context(
 	_runtime: MutationRuntime,
 	context: DamageContext
@@ -185,6 +194,14 @@ func modify_attack_target(
 
 func mutation_attack(_card: CardRoot) -> bool:
 	return false
+
+
+func on_placed(
+	_card: CardRoot,
+	_slot: Slot,
+	_owner: SlotRow.SlotOwner
+) -> void:
+	pass
 
 
 func on_struck(

@@ -37,7 +37,11 @@ func confirm_placement(
 	board_mover.move_card_to_board_layer(card, slot, board)
 	board_mover.snap_card_to_slot(card, slot, placed_scale)
 
-	return event_builder.build_event(board, card, slot, owner)
+	var event: Dictionary = event_builder.build_event(board, card, slot, owner)
+
+	_notify_card_placed(card, slot, owner)
+
+	return event
 
 
 func _assign_card_to_slot(card: CardRoot, slot: Slot) -> bool:
@@ -52,3 +56,20 @@ func _release_card_from_hand(card: CardRoot) -> void:
 
 	if hand != null:
 		hand.release_primed_card_for_placement(card)
+
+
+func _notify_card_placed(
+	card: CardRoot,
+	slot: Slot,
+	owner: SlotRow.SlotOwner
+) -> void:
+	if card == null:
+		return
+
+	if not is_instance_valid(card):
+		return
+
+	if card.mutations == null:
+		return
+
+	card.mutations.notify_placed(slot, owner)
