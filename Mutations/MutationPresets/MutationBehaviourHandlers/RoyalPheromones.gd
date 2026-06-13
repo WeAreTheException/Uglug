@@ -13,9 +13,12 @@ func refresh_board_effect(runtime: MutationRuntime) -> void:
 
 	_remove_buffs(runtime)
 
-	var queen := runtime.owner_card
+	var queen: CardRoot = runtime.owner_card
 
 	if queen == null:
+		return
+
+	if not is_instance_valid(queen):
 		return
 
 	if not queen.is_on_board():
@@ -24,15 +27,15 @@ func refresh_board_effect(runtime: MutationRuntime) -> void:
 	if queen.slots_root == null:
 		return
 
-	var queen_slot := queen.get_current_slot()
+	var queen_slot: Slot = queen.get_current_slot()
 
 	if queen_slot == null:
 		return
 
-	var owner := queen.slots_root.get_owner_of_slot(queen_slot)
-	var ally_slots := queen.slots_root.get_slots_for_owner(owner)
+	var owner: SlotRow.SlotOwner = queen.slots_root.get_owner_of_slot(queen_slot)
+	var ally_slots: Array[Slot] = queen.slots_root.get_slots_for_owner(owner)
 
-	for slot in ally_slots:
+	for slot: Slot in ally_slots:
 		_apply_to_worker(runtime, slot)
 
 
@@ -52,9 +55,12 @@ func _apply_to_worker(runtime: MutationRuntime, slot: Slot) -> void:
 	if slot == null:
 		return
 
-	var target_card := slot.current_card
+	var target_card: CardRoot = slot.current_card
 
 	if target_card == null:
+		return
+
+	if not is_instance_valid(target_card):
 		return
 
 	if target_card.stats == null:
@@ -90,9 +96,12 @@ func _remove_buffs(runtime: MutationRuntime) -> void:
 	if runtime == null:
 		return
 
-	var queen := runtime.owner_card
+	var queen: CardRoot = runtime.owner_card
 
 	if queen == null:
+		return
+
+	if not is_instance_valid(queen):
 		return
 
 	if queen.slots_root == null:
@@ -103,23 +112,26 @@ func _remove_buffs(runtime: MutationRuntime) -> void:
 
 
 func _remove_from_slots(runtime: MutationRuntime, slots: Array[Slot]) -> void:
-	for slot in slots:
+	for slot: Slot in slots:
 		if slot == null:
 			continue
 
-		var target_card := slot.current_card
+		var target_card: CardRoot = slot.current_card
 
 		if target_card == null:
+			continue
+
+		if not is_instance_valid(target_card):
 			continue
 
 		if target_card.stats == null:
 			continue
 
-		var health_before_removal := target_card.stats.get_health()
+		var health_before_removal: int = target_card.stats.get_health()
 
 		target_card.stats.remove_modifiers_from_source(runtime)
 
-		var health_after_removal := target_card.stats.get_health()
+		var health_after_removal: int = target_card.stats.get_health()
 
 		if health_before_removal > 0 and health_after_removal <= 0:
 			target_card.stats.heal(minimum_health_after_buff_removed)

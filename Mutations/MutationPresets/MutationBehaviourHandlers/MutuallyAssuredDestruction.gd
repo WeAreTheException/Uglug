@@ -6,7 +6,10 @@ func on_death(card: CardRoot) -> void:
 	await _kill_opposing_card(card, null)
 
 
-func on_death_context(_runtime: MutationRuntime, context: DeathContext) -> void:
+func on_death_context(
+	_runtime: MutationRuntime,
+	context: DeathContext
+) -> void:
 	if context == null:
 		return
 
@@ -20,10 +23,13 @@ func _kill_opposing_card(
 	if dead_card == null:
 		return
 
+	if not is_instance_valid(dead_card):
+		return
+
 	if dead_card.slots_root == null:
 		return
 
-	var current_slot := dead_card.get_current_slot()
+	var current_slot: Slot = dead_card.get_current_slot()
 
 	if current_slot == null and source_context != null:
 		current_slot = source_context.dead_slot
@@ -31,14 +37,17 @@ func _kill_opposing_card(
 	if current_slot == null:
 		return
 
-	var opposing_slot := dead_card.slots_root.get_opposing_slot(current_slot)
+	var opposing_slot: Slot = dead_card.slots_root.get_opposing_slot(current_slot)
 
 	if opposing_slot == null:
 		return
 
-	var opposing_card := opposing_slot.current_card
+	var opposing_card: CardRoot = opposing_slot.current_card
 
 	if opposing_card == null:
+		return
+
+	if not is_instance_valid(opposing_card):
 		return
 
 	if opposing_card.stats != null and opposing_card.stats.is_dead():
@@ -46,6 +55,10 @@ func _kill_opposing_card(
 
 	if opposing_card.die == null:
 		return
+
+	if opposing_card.die.has_method("is_unavailable_for_combat"):
+		if opposing_card.die.is_unavailable_for_combat():
+			return
 
 	var death_context := DeathContext.new()
 	death_context.setup(

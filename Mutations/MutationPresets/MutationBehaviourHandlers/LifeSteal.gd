@@ -10,21 +10,7 @@ func on_damage_dealt(
 	_target: CardRoot,
 	damage: int
 ) -> void:
-	if card == null:
-		return
-
-	if card.stats == null:
-		return
-
-	if damage <= 0:
-		return
-
-	var final_gain := health_gain_amount
-
-	if gain_based_on_damage_dealt:
-		final_gain = damage
-
-	_add_health_gain(card, final_gain)
+	_apply_lifesteal(card, damage)
 
 
 func on_damage_dealt_context(
@@ -34,11 +20,31 @@ func on_damage_dealt_context(
 	if context == null:
 		return
 
-	on_damage_dealt(
+	_apply_lifesteal(
 		context.source_card,
-		context.target_card,
 		context.actual_damage
 	)
+
+
+func _apply_lifesteal(card: CardRoot, damage: int) -> void:
+	if card == null:
+		return
+
+	if not is_instance_valid(card):
+		return
+
+	if card.stats == null:
+		return
+
+	if damage <= 0:
+		return
+
+	var final_gain: int = health_gain_amount
+
+	if gain_based_on_damage_dealt:
+		final_gain = damage
+
+	_add_health_gain(card, final_gain)
 
 
 func _add_health_gain(card: CardRoot, amount: int) -> void:
