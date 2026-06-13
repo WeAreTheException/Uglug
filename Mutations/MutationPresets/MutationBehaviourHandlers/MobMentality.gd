@@ -11,9 +11,12 @@ func refresh_board_effect(runtime: MutationRuntime) -> void:
 
 	_remove_buff(runtime)
 
-	var source_card := runtime.owner_card
+	var source_card: CardRoot = runtime.owner_card
 
 	if source_card == null:
+		return
+
+	if not is_instance_valid(source_card):
 		return
 
 	if source_card.stats == null:
@@ -25,16 +28,15 @@ func refresh_board_effect(runtime: MutationRuntime) -> void:
 	if source_card.slots_root == null:
 		return
 
-	var source_slot := source_card.get_current_slot()
+	var source_slot: Slot = source_card.get_current_slot()
 
 	if source_slot == null:
 		return
 
-	var owner := source_card.slots_root.get_owner_of_slot(source_slot)
-	var ally_slots := source_card.slots_root.get_slots_for_owner(owner)
-	var ally_count := _count_ally_cards(ally_slots, source_card)
-
-	var bonus := ally_count * attack_bonus_per_ally
+	var owner: SlotRow.SlotOwner = source_card.slots_root.get_owner_of_slot(source_slot)
+	var ally_slots: Array[Slot] = source_card.slots_root.get_slots_for_owner(owner)
+	var ally_count: int = _count_ally_cards(ally_slots, source_card)
+	var bonus: int = ally_count * attack_bonus_per_ally
 
 	if bonus <= 0:
 		return
@@ -55,15 +57,18 @@ func on_left_board_context(runtime: MutationRuntime) -> void:
 
 
 func _count_ally_cards(slots: Array[Slot], source_card: CardRoot) -> int:
-	var count := 0
+	var count: int = 0
 
-	for slot in slots:
+	for slot: Slot in slots:
 		if slot == null:
 			continue
 
-		var card := slot.current_card
+		var card: CardRoot = slot.current_card
 
 		if card == null:
+			continue
+
+		if not is_instance_valid(card):
 			continue
 
 		if not include_self and card == source_card:
@@ -79,6 +84,12 @@ func _apply_buff(
 	source_card: CardRoot,
 	bonus: int
 ) -> void:
+	if source_card == null:
+		return
+
+	if source_card.stats == null:
+		return
+
 	var modifier := StatModifier.new()
 	modifier.stat_name = "attack"
 	modifier.amount = bonus
@@ -93,9 +104,12 @@ func _remove_buff(runtime: MutationRuntime) -> void:
 	if runtime == null:
 		return
 
-	var source_card := runtime.owner_card
+	var source_card: CardRoot = runtime.owner_card
 
 	if source_card == null:
+		return
+
+	if not is_instance_valid(source_card):
 		return
 
 	if source_card.stats == null:
