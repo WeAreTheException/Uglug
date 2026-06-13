@@ -1,5 +1,5 @@
 extends Node
-class_name MutationInhertitanceHandler
+class_name MutationInheritanceHandler
 
 var draw_handler: DeckDrawHandler = null
 

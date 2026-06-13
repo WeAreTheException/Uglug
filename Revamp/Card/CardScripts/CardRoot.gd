@@ -18,6 +18,9 @@ signal unhovered(card: CardRoot)
 @export var die: Die
 @export var sacrifice: Sacrifice
 
+@export var runtime_state: CardRuntimeState
+@export var starts_as_revenant_for_debug: bool = false
+
 var slots_root: SlotsRoot = null
 var card_data: CardData = null
 var card_name: String = ""
@@ -39,6 +42,10 @@ func setup(data: CardData) -> void:
 	card_data = data
 	card_name = data.name
 	_ensure_runtime_id()
+	
+	if starts_as_revenant_for_debug:
+		mark_revenant()
+		print("REVENANT DEBUG: ", card_name, " is_revenant = ", is_revenant())
 
 	if stats != null:
 		stats.setup_from_data(data)
@@ -203,3 +210,24 @@ func _on_input_hovered() -> void:
 
 func _on_input_unhovered() -> void:
 	unhovered.emit(self)
+
+func set_revenant(value: bool) -> void:
+	if runtime_state == null:
+		return
+
+	runtime_state.set_revenant(value)
+
+
+func mark_revenant() -> void:
+	set_revenant(true)
+
+
+func clear_revenant() -> void:
+	set_revenant(false)
+
+
+func is_revenant() -> bool:
+	if runtime_state == null:
+		return false
+
+	return runtime_state.has_revenant()
