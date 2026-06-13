@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://di12gxvqynhg7"]
+
+[ext_resource type="Script" uid="uid://cqpja31colbyv" path="res://Revamp/LarvaeDraggers.gd" id="1_xfe40"]
+[ext_resource type="Texture2D" uid="uid://cgs5k6p3mggyf" path="res://Art/Ants/AntSprite.png" id="2_1ip7o"]
+
+[node name="LarvaeDraggers" type="Node2D" unique_id=1825003288 node_paths=PackedStringArray("larvae_anchor")]
+script = ExtResource("1_xfe40")
+larvae_anchor = NodePath("LarvaeAnchor")
+larvae_local_offset = Vector2(55, 0)
+
+[node name="Workers" type="Node2D" parent="." unique_id=680969544]
+
+[node name="Worker1" type="Sprite2D" parent="Workers" unique_id=1795597679]
+position = Vector2(0, 46)
+scale = Vector2(0.05, 0.05)
+texture = ExtResource("2_1ip7o")
+
+[node name="Worker2" type="Sprite2D" parent="Workers" unique_id=2071815710]
+position = Vector2(0, -45.999996)
+scale = Vector2(0.05, 0.05)
+texture = ExtResource("2_1ip7o")
+
+[node name="LarvaeAnchor" type="Node2D" parent="." unique_id=1577939694]

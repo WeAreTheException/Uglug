@@ -7,9 +7,14 @@ signal reward_generated(mutation: Mutation)
 
 @export var match_flow_root: MatchFlowRoot
 @export var buff_database: BuffDatabase
+@export var animation_handler: BuffPhaseAnimationHandler
 
+@export_group("Debug")
 @export var enable_debug_finish_key: bool = true
 @export var debug_finish_key: Key = KEY_B
+@export var enable_debug_preview_key: bool = true
+@export var debug_preview_key: Key = KEY_L
+@export var debug_preview_mutation: Mutation
 @export var print_debug: bool = true
 
 var is_active: bool = false
@@ -26,12 +31,6 @@ func _ready() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if not enable_debug_finish_key:
-		return
-
-	if not is_active:
-		return
-
 	if not event is InputEventKey:
 		return
 
@@ -40,8 +39,13 @@ func _input(event: InputEvent) -> void:
 	if not key_event.pressed or key_event.echo:
 		return
 
-	if key_event.keycode == debug_finish_key:
-		finish_buff_flow()
+	if enable_debug_finish_key and is_active:
+		if key_event.keycode == debug_finish_key:
+			finish_buff_flow()
+
+	if enable_debug_preview_key:
+		if key_event.keycode == debug_preview_key:
+			debug_preview_reward_animation()
 
 
 func begin_buff_flow() -> void:
@@ -68,12 +72,18 @@ func begin_buff_flow() -> void:
 	buff_started.emit(active_round_number)
 	reward_generated.emit(active_reward_mutation)
 
+	if animation_handler != null:
+		await animation_handler.play_reward_delivery(active_reward_mutation)
+
 
 func finish_buff_flow() -> void:
 	if not is_active:
 		return
 
 	is_active = false
+
+	if animation_handler != null:
+		animation_handler.cleanup()
 
 	if match_flow_root != null:
 		match_flow_root.unlock_transition()
@@ -85,6 +95,23 @@ func finish_buff_flow() -> void:
 
 	active_round_number = 0
 	active_reward_mutation = null
+
+
+func debug_preview_reward_animation() -> void:
+	var mutation := debug_preview_mutation
+
+	if mutation == null:
+		mutation = active_reward_mutation
+
+	if mutation == null:
+		print("BUFF DEBUG PREVIEW BLOCKED: no mutation assigned")
+		return
+
+	if animation_handler == null:
+		print("BUFF DEBUG PREVIEW BLOCKED: animation_handler missing")
+		return
+
+	await animation_handler.play_reward_delivery(mutation)
 
 
 func get_active_reward_mutation() -> Mutation:

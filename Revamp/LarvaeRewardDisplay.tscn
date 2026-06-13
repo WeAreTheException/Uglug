@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://dmgme20qfr6yi"]
 
 [ext_resource type="Script" uid="uid://bqg5nvmtqpdsr" path="res://Revamp/LarvaeRewardDisplay.gd" id="1_ops2o"]
-[ext_resource type="Resource" uid="uid://b6afw5yomddli" path="res://Mutations/MutationPresets/Shield.tres" id="2_mjbow"]
 [ext_resource type="Texture2D" uid="uid://bt8o5l5yrmihl" path="res://Art/AntBack/CardBackground.png" id="3_ng268"]
 [ext_resource type="Shader" path="res://Cards/Panner.gdshader" id="4_t3qet"]
 [ext_resource type="Shader" path="res://Balatro.gdshader" id="5_ddgno"]
@@ -87,11 +86,10 @@ script = ExtResource("1_ops2o")
 name_label = NodePath("Visuals/Name")
 sigil_sprite = NodePath("Visuals/SigilSprite")
 larvae_sprite = NodePath("Visuals/LarvaeSprite")
-test_mutation = ExtResource("2_mjbow")
 run_debug_test_on_ready = true
 
 [node name="Visuals" type="Node2D" parent="." unique_id=591818977]
-position = Vector2(72, 108)
+position = Vector2(4.5474735e-13, 2.7105054e-20)
 scale = Vector2(0.8, 0.8)
 
 [node name="Name" type="RichTextLabel" parent="Visuals" unique_id=1625962492]

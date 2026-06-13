@@ -35,12 +35,18 @@
 [ext_resource type="Script" uid="uid://gc48h0ccwqjp" path="res://BuffSelectionState.gd" id="28_8y4qw"]
 [ext_resource type="PackedScene" uid="uid://coux8hd7esj7g" path="res://Deck_System_Root.tscn" id="28_a1qt2"]
 [ext_resource type="Script" uid="uid://b50mccoppp1lb" path="res://Revamp/MatchFlow/MatchAutoDrawHandler.gd" id="28_mf2my"]
+[ext_resource type="PackedScene" uid="uid://dmgme20qfr6yi" path="res://Revamp/LarvaeRewardDisplay.tscn" id="29_72iem"]
 [ext_resource type="Script" uid="uid://cq06khkyy84o5" path="res://Revamp/DirectDamage/DirectDamageRouter.gd" id="30_venfy"]
 [ext_resource type="Script" uid="uid://c5j44dhlx1div" path="res://Revamp/DirectDamage/MatchScoreState.gd" id="31_3a8w1"]
+[ext_resource type="Script" uid="uid://dssf8rptp70gh" path="res://Revamp/BuffPhaseAnimationHandler.gd" id="31_nmm8s"]
+[ext_resource type="PackedScene" uid="uid://di12gxvqynhg7" path="res://Revamp/LarvaeDraggers.tscn" id="32_qb8ua"]
 [ext_resource type="Script" uid="uid://cn5xfv13wsg1x" path="res://Revamp/MatchFlow/PostGameTransitionHandler.gd" id="34_f3uds"]
 [ext_resource type="Script" uid="uid://cau0ky5b3kabf" path="res://Revamp/Board/AttackAnticipationFeedbackHandler.gd" id="35_wop7f"]
 [ext_resource type="Script" uid="uid://djtnl5koe1f0x" path="res://BuffDatabase.gd" id="38_i8ogu"]
+[ext_resource type="Resource" uid="uid://b6afw5yomddli" path="res://Mutations/MutationPresets/Shield.tres" id="40_2ph70"]
 [ext_resource type="Resource" uid="uid://njutef00oac8" path="res://Mutations/MutationPresets/LifeSteal.tres" id="41_2ph70"]
+[ext_resource type="Resource" uid="uid://ceeskmu01vy5g" path="res://Mutations/MutationPresets/YAttack.tres" id="41_8y4qw"]
+[ext_resource type="Resource" uid="uid://cyutbyh2av6iv" path="res://Mutations/MutationPresets/SteroidDealer.tres" id="42_lyfvt"]
 [ext_resource type="Script" uid="uid://csuhdu8m5bmcv" path="res://Mutations/MutationPresets/MutationBehaviourHandlers/Spiky.gd" id="43_2ph70"]
 [ext_resource type="Resource" uid="uid://cnn0fddifxool" path="res://Mutations/MutationPresets/ColonyNest.tres" id="44_3jt7k"]
 [ext_resource type="Resource" uid="uid://b4sniy31fo50g" path="res://Mutations/MutationPresets/TouchOfDeath.tres" id="44_cyp03"]
@@ -178,10 +184,18 @@ script = ExtResource("28_8y4qw")
 debug_card = NodePath("../../Card")
 debug_replacement_card = NodePath("../../Card2")
 
-[node name="BuffFlowHandler" type="Node" parent="MatchFlowRoot" unique_id=237451156 node_paths=PackedStringArray("match_flow_root", "buff_database")]
+[node name="BuffFlowHandler" type="Node" parent="MatchFlowRoot" unique_id=237451156 node_paths=PackedStringArray("match_flow_root", "buff_database", "animation_handler")]
 script = ExtResource("28_5f7hr")
 match_flow_root = NodePath("..")
 buff_database = NodePath("../../BuffDatabase")
+animation_handler = NodePath("../BuffPhaseAnimationHandler")
+debug_preview_mutation = ExtResource("40_2ph70")
+
+[node name="BuffPhaseAnimationHandler" type="Node" parent="MatchFlowRoot" unique_id=278124127 node_paths=PackedStringArray("reward_parent")]
+script = ExtResource("31_nmm8s")
+larvae_reward_scene = ExtResource("29_72iem")
+larvae_draggers_scene = ExtResource("32_qb8ua")
+reward_parent = NodePath("../../MatchFlowUI")
 
 [node name="BlessingSelectionState" type="Node" parent="MatchFlowRoot" unique_id=1333215538]
 script = ExtResource("25_n5v11")
@@ -263,6 +277,7 @@ slots_root = NodePath("../Board")
 
 [node name="BuffDatabase" type="Node" parent="." unique_id=1175133697]
 script = ExtResource("38_i8ogu")
+buff_pool = Array[ExtResource("3_3vc3c")]([ExtResource("40_2ph70"), ExtResource("41_8y4qw"), ExtResource("42_lyfvt")])
 forbidden_mutations = Array[ExtResource("3_3vc3c")]([SubResource("Resource_cyp03"), ExtResource("44_cyp03"), ExtResource("44_3jt7k"), null])
 print_debug = false
 run_smoke_test_on_ready = false
