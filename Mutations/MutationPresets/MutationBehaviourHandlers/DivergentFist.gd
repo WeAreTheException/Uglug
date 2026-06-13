@@ -9,7 +9,7 @@ func modify_attack_steps(
 	var copied_steps: Array[AttackStep] = []
 
 	if steps.is_empty():
-		var forward_step := AttackStep.new()
+		var forward_step: AttackStep = AttackStep.new()
 		forward_step.setup(
 			AttackStep.FORWARD,
 			MutationSource.BASE,
@@ -17,7 +17,7 @@ func modify_attack_steps(
 		)
 		steps.append(forward_step)
 
-	for step in steps:
+	for step: AttackStep in steps:
 		if step == null:
 			continue
 
@@ -28,7 +28,7 @@ func modify_attack_steps(
 
 
 func _copy_step(source_step: AttackStep) -> AttackStep:
-	var new_step := AttackStep.new()
+	var new_step: AttackStep = AttackStep.new()
 
 	new_step.setup(
 		source_step.direction,
