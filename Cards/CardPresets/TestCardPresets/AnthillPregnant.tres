@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="CardData" format=3 uid="uid://dd1qyn65fkxn3"]
+
+[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="1_1eq34"]
+[ext_resource type="Resource" uid="uid://cnn0fddifxool" path="res://Mutations/MutationPresets/ColonyNest.tres" id="2_34b71"]
+[ext_resource type="Resource" uid="uid://b4tpqnugaguvu" path="res://Mutations/MutationPresets/BabyMaker.tres" id="2_ucutn"]
+[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="2_vc03o"]
+
+[resource]
+script = ExtResource("2_vc03o")
+base_mutations = Array[ExtResource("1_1eq34")]([ExtResource("2_34b71")])
+additional_mutations = Array[ExtResource("1_1eq34")]([ExtResource("2_ucutn")])
+metadata/_custom_type_script = "uid://duslcpxrhurv8"
