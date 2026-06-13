@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://be3ya854p2xh" path="res://Revamp/DeckSystem/WorkerPile/WorkerSource.gd" id="2_ickr5"]
 [ext_resource type="Resource" uid="uid://bn1jyervrnsg" path="res://Cards/CardPresets/WorkerAnt.tres" id="2_mhn3j"]
+[ext_resource type="Script" uid="uid://dlby8apvtbd8o" path="res://Revamp/DeckSystem/WorkerPile/WorkerSpawnEffectHandler.gd" id="4_ickr5"]
 [ext_resource type="Script" uid="uid://cff6om1fvlyac" path="res://Revamp/DeckSystem/WorkerPile/WorkerPileView.gd" id="4_mhn3j"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5bt0e"]
@@ -13,6 +14,8 @@ worker_card = ExtResource("2_mhn3j")
 view = NodePath("WorkerPileView")
 
 [node name="WorkerSource" type="Node" parent="." unique_id=305378732]
+script = ExtResource("2_ickr5")
+worker_card = ExtResource("2_mhn3j")
 
 [node name="WorkerPileView" type="Node" parent="." unique_id=231030872]
 script = ExtResource("4_mhn3j")
@@ -38,4 +41,6 @@ expand_mode = 1
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DrawPileInput" unique_id=57660532]
 shape = SubResource("RectangleShape2D_5bt0e")
 
-[node name="WorkerSpawnEffectHandler" type="Node" parent="." unique_id=814292559]
+[node name="WorkerSpawnEffectHandler" type="Node" parent="." unique_id=814292559 node_paths=PackedStringArray("worker_source")]
+script = ExtResource("4_ickr5")
+worker_source = NodePath("../WorkerSource")

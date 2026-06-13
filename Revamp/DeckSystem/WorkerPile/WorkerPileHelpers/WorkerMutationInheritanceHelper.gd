@@ -1,11 +1,33 @@
-extends Node
+extends RefCounted
+class_name WorkerMutationInheritanceHelper
 
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
+func apply_inherited_mutations(
+	source_card: CardRoot,
+	spawned_worker: CardRoot
+) -> void:
+	if source_card == null:
+		return
 
+	if spawned_worker == null:
+		return
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+	if not is_instance_valid(source_card):
+		return
+
+	if not is_instance_valid(spawned_worker):
+		return
+
+	if source_card.mutations == null:
+		return
+
+	if spawned_worker.mutations == null:
+		return
+
+	var inherited_mutations: Array[Mutation] = source_card.mutations.get_inheritable_mutations()
+
+	for mutation: Mutation in inherited_mutations:
+		if mutation == null:
+			continue
+
+		spawned_worker.mutations.add_buff_mutation(mutation)

@@ -67,6 +67,40 @@ func spawn_card(data: CardData) -> CardRoot:
 	return card_spawner.spawn_card(data)
 
 
+func spawn_card_from_effect(
+	data: CardData,
+	ignore_hand_limit: bool = true
+) -> CardRoot:
+	if card_spawner == null:
+		return null
+
+	var spawned_card: CardRoot = null
+
+	if ignore_hand_limit:
+		spawned_card = card_spawner.spawn_card_ignoring_limit(data)
+	else:
+		spawned_card = card_spawner.spawn_card(data)
+
+	if spawned_card != null:
+		arrange_cards()
+
+	return spawned_card
+
+
+func is_full() -> bool:
+	if card_spawner == null:
+		return false
+
+	return card_spawner.get_card_count() >= max_hand_size
+
+
+func get_card_count() -> int:
+	if card_spawner == null:
+		return 0
+
+	return card_spawner.get_card_count()
+
+
 func arrange_cards() -> void:
 	if hand_layout == null:
 		return
@@ -122,6 +156,7 @@ func enter_sacrifice_state() -> void:
 
 	arrange_cards()
 
+
 func enter_buff_state() -> void:
 	if interaction_root != null and interaction_root.can_unprime():
 		interaction_root.toggle_prime()
@@ -130,6 +165,7 @@ func enter_buff_state() -> void:
 		state_machine.change_state(Hand_StateMachine.BUFF)
 
 	arrange_cards()
+
 
 func enter_blessing_state() -> void:
 	if interaction_root != null and interaction_root.can_unprime():
