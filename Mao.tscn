@@ -40,10 +40,8 @@
 [ext_resource type="Script" uid="uid://cn5xfv13wsg1x" path="res://Revamp/MatchFlow/PostGameTransitionHandler.gd" id="34_f3uds"]
 [ext_resource type="Script" uid="uid://cau0ky5b3kabf" path="res://Revamp/Board/AttackAnticipationFeedbackHandler.gd" id="35_wop7f"]
 [ext_resource type="Script" uid="uid://djtnl5koe1f0x" path="res://BuffDatabase.gd" id="38_i8ogu"]
-[ext_resource type="Resource" uid="uid://b6afw5yomddli" path="res://Mutations/MutationPresets/Shield.tres" id="40_2ph70"]
 [ext_resource type="Resource" uid="uid://njutef00oac8" path="res://Mutations/MutationPresets/LifeSteal.tres" id="41_2ph70"]
 [ext_resource type="Script" uid="uid://csuhdu8m5bmcv" path="res://Mutations/MutationPresets/MutationBehaviourHandlers/Spiky.gd" id="43_2ph70"]
-[ext_resource type="Resource" uid="uid://bqxd6swy88edw" path="res://Mutations/MutationPresets/MobMentality.tres" id="43_31d2k"]
 [ext_resource type="Resource" uid="uid://cnn0fddifxool" path="res://Mutations/MutationPresets/ColonyNest.tres" id="44_3jt7k"]
 [ext_resource type="Resource" uid="uid://b4sniy31fo50g" path="res://Mutations/MutationPresets/TouchOfDeath.tres" id="44_cyp03"]
 [ext_resource type="Texture2D" uid="uid://c8kf7vqpx34gh" path="res://Art/Mutations/Duriant_Sigil.PNG" id="44_lyfvt"]
@@ -180,9 +178,10 @@ script = ExtResource("28_8y4qw")
 debug_card = NodePath("../../Card")
 debug_replacement_card = NodePath("../../Card2")
 
-[node name="BuffFlowHandler" type="Node" parent="MatchFlowRoot" unique_id=237451156 node_paths=PackedStringArray("match_flow_root")]
+[node name="BuffFlowHandler" type="Node" parent="MatchFlowRoot" unique_id=237451156 node_paths=PackedStringArray("match_flow_root", "buff_database")]
 script = ExtResource("28_5f7hr")
 match_flow_root = NodePath("..")
+buff_database = NodePath("../../BuffDatabase")
 
 [node name="BlessingSelectionState" type="Node" parent="MatchFlowRoot" unique_id=1333215538]
 script = ExtResource("25_n5v11")
@@ -264,7 +263,6 @@ slots_root = NodePath("../Board")
 
 [node name="BuffDatabase" type="Node" parent="." unique_id=1175133697]
 script = ExtResource("38_i8ogu")
-buff_pool = Array[ExtResource("3_3vc3c")]([ExtResource("43_31d2k"), ExtResource("40_2ph70"), ExtResource("41_2ph70"), null])
 forbidden_mutations = Array[ExtResource("3_3vc3c")]([SubResource("Resource_cyp03"), ExtResource("44_cyp03"), ExtResource("44_3jt7k"), null])
 print_debug = false
 run_smoke_test_on_ready = false
