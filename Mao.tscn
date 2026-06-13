@@ -31,6 +31,7 @@
 [ext_resource type="Script" uid="uid://e0tr3sanyo1r" path="res://Revamp/MatchFlow/MatchAnnouncementDisplay.gd" id="27_7gy8c"]
 [ext_resource type="Script" uid="uid://dxj656ms4qeq4" path="res://Revamp/MatchFlow/MatchDominantRevealHandler.gd" id="27_a1qt2"]
 [ext_resource type="Script" uid="uid://myowbycyd18l" path="res://Revamp/MatchFlow/MatchPlacementFlowHandler.gd" id="27_mf2my"]
+[ext_resource type="Script" uid="uid://gc48h0ccwqjp" path="res://BuffSelectionState.gd" id="28_8y4qw"]
 [ext_resource type="PackedScene" uid="uid://coux8hd7esj7g" path="res://Deck_System_Root.tscn" id="28_a1qt2"]
 [ext_resource type="Script" uid="uid://b50mccoppp1lb" path="res://Revamp/MatchFlow/MatchAutoDrawHandler.gd" id="28_mf2my"]
 [ext_resource type="Script" uid="uid://cq06khkyy84o5" path="res://Revamp/DirectDamage/DirectDamageRouter.gd" id="30_venfy"]
@@ -45,6 +46,9 @@
 [ext_resource type="Resource" uid="uid://cnn0fddifxool" path="res://Mutations/MutationPresets/ColonyNest.tres" id="44_3jt7k"]
 [ext_resource type="Resource" uid="uid://b4sniy31fo50g" path="res://Mutations/MutationPresets/TouchOfDeath.tres" id="44_cyp03"]
 [ext_resource type="Texture2D" uid="uid://c8kf7vqpx34gh" path="res://Art/Mutations/Duriant_Sigil.PNG" id="44_lyfvt"]
+[ext_resource type="PackedScene" uid="uid://5qb61nfrd521" path="res://Revamp/Card/Card.tscn" id="47_31d2k"]
+[ext_resource type="Resource" uid="uid://bckromx6ufd8m" path="res://Cards/CardPresets/Escucheant.tres" id="48_cyp03"]
+[ext_resource type="Resource" uid="uid://bxfxi0h5itrdu" path="res://Cards/CardPresets/Lieutenant.tres" id="49_cyp03"]
 
 [sub_resource type="Resource" id="Resource_nllv1"]
 script = ExtResource("6_fobm3")
@@ -170,6 +174,11 @@ script = ExtResource("24_oekep")
 match_flow_root = NodePath("..")
 phase_manager = NodePath("../../PhaseManager")
 
+[node name="BuffSelectionState" type="Node" parent="MatchFlowRoot" unique_id=421083113 node_paths=PackedStringArray("debug_card", "debug_replacement_card")]
+script = ExtResource("28_8y4qw")
+debug_card = NodePath("../../Card")
+debug_replacement_card = NodePath("../../Card2")
+
 [node name="BlessingSelectionState" type="Node" parent="MatchFlowRoot" unique_id=1333215538]
 script = ExtResource("25_n5v11")
 
@@ -252,3 +261,19 @@ slots_root = NodePath("../Board")
 script = ExtResource("38_i8ogu")
 buff_pool = Array[ExtResource("3_3vc3c")]([ExtResource("43_31d2k"), ExtResource("40_2ph70"), ExtResource("41_2ph70"), null])
 forbidden_mutations = Array[ExtResource("3_3vc3c")]([SubResource("Resource_cyp03"), ExtResource("44_cyp03"), ExtResource("44_3jt7k"), null])
+print_debug = false
+run_smoke_test_on_ready = false
+
+[node name="Card" parent="." unique_id=1649731477 instance=ExtResource("47_31d2k")]
+visible = false
+position = Vector2(331, 404)
+test_data = ExtResource("48_cyp03")
+debug_buff_mutation = ExtResource("41_2ph70")
+enable_debug_buff_test = true
+
+[node name="Card2" parent="." unique_id=41946507 instance=ExtResource("47_31d2k")]
+visible = false
+position = Vector2(494, 404)
+test_data = ExtResource("49_cyp03")
+debug_buff_mutation = ExtResource("41_2ph70")
+enable_debug_buff_test = true
