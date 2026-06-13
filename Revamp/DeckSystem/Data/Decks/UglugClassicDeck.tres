@@ -1,10 +1,10 @@
 [gd_resource type="Resource" script_class="DeckDefinition" format=3 uid="uid://tl3fw51tp3sg"]
 
 [ext_resource type="Script" uid="uid://cjj3kdqxwkg4g" path="res://Revamp/DeckSystem/Deck/DeckEntry.gd" id="1_1o8w7"]
-[ext_resource type="Resource" uid="uid://kmwnulcu4tml" path="res://Cards/CardPresets/Antler.tres" id="2_106yo"]
+[ext_resource type="Resource" uid="uid://kmwnulcu4tml" path="res://Revamp/CardPresets/Antler.tres" id="2_106yo"]
 [ext_resource type="Script" uid="uid://dk3gfwlv0tpwb" path="res://Revamp/DeckSystem/Deck/DeckDefinition.gd" id="2_tanvt"]
 [ext_resource type="Resource" uid="uid://di7qn14ht770q" path="res://Revamp/DeckSystem/Data/UglugClassicStartingHand.tres" id="3_106yo"]
-[ext_resource type="Resource" uid="uid://bxfxi0h5itrdu" path="res://Cards/CardPresets/Lieutenant.tres" id="3_qbfal"]
+[ext_resource type="Resource" uid="uid://bxfxi0h5itrdu" path="res://Revamp/CardPresets/Lieutenant.tres" id="3_qbfal"]
 
 [sub_resource type="Resource" id="Resource_qbfal"]
 script = ExtResource("1_1o8w7")

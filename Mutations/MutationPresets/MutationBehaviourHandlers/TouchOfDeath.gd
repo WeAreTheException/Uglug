@@ -7,7 +7,7 @@ func on_damage_dealt(
 	target: CardRoot,
 	damage: int
 ) -> void:
-	_kill_target_if_damaged(card, target, damage)
+	await _kill_target_if_damaged(card, target, damage)
 
 
 func on_damage_dealt_context(
@@ -17,7 +17,7 @@ func on_damage_dealt_context(
 	if context == null:
 		return
 
-	_kill_target_if_damaged(
+	await _kill_target_if_damaged(
 		context.source_card,
 		context.target_card,
 		context.actual_damage
@@ -30,6 +30,9 @@ func _kill_target_if_damaged(
 	damage: int
 ) -> void:
 	if target == null:
+		return
+
+	if not is_instance_valid(target):
 		return
 
 	if damage <= 0:

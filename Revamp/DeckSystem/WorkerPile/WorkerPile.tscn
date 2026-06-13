@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cktoqlj781g24"]
 
 [ext_resource type="Script" uid="uid://be3ya854p2xh" path="res://Revamp/DeckSystem/WorkerPile/WorkerSource.gd" id="2_ickr5"]
-[ext_resource type="Resource" uid="uid://bn1jyervrnsg" path="res://Cards/CardPresets/WorkerAnt.tres" id="2_mhn3j"]
+[ext_resource type="Resource" uid="uid://bn1jyervrnsg" path="res://Revamp/CardPresets/WorkerAnt.tres" id="2_mhn3j"]
 [ext_resource type="Script" uid="uid://dlby8apvtbd8o" path="res://Revamp/DeckSystem/WorkerPile/WorkerSpawnEffectHandler.gd" id="4_ickr5"]
 [ext_resource type="Script" uid="uid://cff6om1fvlyac" path="res://Revamp/DeckSystem/WorkerPile/WorkerPileView.gd" id="4_mhn3j"]
 

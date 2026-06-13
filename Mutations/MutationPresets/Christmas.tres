@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="Christmas" format=3 uid="uid://5sahtthq2tjm"]
+
+[ext_resource type="Script" uid="uid://l6decvrb2m7b" path="res://Mutations/MutationPresets/MutationBehaviourHandlers/Christmas.gd" id="1_6qk15"]
+
+[resource]
+script = ExtResource("1_6qk15")
+mutation_name = "Christmas"
+mutation_description = "On placement grants random warrior"
+metadata/_custom_type_script = "uid://be8yk3djwb5oc"
