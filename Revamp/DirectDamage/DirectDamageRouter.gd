@@ -30,18 +30,15 @@ func request_direct_damage(
 	target_slot: Slot,
 	amount: int
 ) -> void:
-	if attacker == null:
-		return
-
 	if target_slot == null:
 		return
 
 	if amount <= 0:
 		return
 
-	var defender_owner := _get_defender_owner(target_slot)
+	var defender_owner: SlotRow.SlotOwner = _get_defender_owner(target_slot)
 
-	var context := DirectDamageContext.new()
+	var context: DirectDamageContext = DirectDamageContext.new()
 	context.setup(
 		attacker,
 		attacker_owner,
@@ -50,10 +47,16 @@ func request_direct_damage(
 		amount
 	)
 
-	await _resolve_direct_damage(context)
+	var pending_deaths: Array[CardRoot] = []
+
+	await _resolve_direct_damage(context, pending_deaths)
+	await _resolve_death_if_needed(attacker)
 
 
-func _resolve_direct_damage(context: DirectDamageContext) -> void:
+func _resolve_direct_damage(
+	context: DirectDamageContext,
+	pending_deaths: Array[CardRoot]
+) -> void:
 	if context == null:
 		return
 
@@ -67,25 +70,25 @@ func _resolve_direct_damage(context: DirectDamageContext) -> void:
 		context.amount
 	)
 
-	var interceptor := _find_direct_damage_interceptor(context)
+	var interceptor: CardRoot = _find_direct_damage_interceptor(context)
 
 	if interceptor != null:
-		await _apply_interception(context, interceptor)
+		await _apply_interception(context, interceptor, pending_deaths)
 		return
 
-	_apply_score_damage(context)
+	await _resolve_pending_deaths(pending_deaths)
+	await _apply_score_damage(context)
 
 
 func _apply_interception(
 	context: DirectDamageContext,
-	interceptor: CardRoot
+	interceptor: CardRoot,
+	pending_deaths: Array[CardRoot]
 ) -> void:
 	if not _is_live_card(interceptor):
-		_apply_score_damage(context)
+		await _resolve_pending_deaths(pending_deaths)
+		await _apply_score_damage(context)
 		return
-
-	var health_before: int = _get_card_health(interceptor)
-	var overflow: int = max(context.amount - health_before, 0)
 
 	context.was_intercepted = true
 	context.interceptor_card = interceptor
@@ -102,32 +105,121 @@ func _apply_interception(
 	if interceptor.mutations != null:
 		interceptor.mutations.notify_direct_damage_intercepted(context)
 
-	if interceptor.hurt != null:
-		context.actual_damage_to_interceptor = await interceptor.hurt.play_hurt(
-			context.amount,
-			context.attacker
-		)
+	context.actual_damage_to_interceptor = await _hurt_interceptor_without_auto_death(
+		context,
+		interceptor
+	)
 
-	if context.attacker != null and context.attacker.mutations != null:
-		context.attacker.mutations.notify_damage_dealt(
-			interceptor,
-			context.actual_damage_to_interceptor
-		)
+	if _should_resolve_later(interceptor):
+		_add_pending_death(interceptor, pending_deaths)
+
+	if context.attacker != null and is_instance_valid(context.attacker):
+		if context.attacker.mutations != null:
+			context.attacker.mutations.notify_damage_dealt(
+				interceptor,
+				context.actual_damage_to_interceptor
+			)
 
 	direct_damage_intercepted.emit(interceptor, context.amount)
 
-	if overflow > 0:
-		var overflow_context := DirectDamageContext.new()
-		overflow_context.setup(
-			context.attacker,
-			context.attacker_owner,
-			context.defender_owner,
-			context.target_slot,
-			overflow
-		)
-		overflow_context.copy_ignored_interceptors_from(context)
+	var overflow: int = max(context.amount - context.actual_damage_to_interceptor, 0)
 
-		await _resolve_direct_damage(overflow_context)
+	if overflow <= 0:
+		await _resolve_pending_deaths(pending_deaths)
+		return
+
+	var overflow_context: DirectDamageContext = DirectDamageContext.new()
+	overflow_context.setup(
+		context.attacker,
+		context.attacker_owner,
+		context.defender_owner,
+		context.target_slot,
+		overflow
+	)
+	overflow_context.copy_ignored_interceptors_from(context)
+
+	await _resolve_direct_damage(overflow_context, pending_deaths)
+
+
+func _hurt_interceptor_without_auto_death(
+	context: DirectDamageContext,
+	interceptor: CardRoot
+) -> int:
+	if interceptor == null:
+		return 0
+
+	if not is_instance_valid(interceptor):
+		return 0
+
+	if interceptor.hurt == null:
+		return 0
+
+	var original_resolve_death: bool = interceptor.hurt.resolve_death_on_hurt_finish
+	interceptor.hurt.resolve_death_on_hurt_finish = false
+
+	var actual_damage: int = await interceptor.hurt.play_hurt(
+		context.amount,
+		context.attacker
+	)
+
+	if is_instance_valid(interceptor) and interceptor.hurt != null:
+		interceptor.hurt.resolve_death_on_hurt_finish = original_resolve_death
+
+	return actual_damage
+
+
+func _resolve_pending_deaths(pending_deaths: Array[CardRoot]) -> void:
+	while not pending_deaths.is_empty():
+		var card: CardRoot = pending_deaths.pop_front() as CardRoot
+		await _resolve_death_if_needed(card)
+
+
+func _add_pending_death(
+	card: CardRoot,
+	pending_deaths: Array[CardRoot]
+) -> void:
+	if card == null:
+		return
+
+	if not is_instance_valid(card):
+		return
+
+	if pending_deaths.has(card):
+		return
+
+	pending_deaths.append(card)
+
+
+func _should_resolve_later(card: CardRoot) -> bool:
+	if card == null:
+		return false
+
+	if not is_instance_valid(card):
+		return false
+
+	if card.stats == null:
+		return false
+
+	return card.stats.is_dead()
+
+
+func _resolve_death_if_needed(card: CardRoot) -> void:
+	if card == null:
+		return
+
+	if not is_instance_valid(card):
+		return
+
+	if card.stats == null:
+		return
+
+	if not card.stats.is_dead():
+		return
+
+	if card.die == null:
+		return
+
+	await card.die.play_die()
 
 
 func _apply_score_damage(context: DirectDamageContext) -> void:
@@ -140,7 +232,7 @@ func _apply_score_damage(context: DirectDamageContext) -> void:
 		)
 
 	if slots_root != null:
-		slots_root.show_direct_damage_feedback(context.target_slot)
+		await slots_root.show_direct_damage_feedback(context.target_slot)
 
 	if score_state == null:
 		return
@@ -163,8 +255,8 @@ func _find_direct_damage_interceptor(
 	if slots_root == null:
 		return null
 
-	var slots := slots_root.get_slots_for_owner(context.defender_owner)
-	var left_to_right := true
+	var slots: Array[Slot] = slots_root.get_slots_for_owner(context.defender_owner)
+	var left_to_right: bool = true
 
 	if slots_root.attack_order_handler != null:
 		left_to_right = slots_root.attack_order_handler.get_left_to_right(
@@ -174,11 +266,11 @@ func _find_direct_damage_interceptor(
 	if not left_to_right:
 		slots.reverse()
 
-	for slot in slots:
+	for slot: Slot in slots:
 		if slot == null:
 			continue
 
-		var card := slot.current_card
+		var card: CardRoot = slot.current_card
 
 		if not _can_card_intercept(card, context):
 			continue
@@ -211,6 +303,9 @@ func _is_live_card(card: CardRoot) -> bool:
 	if not is_instance_valid(card):
 		return false
 
+	if card.die != null and card.die.is_unavailable_for_combat():
+		return false
+
 	if card.stats == null:
 		return true
 
@@ -218,24 +313,6 @@ func _is_live_card(card: CardRoot) -> bool:
 		return not card.stats.is_dead()
 
 	return true
-
-
-func _get_card_health(card: CardRoot) -> int:
-	if card == null:
-		return 0
-
-	if card.stats == null:
-		return 0
-
-	if card.stats.has_method("get_health"):
-		return int(card.stats.get_health())
-
-	var raw_health: Variant = card.stats.get("health")
-
-	if raw_health is int:
-		return int(raw_health)
-
-	return 0
 
 
 func _get_defender_owner(target_slot: Slot) -> SlotRow.SlotOwner:

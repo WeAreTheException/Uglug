@@ -11,8 +11,8 @@ signal attack_order_finished
 @export var opponent_left_to_right: bool = true
 
 var slots_root: SlotsRoot = null
-var is_running: bool = false
-var stop_requested: bool = false
+var is_running := false
+var stop_requested := false
 
 
 func setup(source_slots_root: SlotsRoot) -> void:
@@ -56,12 +56,9 @@ func run_attack_order(slot_owner: SlotRow.SlotOwner) -> void:
 		if stop_requested:
 			break
 
-		var card: CardRoot = _get_valid_card_from_entry(entry)
+		var card: CardRoot = _get_valid_card_from_entry(entry, slot_owner)
 
 		if card == null:
-			continue
-
-		if card.attack == null:
 			continue
 
 		await card.attack.perform_attack()
@@ -93,6 +90,9 @@ func _build_attack_entries(slot_owner: SlotRow.SlotOwner) -> Array[Dictionary]:
 
 		var card := slot.current_card
 
+		if not _is_card_attack_ready(card):
+			continue
+
 		entries.append({
 			"slot": slot,
 			"slot_index": slot.slot_index,
@@ -102,7 +102,10 @@ func _build_attack_entries(slot_owner: SlotRow.SlotOwner) -> Array[Dictionary]:
 	return entries
 
 
-func _get_valid_card_from_entry(entry: Dictionary) -> CardRoot:
+func _get_valid_card_from_entry(
+	entry: Dictionary,
+	expected_owner: SlotRow.SlotOwner
+) -> CardRoot:
 	if not entry.has("slot"):
 		return null
 
@@ -114,15 +117,40 @@ func _get_valid_card_from_entry(entry: Dictionary) -> CardRoot:
 	if not is_instance_valid(slot):
 		return null
 
-	var card := slot.current_card
-
-	if card == null:
+	if slots_root.get_owner_of_slot(slot) != expected_owner:
 		return null
 
-	if not is_instance_valid(card):
+	var card := slot.current_card
+
+	if not _is_card_attack_ready(card):
+		return null
+
+	if card.get_current_slot() != slot:
 		return null
 
 	return card
+
+
+func _is_card_attack_ready(card: CardRoot) -> bool:
+	if card == null:
+		return false
+
+	if not is_instance_valid(card):
+		return false
+
+	if card.attack == null:
+		return false
+
+	if card.die != null and card.die.is_unavailable_for_combat():
+		return false
+
+	if card.stats != null and card.stats.is_dead():
+		return false
+
+	if card.get_current_slot() == null:
+		return false
+
+	return true
 
 
 func _sort_attack_entries(

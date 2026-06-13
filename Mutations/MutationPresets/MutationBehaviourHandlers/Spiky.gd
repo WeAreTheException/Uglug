@@ -34,6 +34,9 @@ func _counter_attack(
 	if attacker == null:
 		return
 
+	if not is_instance_valid(attacker):
+		return
+
 	if damage <= 0:
 		return
 
@@ -43,8 +46,14 @@ func _counter_attack(
 	if attacker.hurt == null:
 		return
 
+	var original_resolve_death := attacker.hurt.resolve_death_on_hurt_finish
+	attacker.hurt.resolve_death_on_hurt_finish = false
+
 	await attacker.hurt.play_hurt(
 		counter_damage,
 		card,
 		false
 	)
+
+	if is_instance_valid(attacker) and attacker.hurt != null:
+		attacker.hurt.resolve_death_on_hurt_finish = original_resolve_death
