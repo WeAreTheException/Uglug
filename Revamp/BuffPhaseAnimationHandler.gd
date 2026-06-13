@@ -35,6 +35,13 @@ func play_reward_delivery(mutation: Mutation) -> void:
 	await _spawn_and_animate_reward(mutation)
 
 
+func hide_reward_display() -> void:
+	if active_reward_display != null and is_instance_valid(active_reward_display):
+		active_reward_display.queue_free()
+
+	active_reward_display = null
+
+
 func cleanup() -> void:
 	if active_tween != null:
 		active_tween.kill()
@@ -43,11 +50,9 @@ func cleanup() -> void:
 	if active_draggers != null and is_instance_valid(active_draggers):
 		active_draggers.queue_free()
 
-	if active_reward_display != null and is_instance_valid(active_reward_display):
-		active_reward_display.queue_free()
+	hide_reward_display()
 
 	active_draggers = null
-	active_reward_display = null
 
 
 func get_active_reward_display() -> LarvaeRewardDisplay:
