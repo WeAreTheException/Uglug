@@ -19,6 +19,8 @@ signal card_placed(event: Dictionary)
 @export var event_emitter: PlacementEventEmitter
 @export var placement_cancel: PlacementCancel
 
+@export var enable_right_click_cancel: bool = true
+
 var slot_resolver := PlacementSlotResolverHelper.new()
 var slot_validator := PlacementSlotValidatorHelper.new()
 var setup_helper := PlacementControllerSetupHelper.new()
@@ -29,6 +31,21 @@ var confirm_flow := PlacementConfirmFlowHelper.new()
 func _ready() -> void:
 	setup_helper.setup_children(self)
 	setup_helper.connect_external_signals(self)
+
+
+func _input(event: InputEvent) -> void:
+	if not enable_right_click_cancel:
+		return
+
+	if not is_placing():
+		return
+
+	if is_confirming():
+		return
+
+	if event is InputEventMouseButton:
+		if event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
+			cancel_placement(true)
 
 
 func start_placement(card: CardRoot, owner: SlotRow.SlotOwner) -> void:
