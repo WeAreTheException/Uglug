@@ -10,7 +10,10 @@
 [ext_resource type="Texture2D" uid="uid://7ekuxdrk3yyj" path="res://Art/Background/BG_Treeline.png" id="7_33ddm"]
 [ext_resource type="Texture2D" uid="uid://t7xaf0ur302a" path="res://Art/Background/BG_Trees.png" id="8_hmkl7"]
 [ext_resource type="Texture2D" uid="uid://bq163o0yr7tcm" path="res://Art/Background/BG_Yello.jpg" id="9_ac0qm"]
+[ext_resource type="Shader" uid="uid://delptby1cxouw" path="res://Revamp/Board/Vibrate.gdshader" id="9_k61qs"]
+[ext_resource type="Texture2D" uid="uid://byxxi08f7ymhu" path="res://Art/Background/BG_Noise.jpg" id="10_hcsqr"]
 [ext_resource type="PackedScene" uid="uid://rir2t85e314a" path="res://Mao_UI_Mockup.tscn" id="10_nib0g"]
+[ext_resource type="Texture2D" uid="uid://o3wqjykmhhv0" path="res://Art/Background/BG_Vines.png" id="10_ou7fi"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_c3ppa"]
 shader = ExtResource("2_b10xy")
@@ -28,18 +31,33 @@ shader_parameter/is_rotating = false
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_k61qs"]
 shader = ExtResource("4_06tnx")
-shader_parameter/waveAmplitude = 0.1250000059375
+shader_parameter/waveAmplitude = 0.0850000040375
 shader_parameter/correctVertex = true
-shader_parameter/waveFrequency = 27.7630013187425
+shader_parameter/waveFrequency = 15.0000007125
 shader_parameter/verticalWave = true
 shader_parameter/keepTransparency = true
 shader_parameter/useTime = true
-shader_parameter/waveSpeed = 1.0000000475
+shader_parameter/waveSpeed = 0.70000003325
 shader_parameter/progress = 0.0
 shader_parameter/firstHalf = 0.5
 shader_parameter/secondHalf = 0.5
 shader_parameter/freezeFirstHalf = false
 shader_parameter/freezeSecondHalf = false
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hcsqr"]
+shader = ExtResource("9_k61qs")
+shader_parameter/pixel_mode = false
+shader_parameter/pixel_amount = 32.0
+shader_parameter/distortion = 0.002000000095
+shader_parameter/texture_noise_system = true
+shader_parameter/noise_speed = 0.05
+shader_parameter/noise_direction = 1
+shader_parameter/noise_texture = ExtResource("10_hcsqr")
+shader_parameter/worley_noise_system = false
+shader_parameter/worley_cell_density = 10.0
+shader_parameter/worley_speed = 2.0
+shader_parameter/edge_and_mask = false
+shader_parameter/alpha_value = 1.0
 
 [node name="Background" type="Node2D" unique_id=40767625]
 
@@ -52,7 +70,7 @@ texture = ExtResource("1_efcvh")
 expand_mode = 1
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=1914754656]
-modulate = Color(1, 1, 1, 0.27450982)
+modulate = Color(1, 1, 1, 0.11372549)
 material = SubResource("ShaderMaterial_c3ppa")
 offset_right = 1920.0
 offset_bottom = 1080.0
@@ -86,6 +104,13 @@ expand_mode = 1
 offset_right = 1920.0
 offset_bottom = 1080.0
 texture = ExtResource("7_33ddm")
+expand_mode = 1
+
+[node name="Vines" type="TextureRect" parent="CanvasLayer" unique_id=612017505]
+material = SubResource("ShaderMaterial_hcsqr")
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("10_ou7fi")
 expand_mode = 1
 
 [node name="Trees" type="TextureRect" parent="CanvasLayer" unique_id=772493415]
