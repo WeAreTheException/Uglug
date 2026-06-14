@@ -17,6 +17,8 @@ var is_enabled: bool = false
 var is_drag_multi_selecting: bool = false
 var drag_seen_cards: Array[CardRoot] = []
 
+var worth_limit := HandSacrificeWorthLimitHelper.new()
+
 
 func setup(source_card_spawner: Hand_CardSpawner) -> void:
 	card_spawner = source_card_spawner
@@ -94,6 +96,9 @@ func select_card(card: CardRoot) -> void:
 		return
 
 	if not _is_card_in_hand(card):
+		return
+
+	if worth_limit.would_over_select(card, primed_card, selected_cards):
 		return
 
 	selected_cards.append(card)

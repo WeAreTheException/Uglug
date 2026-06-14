@@ -59,7 +59,8 @@ script = ExtResource("10_4g7iw")
 
 [node name="Hand_PlayLayout" type="Node2D" parent="Hand_Layout" unique_id=614443051]
 script = ExtResource("11_hl46v")
-card_spacing = 130.0
+card_spacing = 140.0
+target_scale = Vector2(1, 1)
 y_offset = 10.0
 
 [node name="Hand_LayoutTweener" type="Node2D" parent="Hand_Layout" unique_id=460038037]
