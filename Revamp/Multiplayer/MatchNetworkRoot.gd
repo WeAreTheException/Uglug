@@ -15,19 +15,15 @@ func _ready() -> void:
 
 
 func is_host() -> bool:
-	return multiplayer.is_server()
+	return GDSync.is_host()
 
 
 func is_client() -> bool:
-	return not multiplayer.is_server()
+	return not GDSync.is_host()
 
 
 func get_local_client_id() -> int:
-	return multiplayer.get_unique_id()
-
-
-func get_local_owner() -> SlotRow.SlotOwner:
-	return local_owner
+	return GDSync.get_client_id()
 
 
 func _assign_local_owner() -> void:
