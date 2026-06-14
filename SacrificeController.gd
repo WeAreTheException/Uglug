@@ -115,7 +115,7 @@ func commit_pending_sacrifice() -> void:
 	is_committing = false
 
 	sacrifice_committed.emit(cards)
-	_update_warning()
+	_hide_warning()
 	_update_requirement_state()
 
 
@@ -135,6 +135,7 @@ func _begin_pending_sacrifice(
 	is_processing = true
 
 	var entries: Array[Dictionary] = []
+	var has_pending_revenant := _cards_include_revenant(selected_cards)
 
 	for card in selected_cards:
 		if card == null:
@@ -156,9 +157,13 @@ func _begin_pending_sacrifice(
 		})
 
 	player_hand.clear_sacrifice_selection()
-	_hide_warning()
 
 	var pending_cards := pending_boat.begin_pending(primed_card, entries)
+
+	if has_pending_revenant:
+		_show_warning()
+	else:
+		_hide_warning()
 
 	is_processing = false
 
@@ -188,6 +193,9 @@ func _on_sacrifice_requested(
 
 
 func _on_selection_changed(_cards: Array[CardRoot]) -> void:
+	if is_processing:
+		return
+
 	_update_warning()
 	_update_requirement_state()
 	_try_auto_sacrifice()
@@ -218,9 +226,22 @@ func _update_warning() -> void:
 	revenant_warning.update_for_cards(_get_selected_cards())
 
 
+func _show_warning() -> void:
+	if revenant_warning != null:
+		revenant_warning.show_warning()
+
+
 func _hide_warning() -> void:
 	if revenant_warning != null:
 		revenant_warning.hide_warning()
+
+
+func _cards_include_revenant(cards: Array[CardRoot]) -> bool:
+	for card in cards:
+		if card != null and card.is_revenant():
+			return true
+
+	return false
 
 
 func _update_requirement_state() -> void:
