@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://di12gxvqynhg7"]
 
-[ext_resource type="Script" uid="uid://cqpja31colbyv" path="res://Revamp/LarvaeDraggers.gd" id="1_xfe40"]
+[ext_resource type="Script" uid="uid://cqpja31colbyv" path="res://Revamp/Buff/LarvaeDraggers.gd" id="1_xfe40"]
 [ext_resource type="Texture2D" uid="uid://cgs5k6p3mggyf" path="res://Art/Ants/AntSprite.png" id="2_1ip7o"]
 
 [node name="LarvaeDraggers" type="Node2D" unique_id=1825003288 node_paths=PackedStringArray("larvae_anchor")]
