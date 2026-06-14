@@ -21,9 +21,8 @@ signal sacrifice_selection_changed(cards: Array[CardRoot])
 @export var drag_layer: Node2D
 @export var prime_location: Node2D
 
-@export var prime_button_root: Node
-@export var sort_buttons_root: Node
-@export var sacrifice_button_root: Node
+@export var cost_sort: BaseButton
+@export var mutation_sort: BaseButton
 
 @export var card_spawner: Hand_CardSpawner
 @export var hand_layout: Hand_Layout
