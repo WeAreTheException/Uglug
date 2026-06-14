@@ -23,12 +23,12 @@ card_scene = ExtResource("5_1gkk1")
 attack_animation_layer = NodePath("AttackAnimationLayer")
 
 [node name="BoardCardsLayer" type="Node2D" parent="." unique_id=1962797662]
+position = Vector2(564, 240)
 
 [node name="OpponentRow" type="Node2D" parent="BoardCardsLayer" unique_id=211964924]
-position = Vector2(348, 108)
+position = Vector2(348, 84)
 script = ExtResource("2_2k41x")
 slot_owner = 1
-metadata/_edit_lock_ = true
 
 [node name="OP_Slot1" parent="BoardCardsLayer/OpponentRow" unique_id=904478857 instance=ExtResource("8_s3p7v")]
 position = Vector2(-276, 0)
@@ -46,9 +46,8 @@ position = Vector2(264, 0)
 slot_index = 4
 
 [node name="PlayerRow" type="Node2D" parent="BoardCardsLayer" unique_id=604740611]
-position = Vector2(336, 360)
+position = Vector2(336, 336)
 script = ExtResource("2_2k41x")
-metadata/_edit_lock_ = true
 
 [node name="PL_Slot1" parent="BoardCardsLayer/PlayerRow" unique_id=1917887040 instance=ExtResource("8_s3p7v")]
 position = Vector2(-264, 0)
@@ -66,6 +65,7 @@ position = Vector2(276, 0)
 slot_index = 4
 
 [node name="AttackAnimationLayer" type="Node2D" parent="." unique_id=2016446847]
+position = Vector2(564, 264)
 
 [node name="AttackOrderHandler" type="Node" parent="." unique_id=381521499]
 script = ExtResource("9_1gkk1")

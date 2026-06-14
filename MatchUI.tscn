@@ -1,0 +1,312 @@
+[gd_scene format=3 uid="uid://c1vh316hdjlc"]
+
+[ext_resource type="Texture2D" uid="uid://cgs5k6p3mggyf" path="res://Art/Ants/AntSprite.png" id="2_hioxb"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nco33"]
+bg_color = Color(0.86036915, 0.8603692, 0.8603691, 1)
+corner_radius_top_left = 25
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l0x2u"]
+bg_color = Color(0.85882354, 0.85882354, 0.85882354, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hioxb"]
+bg_color = Color(0.13, 0.122394994, 0.11829999, 0.5764706)
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2wytx"]
+bg_color = Color(0.16924527, 0.1692453, 0.16924527, 0.9098039)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wfaws"]
+bg_color = Color(0.07300001, 0.091, 0.1, 0.6862745)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.792, 0.9, 0.8964, 0.6313726)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6pi27"]
+bg_color = Color(0.16169998, 0.77, 0.50640327, 0.47843137)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.2392, 0.92, 0.54556006, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ioqil"]
+bg_color = Color(0.47, 0.1175, 0.17625012, 0.42352942)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.8291633, 0.14043778, 0.35698447, 1)
+
+[node name="MatchUI" type="Node2D" unique_id=495517401]
+
+[node name="AttackOrderArrow" type="Node2D" parent="." unique_id=1478535642]
+
+[node name="Left2Right" type="Panel" parent="AttackOrderArrow" unique_id=1940495874]
+offset_left = 540.0
+offset_top = 444.0
+offset_right = 1276.0
+offset_bottom = 456.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_nco33")
+
+[node name="Arrowhead" type="Panel" parent="AttackOrderArrow/Left2Right" unique_id=345086967]
+layout_mode = 0
+offset_left = 736.0001
+offset_top = -14.0
+offset_right = 760.0001
+offset_bottom = 10.0
+rotation = 0.7853982
+pivot_offset = Vector2(0, 12)
+theme_override_styles/panel = SubResource("StyleBoxFlat_l0x2u")
+
+[node name="Right2Left" type="Panel" parent="AttackOrderArrow" unique_id=1965078982]
+offset_left = 1292.0
+offset_top = 460.0
+offset_right = 2028.0
+offset_bottom = 472.0
+rotation = -3.1414156
+theme_override_styles/panel = SubResource("StyleBoxFlat_nco33")
+
+[node name="Arrowhead" type="Panel" parent="AttackOrderArrow/Right2Left" unique_id=2074681242]
+layout_mode = 0
+offset_left = 736.0001
+offset_top = -14.0
+offset_right = 760.0001
+offset_bottom = 10.0
+rotation = 0.7853982
+pivot_offset = Vector2(0, 12)
+theme_override_styles/panel = SubResource("StyleBoxFlat_l0x2u")
+
+[node name="PhaseStuff" type="Node2D" parent="." unique_id=2006450215]
+metadata/_edit_lock_ = true
+
+[node name="PhaseBacking" type="Panel" parent="PhaseStuff" unique_id=1154688713]
+offset_left = 1368.0
+offset_top = 780.0
+offset_right = 1572.0
+offset_bottom = 909.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_hioxb")
+
+[node name="PhaseTitle" type="Label" parent="PhaseStuff" unique_id=1798120103]
+offset_left = 1408.0
+offset_top = 781.0
+offset_right = 1536.0
+offset_bottom = 815.0
+pivot_offset = Vector2(48, 0)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "PHASE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PhaseTimer" type="Label" parent="PhaseStuff" unique_id=1945348755]
+offset_left = 1408.0
+offset_top = 815.0
+offset_right = 1535.0
+offset_bottom = 903.0
+pivot_offset = Vector2(63.5, 0)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 64
+text = "1:33"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="EndButton" type="Button" parent="PhaseStuff" unique_id=1488200212]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 1368.0
+offset_top = 696.0
+offset_right = 1572.0
+offset_bottom = 768.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 36
+text = "End Turn
+"
+metadata/_edit_lock_ = true
+
+[node name="SortButtons" type="Node2D" parent="." unique_id=960620408]
+
+[node name="CostSortButton" type="Button" parent="SortButtons" unique_id=1619167868]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 420.0
+offset_top = 858.0
+offset_right = 564.0
+offset_bottom = 900.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 24
+text = "Cost
+"
+
+[node name="MutationSortButton" type="Button" parent="SortButtons" unique_id=919931295]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 420.0
+offset_top = 912.0
+offset_right = 564.0
+offset_bottom = 954.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 24
+text = "Mutation
+"
+metadata/_edit_lock_ = true
+
+[node name="InitatorStuff" type="Node2D" parent="." unique_id=1780550570]
+
+[node name="InitiatorBacking" type="Panel" parent="InitatorStuff" unique_id=1921646166]
+offset_left = 540.0
+offset_top = 708.0
+offset_right = 1308.0
+offset_bottom = 742.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_2wytx")
+
+[node name="InitiatorNAme" type="Label" parent="InitatorStuff" unique_id=817725613]
+offset_left = 540.0
+offset_top = 708.0
+offset_right = 1308.0
+offset_bottom = 740.0
+pivot_offset = Vector2(48, 0)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 18
+text = "P1 ATTACKS FIRST"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TuggaStuff" type="Node2D" parent="." unique_id=748572851]
+
+[node name="TuggaBacking" type="Panel" parent="TuggaStuff" unique_id=1023558863]
+offset_left = 480.0
+offset_top = 64.0
+offset_right = 1376.0
+offset_bottom = 160.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_hioxb")
+
+[node name="SugarRim" type="Panel" parent="TuggaStuff/TuggaBacking" unique_id=71699811]
+layout_mode = 0
+offset_left = 448.00012
+offset_right = 528.0001
+offset_bottom = 80.0
+rotation = 0.7853982
+theme_override_styles/panel = SubResource("StyleBoxFlat_wfaws")
+
+[node name="PlayerPips" type="Node2D" parent="TuggaStuff/TuggaBacking" unique_id=1620525660]
+position = Vector2(454, 32)
+
+[node name="Host1" type="Panel" parent="TuggaStuff/TuggaBacking/PlayerPips" unique_id=1011494438]
+offset_left = -134.0
+offset_right = -94.0
+offset_bottom = 40.0
+rotation = 0.7853982
+theme_override_styles/panel = SubResource("StyleBoxFlat_6pi27")
+
+[node name="Host2" type="Panel" parent="TuggaStuff/TuggaBacking/PlayerPips" unique_id=145845343]
+offset_left = -389.99994
+offset_right = -349.99994
+offset_bottom = 40.0
+rotation = 0.7853982
+theme_override_styles/panel = SubResource("StyleBoxFlat_6pi27")
+
+[node name="Host3" type="Panel" parent="TuggaStuff/TuggaBacking/PlayerPips" unique_id=1327987164]
+offset_left = -329.7157
+offset_right = -289.7157
+offset_bottom = 40.0
+rotation = 0.7853982
+theme_override_styles/panel = SubResource("StyleBoxFlat_6pi27")
+
+[node name="Host4" type="Panel" parent="TuggaStuff/TuggaBacking/PlayerPips" unique_id=169435385]
+offset_left = -265.7157
+offset_right = -225.7157
+offset_bottom = 40.0
+rotation = 0.7853982
+theme_override_styles/panel = SubResource("StyleBoxFlat_6pi27")
+
+[node name="Host5" type="Panel" parent="TuggaStuff/TuggaBacking/PlayerPips" unique_id=531727341]
+offset_left = -201.7157
+offset_right = -161.7157
+offset_bottom = 40.0
+rotation = 0.7853982
+theme_override_styles/panel = SubResource("StyleBoxFlat_6pi27")
+
+[node name="OpponentPips" type="Node2D" parent="TuggaStuff/TuggaBacking" unique_id=638919662]
+position = Vector2(454, 32)
+
+[node name="Opponent1" type="Panel" parent="TuggaStuff/TuggaBacking/OpponentPips" unique_id=51015056]
+offset_left = 118.28427
+offset_right = 158.28427
+offset_bottom = 40.000008
+rotation = 0.7853982
+theme_override_styles/panel = SubResource("StyleBoxFlat_ioqil")
+
+[node name="Opponent2" type="Panel" parent="TuggaStuff/TuggaBacking/OpponentPips" unique_id=1595004642]
+offset_left = 178.56851
+offset_right = 218.56851
+offset_bottom = 40.000008
+rotation = 0.7853982
+theme_override_styles/panel = SubResource("StyleBoxFlat_ioqil")
+
+[node name="Opponent3" type="Panel" parent="TuggaStuff/TuggaBacking/OpponentPips" unique_id=537687146]
+offset_left = 242.56851
+offset_right = 282.5685
+offset_bottom = 40.000008
+rotation = 0.7853982
+theme_override_styles/panel = SubResource("StyleBoxFlat_ioqil")
+
+[node name="Opponent4" type="Panel" parent="TuggaStuff/TuggaBacking/OpponentPips" unique_id=937209590]
+offset_left = 306.5685
+offset_right = 346.5685
+offset_bottom = 40.000008
+rotation = 0.7853982
+theme_override_styles/panel = SubResource("StyleBoxFlat_ioqil")
+
+[node name="Opponent5" type="Panel" parent="TuggaStuff/TuggaBacking/OpponentPips" unique_id=1478536480]
+offset_left = 374.2842
+offset_right = 414.2842
+offset_bottom = 40.000008
+rotation = 0.7853982
+theme_override_styles/panel = SubResource("StyleBoxFlat_ioqil")
+
+[node name="Player" type="Sprite2D" parent="." unique_id=2000681045]
+position = Vector2(347.99988, 180)
+scale = Vector2(0.13109249, 0.123711355)
+texture = ExtResource("2_hioxb")
+
+[node name="PlayerName" type="TextEdit" parent="." unique_id=1805308345]
+offset_left = 276.0
+offset_top = 240.0
+offset_right = 420.0
+offset_bottom = 288.0
+placeholder_text = "Swagsterdevil"
+
+[node name="Enemy" type="Node2D" parent="." unique_id=1937094296]
+
+[node name="Enemy" type="Sprite2D" parent="Enemy" unique_id=1971120593]
+position = Vector2(1506.0001, 180)
+scale = Vector2(0.13109249, 0.12371134)
+texture = ExtResource("2_hioxb")
+
+[node name="EnemyName" type="TextEdit" parent="Enemy" unique_id=1756216035]
+offset_left = 1428.0
+offset_top = 240.0
+offset_right = 1584.0
+offset_bottom = 288.0
+placeholder_text = "Swagsterdevil"
