@@ -140,10 +140,12 @@ func _get_target_scale() -> Vector2:
 
 
 func _get_y_offset() -> float:
-	if current_mode != LayoutMode.BLESSING:
+	var layout := _get_active_layout()
+
+	if layout == null:
 		return 0.0
 
-	if blessing_layout == null:
-		return 0.0
+	if "y_offset" in layout:
+		return layout.y_offset
 
-	return blessing_layout.y_offset
+	return 0.0

@@ -7,6 +7,7 @@ signal pending_taken(cards: Array[CardRoot])
 
 @export var pending_layer: Node2D
 @export var hide_cards_while_pending: bool = false
+@export var move_cards_to_pending_layer: bool = false
 
 var pending_primed_card: CardRoot = null
 var pending_entries: Array[Dictionary] = []
@@ -49,7 +50,7 @@ func undo_pending() -> Array[Dictionary]:
 			continue
 
 		card.visible = true
-		card.set_pending_sacrifice(false)
+		card.reset_sacrifice_feedback()
 		cards.append(card)
 
 	var old_primed := pending_primed_card
@@ -78,7 +79,7 @@ func take_pending_cards() -> Array[CardRoot]:
 
 
 func has_pending() -> bool:
-	return not pending_entries.is_empty()
+	return pending_primed_card != null
 
 
 func get_pending_primed_card() -> CardRoot:
@@ -86,12 +87,10 @@ func get_pending_primed_card() -> CardRoot:
 
 
 func _prepare_card_for_pending(card: CardRoot) -> void:
-	card.set_sacrifice_selected(false)
-	card.stop_sacrifice_anticipation()
 	card.clear_hand_feedback()
 	card.set_pending_sacrifice(true)
 
-	if pending_layer != null:
+	if move_cards_to_pending_layer and pending_layer != null:
 		_move_card_to_layer(card, pending_layer)
 
 	card.visible = not hide_cards_while_pending
