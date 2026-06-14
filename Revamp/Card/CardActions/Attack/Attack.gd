@@ -127,6 +127,13 @@ func _can_attack() -> bool:
 	if card == null:
 		return false
 
+	if card.stats == null:
+		print("attack blocked: card stats missing")
+		return false
+
+	if card.stats.get_attack() <= 0:
+		return false
+
 	if slots_root == null:
 		print("attack blocked: slots_root missing")
 		return false

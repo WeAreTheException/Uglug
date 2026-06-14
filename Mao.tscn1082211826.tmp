@@ -1,0 +1,395 @@
+[gd_scene format=3 uid="uid://hbyxts155x0r"]
+
+[ext_resource type="PackedScene" uid="uid://c1vh316hdjlc" path="res://Revamp/MatchUI/MatchUI.tscn" id="1_2n6q5"]
+[ext_resource type="PackedScene" uid="uid://bw8c7m7n5yuk8" path="res://Revamp/Board/Slots.tscn" id="1_yq750"]
+[ext_resource type="PackedScene" uid="uid://1wr1e57v7trd" path="res://Revamp/PlayerHand/Player_Hand.tscn" id="2_mi1n2"]
+[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="3_3vc3c"]
+[ext_resource type="Script" uid="uid://bxbqihkit6rgo" path="res://Managers/Phasemanager.gd" id="8_cc2no"]
+[ext_resource type="Script" uid="uid://bbcig486utsir" path="res://HandPhaseApplier.gd" id="9_cc2no"]
+[ext_resource type="Script" uid="uid://61l5g8wkdar3" path="res://SacrificeController.gd" id="10_1j514"]
+[ext_resource type="Script" uid="uid://db4xai716j06p" path="res://Revamp/Card/CardActions/Sacrifice/SacrificeSelectionRoot.gd" id="11_5f7hr"]
+[ext_resource type="Script" uid="uid://ciopi88keoi3k" path="res://SacrificeRequirement.gd" id="11_at0h8"]
+[ext_resource type="Script" uid="uid://b3pcelfs57qav" path="res://Revamp/Card/CardActions/Sacrifice/SacrificeBoardSelectionBinder.gd" id="12_3j6fp"]
+[ext_resource type="Script" uid="uid://b4qvc7353obir" path="res://PendingSacrificeBoat.gd" id="12_30x73"]
+[ext_resource type="Script" uid="uid://vmy04gllke53" path="res://SacrificeCommitter.gd" id="13_6ula3"]
+[ext_resource type="Script" uid="uid://dnikkosq1o0kr" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementController.gd" id="13_ubws4"]
+[ext_resource type="Script" uid="uid://cvkghlt7xdj22" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementState.gd" id="14_5sdof"]
+[ext_resource type="Script" uid="uid://dsut7kstdcc6u" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementInputRouter.gd" id="15_20kdy"]
+[ext_resource type="Script" uid="uid://6ycktn6tay80" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementPreview.gd" id="16_5ixgq"]
+[ext_resource type="Script" uid="uid://yc6i5trydgut" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementExecutor.gd" id="17_8ve8k"]
+[ext_resource type="Script" uid="uid://dp6gve6tfarqs" path="res://Revamp/Phases/BoardPhaseApplier.gd" id="17_b7h4g"]
+[ext_resource type="Script" uid="uid://c18hwqs033t7x" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementEventEmitter.gd" id="18_oekep"]
+[ext_resource type="Script" uid="uid://cmcxm3mp7ljvv" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementCancel.gd" id="19_n5v11"]
+[ext_resource type="Script" uid="uid://dhe454wat35an" path="res://Revamp/MatchFlow/MatchCombatFlowHandler.gd" id="24_n5v11"]
+[ext_resource type="Script" uid="uid://bmc4688qk3cow" path="res://Revamp/MatchFlow/MatchPhaseBridge.gd" id="24_oekep"]
+[ext_resource type="Script" uid="uid://c0jbty6yowib5" path="res://Revamp/MatchFlow/Blessing/BlessingSelectionState.gd" id="25_n5v11"]
+[ext_resource type="Script" uid="uid://difytxi1dyr27" path="res://Revamp/MatchFlow/MatchFlowRoot.gd" id="25_oekep"]
+[ext_resource type="Script" uid="uid://q2nybrneyr7f" path="res://Revamp/MatchFlow/Blessing/BlessingFlowHandler.gd" id="26_7gy8c"]
+[ext_resource type="Script" uid="uid://c6ap2csjp7k81" path="res://Revamp/MatchFlow/MatchTurnOrderState.gd" id="26_n5v11"]
+[ext_resource type="Script" uid="uid://e0tr3sanyo1r" path="res://Revamp/MatchFlow/MatchAnnouncementDisplay.gd" id="27_7gy8c"]
+[ext_resource type="Script" uid="uid://dxj656ms4qeq4" path="res://Revamp/MatchFlow/MatchDominantRevealHandler.gd" id="27_a1qt2"]
+[ext_resource type="Script" uid="uid://myowbycyd18l" path="res://Revamp/MatchFlow/MatchPlacementFlowHandler.gd" id="27_mf2my"]
+[ext_resource type="Script" uid="uid://crpvi6u42w8yj" path="res://BuffFlowHandler.gd" id="28_5f7hr"]
+[ext_resource type="Script" uid="uid://gc48h0ccwqjp" path="res://BuffSelectionState.gd" id="28_8y4qw"]
+[ext_resource type="PackedScene" uid="uid://coux8hd7esj7g" path="res://Deck_System_Root.tscn" id="28_a1qt2"]
+[ext_resource type="Script" uid="uid://b50mccoppp1lb" path="res://Revamp/MatchFlow/MatchAutoDrawHandler.gd" id="28_mf2my"]
+[ext_resource type="PackedScene" uid="uid://dmgme20qfr6yi" path="res://Revamp/LarvaeRewardDisplay.tscn" id="29_72iem"]
+[ext_resource type="Script" uid="uid://cq06khkyy84o5" path="res://Revamp/DirectDamage/DirectDamageRouter.gd" id="30_venfy"]
+[ext_resource type="Script" uid="uid://c5j44dhlx1div" path="res://Revamp/DirectDamage/MatchScoreState.gd" id="31_3a8w1"]
+[ext_resource type="Script" uid="uid://dssf8rptp70gh" path="res://Revamp/BuffPhaseAnimationHandler.gd" id="31_nmm8s"]
+[ext_resource type="PackedScene" uid="uid://di12gxvqynhg7" path="res://Revamp/LarvaeDraggers.tscn" id="32_qb8ua"]
+[ext_resource type="Script" uid="uid://cn5xfv13wsg1x" path="res://Revamp/MatchFlow/PostGameTransitionHandler.gd" id="34_f3uds"]
+[ext_resource type="Script" uid="uid://cau0ky5b3kabf" path="res://Revamp/Board/AttackAnticipationFeedbackHandler.gd" id="35_wop7f"]
+[ext_resource type="Script" uid="uid://djtnl5koe1f0x" path="res://BuffDatabase.gd" id="38_i8ogu"]
+[ext_resource type="Resource" uid="uid://b6afw5yomddli" path="res://Mutations/MutationPresets/Shield.tres" id="40_2ph70"]
+[ext_resource type="Resource" uid="uid://ceeskmu01vy5g" path="res://Mutations/MutationPresets/YAttack.tres" id="41_8y4qw"]
+[ext_resource type="Resource" uid="uid://cyutbyh2av6iv" path="res://Mutations/MutationPresets/SteroidDealer.tres" id="42_lyfvt"]
+[ext_resource type="Script" uid="uid://csuhdu8m5bmcv" path="res://Mutations/MutationPresets/MutationBehaviourHandlers/Spiky.gd" id="43_2ph70"]
+[ext_resource type="Resource" uid="uid://cnn0fddifxool" path="res://Mutations/MutationPresets/ColonyNest.tres" id="44_3jt7k"]
+[ext_resource type="Resource" uid="uid://b4sniy31fo50g" path="res://Mutations/MutationPresets/TouchOfDeath.tres" id="44_cyp03"]
+[ext_resource type="Texture2D" uid="uid://c8kf7vqpx34gh" path="res://Art/Mutations/Duriant_Sigil.PNG" id="44_lyfvt"]
+[ext_resource type="Script" uid="uid://b0a7u0d6w3wt5" path="res://BuffCardSelectionHandler.gd" id="51_3j6fp"]
+[ext_resource type="Script" uid="uid://btx34g1cs7nhy" path="res://BuffMutationApplyHandler.gd" id="52_72iem"]
+[ext_resource type="Script" uid="uid://ysva1maqqb8w" path="res://HandCountDisplay.gd" id="52_nmm8s"]
+[ext_resource type="Script" uid="uid://dbw5dxwuc5h4h" path="res://BuffCardStagingHandler.gd" id="53_nmm8s"]
+
+[sub_resource type="Resource" id="Resource_cyp03"]
+script = ExtResource("43_2ph70")
+mutation_name = "Spiky"
+mutation_description = "Deals 1DMG to card that attacked it"
+sigil_texture = ExtResource("44_lyfvt")
+metadata/_custom_type_script = "uid://be8yk3djwb5oc"
+
+[node name="Mao" type="Node2D" unique_id=550121538]
+
+[node name="Core" type="Node2D" parent="." unique_id=878801964]
+
+[node name="Deck" parent="Core" unique_id=93691211 node_paths=PackedStringArray("player_one_hand", "player_two_hand") instance=ExtResource("28_a1qt2")]
+position = Vector2(1836, 492)
+player_one_hand = NodePath("../PlayerHAnd")
+player_two_hand = NodePath("../OpponenetHAnd")
+
+[node name="Board" parent="Core" unique_id=1318716624 node_paths=PackedStringArray("direct_damage_router") instance=ExtResource("1_yq750")]
+position = Vector2(24, 0)
+direct_damage_router = NodePath("../../Scripts/Core/DirectDamageRouter")
+
+[node name="PlayerHAnd" parent="Core" unique_id=371738706 node_paths=PackedStringArray("prime_location", "cost_sort", "mutation_sort") instance=ExtResource("2_mi1n2")]
+position = Vector2(935.99994, 911.99994)
+prime_location = NodePath("../PrimeCardLocation")
+cost_sort = NodePath("../../Control/CostSortButton")
+mutation_sort = NodePath("../../Control/MutationSortButton")
+
+[node name="OpponenetHAnd" parent="Core" unique_id=1415383407 node_paths=PackedStringArray("prime_location") instance=ExtResource("2_mi1n2")]
+visible = false
+position = Vector2(312, 240)
+prime_location = NodePath("../PrimeCardLocation")
+
+[node name="PrimeCardLocation" type="Node2D" parent="Core" unique_id=2143511336]
+position = Vector2(312, 504)
+
+[node name="BuffCardLocation" type="Node2D" parent="Core" unique_id=1437677715]
+position = Vector2(1198, 492)
+
+[node name="MatchFlowUI" type="Node2D" parent="Core" unique_id=1660901840]
+metadata/_edit_lock_ = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Core/MatchFlowUI" unique_id=1511141763]
+
+[node name="MatchAnnouncementDisplay" type="Control" parent="Core/MatchFlowUI/CanvasLayer" unique_id=866682808 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "round_label", "message_label")]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("27_7gy8c")
+match_flow_root = NodePath("../../../../Scripts/MatchFlowRoot")
+turn_order_state = NodePath("../../../../Scripts/MatchFlowRoot/MatchTurnOrderState")
+round_label = NodePath("RoundLabel")
+message_label = NodePath("MessageLabel")
+
+[node name="RoundLabel" type="Label" parent="Core/MatchFlowUI/CanvasLayer/MatchAnnouncementDisplay" unique_id=1682652415]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 21.000002
+anchor_top = 0.3
+anchor_right = 25.500002
+anchor_bottom = 1.2
+offset_left = -6.1035156e-05
+offset_right = -6.1035156e-05
+offset_bottom = 12.0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MessageLabel" type="Label" parent="Core/MatchFlowUI/CanvasLayer/MatchAnnouncementDisplay" unique_id=286669320]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 19.5
+anchor_top = 17.7
+anchor_right = 27.000002
+anchor_bottom = 18.6
+offset_left = -12.0
+offset_right = -0.00012207031
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 1
+
+[node name="ChoosCardForBuffLabel" type="Label" parent="Core/MatchFlowUI/CanvasLayer" unique_id=331567794]
+visible = false
+offset_left = 77.0
+offset_top = 584.0
+offset_right = 513.0
+offset_bottom = 716.0
+theme_override_font_sizes/font_size = 30
+text = "Choose one of your warriors to consume the larvae and gain its powers"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Scripts" type="Node" parent="." unique_id=1166020718]
+
+[node name="PhaseManager" type="Node" parent="Scripts" unique_id=658439244]
+script = ExtResource("8_cc2no")
+metadata/_custom_type_script = "uid://bxbqihkit6rgo"
+
+[node name="HandPhaseApplier" type="Node" parent="Scripts/PhaseManager" unique_id=1109584642 node_paths=PackedStringArray("phase_manager", "lead_hand", "response_hand")]
+script = ExtResource("9_cc2no")
+phase_manager = NodePath("..")
+lead_hand = NodePath("../../../Core/PlayerHAnd")
+response_hand = NodePath("../../../Core/OpponenetHAnd")
+
+[node name="BoardPhaseApplier" type="Node" parent="Scripts" unique_id=940502173 node_paths=PackedStringArray("phase_manager", "slots_root")]
+script = ExtResource("17_b7h4g")
+phase_manager = NodePath("../PhaseManager")
+slots_root = NodePath("../../Core/Board")
+
+[node name="CardEffectSpawnrouter" type="Node" parent="Scripts" unique_id=1854042398]
+
+[node name="MatchFlowRoot" type="Node" parent="Scripts" unique_id=1707594948 node_paths=PackedStringArray("turn_order_state", "deck_system_root", "score_state")]
+script = ExtResource("25_oekep")
+turn_order_state = NodePath("MatchTurnOrderState")
+deck_system_root = NodePath("../../Core/Deck")
+score_state = NodePath("MatchScoreState")
+
+[node name="MatchTurnOrderState" type="Node" parent="Scripts/MatchFlowRoot" unique_id=708809136]
+script = ExtResource("26_n5v11")
+
+[node name="MatchPhaseBridge" type="Node" parent="Scripts/MatchFlowRoot" unique_id=1064403000 node_paths=PackedStringArray("match_flow_root", "phase_manager")]
+script = ExtResource("24_oekep")
+match_flow_root = NodePath("..")
+phase_manager = NodePath("../../PhaseManager")
+
+[node name="BlessingSelectionState" type="Node" parent="Scripts/MatchFlowRoot" unique_id=1333215538]
+script = ExtResource("25_n5v11")
+
+[node name="BlessingFlowHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=47668461 node_paths=PackedStringArray("match_flow_root")]
+script = ExtResource("26_7gy8c")
+match_flow_root = NodePath("..")
+
+[node name="MatchPlacementFlowHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=1230555798 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "placement_controller")]
+script = ExtResource("27_mf2my")
+match_flow_root = NodePath("..")
+turn_order_state = NodePath("../MatchTurnOrderState")
+placement_controller = NodePath("../../Core/PlacementController")
+
+[node name="MatchCombatFlowHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=1772524559 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "slots_root", "anticipation_feedback")]
+script = ExtResource("24_n5v11")
+match_flow_root = NodePath("..")
+turn_order_state = NodePath("../MatchTurnOrderState")
+slots_root = NodePath("../../../Core/Board")
+anticipation_feedback = NodePath("../AttackAnticipationFeedbackHandler")
+
+[node name="MatchDominantRevealHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=1122772169 node_paths=PackedStringArray("match_flow_root")]
+script = ExtResource("27_a1qt2")
+match_flow_root = NodePath("..")
+
+[node name="MatchAutoDrawHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=833003799 node_paths=PackedStringArray("match_flow_root", "deck_system_root")]
+script = ExtResource("28_mf2my")
+match_flow_root = NodePath("..")
+deck_system_root = NodePath("../../../Core/Deck")
+
+[node name="MatchScoreState" type="Node" parent="Scripts/MatchFlowRoot" unique_id=1110463725]
+script = ExtResource("31_3a8w1")
+
+[node name="PostGameTransitionHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=327167645 node_paths=PackedStringArray("match_flow_root")]
+script = ExtResource("34_f3uds")
+match_flow_root = NodePath("..")
+post_game_scene_path = "uid://bhhfwt6y6l505"
+
+[node name="AttackAnticipationFeedbackHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=1452981444 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "slots_root")]
+script = ExtResource("35_wop7f")
+match_flow_root = NodePath("..")
+turn_order_state = NodePath("../MatchTurnOrderState")
+slots_root = NodePath("../../../Core/Board")
+
+[node name="Core" type="Node" parent="Scripts" unique_id=343949318]
+
+[node name="Buff" type="Node" parent="Scripts/Core" unique_id=144455309]
+
+[node name="BuffSelectionState" type="Node" parent="Scripts/Core/Buff" unique_id=421083113]
+script = ExtResource("28_8y4qw")
+
+[node name="BuffFlowHandler" type="Node" parent="Scripts/Core/Buff" unique_id=237451156 node_paths=PackedStringArray("match_flow_root", "buff_database", "animation_handler")]
+script = ExtResource("28_5f7hr")
+match_flow_root = NodePath("../../../MatchFlowRoot")
+buff_database = NodePath("../BuffDatabase")
+animation_handler = NodePath("../BuffPhaseAnimationHandler")
+debug_preview_mutation = ExtResource("40_2ph70")
+
+[node name="BuffPhaseAnimationHandler" type="Node" parent="Scripts/Core/Buff" unique_id=278124127 node_paths=PackedStringArray("reward_parent")]
+script = ExtResource("31_nmm8s")
+larvae_reward_scene = ExtResource("29_72iem")
+larvae_draggers_scene = ExtResource("32_qb8ua")
+reward_parent = NodePath("../../../../Core/MatchFlowUI")
+
+[node name="BuffDatabase" type="Node" parent="Scripts/Core/Buff" unique_id=1175133697]
+script = ExtResource("38_i8ogu")
+buff_pool = Array[ExtResource("3_3vc3c")]([ExtResource("40_2ph70"), ExtResource("41_8y4qw"), ExtResource("42_lyfvt")])
+forbidden_mutations = Array[ExtResource("3_3vc3c")]([SubResource("Resource_cyp03"), ExtResource("44_cyp03"), ExtResource("44_3jt7k"), null])
+print_debug = false
+run_smoke_test_on_ready = false
+
+[node name="BuffCardSelectionHandler" type="Node" parent="Scripts/Core/Buff" unique_id=1583935419 node_paths=PackedStringArray("buff_flow_handler", "selection_state", "turn_order_state", "player_one_hand", "player_two_hand", "instruction_label")]
+script = ExtResource("51_3j6fp")
+buff_flow_handler = NodePath("../BuffFlowHandler")
+selection_state = NodePath("../BuffSelectionState")
+turn_order_state = NodePath("../../../MatchFlowRoot/MatchTurnOrderState")
+player_one_hand = NodePath("../../../../Core/PlayerHAnd")
+player_two_hand = NodePath("../../../../Core/OpponenetHAnd")
+instruction_label = NodePath("../../../../Core/MatchFlowUI/CanvasLayer/ChoosCardForBuffLabel")
+
+[node name="BuffMutationApplyHandler" type="Node" parent="Scripts/Core/Buff" unique_id=1110353445 node_paths=PackedStringArray("buff_flow_handler", "selection_state", "turn_order_state", "staging_handler")]
+script = ExtResource("52_72iem")
+buff_flow_handler = NodePath("../BuffFlowHandler")
+selection_state = NodePath("../BuffSelectionState")
+turn_order_state = NodePath("../../../MatchFlowRoot/MatchTurnOrderState")
+staging_handler = NodePath("../BuffCardStagingHandler")
+
+[node name="BuffCardStagingHandler" type="Node" parent="Scripts/Core/Buff" unique_id=617262833 node_paths=PackedStringArray("buff_flow_handler", "selection_state", "buff_card_location", "player_one_hand", "player_two_hand")]
+script = ExtResource("53_nmm8s")
+buff_flow_handler = NodePath("../BuffFlowHandler")
+selection_state = NodePath("../BuffSelectionState")
+buff_card_location = NodePath("../../../../Core/BuffCardLocation")
+player_one_hand = NodePath("../../../../Core/PlayerHAnd")
+player_two_hand = NodePath("../../../../Core/OpponenetHAnd")
+consume_rotation_degrees = -20.0
+power_scale = Vector2(2, 2)
+
+[node name="DirectDamageRouter" type="Node" parent="Scripts/Core" unique_id=396013123 node_paths=PackedStringArray("score_state", "slots_root")]
+script = ExtResource("30_venfy")
+score_state = NodePath("../../MatchFlowRoot/MatchScoreState")
+slots_root = NodePath("../../../Core/Board")
+
+[node name="SacrificeController" type="Node" parent="Scripts/Core" unique_id=1432478239 node_paths=PackedStringArray("player_hand", "sacrifice_selection_root", "requirement", "pending_boat", "committer")]
+script = ExtResource("10_1j514")
+player_hand = NodePath("../../../Core/PlayerHAnd")
+sacrifice_selection_root = NodePath("SacrificeSelectionRoot")
+requirement = NodePath("SacrificeRequirement")
+pending_boat = NodePath("PendingSacrificeBoat")
+committer = NodePath("SacrificeComitter")
+auto_sacrifice_when_cost_met = true
+
+[node name="SacrificeRequirement" type="Node" parent="Scripts/Core/SacrificeController" unique_id=1332384962]
+script = ExtResource("11_at0h8")
+
+[node name="PendingSacrificeBoat" type="Node" parent="Scripts/Core/SacrificeController" unique_id=1449104389 node_paths=PackedStringArray("pending_layer")]
+script = ExtResource("12_30x73")
+pending_layer = NodePath("../PendingSacrificeLayer")
+
+[node name="SacrificeComitter" type="Node" parent="Scripts/Core/SacrificeController" unique_id=1945886437]
+script = ExtResource("13_6ula3")
+
+[node name="PendingSacrificeLayer" type="Node2D" parent="Scripts/Core/SacrificeController" unique_id=183134508]
+
+[node name="SacrificeSelectionRoot" type="Node" parent="Scripts/Core/SacrificeController" unique_id=562062986]
+script = ExtResource("11_5f7hr")
+metadata/_custom_type_script = "uid://db4xai716j06p"
+
+[node name="SacrificeBoardSelectionBinder" type="Node" parent="Scripts/Core/SacrificeController" unique_id=571826404 node_paths=PackedStringArray("slots_root", "selection_root", "player_hand")]
+script = ExtResource("12_3j6fp")
+slots_root = NodePath("../../../../Core/Board")
+selection_root = NodePath("../SacrificeSelectionRoot")
+player_hand = NodePath("../../../../Core/PlayerHAnd")
+
+[node name="PlacementController" type="Node" parent="Scripts/Core" unique_id=1405375079 node_paths=PackedStringArray("slots_root", "player_hand", "sacrifice_controller", "placement_state", "input_router", "placement_preview", "placement_executor", "event_emitter", "placement_cancel")]
+script = ExtResource("13_ubws4")
+slots_root = NodePath("../../../Core/Board")
+player_hand = NodePath("../../../Core/PlayerHAnd")
+sacrifice_controller = NodePath("../SacrificeController")
+placement_state = NodePath("PlacementState")
+input_router = NodePath("PlacementInputRouter")
+placement_preview = NodePath("PlacementPreview")
+placement_executor = NodePath("PlacementExecutor")
+event_emitter = NodePath("PlacementEventEmitter")
+placement_cancel = NodePath("PlacementCancel")
+
+[node name="PlacementState" type="Node" parent="Scripts/Core/PlacementController" unique_id=1456688179]
+script = ExtResource("14_5sdof")
+
+[node name="PlacementInputRouter" type="Node" parent="Scripts/Core/PlacementController" unique_id=1643686806]
+script = ExtResource("15_20kdy")
+
+[node name="PlacementPreview" type="Node" parent="Scripts/Core/PlacementController" unique_id=1774818153]
+script = ExtResource("16_5ixgq")
+
+[node name="PlacementExecutor" type="Node" parent="Scripts/Core/PlacementController" unique_id=988574054]
+script = ExtResource("17_8ve8k")
+
+[node name="PlacementEventEmitter" type="Node" parent="Scripts/Core/PlacementController" unique_id=1389290294]
+script = ExtResource("18_oekep")
+
+[node name="PlacementCancel" type="Node" parent="Scripts/Core/PlacementController" unique_id=1193513979]
+script = ExtResource("19_n5v11")
+
+[node name="Control" type="Control" parent="." unique_id=746986057 node_paths=PackedStringArray("player_hand", "count_label")]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("52_nmm8s")
+player_hand = NodePath("../Core/PlayerHAnd")
+count_label = NodePath("PlayerHandCount")
+
+[node name="CostSortButton" type="Button" parent="Control" unique_id=1231266524]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 732.0
+offset_top = 996.0
+offset_right = 876.0
+offset_bottom = 1038.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 24
+text = "Cost
+"
+
+[node name="MutationSortButton" type="Button" parent="Control" unique_id=479050822]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 996.0
+offset_top = 996.0
+offset_right = 1140.0
+offset_bottom = 1038.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 24
+text = "Mutation
+"
+
+[node name="PlayerHandCount" type="Label" parent="Control" unique_id=918507559]
+layout_mode = 0
+offset_left = 900.0
+offset_top = 996.0
+offset_right = 972.0
+offset_bottom = 1044.0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MatchUI" parent="Control" unique_id=495517401 node_paths=PackedStringArray("match_flow_root", "slots_root", "score_state") instance=ExtResource("1_2n6q5")]
+layout_mode = 0
+match_flow_root = NodePath("../../Scripts/MatchFlowRoot")
+slots_root = NodePath("../../Core/Board")
+score_state = NodePath("../../Scripts/MatchFlowRoot/MatchScoreState")
