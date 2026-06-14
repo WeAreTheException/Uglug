@@ -76,4 +76,4 @@ func _get_attacking_first_message() -> String:
 		turn_order_state.attacking_first_owner
 	)
 
-	return "%s's cards are attacking first" % owner_name
+	return "%s Attacks First" % owner_name
