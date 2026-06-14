@@ -44,6 +44,8 @@ enum CardType {
 @export var additional_mutations: Array[Mutation] = []
 @export var deck_amount: int = 1
 
+@export var starts_as_revenant_for_debug: bool = false
+
 
 func get_safe_card_id() -> String:
 	if card_id.strip_edges() != "":

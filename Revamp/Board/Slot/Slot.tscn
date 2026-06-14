@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://c5cbf5mt6cwqc"]
 
-[ext_resource type="Script" uid="uid://ctb0sphxjf65u" path="res://Slots/Slot.gd" id="1_iym07"]
+[ext_resource type="Script" uid="uid://ctb0sphxjf65u" path="res://Revamp/Board/Slot/Slot.gd" id="1_iym07"]
 [ext_resource type="Script" uid="uid://blakh033eae1j" path="res://Revamp/Board/SlotInput.gd" id="2_0ebxi"]
 [ext_resource type="Texture2D" uid="uid://bkafxhbg4kvug" path="res://Sprites/CardSlot.png" id="2_rh202"]
 [ext_resource type="Script" uid="uid://cxtlbt4cyp42p" path="res://Revamp/Board/SlotPresence.gd" id="3_0ebxi"]
@@ -60,3 +60,5 @@ scale = Vector2(0.8, 0.81509435)
 texture = ExtResource("2_rh202")
 
 [node name="CardAnchor" type="Node2D" parent="." unique_id=928768785]
+
+[node name="Node" type="Node" parent="." unique_id=574764237]

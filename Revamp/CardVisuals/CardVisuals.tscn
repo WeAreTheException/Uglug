@@ -2,10 +2,11 @@
 
 [ext_resource type="Script" uid="uid://cdu3ykilblant" path="res://Revamp/CardVisuals/CardVisualsRoot.gd" id="1_gy5gi"]
 [ext_resource type="Shader" uid="uid://dmiuuajh8r665" path="res://Revamp/CardVisuals/CardTilt.gdshader" id="2_4t10r"]
+[ext_resource type="Shader" uid="uid://dlpmxqotruebp" path="res://Cards/BackInHandInvert.gdshader" id="2_460t8"]
 [ext_resource type="Script" uid="uid://cafcxy3c8eco5" path="res://Revamp/CardVisuals/CardMainVisuals.gd" id="2_a8btx"]
 [ext_resource type="Texture2D" uid="uid://bt8o5l5yrmihl" path="res://Art/AntBack/CardBackground.png" id="3_4t10r"]
 [ext_resource type="Shader" uid="uid://b12e0umk1s7xs" path="res://Cards/Panner.gdshader" id="4_460t8"]
-[ext_resource type="Shader" uid="uid://n3l4egojry4s" path="res://Balatro.gdshader" id="5_0pq8k"]
+[ext_resource type="Shader" path="res://Balatro.gdshader" id="5_0pq8k"]
 [ext_resource type="Shader" uid="uid://clsxlhuocr8hn" path="res://Cards/BackgroundSlide.gdshader" id="6_g780n"]
 [ext_resource type="Shader" uid="uid://ck3gs6whq2t57" path="res://Cards/AntSway.gdshader" id="7_v8bk3"]
 [ext_resource type="Texture2D" uid="uid://b8a1gr84h2iie" path="res://Art/Ants/WorkerAnt_Standalone.png" id="8_wvfxw"]
@@ -117,15 +118,21 @@ shader = ExtResource("13_8ia1o")
 shader_parameter/line_color = Color(0.105882354, 0.09019608, 0.08627451, 1)
 shader_parameter/line_thickness = 10.0
 
-[node name="CardVisualsRoot" type="Node2D" unique_id=1593445486 node_paths=PackedStringArray("main_visuals", "mutation_visuals", "stats_visual")]
+[node name="CardVisualsRoot" type="Node2D" unique_id=1593445486 node_paths=PackedStringArray("main_visuals", "mutation_visuals", "stats_visual", "viewport_sprite", "revenant_overlay")]
 script = ExtResource("1_gy5gi")
 main_visuals = NodePath("SubViewport/Visuals/MainVisuals")
 mutation_visuals = NodePath("SubViewport/Visuals/MutationVisuals")
 stats_visual = NodePath("SubViewport/Visuals/StatsVisual")
+viewport_sprite = NodePath("ViewportSprite")
+revenant_overlay = NodePath("RevenantOverlay")
+revenant_shader = ExtResource("2_460t8")
 metadata/_edit_lock_ = true
 
 [node name="ViewportSprite" type="Sprite2D" parent="." unique_id=1830606489]
 material = SubResource("ShaderMaterial_460t8")
+metadata/_edit_lock_ = true
+
+[node name="RevenantOverlay" type="Sprite2D" parent="." unique_id=1237233230]
 metadata/_edit_lock_ = true
 
 [node name="SubViewport" type="SubViewport" parent="." unique_id=1110952986]

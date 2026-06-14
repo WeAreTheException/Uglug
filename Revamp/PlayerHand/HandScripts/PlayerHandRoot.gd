@@ -98,6 +98,39 @@ func spawn_card_from_effect(
 	return spawned_card
 
 
+func return_existing_card_to_hand(card: CardRoot) -> void:
+	if card == null:
+		return
+
+	if not is_instance_valid(card):
+		return
+
+	if card_spawner == null:
+		return
+
+	card.visible = true
+	card.clear_hand_feedback()
+	card.reset_sacrifice_feedback()
+
+	if hand_card_layer != null and card.get_parent() != hand_card_layer:
+		card.reparent(hand_card_layer, true)
+
+	card_spawner.add_card(card)
+	_setup_spawned_card_context(card)
+	arrange_cards()
+	emit_prime_state()
+
+
+func has_card(card: CardRoot) -> bool:
+	if card == null:
+		return false
+
+	if card_spawner == null:
+		return false
+
+	return card_spawner.is_card_in_hand(card)
+
+
 func is_full() -> bool:
 	if card_spawner == null:
 		return false
