@@ -215,15 +215,19 @@ func _get_owner_for_card(source_card: CardRoot) -> SlotRow.SlotOwner:
 	if source_card == null:
 		return SlotRow.SlotOwner.PLAYER
 
-	if source_card.slots_root == null:
+	if source_card.slots_root != null:
+		var slot: Slot = source_card.get_current_slot()
+
+		if slot != null:
+			return source_card.slots_root.get_owner_of_slot(slot)
+
+	if player_two_hand != null and player_two_hand.has_card(source_card):
+		return SlotRow.SlotOwner.OPPONENT
+
+	if player_one_hand != null and player_one_hand.has_card(source_card):
 		return SlotRow.SlotOwner.PLAYER
 
-	var slot: Slot = source_card.get_current_slot()
-
-	if slot == null:
-		return SlotRow.SlotOwner.PLAYER
-
-	return source_card.slots_root.get_owner_of_slot(slot)
+	return SlotRow.SlotOwner.PLAYER
 
 
 func _deal_starting_hands_animated(

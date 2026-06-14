@@ -3,12 +3,17 @@
 [ext_resource type="PackedScene" uid="uid://coux8hd7esj7g" path="res://Deck_System_Root.tscn" id="1_l1wu0"]
 [ext_resource type="PackedScene" uid="uid://bw8c7m7n5yuk8" path="res://Revamp/Board/Slots.tscn" id="2_7mssi"]
 [ext_resource type="PackedScene" uid="uid://1wr1e57v7trd" path="res://Revamp/PlayerHand/Player_Hand.tscn" id="3_l0n1k"]
+[ext_resource type="Resource" uid="uid://bxfxi0h5itrdu" path="res://Revamp/CardPresets/Lieutenant.tres" id="3_pruxq"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="4_q3urw"]
 [ext_resource type="Resource" uid="uid://bn1jyervrnsg" path="res://Revamp/CardPresets/WorkerAnt.tres" id="5_xw6gj"]
+[ext_resource type="Resource" uid="uid://mnht3u87f5og" path="res://Revamp/CardPresets/CardSpawner/Pregnant.tres" id="6_pruxq"]
 [ext_resource type="Script" uid="uid://bxbqihkit6rgo" path="res://Managers/Phasemanager.gd" id="8_6rp1e"]
+[ext_resource type="Resource" uid="uid://d34eaw1jxirr0" path="res://Revamp/CardPresets/Giant.tres" id="9_l0n1k"]
 [ext_resource type="Script" uid="uid://bbcig486utsir" path="res://HandPhaseApplier.gd" id="9_qqwt0"]
 [ext_resource type="Script" uid="uid://61l5g8wkdar3" path="res://SacrificeController.gd" id="10_gmon0"]
+[ext_resource type="Resource" uid="uid://bxrcjm4w1dy82" path="res://Revamp/CardPresets/Anthrax.tres" id="10_q3urw"]
 [ext_resource type="Script" uid="uid://ciopi88keoi3k" path="res://SacrificeRequirement.gd" id="11_tgdqg"]
+[ext_resource type="Resource" uid="uid://dbgpqc3vdl8t" path="res://Revamp/CardPresets/Duriant.tres" id="11_xw6gj"]
 [ext_resource type="Script" uid="uid://b4qvc7353obir" path="res://PendingSacrificeBoat.gd" id="12_4vo7u"]
 [ext_resource type="Script" uid="uid://vmy04gllke53" path="res://SacrificeCommitter.gd" id="13_4g0s8"]
 [ext_resource type="Script" uid="uid://dnikkosq1o0kr" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementController.gd" id="14_m7ac6"]
@@ -66,21 +71,23 @@ position = Vector2(1836, 492)
 player_one_hand = NodePath("../PlayerHAnd")
 player_two_hand = NodePath("../OpponenetHAnd")
 
-[node name="Board" parent="." unique_id=1318716624 instance=ExtResource("2_7mssi")]
+[node name="Board" parent="." unique_id=1318716624 node_paths=PackedStringArray("direct_damage_router") instance=ExtResource("2_7mssi")]
 position = Vector2(588, 252)
-opponent_slot_1_card = ExtResource("54_sg6ts")
+opponent_slot_1_card = ExtResource("3_pruxq")
+direct_damage_router = NodePath("../DirectDamageRouter")
 
-[node name="PlayerHAnd" parent="." unique_id=371738706 instance=ExtResource("3_l0n1k")]
-position = Vector2(300, 960)
-starting_cards = Array[ExtResource("4_q3urw")]([ExtResource("5_xw6gj")])
-max_hand_size = 10
+[node name="PlayerHAnd" parent="." unique_id=371738706 node_paths=PackedStringArray("prime_location") instance=ExtResource("3_l0n1k")]
+position = Vector2(936, 960)
+starting_cards = Array[ExtResource("4_q3urw")]([ExtResource("6_pruxq"), ExtResource("5_xw6gj"), ExtResource("3_pruxq"), ExtResource("54_sg6ts"), ExtResource("9_l0n1k"), ExtResource("10_q3urw"), ExtResource("11_xw6gj")])
+max_hand_size = 7
+prime_location = NodePath("../PrimeCardLocation")
 
 [node name="OpponenetHAnd" parent="." unique_id=1334900706 instance=ExtResource("3_l0n1k")]
 position = Vector2(312, 240)
 starting_cards = Array[ExtResource("4_q3urw")]([ExtResource("5_xw6gj")])
 
 [node name="PrimeCardLocation" type="Node2D" parent="." unique_id=1670544138]
-position = Vector2(312, 504)
+position = Vector2(312, 600)
 
 [node name="BuffCardLocation" type="Node2D" parent="." unique_id=1956485645]
 position = Vector2(1198, 492)

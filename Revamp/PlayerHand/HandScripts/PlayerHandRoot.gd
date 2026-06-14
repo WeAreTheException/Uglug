@@ -122,6 +122,16 @@ func return_existing_card_to_hand(card: CardRoot) -> void:
 	emit_prime_state()
 
 
+func has_card(card: CardRoot) -> bool:
+	if card == null:
+		return false
+
+	if card_spawner == null:
+		return false
+
+	return card_spawner.is_card_in_hand(card)
+
+
 func is_full() -> bool:
 	if card_spawner == null:
 		return false

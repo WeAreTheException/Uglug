@@ -72,9 +72,6 @@ func die_with_context(context: DeathContext) -> void:
 	die_started.emit(card)
 	_notify_death_started(context)
 
-	if context.should_trigger_death_mutations:
-		_notify_death_mutations()
-
 	if death_audio != null:
 		death_audio.play_detached()
 
@@ -83,8 +80,13 @@ func die_with_context(context: DeathContext) -> void:
 	else:
 		print("die blocked: animation_runner missing")
 
-	if context.should_remove_from_board and not should_return_to_hand:
+	if should_return_to_hand:
+		_return_revenant_to_hand()
+	elif context.should_remove_from_board:
 		_remove_card_from_board()
+
+	if context.should_trigger_death_mutations:
+		_notify_death_mutations()
 
 	is_playing = false
 	is_dying = false
@@ -93,7 +95,7 @@ func die_with_context(context: DeathContext) -> void:
 	die_finished.emit(card)
 
 	if should_return_to_hand:
-		_return_revenant_to_hand()
+		has_died = false
 		return
 
 	if context.should_free_card and is_instance_valid(card):
@@ -151,10 +153,6 @@ func _return_revenant_to_hand() -> void:
 		_remove_card_from_board()
 
 	target_hand.return_existing_card_to_hand(card)
-
-	has_died = false
-	is_dying = false
-	is_playing = false
 
 	print("REVENANT RETURNED TO HAND: ", card.card_name)
 
