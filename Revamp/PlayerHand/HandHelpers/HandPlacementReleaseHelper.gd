@@ -30,8 +30,5 @@ func release_primed_card_for_placement(
 	if state_machine != null:
 		state_machine.change_state(Hand_StateMachine.PLAY)
 
-	if hand_layout != null:
-		hand_layout.arrange_cards(card_spawner.get_cards())
-
 	if interaction_root != null:
 		interaction_root.refresh_hover_focus()

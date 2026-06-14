@@ -66,9 +66,6 @@ func set_marked_for_sacrifice(value: bool) -> void:
 	if card == null:
 		return
 
-	if is_pending_sacrifice:
-		value = false
-
 	if is_marked_for_sacrifice == value:
 		return
 
@@ -83,7 +80,7 @@ func set_marked_for_sacrifice(value: bool) -> void:
 
 		marked_for_sacrifice.emit(card)
 	else:
-		if animation_runner != null:
+		if not is_pending_sacrifice and animation_runner != null:
 			animation_runner.stop_all(card)
 
 		unmarked_for_sacrifice.emit(card)
@@ -98,15 +95,28 @@ func set_pending_sacrifice(value: bool) -> void:
 
 	is_pending_sacrifice = value
 
-	if is_pending_sacrifice:
-		stop_anticipation()
-
 	if pending_sacrifice_feedback != null:
 		pending_sacrifice_feedback.set_pending(card, is_pending_sacrifice)
 
 	if is_pending_sacrifice:
+		is_marked_for_sacrifice = true
+
+		if sacrifice_select_feedback != null:
+			sacrifice_select_feedback.set_selected(true)
+
+		if animation_runner != null:
+			animation_runner.play_selected(card)
+
 		pending_sacrifice_started.emit(card)
 	else:
+		is_marked_for_sacrifice = false
+
+		if sacrifice_select_feedback != null:
+			sacrifice_select_feedback.set_selected(false)
+
+		if animation_runner != null:
+			animation_runner.stop_all(card)
+
 		pending_sacrifice_stopped.emit(card)
 
 
