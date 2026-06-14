@@ -177,6 +177,9 @@ func _connect_hand() -> void:
 	if not player_hand.sacrifice_requested.is_connected(_on_sacrifice_requested):
 		player_hand.sacrifice_requested.connect(_on_sacrifice_requested)
 
+	if not player_hand.card_primed.is_connected(_on_card_primed):
+		player_hand.card_primed.connect(_on_card_primed)
+
 	if not player_hand.card_unprimed.is_connected(_on_card_unprimed):
 		player_hand.card_unprimed.connect(_on_card_unprimed)
 
@@ -189,6 +192,29 @@ func _on_sacrifice_requested(
 	_cards: Array[CardRoot]
 ) -> void:
 	request_sacrifice()
+
+
+func _on_card_primed(card: CardRoot) -> void:
+	_update_requirement_state()
+
+	if card == null:
+		return
+
+	if is_processing:
+		return
+
+	if pending_boat != null and pending_boat.has_pending():
+		return
+
+	if requirement == null:
+		return
+
+	var required := requirement.get_required_worth(card)
+
+	if required > 0:
+		return
+
+	_begin_pending_sacrifice(card, [])
 
 
 func _on_selection_changed(_cards: Array[CardRoot]) -> void:

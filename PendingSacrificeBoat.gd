@@ -79,7 +79,7 @@ func take_pending_cards() -> Array[CardRoot]:
 
 
 func has_pending() -> bool:
-	return not pending_entries.is_empty()
+	return pending_primed_card != null
 
 
 func get_pending_primed_card() -> CardRoot:
