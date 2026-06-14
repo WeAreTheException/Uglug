@@ -7,13 +7,13 @@ class_name MatchAnnouncementDisplay
 @export var round_label: Label
 @export var message_label: Label
 
-@export var hide_when_not_round_intro: bool = true
+@export var hide_when_not_round_intro: bool = false
 
 var current_round: int = 0
 
 
 func _ready() -> void:
-	visible = false
+	visible = true
 
 	if turn_order_state == null and match_flow_root != null:
 		turn_order_state = match_flow_root.turn_order_state
@@ -43,6 +43,8 @@ func _refresh_from_match_flow() -> void:
 		_show_round_intro()
 	elif hide_when_not_round_intro:
 		visible = false
+	else:
+		visible = true
 
 
 func _on_round_changed(round_number: int) -> void:
@@ -56,6 +58,8 @@ func _on_match_state_changed(state: MatchFlowRoot.MatchState) -> void:
 
 	if hide_when_not_round_intro:
 		visible = false
+	else:
+		visible = true
 
 
 func _show_round_intro() -> void:
