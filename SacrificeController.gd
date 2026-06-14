@@ -79,14 +79,13 @@ func undo_pending_sacrifice() -> void:
 
 	for entry in entries:
 		var card := entry["card"] as CardRoot
-		var index := int(entry["index"])
 
 		if card == null:
 			continue
 
-		if player_hand != null:
-			player_hand.restore_card_to_hand(card, index)
-
+		card.visible = true
+		card.reset_sacrifice_feedback()
+		card.clear_hand_feedback()
 		restored_cards.append(card)
 
 	pending_sacrifice_undone.emit(old_primed, restored_cards)
@@ -107,6 +106,14 @@ func commit_pending_sacrifice() -> void:
 	is_committing = true
 
 	var cards := pending_boat.take_pending_cards()
+
+	for card: CardRoot in cards:
+		if card == null:
+			continue
+
+		if player_hand != null:
+			player_hand.remove_card_from_hand(card)
+
 	committer.commit_cards(cards)
 
 	is_committing = false
@@ -139,19 +146,21 @@ func _begin_pending_sacrifice(
 		if card == primed_card:
 			continue
 
-		var index := player_hand.get_index_of_card(card)
+		var index := -1
+
+		if player_hand != null:
+			index = player_hand.get_index_of_card(card)
 
 		if index < 0:
 			continue
-
-		player_hand.remove_card_from_hand(card)
 
 		entries.append({
 			"card": card,
 			"index": index
 		})
 
-	player_hand.clear_sacrifice_selection()
+	if player_hand != null:
+		player_hand.clear_sacrifice_selection()
 
 	var pending_cards := pending_boat.begin_pending(primed_card, entries)
 

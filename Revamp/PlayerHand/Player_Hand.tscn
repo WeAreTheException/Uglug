@@ -56,11 +56,12 @@ layout_tweener = NodePath("Hand_LayoutTweener")
 
 [node name="Hand_IdleLayout" type="Node2D" parent="Hand_Layout" unique_id=1708688104]
 script = ExtResource("10_4g7iw")
+target_scale = Vector2(0.9, 0.9)
 
 [node name="Hand_PlayLayout" type="Node2D" parent="Hand_Layout" unique_id=614443051]
 script = ExtResource("11_hl46v")
 card_spacing = 140.0
-target_scale = Vector2(1, 1)
+target_scale = Vector2(0.95, 0.95)
 y_offset = 10.0
 
 [node name="Hand_LayoutTweener" type="Node2D" parent="Hand_Layout" unique_id=460038037]
@@ -71,7 +72,6 @@ script = ExtResource("8_egog8")
 card_spacing = 160.0
 curve_height = 20.0
 max_rotation_degrees = -5.0
-target_scale = Vector2(1.2, 1.2)
 y_offset = -200.0
 
 [node name="Hand_StateMachine" type="Node" parent="." unique_id=101836643 node_paths=PackedStringArray("idle_state", "play_state", "sacrifice_state", "blessing_state", "buff_state")]

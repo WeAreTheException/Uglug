@@ -81,13 +81,13 @@ direct_damage_router = NodePath("../DirectDamageRouter")
 
 [node name="PlayerHAnd" parent="." unique_id=371738706 node_paths=PackedStringArray("prime_location", "cost_sort", "mutation_sort") instance=ExtResource("2_mi1n2")]
 position = Vector2(935.99994, 911.99994)
-scale = Vector2(0.85, 0.85)
 max_hand_size = 6
 prime_location = NodePath("../PrimeCardLocation")
 cost_sort = NodePath("../CostSortButton")
 mutation_sort = NodePath("../MutationSortButton")
 
 [node name="OpponenetHAnd" parent="." unique_id=1415383407 node_paths=PackedStringArray("prime_location") instance=ExtResource("2_mi1n2")]
+visible = false
 position = Vector2(312, 240)
 prime_location = NodePath("../PrimeCardLocation")
 
