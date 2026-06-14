@@ -87,7 +87,7 @@ corner_radius_bottom_left = 20
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_feejq"]
 bg_color = Color(0.85882354, 0.85882354, 0.85882354, 1)
 
-[node name="Mao" type="Node2D" unique_id=550121538]
+[node name="Mao_UI_Mockup" type="Node2D" unique_id=550121538]
 
 [node name="Deck" parent="." unique_id=93691211 node_paths=PackedStringArray("player_one_hand", "player_two_hand") instance=ExtResource("1_7kt8c")]
 position = Vector2(1836, 492)
@@ -282,12 +282,14 @@ slots_root = NodePath("../Slots")
 position = Vector2(320, 160)
 rotation = 0.2617994
 scale = Vector2(0.85, 0.85)
+script = null
 
 [node name="EnemyIcon" parent="." unique_id=1236981440 instance=ExtResource("35_wmbu0")]
 modulate = Color(0.9428946, 0, 0.10008567, 1)
 position = Vector2(1535.9999, 159.99995)
 rotation = -0.2617994
 scale = Vector2(0.85, 0.85)
+script = null
 
 [node name="Panel2" type="Panel" parent="." unique_id=1168116615]
 offset_left = 480.0

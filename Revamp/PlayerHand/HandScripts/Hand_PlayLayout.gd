@@ -5,3 +5,4 @@ class_name Hand_PlayLayout
 @export var curve_height: float = 0.0
 @export var max_rotation_degrees: float = 0.0
 @export var target_scale: Vector2 = Vector2(1.08, 1.08)
+@export var y_offset: float = 0.0
