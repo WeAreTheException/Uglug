@@ -64,10 +64,6 @@ metadata/_custom_type_script = "uid://be8yk3djwb5oc"
 
 [node name="Core" type="Node2D" parent="." unique_id=878801964]
 
-[node name="MatchUI" parent="Core" unique_id=495517401 node_paths=PackedStringArray("match_flow_root", "score_state") instance=ExtResource("1_2n6q5")]
-match_flow_root = NodePath("../../Scripts/MatchFlowRoot")
-score_state = NodePath("../../Scripts/MatchFlowRoot/MatchScoreState")
-
 [node name="Deck" parent="Core" unique_id=93691211 node_paths=PackedStringArray("player_one_hand", "player_two_hand") instance=ExtResource("28_a1qt2")]
 position = Vector2(1836, 492)
 player_one_hand = NodePath("../PlayerHAnd")
@@ -391,3 +387,9 @@ offset_right = 972.0
 offset_bottom = 1044.0
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="MatchUI" parent="Control" unique_id=495517401 node_paths=PackedStringArray("match_flow_root", "slots_root", "score_state") instance=ExtResource("1_2n6q5")]
+layout_mode = 0
+match_flow_root = NodePath("../../Scripts/MatchFlowRoot")
+slots_root = NodePath("../../Core/Board")
+score_state = NodePath("../../Scripts/MatchFlowRoot/MatchScoreState")

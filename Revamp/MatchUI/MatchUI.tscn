@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://drlu1efs8taqn" path="res://Revamp/MatchUI/MatchUIRoot.gd" id="1_0cu85"]
 [ext_resource type="Script" uid="uid://c7cg4mnmqjf1h" path="res://Revamp/MatchUI/TuggaBattleScaleDisplay.gd" id="1_xe135"]
 [ext_resource type="Script" uid="uid://c5j44dhlx1div" path="res://Revamp/DirectDamage/MatchScoreState.gd" id="2_1duyo"]
+[ext_resource type="Script" uid="uid://dw1k6pcwy2emf" path="res://Revamp/MatchUI/AttackOrderArrowDisplay.gd" id="2_i6ny6"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nco33"]
 bg_color = Color(0.86036915, 0.8603692, 0.8603691, 1)
@@ -48,16 +49,21 @@ border_width_right = 3
 border_width_bottom = 3
 border_color = Color(0.8291633, 0.14043778, 0.35698447, 1)
 
-[node name="MatchUI" type="Control" unique_id=1584030534 node_paths=PackedStringArray("score_state", "tugga_display")]
+[node name="MatchUI" type="Control" unique_id=1584030534 node_paths=PackedStringArray("tugga_display", "attack_order_arrow_display")]
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_0cu85")
-score_state = NodePath("MatchScoreState")
 tugga_display = NodePath("TuggaStuff")
+attack_order_arrow_display = NodePath("AttackOrderArrow")
 
-[node name="AttackOrderArrow" type="Node2D" parent="." unique_id=1478535642]
+[node name="AttackOrderArrow" type="Control" parent="." unique_id=279434668 node_paths=PackedStringArray("left_to_right_arrow", "right_to_left_arrow")]
+anchors_preset = 0
+script = ExtResource("2_i6ny6")
+left_to_right_arrow = NodePath("Left2Right")
+right_to_left_arrow = NodePath("Right2Left")
 
 [node name="Left2Right" type="Panel" parent="AttackOrderArrow" unique_id=1940495874]
+layout_mode = 0
 offset_left = 557.0
 offset_top = 437.0
 offset_right = 1293.0
@@ -75,6 +81,7 @@ pivot_offset = Vector2(0, 12)
 theme_override_styles/panel = SubResource("StyleBoxFlat_l0x2u")
 
 [node name="Right2Left" type="Panel" parent="AttackOrderArrow" unique_id=1965078982]
+layout_mode = 0
 offset_left = 1309.0
 offset_top = 453.0
 offset_right = 2045.0
