@@ -60,3 +60,5 @@ scale = Vector2(0.8, 0.81509435)
 texture = ExtResource("2_rh202")
 
 [node name="CardAnchor" type="Node2D" parent="." unique_id=928768785]
+
+[node name="Node" type="Node" parent="." unique_id=574764237]

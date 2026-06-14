@@ -4,14 +4,12 @@
 [ext_resource type="PackedScene" uid="uid://bw8c7m7n5yuk8" path="res://Revamp/Board/Slots.tscn" id="1_yq750"]
 [ext_resource type="PackedScene" uid="uid://1wr1e57v7trd" path="res://Revamp/PlayerHand/Player_Hand.tscn" id="2_mi1n2"]
 [ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="3_3vc3c"]
-[ext_resource type="Resource" uid="uid://b1dt5378u5ga8" path="res://Revamp/CardPresets/Sustain/Guardiant.tres" id="3_ufjv4"]
-[ext_resource type="Resource" uid="uid://dbgpqc3vdl8t" path="res://Revamp/CardPresets/Duriant.tres" id="4_qqxe6"]
-[ext_resource type="Resource" uid="uid://ci7yvhc8pfst6" path="res://Revamp/CardPresets/QueenAnt.tres" id="4_vcbui"]
-[ext_resource type="Resource" uid="uid://bn1jyervrnsg" path="res://Revamp/CardPresets/WorkerAnt.tres" id="7_ufjv4"]
 [ext_resource type="Script" uid="uid://bxbqihkit6rgo" path="res://Managers/Phasemanager.gd" id="8_cc2no"]
 [ext_resource type="Script" uid="uid://bbcig486utsir" path="res://HandPhaseApplier.gd" id="9_cc2no"]
 [ext_resource type="Script" uid="uid://61l5g8wkdar3" path="res://SacrificeController.gd" id="10_1j514"]
+[ext_resource type="Script" uid="uid://db4xai716j06p" path="res://Revamp/Card/CardActions/Sacrifice/SacrificeSelectionRoot.gd" id="11_5f7hr"]
 [ext_resource type="Script" uid="uid://ciopi88keoi3k" path="res://SacrificeRequirement.gd" id="11_at0h8"]
+[ext_resource type="Script" uid="uid://b3pcelfs57qav" path="res://Revamp/Card/CardActions/Sacrifice/SacrificeBoardSelectionBinder.gd" id="12_3j6fp"]
 [ext_resource type="Script" uid="uid://b4qvc7353obir" path="res://PendingSacrificeBoat.gd" id="12_30x73"]
 [ext_resource type="Script" uid="uid://vmy04gllke53" path="res://SacrificeCommitter.gd" id="13_6ula3"]
 [ext_resource type="Script" uid="uid://dnikkosq1o0kr" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementController.gd" id="13_ubws4"]
@@ -72,11 +70,6 @@ player_two_hand = NodePath("../OpponenetHAnd")
 
 [node name="Board" parent="." unique_id=1318716624 node_paths=PackedStringArray("direct_damage_router") instance=ExtResource("1_yq750")]
 position = Vector2(24, 0)
-player_slot_1_card = ExtResource("7_ufjv4")
-player_slot_2_card = ExtResource("4_vcbui")
-opponent_slot_1_card = ExtResource("3_ufjv4")
-opponent_slot_2_card = ExtResource("4_qqxe6")
-opponent_slot_3_card = ExtResource("7_ufjv4")
 direct_damage_router = NodePath("../DirectDamageRouter")
 
 [node name="PlayerHAnd" parent="." unique_id=371738706 node_paths=PackedStringArray("prime_location", "cost_sort", "mutation_sort") instance=ExtResource("2_mi1n2")]
@@ -106,9 +99,10 @@ phase_manager = NodePath("..")
 lead_hand = NodePath("../../PlayerHAnd")
 response_hand = NodePath("../../OpponenetHAnd")
 
-[node name="SacrificeController" type="Node" parent="." unique_id=1432478239 node_paths=PackedStringArray("player_hand", "requirement", "pending_boat", "committer")]
+[node name="SacrificeController" type="Node" parent="." unique_id=1432478239 node_paths=PackedStringArray("player_hand", "sacrifice_selection_root", "requirement", "pending_boat", "committer")]
 script = ExtResource("10_1j514")
 player_hand = NodePath("../PlayerHAnd")
+sacrifice_selection_root = NodePath("SacrificeSelectionRoot")
 requirement = NodePath("SacrificeRequirement")
 pending_boat = NodePath("PendingSacrificeBoat")
 committer = NodePath("SacrificeComitter")
@@ -125,6 +119,16 @@ pending_layer = NodePath("../PendingSacrificeLayer")
 script = ExtResource("13_6ula3")
 
 [node name="PendingSacrificeLayer" type="Node2D" parent="SacrificeController" unique_id=183134508]
+
+[node name="SacrificeSelectionRoot" type="Node" parent="SacrificeController" unique_id=562062986]
+script = ExtResource("11_5f7hr")
+metadata/_custom_type_script = "uid://db4xai716j06p"
+
+[node name="SacrificeBoardSelectionBinder" type="Node" parent="SacrificeController" unique_id=571826404 node_paths=PackedStringArray("slots_root", "selection_root", "player_hand")]
+script = ExtResource("12_3j6fp")
+slots_root = NodePath("../../Board")
+selection_root = NodePath("../SacrificeSelectionRoot")
+player_hand = NodePath("../../PlayerHAnd")
 
 [node name="PlacementController" type="Node" parent="." unique_id=1405375079 node_paths=PackedStringArray("slots_root", "player_hand", "sacrifice_controller", "placement_state", "input_router", "placement_preview", "placement_executor", "event_emitter", "placement_cancel")]
 script = ExtResource("13_ubws4")
@@ -180,10 +184,9 @@ phase_manager = NodePath("../../PhaseManager")
 [node name="BlessingSelectionState" type="Node" parent="MatchFlowRoot" unique_id=1333215538]
 script = ExtResource("25_n5v11")
 
-[node name="BlessingFlowHandler" type="Node" parent="MatchFlowRoot" unique_id=47668461 node_paths=PackedStringArray("match_flow_root", "selection_state")]
+[node name="BlessingFlowHandler" type="Node" parent="MatchFlowRoot" unique_id=47668461 node_paths=PackedStringArray("match_flow_root")]
 script = ExtResource("26_7gy8c")
 match_flow_root = NodePath("..")
-selection_state = NodePath("../BlessingSelectionState")
 
 [node name="MatchPlacementFlowHandler" type="Node" parent="MatchFlowRoot" unique_id=1230555798 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "placement_controller")]
 script = ExtResource("27_mf2my")

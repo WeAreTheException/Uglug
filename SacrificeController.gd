@@ -11,6 +11,7 @@ signal sacrifice_committed(cards: Array[CardRoot])
 signal sacrifice_blocked(reason: String)
 
 @export var player_hand: PlayerHandRoot
+@export var sacrifice_selection_root: SacrificeSelectionRoot
 
 @export var requirement: SacrificeRequirement
 @export var pending_boat: PendingSacrificeBoat
@@ -26,6 +27,7 @@ var is_committing: bool = false
 
 func _ready() -> void:
 	_connect_hand()
+	_connect_selection_root()
 	_update_warning()
 	_update_requirement_state()
 
@@ -76,7 +78,6 @@ func undo_pending_sacrifice() -> void:
 
 	var old_primed := pending_boat.get_pending_primed_card()
 	var entries := pending_boat.undo_pending()
-
 	var restored_cards: Array[CardRoot] = []
 
 	for entry in entries:
@@ -114,8 +115,7 @@ func commit_pending_sacrifice() -> void:
 		if card == null:
 			continue
 
-		if player_hand != null:
-			player_hand.remove_card_from_hand(card)
+		_remove_card_from_source(card)
 
 	committer.commit_cards(cards)
 
@@ -151,21 +151,18 @@ func _begin_pending_sacrifice(
 		if card == primed_card:
 			continue
 
-		var index := -1
+		var entry := _build_pending_entry(card)
 
-		if player_hand != null:
-			index = player_hand.get_index_of_card(card)
-
-		if index < 0:
+		if entry.is_empty():
 			continue
 
-		entries.append({
-			"card": card,
-			"index": index
-		})
+		entries.append(entry)
 
 	if player_hand != null:
 		player_hand.clear_sacrifice_selection()
+
+	if sacrifice_selection_root != null:
+		sacrifice_selection_root.clear_all()
 
 	var pending_cards := pending_boat.begin_pending(primed_card, entries)
 
@@ -178,6 +175,73 @@ func _begin_pending_sacrifice(
 
 	pending_sacrifice_started.emit(primed_card, pending_cards)
 	_update_requirement_state()
+
+
+func _build_pending_entry(card: CardRoot) -> Dictionary:
+	if card == null:
+		return {}
+
+	if _is_hand_card(card):
+		return {
+			"card": card,
+			"source": "hand",
+			"index": player_hand.get_index_of_card(card)
+		}
+
+	if _is_board_card(card):
+		return {
+			"card": card,
+			"source": "board",
+			"slot": _get_card_slot(card)
+		}
+
+	return {}
+
+
+func _remove_card_from_source(card: CardRoot) -> void:
+	if card == null:
+		return
+
+	if _is_hand_card(card):
+		player_hand.remove_card_from_hand(card)
+		return
+
+	var board_presence := _get_board_presence(card)
+
+	if board_presence != null and board_presence.is_on_board():
+		board_presence.leave_slot(card)
+
+
+func _is_hand_card(card: CardRoot) -> bool:
+	if player_hand == null:
+		return false
+
+	return player_hand.has_card(card)
+
+
+func _is_board_card(card: CardRoot) -> bool:
+	var board_presence := _get_board_presence(card)
+
+	if board_presence == null:
+		return false
+
+	return board_presence.is_on_board()
+
+
+func _get_card_slot(card: CardRoot) -> Slot:
+	var board_presence := _get_board_presence(card)
+
+	if board_presence == null:
+		return null
+
+	return board_presence.current_slot
+
+
+func _get_board_presence(card: CardRoot) -> BoardPresence:
+	if card == null:
+		return null
+
+	return card.get("board_presence") as BoardPresence
 
 
 func _connect_hand() -> void:
@@ -193,8 +257,16 @@ func _connect_hand() -> void:
 	if not player_hand.card_unprimed.is_connected(_on_card_unprimed):
 		player_hand.card_unprimed.connect(_on_card_unprimed)
 
-	if not player_hand.sacrifice_selection_changed.is_connected(_on_selection_changed):
-		player_hand.sacrifice_selection_changed.connect(_on_selection_changed)
+	if not player_hand.sacrifice_selection_changed.is_connected(_on_hand_selection_changed):
+		player_hand.sacrifice_selection_changed.connect(_on_hand_selection_changed)
+
+
+func _connect_selection_root() -> void:
+	if sacrifice_selection_root == null:
+		return
+
+	if not sacrifice_selection_root.selection_changed.is_connected(_on_selection_root_changed):
+		sacrifice_selection_root.selection_changed.connect(_on_selection_root_changed)
 
 
 func _on_sacrifice_requested(
@@ -227,7 +299,20 @@ func _on_card_primed(card: CardRoot) -> void:
 	_begin_pending_sacrifice(card, [])
 
 
-func _on_selection_changed(_cards: Array[CardRoot]) -> void:
+func _on_hand_selection_changed(cards: Array[CardRoot]) -> void:
+	if sacrifice_selection_root != null:
+		sacrifice_selection_root.set_hand_cards(cards)
+		return
+
+	if is_processing:
+		return
+
+	_update_warning()
+	_update_requirement_state()
+	_try_auto_sacrifice()
+
+
+func _on_selection_root_changed(_cards: Array[CardRoot]) -> void:
 	if is_processing:
 		return
 
@@ -244,6 +329,9 @@ func _on_card_unprimed(_card: CardRoot) -> void:
 
 	if player_hand != null:
 		player_hand.clear_sacrifice_selection()
+
+	if sacrifice_selection_root != null:
+		sacrifice_selection_root.clear_all()
 
 	_hide_warning()
 	_update_requirement_state()
@@ -306,6 +394,9 @@ func _get_primed_card() -> CardRoot:
 
 
 func _get_selected_cards() -> Array[CardRoot]:
+	if sacrifice_selection_root != null:
+		return sacrifice_selection_root.get_selected_cards()
+
 	if player_hand == null:
 		return []
 
