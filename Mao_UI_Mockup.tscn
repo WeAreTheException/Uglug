@@ -7,7 +7,9 @@
 [ext_resource type="Resource" uid="uid://b1dt5378u5ga8" path="res://Revamp/CardPresets/Sustain/Guardiant.tres" id="5_m6w7e"]
 [ext_resource type="PackedScene" uid="uid://1wr1e57v7trd" path="res://Revamp/PlayerHand/Player_Hand.tscn" id="6_0y26d"]
 [ext_resource type="Script" uid="uid://bxbqihkit6rgo" path="res://Managers/Phasemanager.gd" id="7_grhre"]
+[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="7_i3li4"]
 [ext_resource type="Script" uid="uid://bbcig486utsir" path="res://HandPhaseApplier.gd" id="8_s7tvq"]
+[ext_resource type="Resource" uid="uid://bkvgy3ptdrbuj" path="res://Revamp/CardPresets/TestCardPresets/AntlerAntler.tres" id="8_snvix"]
 [ext_resource type="Script" uid="uid://61l5g8wkdar3" path="res://SacrificeController.gd" id="9_ff4c1"]
 [ext_resource type="Script" uid="uid://ciopi88keoi3k" path="res://SacrificeRequirement.gd" id="10_eaoai"]
 [ext_resource type="Script" uid="uid://b4qvc7353obir" path="res://PendingSacrificeBoat.gd" id="11_mraqy"]
@@ -103,6 +105,8 @@ direct_damage_router = NodePath("../DirectDamageRouter")
 
 [node name="PlayerHAnd" parent="." unique_id=371738706 node_paths=PackedStringArray("prime_location") instance=ExtResource("6_0y26d")]
 position = Vector2(934, 992)
+starting_cards = Array[ExtResource("7_i3li4")]([ExtResource("8_snvix"), ExtResource("8_snvix"), ExtResource("8_snvix"), ExtResource("8_snvix"), ExtResource("8_snvix"), ExtResource("8_snvix")])
+max_hand_size = 6
 prime_location = NodePath("../PrimeCardLocation")
 
 [node name="OpponenetHAnd" parent="." unique_id=1415383407 node_paths=PackedStringArray("prime_location") instance=ExtResource("6_0y26d")]
@@ -375,7 +379,7 @@ offset_bottom = 40.000008
 rotation = 0.7853982
 theme_override_styles/panel = SubResource("StyleBoxFlat_ygb55")
 
-[node name="Panel" type="Panel" parent="." unique_id=1528674750]
+[node name="SuagrCubeArea" type="Panel" parent="." unique_id=1528674750]
 offset_left = 928.0001
 offset_top = 64.00001
 offset_right = 1008.0001
