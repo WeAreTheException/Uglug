@@ -1,5 +1,10 @@
 [gd_scene format=3 uid="uid://c1vh316hdjlc"]
 
+[ext_resource type="Script" uid="uid://drlu1efs8taqn" path="res://Revamp/MatchUI/MatchUIRoot.gd" id="1_0cu85"]
+[ext_resource type="Script" uid="uid://c7cg4mnmqjf1h" path="res://Revamp/MatchUI/TuggaBattleScaleDisplay.gd" id="1_xe135"]
+[ext_resource type="Script" uid="uid://c5j44dhlx1div" path="res://Revamp/DirectDamage/MatchScoreState.gd" id="2_1duyo"]
+[ext_resource type="Script" uid="uid://dw1k6pcwy2emf" path="res://Revamp/MatchUI/AttackOrderArrowDisplay.gd" id="2_i6ny6"]
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nco33"]
 bg_color = Color(0.86036915, 0.8603692, 0.8603691, 1)
 corner_radius_top_left = 25
@@ -44,11 +49,21 @@ border_width_right = 3
 border_width_bottom = 3
 border_color = Color(0.8291633, 0.14043778, 0.35698447, 1)
 
-[node name="MatchUI" type="Node2D" unique_id=495517401]
+[node name="MatchUI" type="Control" unique_id=1584030534 node_paths=PackedStringArray("tugga_display", "attack_order_arrow_display")]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_0cu85")
+tugga_display = NodePath("TuggaStuff")
+attack_order_arrow_display = NodePath("AttackOrderArrow")
 
-[node name="AttackOrderArrow" type="Node2D" parent="." unique_id=1478535642]
+[node name="AttackOrderArrow" type="Control" parent="." unique_id=279434668 node_paths=PackedStringArray("left_to_right_arrow", "right_to_left_arrow")]
+anchors_preset = 0
+script = ExtResource("2_i6ny6")
+left_to_right_arrow = NodePath("Left2Right")
+right_to_left_arrow = NodePath("Right2Left")
 
 [node name="Left2Right" type="Panel" parent="AttackOrderArrow" unique_id=1940495874]
+layout_mode = 0
 offset_left = 557.0
 offset_top = 437.0
 offset_right = 1293.0
@@ -66,6 +81,7 @@ pivot_offset = Vector2(0, 12)
 theme_override_styles/panel = SubResource("StyleBoxFlat_l0x2u")
 
 [node name="Right2Left" type="Panel" parent="AttackOrderArrow" unique_id=1965078982]
+layout_mode = 0
 offset_left = 1309.0
 offset_top = 453.0
 offset_right = 2045.0
@@ -158,9 +174,15 @@ text = "P1 ATTACKS FIRST"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TuggaStuff" type="Node2D" parent="." unique_id=748572851]
+[node name="TuggaStuff" type="Control" parent="." unique_id=482674160 node_paths=PackedStringArray("score_state", "player_pips", "opponent_pips")]
+anchors_preset = 0
+script = ExtResource("1_xe135")
+score_state = NodePath("../MatchScoreState")
+player_pips = [NodePath("TuggaBacking/PlayerPips/P1"), NodePath("TuggaBacking/PlayerPips/P2"), NodePath("TuggaBacking/PlayerPips/P3"), NodePath("TuggaBacking/PlayerPips/P4"), NodePath("TuggaBacking/PlayerPips/P5")]
+opponent_pips = [NodePath("TuggaBacking/OpponentPips/Opponent1"), NodePath("TuggaBacking/OpponentPips/Opponent2"), NodePath("TuggaBacking/OpponentPips/Opponent3"), NodePath("TuggaBacking/OpponentPips/Opponent4"), NodePath("TuggaBacking/OpponentPips/Opponent5")]
 
 [node name="TuggaBacking" type="Panel" parent="TuggaStuff" unique_id=1023558863]
+layout_mode = 0
 offset_left = 480.0
 offset_top = 64.0
 offset_right = 1368.0
@@ -178,37 +200,37 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_wfaws")
 [node name="PlayerPips" type="Node2D" parent="TuggaStuff/TuggaBacking" unique_id=1620525660]
 position = Vector2(454, 32)
 
-[node name="Host1" type="Panel" parent="TuggaStuff/TuggaBacking/PlayerPips" unique_id=1011494438]
+[node name="P1" type="Panel" parent="TuggaStuff/TuggaBacking/PlayerPips" unique_id=1011494438]
 offset_left = -134.0
 offset_right = -94.0
 offset_bottom = 40.0
 rotation = 0.7853982
 theme_override_styles/panel = SubResource("StyleBoxFlat_6pi27")
 
-[node name="Host2" type="Panel" parent="TuggaStuff/TuggaBacking/PlayerPips" unique_id=145845343]
-offset_left = -389.99994
-offset_right = -349.99994
+[node name="P2" type="Panel" parent="TuggaStuff/TuggaBacking/PlayerPips" unique_id=531727341]
+offset_left = -201.7157
+offset_right = -161.7157
 offset_bottom = 40.0
 rotation = 0.7853982
 theme_override_styles/panel = SubResource("StyleBoxFlat_6pi27")
 
-[node name="Host3" type="Panel" parent="TuggaStuff/TuggaBacking/PlayerPips" unique_id=1327987164]
-offset_left = -329.7157
-offset_right = -289.7157
-offset_bottom = 40.0
-rotation = 0.7853982
-theme_override_styles/panel = SubResource("StyleBoxFlat_6pi27")
-
-[node name="Host4" type="Panel" parent="TuggaStuff/TuggaBacking/PlayerPips" unique_id=169435385]
+[node name="P3" type="Panel" parent="TuggaStuff/TuggaBacking/PlayerPips" unique_id=169435385]
 offset_left = -265.7157
 offset_right = -225.7157
 offset_bottom = 40.0
 rotation = 0.7853982
 theme_override_styles/panel = SubResource("StyleBoxFlat_6pi27")
 
-[node name="Host5" type="Panel" parent="TuggaStuff/TuggaBacking/PlayerPips" unique_id=531727341]
-offset_left = -201.7157
-offset_right = -161.7157
+[node name="P4" type="Panel" parent="TuggaStuff/TuggaBacking/PlayerPips" unique_id=1327987164]
+offset_left = -329.7157
+offset_right = -289.7157
+offset_bottom = 40.0
+rotation = 0.7853982
+theme_override_styles/panel = SubResource("StyleBoxFlat_6pi27")
+
+[node name="P5" type="Panel" parent="TuggaStuff/TuggaBacking/PlayerPips" unique_id=145845343]
+offset_left = -389.99994
+offset_right = -349.99994
 offset_bottom = 40.0
 rotation = 0.7853982
 theme_override_styles/panel = SubResource("StyleBoxFlat_6pi27")
@@ -252,6 +274,7 @@ rotation = 0.7853982
 theme_override_styles/panel = SubResource("StyleBoxFlat_ioqil")
 
 [node name="PlayerName" type="TextEdit" parent="." unique_id=1805308345]
+layout_mode = 0
 offset_left = 480.0
 offset_top = 12.0
 offset_right = 624.0
@@ -266,3 +289,12 @@ offset_top = 12.0
 offset_right = 1368.0
 offset_bottom = 60.0
 placeholder_text = "Swagsterdevil"
+
+[node name="Control" type="Control" parent="." unique_id=1770342218]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="MatchScoreState" type="Node" parent="." unique_id=1817040655]
+script = ExtResource("2_1duyo")
+metadata/_custom_type_script = "uid://c5j44dhlx1div"
