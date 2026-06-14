@@ -59,6 +59,10 @@ func build_match_decks() -> void:
 		starting_hands_dealt.emit()
 
 
+func get_hand_for_card_owner(source_card: CardRoot) -> PlayerHandRoot:
+	return _get_hand_for_card_owner(source_card)
+
+
 func draw_warrior_for_owner(owner: SlotRow.SlotOwner) -> void:
 	if owner == SlotRow.SlotOwner.OPPONENT:
 		draw_warrior_for_player_two()
@@ -98,10 +102,7 @@ func draw_random_cards_from_effect_for_card_owner(
 ) -> Array[CardRoot]:
 	var drawn_cards: Array[CardRoot] = []
 
-	if source_card == null:
-		return drawn_cards
-
-	if not is_instance_valid(source_card):
+	if source_card == null or not is_instance_valid(source_card):
 		return drawn_cards
 
 	if amount <= 0:
@@ -145,10 +146,7 @@ func spawn_workers_from_effect_for_card_owner(
 ) -> Array[CardRoot]:
 	var spawned_cards: Array[CardRoot] = []
 
-	if source_card == null:
-		return spawned_cards
-
-	if not is_instance_valid(source_card):
+	if source_card == null or not is_instance_valid(source_card):
 		return spawned_cards
 
 	if amount <= 0:
@@ -217,15 +215,19 @@ func _get_owner_for_card(source_card: CardRoot) -> SlotRow.SlotOwner:
 	if source_card == null:
 		return SlotRow.SlotOwner.PLAYER
 
-	if source_card.slots_root == null:
+	if source_card.slots_root != null:
+		var slot: Slot = source_card.get_current_slot()
+
+		if slot != null:
+			return source_card.slots_root.get_owner_of_slot(slot)
+
+	if player_two_hand != null and player_two_hand.has_card(source_card):
+		return SlotRow.SlotOwner.OPPONENT
+
+	if player_one_hand != null and player_one_hand.has_card(source_card):
 		return SlotRow.SlotOwner.PLAYER
 
-	var slot: Slot = source_card.get_current_slot()
-
-	if slot == null:
-		return SlotRow.SlotOwner.PLAYER
-
-	return source_card.slots_root.get_owner_of_slot(slot)
+	return SlotRow.SlotOwner.PLAYER
 
 
 func _deal_starting_hands_animated(
@@ -257,10 +259,7 @@ func _deal_starting_hand(hand: PlayerHandRoot, cards: Array[CardData]) -> void:
 
 
 func _spawn_starting_card(hand: PlayerHandRoot, card_data: CardData) -> void:
-	if hand == null:
-		return
-
-	if card_data == null:
+	if hand == null or card_data == null:
 		return
 
 	hand.spawn_card(card_data)

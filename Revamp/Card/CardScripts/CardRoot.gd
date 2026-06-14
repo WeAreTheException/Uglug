@@ -44,7 +44,7 @@ func setup(data: CardData) -> void:
 	card_name = data.name
 	_ensure_runtime_id()
 
-	if starts_as_revenant_for_debug:
+	if starts_as_revenant_for_debug or data.starts_as_revenant_for_debug:
 		mark_revenant()
 		print("REVENANT DEBUG: ", card_name, " is_revenant = ", is_revenant())
 
@@ -188,9 +188,13 @@ func get_current_slot() -> Slot:
 
 func set_revenant(value: bool) -> void:
 	if runtime_state == null:
+		print("REVENANT BLOCKED: runtime_state missing on ", card_name)
 		return
 
 	runtime_state.set_revenant(value)
+
+	if card_visuals_root != null:
+		card_visuals_root.refresh_revenant_visual()
 
 
 func mark_revenant() -> void:
