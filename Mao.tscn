@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://hbyxts155x0r"]
 
-[ext_resource type="PackedScene" uid="uid://c1vh316hdjlc" path="res://MatchUI.tscn" id="1_2n6q5"]
+[ext_resource type="PackedScene" uid="uid://c1vh316hdjlc" path="res://Revamp/MatchUI/MatchUI.tscn" id="1_2n6q5"]
 [ext_resource type="PackedScene" uid="uid://bw8c7m7n5yuk8" path="res://Revamp/Board/Slots.tscn" id="1_yq750"]
 [ext_resource type="PackedScene" uid="uid://1wr1e57v7trd" path="res://Revamp/PlayerHand/Player_Hand.tscn" id="2_mi1n2"]
 [ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="3_3vc3c"]
@@ -50,6 +50,7 @@
 [ext_resource type="Texture2D" uid="uid://c8kf7vqpx34gh" path="res://Art/Mutations/Duriant_Sigil.PNG" id="44_lyfvt"]
 [ext_resource type="Script" uid="uid://b0a7u0d6w3wt5" path="res://BuffCardSelectionHandler.gd" id="51_3j6fp"]
 [ext_resource type="Script" uid="uid://btx34g1cs7nhy" path="res://BuffMutationApplyHandler.gd" id="52_72iem"]
+[ext_resource type="Script" uid="uid://ysva1maqqb8w" path="res://HandCountDisplay.gd" id="52_nmm8s"]
 [ext_resource type="Script" uid="uid://dbw5dxwuc5h4h" path="res://BuffCardStagingHandler.gd" id="53_nmm8s"]
 
 [sub_resource type="Resource" id="Resource_cyp03"]
@@ -61,186 +62,55 @@ metadata/_custom_type_script = "uid://be8yk3djwb5oc"
 
 [node name="Mao" type="Node2D" unique_id=550121538]
 
-[node name="MatchUI" parent="." unique_id=495517401 instance=ExtResource("1_2n6q5")]
+[node name="Core" type="Node2D" parent="." unique_id=878801964]
 
-[node name="Deck" parent="." unique_id=93691211 node_paths=PackedStringArray("player_one_hand", "player_two_hand") instance=ExtResource("28_a1qt2")]
+[node name="MatchUI" parent="Core" unique_id=495517401 node_paths=PackedStringArray("match_flow_root", "score_state") instance=ExtResource("1_2n6q5")]
+match_flow_root = NodePath("../../Scripts/MatchFlowRoot")
+score_state = NodePath("../../Scripts/MatchFlowRoot/MatchScoreState")
+
+[node name="Deck" parent="Core" unique_id=93691211 node_paths=PackedStringArray("player_one_hand", "player_two_hand") instance=ExtResource("28_a1qt2")]
 position = Vector2(1836, 492)
 player_one_hand = NodePath("../PlayerHAnd")
 player_two_hand = NodePath("../OpponenetHAnd")
 
-[node name="Board" parent="." unique_id=1318716624 node_paths=PackedStringArray("direct_damage_router") instance=ExtResource("1_yq750")]
+[node name="Board" parent="Core" unique_id=1318716624 node_paths=PackedStringArray("direct_damage_router") instance=ExtResource("1_yq750")]
 position = Vector2(24, 0)
-direct_damage_router = NodePath("../DirectDamageRouter")
+direct_damage_router = NodePath("../../Scripts/Core/DirectDamageRouter")
 
-[node name="PlayerHAnd" parent="." unique_id=371738706 node_paths=PackedStringArray("prime_location", "cost_sort", "mutation_sort") instance=ExtResource("2_mi1n2")]
+[node name="PlayerHAnd" parent="Core" unique_id=371738706 node_paths=PackedStringArray("prime_location", "cost_sort", "mutation_sort") instance=ExtResource("2_mi1n2")]
 position = Vector2(935.99994, 911.99994)
 prime_location = NodePath("../PrimeCardLocation")
-cost_sort = NodePath("../CostSortButton")
-mutation_sort = NodePath("../MutationSortButton")
+cost_sort = NodePath("../../Control/CostSortButton")
+mutation_sort = NodePath("../../Control/MutationSortButton")
 
-[node name="OpponenetHAnd" parent="." unique_id=1415383407 node_paths=PackedStringArray("prime_location") instance=ExtResource("2_mi1n2")]
+[node name="OpponenetHAnd" parent="Core" unique_id=1415383407 node_paths=PackedStringArray("prime_location") instance=ExtResource("2_mi1n2")]
 visible = false
 position = Vector2(312, 240)
 prime_location = NodePath("../PrimeCardLocation")
 
-[node name="PrimeCardLocation" type="Node2D" parent="." unique_id=2143511336]
+[node name="PrimeCardLocation" type="Node2D" parent="Core" unique_id=2143511336]
 position = Vector2(312, 504)
 
-[node name="BuffCardLocation" type="Node2D" parent="." unique_id=1437677715]
+[node name="BuffCardLocation" type="Node2D" parent="Core" unique_id=1437677715]
 position = Vector2(1198, 492)
 
-[node name="PhaseManager" type="Node" parent="." unique_id=658439244]
-script = ExtResource("8_cc2no")
-metadata/_custom_type_script = "uid://bxbqihkit6rgo"
-
-[node name="HandPhaseApplier" type="Node" parent="PhaseManager" unique_id=1109584642 node_paths=PackedStringArray("phase_manager", "lead_hand", "response_hand")]
-script = ExtResource("9_cc2no")
-phase_manager = NodePath("..")
-lead_hand = NodePath("../../PlayerHAnd")
-response_hand = NodePath("../../OpponenetHAnd")
-
-[node name="SacrificeController" type="Node" parent="." unique_id=1432478239 node_paths=PackedStringArray("player_hand", "sacrifice_selection_root", "requirement", "pending_boat", "committer")]
-script = ExtResource("10_1j514")
-player_hand = NodePath("../PlayerHAnd")
-sacrifice_selection_root = NodePath("SacrificeSelectionRoot")
-requirement = NodePath("SacrificeRequirement")
-pending_boat = NodePath("PendingSacrificeBoat")
-committer = NodePath("SacrificeComitter")
-auto_sacrifice_when_cost_met = true
-
-[node name="SacrificeRequirement" type="Node" parent="SacrificeController" unique_id=1332384962]
-script = ExtResource("11_at0h8")
-
-[node name="PendingSacrificeBoat" type="Node" parent="SacrificeController" unique_id=1449104389 node_paths=PackedStringArray("pending_layer")]
-script = ExtResource("12_30x73")
-pending_layer = NodePath("../PendingSacrificeLayer")
-
-[node name="SacrificeComitter" type="Node" parent="SacrificeController" unique_id=1945886437]
-script = ExtResource("13_6ula3")
-
-[node name="PendingSacrificeLayer" type="Node2D" parent="SacrificeController" unique_id=183134508]
-
-[node name="SacrificeSelectionRoot" type="Node" parent="SacrificeController" unique_id=562062986]
-script = ExtResource("11_5f7hr")
-metadata/_custom_type_script = "uid://db4xai716j06p"
-
-[node name="SacrificeBoardSelectionBinder" type="Node" parent="SacrificeController" unique_id=571826404 node_paths=PackedStringArray("slots_root", "selection_root", "player_hand")]
-script = ExtResource("12_3j6fp")
-slots_root = NodePath("../../Board")
-selection_root = NodePath("../SacrificeSelectionRoot")
-player_hand = NodePath("../../PlayerHAnd")
-
-[node name="PlacementController" type="Node" parent="." unique_id=1405375079 node_paths=PackedStringArray("slots_root", "player_hand", "sacrifice_controller", "placement_state", "input_router", "placement_preview", "placement_executor", "event_emitter", "placement_cancel")]
-script = ExtResource("13_ubws4")
-slots_root = NodePath("../Board")
-player_hand = NodePath("../PlayerHAnd")
-sacrifice_controller = NodePath("../SacrificeController")
-placement_state = NodePath("PlacementState")
-input_router = NodePath("PlacementInputRouter")
-placement_preview = NodePath("PlacementPreview")
-placement_executor = NodePath("PlacementExecutor")
-event_emitter = NodePath("PlacementEventEmitter")
-placement_cancel = NodePath("PlacementCancel")
-
-[node name="PlacementState" type="Node" parent="PlacementController" unique_id=1456688179]
-script = ExtResource("14_5sdof")
-
-[node name="PlacementInputRouter" type="Node" parent="PlacementController" unique_id=1643686806]
-script = ExtResource("15_20kdy")
-
-[node name="PlacementPreview" type="Node" parent="PlacementController" unique_id=1774818153]
-script = ExtResource("16_5ixgq")
-
-[node name="PlacementExecutor" type="Node" parent="PlacementController" unique_id=988574054]
-script = ExtResource("17_8ve8k")
-
-[node name="PlacementEventEmitter" type="Node" parent="PlacementController" unique_id=1389290294]
-script = ExtResource("18_oekep")
-
-[node name="PlacementCancel" type="Node" parent="PlacementController" unique_id=1193513979]
-script = ExtResource("19_n5v11")
-
-[node name="BoardPhaseApplier" type="Node" parent="." unique_id=940502173 node_paths=PackedStringArray("phase_manager", "slots_root")]
-script = ExtResource("17_b7h4g")
-phase_manager = NodePath("../PhaseManager")
-slots_root = NodePath("../Board")
-
-[node name="CardEffectSpawnrouter" type="Node" parent="." unique_id=1854042398]
-
-[node name="MatchFlowRoot" type="Node" parent="." unique_id=1707594948 node_paths=PackedStringArray("turn_order_state", "deck_system_root", "score_state")]
-script = ExtResource("25_oekep")
-turn_order_state = NodePath("MatchTurnOrderState")
-deck_system_root = NodePath("../Deck")
-score_state = NodePath("MatchScoreState")
-
-[node name="MatchTurnOrderState" type="Node" parent="MatchFlowRoot" unique_id=708809136]
-script = ExtResource("26_n5v11")
-
-[node name="MatchPhaseBridge" type="Node" parent="MatchFlowRoot" unique_id=1064403000 node_paths=PackedStringArray("match_flow_root", "phase_manager")]
-script = ExtResource("24_oekep")
-match_flow_root = NodePath("..")
-phase_manager = NodePath("../../PhaseManager")
-
-[node name="BlessingSelectionState" type="Node" parent="MatchFlowRoot" unique_id=1333215538]
-script = ExtResource("25_n5v11")
-
-[node name="BlessingFlowHandler" type="Node" parent="MatchFlowRoot" unique_id=47668461 node_paths=PackedStringArray("match_flow_root")]
-script = ExtResource("26_7gy8c")
-match_flow_root = NodePath("..")
-
-[node name="MatchPlacementFlowHandler" type="Node" parent="MatchFlowRoot" unique_id=1230555798 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "placement_controller")]
-script = ExtResource("27_mf2my")
-match_flow_root = NodePath("..")
-turn_order_state = NodePath("../MatchTurnOrderState")
-placement_controller = NodePath("../../PlacementController")
-
-[node name="MatchCombatFlowHandler" type="Node" parent="MatchFlowRoot" unique_id=1772524559 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "slots_root", "anticipation_feedback")]
-script = ExtResource("24_n5v11")
-match_flow_root = NodePath("..")
-turn_order_state = NodePath("../MatchTurnOrderState")
-slots_root = NodePath("../../Board")
-anticipation_feedback = NodePath("../AttackAnticipationFeedbackHandler")
-
-[node name="MatchDominantRevealHandler" type="Node" parent="MatchFlowRoot" unique_id=1122772169 node_paths=PackedStringArray("match_flow_root")]
-script = ExtResource("27_a1qt2")
-match_flow_root = NodePath("..")
-
-[node name="MatchAutoDrawHandler" type="Node" parent="MatchFlowRoot" unique_id=833003799 node_paths=PackedStringArray("match_flow_root", "deck_system_root")]
-script = ExtResource("28_mf2my")
-match_flow_root = NodePath("..")
-deck_system_root = NodePath("../../Deck")
-
-[node name="MatchScoreState" type="Node" parent="MatchFlowRoot" unique_id=1110463725]
-script = ExtResource("31_3a8w1")
-
-[node name="PostGameTransitionHandler" type="Node" parent="MatchFlowRoot" unique_id=327167645 node_paths=PackedStringArray("match_flow_root")]
-script = ExtResource("34_f3uds")
-match_flow_root = NodePath("..")
-post_game_scene_path = "uid://bhhfwt6y6l505"
-
-[node name="AttackAnticipationFeedbackHandler" type="Node" parent="MatchFlowRoot" unique_id=1452981444 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "slots_root")]
-script = ExtResource("35_wop7f")
-match_flow_root = NodePath("..")
-turn_order_state = NodePath("../MatchTurnOrderState")
-slots_root = NodePath("../../Board")
-
-[node name="MatchFlowUI" type="Node2D" parent="." unique_id=1660901840]
+[node name="MatchFlowUI" type="Node2D" parent="Core" unique_id=1660901840]
 metadata/_edit_lock_ = true
 
-[node name="CanvasLayer" type="CanvasLayer" parent="MatchFlowUI" unique_id=1511141763]
+[node name="CanvasLayer" type="CanvasLayer" parent="Core/MatchFlowUI" unique_id=1511141763]
 
-[node name="MatchAnnouncementDisplay" type="Control" parent="MatchFlowUI/CanvasLayer" unique_id=866682808 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "round_label", "message_label")]
+[node name="MatchAnnouncementDisplay" type="Control" parent="Core/MatchFlowUI/CanvasLayer" unique_id=866682808 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "round_label", "message_label")]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("27_7gy8c")
-match_flow_root = NodePath("../../../MatchFlowRoot")
-turn_order_state = NodePath("../../../MatchFlowRoot/MatchTurnOrderState")
+match_flow_root = NodePath("../../../../Scripts/MatchFlowRoot")
+turn_order_state = NodePath("../../../../Scripts/MatchFlowRoot/MatchTurnOrderState")
 round_label = NodePath("RoundLabel")
 message_label = NodePath("MessageLabel")
 
-[node name="RoundLabel" type="Label" parent="MatchFlowUI/CanvasLayer/MatchAnnouncementDisplay" unique_id=1682652415]
+[node name="RoundLabel" type="Label" parent="Core/MatchFlowUI/CanvasLayer/MatchAnnouncementDisplay" unique_id=1682652415]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 21.000002
@@ -253,7 +123,7 @@ offset_bottom = 12.0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MessageLabel" type="Label" parent="MatchFlowUI/CanvasLayer/MatchAnnouncementDisplay" unique_id=286669320]
+[node name="MessageLabel" type="Label" parent="Core/MatchFlowUI/CanvasLayer/MatchAnnouncementDisplay" unique_id=286669320]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 19.5
@@ -266,7 +136,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 1
 
-[node name="ChoosCardForBuffLabel" type="Label" parent="MatchFlowUI/CanvasLayer" unique_id=331567794]
+[node name="ChoosCardForBuffLabel" type="Label" parent="Core/MatchFlowUI/CanvasLayer" unique_id=331567794]
 visible = false
 offset_left = 77.0
 offset_top = 584.0
@@ -277,61 +147,210 @@ text = "Choose one of your warriors to consume the larvae and gain its powers"
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="DirectDamageRouter" type="Node" parent="." unique_id=396013123 node_paths=PackedStringArray("score_state", "slots_root")]
-script = ExtResource("30_venfy")
-score_state = NodePath("../MatchFlowRoot/MatchScoreState")
-slots_root = NodePath("../Board")
+[node name="Scripts" type="Node" parent="." unique_id=1166020718]
 
-[node name="BuffSelectionState" type="Node" parent="." unique_id=421083113]
+[node name="PhaseManager" type="Node" parent="Scripts" unique_id=658439244]
+script = ExtResource("8_cc2no")
+metadata/_custom_type_script = "uid://bxbqihkit6rgo"
+
+[node name="HandPhaseApplier" type="Node" parent="Scripts/PhaseManager" unique_id=1109584642 node_paths=PackedStringArray("phase_manager", "lead_hand", "response_hand")]
+script = ExtResource("9_cc2no")
+phase_manager = NodePath("..")
+lead_hand = NodePath("../../../Core/PlayerHAnd")
+response_hand = NodePath("../../../Core/OpponenetHAnd")
+
+[node name="BoardPhaseApplier" type="Node" parent="Scripts" unique_id=940502173 node_paths=PackedStringArray("phase_manager", "slots_root")]
+script = ExtResource("17_b7h4g")
+phase_manager = NodePath("../PhaseManager")
+slots_root = NodePath("../../Core/Board")
+
+[node name="CardEffectSpawnrouter" type="Node" parent="Scripts" unique_id=1854042398]
+
+[node name="MatchFlowRoot" type="Node" parent="Scripts" unique_id=1707594948 node_paths=PackedStringArray("turn_order_state", "deck_system_root", "score_state")]
+script = ExtResource("25_oekep")
+turn_order_state = NodePath("MatchTurnOrderState")
+deck_system_root = NodePath("../../Core/Deck")
+score_state = NodePath("MatchScoreState")
+
+[node name="MatchTurnOrderState" type="Node" parent="Scripts/MatchFlowRoot" unique_id=708809136]
+script = ExtResource("26_n5v11")
+
+[node name="MatchPhaseBridge" type="Node" parent="Scripts/MatchFlowRoot" unique_id=1064403000 node_paths=PackedStringArray("match_flow_root", "phase_manager")]
+script = ExtResource("24_oekep")
+match_flow_root = NodePath("..")
+phase_manager = NodePath("../../PhaseManager")
+
+[node name="BlessingSelectionState" type="Node" parent="Scripts/MatchFlowRoot" unique_id=1333215538]
+script = ExtResource("25_n5v11")
+
+[node name="BlessingFlowHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=47668461 node_paths=PackedStringArray("match_flow_root")]
+script = ExtResource("26_7gy8c")
+match_flow_root = NodePath("..")
+
+[node name="MatchPlacementFlowHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=1230555798 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "placement_controller")]
+script = ExtResource("27_mf2my")
+match_flow_root = NodePath("..")
+turn_order_state = NodePath("../MatchTurnOrderState")
+placement_controller = NodePath("../../Core/PlacementController")
+
+[node name="MatchCombatFlowHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=1772524559 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "slots_root", "anticipation_feedback")]
+script = ExtResource("24_n5v11")
+match_flow_root = NodePath("..")
+turn_order_state = NodePath("../MatchTurnOrderState")
+slots_root = NodePath("../../../Core/Board")
+anticipation_feedback = NodePath("../AttackAnticipationFeedbackHandler")
+
+[node name="MatchDominantRevealHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=1122772169 node_paths=PackedStringArray("match_flow_root")]
+script = ExtResource("27_a1qt2")
+match_flow_root = NodePath("..")
+
+[node name="MatchAutoDrawHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=833003799 node_paths=PackedStringArray("match_flow_root", "deck_system_root")]
+script = ExtResource("28_mf2my")
+match_flow_root = NodePath("..")
+deck_system_root = NodePath("../../../Core/Deck")
+
+[node name="MatchScoreState" type="Node" parent="Scripts/MatchFlowRoot" unique_id=1110463725]
+script = ExtResource("31_3a8w1")
+
+[node name="PostGameTransitionHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=327167645 node_paths=PackedStringArray("match_flow_root")]
+script = ExtResource("34_f3uds")
+match_flow_root = NodePath("..")
+post_game_scene_path = "uid://bhhfwt6y6l505"
+
+[node name="AttackAnticipationFeedbackHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=1452981444 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "slots_root")]
+script = ExtResource("35_wop7f")
+match_flow_root = NodePath("..")
+turn_order_state = NodePath("../MatchTurnOrderState")
+slots_root = NodePath("../../../Core/Board")
+
+[node name="Core" type="Node" parent="Scripts" unique_id=343949318]
+
+[node name="Buff" type="Node" parent="Scripts/Core" unique_id=144455309]
+
+[node name="BuffSelectionState" type="Node" parent="Scripts/Core/Buff" unique_id=421083113]
 script = ExtResource("28_8y4qw")
 
-[node name="BuffFlowHandler" type="Node" parent="." unique_id=237451156 node_paths=PackedStringArray("match_flow_root", "buff_database", "animation_handler")]
+[node name="BuffFlowHandler" type="Node" parent="Scripts/Core/Buff" unique_id=237451156 node_paths=PackedStringArray("match_flow_root", "buff_database", "animation_handler")]
 script = ExtResource("28_5f7hr")
-match_flow_root = NodePath("../MatchFlowRoot")
+match_flow_root = NodePath("../../../MatchFlowRoot")
 buff_database = NodePath("../BuffDatabase")
 animation_handler = NodePath("../BuffPhaseAnimationHandler")
 debug_preview_mutation = ExtResource("40_2ph70")
 
-[node name="BuffPhaseAnimationHandler" type="Node" parent="." unique_id=278124127 node_paths=PackedStringArray("reward_parent")]
+[node name="BuffPhaseAnimationHandler" type="Node" parent="Scripts/Core/Buff" unique_id=278124127 node_paths=PackedStringArray("reward_parent")]
 script = ExtResource("31_nmm8s")
 larvae_reward_scene = ExtResource("29_72iem")
 larvae_draggers_scene = ExtResource("32_qb8ua")
-reward_parent = NodePath("../MatchFlowUI")
+reward_parent = NodePath("../../../../Core/MatchFlowUI")
 
-[node name="BuffDatabase" type="Node" parent="." unique_id=1175133697]
+[node name="BuffDatabase" type="Node" parent="Scripts/Core/Buff" unique_id=1175133697]
 script = ExtResource("38_i8ogu")
 buff_pool = Array[ExtResource("3_3vc3c")]([ExtResource("40_2ph70"), ExtResource("41_8y4qw"), ExtResource("42_lyfvt")])
 forbidden_mutations = Array[ExtResource("3_3vc3c")]([SubResource("Resource_cyp03"), ExtResource("44_cyp03"), ExtResource("44_3jt7k"), null])
 print_debug = false
 run_smoke_test_on_ready = false
 
-[node name="BuffCardSelectionHandler" type="Node" parent="." unique_id=1583935419 node_paths=PackedStringArray("buff_flow_handler", "selection_state", "turn_order_state", "player_one_hand", "player_two_hand", "instruction_label")]
+[node name="BuffCardSelectionHandler" type="Node" parent="Scripts/Core/Buff" unique_id=1583935419 node_paths=PackedStringArray("buff_flow_handler", "selection_state", "turn_order_state", "player_one_hand", "player_two_hand", "instruction_label")]
 script = ExtResource("51_3j6fp")
 buff_flow_handler = NodePath("../BuffFlowHandler")
 selection_state = NodePath("../BuffSelectionState")
-turn_order_state = NodePath("../MatchFlowRoot/MatchTurnOrderState")
-player_one_hand = NodePath("../PlayerHAnd")
-player_two_hand = NodePath("../OpponenetHAnd")
-instruction_label = NodePath("../MatchFlowUI/CanvasLayer/ChoosCardForBuffLabel")
+turn_order_state = NodePath("../../../MatchFlowRoot/MatchTurnOrderState")
+player_one_hand = NodePath("../../../../Core/PlayerHAnd")
+player_two_hand = NodePath("../../../../Core/OpponenetHAnd")
+instruction_label = NodePath("../../../../Core/MatchFlowUI/CanvasLayer/ChoosCardForBuffLabel")
 
-[node name="BuffMutationApplyHandler" type="Node" parent="." unique_id=1110353445 node_paths=PackedStringArray("buff_flow_handler", "selection_state", "turn_order_state", "staging_handler")]
+[node name="BuffMutationApplyHandler" type="Node" parent="Scripts/Core/Buff" unique_id=1110353445 node_paths=PackedStringArray("buff_flow_handler", "selection_state", "turn_order_state", "staging_handler")]
 script = ExtResource("52_72iem")
 buff_flow_handler = NodePath("../BuffFlowHandler")
 selection_state = NodePath("../BuffSelectionState")
-turn_order_state = NodePath("../MatchFlowRoot/MatchTurnOrderState")
+turn_order_state = NodePath("../../../MatchFlowRoot/MatchTurnOrderState")
 staging_handler = NodePath("../BuffCardStagingHandler")
 
-[node name="BuffCardStagingHandler" type="Node" parent="." unique_id=617262833 node_paths=PackedStringArray("buff_flow_handler", "selection_state", "buff_card_location", "player_one_hand", "player_two_hand")]
+[node name="BuffCardStagingHandler" type="Node" parent="Scripts/Core/Buff" unique_id=617262833 node_paths=PackedStringArray("buff_flow_handler", "selection_state", "buff_card_location", "player_one_hand", "player_two_hand")]
 script = ExtResource("53_nmm8s")
 buff_flow_handler = NodePath("../BuffFlowHandler")
 selection_state = NodePath("../BuffSelectionState")
-buff_card_location = NodePath("../BuffCardLocation")
-player_one_hand = NodePath("../PlayerHAnd")
-player_two_hand = NodePath("../OpponenetHAnd")
+buff_card_location = NodePath("../../../../Core/BuffCardLocation")
+player_one_hand = NodePath("../../../../Core/PlayerHAnd")
+player_two_hand = NodePath("../../../../Core/OpponenetHAnd")
 consume_rotation_degrees = -20.0
 power_scale = Vector2(2, 2)
 
-[node name="CostSortButton" type="Button" parent="." unique_id=1231266524]
+[node name="DirectDamageRouter" type="Node" parent="Scripts/Core" unique_id=396013123 node_paths=PackedStringArray("score_state", "slots_root")]
+script = ExtResource("30_venfy")
+score_state = NodePath("../../MatchFlowRoot/MatchScoreState")
+slots_root = NodePath("../../../Core/Board")
+
+[node name="SacrificeController" type="Node" parent="Scripts/Core" unique_id=1432478239 node_paths=PackedStringArray("player_hand", "sacrifice_selection_root", "requirement", "pending_boat", "committer")]
+script = ExtResource("10_1j514")
+player_hand = NodePath("../../../Core/PlayerHAnd")
+sacrifice_selection_root = NodePath("SacrificeSelectionRoot")
+requirement = NodePath("SacrificeRequirement")
+pending_boat = NodePath("PendingSacrificeBoat")
+committer = NodePath("SacrificeComitter")
+auto_sacrifice_when_cost_met = true
+
+[node name="SacrificeRequirement" type="Node" parent="Scripts/Core/SacrificeController" unique_id=1332384962]
+script = ExtResource("11_at0h8")
+
+[node name="PendingSacrificeBoat" type="Node" parent="Scripts/Core/SacrificeController" unique_id=1449104389 node_paths=PackedStringArray("pending_layer")]
+script = ExtResource("12_30x73")
+pending_layer = NodePath("../PendingSacrificeLayer")
+
+[node name="SacrificeComitter" type="Node" parent="Scripts/Core/SacrificeController" unique_id=1945886437]
+script = ExtResource("13_6ula3")
+
+[node name="PendingSacrificeLayer" type="Node2D" parent="Scripts/Core/SacrificeController" unique_id=183134508]
+
+[node name="SacrificeSelectionRoot" type="Node" parent="Scripts/Core/SacrificeController" unique_id=562062986]
+script = ExtResource("11_5f7hr")
+metadata/_custom_type_script = "uid://db4xai716j06p"
+
+[node name="SacrificeBoardSelectionBinder" type="Node" parent="Scripts/Core/SacrificeController" unique_id=571826404 node_paths=PackedStringArray("slots_root", "selection_root", "player_hand")]
+script = ExtResource("12_3j6fp")
+slots_root = NodePath("../../../../Core/Board")
+selection_root = NodePath("../SacrificeSelectionRoot")
+player_hand = NodePath("../../../../Core/PlayerHAnd")
+
+[node name="PlacementController" type="Node" parent="Scripts/Core" unique_id=1405375079 node_paths=PackedStringArray("slots_root", "player_hand", "sacrifice_controller", "placement_state", "input_router", "placement_preview", "placement_executor", "event_emitter", "placement_cancel")]
+script = ExtResource("13_ubws4")
+slots_root = NodePath("../../../Core/Board")
+player_hand = NodePath("../../../Core/PlayerHAnd")
+sacrifice_controller = NodePath("../SacrificeController")
+placement_state = NodePath("PlacementState")
+input_router = NodePath("PlacementInputRouter")
+placement_preview = NodePath("PlacementPreview")
+placement_executor = NodePath("PlacementExecutor")
+event_emitter = NodePath("PlacementEventEmitter")
+placement_cancel = NodePath("PlacementCancel")
+
+[node name="PlacementState" type="Node" parent="Scripts/Core/PlacementController" unique_id=1456688179]
+script = ExtResource("14_5sdof")
+
+[node name="PlacementInputRouter" type="Node" parent="Scripts/Core/PlacementController" unique_id=1643686806]
+script = ExtResource("15_20kdy")
+
+[node name="PlacementPreview" type="Node" parent="Scripts/Core/PlacementController" unique_id=1774818153]
+script = ExtResource("16_5ixgq")
+
+[node name="PlacementExecutor" type="Node" parent="Scripts/Core/PlacementController" unique_id=988574054]
+script = ExtResource("17_8ve8k")
+
+[node name="PlacementEventEmitter" type="Node" parent="Scripts/Core/PlacementController" unique_id=1389290294]
+script = ExtResource("18_oekep")
+
+[node name="PlacementCancel" type="Node" parent="Scripts/Core/PlacementController" unique_id=1193513979]
+script = ExtResource("19_n5v11")
+
+[node name="Control" type="Control" parent="." unique_id=746986057 node_paths=PackedStringArray("player_hand", "count_label")]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("52_nmm8s")
+player_hand = NodePath("../Core/PlayerHAnd")
+count_label = NodePath("PlayerHandCount")
+
+[node name="CostSortButton" type="Button" parent="Control" unique_id=1231266524]
+layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
@@ -347,7 +366,8 @@ theme_override_font_sizes/font_size = 24
 text = "Cost
 "
 
-[node name="MutationSortButton" type="Button" parent="." unique_id=479050822]
+[node name="MutationSortButton" type="Button" parent="Control" unique_id=479050822]
+layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
@@ -362,3 +382,12 @@ grow_vertical = 0
 theme_override_font_sizes/font_size = 24
 text = "Mutation
 "
+
+[node name="PlayerHandCount" type="Label" parent="Control" unique_id=918507559]
+layout_mode = 0
+offset_left = 900.0
+offset_top = 996.0
+offset_right = 972.0
+offset_bottom = 1044.0
+horizontal_alignment = 1
+vertical_alignment = 1
