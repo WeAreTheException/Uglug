@@ -15,6 +15,7 @@ signal sacrifice_blocked(reason: String)
 @export var requirement: SacrificeRequirement
 @export var pending_boat: PendingSacrificeBoat
 @export var committer: SacrificeCommitter
+@export var revenant_warning: SacrificeRevenantWarningLabel
 
 @export var auto_sacrifice_when_cost_met: bool = false
 @export var enable_undo_key: bool = true
@@ -25,6 +26,7 @@ var is_committing: bool = false
 
 func _ready() -> void:
 	_connect_hand()
+	_update_warning()
 	_update_requirement_state()
 
 
@@ -90,6 +92,7 @@ func undo_pending_sacrifice() -> void:
 		restored_cards.append(card)
 
 	pending_sacrifice_undone.emit(old_primed, restored_cards)
+	_update_warning()
 	_update_requirement_state()
 
 
@@ -112,6 +115,7 @@ func commit_pending_sacrifice() -> void:
 	is_committing = false
 
 	sacrifice_committed.emit(cards)
+	_update_warning()
 	_update_requirement_state()
 
 
@@ -152,6 +156,7 @@ func _begin_pending_sacrifice(
 		})
 
 	player_hand.clear_sacrifice_selection()
+	_hide_warning()
 
 	var pending_cards := pending_boat.begin_pending(primed_card, entries)
 
@@ -183,6 +188,7 @@ func _on_sacrifice_requested(
 
 
 func _on_selection_changed(_cards: Array[CardRoot]) -> void:
+	_update_warning()
 	_update_requirement_state()
 	_try_auto_sacrifice()
 
@@ -196,12 +202,25 @@ func _on_card_unprimed(_card: CardRoot) -> void:
 	if player_hand != null:
 		player_hand.clear_sacrifice_selection()
 
+	_hide_warning()
 	_update_requirement_state()
 
 
 func _try_auto_sacrifice() -> void:
 	if auto_sacrifice_when_cost_met:
 		request_sacrifice()
+
+
+func _update_warning() -> void:
+	if revenant_warning == null:
+		return
+
+	revenant_warning.update_for_cards(_get_selected_cards())
+
+
+func _hide_warning() -> void:
+	if revenant_warning != null:
+		revenant_warning.hide_warning()
 
 
 func _update_requirement_state() -> void:

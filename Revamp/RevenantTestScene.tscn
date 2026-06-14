@@ -11,9 +11,8 @@
 [ext_resource type="Resource" uid="uid://d34eaw1jxirr0" path="res://Revamp/CardPresets/Giant.tres" id="9_l0n1k"]
 [ext_resource type="Script" uid="uid://bbcig486utsir" path="res://HandPhaseApplier.gd" id="9_qqwt0"]
 [ext_resource type="Script" uid="uid://61l5g8wkdar3" path="res://SacrificeController.gd" id="10_gmon0"]
-[ext_resource type="Resource" uid="uid://bxrcjm4w1dy82" path="res://Revamp/CardPresets/Anthrax.tres" id="10_q3urw"]
+[ext_resource type="Resource" uid="uid://kmwnulcu4tml" path="res://Revamp/CardPresets/Antler.tres" id="10_l0n1k"]
 [ext_resource type="Script" uid="uid://ciopi88keoi3k" path="res://SacrificeRequirement.gd" id="11_tgdqg"]
-[ext_resource type="Resource" uid="uid://dbgpqc3vdl8t" path="res://Revamp/CardPresets/Duriant.tres" id="11_xw6gj"]
 [ext_resource type="Script" uid="uid://b4qvc7353obir" path="res://PendingSacrificeBoat.gd" id="12_4vo7u"]
 [ext_resource type="Script" uid="uid://vmy04gllke53" path="res://SacrificeCommitter.gd" id="13_4g0s8"]
 [ext_resource type="Script" uid="uid://dnikkosq1o0kr" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementController.gd" id="14_m7ac6"]
@@ -41,6 +40,7 @@
 [ext_resource type="Script" uid="uid://gc48h0ccwqjp" path="res://BuffSelectionState.gd" id="36_g4inx"]
 [ext_resource type="Script" uid="uid://crpvi6u42w8yj" path="res://BuffFlowHandler.gd" id="37_xgnqr"]
 [ext_resource type="Resource" uid="uid://b6afw5yomddli" path="res://Mutations/MutationPresets/Shield.tres" id="38_q2hn4"]
+[ext_resource type="Script" uid="uid://c7wng8w2rmiaq" path="res://Revamp/SacrificeRevenantWarningLabel.gd" id="39_q3urw"]
 [ext_resource type="Script" uid="uid://dssf8rptp70gh" path="res://Revamp/BuffPhaseAnimationHandler.gd" id="39_vkaxn"]
 [ext_resource type="PackedScene" uid="uid://dmgme20qfr6yi" path="res://Revamp/LarvaeRewardDisplay.tscn" id="40_3i4jm"]
 [ext_resource type="PackedScene" uid="uid://di12gxvqynhg7" path="res://Revamp/LarvaeDraggers.tscn" id="41_f8xhi"]
@@ -71,15 +71,14 @@ position = Vector2(1836, 492)
 player_one_hand = NodePath("../PlayerHAnd")
 player_two_hand = NodePath("../OpponenetHAnd")
 
-[node name="Board" parent="." unique_id=1318716624 node_paths=PackedStringArray("direct_damage_router") instance=ExtResource("2_7mssi")]
+[node name="Board" parent="." unique_id=1318716624 instance=ExtResource("2_7mssi")]
 position = Vector2(588, 252)
-opponent_slot_1_card = ExtResource("3_pruxq")
-direct_damage_router = NodePath("../DirectDamageRouter")
+opponent_slot_1_card = ExtResource("54_sg6ts")
 
 [node name="PlayerHAnd" parent="." unique_id=371738706 node_paths=PackedStringArray("prime_location") instance=ExtResource("3_l0n1k")]
-position = Vector2(936, 960)
-starting_cards = Array[ExtResource("4_q3urw")]([ExtResource("6_pruxq"), ExtResource("5_xw6gj"), ExtResource("3_pruxq"), ExtResource("54_sg6ts"), ExtResource("9_l0n1k"), ExtResource("10_q3urw"), ExtResource("11_xw6gj")])
-max_hand_size = 7
+position = Vector2(936, 937)
+starting_cards = Array[ExtResource("4_q3urw")]([ExtResource("5_xw6gj"), ExtResource("6_pruxq"), ExtResource("9_l0n1k"), ExtResource("3_pruxq"), ExtResource("54_sg6ts"), ExtResource("10_l0n1k")])
+max_hand_size = 10
 prime_location = NodePath("../PrimeCardLocation")
 
 [node name="OpponenetHAnd" parent="." unique_id=1334900706 instance=ExtResource("3_l0n1k")]
@@ -87,7 +86,7 @@ position = Vector2(312, 240)
 starting_cards = Array[ExtResource("4_q3urw")]([ExtResource("5_xw6gj")])
 
 [node name="PrimeCardLocation" type="Node2D" parent="." unique_id=1670544138]
-position = Vector2(312, 600)
+position = Vector2(312, 504)
 
 [node name="BuffCardLocation" type="Node2D" parent="." unique_id=1956485645]
 position = Vector2(1198, 492)
@@ -102,12 +101,13 @@ phase_manager = NodePath("..")
 lead_hand = NodePath("../../PlayerHAnd")
 response_hand = NodePath("../../OpponenetHAnd")
 
-[node name="SacrificeController" type="Node" parent="." unique_id=20162 node_paths=PackedStringArray("player_hand", "requirement", "pending_boat", "committer")]
+[node name="SacrificeController" type="Node" parent="." unique_id=20162 node_paths=PackedStringArray("player_hand", "requirement", "pending_boat", "committer", "revenant_warning")]
 script = ExtResource("10_gmon0")
 player_hand = NodePath("../PlayerHAnd")
 requirement = NodePath("SacrificeRequirement")
 pending_boat = NodePath("PendingSacrificeBoat")
 committer = NodePath("SacrificeComitter")
+revenant_warning = NodePath("../MatchFlowUI/CanvasLayer/SacrificeRevenantWarningLabel")
 auto_sacrifice_when_cost_met = true
 
 [node name="SacrificeRequirement" type="Node" parent="SacrificeController" unique_id=1885351172]
@@ -256,6 +256,18 @@ theme_override_font_sizes/font_size = 30
 text = "Choose one of your warriors to consume the larvae and gain its powers"
 horizontal_alignment = 1
 autowrap_mode = 2
+
+[node name="SacrificeRevenantWarningLabel" type="Label" parent="MatchFlowUI/CanvasLayer" unique_id=162044178]
+visible = false
+offset_left = 77.0
+offset_top = 584.0
+offset_right = 513.0
+offset_bottom = 716.0
+theme_override_font_sizes/font_size = 30
+text = "Choose one of your warriors to consume the larvae and gain its powers"
+horizontal_alignment = 1
+autowrap_mode = 2
+script = ExtResource("39_q3urw")
 
 [node name="DirectDamageRouter" type="Node" parent="." unique_id=133627624 node_paths=PackedStringArray("score_state", "slots_root")]
 script = ExtResource("35_v3p2o")
