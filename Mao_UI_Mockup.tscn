@@ -95,7 +95,7 @@ player_one_hand = NodePath("../PlayerHAnd")
 player_two_hand = NodePath("../OpponenetHAnd")
 
 [node name="Slots" parent="." unique_id=1318716624 node_paths=PackedStringArray("direct_damage_router") instance=ExtResource("2_kkk5q")]
-position = Vector2(544, 256)
+position = Vector2(-96, 0)
 scale = Vector2(1.12, 1.12)
 player_slot_1_card = ExtResource("3_i3li4")
 player_slot_2_card = ExtResource("4_snvix")
@@ -491,9 +491,9 @@ vertical_alignment = 1
 
 [node name="Panel8" type="Panel" parent="." unique_id=1096888281]
 offset_left = 544.0
-offset_top = 512.0
+offset_top = 492.0
 offset_right = 1280.0
-offset_bottom = 524.0
+offset_bottom = 504.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_u26di")
 
 [node name="Panel" type="Panel" parent="Panel8" unique_id=1489501921]

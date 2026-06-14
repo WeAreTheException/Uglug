@@ -58,7 +58,6 @@ offset_right = 1920.0
 offset_bottom = 1080.0
 
 [node name="Mountain" type="TextureRect" parent="CanvasLayer" unique_id=1222108314]
-modulate = Color(1, 1, 1, 0.50980395)
 offset_right = 1920.0
 offset_bottom = 1080.0
 texture = ExtResource("3_06tnx")
