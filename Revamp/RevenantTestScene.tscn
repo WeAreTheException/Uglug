@@ -32,7 +32,10 @@
 [ext_resource type="Script" uid="uid://dhe454wat35an" path="res://Revamp/MatchFlow/MatchCombatFlowHandler.gd" id="28_n2oy7"]
 [ext_resource type="Script" uid="uid://dxj656ms4qeq4" path="res://Revamp/MatchFlow/MatchDominantRevealHandler.gd" id="29_ke6c1"]
 [ext_resource type="Script" uid="uid://b50mccoppp1lb" path="res://Revamp/MatchFlow/MatchAutoDrawHandler.gd" id="30_p4p5h"]
+[ext_resource type="Script" uid="uid://cstbr8ehhhhio" path="res://Revamp/BlessingCardSelectionHandler.gd" id="30_q3urw"]
+[ext_resource type="Resource" uid="uid://d24tehq1c6xdf" path="res://Revamp/Blessings/RevenantBlessing.tres" id="30_xw6gj"]
 [ext_resource type="Script" uid="uid://c5j44dhlx1div" path="res://Revamp/DirectDamage/MatchScoreState.gd" id="31_ps773"]
+[ext_resource type="Script" uid="uid://dxkdv76ah1to1" path="res://Revamp/BlessingApplyHandler.gd" id="32_s1hdv"]
 [ext_resource type="Script" uid="uid://cn5xfv13wsg1x" path="res://Revamp/MatchFlow/PostGameTransitionHandler.gd" id="32_yb585"]
 [ext_resource type="Script" uid="uid://cau0ky5b3kabf" path="res://Revamp/Board/AttackAnticipationFeedbackHandler.gd" id="33_76cef"]
 [ext_resource type="Script" uid="uid://e0tr3sanyo1r" path="res://Revamp/MatchFlow/MatchAnnouncementDisplay.gd" id="34_x0oxh"]
@@ -72,8 +75,7 @@ player_one_hand = NodePath("../PlayerHAnd")
 player_two_hand = NodePath("../OpponenetHAnd")
 
 [node name="Board" parent="." unique_id=1318716624 instance=ExtResource("2_7mssi")]
-position = Vector2(588, 252)
-opponent_slot_1_card = ExtResource("54_sg6ts")
+opponent_slot_1_card = ExtResource("9_l0n1k")
 
 [node name="PlayerHAnd" parent="." unique_id=371738706 node_paths=PackedStringArray("prime_location") instance=ExtResource("3_l0n1k")]
 position = Vector2(936, 937)
@@ -176,10 +178,24 @@ phase_manager = NodePath("../../PhaseManager")
 [node name="BlessingSelectionState" type="Node" parent="MatchFlowRoot" unique_id=315134028]
 script = ExtResource("25_egpqn")
 
-[node name="BlessingFlowHandler" type="Node" parent="MatchFlowRoot" unique_id=444998289 node_paths=PackedStringArray("match_flow_root", "selection_state")]
+[node name="BlessingFlowHandler" type="Node" parent="MatchFlowRoot" unique_id=444998289 node_paths=PackedStringArray("match_flow_root")]
 script = ExtResource("26_18l62")
 match_flow_root = NodePath("..")
+blessing_to_apply = ExtResource("30_xw6gj")
+
+[node name="BlessingCardSelectionHandler" type="Node" parent="MatchFlowRoot" unique_id=1108300428 node_paths=PackedStringArray("blessing_flow_handler", "selection_state", "turn_order_state", "player_one_hand", "player_two_hand")]
+script = ExtResource("30_q3urw")
+blessing_flow_handler = NodePath("../BlessingFlowHandler")
 selection_state = NodePath("../BlessingSelectionState")
+turn_order_state = NodePath("../MatchTurnOrderState")
+player_one_hand = NodePath("../../PlayerHAnd")
+player_two_hand = NodePath("../../OpponenetHAnd")
+
+[node name="BlessingApplyHandler" type="Node" parent="MatchFlowRoot" unique_id=1221258798 node_paths=PackedStringArray("blessing_flow_handler", "selection_state", "turn_order_state")]
+script = ExtResource("32_s1hdv")
+blessing_flow_handler = NodePath("../BlessingFlowHandler")
+selection_state = NodePath("../BlessingSelectionState")
+turn_order_state = NodePath("../MatchTurnOrderState")
 
 [node name="MatchPlacementFlowHandler" type="Node" parent="MatchFlowRoot" unique_id=1801071397 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "placement_controller")]
 script = ExtResource("27_blmws")

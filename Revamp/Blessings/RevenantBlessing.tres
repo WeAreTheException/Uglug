@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="RevenantBlessing" format=3 uid="uid://d24tehq1c6xdf"]
+
+[ext_resource type="Script" uid="uid://vothb8f03oaj" path="res://Revamp/Blessings/RevenAntBlessing.gd" id="1_0i3so"]
+
+[resource]
+script = ExtResource("1_0i3so")
+blessing_id = "Revenant"
+blessing_name = "Revenant"
+description = "On death, return to hand. Excluding sacrifice."
+metadata/_custom_type_script = "uid://vothb8f03oaj"
