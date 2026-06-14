@@ -138,39 +138,6 @@ metadata/_edit_lock_ = true
 
 [node name="SortButtons" type="Node2D" parent="." unique_id=960620408]
 
-[node name="CostSortButton" type="Button" parent="SortButtons" unique_id=1619167868]
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = 420.0
-offset_top = 858.0
-offset_right = 564.0
-offset_bottom = 900.0
-grow_horizontal = 2
-grow_vertical = 0
-theme_override_font_sizes/font_size = 24
-text = "Cost
-"
-
-[node name="MutationSortButton" type="Button" parent="SortButtons" unique_id=919931295]
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = 420.0
-offset_top = 912.0
-offset_right = 564.0
-offset_bottom = 954.0
-grow_horizontal = 2
-grow_vertical = 0
-theme_override_font_sizes/font_size = 24
-text = "Mutation
-"
-metadata/_edit_lock_ = true
-
 [node name="InitatorStuff" type="Node2D" parent="." unique_id=1780550570]
 
 [node name="InitiatorBacking" type="Panel" parent="InitatorStuff" unique_id=1921646166]
