@@ -45,9 +45,6 @@ func request_sacrifice() -> void:
 	if is_processing:
 		return
 
-	if pending_boat != null and pending_boat.has_pending():
-		return
-
 	var primed_card := _get_primed_card()
 	var selected_cards := _get_selected_cards()
 
@@ -161,13 +158,7 @@ func _begin_pending_sacrifice(
 	if player_hand != null:
 		player_hand.clear_sacrifice_selection()
 
-	if sacrifice_selection_root != null:
-		sacrifice_selection_root.clear_all()
-
 	var pending_cards := pending_boat.begin_pending(primed_card, entries)
-
-	if sacrifice_selection_root != null:
-		sacrifice_selection_root.set_hand_cards(pending_cards)
 
 	if has_pending_revenant:
 		_show_warning()
@@ -315,7 +306,6 @@ func _on_card_primed(card: CardRoot) -> void:
 
 
 func _on_hand_selection_changed(cards: Array[CardRoot]) -> void:
-	print("HAND SELECTION CHANGED | cards=", cards.size())
 
 	if sacrifice_selection_root != null:
 		sacrifice_selection_root.set_hand_cards(cards)
@@ -345,9 +335,6 @@ func _on_card_unprimed(_card: CardRoot) -> void:
 
 	if player_hand != null:
 		player_hand.clear_sacrifice_selection()
-
-	if sacrifice_selection_root != null:
-		sacrifice_selection_root.clear_all()
 
 	_hide_warning()
 	_update_requirement_state()

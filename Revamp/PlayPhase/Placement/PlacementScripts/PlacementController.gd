@@ -70,16 +70,6 @@ func start_placement(card: CardRoot, owner: SlotRow.SlotOwner) -> void:
 
 
 func request_preview_slot(slot: Slot) -> void:
-	_print(
-		"PLACEMENT PREVIEW REQUEST | placing="
-		+ str(is_placing())
-		+ " slot_valid="
-		+ str(is_valid_placement_slot(slot))
-		+ " active_owner="
-		+ str(_get_active_owner_debug())
-		+ " slot_owner="
-		+ str(_get_slot_owner_debug(slot))
-	)
 
 	if not is_placing() or not is_valid_placement_slot(slot):
 		return
