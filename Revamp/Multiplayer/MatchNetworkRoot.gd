@@ -12,6 +12,8 @@ class_name MatchNetworkRoot
 
 @export var blessing_flow_handler: BlessingFlowHandler
 
+@export var placement_controller: PlacementController
+
 @export var enable_lookup_debug := false
 @export var lookup_debug_key: Key = KEY_L
 
@@ -41,6 +43,7 @@ func _ready() -> void:
 	GDSync.expose_func(request_blessing_confirm)
 	GDSync.expose_func(_receive_confirmed_blessing)
 	GDSync.expose_func(request_placement)
+	GDSync.expose_func(_receive_confirmed_placement)
 
 	_assign_local_owner()
 	_print_network_status()
@@ -694,7 +697,7 @@ func _process_placement_request(payload: Dictionary) -> void:
 		print("PLACEMENT REQUEST REJECTED")
 		return
 
-	print("PLACEMENT REQUEST ACCEPTED")
+	_broadcast_confirmed_placement(payload)
 
 	GDSync.call_func(request_placement, payload)
 
@@ -733,3 +736,16 @@ func _is_valid_placement_request(payload: Dictionary) -> bool:
 		return false
 
 	return true
+func _broadcast_confirmed_placement(payload: Dictionary) -> void:
+	if print_debug:
+		print("PLACEMENT CONFIRMED: ", payload)
+
+	GDSync.call_func_all(_receive_confirmed_placement, payload)
+
+
+func _receive_confirmed_placement(payload: Dictionary) -> void:
+	if placement_controller == null:
+		print("CONFIRMED PLACEMENT FAILED: placement_controller missing")
+		return
+
+	placement_controller.apply_confirmed_placement(payload)

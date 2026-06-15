@@ -215,3 +215,76 @@ func build_current_placement_payload() -> Dictionary:
 		placement_state.active_owner,
 		sacrifice_controller.get_pending_sacrifice_cards()
 	)
+
+func apply_confirmed_placement(payload: Dictionary) -> void:
+	if payload.is_empty():
+		block("Confirmed placement payload empty.")
+		return
+
+	if slots_root == null:
+		block("Confirmed placement blocked: slots_root missing.")
+		return
+
+	var card_id: String = payload.get("placed_card_runtime_id", "")
+	var slot_owner: SlotRow.SlotOwner = payload.get("target_slot_owner", SlotRow.SlotOwner.PLAYER)
+	var slot_index: int = payload.get("target_slot_index", -1)
+	var owner: SlotRow.SlotOwner = payload.get("owner", SlotRow.SlotOwner.PLAYER)
+
+	var card := _find_card_for_confirmed_placement(card_id)
+	var slot := slots_root.get_slot(slot_owner, slot_index)
+
+	if card == null:
+		block("Confirmed placement blocked: card missing.")
+		return
+
+	if slot == null:
+		block("Confirmed placement blocked: slot missing.")
+		return
+
+	if not slot.is_empty():
+		block("Confirmed placement blocked: slot occupied.")
+		return
+
+	var event := placement_executor.confirm_placement(card, slot, owner)
+
+	if event.is_empty():
+		block("Confirmed placement failed.")
+		return
+
+	if placement_preview != null:
+		placement_preview.clear_preview()
+
+	if sacrifice_controller != null:
+		sacrifice_controller.commit_pending_sacrifice()
+
+	if event_emitter != null:
+		event_emitter.emit_card_placed(event)
+
+	card_placed.emit(event)
+	placement_finished.emit(event)
+
+	if placement_state != null:
+		placement_state.reset()
+
+	set_hand_input_enabled(true)
+
+	if slots_root != null:
+		slots_root.refresh_board_mutations()
+
+
+func _find_card_for_confirmed_placement(runtime_id: String) -> CardRoot:
+	var clean_id := runtime_id.strip_edges()
+
+	if clean_id == "":
+		return null
+
+	if player_hand != null:
+		var card := player_hand.find_card_by_runtime_id(clean_id)
+
+		if card != null:
+			return card
+
+	if sacrifice_controller != null and sacrifice_controller.player_hand != null:
+		return sacrifice_controller.player_hand.find_card_by_runtime_id(clean_id)
+
+	return null
