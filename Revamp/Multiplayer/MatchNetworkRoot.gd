@@ -138,6 +138,19 @@ func _connect_deck_setup() -> void:
 	if not deck_system_root.starting_hands_dealt.is_connected(_on_starting_hands_dealt):
 		deck_system_root.starting_hands_dealt.connect(_on_starting_hands_dealt)
 
+	if is_host():
+		_try_broadcast_existing_setup_payload()
+
+func _try_broadcast_existing_setup_payload() -> void:
+	if deck_system_root == null:
+		return
+
+	var payload := deck_system_root.get_last_setup_payload()
+
+	if payload.is_empty():
+		return
+
+	_broadcast_match_setup_payload(payload)
 
 func _on_starting_hands_dealt() -> void:
 	if not is_host():
@@ -152,6 +165,9 @@ func _on_starting_hands_dealt() -> void:
 		print("MATCH SETUP BROADCAST FAILED: payload empty")
 		return
 
+	_broadcast_match_setup_payload(payload)
+
+func _broadcast_match_setup_payload(payload: Dictionary) -> void:
 	print("MATCH SETUP READY: HOST")
 	_receive_match_setup_payload.rpc(payload)
 
