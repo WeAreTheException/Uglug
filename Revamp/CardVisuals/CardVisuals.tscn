@@ -250,57 +250,59 @@ shape = SubResource("RectangleShape2D_4t10r")
 
 [node name="AdditonalMutation" type="Node2D" parent="SubViewport/Visuals/MutationVisuals/Mutations" unique_id=100591237]
 
-[node name="Additional1" type="Sprite2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation" unique_id=185873266]
-material = SubResource("ShaderMaterial_0l3ys")
-position = Vector2(-64.25001, -76)
-scale = Vector2(0.12699999, 0.123999976)
-texture = ExtResource("17_v8bk3")
-metadata/_edit_lock_ = true
+[node name="SigilSlot" type="Node2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation" unique_id=264549928]
+position = Vector2(-64.25001, -76.00001)
+scale = Vector2(0.12699999, 0.12399998)
 
-[node name="SigilSlot" type="Node2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation/Additional1" unique_id=264549928]
-
-[node name="MutationInput2" type="Area2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation/Additional1/SigilSlot" unique_id=178151423]
+[node name="MutationInput2" type="Area2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation/SigilSlot" unique_id=178151423]
 position = Vector2(31.249924, -9.1552734e-05)
 scale = Vector2(0.22411354, 0.22411355)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation/Additional1/SigilSlot/MutationInput2" unique_id=31178376]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation/SigilSlot/MutationInput2" unique_id=31178376]
 position = Vector2(-261.44653, 52.29004)
 shape = SubResource("RectangleShape2D_4t10r")
 
-[node name="Additional2" type="Sprite2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation" unique_id=1787102359]
-material = SubResource("ShaderMaterial_l5g41")
+[node name="Additional1" type="Sprite2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation/SigilSlot" unique_id=185873266]
+material = SubResource("ShaderMaterial_0l3ys")
+position = Vector2(0, 6.1035156e-05)
+scale = Vector2(0.99999994, 0.9999999)
+texture = ExtResource("17_v8bk3")
+
+[node name="SigilSlot2" type="Node2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation" unique_id=1744429033]
 position = Vector2(66, 0)
-scale = Vector2(0.128, 0.12799999)
-texture = ExtResource("18_wvfxw")
+scale = Vector2(0.128, 0.128)
 
-[node name="SigilSlot" type="Node2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation/Additional2" unique_id=1744429033]
-
-[node name="MutationInput4" type="Area2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation/Additional2/SigilSlot" unique_id=2022022863]
+[node name="MutationInput4" type="Area2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation/SigilSlot2" unique_id=2022022863]
 position = Vector2(-7.812378, -0.00012207031)
 scale = Vector2(0.22411355, 0.22411352)
 metadata/_edit_lock_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation/Additional2/SigilSlot/MutationInput4" unique_id=889317424]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation/SigilSlot2/MutationInput4" unique_id=889317424]
 position = Vector2(0, 52.29004)
 shape = SubResource("RectangleShape2D_4t10r")
 
-[node name="Additional3" type="Sprite2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation" unique_id=259294942]
-material = SubResource("ShaderMaterial_hdaxf")
-position = Vector2(-64, 32)
+[node name="Additional2" type="Sprite2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation/SigilSlot2" unique_id=1787102359]
+material = SubResource("ShaderMaterial_l5g41")
+scale = Vector2(1, 0.99999994)
+texture = ExtResource("18_wvfxw")
+
+[node name="SigilSlot3" type="Node2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation" unique_id=828449294]
+position = Vector2(66, 0)
 scale = Vector2(0.128, 0.12799999)
-texture = ExtResource("19_d8086")
 
-[node name="SigilSlot2" type="Node2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation/Additional3" unique_id=828449294]
-position = Vector2(1015.6249, -249.99988)
-scale = Vector2(1, 0.9999999)
-
-[node name="MutationInput3" type="Area2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation/Additional3/SigilSlot2" unique_id=1029004044]
+[node name="MutationInput3" type="Area2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation/SigilSlot3" unique_id=1029004044]
 position = Vector2(-1042.9689, 234.375)
 scale = Vector2(0.22411358, 0.22411357)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation/Additional3/SigilSlot2/MutationInput3" unique_id=1350806003]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation/SigilSlot3/MutationInput3" unique_id=1350806003]
 position = Vector2(0, 52.29004)
 shape = SubResource("RectangleShape2D_4t10r")
+
+[node name="Additional3" type="Sprite2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation/SigilSlot3" unique_id=259294942]
+material = SubResource("ShaderMaterial_hdaxf")
+position = Vector2(-1015.6249, 249.99988)
+scale = Vector2(1, 0.99999994)
+texture = ExtResource("19_d8086")
 
 [node name="StatsVisual" type="Node2D" parent="SubViewport/Visuals" unique_id=769110726 node_paths=PackedStringArray("attack", "health", "cost", "name_label")]
 z_index = 7
