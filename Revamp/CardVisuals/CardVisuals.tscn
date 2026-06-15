@@ -18,13 +18,9 @@
 [ext_resource type="Script" uid="uid://bq48m50dnrwib" path="res://Revamp/Card/CardScripts/StatsVisual.gd" id="15_5t0dk"]
 [ext_resource type="Script" uid="uid://dvwq7j2ojg3d6" path="res://Revamp/MutationTooltTip/SigilSlot.gd" id="15_d8086"]
 [ext_resource type="Texture2D" uid="uid://bdi7eyt5cmur0" path="res://Art/Numbers/1.png" id="16_4yngs"]
-[ext_resource type="Texture2D" uid="uid://52i5rsrcuyfc" path="res://Art/Mutations/Guardiant_Sigil.PNG" id="16_460t8"]
 [ext_resource type="Texture2D" uid="uid://clk0ori80b5gg" path="res://Art/Numbers/2.png" id="17_8nq5a"]
-[ext_resource type="Texture2D" uid="uid://c8ymxpi2ol5u" path="res://Art/Mutations/Observant_Sigil.PNG" id="17_v8bk3"]
 [ext_resource type="Texture2D" uid="uid://bnj2kyvgakfq3" path="res://Art/Numbers/3.png" id="18_8aa6v"]
 [ext_resource type="Script" uid="uid://bblsossrbyhpa" path="res://Revamp/MutationTooltTip/SigilInput.gd" id="18_b5mm6"]
-[ext_resource type="Texture2D" uid="uid://c8kf7vqpx34gh" path="res://Art/Mutations/Duriant_Sigil.PNG" id="18_wvfxw"]
-[ext_resource type="Texture2D" uid="uid://dysykkevjmrhp" path="res://Art/Mutations/Draculant_Sigil.PNG" id="19_d8086"]
 [ext_resource type="Texture2D" uid="uid://4f3gn63utyru" path="res://Art/Numbers/4.png" id="19_kawbk"]
 [ext_resource type="Texture2D" uid="uid://c1fev2dw4ehne" path="res://Art/Numbers/5.png" id="20_6t487"]
 [ext_resource type="Texture2D" uid="uid://bq8esv4xpuv68" path="res://Art/Numbers/6.png" id="21_457k1"]
@@ -110,9 +106,6 @@ shader = ExtResource("13_8ia1o")
 shader_parameter/line_color = Color(0.105882354, 0.09019608, 0.08627451, 1)
 shader_parameter/line_thickness = 10.0
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_4t10r"]
-size = Vector2(1568.6804, 1568.6799)
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0l3ys"]
 shader = ExtResource("13_8ia1o")
 shader_parameter/line_color = Color(0.105882354, 0.09019608, 0.08627451, 1)
@@ -127,6 +120,9 @@ shader_parameter/line_thickness = 10.0
 shader = ExtResource("13_8ia1o")
 shader_parameter/line_color = Color(0.105882354, 0.09019608, 0.08627451, 1)
 shader_parameter/line_thickness = 10.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4t10r"]
+size = Vector2(1568.6804, 1568.6799)
 
 [node name="CardVisualsRoot" type="Node2D" unique_id=1593445486 node_paths=PackedStringArray("main_visuals", "mutation_visuals", "stats_visual", "viewport_sprite", "revenant_overlay")]
 script = ExtResource("1_gy5gi")
@@ -237,90 +233,55 @@ position = Vector2(0, 96)
 scale = Vector2(0.028686536, 0.028686536)
 metadata/_edit_lock_ = true
 
-[node name="SigilSlot" type="Node2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/BaseMutation" unique_id=1275122917]
+[node name="SigilSlot" type="Node2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/BaseMutation" unique_id=1275122917 node_paths=PackedStringArray("sprite", "input")]
 script = ExtResource("15_d8086")
+sprite = NodePath("BaseSprite")
+input = NodePath("../../../../../../BaseSigilInput")
 metadata/_edit_lock_ = true
 
 [node name="BaseSprite" type="Sprite2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/BaseMutation/SigilSlot" unique_id=935391738]
 material = SubResource("ShaderMaterial_6nr3l")
 scale = Vector2(4.4620237, 4.4620233)
-texture = ExtResource("16_460t8")
 metadata/_edit_lock_ = true
-
-[node name="MutationInput" type="Area2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/BaseMutation/SigilSlot" unique_id=123293917]
-position = Vector2(0, 8.715423)
-script = ExtResource("18_b5mm6")
-metadata/_edit_lock_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/BaseMutation/SigilSlot/MutationInput" unique_id=1714394200]
-position = Vector2(0, 8.715584)
-shape = SubResource("RectangleShape2D_4t10r")
 
 [node name="AdditonalMutation" type="Node2D" parent="SubViewport/Visuals/MutationVisuals/Mutations" unique_id=100591237]
 
-[node name="SigilSlot" type="Node2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation" unique_id=264549928]
+[node name="SigilSlot" type="Node2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation" unique_id=264549928 node_paths=PackedStringArray("sprite", "input")]
 position = Vector2(-64.25001, -76.00001)
 scale = Vector2(0.12699999, 0.12399998)
 script = ExtResource("15_d8086")
+sprite = NodePath("Additional1")
+input = NodePath("../../../../../../AddSigil1")
 metadata/_edit_lock_ = true
 
 [node name="Additional1" type="Sprite2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation/SigilSlot" unique_id=185873266]
 material = SubResource("ShaderMaterial_0l3ys")
 position = Vector2(0, 6.1035156e-05)
 scale = Vector2(0.9999999, 0.9999998)
-texture = ExtResource("17_v8bk3")
 metadata/_edit_lock_ = true
 
-[node name="MutationInput2" type="Area2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation/SigilSlot" unique_id=178151423]
-position = Vector2(3.936983, -2.016152)
-scale = Vector2(0.22411354, 0.22411355)
-script = ExtResource("18_b5mm6")
-metadata/_edit_lock_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation/SigilSlot/MutationInput2" unique_id=31178376]
-position = Vector2(7.6293945e-06, 6.580353e-05)
-shape = SubResource("RectangleShape2D_4t10r")
-metadata/_edit_lock_ = true
-
-[node name="SigilSlot2" type="Node2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation" unique_id=1744429033]
+[node name="SigilSlot2" type="Node2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation" unique_id=1744429033 node_paths=PackedStringArray("sprite", "input")]
 position = Vector2(66, 0)
 scale = Vector2(0.128, 0.128)
 script = ExtResource("15_d8086")
+sprite = NodePath("../SigilSlot3/Additional3")
+input = NodePath("../../../../../../AddSigil2")
 
 [node name="Additional2" type="Sprite2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation/SigilSlot2" unique_id=1787102359]
 material = SubResource("ShaderMaterial_l5g41")
 scale = Vector2(1, 0.99999994)
-texture = ExtResource("18_wvfxw")
 
-[node name="MutationInput4" type="Area2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation/SigilSlot2" unique_id=2022022863]
-position = Vector2(-7.812378, -0.00012207031)
-scale = Vector2(0.22411355, 0.22411352)
-script = ExtResource("18_b5mm6")
-metadata/_edit_lock_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation/SigilSlot2/MutationInput4" unique_id=889317424]
-position = Vector2(0, 52.29004)
-shape = SubResource("RectangleShape2D_4t10r")
-
-[node name="SigilSlot3" type="Node2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation" unique_id=828449294]
+[node name="SigilSlot3" type="Node2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation" unique_id=828449294 node_paths=PackedStringArray("sprite", "input")]
 position = Vector2(-63.750015, 41.25)
 scale = Vector2(0.128, 0.12799999)
 script = ExtResource("15_d8086")
+sprite = NodePath("Additional3")
+input = NodePath("../../../../../../AddSigil3")
 
 [node name="Additional3" type="Sprite2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation/SigilSlot3" unique_id=259294942]
 material = SubResource("ShaderMaterial_hdaxf")
 position = Vector2(4.7683716e-05, -1.5258789e-05)
 scale = Vector2(1, 0.99999994)
-texture = ExtResource("19_d8086")
-
-[node name="AddMutation3" type="Area2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation/SigilSlot3" unique_id=1029004044]
-scale = Vector2(0.2241136, 0.22411358)
-script = ExtResource("18_b5mm6")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation/SigilSlot3/AddMutation3" unique_id=1350806003]
-position = Vector2(0.00018310547, 0)
-scale = Vector2(1, 1.0000001)
-shape = SubResource("RectangleShape2D_4t10r")
 
 [node name="StatsVisual" type="Node2D" parent="SubViewport/Visuals" unique_id=769110726 node_paths=PackedStringArray("attack", "health", "cost", "name_label")]
 z_index = 7
@@ -384,6 +345,50 @@ viewport_sprite = NodePath("../ViewportSprite")
 metadata/_edit_lock_ = true
 
 [node name="AntSprite" type="Sprite2D" parent="." unique_id=425635481]
-visible = false
 scale = Vector2(0.121008396, 0.117200226)
 texture = ExtResource("29_wvfxw")
+
+[node name="BaseSigilInput" type="Area2D" parent="." unique_id=123293917]
+position = Vector2(0, 75)
+scale = Vector2(0.022949226, 0.022949226)
+script = ExtResource("18_b5mm6")
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BaseSigilInput" unique_id=1714394200]
+position = Vector2(0, 8.715584)
+shape = SubResource("RectangleShape2D_4t10r")
+metadata/_edit_lock_ = true
+
+[node name="AddSigil1" type="Area2D" parent="." unique_id=178151423]
+position = Vector2(-50, -59)
+scale = Vector2(0.02276993, 0.02223206)
+script = ExtResource("18_b5mm6")
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AddSigil1" unique_id=31178376]
+position = Vector2(7.6293945e-06, 6.580353e-05)
+shape = SubResource("RectangleShape2D_4t10r")
+metadata/_edit_lock_ = true
+
+[node name="AddSigil2" type="Area2D" parent="." unique_id=2022022863]
+position = Vector2(50, 7.6293945e-06)
+scale = Vector2(0.022949226, 0.022949222)
+script = ExtResource("18_b5mm6")
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AddSigil2" unique_id=889317424]
+position = Vector2(0, 52.29004)
+shape = SubResource("RectangleShape2D_4t10r")
+metadata/_edit_lock_ = true
+
+[node name="AddSigil3" type="Area2D" parent="." unique_id=1029004044]
+position = Vector2(-50.000004, 33)
+scale = Vector2(0.02294923, 0.022949226)
+script = ExtResource("18_b5mm6")
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AddSigil3" unique_id=1350806003]
+position = Vector2(0.00018310547, 0)
+scale = Vector2(1, 1.0000001)
+shape = SubResource("RectangleShape2D_4t10r")
+metadata/_edit_lock_ = true
