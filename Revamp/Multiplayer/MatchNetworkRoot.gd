@@ -11,12 +11,16 @@ class_name MatchNetworkRoot
 @export var lookup_debug_key: Key = KEY_L
 @export var print_debug := true
 
+@export var enable_ping_debug := false
+@export var ping_debug_key: Key = KEY_N
+
 var local_owner: SlotRow.SlotOwner = SlotRow.SlotOwner.PLAYER
 
 
 func _ready() -> void:
 	_assign_local_owner()
 	_print_network_status()
+	GDSync.expose_func(_receive_network_ping)
 	GDSync.expose_func(_receive_match_setup_payload)
 	_connect_deck_setup()
 
@@ -35,6 +39,10 @@ func _input(event: InputEvent) -> void:
 
 	if key_event.keycode == lookup_debug_key:
 		_run_lookup_debug()
+	
+	if enable_ping_debug and key_event.keycode == ping_debug_key:
+		print("NETWORK PING SENDING")
+		GDSync.call_func(_receive_network_ping, ["hello from " + str(GDSync.get_client_id())])
 
 
 func is_host() -> bool:
@@ -191,3 +199,6 @@ func _run_lookup_debug() -> void:
 
 	print("LOOKUP DEBUG ID: ", runtime_id)
 	print("LOOKUP DEBUG FOUND: ", found_card == first_card)
+
+func _receive_network_ping(message: String) -> void:
+	print("NETWORK PING RECEIVED: ", message, " | HOST: ", is_host())
