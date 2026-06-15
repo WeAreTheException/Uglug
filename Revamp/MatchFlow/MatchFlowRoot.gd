@@ -255,6 +255,11 @@ func _build_starting_hands_once() -> void:
 			print("starting hand skipped: deck_system_root missing")
 		return
 
+	if not GDSync.is_host():
+		if print_debug:
+			print("starting hand skipped: waiting for host setup payload")
+		return
+
 	deck_system_root.build_match_decks()
 
 
