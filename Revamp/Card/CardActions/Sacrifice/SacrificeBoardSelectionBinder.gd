@@ -88,9 +88,13 @@ func _toggle_board_card(card: CardRoot) -> void:
 		_print("BOARD SACRIFICE UNSELECTED: %s" % card.card_name)
 		return
 
-	selection_root.add_board_card(card)
-	card.set_sacrifice_selected(true)
-	_print("BOARD SACRIFICE SELECTED: %s" % card.card_name)
+	if selection_root.add_board_card(card):
+		card.set_sacrifice_selected(true)
+		_print("BOARD SACRIFICE SELECTED: %s" % card.card_name)
+		return
+
+	card.set_sacrifice_selected(false)
+	_print("BOARD SACRIFICE BLOCKED: worth limit")
 
 
 func _is_allowed_slot(slot: Slot) -> bool:

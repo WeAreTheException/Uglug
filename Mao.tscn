@@ -21,7 +21,6 @@
 [ext_resource type="Script" uid="uid://cmcxm3mp7ljvv" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementCancel.gd" id="19_n5v11"]
 [ext_resource type="Script" uid="uid://bfhpukgxqjd0m" path="res://MatchFlowBoardApplier.gd" id="20_vcbui"]
 [ext_resource type="Script" uid="uid://dhe454wat35an" path="res://Revamp/MatchFlow/MatchCombatFlowHandler.gd" id="24_n5v11"]
-[ext_resource type="Script" uid="uid://bmc4688qk3cow" path="res://Revamp/MatchFlow/MatchPhaseBridge.gd" id="24_oekep"]
 [ext_resource type="Script" uid="uid://c0jbty6yowib5" path="res://Revamp/MatchFlow/Blessing/BlessingSelectionState.gd" id="25_n5v11"]
 [ext_resource type="Script" uid="uid://difytxi1dyr27" path="res://Revamp/MatchFlow/MatchFlowRoot.gd" id="25_oekep"]
 [ext_resource type="Script" uid="uid://q2nybrneyr7f" path="res://Revamp/MatchFlow/Blessing/BlessingFlowHandler.gd" id="26_7gy8c"]
@@ -174,10 +173,6 @@ score_state = NodePath("MatchScoreState")
 [node name="MatchTurnOrderState" type="Node" parent="Scripts/MatchFlowRoot" unique_id=708809136]
 script = ExtResource("26_n5v11")
 
-[node name="MatchPhaseBridge" type="Node" parent="Scripts/MatchFlowRoot" unique_id=1064403000 node_paths=PackedStringArray("match_flow_root")]
-script = ExtResource("24_oekep")
-match_flow_root = NodePath("..")
-
 [node name="MatchPlacementFlowHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=1230555798 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "placement_controller")]
 script = ExtResource("27_mf2my")
 match_flow_root = NodePath("..")
@@ -329,6 +324,7 @@ pending_layer = NodePath("../PendingSacrificeLayer")
 script = ExtResource("13_6ula3")
 
 [node name="PendingSacrificeLayer" type="Node2D" parent="Scripts/Core/SacrificeController" unique_id=183134508]
+position = Vector2(132, 504)
 
 [node name="SacrificeSelectionRoot" type="Node" parent="Scripts/Core/SacrificeController" unique_id=562062986]
 script = ExtResource("11_5f7hr")
@@ -447,14 +443,13 @@ buff_flow_handler = NodePath("../../Scripts/Core/Buff/BuffFlowHandler")
 buff_database = NodePath("../../Scripts/Core/Buff/BuffDatabase")
 blessing_flow_handler = NodePath("../../Scripts/Core/Blessing/BlessingFlowHandler")
 placement_controller = NodePath("../../Scripts/Core/PlacementController")
-enable_draw_debug = true
+print_debug = false
 
 [node name="MatchLocalViewApplier" type="Node" parent="Multiplayer" unique_id=1811884870 node_paths=PackedStringArray("match_network_root", "player_one_hand", "player_two_hand")]
 script = ExtResource("57_2n6q5")
 match_network_root = NodePath("../MatchNetworkRoot")
 player_one_hand = NodePath("../../Core/PlayerHAnd")
 player_two_hand = NodePath("../../Core/OpponenetHAnd")
-print_debug = true
 
 [node name="LocalGameplayReferenceBinder" type="Node" parent="Multiplayer" unique_id=1649323469 node_paths=PackedStringArray("match_network_root", "deck_system_root", "placement_controller", "sacrifice_controller", "sacrifice_board_binder")]
 script = ExtResource("66_5j00x")
