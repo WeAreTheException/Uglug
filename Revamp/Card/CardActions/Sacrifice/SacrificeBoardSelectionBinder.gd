@@ -4,8 +4,10 @@ class_name SacrificeBoardSelectionBinder
 @export var slots_root: SlotsRoot
 @export var selection_root: SacrificeSelectionRoot
 @export var player_hand: PlayerHandRoot
+@export var turn_order_state: MatchTurnOrderState
 
 @export var allowed_owner: SlotRow.SlotOwner = SlotRow.SlotOwner.PLAYER
+@export var use_controlled_owner: bool = true
 @export var print_debug: bool = true
 
 var is_sacrifice_active: bool = false
@@ -95,7 +97,14 @@ func _is_allowed_slot(slot: Slot) -> bool:
 	if slots_root == null:
 		return false
 
-	return slots_root.get_owner_of_slot(slot) == allowed_owner
+	return slots_root.get_owner_of_slot(slot) == _get_allowed_owner()
+
+
+func _get_allowed_owner() -> SlotRow.SlotOwner:
+	if use_controlled_owner and turn_order_state != null:
+		return turn_order_state.controlled_owner
+
+	return allowed_owner
 
 
 func _is_primed_card(card: CardRoot) -> bool:
