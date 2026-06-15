@@ -49,3 +49,6 @@ func has_card(card: CardRoot) -> bool:
 
 func size() -> int:
 	return cards.size()
+
+func clear() -> void:
+	cards.clear()

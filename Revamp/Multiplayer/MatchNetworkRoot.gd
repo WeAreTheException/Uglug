@@ -18,6 +18,7 @@ var local_owner: SlotRow.SlotOwner = SlotRow.SlotOwner.PLAYER
 func _ready() -> void:
 	_assign_local_owner()
 	_print_network_status()
+	_connect_deck_setup()
 
 
 func is_host() -> bool:
@@ -129,3 +130,40 @@ func _run_lookup_debug() -> void:
 
 	print("LOOKUP DEBUG ID: ", runtime_id)
 	print("LOOKUP DEBUG FOUND: ", found_card == first_card)
+
+func _connect_deck_setup() -> void:
+	if deck_system_root == null:
+		return
+
+	if not deck_system_root.starting_hands_dealt.is_connected(_on_starting_hands_dealt):
+		deck_system_root.starting_hands_dealt.connect(_on_starting_hands_dealt)
+
+
+func _on_starting_hands_dealt() -> void:
+	if not is_host():
+		return
+
+	if deck_system_root == null:
+		return
+
+	var payload := deck_system_root.get_last_setup_payload()
+
+	if payload.is_empty():
+		print("MATCH SETUP BROADCAST FAILED: payload empty")
+		return
+
+	print("MATCH SETUP READY: HOST")
+	_receive_match_setup_payload.rpc(payload)
+
+
+@rpc("any_peer", "call_remote", "reliable")
+func _receive_match_setup_payload(payload: Dictionary) -> void:
+	if is_host():
+		return
+
+	if deck_system_root == null:
+		print("MATCH SETUP APPLY FAILED: deck_system_root missing")
+		return
+
+	deck_system_root.apply_match_setup_payload(payload)
+	print("MATCH SETUP READY: CLIENT")

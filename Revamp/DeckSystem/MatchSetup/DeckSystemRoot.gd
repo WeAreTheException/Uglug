@@ -11,10 +11,17 @@ signal starting_hands_dealt
 @export var player_two_draw_pile: DrawPileRoot
 @export var worker_source: WorkerSource
 @export var build_on_ready: bool = false
+@export var card_database: CardDatabase
 
 @export var animate_starting_hand_deal: bool = true
 @export var starting_hand_start_delay: float = 0.25
 @export var starting_hand_card_delay: float = 0.12
+
+@export var enable_payload_apply_debug := false
+@export var payload_apply_debug_key: Key = KEY_P
+
+var payload_builder := MatchSetupPayloadBuilder.new()
+var last_setup_payload: Dictionary = {}
 
 
 func _ready() -> void:
@@ -42,6 +49,16 @@ func build_match_decks() -> void:
 	var p2_draw: Array[CardData] = _to_card_data_array(result["p2_draw_pile"])
 	var p1_start: Array[CardData] = _to_card_data_array(result["p1_starting_hand"])
 	var p2_start: Array[CardData] = _to_card_data_array(result["p2_starting_hand"])
+	
+	last_setup_payload = payload_builder.build_payload(
+	_get_match_seed(),
+	p1_start,
+	p2_start,
+	p1_draw,
+	p2_draw
+)
+
+	print("MATCH SETUP PAYLOAD: ", last_setup_payload)
 
 	if player_one_draw_pile != null:
 		player_one_draw_pile.setup_with_cards(p1_draw)
@@ -58,7 +75,14 @@ func build_match_decks() -> void:
 		_deal_starting_hand(player_two_hand, p2_start)
 		starting_hands_dealt.emit()
 
+func _get_match_seed() -> int:
+	if match_setup == null:
+		return 0
 
+	if match_setup.seed_config == null:
+		return 12345
+
+	return match_setup.seed_config.get_seed()
 func get_hand_for_card_owner(source_card: CardRoot) -> PlayerHandRoot:
 	return _get_hand_for_card_owner(source_card)
 
@@ -323,3 +347,113 @@ func _find_card_in_hand(
 		return null
 
 	return hand.find_card_by_runtime_id(runtime_id)
+
+func get_card_data(card_id: String) -> CardData:
+	if card_database == null:
+		print("DeckSystemRoot card lookup failed: card_database missing")
+		return null
+
+	var card_data := card_database.get_card_by_id(card_id)
+
+	if card_data == null:
+		print("DeckSystemRoot card lookup failed: ", card_id)
+
+	return card_data
+
+func get_last_setup_payload() -> Dictionary:
+	return last_setup_payload.duplicate(true)
+
+func apply_match_setup_payload(payload: Dictionary) -> void:
+	_setup_hand_contexts()
+	_clear_match_cards()
+
+	var p1_start := _card_data_from_entries(payload.get("p1_starting_hand", []))
+	var p2_start := _card_data_from_entries(payload.get("p2_starting_hand", []))
+	var p1_draw := _card_data_from_entries(payload.get("p1_draw_pile", []))
+	var p2_draw := _card_data_from_entries(payload.get("p2_draw_pile", []))
+
+	if player_one_draw_pile != null:
+		player_one_draw_pile.setup_with_cards(p1_draw)
+
+	if player_two_draw_pile != null:
+		player_two_draw_pile.setup_with_cards(p2_draw)
+
+	_spawn_payload_hand(player_one_hand, payload.get("p1_starting_hand", []))
+	_spawn_payload_hand(player_two_hand, payload.get("p2_starting_hand", []))
+
+	last_setup_payload = payload.duplicate(true)
+
+	match_decks_built.emit()
+	starting_hands_dealt.emit()
+
+func _clear_match_cards() -> void:
+	if player_one_hand != null:
+		player_one_hand.clear_cards(true)
+
+	if player_two_hand != null:
+		player_two_hand.clear_cards(true)
+
+	if player_one_draw_pile != null:
+		player_one_draw_pile.clear_cards()
+
+	if player_two_draw_pile != null:
+		player_two_draw_pile.clear_cards()
+
+
+func _spawn_payload_hand(hand: PlayerHandRoot, entries: Array) -> void:
+	if hand == null:
+		return
+
+	for entry in entries:
+		if not entry is Dictionary:
+			continue
+
+		var card_id: String = entry.get("card_id", "")
+		var runtime_id: String = entry.get("runtime_id", "")
+		var card_data := get_card_data(card_id)
+
+		if card_data == null:
+			continue
+
+		hand.spawn_card_with_runtime_id(card_data, runtime_id)
+
+	hand.arrange_cards()
+
+
+func _card_data_from_entries(entries: Array) -> Array[CardData]:
+	var result: Array[CardData] = []
+
+	for entry in entries:
+		if not entry is Dictionary:
+			continue
+
+		var card_id: String = entry.get("card_id", "")
+		var card_data := get_card_data(card_id)
+
+		if card_data != null:
+			result.append(card_data)
+
+	return result
+
+func _input(event: InputEvent) -> void:
+	if not enable_payload_apply_debug:
+		return
+
+	if not event is InputEventKey:
+		return
+
+	var key_event := event as InputEventKey
+
+	if not key_event.pressed or key_event.echo:
+		return
+
+	if key_event.keycode == payload_apply_debug_key:
+		_apply_payload_debug()
+
+func _apply_payload_debug() -> void:
+	if last_setup_payload.is_empty():
+		print("PAYLOAD APPLY DEBUG FAILED: no payload")
+		return
+
+	print("PAYLOAD APPLY DEBUG: applying last setup payload")
+	apply_match_setup_payload(last_setup_payload)

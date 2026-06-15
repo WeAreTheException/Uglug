@@ -43,3 +43,9 @@ func _refresh_views() -> void:
 	if counter != null:
 		counter.set_count(count)
 	pile_changed.emit(count)
+
+func clear_cards() -> void:
+	if instance != null:
+		instance.clear_cards()
+
+	_refresh_views()

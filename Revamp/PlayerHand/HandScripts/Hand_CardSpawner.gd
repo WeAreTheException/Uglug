@@ -137,3 +137,22 @@ func _spawn_card_internal(data: CardData) -> CardRoot:
 
 	add_card(card)
 	return card
+
+func clear_cards(free_cards: bool = true) -> void:
+	var current_cards := store.get_cards()
+
+	store.clear()
+
+	for card: CardRoot in current_cards:
+		if card == null:
+			continue
+
+		if not is_instance_valid(card):
+			continue
+
+		card_removed.emit(card)
+
+		if free_cards:
+			card.queue_free()
+
+	hand_changed.emit()

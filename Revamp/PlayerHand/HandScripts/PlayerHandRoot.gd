@@ -376,3 +376,11 @@ func _setup_spawned_card_context(card: CardRoot) -> void:
 
 	if deck_system_root != null:
 		card.setup_deck_system_context(deck_system_root)
+
+func clear_cards(free_cards: bool = true) -> void:
+	if card_spawner == null:
+		return
+
+	card_spawner.clear_cards(free_cards)
+	arrange_cards()
+	emit_prime_state()

@@ -24,3 +24,6 @@ func is_empty() -> bool:
 
 func get_cards_debug() -> Array[CardData]:
 	return cards.duplicate()
+
+func clear_cards() -> void:
+	cards.clear()
