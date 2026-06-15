@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="CardData" format=3 uid="uid://c64jbnvj0pbwk"]
 
 [ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="1_sucw5"]
+[ext_resource type="Texture2D" uid="uid://d27b31dfdt7nm" path="res://Art/Ants/AntHill.PNG" id="2_ff7qe"]
 [ext_resource type="Resource" uid="uid://cnn0fddifxool" path="res://Mutations/MutationPresets/ColonyNest.tres" id="2_krv1q"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="2_wvsyy"]
 
@@ -9,6 +10,7 @@ script = ExtResource("2_wvsyy")
 name = "Ant Hill"
 health = 3
 cost = 2
+ant_texture = ExtResource("2_ff7qe")
 base_mutations = Array[ExtResource("1_sucw5")]([ExtResource("2_krv1q")])
 deck_amount = 2
 metadata/_custom_type_script = "uid://duslcpxrhurv8"

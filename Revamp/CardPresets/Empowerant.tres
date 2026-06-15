@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="1_6ig78"]
 [ext_resource type="Resource" uid="uid://bqxd6swy88edw" path="res://Mutations/MutationPresets/MobMentality.tres" id="2_0sdcj"]
-[ext_resource type="Texture2D" uid="uid://bd3n84cq63rtf" path="res://Art/Ants/Eliminant.png" id="2_n8a4s"]
+[ext_resource type="Texture2D" uid="uid://me75ho1xnol6" path="res://Art/Ants/EmpowerAnt_Small.PNG" id="2_n8a4s"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="2_vylo5"]
 [ext_resource type="Texture2D" uid="uid://bt8o5l5yrmihl" path="res://Art/AntBack/CardBackground.png" id="3_6qd3c"]
 

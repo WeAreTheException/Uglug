@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://21w8glb26358"]
+
+[ext_resource type="Shader" uid="uid://cnas0qc66obri" path="res://GreenScreen.gdshader" id="1_bb25q"]
+[ext_resource type="VideoStream" uid="uid://cmj1dy34vagxs" path="res://Art/WizantAnim/Wizant_GreensScreen.ogv" id="2_ru1o7"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_m4pko"]
+shader = ExtResource("1_bb25q")
+shader_parameter/key_color = Color(0, 1, 0, 1)
+shader_parameter/similarity = 0.4
+shader_parameter/smoothness = 0.08
+shader_parameter/spill = 0.1
+
+[node name="Node2D" type="Node2D" unique_id=1060986998]
+
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="." unique_id=1745805847]
+material = SubResource("ShaderMaterial_m4pko")
+offset_right = 40.0
+offset_bottom = 40.0
+stream = ExtResource("2_ru1o7")
+autoplay = true
