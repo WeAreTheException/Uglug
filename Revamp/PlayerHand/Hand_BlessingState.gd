@@ -1,5 +1,5 @@
 extends Node
-class_name Hand_BuffState
+class_name Hand_BlessingState
 
 var hand_layout: Hand_Layout = null
 var interaction_root: Hand_InteractionRoot = null
@@ -21,7 +21,7 @@ func setup(
 
 func enter() -> void:
 	if hand_layout != null:
-		hand_layout.set_layout_mode(Hand_Layout.LayoutMode.BUFF)
+		hand_layout.set_layout_mode(Hand_Layout.LayoutMode.BLESSING)
 
 	if interaction_root != null:
 		interaction_root.set_drag_enabled(false)
