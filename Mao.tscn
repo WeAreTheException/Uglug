@@ -299,11 +299,12 @@ turn_order_state = NodePath("../../../MatchFlowRoot/MatchTurnOrderState")
 player_one_hand = NodePath("../../../../Core/PlayerHAnd")
 player_two_hand = NodePath("../../../../Core/OpponenetHAnd")
 
-[node name="BlessingApplyHandler" type="Node" parent="Scripts/Core/Blessing" unique_id=365667343 node_paths=PackedStringArray("blessing_flow_handler", "selection_state", "turn_order_state")]
+[node name="BlessingApplyHandler" type="Node" parent="Scripts/Core/Blessing" unique_id=365667343 node_paths=PackedStringArray("blessing_flow_handler", "selection_state", "turn_order_state", "match_network_root")]
 script = ExtResource("53_8mjsp")
 blessing_flow_handler = NodePath("../BlessingFlowHandler")
 selection_state = NodePath("../BlessingSelectionState")
 turn_order_state = NodePath("../../../MatchFlowRoot/MatchTurnOrderState")
+match_network_root = NodePath("../../../../Multiplayer/MatchNetworkRoot")
 
 [node name="SacrificeController" type="Node" parent="Scripts/Core" unique_id=1432478239 node_paths=PackedStringArray("player_hand", "sacrifice_selection_root", "requirement", "pending_boat", "committer", "revenant_warning")]
 script = ExtResource("10_1j514")

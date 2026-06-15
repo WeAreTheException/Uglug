@@ -668,7 +668,10 @@ func _get_active_blessing_by_id(blessing_id: String) -> Blessing:
 	if blessing == null:
 		return null
 
-	if blessing.blessing_id != blessing_id.strip_edges():
+	var clean_id := blessing_id.strip_edges().to_snake_case()
+	var active_id := blessing.blessing_id.strip_edges().to_snake_case()
+
+	if active_id != clean_id:
 		return null
 
 	return blessing

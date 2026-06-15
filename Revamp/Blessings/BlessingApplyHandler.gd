@@ -77,7 +77,7 @@ func confirm_blessing() -> bool:
 		match_network_root.request_blessing_confirm(
 			owner,
 			card.get_runtime_id(),
-			blessing.blessing_id
+			blessing.blessing_id.to_snake_case()
 		)
 
 		if print_debug:
