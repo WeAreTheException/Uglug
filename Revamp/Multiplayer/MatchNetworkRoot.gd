@@ -16,7 +16,7 @@ class_name MatchNetworkRoot
 @export var enable_draw_debug := false
 @export var draw_debug_key: Key = KEY_D
 @export var debug_draw_owner: SlotRow.SlotOwner = SlotRow.SlotOwner.PLAYER
-@export var debug_draw_pile_type := "warrior"
+@export var debug_draw_pile_type := DeckSystemRoot.DRAW_PILE_WARRIOR
 
 @export var print_debug := true
 
@@ -180,6 +180,23 @@ func _receive_confirmed_draw(
 	runtime_id: String,
 	pile_type: String
 ) -> void:
+	print(
+		"CONFIRMED DRAW RECEIVED: ",
+		_get_owner_name(owner),
+		" ",
+		pile_type,
+		" ",
+		card_id,
+		" | HOST: ",
+		is_host(),
+		" | SETUP READY: ",
+		has_received_setup_payload
+	)
+
+	if not has_received_setup_payload:
+		print("CONFIRMED DRAW IGNORED: setup payload not ready")
+		return
+
 	if deck_system_root == null:
 		print("CONFIRMED DRAW FAILED: deck_system_root missing")
 		return
@@ -253,6 +270,7 @@ func _on_starting_hands_dealt() -> void:
 
 	_broadcast_match_setup_payload(payload)
 
+
 func _broadcast_match_setup_payload(payload: Dictionary) -> void:
 	has_received_setup_payload = true
 
@@ -271,6 +289,7 @@ func _receive_match_setup_payload(payload: Dictionary) -> void:
 		return
 
 	deck_system_root.apply_match_setup_payload(payload)
+	has_received_setup_payload = true
 	print("MATCH SETUP READY: CLIENT")
 
 
