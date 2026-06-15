@@ -7,6 +7,7 @@ signal own_lobby_clicked(lobby_info: Dictionary)
 
 @export var state_manager: MainMenuStateManager
 @export var lobby_icon_spawner: LobbyIconSpawner
+@export var print_lobby_map_debug := false
 
 var current_lobbies: Array = []
 var hosted_lobby_name := ""
@@ -20,7 +21,10 @@ func _ready() -> void:
 
 func handle_lobbies_updated(lobbies: Array) -> void:
 	current_lobbies = lobbies
-	print("Joinable lobbies found: ", lobbies.size())
+
+	if print_lobby_map_debug:
+		print("Joinable lobbies found: ", lobbies.size())
+
 	_update_lobby_map()
 
 

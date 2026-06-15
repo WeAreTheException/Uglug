@@ -140,3 +140,19 @@ func _get_valid_forbidden_count() -> int:
 			count += 1
 
 	return count
+
+func get_mutation_by_id(mutation_id: String) -> Mutation:
+	var clean_id := mutation_id.strip_edges()
+
+	if clean_id == "":
+		return null
+
+	for mutation: Mutation in buff_pool:
+		if mutation == null:
+			continue
+
+		if mutation.get_safe_mutation_id() == clean_id:
+			return mutation
+
+	print("BuffDatabase lookup failed: ", mutation_id)
+	return null

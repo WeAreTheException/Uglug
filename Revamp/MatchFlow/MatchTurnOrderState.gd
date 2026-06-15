@@ -72,3 +72,21 @@ func _apply_attacking_first_owner(owner: SlotRow.SlotOwner) -> void:
 	lead_placement_owner = owner
 	response_placement_owner = get_opposing_owner(owner)
 	attacking_first_owner_changed.emit(attacking_first_owner)
+
+func get_active_owner() -> SlotRow.SlotOwner:
+	return active_owner
+
+
+func get_controlled_owner() -> SlotRow.SlotOwner:
+	return controlled_owner
+
+
+func get_attacking_first_owner() -> SlotRow.SlotOwner:
+	return attacking_first_owner
+
+
+func get_lead_placement_owner() -> SlotRow.SlotOwner:
+	return lead_placement_owner
+
+func get_response_placement_owner() -> SlotRow.SlotOwner:
+	return response_placement_owner

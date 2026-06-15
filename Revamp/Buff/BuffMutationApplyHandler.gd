@@ -7,6 +7,7 @@ signal buff_applied(card: CardRoot, mutation: Mutation)
 @export var selection_state: BuffSelectionState
 @export var turn_order_state: MatchTurnOrderState
 @export var staging_handler: BuffCardStagingHandler
+@export var match_network_root: MatchNetworkRoot
 
 @export var return_delay_after_buff: float = 0.35
 
@@ -64,6 +65,7 @@ func confirm_buff() -> bool:
 		return false
 
 	var mutation := buff_flow_handler.get_active_reward_mutation()
+
 	if mutation == null:
 		print("Buff confirm blocked: no reward mutation")
 		return false
@@ -89,19 +91,29 @@ func confirm_buff() -> bool:
 
 	await staging_handler.play_power_tremble()
 
-	var applied := card.add_buff_mutation(mutation)
+	if match_network_root != null:
+		match_network_root.request_buff_confirm(
+			owner,
+			card.get_runtime_id(),
+			mutation.get_safe_mutation_id()
+		)
 
-	if not applied:
-		print("Buff apply blocked: add failed")
-		has_confirmed = false
-		staging_handler.set_hand_input_enabled(true)
-		return false
+		if print_debug:
+			print("BUFF CONFIRM REQUEST SENT: ", mutation.mutation_name, " -> ", card.card_name)
+			print("BUFF CONFIRM CARD ID: ", card.get_runtime_id())
+	else:
+		var applied := card.add_buff_mutation(mutation)
 
-	buff_applied.emit(card, mutation)
+		if not applied:
+			print("Buff apply blocked: add failed")
+			has_confirmed = false
+			staging_handler.set_hand_input_enabled(true)
+			return false
 
-	if print_debug:
-		print("BUFF APPLIED DURING TREMBLE: ", mutation.mutation_name, " -> ", card.card_name)
-		print("BUFF APPLIED CARD ID: ", card.get_runtime_id())
+		buff_applied.emit(card, mutation)
+
+		if print_debug:
+			print("BUFF APPLIED LOCAL: ", mutation.mutation_name, " -> ", card.card_name)
 
 	await _finish_after_apply()
 	return true

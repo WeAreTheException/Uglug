@@ -64,6 +64,29 @@ func spawn_card(data: CardData) -> CardRoot:
 func spawn_card_ignoring_limit(data: CardData) -> CardRoot:
 	return _spawn_card_internal(data)
 
+func spawn_card_with_runtime_id(
+	data: CardData,
+	runtime_id: String
+) -> CardRoot:
+	var card := spawn_card(data)
+
+	if card != null:
+		card.set_runtime_id(runtime_id)
+
+	return card
+
+
+func spawn_card_ignoring_limit_with_runtime_id(
+	data: CardData,
+	runtime_id: String
+) -> CardRoot:
+	var card := spawn_card_ignoring_limit(data)
+
+	if card != null:
+		card.set_runtime_id(runtime_id)
+
+	return card
+	
 
 func add_card(card: CardRoot) -> void:
 	if not store.add_card(card):
@@ -114,3 +137,22 @@ func _spawn_card_internal(data: CardData) -> CardRoot:
 
 	add_card(card)
 	return card
+
+func clear_cards(free_cards: bool = true) -> void:
+	var current_cards := store.get_cards()
+
+	store.clear()
+
+	for card: CardRoot in current_cards:
+		if card == null:
+			continue
+
+		if not is_instance_valid(card):
+			continue
+
+		card_removed.emit(card)
+
+		if free_cards:
+			card.queue_free()
+
+	hand_changed.emit()

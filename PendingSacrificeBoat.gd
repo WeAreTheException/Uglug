@@ -115,3 +115,14 @@ func _move_card_to_layer(card: CardRoot, target_layer: Node2D) -> void:
 func _clear_pending() -> void:
 	pending_primed_card = null
 	pending_entries.clear()
+
+func get_pending_cards() -> Array[CardRoot]:
+	var cards: Array[CardRoot] = []
+
+	for entry in pending_entries:
+		var card := entry.get("card", null) as CardRoot
+
+		if card != null:
+			cards.append(card)
+
+	return cards

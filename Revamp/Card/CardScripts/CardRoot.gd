@@ -67,6 +67,16 @@ func get_runtime_id() -> String:
 	return runtime_id
 
 
+func set_runtime_id(new_id: String) -> void:
+	var clean_id := new_id.strip_edges()
+
+	if clean_id == "":
+		print("CardRoot blocked empty runtime ID on ", card_name)
+		return
+
+	runtime_id = clean_id
+
+
 func can_receive_buff_mutation(mutation: Mutation) -> bool:
 	if mutations == null:
 		return false

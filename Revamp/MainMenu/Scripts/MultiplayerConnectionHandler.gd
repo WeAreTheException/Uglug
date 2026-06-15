@@ -6,6 +6,7 @@ signal connection_succeeded
 signal connection_failed(error: int)
 
 @export var force_connection_failure := false
+@export var print_connection_debug := false
 
 var is_connected_to_gdsync := false
 var is_connecting := false
@@ -43,9 +44,10 @@ func _on_connected() -> void:
 	var username := _build_unique_username()
 	GDSync.player_set_username(username)
 
-	print("GD-Sync connected.")
-	print("Client ID: ", GDSync.get_client_id())
-	print("Username set to: ", username)
+	if print_connection_debug:
+		print("GD-Sync connected.")
+		print("Client ID: ", GDSync.get_client_id())
+		print("Username set to: ", username)
 
 	connection_succeeded.emit()
 
@@ -53,6 +55,10 @@ func _on_connected() -> void:
 func _on_connection_failed(error: int) -> void:
 	is_connecting = false
 	is_connected_to_gdsync = false
+
+	if print_connection_debug:
+		print("GD-Sync connection failed: ", error)
+
 	connection_failed.emit(error)
 
 

@@ -6,6 +6,14 @@ class_name Mutation
 @export var sigil_texture: Texture2D
 
 
+
+func get_safe_mutation_id() -> String:
+	if mutation_name.strip_edges() == "":
+		return ""
+
+	return mutation_name.to_snake_case()
+	
+	
 func get_attack_priority(_runtime: MutationRuntime) -> int:
 	return 0
 

@@ -6,6 +6,6 @@
 [resource]
 script = ExtResource("1_8i8l7")
 mutation_name = "MutuallyAssuredDestruction"
-mutation_description = "Kills the card that killed it"
+mutation_description = "Kills the opposing card"
 sigil_texture = ExtResource("2_86185")
 metadata/_custom_type_script = "uid://be8yk3djwb5oc"

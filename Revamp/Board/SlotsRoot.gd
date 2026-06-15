@@ -179,7 +179,30 @@ func get_first_empty_slot_in_order(
 
 	return board_query.get_first_empty_slot_in_order(owner, left_to_right)
 
+func find_card_by_runtime_id(runtime_id: String) -> CardRoot:
+	var clean_id := runtime_id.strip_edges()
 
+	if clean_id == "":
+		return null
+
+	for slot: Slot in get_all_slots():
+		if slot == null:
+			continue
+
+		var card := slot.current_card
+
+		if card == null:
+			continue
+
+		if not is_instance_valid(card):
+			continue
+
+		if card.get_runtime_id() == clean_id:
+			return card
+
+	return null
+	
+	
 func refresh_board_mutations() -> void:
 	if board_mutation_refresher != null:
 		board_mutation_refresher.refresh_board_mutations()
