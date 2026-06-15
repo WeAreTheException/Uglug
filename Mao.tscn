@@ -332,11 +332,12 @@ script = ExtResource("13_6ula3")
 script = ExtResource("11_5f7hr")
 metadata/_custom_type_script = "uid://db4xai716j06p"
 
-[node name="SacrificeBoardSelectionBinder" type="Node" parent="Scripts/Core/SacrificeController" unique_id=571826404 node_paths=PackedStringArray("slots_root", "selection_root", "player_hand")]
+[node name="SacrificeBoardSelectionBinder" type="Node" parent="Scripts/Core/SacrificeController" unique_id=571826404 node_paths=PackedStringArray("slots_root", "selection_root", "player_hand", "turn_order_state")]
 script = ExtResource("12_3j6fp")
 slots_root = NodePath("../../../../Core/Board")
 selection_root = NodePath("../SacrificeSelectionRoot")
 player_hand = NodePath("../../../../Core/PlayerHAnd")
+turn_order_state = NodePath("../../../MatchFlowRoot/MatchTurnOrderState")
 
 [node name="PlacementController" type="Node" parent="Scripts/Core" unique_id=1405375079 node_paths=PackedStringArray("slots_root", "player_hand", "sacrifice_controller", "match_network_root", "placement_state", "input_router", "placement_preview", "placement_executor", "event_emitter", "placement_cancel")]
 script = ExtResource("13_ubws4")
