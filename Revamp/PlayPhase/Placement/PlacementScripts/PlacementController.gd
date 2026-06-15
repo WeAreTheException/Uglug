@@ -199,11 +199,17 @@ func build_current_placement_payload() -> Dictionary:
 	if match_network_root != null:
 		network_owner = match_network_root.get_local_owner()
 
-	return payload_builder.build_payload(
+	var network_slot_index := _get_network_slot_index(
+		network_owner,
+		placement_state.preview_slot
+	)
+
+	return payload_builder.build_payload_with_slot_index(
 		slots_root,
 		placement_state.active_card,
 		placement_state.preview_slot,
 		network_owner,
+		network_slot_index,
 		sacrifice_controller.get_pending_sacrifice_cards()
 	)
 
@@ -411,3 +417,20 @@ func _get_current_local_placement_owner() -> SlotRow.SlotOwner:
 		return match_network_root.get_local_owner()
 
 	return get_placing_owner()
+
+func _get_network_slot_index(
+	network_owner: SlotRow.SlotOwner,
+	target_slot: Slot
+) -> int:
+	if target_slot == null:
+		return -1
+
+	if slots_root == null:
+		return target_slot.slot_index
+
+	var visual_owner := slots_root.get_owner_of_slot(target_slot)
+
+	if visual_owner != network_owner:
+		return _mirror_slot_index(target_slot.slot_index)
+
+	return target_slot.slot_index
