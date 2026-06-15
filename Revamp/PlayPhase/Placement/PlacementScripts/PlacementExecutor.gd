@@ -23,9 +23,29 @@ func confirm_placement(
 	if not controller.is_valid_placement_slot(slot):
 		return {}
 
+	return confirm_network_placement(
+		card,
+		slot,
+		owner,
+		controller.get_player_hand()
+	)
+
+
+func confirm_network_placement(
+	card: CardRoot,
+	slot: Slot,
+	owner: SlotRow.SlotOwner,
+	source_hand: PlayerHandRoot
+) -> Dictionary:
+	if controller == null:
+		return {}
+
 	var board := controller.get_slots_root()
 
 	if board == null:
+		return {}
+
+	if card == null or slot == null:
 		return {}
 
 	card.setup_board_context(board)
@@ -33,7 +53,7 @@ func confirm_placement(
 	if not _assign_card_to_slot(card, slot):
 		return {}
 
-	_release_card_from_hand(card)
+	_release_card_from_source_hand(card, source_hand)
 	board_mover.move_card_to_board_layer(card, slot, board)
 	board_mover.snap_card_to_slot(card, slot, placed_scale)
 
@@ -51,11 +71,14 @@ func _assign_card_to_slot(card: CardRoot, slot: Slot) -> bool:
 	return slot.assign_card(card)
 
 
-func _release_card_from_hand(card: CardRoot) -> void:
-	var hand := controller.get_player_hand()
+func _release_card_from_source_hand(
+	card: CardRoot,
+	source_hand: PlayerHandRoot
+) -> void:
+	if source_hand == null:
+		return
 
-	if hand != null:
-		hand.release_primed_card_for_placement(card)
+	source_hand.release_primed_card_for_placement(card)
 
 
 func _notify_card_placed(

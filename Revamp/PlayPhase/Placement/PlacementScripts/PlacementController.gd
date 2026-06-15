@@ -11,6 +11,8 @@ signal card_placed(event: Dictionary)
 @export var slots_root: SlotsRoot
 @export var player_hand: PlayerHandRoot
 @export var sacrifice_controller: SacrificeController
+@export var match_network_root: MatchNetworkRoot
+
 @export var config: PlacementConfigHelper
 @export var placement_state: PlacementState
 @export var input_router: PlacementInputRouter
@@ -18,7 +20,6 @@ signal card_placed(event: Dictionary)
 @export var placement_executor: PlacementExecutor
 @export var event_emitter: PlacementEventEmitter
 @export var placement_cancel: PlacementCancel
-@export var match_network_root: MatchNetworkRoot
 
 @export var enable_right_click_cancel: bool = true
 @export var enable_payload_debug: bool = false
@@ -81,6 +82,54 @@ func confirm_placement() -> void:
 	confirm_flow.confirm(self)
 
 
+func apply_confirmed_placement(payload: Dictionary) -> void:
+	if payload.is_empty():
+		block("Confirmed placement payload empty.")
+		return
+
+	if slots_root == null:
+		block("Confirmed placement blocked: slots_root missing.")
+		return
+
+	if placement_executor == null:
+		block("Confirmed placement blocked: placement_executor missing.")
+		return
+
+	var card_id: String = payload.get("placed_card_runtime_id", "")
+	var slot_owner: SlotRow.SlotOwner = payload.get("target_slot_owner", SlotRow.SlotOwner.PLAYER)
+	var slot_index: int = payload.get("target_slot_index", -1)
+	var owner: SlotRow.SlotOwner = payload.get("owner", SlotRow.SlotOwner.PLAYER)
+
+	var card := _find_card_for_confirmed_placement(card_id)
+	var slot := slots_root.get_slot(slot_owner, slot_index)
+
+	if card == null:
+		block("Confirmed placement blocked: card missing.")
+		return
+
+	if slot == null:
+		block("Confirmed placement blocked: slot missing.")
+		return
+
+	if not slot.is_empty():
+		block("Confirmed placement blocked: slot occupied.")
+		return
+
+	var source_hand := _get_source_hand_for_owner(owner)
+	var event := placement_executor.confirm_network_placement(
+		card,
+		slot,
+		owner,
+		source_hand
+	)
+
+	if event.is_empty():
+		block("Confirmed placement failed.")
+		return
+
+	_finish_confirmed_placement(event)
+
+
 func cancel_placement(undo_pending_sacrifice: bool = true) -> void:
 	if placement_state == null or not placement_state.has_active_card():
 		return
@@ -115,7 +164,7 @@ func is_valid_placement_slot(slot: Slot) -> bool:
 	)
 
 
-func build_current_placement_payload_debug() -> Dictionary:
+func build_current_placement_payload() -> Dictionary:
 	if placement_state == null:
 		return {}
 
@@ -132,6 +181,10 @@ func build_current_placement_payload_debug() -> Dictionary:
 		placement_state.active_owner,
 		sacrifice_controller.get_pending_sacrifice_cards()
 	)
+
+
+func build_current_placement_payload_debug() -> Dictionary:
+	return build_current_placement_payload()
 
 
 func get_left_to_right(owner: SlotRow.SlotOwner) -> bool:
@@ -176,6 +229,58 @@ func undo_pending_sacrifice() -> void:
 		sacrifice_controller.undo_pending_sacrifice()
 
 
+func _finish_confirmed_placement(event: Dictionary) -> void:
+	var emitted_event := event.duplicate(true)
+
+	if placement_preview != null:
+		placement_preview.clear_preview()
+
+	if sacrifice_controller != null:
+		sacrifice_controller.commit_pending_sacrifice()
+
+	if event_emitter != null:
+		event_emitter.emit_card_placed(emitted_event)
+
+	card_placed.emit(emitted_event)
+	placement_finished.emit(emitted_event)
+
+	if placement_state != null:
+		placement_state.reset()
+
+	set_hand_input_enabled(true)
+
+	if slots_root != null:
+		slots_root.refresh_board_mutations()
+
+
+func _find_card_for_confirmed_placement(runtime_id: String) -> CardRoot:
+	var clean_id := runtime_id.strip_edges()
+
+	if clean_id == "":
+		return null
+
+	if match_network_root != null:
+		var card := match_network_root.find_card_anywhere(clean_id)
+
+		if card != null:
+			return card
+
+	if player_hand != null:
+		return player_hand.find_card_by_runtime_id(clean_id)
+
+	return null
+
+
+func _get_source_hand_for_owner(owner: SlotRow.SlotOwner) -> PlayerHandRoot:
+	if match_network_root == null:
+		return player_hand
+
+	if match_network_root.deck_system_root == null:
+		return player_hand
+
+	return match_network_root.deck_system_root.get_hand_for_owner(owner)
+
+
 func _on_pending_sacrifice_started(
 	primed_card: CardRoot,
 	_cards: Array[CardRoot]
@@ -197,94 +302,3 @@ func _on_card_unprimed(_card: CardRoot) -> void:
 
 func block(reason: String) -> void:
 	placement_blocked.emit(reason)
-
-func build_current_placement_payload() -> Dictionary:
-	if placement_state == null:
-		return {}
-
-	if slots_root == null:
-		return {}
-
-	if sacrifice_controller == null:
-		return {}
-
-	return payload_builder.build_payload(
-		slots_root,
-		placement_state.active_card,
-		placement_state.preview_slot,
-		placement_state.active_owner,
-		sacrifice_controller.get_pending_sacrifice_cards()
-	)
-
-func apply_confirmed_placement(payload: Dictionary) -> void:
-	if payload.is_empty():
-		block("Confirmed placement payload empty.")
-		return
-
-	if slots_root == null:
-		block("Confirmed placement blocked: slots_root missing.")
-		return
-
-	var card_id: String = payload.get("placed_card_runtime_id", "")
-	var slot_owner: SlotRow.SlotOwner = payload.get("target_slot_owner", SlotRow.SlotOwner.PLAYER)
-	var slot_index: int = payload.get("target_slot_index", -1)
-	var owner: SlotRow.SlotOwner = payload.get("owner", SlotRow.SlotOwner.PLAYER)
-
-	var card := _find_card_for_confirmed_placement(card_id)
-	var slot := slots_root.get_slot(slot_owner, slot_index)
-
-	if card == null:
-		block("Confirmed placement blocked: card missing.")
-		return
-
-	if slot == null:
-		block("Confirmed placement blocked: slot missing.")
-		return
-
-	if not slot.is_empty():
-		block("Confirmed placement blocked: slot occupied.")
-		return
-
-	var event := placement_executor.confirm_placement(card, slot, owner)
-
-	if event.is_empty():
-		block("Confirmed placement failed.")
-		return
-
-	if placement_preview != null:
-		placement_preview.clear_preview()
-
-	if sacrifice_controller != null:
-		sacrifice_controller.commit_pending_sacrifice()
-
-	if event_emitter != null:
-		event_emitter.emit_card_placed(event)
-
-	card_placed.emit(event)
-	placement_finished.emit(event)
-
-	if placement_state != null:
-		placement_state.reset()
-
-	set_hand_input_enabled(true)
-
-	if slots_root != null:
-		slots_root.refresh_board_mutations()
-
-
-func _find_card_for_confirmed_placement(runtime_id: String) -> CardRoot:
-	var clean_id := runtime_id.strip_edges()
-
-	if clean_id == "":
-		return null
-
-	if player_hand != null:
-		var card := player_hand.find_card_by_runtime_id(clean_id)
-
-		if card != null:
-			return card
-
-	if sacrifice_controller != null and sacrifice_controller.player_hand != null:
-		return sacrifice_controller.player_hand.find_card_by_runtime_id(clean_id)
-
-	return null
