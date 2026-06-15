@@ -34,6 +34,8 @@ func _ready() -> void:
 	GDSync.expose_func(request_draw)
 	GDSync.expose_func(_receive_confirmed_draw)
 	GDSync.expose_func(_receive_buff_reward)
+	GDSync.expose_func(request_buff_confirm)
+	GDSync.expose_func(_receive_confirmed_buff)
 
 	_assign_local_owner()
 	_print_network_status()
@@ -74,6 +76,127 @@ func get_local_client_id() -> int:
 
 func get_local_owner() -> SlotRow.SlotOwner:
 	return local_owner
+
+
+func request_buff_confirm(
+	owner: SlotRow.SlotOwner,
+	target_card_runtime_id: String,
+	mutation_id: String
+) -> void:
+	if is_host():
+		_process_buff_confirm_request(owner, target_card_runtime_id, mutation_id)
+		return
+
+	GDSync.call_func(
+		request_buff_confirm,
+		owner,
+		target_card_runtime_id,
+		mutation_id
+	)
+
+
+func _process_buff_confirm_request(
+	owner: SlotRow.SlotOwner,
+	target_card_runtime_id: String,
+	mutation_id: String
+) -> void:
+	if buff_database == null:
+		print("BUFF REQUEST REJECTED: buff_database missing")
+		return
+
+	var card := find_card_anywhere(target_card_runtime_id)
+
+	if card == null:
+		print("BUFF REQUEST REJECTED: card missing ", target_card_runtime_id)
+		return
+
+	if not _card_belongs_to_owner_hand(card, owner):
+		print("BUFF REQUEST REJECTED: wrong owner")
+		return
+
+	var mutation := buff_database.get_mutation_by_id(mutation_id)
+
+	if mutation == null:
+		print("BUFF REQUEST REJECTED: mutation missing ", mutation_id)
+		return
+
+	if buff_flow_handler != null:
+		var offered := buff_flow_handler.get_active_reward_mutation()
+
+		if offered != null and offered.get_safe_mutation_id() != mutation_id:
+			print("BUFF REQUEST REJECTED: mutation was not offered")
+			return
+
+	if not card.can_receive_buff_mutation(mutation):
+		print("BUFF REQUEST REJECTED: card cannot receive mutation")
+		return
+
+	_broadcast_confirmed_buff(owner, target_card_runtime_id, mutation_id)
+
+
+func _broadcast_confirmed_buff(
+	owner: SlotRow.SlotOwner,
+	target_card_runtime_id: String,
+	mutation_id: String
+) -> void:
+	if print_debug:
+		print(
+			"BUFF CONFIRMED: ",
+			_get_owner_name(owner),
+			" ",
+			target_card_runtime_id,
+			" ",
+			mutation_id
+		)
+
+	GDSync.call_func_all(
+		_receive_confirmed_buff,
+		owner,
+		target_card_runtime_id,
+		mutation_id
+	)
+
+
+func _receive_confirmed_buff(
+	owner: SlotRow.SlotOwner,
+	target_card_runtime_id: String,
+	mutation_id: String
+) -> void:
+	if buff_database == null:
+		print("CONFIRMED BUFF FAILED: buff_database missing")
+		return
+
+	var card := find_card_anywhere(target_card_runtime_id)
+
+	if card == null:
+		print("CONFIRMED BUFF FAILED: card missing ", target_card_runtime_id)
+		return
+
+	var mutation := buff_database.get_mutation_by_id(mutation_id)
+
+	if mutation == null:
+		print("CONFIRMED BUFF FAILED: mutation missing ", mutation_id)
+		return
+
+	if not card.can_receive_buff_mutation(mutation):
+		print("CONFIRMED BUFF FAILED: card cannot receive mutation")
+		return
+
+	var applied := card.add_buff_mutation(mutation)
+
+	if not applied:
+		print("CONFIRMED BUFF FAILED: add failed")
+		return
+
+	if print_debug:
+		print(
+			"CONFIRMED BUFF APPLIED: ",
+			_get_owner_name(owner),
+			" ",
+			mutation.mutation_name,
+			" -> ",
+			card.card_name
+		)
 
 
 func request_draw(
@@ -142,10 +265,7 @@ func _on_buff_phase_started() -> void:
 	if print_debug:
 		print("HOST BUFF ROLLED: ", mutation_id)
 
-	GDSync.call_func_all(
-		_receive_buff_reward,
-		mutation_id
-	)
+	GDSync.call_func_all(_receive_buff_reward, mutation_id)
 
 
 func _receive_buff_reward(mutation_id: String) -> void:
@@ -164,12 +284,7 @@ func _receive_buff_reward(mutation_id: String) -> void:
 		return
 
 	if print_debug:
-		print(
-			"BUFF RECEIVE: ",
-			mutation.mutation_name,
-			" | HOST: ",
-			is_host()
-		)
+		print("BUFF RECEIVE: ", mutation.mutation_name, " | HOST: ", is_host())
 
 	buff_flow_handler.begin_buff_flow_with_reward(mutation)
 
@@ -360,6 +475,21 @@ func _receive_match_setup_payload(payload: Dictionary) -> void:
 	deck_system_root.apply_match_setup_payload(payload)
 	has_received_setup_payload = true
 	print("MATCH SETUP READY: CLIENT")
+
+
+func _card_belongs_to_owner_hand(
+	card: CardRoot,
+	owner: SlotRow.SlotOwner
+) -> bool:
+	if deck_system_root == null:
+		return false
+
+	var hand := deck_system_root.get_hand_for_owner(owner)
+
+	if hand == null:
+		return false
+
+	return hand.has_card(card)
 
 
 func _find_card_in_hand(
