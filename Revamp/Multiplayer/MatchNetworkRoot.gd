@@ -642,7 +642,12 @@ func _receive_confirmed_blessing(
 		print("CONFIRMED BLESSING FAILED: blessing missing ", blessing_id)
 		return
 
-	var applied := false
+	print("CONFIRMED BLESSING ABOUT TO APPLY: ", blessing_id)
+
+	var applied := BlessingApplyHelper.new().apply_blessing(
+		card,
+		blessing
+	)
 
 	if not applied:
 		print("CONFIRMED BLESSING FAILED: apply failed")
