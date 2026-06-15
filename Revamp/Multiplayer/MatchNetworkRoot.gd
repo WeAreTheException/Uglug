@@ -21,7 +21,7 @@ class_name MatchNetworkRoot
 @export var print_debug := true
 
 var local_owner: SlotRow.SlotOwner = SlotRow.SlotOwner.PLAYER
-var has_broadcast_setup_payload := false
+var has_received_setup_payload := false
 
 
 func _ready() -> void:
@@ -227,9 +227,6 @@ func _connect_deck_setup() -> void:
 
 
 func _try_broadcast_existing_setup_payload() -> void:
-	if has_broadcast_setup_payload:
-		return
-
 	if deck_system_root == null:
 		return
 
@@ -245,9 +242,6 @@ func _on_starting_hands_dealt() -> void:
 	if not is_host():
 		return
 
-	if has_broadcast_setup_payload:
-		return
-
 	if deck_system_root == null:
 		return
 
@@ -259,9 +253,8 @@ func _on_starting_hands_dealt() -> void:
 
 	_broadcast_match_setup_payload(payload)
 
-
 func _broadcast_match_setup_payload(payload: Dictionary) -> void:
-	has_broadcast_setup_payload = true
+	has_received_setup_payload = true
 
 	if print_debug:
 		print("MATCH SETUP READY: HOST")
