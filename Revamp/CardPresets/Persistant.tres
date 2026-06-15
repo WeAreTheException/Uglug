@@ -1,9 +1,9 @@
 [gd_resource type="Resource" script_class="CardData" format=3 uid="uid://jd5rbexi4lr4"]
 
 [ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="1_p7342"]
+[ext_resource type="Texture2D" uid="uid://b2b3s4bwklsov" path="res://Art/Ants/Persistant.PNG" id="2_p7342"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="2_w52ji"]
 [ext_resource type="Resource" uid="uid://dcgqrr05c2pyg" path="res://Mutations/MutationPresets/DivergentFist.tres" id="3_cb54b"]
-[ext_resource type="Texture2D" uid="uid://b8a1gr84h2iie" path="res://Art/Ants/WorkerAnt_Standalone.png" id="3_mtqv4"]
 
 [resource]
 script = ExtResource("2_w52ji")
@@ -11,7 +11,7 @@ name = "Persistent"
 attack = 1
 health = 2
 cost = 1
-ant_texture = ExtResource("3_mtqv4")
+ant_texture = ExtResource("2_p7342")
 base_mutations = Array[ExtResource("1_p7342")]([ExtResource("3_cb54b")])
 deck_amount = 2
 metadata/_custom_type_script = "uid://duslcpxrhurv8"

@@ -2,8 +2,7 @@
 
 [ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="1_kpl6p"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="2_djvnq"]
-[ext_resource type="Texture2D" uid="uid://dqynxdcij0qpn" path="res://Art/Ants/Giant.png" id="2_kpl6p"]
-[ext_resource type="Texture2D" uid="uid://c1g17ytfxes43" path="res://Art/Mutations/Penetrant_Sigil.PNG" id="3_kpl6p"]
+[ext_resource type="Texture2D" uid="uid://chdko376katyy" path="res://Art/Ants/Rhinocerant.PNG" id="2_iyf5u"]
 [ext_resource type="Resource" uid="uid://dp3xgqtqwogy3" path="res://Mutations/MutationPresets/StraightChopsMutations/Lance.tres" id="4_bo34x"]
 
 [resource]
@@ -14,7 +13,6 @@ rarity = 2
 attack = 4
 health = 3
 cost = 4
-background_texture = ExtResource("3_kpl6p")
-ant_texture = ExtResource("2_kpl6p")
+ant_texture = ExtResource("2_iyf5u")
 base_mutations = Array[ExtResource("1_kpl6p")]([ExtResource("4_bo34x")])
 metadata/_custom_type_script = "uid://duslcpxrhurv8"

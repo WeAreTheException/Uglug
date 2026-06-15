@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="1_oylng"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="2_77v3d"]
-[ext_resource type="Texture2D" uid="uid://b8a1gr84h2iie" path="res://Art/Ants/WorkerAnt_Standalone.png" id="2_nk5bi"]
+[ext_resource type="Texture2D" uid="uid://dgtbnunhcc0ey" path="res://Art/Ants/SuperStimulant.PNG" id="2_xpave"]
 [ext_resource type="Resource" uid="uid://c0cebfc5tmmng" path="res://Mutations/MutationPresets/SteroidMaxxing.tres" id="3_ufrle"]
 
 [resource]
@@ -11,6 +11,6 @@ name = "Super Stimulant"
 attack = 1
 health = 2
 cost = 2
-ant_texture = ExtResource("2_nk5bi")
+ant_texture = ExtResource("2_xpave")
 base_mutations = Array[ExtResource("1_oylng")]([ExtResource("3_ufrle")])
 metadata/_custom_type_script = "uid://duslcpxrhurv8"

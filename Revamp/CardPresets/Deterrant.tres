@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="1_j46im"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="2_i4d0u"]
 [ext_resource type="Resource" uid="uid://qm2l2rlbwj77" path="res://Mutations/MutationPresets/Heckler.tres" id="2_n0nc2"]
+[ext_resource type="Texture2D" uid="uid://b3o6p87wad5eh" path="res://Art/Ants/Deterrant.PNG" id="2_qep1h"]
 
 [resource]
 script = ExtResource("2_i4d0u")
@@ -10,6 +11,7 @@ name = "Deterrant"
 attack = 1
 health = 3
 cost = 2
-deck_amount = 2
+ant_texture = ExtResource("2_qep1h")
 base_mutations = Array[ExtResource("1_j46im")]([ExtResource("2_n0nc2")])
+deck_amount = 2
 metadata/_custom_type_script = "uid://duslcpxrhurv8"
