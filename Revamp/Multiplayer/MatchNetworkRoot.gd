@@ -9,26 +9,26 @@ class_name MatchNetworkRoot
 
 @export var enable_lookup_debug := false
 @export var lookup_debug_key: Key = KEY_L
-@export var print_debug := true
 
 @export var enable_ping_debug := false
 @export var ping_debug_key: Key = KEY_N
+
+@export var print_debug := true
 
 var local_owner: SlotRow.SlotOwner = SlotRow.SlotOwner.PLAYER
 
 
 func _ready() -> void:
+	GDSync.expose_node(self)
+	GDSync.expose_func(_receive_match_setup_payload)
+	GDSync.expose_func(_receive_network_ping)
+
 	_assign_local_owner()
 	_print_network_status()
-	GDSync.expose_func(_receive_network_ping)
-	GDSync.expose_func(_receive_match_setup_payload)
 	_connect_deck_setup()
 
 
 func _input(event: InputEvent) -> void:
-	if not enable_lookup_debug:
-		return
-
 	if not event is InputEventKey:
 		return
 
@@ -37,12 +37,11 @@ func _input(event: InputEvent) -> void:
 	if not key_event.pressed or key_event.echo:
 		return
 
-	if key_event.keycode == lookup_debug_key:
+	if enable_lookup_debug and key_event.keycode == lookup_debug_key:
 		_run_lookup_debug()
-	
+
 	if enable_ping_debug and key_event.keycode == ping_debug_key:
-		print("NETWORK PING SENDING")
-		GDSync.call_func(_receive_network_ping, ["hello from " + str(GDSync.get_client_id())])
+		_send_ping_debug()
 
 
 func is_host() -> bool:
@@ -146,8 +145,10 @@ func _on_starting_hands_dealt() -> void:
 
 
 func _broadcast_match_setup_payload(payload: Dictionary) -> void:
-	print("MATCH SETUP READY: HOST")
-	GDSync.call_func(_receive_match_setup_payload, [payload])
+	if print_debug:
+		print("MATCH SETUP READY: HOST")
+
+	GDSync.call_func_all(_receive_match_setup_payload, payload)
 
 
 func _receive_match_setup_payload(payload: Dictionary) -> void:
@@ -170,6 +171,18 @@ func _find_card_in_hand(
 		return null
 
 	return hand.find_card_by_runtime_id(runtime_id)
+
+
+func _send_ping_debug() -> void:
+	print("NETWORK PING SENDING")
+	GDSync.call_func_all(
+		_receive_network_ping,
+		"hello from " + str(GDSync.get_client_id())
+	)
+
+
+func _receive_network_ping(message: String) -> void:
+	print("NETWORK PING RECEIVED: ", message, " | HOST: ", is_host())
 
 
 func _run_lookup_debug() -> void:
@@ -199,6 +212,3 @@ func _run_lookup_debug() -> void:
 
 	print("LOOKUP DEBUG ID: ", runtime_id)
 	print("LOOKUP DEBUG FOUND: ", found_card == first_card)
-
-func _receive_network_ping(message: String) -> void:
-	print("NETWORK PING RECEIVED: ", message, " | HOST: ", is_host())
