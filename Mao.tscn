@@ -170,9 +170,10 @@ anticipation_feedback = NodePath("../AttackAnticipationFeedbackHandler")
 script = ExtResource("27_a1qt2")
 match_flow_root = NodePath("..")
 
-[node name="MatchAutoDrawHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=833003799 node_paths=PackedStringArray("match_flow_root")]
+[node name="MatchAutoDrawHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=833003799 node_paths=PackedStringArray("match_flow_root", "match_network_root")]
 script = ExtResource("28_mf2my")
 match_flow_root = NodePath("..")
+match_network_root = NodePath("../../../Multiplayer/MatchNetworkRoot")
 
 [node name="MatchScoreState" type="Node" parent="Scripts/MatchFlowRoot" unique_id=1110463725]
 script = ExtResource("31_3a8w1")

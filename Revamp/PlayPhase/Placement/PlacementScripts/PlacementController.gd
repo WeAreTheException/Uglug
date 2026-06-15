@@ -32,6 +32,7 @@ var setup_helper := PlacementControllerSetupHelper.new()
 var start_flow := PlacementStartFlowHelper.new()
 var confirm_flow := PlacementConfirmFlowHelper.new()
 var payload_builder := PlacementRequestPayloadBuilder.new()
+var finish_flow := PlacementFinishFlowHelper.new()
 
 
 func _ready() -> void:
@@ -254,27 +255,7 @@ func undo_pending_sacrifice() -> void:
 
 
 func _finish_confirmed_placement(event: Dictionary) -> void:
-	var emitted_event := event.duplicate(true)
-
-	if placement_preview != null:
-		placement_preview.clear_preview()
-
-	if sacrifice_controller != null:
-		sacrifice_controller.commit_pending_sacrifice()
-
-	if event_emitter != null:
-		event_emitter.emit_card_placed(emitted_event)
-
-	card_placed.emit(emitted_event)
-	placement_finished.emit(emitted_event)
-
-	if placement_state != null:
-		placement_state.reset()
-
-	set_hand_input_enabled(true)
-
-	if slots_root != null:
-		slots_root.refresh_board_mutations()
+	finish_flow.finish_placement(self, event)
 
 
 func _get_confirmed_target_slot(

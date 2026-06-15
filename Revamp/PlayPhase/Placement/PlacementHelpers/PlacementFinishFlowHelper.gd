@@ -2,8 +2,14 @@ extends RefCounted
 class_name PlacementFinishFlowHelper
 
 
-func finish_placement(controller: PlacementController, event: Dictionary) -> void:
+func finish_placement(
+	controller: PlacementController,
+	event: Dictionary
+) -> void:
 	if controller == null:
+		return
+
+	if event.is_empty():
 		return
 
 	var emitted_event := event.duplicate(true)
@@ -20,5 +26,10 @@ func finish_placement(controller: PlacementController, event: Dictionary) -> voi
 	controller.card_placed.emit(emitted_event)
 	controller.placement_finished.emit(emitted_event)
 
-	controller.placement_state.reset()
+	if controller.placement_state != null:
+		controller.placement_state.reset()
+
 	controller.set_hand_input_enabled(true)
+
+	if controller.slots_root != null:
+		controller.slots_root.refresh_board_mutations()

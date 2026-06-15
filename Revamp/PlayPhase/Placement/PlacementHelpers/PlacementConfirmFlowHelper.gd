@@ -1,12 +1,18 @@
 extends RefCounted
 class_name PlacementConfirmFlowHelper
 
+
 func confirm(controller: PlacementController) -> void:
+	if controller == null:
+		return
+
 	if not controller.is_placing():
 		return
+
 	if not controller.is_valid_placement_slot(controller.placement_state.preview_slot):
 		controller.block("Invalid placement slot.")
 		return
+
 	controller.placement_state.is_confirming = true
 
 	if controller.match_network_root != null:
@@ -18,7 +24,9 @@ func confirm(controller: PlacementController) -> void:
 			return
 
 		controller.match_network_root.request_placement(payload)
-		print("PLACEMENT REQUEST SENT: ", payload)
+
+		if controller.print_debug:
+			print("PLACEMENT REQUEST SENT: ", payload)
 
 		controller.placement_state.is_confirming = false
 		return
@@ -28,21 +36,10 @@ func confirm(controller: PlacementController) -> void:
 		controller.placement_state.preview_slot,
 		controller.placement_state.active_owner
 	)
+
 	if event.is_empty():
 		controller.placement_state.is_confirming = false
 		controller.block("Placement failed.")
 		return
-	_finish(controller, event)
 
-func _finish(controller: PlacementController, event: Dictionary) -> void:
-	var emitted_event := event.duplicate(true)
-	if controller.placement_preview != null:
-		controller.placement_preview.clear_preview()
-	if controller.sacrifice_controller != null:
-		controller.sacrifice_controller.commit_pending_sacrifice()
-	if controller.event_emitter != null:
-		controller.event_emitter.emit_card_placed(emitted_event)
-	controller.card_placed.emit(emitted_event)
-	controller.placement_finished.emit(emitted_event)
-	controller.placement_state.reset()
-	controller.set_hand_input_enabled(true)
+	controller.finish_flow.finish_placement(controller, event)
