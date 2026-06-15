@@ -45,10 +45,10 @@ status_label = NodePath("StatusLabel")
 
 [node name="MapVisual" type="TextureRect" parent="." unique_id=1786858430]
 layout_mode = 0
-offset_right = 2019.9895
-offset_bottom = 1065.3228
+offset_right = 2021.0422
+offset_bottom = 1078.158
 texture = ExtResource("2_kpx3y")
-metadata/_edit_lock_ = true
+expand_mode = 1
 
 [node name="LobbyIconLayer" type="Node2D" parent="." unique_id=894064762]
 scale = Vector2(1.0000001, 1)
