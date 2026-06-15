@@ -101,7 +101,7 @@ func apply_confirmed_placement(payload: Dictionary) -> void:
 	var owner: SlotRow.SlotOwner = payload.get("owner", SlotRow.SlotOwner.PLAYER)
 
 	var card := _find_card_for_confirmed_placement(card_id)
-	var slot := slots_root.get_slot(slot_owner, slot_index)
+	var slot := _get_confirmed_target_slot(owner, slot_owner, slot_index)
 
 	if card == null:
 		block("Confirmed placement blocked: card missing.")
@@ -302,3 +302,43 @@ func _on_card_unprimed(_card: CardRoot) -> void:
 
 func block(reason: String) -> void:
 	placement_blocked.emit(reason)
+	
+func _get_confirmed_target_slot(
+	owner: SlotRow.SlotOwner,
+	slot_owner: SlotRow.SlotOwner,
+	logical_slot_index: int
+) -> Slot:
+	if slots_root == null:
+		return null
+
+	var local_index := _get_local_visual_slot_index(owner, logical_slot_index)
+
+	return slots_root.get_slot(slot_owner, local_index)
+
+
+func _get_local_visual_slot_index(
+	owner: SlotRow.SlotOwner,
+	logical_slot_index: int
+) -> int:
+	if _should_mirror_confirmed_slot(owner):
+		return _mirror_slot_index(logical_slot_index)
+
+	return logical_slot_index
+
+
+func _should_mirror_confirmed_slot(owner: SlotRow.SlotOwner) -> bool:
+	if match_network_root == null:
+		return false
+
+	return match_network_root.get_local_owner() != owner
+
+
+func _mirror_slot_index(slot_index: int) -> int:
+	var max_slots := 4
+
+	if slots_root != null:
+		var slots := slots_root.get_slots_for_owner(SlotRow.SlotOwner.PLAYER)
+		if not slots.is_empty():
+			max_slots = slots.size()
+
+	return (max_slots + 1) - slot_index
