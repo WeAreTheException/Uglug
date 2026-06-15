@@ -99,20 +99,16 @@ func _connect_slot(slot: SigilSlot) -> void:
 
 
 func _on_slot_hovered(slot: SigilSlot) -> void:
-	print("CARD MUTATION VISUALS GOT HOVER: ", slot.get_mutation_name())
 	sigil_hovered.emit(slot)
 
 
 func _on_slot_unhovered(slot: SigilSlot) -> void:
-	print("CARD MUTATION VISUALS GOT UNHOVER: ", slot.get_mutation_name())
 	sigil_unhovered.emit(slot)
 
 
 func _on_slot_right_clicked(slot: SigilSlot) -> void:
-	print("CARD MUTATION VISUALS GOT RIGHT CLICK: ", slot.get_mutation_name())
 	sigil_right_clicked.emit(slot)
 
 
 func _on_slot_left_clicked(slot: SigilSlot) -> void:
-	print("CARD MUTATION VISUALS GOT LEFT CLICK: ", slot.get_mutation_name())
 	sigil_left_clicked.emit(slot)

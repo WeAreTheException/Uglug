@@ -131,6 +131,7 @@ main_visuals = NodePath("SubViewport/Visuals/MainVisuals")
 mutation_visuals = NodePath("SubViewport/Visuals/MutationVisuals")
 stats_visual = NodePath("SubViewport/Visuals/StatsVisual")
 mutation_tooltip = NodePath("MutationToolTip")
+auto_show_mutation_tooltip_on_hover = true
 viewport_sprite = NodePath("ViewportSprite")
 revenant_overlay = NodePath("RevenantOverlay")
 revenant_shader = ExtResource("2_460t8")
