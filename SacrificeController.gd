@@ -401,3 +401,12 @@ func _get_selected_cards() -> Array[CardRoot]:
 		return []
 
 	return player_hand.get_selected_sacrifice_cards()
+
+func get_pending_sacrifice_cards() -> Array[CardRoot]:
+	if pending_boat == null:
+		return []
+
+	if not pending_boat.has_pending():
+		return []
+
+	return pending_boat.get_pending_cards()

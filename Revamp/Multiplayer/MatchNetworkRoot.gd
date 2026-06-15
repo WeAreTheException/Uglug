@@ -40,6 +40,7 @@ func _ready() -> void:
 	GDSync.expose_func(_receive_confirmed_buff)
 	GDSync.expose_func(request_blessing_confirm)
 	GDSync.expose_func(_receive_confirmed_blessing)
+	GDSync.expose_func(request_placement)
 
 	_assign_local_owner()
 	_print_network_status()
@@ -680,3 +681,55 @@ func _get_active_blessing_by_id(blessing_id: String) -> Blessing:
 		return null
 
 	return blessing
+
+func request_placement(payload: Dictionary) -> void:
+	if is_host():
+		_process_placement_request(payload)
+		return
+
+func _process_placement_request(payload: Dictionary) -> void:
+	print("PLACEMENT REQUEST RECEIVED: ", payload)
+
+	if not _is_valid_placement_request(payload):
+		print("PLACEMENT REQUEST REJECTED")
+		return
+
+	print("PLACEMENT REQUEST ACCEPTED")
+
+	GDSync.call_func(request_placement, payload)
+
+func _is_valid_placement_request(payload: Dictionary) -> bool:
+	if payload.is_empty():
+		print("PLACEMENT VALIDATION FAILED: payload empty")
+		return false
+
+	var owner: SlotRow.SlotOwner = payload.get("owner", SlotRow.SlotOwner.PLAYER)
+	var card_id: String = payload.get("placed_card_runtime_id", "")
+	var slot_owner: SlotRow.SlotOwner = payload.get("target_slot_owner", SlotRow.SlotOwner.PLAYER)
+	var slot_index: int = payload.get("target_slot_index", -1)
+
+	var card := find_card_anywhere(card_id)
+
+	if card == null:
+		print("PLACEMENT VALIDATION FAILED: card missing ", card_id)
+		return false
+
+	if not _card_belongs_to_owner_hand(card, owner):
+		print("PLACEMENT VALIDATION FAILED: card wrong owner")
+		return false
+
+	if slots_root == null:
+		print("PLACEMENT VALIDATION FAILED: slots_root missing")
+		return false
+
+	var slot := slots_root.get_slot(slot_owner, slot_index)
+
+	if slot == null:
+		print("PLACEMENT VALIDATION FAILED: slot missing")
+		return false
+
+	if not slot.is_empty():
+		print("PLACEMENT VALIDATION FAILED: slot occupied")
+		return false
+
+	return true

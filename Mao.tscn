@@ -338,7 +338,7 @@ slots_root = NodePath("../../../../Core/Board")
 selection_root = NodePath("../SacrificeSelectionRoot")
 player_hand = NodePath("../../../../Core/PlayerHAnd")
 
-[node name="PlacementController" type="Node" parent="Scripts/Core" unique_id=1405375079 node_paths=PackedStringArray("slots_root", "player_hand", "sacrifice_controller", "placement_state", "input_router", "placement_preview", "placement_executor", "event_emitter", "placement_cancel")]
+[node name="PlacementController" type="Node" parent="Scripts/Core" unique_id=1405375079 node_paths=PackedStringArray("slots_root", "player_hand", "sacrifice_controller", "placement_state", "input_router", "placement_preview", "placement_executor", "event_emitter", "placement_cancel", "match_network_root")]
 script = ExtResource("13_ubws4")
 slots_root = NodePath("../../../Core/Board")
 player_hand = NodePath("../../../Core/PlayerHAnd")
@@ -349,6 +349,8 @@ placement_preview = NodePath("PlacementPreview")
 placement_executor = NodePath("PlacementExecutor")
 event_emitter = NodePath("PlacementEventEmitter")
 placement_cancel = NodePath("PlacementCancel")
+match_network_root = NodePath("../../../Multiplayer/MatchNetworkRoot")
+enable_payload_debug = true
 
 [node name="PlacementState" type="Node" parent="Scripts/Core/PlacementController" unique_id=1456688179]
 script = ExtResource("14_5sdof")

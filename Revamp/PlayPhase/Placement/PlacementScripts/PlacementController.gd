@@ -18,14 +18,18 @@ signal card_placed(event: Dictionary)
 @export var placement_executor: PlacementExecutor
 @export var event_emitter: PlacementEventEmitter
 @export var placement_cancel: PlacementCancel
+@export var match_network_root: MatchNetworkRoot
 
 @export var enable_right_click_cancel: bool = true
+@export var enable_payload_debug: bool = false
+@export var payload_debug_key: Key = KEY_P
 
 var slot_resolver := PlacementSlotResolverHelper.new()
 var slot_validator := PlacementSlotValidatorHelper.new()
 var setup_helper := PlacementControllerSetupHelper.new()
 var start_flow := PlacementStartFlowHelper.new()
 var confirm_flow := PlacementConfirmFlowHelper.new()
+var payload_builder := PlacementRequestPayloadBuilder.new()
 
 
 func _ready() -> void:
@@ -34,6 +38,11 @@ func _ready() -> void:
 
 
 func _input(event: InputEvent) -> void:
+	if event is InputEventKey:
+		if event.pressed and not event.echo:
+			if enable_payload_debug and event.keycode == payload_debug_key:
+				print("PLACEMENT PAYLOAD DEBUG: ", build_current_placement_payload_debug())
+
 	if not enable_right_click_cancel:
 		return
 
@@ -106,6 +115,25 @@ func is_valid_placement_slot(slot: Slot) -> bool:
 	)
 
 
+func build_current_placement_payload_debug() -> Dictionary:
+	if placement_state == null:
+		return {}
+
+	if slots_root == null:
+		return {}
+
+	if sacrifice_controller == null:
+		return {}
+
+	return payload_builder.build_payload(
+		slots_root,
+		placement_state.active_card,
+		placement_state.preview_slot,
+		placement_state.active_owner,
+		sacrifice_controller.get_pending_sacrifice_cards()
+	)
+
+
 func get_left_to_right(owner: SlotRow.SlotOwner) -> bool:
 	if config == null:
 		return owner == SlotRow.SlotOwner.PLAYER
@@ -169,3 +197,21 @@ func _on_card_unprimed(_card: CardRoot) -> void:
 
 func block(reason: String) -> void:
 	placement_blocked.emit(reason)
+
+func build_current_placement_payload() -> Dictionary:
+	if placement_state == null:
+		return {}
+
+	if slots_root == null:
+		return {}
+
+	if sacrifice_controller == null:
+		return {}
+
+	return payload_builder.build_payload(
+		slots_root,
+		placement_state.active_card,
+		placement_state.preview_slot,
+		placement_state.active_owner,
+		sacrifice_controller.get_pending_sacrifice_cards()
+	)
