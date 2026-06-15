@@ -419,3 +419,30 @@ func get_pending_sacrifice_cards() -> Array[CardRoot]:
 		return []
 
 	return pending_boat.get_pending_cards()
+
+func set_player_hand(new_hand: PlayerHandRoot) -> void:
+	if player_hand == new_hand:
+		return
+
+	_disconnect_hand()
+	player_hand = new_hand
+	_connect_hand()
+	_update_warning()
+	_update_requirement_state()
+
+
+func _disconnect_hand() -> void:
+	if player_hand == null:
+		return
+
+	if player_hand.sacrifice_requested.is_connected(_on_sacrifice_requested):
+		player_hand.sacrifice_requested.disconnect(_on_sacrifice_requested)
+
+	if player_hand.card_primed.is_connected(_on_card_primed):
+		player_hand.card_primed.disconnect(_on_card_primed)
+
+	if player_hand.card_unprimed.is_connected(_on_card_unprimed):
+		player_hand.card_unprimed.disconnect(_on_card_unprimed)
+
+	if player_hand.sacrifice_selection_changed.is_connected(_on_hand_selection_changed):
+		player_hand.sacrifice_selection_changed.disconnect(_on_hand_selection_changed)

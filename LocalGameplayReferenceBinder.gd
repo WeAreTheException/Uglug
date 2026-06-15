@@ -24,7 +24,7 @@ func _apply_local_refs() -> void:
 		placement_controller.set_active_owner(owner)
 
 	if sacrifice_controller != null:
-		sacrifice_controller.player_hand = local_hand
+		sacrifice_controller.set_player_hand(local_hand)
 
 	if sacrifice_board_binder != null:
 		sacrifice_board_binder.player_hand = local_hand
