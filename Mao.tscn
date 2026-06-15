@@ -172,10 +172,9 @@ score_state = NodePath("MatchScoreState")
 [node name="MatchTurnOrderState" type="Node" parent="Scripts/MatchFlowRoot" unique_id=708809136]
 script = ExtResource("26_n5v11")
 
-[node name="MatchPhaseBridge" type="Node" parent="Scripts/MatchFlowRoot" unique_id=1064403000 node_paths=PackedStringArray("match_flow_root", "phase_manager")]
+[node name="MatchPhaseBridge" type="Node" parent="Scripts/MatchFlowRoot" unique_id=1064403000 node_paths=PackedStringArray("match_flow_root")]
 script = ExtResource("24_oekep")
 match_flow_root = NodePath("..")
-phase_manager = NodePath("")
 
 [node name="MatchPlacementFlowHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=1230555798 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "placement_controller")]
 script = ExtResource("27_mf2my")
@@ -238,6 +237,7 @@ script = ExtResource("28_5f7hr")
 match_flow_root = NodePath("../../../MatchFlowRoot")
 buff_database = NodePath("../BuffDatabase")
 animation_handler = NodePath("../BuffPhaseAnimationHandler")
+enable_debug_preview_key = false
 debug_preview_mutation = ExtResource("40_2ph70")
 
 [node name="BuffPhaseAnimationHandler" type="Node" parent="Scripts/Core/Buff" unique_id=278124127 node_paths=PackedStringArray("reward_parent")]
@@ -428,12 +428,13 @@ score_state = NodePath("../../Scripts/MatchFlowRoot/MatchScoreState")
 
 [node name="Multiplayer" type="Node" parent="." unique_id=297260751]
 
-[node name="MatchNetworkRoot" type="Node" parent="Multiplayer" unique_id=1636531151 node_paths=PackedStringArray("match_flow_root", "deck_system_root", "turn_order_state", "match_score_state")]
+[node name="MatchNetworkRoot" type="Node" parent="Multiplayer" unique_id=1636531151 node_paths=PackedStringArray("match_flow_root", "deck_system_root", "turn_order_state", "match_score_state", "slots_root")]
 script = ExtResource("57_8mjsp")
 match_flow_root = NodePath("../../Scripts/MatchFlowRoot")
 deck_system_root = NodePath("../../Core/Deck")
 turn_order_state = NodePath("../../Scripts/MatchFlowRoot/MatchTurnOrderState")
 match_score_state = NodePath("../../Scripts/MatchFlowRoot/MatchScoreState")
+slots_root = NodePath("../../Core/Board")
 
 [node name="MatchLocalViewApplier" type="Node" parent="Multiplayer" unique_id=1811884870 node_paths=PackedStringArray("match_network_root", "player_one_hand", "player_two_hand")]
 script = ExtResource("57_2n6q5")

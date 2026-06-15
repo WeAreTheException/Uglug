@@ -295,3 +295,31 @@ func _to_card_data_array(source: Array) -> Array[CardData]:
 			result.append(card_data)
 
 	return result
+
+func find_card_anywhere(runtime_id: String) -> CardRoot:
+	var clean_id := runtime_id.strip_edges()
+
+	if clean_id == "":
+		return null
+
+	var card := _find_card_in_hand(player_one_hand, clean_id)
+
+	if card != null:
+		return card
+
+	card = _find_card_in_hand(player_two_hand, clean_id)
+
+	if card != null:
+		return card
+
+	return null
+
+
+func _find_card_in_hand(
+	hand: PlayerHandRoot,
+	runtime_id: String
+) -> CardRoot:
+	if hand == null:
+		return null
+
+	return hand.find_card_by_runtime_id(runtime_id)

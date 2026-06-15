@@ -75,7 +75,22 @@ func spawn_card(data: CardData) -> CardRoot:
 
 	return card
 
+func spawn_card_with_runtime_id(
+	data: CardData,
+	runtime_id: String
+) -> CardRoot:
+	if card_spawner == null:
+		return null
 
+	var card: CardRoot = card_spawner.spawn_card_with_runtime_id(
+		data,
+		runtime_id
+	)
+
+	_setup_spawned_card_context(card)
+
+	return card
+	
 func spawn_card_from_effect(
 	data: CardData,
 	ignore_hand_limit: bool = true
@@ -98,6 +113,34 @@ func spawn_card_from_effect(
 	return spawned_card
 
 
+func spawn_card_from_effect_with_runtime_id(
+	data: CardData,
+	runtime_id: String,
+	ignore_hand_limit: bool = true
+) -> CardRoot:
+	if card_spawner == null:
+		return null
+
+	var spawned_card: CardRoot = null
+
+	if ignore_hand_limit:
+		spawned_card = card_spawner.spawn_card_ignoring_limit_with_runtime_id(
+			data,
+			runtime_id
+		)
+	else:
+		spawned_card = card_spawner.spawn_card_with_runtime_id(
+			data,
+			runtime_id
+		)
+
+	_setup_spawned_card_context(spawned_card)
+
+	if spawned_card != null:
+		arrange_cards()
+
+	return spawned_card
+	
 func return_existing_card_to_hand(card: CardRoot) -> void:
 	if card == null:
 		return
@@ -264,7 +307,28 @@ func get_index_of_card(card: CardRoot) -> int:
 
 	return card_spawner.get_cards().find(card)
 
+func find_card_by_runtime_id(runtime_id: String) -> CardRoot:
+	var clean_id := runtime_id.strip_edges()
 
+	if clean_id == "":
+		return null
+
+	if card_spawner == null:
+		return null
+
+	for card: CardRoot in card_spawner.get_cards():
+		if card == null:
+			continue
+
+		if not is_instance_valid(card):
+			continue
+
+		if card.get_runtime_id() == clean_id:
+			return card
+
+	return null
+	
+	
 func remove_card_from_hand(card: CardRoot) -> void:
 	if card_spawner != null:
 		card_spawner.remove_card(card)

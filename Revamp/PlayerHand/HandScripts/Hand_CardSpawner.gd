@@ -64,6 +64,29 @@ func spawn_card(data: CardData) -> CardRoot:
 func spawn_card_ignoring_limit(data: CardData) -> CardRoot:
 	return _spawn_card_internal(data)
 
+func spawn_card_with_runtime_id(
+	data: CardData,
+	runtime_id: String
+) -> CardRoot:
+	var card := spawn_card(data)
+
+	if card != null:
+		card.set_runtime_id(runtime_id)
+
+	return card
+
+
+func spawn_card_ignoring_limit_with_runtime_id(
+	data: CardData,
+	runtime_id: String
+) -> CardRoot:
+	var card := spawn_card_ignoring_limit(data)
+
+	if card != null:
+		card.set_runtime_id(runtime_id)
+
+	return card
+	
 
 func add_card(card: CardRoot) -> void:
 	if not store.add_card(card):
