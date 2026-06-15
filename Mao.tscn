@@ -65,6 +65,7 @@
 [ext_resource type="Script" uid="uid://dbw5dxwuc5h4h" path="res://Revamp/Buff/BuffCardStagingHandler.gd" id="53_nmm8s"]
 [ext_resource type="Script" uid="uid://qkm73v3qftgr" path="res://MatchLocalViewApplier.gd" id="57_2n6q5"]
 [ext_resource type="Script" uid="uid://ddq57bg6lcsk1" path="res://Revamp/Multiplayer/MatchNetworkRoot.gd" id="57_8mjsp"]
+[ext_resource type="Script" uid="uid://cy3sful3ggumm" path="res://LocalGameplayReferenceBinder.gd" id="66_5j00x"]
 
 [node name="Mao" type="Node2D" unique_id=550121538]
 
@@ -453,3 +454,11 @@ match_network_root = NodePath("../MatchNetworkRoot")
 player_one_hand = NodePath("../../Core/PlayerHAnd")
 player_two_hand = NodePath("../../Core/OpponenetHAnd")
 print_debug = true
+
+[node name="LocalGameplayReferenceBinder" type="Node" parent="Multiplayer" unique_id=1649323469 node_paths=PackedStringArray("match_network_root", "deck_system_root", "placement_controller", "sacrifice_controller", "sacrifice_board_binder")]
+script = ExtResource("66_5j00x")
+match_network_root = NodePath("../MatchNetworkRoot")
+deck_system_root = NodePath("../../Core/Deck")
+placement_controller = NodePath("../../Scripts/Core/PlacementController")
+sacrifice_controller = NodePath("../../Scripts/Core/SacrificeController")
+sacrifice_board_binder = NodePath("../../Scripts/Core/SacrificeController/SacrificeBoardSelectionBinder")
