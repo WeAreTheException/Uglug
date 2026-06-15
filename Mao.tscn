@@ -55,6 +55,7 @@
 [ext_resource type="Script" uid="uid://cstbr8ehhhhio" path="res://Revamp/Blessings/BlessingCardSelectionHandler.gd" id="52_qqxe6"]
 [ext_resource type="Script" uid="uid://dxkdv76ah1to1" path="res://Revamp/Blessings/BlessingApplyHandler.gd" id="53_8mjsp"]
 [ext_resource type="Script" uid="uid://dbw5dxwuc5h4h" path="res://Revamp/Buff/BuffCardStagingHandler.gd" id="53_nmm8s"]
+[ext_resource type="Script" uid="uid://qkm73v3qftgr" path="res://MatchLocalViewApplier.gd" id="57_2n6q5"]
 [ext_resource type="Script" uid="uid://ddq57bg6lcsk1" path="res://Revamp/Multiplayer/MatchNetworkRoot.gd" id="57_8mjsp"]
 
 [sub_resource type="Resource" id="Resource_cyp03"]
@@ -84,8 +85,7 @@ cost_sort = NodePath("../../Control/CostSortButton")
 mutation_sort = NodePath("../../Control/MutationSortButton")
 
 [node name="OpponenetHAnd" parent="Core" unique_id=1415383407 node_paths=PackedStringArray("prime_location") instance=ExtResource("2_mi1n2")]
-visible = false
-position = Vector2(312, 240)
+position = Vector2(936, 912)
 prime_location = NodePath("../PrimeCardLocation")
 
 [node name="PrimeCardLocation" type="Node2D" parent="Core" unique_id=2143511336]
@@ -303,11 +303,6 @@ blessing_flow_handler = NodePath("../BlessingFlowHandler")
 selection_state = NodePath("../BlessingSelectionState")
 turn_order_state = NodePath("../../../MatchFlowRoot/MatchTurnOrderState")
 
-[node name="DirectDamageRouter" type="Node" parent="Scripts/Core" unique_id=396013123 node_paths=PackedStringArray("score_state", "slots_root")]
-script = ExtResource("30_venfy")
-score_state = NodePath("../../MatchFlowRoot/MatchScoreState")
-slots_root = NodePath("../../../Core/Board")
-
 [node name="SacrificeController" type="Node" parent="Scripts/Core" unique_id=1432478239 node_paths=PackedStringArray("player_hand", "sacrifice_selection_root", "requirement", "pending_boat", "committer", "revenant_warning")]
 script = ExtResource("10_1j514")
 player_hand = NodePath("../../../Core/PlayerHAnd")
@@ -369,6 +364,11 @@ script = ExtResource("18_oekep")
 
 [node name="PlacementCancel" type="Node" parent="Scripts/Core/PlacementController" unique_id=1193513979]
 script = ExtResource("19_n5v11")
+
+[node name="DirectDamageRouter" type="Node" parent="Scripts/Core" unique_id=396013123 node_paths=PackedStringArray("score_state", "slots_root")]
+script = ExtResource("30_venfy")
+score_state = NodePath("../../MatchFlowRoot/MatchScoreState")
+slots_root = NodePath("../../../Core/Board")
 
 [node name="Control" type="Control" parent="." unique_id=746986057 node_paths=PackedStringArray("player_hand", "count_label")]
 layout_mode = 3
@@ -434,3 +434,10 @@ match_flow_root = NodePath("../../Scripts/MatchFlowRoot")
 deck_system_root = NodePath("../../Core/Deck")
 turn_order_state = NodePath("../../Scripts/MatchFlowRoot/MatchTurnOrderState")
 match_score_state = NodePath("../../Scripts/MatchFlowRoot/MatchScoreState")
+
+[node name="MatchLocalViewApplier" type="Node" parent="Multiplayer" unique_id=1811884870 node_paths=PackedStringArray("match_network_root", "player_one_hand", "player_two_hand")]
+script = ExtResource("57_2n6q5")
+match_network_root = NodePath("../MatchNetworkRoot")
+player_one_hand = NodePath("../../Core/PlayerHAnd")
+player_two_hand = NodePath("../../Core/OpponenetHAnd")
+print_debug = true
