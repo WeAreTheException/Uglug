@@ -26,28 +26,36 @@
 [ext_resource type="Script" uid="uid://difytxi1dyr27" path="res://Revamp/MatchFlow/MatchFlowRoot.gd" id="25_oekep"]
 [ext_resource type="Script" uid="uid://q2nybrneyr7f" path="res://Revamp/MatchFlow/Blessing/BlessingFlowHandler.gd" id="26_7gy8c"]
 [ext_resource type="Script" uid="uid://c6ap2csjp7k81" path="res://Revamp/MatchFlow/MatchTurnOrderState.gd" id="26_n5v11"]
+[ext_resource type="Resource" uid="uid://b4tpqnugaguvu" path="res://Mutations/MutationPresets/BabyMaker.tres" id="26_yjq0i"]
 [ext_resource type="Script" uid="uid://e0tr3sanyo1r" path="res://Revamp/MatchFlow/MatchAnnouncementDisplay.gd" id="27_7gy8c"]
 [ext_resource type="Script" uid="uid://dxj656ms4qeq4" path="res://Revamp/MatchFlow/MatchDominantRevealHandler.gd" id="27_a1qt2"]
 [ext_resource type="Script" uid="uid://myowbycyd18l" path="res://Revamp/MatchFlow/MatchPlacementFlowHandler.gd" id="27_mf2my"]
 [ext_resource type="Script" uid="uid://crpvi6u42w8yj" path="res://Revamp/Buff/BuffFlowHandler.gd" id="28_5f7hr"]
+[ext_resource type="Resource" uid="uid://dcgqrr05c2pyg" path="res://Mutations/MutationPresets/DivergentFist.tres" id="28_5j00x"]
 [ext_resource type="Script" uid="uid://gc48h0ccwqjp" path="res://Revamp/Buff/BuffSelectionState.gd" id="28_8y4qw"]
 [ext_resource type="PackedScene" uid="uid://coux8hd7esj7g" path="res://Deck_System_Root.tscn" id="28_a1qt2"]
 [ext_resource type="Script" uid="uid://b50mccoppp1lb" path="res://Revamp/MatchFlow/MatchAutoDrawHandler.gd" id="28_mf2my"]
 [ext_resource type="PackedScene" uid="uid://dmgme20qfr6yi" path="res://Revamp/Buff/LarvaeRewardDisplay.tscn" id="29_72iem"]
+[ext_resource type="Resource" uid="uid://qm2l2rlbwj77" path="res://Mutations/MutationPresets/Heckler.tres" id="29_af7hx"]
+[ext_resource type="Resource" uid="uid://njutef00oac8" path="res://Mutations/MutationPresets/LifeSteal.tres" id="30_fd62j"]
 [ext_resource type="Script" uid="uid://cq06khkyy84o5" path="res://Revamp/DirectDamage/DirectDamageRouter.gd" id="30_venfy"]
 [ext_resource type="Script" uid="uid://c5j44dhlx1div" path="res://Revamp/DirectDamage/MatchScoreState.gd" id="31_3a8w1"]
 [ext_resource type="Script" uid="uid://dssf8rptp70gh" path="res://Revamp/Buff/BuffPhaseAnimationHandler.gd" id="31_nmm8s"]
+[ext_resource type="Resource" uid="uid://bk7bftdp5178x" path="res://Mutations/MutationPresets/MeFirst.tres" id="31_q844d"]
+[ext_resource type="Resource" uid="uid://bqxd6swy88edw" path="res://Mutations/MutationPresets/MobMentality.tres" id="32_gfrq6"]
 [ext_resource type="PackedScene" uid="uid://di12gxvqynhg7" path="res://Revamp/Buff/LarvaeDraggers.tscn" id="32_qb8ua"]
+[ext_resource type="Resource" uid="uid://d6umheqx0qia" path="res://Mutations/MutationPresets/MutuallyAssuredDestruction.tres" id="33_8hx3r"]
+[ext_resource type="Resource" uid="uid://c0ojr71i4k50b" path="res://Mutations/MutationPresets/RoyalPheromones.tres" id="34_bvwb1"]
 [ext_resource type="Script" uid="uid://cn5xfv13wsg1x" path="res://Revamp/MatchFlow/PostGameTransitionHandler.gd" id="34_f3uds"]
+[ext_resource type="Resource" uid="uid://dko3ngpbogrv1" path="res://Mutations/MutationPresets/Spiky.tres" id="35_uv74c"]
 [ext_resource type="Script" uid="uid://cau0ky5b3kabf" path="res://Revamp/Board/AttackAnticipationFeedbackHandler.gd" id="35_wop7f"]
+[ext_resource type="Resource" uid="uid://c0cebfc5tmmng" path="res://Mutations/MutationPresets/SteroidMaxxing.tres" id="37_fk48e"]
 [ext_resource type="Script" uid="uid://djtnl5koe1f0x" path="res://Revamp/Buff/BuffDatabase.gd" id="38_i8ogu"]
 [ext_resource type="Resource" uid="uid://b6afw5yomddli" path="res://Mutations/MutationPresets/Shield.tres" id="40_2ph70"]
 [ext_resource type="Resource" uid="uid://ceeskmu01vy5g" path="res://Mutations/MutationPresets/YAttack.tres" id="41_8y4qw"]
 [ext_resource type="Resource" uid="uid://cyutbyh2av6iv" path="res://Mutations/MutationPresets/SteroidDealer.tres" id="42_lyfvt"]
-[ext_resource type="Script" uid="uid://csuhdu8m5bmcv" path="res://Mutations/MutationPresets/MutationBehaviourHandlers/Spiky.gd" id="43_2ph70"]
 [ext_resource type="Resource" uid="uid://cnn0fddifxool" path="res://Mutations/MutationPresets/ColonyNest.tres" id="44_3jt7k"]
 [ext_resource type="Resource" uid="uid://b4sniy31fo50g" path="res://Mutations/MutationPresets/TouchOfDeath.tres" id="44_cyp03"]
-[ext_resource type="Texture2D" uid="uid://c8kf7vqpx34gh" path="res://Art/Mutations/Duriant_Sigil.PNG" id="44_lyfvt"]
 [ext_resource type="Script" uid="uid://b0a7u0d6w3wt5" path="res://Revamp/Buff/BuffCardSelectionHandler.gd" id="51_3j6fp"]
 [ext_resource type="Resource" uid="uid://d24tehq1c6xdf" path="res://Revamp/Blessings/RevenantBlessing.tres" id="51_ufjv4"]
 [ext_resource type="Script" uid="uid://btx34g1cs7nhy" path="res://Revamp/Buff/BuffMutationApplyHandler.gd" id="52_72iem"]
@@ -57,13 +65,6 @@
 [ext_resource type="Script" uid="uid://dbw5dxwuc5h4h" path="res://Revamp/Buff/BuffCardStagingHandler.gd" id="53_nmm8s"]
 [ext_resource type="Script" uid="uid://qkm73v3qftgr" path="res://MatchLocalViewApplier.gd" id="57_2n6q5"]
 [ext_resource type="Script" uid="uid://ddq57bg6lcsk1" path="res://Revamp/Multiplayer/MatchNetworkRoot.gd" id="57_8mjsp"]
-
-[sub_resource type="Resource" id="Resource_cyp03"]
-script = ExtResource("43_2ph70")
-mutation_name = "Spiky"
-mutation_description = "Deals 1DMG to card that attacked it"
-sigil_texture = ExtResource("44_lyfvt")
-metadata/_custom_type_script = "uid://be8yk3djwb5oc"
 
 [node name="Mao" type="Node2D" unique_id=550121538]
 
@@ -239,6 +240,7 @@ buff_database = NodePath("../BuffDatabase")
 animation_handler = NodePath("../BuffPhaseAnimationHandler")
 enable_debug_preview_key = false
 debug_preview_mutation = ExtResource("40_2ph70")
+enable_debug_forced_reward_key = true
 
 [node name="BuffPhaseAnimationHandler" type="Node" parent="Scripts/Core/Buff" unique_id=278124127 node_paths=PackedStringArray("reward_parent")]
 script = ExtResource("31_nmm8s")
@@ -248,8 +250,7 @@ reward_parent = NodePath("../../../../Core/MatchFlowUI")
 
 [node name="BuffDatabase" type="Node" parent="Scripts/Core/Buff" unique_id=1175133697]
 script = ExtResource("38_i8ogu")
-buff_pool = Array[ExtResource("3_3vc3c")]([ExtResource("40_2ph70"), ExtResource("41_8y4qw"), ExtResource("42_lyfvt")])
-forbidden_mutations = Array[ExtResource("3_3vc3c")]([SubResource("Resource_cyp03"), ExtResource("44_cyp03"), ExtResource("44_3jt7k"), null])
+buff_pool = Array[ExtResource("3_3vc3c")]([ExtResource("26_yjq0i"), ExtResource("44_3jt7k"), ExtResource("28_5j00x"), ExtResource("29_af7hx"), ExtResource("30_fd62j"), ExtResource("31_q844d"), ExtResource("32_gfrq6"), ExtResource("33_8hx3r"), ExtResource("34_bvwb1"), ExtResource("40_2ph70"), ExtResource("35_uv74c"), ExtResource("42_lyfvt"), ExtResource("37_fk48e"), ExtResource("44_cyp03"), ExtResource("41_8y4qw")])
 print_debug = false
 run_smoke_test_on_ready = false
 
@@ -428,13 +429,15 @@ score_state = NodePath("../../Scripts/MatchFlowRoot/MatchScoreState")
 
 [node name="Multiplayer" type="Node" parent="." unique_id=297260751]
 
-[node name="MatchNetworkRoot" type="Node" parent="Multiplayer" unique_id=1636531151 node_paths=PackedStringArray("match_flow_root", "deck_system_root", "turn_order_state", "match_score_state", "slots_root")]
+[node name="MatchNetworkRoot" type="Node" parent="Multiplayer" unique_id=1636531151 node_paths=PackedStringArray("match_flow_root", "deck_system_root", "turn_order_state", "match_score_state", "slots_root", "buff_flow_handler", "buff_database")]
 script = ExtResource("57_8mjsp")
 match_flow_root = NodePath("../../Scripts/MatchFlowRoot")
 deck_system_root = NodePath("../../Core/Deck")
 turn_order_state = NodePath("../../Scripts/MatchFlowRoot/MatchTurnOrderState")
 match_score_state = NodePath("../../Scripts/MatchFlowRoot/MatchScoreState")
 slots_root = NodePath("../../Core/Board")
+buff_flow_handler = NodePath("../../Scripts/Core/Buff/BuffFlowHandler")
+buff_database = NodePath("../../Scripts/Core/Buff/BuffDatabase")
 enable_draw_debug = true
 
 [node name="MatchLocalViewApplier" type="Node" parent="Multiplayer" unique_id=1811884870 node_paths=PackedStringArray("match_network_root", "player_one_hand", "player_two_hand")]

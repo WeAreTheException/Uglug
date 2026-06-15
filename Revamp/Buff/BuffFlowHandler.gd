@@ -15,6 +15,9 @@ signal reward_generated(mutation: Mutation)
 @export var enable_debug_preview_key: bool = true
 @export var debug_preview_key: Key = KEY_L
 @export var debug_preview_mutation: Mutation
+@export var enable_debug_forced_reward_key := false
+@export var debug_forced_reward_key: Key = KEY_K
+@export var debug_forced_reward_id := "spiky"
 @export var print_debug: bool = true
 
 var is_active: bool = false
@@ -47,20 +50,23 @@ func _input(event: InputEvent) -> void:
 		if key_event.keycode == debug_preview_key:
 			debug_preview_reward_animation()
 
+	if enable_debug_forced_reward_key:
+		if key_event.keycode == debug_forced_reward_key:
+			debug_start_forced_reward()
 
-func begin_buff_flow() -> void:
+
+func begin_buff_flow_with_reward(mutation: Mutation) -> void:
 	if is_active:
 		return
 
 	if match_flow_root == null:
 		return
 
-	active_reward_mutation = _generate_reward_mutation()
-
-	if active_reward_mutation == null:
-		print("BUFF FLOW BLOCKED: no reward mutation")
+	if mutation == null:
+		print("BUFF FLOW BLOCKED: forced reward missing")
 		return
 
+	active_reward_mutation = mutation
 	is_active = true
 	active_round_number = match_flow_root.current_round
 	match_flow_root.lock_transition()
@@ -114,31 +120,21 @@ func debug_preview_reward_animation() -> void:
 	await animation_handler.play_reward_delivery(mutation)
 
 
+func debug_start_forced_reward() -> void:
+	if buff_database == null:
+		print("BUFF DEBUG FORCED BLOCKED: buff_database missing")
+		return
+
+	var mutation := buff_database.get_mutation_by_id(debug_forced_reward_id)
+	begin_buff_flow_with_reward(mutation)
+
+
 func get_active_reward_mutation() -> Mutation:
 	return active_reward_mutation
 
 
-func _generate_reward_mutation() -> Mutation:
-	if buff_database == null:
-		print("BUFF FLOW BLOCKED: buff_database missing")
-		return null
-
-	if not buff_database.has_available_mutations():
-		print("BUFF FLOW BLOCKED: buff database empty")
-		return null
-
-	print("BuffDatabase count before draw: ", buff_database.get_remaining_count())
-
-	var mutation := buff_database.draw_random_mutation()
-
-	print("BuffDatabase count after draw: ", buff_database.get_remaining_count())
-
-	return mutation
-
-
 func _on_match_state_changed(state: MatchFlowRoot.MatchState) -> void:
 	if state == MatchFlowRoot.MatchState.BUFF:
-		begin_buff_flow()
 		return
 
 	if is_active:

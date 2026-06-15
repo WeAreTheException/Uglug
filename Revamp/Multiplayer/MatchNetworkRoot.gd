@@ -7,6 +7,9 @@ class_name MatchNetworkRoot
 @export var match_score_state: MatchScoreState
 @export var slots_root: SlotsRoot
 
+@export var buff_flow_handler: BuffFlowHandler
+@export var buff_database: BuffDatabase
+
 @export var enable_lookup_debug := false
 @export var lookup_debug_key: Key = KEY_L
 
@@ -30,10 +33,12 @@ func _ready() -> void:
 	GDSync.expose_func(_receive_network_ping)
 	GDSync.expose_func(request_draw)
 	GDSync.expose_func(_receive_confirmed_draw)
+	GDSync.expose_func(_receive_buff_reward)
 
 	_assign_local_owner()
 	_print_network_status()
 	_connect_deck_setup()
+	_connect_match_flow()
 
 
 func _input(event: InputEvent) -> void:
@@ -103,6 +108,70 @@ func find_card_anywhere(runtime_id: String) -> CardRoot:
 		return slots_root.find_card_by_runtime_id(clean_id)
 
 	return null
+
+
+func _connect_match_flow() -> void:
+	if match_flow_root == null:
+		return
+
+	if not match_flow_root.match_state_changed.is_connected(_on_match_state_changed):
+		match_flow_root.match_state_changed.connect(_on_match_state_changed)
+
+
+func _on_match_state_changed(state: MatchFlowRoot.MatchState) -> void:
+	if state == MatchFlowRoot.MatchState.BUFF:
+		_on_buff_phase_started()
+
+
+func _on_buff_phase_started() -> void:
+	if not is_host():
+		return
+
+	if buff_database == null:
+		print("HOST BUFF ROLL BLOCKED: buff_database missing")
+		return
+
+	var mutation := buff_database.draw_random_mutation()
+
+	if mutation == null:
+		print("HOST BUFF ROLL BLOCKED: no mutation")
+		return
+
+	var mutation_id := mutation.get_safe_mutation_id()
+
+	if print_debug:
+		print("HOST BUFF ROLLED: ", mutation_id)
+
+	GDSync.call_func_all(
+		_receive_buff_reward,
+		mutation_id
+	)
+
+
+func _receive_buff_reward(mutation_id: String) -> void:
+	if buff_database == null:
+		print("BUFF RECEIVE FAILED: buff_database missing")
+		return
+
+	if buff_flow_handler == null:
+		print("BUFF RECEIVE FAILED: buff_flow_handler missing")
+		return
+
+	var mutation := buff_database.get_mutation_by_id(mutation_id)
+
+	if mutation == null:
+		print("BUFF RECEIVE FAILED: ", mutation_id)
+		return
+
+	if print_debug:
+		print(
+			"BUFF RECEIVE: ",
+			mutation.mutation_name,
+			" | HOST: ",
+			is_host()
+		)
+
+	buff_flow_handler.begin_buff_flow_with_reward(mutation)
 
 
 func _process_draw_request(
