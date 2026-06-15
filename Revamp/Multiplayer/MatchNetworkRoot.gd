@@ -9,9 +9,7 @@ class_name MatchNetworkRoot
 
 @export var buff_flow_handler: BuffFlowHandler
 @export var buff_database: BuffDatabase
-
 @export var blessing_flow_handler: BlessingFlowHandler
-
 @export var placement_controller: PlacementController
 
 @export var enable_lookup_debug := false
@@ -86,6 +84,17 @@ func get_local_owner() -> SlotRow.SlotOwner:
 	return local_owner
 
 
+func request_draw(
+	owner: SlotRow.SlotOwner,
+	pile_type: String
+) -> void:
+	if is_host():
+		_process_draw_request(owner, pile_type)
+		return
+
+	GDSync.call_func(request_draw, owner, pile_type)
+
+
 func request_buff_confirm(
 	owner: SlotRow.SlotOwner,
 	target_card_runtime_id: String,
@@ -101,6 +110,121 @@ func request_buff_confirm(
 		target_card_runtime_id,
 		mutation_id
 	)
+
+
+func request_blessing_confirm(
+	owner: SlotRow.SlotOwner,
+	target_card_runtime_id: String,
+	blessing_id: String
+) -> void:
+	if is_host():
+		_process_blessing_confirm_request(
+			owner,
+			target_card_runtime_id,
+			blessing_id
+		)
+		return
+
+	GDSync.call_func(
+		request_blessing_confirm,
+		owner,
+		target_card_runtime_id,
+		blessing_id
+	)
+
+
+func request_placement(payload: Dictionary) -> void:
+	print(
+		"REQUEST PLACEMENT CALLED | HOST: ",
+		is_host(),
+		" payload: ",
+		payload
+	)
+
+	if is_host():
+		_process_placement_request(payload)
+		return
+
+	GDSync.call_func(request_placement, payload)
+
+
+func find_card_anywhere(runtime_id: String) -> CardRoot:
+	var clean_id := runtime_id.strip_edges()
+
+	if clean_id == "":
+		return null
+
+	if deck_system_root != null:
+		var card := _find_card_in_hand(deck_system_root.player_one_hand, clean_id)
+
+		if card != null:
+			return card
+
+		card = _find_card_in_hand(deck_system_root.player_two_hand, clean_id)
+
+		if card != null:
+			return card
+
+	if slots_root != null:
+		return slots_root.find_card_by_runtime_id(clean_id)
+
+	return null
+
+
+func _connect_match_flow() -> void:
+	if match_flow_root == null:
+		return
+
+	if not match_flow_root.match_state_changed.is_connected(_on_match_state_changed):
+		match_flow_root.match_state_changed.connect(_on_match_state_changed)
+
+
+func _on_match_state_changed(state: MatchFlowRoot.MatchState) -> void:
+	if state == MatchFlowRoot.MatchState.BUFF:
+		_on_buff_phase_started()
+
+
+func _on_buff_phase_started() -> void:
+	if not is_host():
+		return
+
+	if buff_database == null:
+		print("HOST BUFF ROLL BLOCKED: buff_database missing")
+		return
+
+	var mutation := buff_database.draw_random_mutation()
+
+	if mutation == null:
+		print("HOST BUFF ROLL BLOCKED: no mutation")
+		return
+
+	var mutation_id := mutation.get_safe_mutation_id()
+
+	if print_debug:
+		print("HOST BUFF ROLLED: ", mutation_id)
+
+	GDSync.call_func_all(_receive_buff_reward, mutation_id)
+
+
+func _receive_buff_reward(mutation_id: String) -> void:
+	if buff_database == null:
+		print("BUFF RECEIVE FAILED: buff_database missing")
+		return
+
+	if buff_flow_handler == null:
+		print("BUFF RECEIVE FAILED: buff_flow_handler missing")
+		return
+
+	var mutation := buff_database.get_mutation_by_id(mutation_id)
+
+	if mutation == null:
+		print("BUFF RECEIVE FAILED: ", mutation_id)
+		return
+
+	if print_debug:
+		print("BUFF RECEIVE: ", mutation.mutation_name, " | HOST: ", is_host())
+
+	buff_flow_handler.begin_buff_flow_with_reward(mutation)
 
 
 func _process_buff_confirm_request(
@@ -207,94 +331,108 @@ func _receive_confirmed_buff(
 		)
 
 
-func request_draw(
+func _process_blessing_confirm_request(
 	owner: SlotRow.SlotOwner,
-	pile_type: String
+	target_card_runtime_id: String,
+	blessing_id: String
 ) -> void:
-	if is_host():
-		_process_draw_request(owner, pile_type)
+	var card := find_card_anywhere(target_card_runtime_id)
+
+	if card == null:
+		print("BLESSING REQUEST REJECTED: card missing ", target_card_runtime_id)
 		return
 
-	GDSync.call_func(request_draw, owner, pile_type)
+	if not _card_belongs_to_owner_hand(card, owner):
+		print("BLESSING REQUEST REJECTED: wrong owner")
+		return
+
+	var blessing := _get_active_blessing_by_id(blessing_id)
+
+	if blessing == null:
+		print("BLESSING REQUEST REJECTED: blessing missing ", blessing_id)
+		return
+
+	_broadcast_confirmed_blessing(owner, target_card_runtime_id, blessing_id)
 
 
-func find_card_anywhere(runtime_id: String) -> CardRoot:
-	var clean_id := runtime_id.strip_edges()
+func _broadcast_confirmed_blessing(
+	owner: SlotRow.SlotOwner,
+	target_card_runtime_id: String,
+	blessing_id: String
+) -> void:
+	if print_debug:
+		print(
+			"BLESSING CONFIRMED: ",
+			_get_owner_name(owner),
+			" ",
+			target_card_runtime_id,
+			" ",
+			blessing_id
+		)
 
-	if clean_id == "":
+	GDSync.call_func_all(
+		_receive_confirmed_blessing,
+		owner,
+		target_card_runtime_id,
+		blessing_id
+	)
+
+
+func _receive_confirmed_blessing(
+	owner: SlotRow.SlotOwner,
+	target_card_runtime_id: String,
+	blessing_id: String
+) -> void:
+	var card := find_card_anywhere(target_card_runtime_id)
+
+	if card == null:
+		print("CONFIRMED BLESSING FAILED: card missing ", target_card_runtime_id)
+		return
+
+	var blessing := _get_active_blessing_by_id(blessing_id)
+
+	if blessing == null:
+		print("CONFIRMED BLESSING FAILED: blessing missing ", blessing_id)
+		return
+
+	print("CONFIRMED BLESSING ABOUT TO APPLY: ", blessing_id)
+
+	var applied := BlessingApplyHelper.new().apply_blessing(
+		card,
+		blessing
+	)
+
+	if not applied:
+		print("CONFIRMED BLESSING FAILED: apply failed")
+		return
+
+	if print_debug:
+		print(
+			"CONFIRMED BLESSING APPLIED: ",
+			_get_owner_name(owner),
+			" ",
+			blessing.get_display_name(),
+			" -> ",
+			card.card_name
+		)
+
+
+func _get_active_blessing_by_id(blessing_id: String) -> Blessing:
+	if blessing_flow_handler == null:
 		return null
 
-	if deck_system_root != null:
-		var card := _find_card_in_hand(deck_system_root.player_one_hand, clean_id)
+	var blessing := blessing_flow_handler.get_active_blessing()
 
-		if card != null:
-			return card
+	if blessing == null:
+		return null
 
-		card = _find_card_in_hand(deck_system_root.player_two_hand, clean_id)
+	var clean_id := blessing_id.strip_edges().to_snake_case()
+	var active_id := blessing.blessing_id.strip_edges().to_snake_case()
 
-		if card != null:
-			return card
+	if active_id != clean_id:
+		return null
 
-	if slots_root != null:
-		return slots_root.find_card_by_runtime_id(clean_id)
-
-	return null
-
-
-func _connect_match_flow() -> void:
-	if match_flow_root == null:
-		return
-
-	if not match_flow_root.match_state_changed.is_connected(_on_match_state_changed):
-		match_flow_root.match_state_changed.connect(_on_match_state_changed)
-
-
-func _on_match_state_changed(state: MatchFlowRoot.MatchState) -> void:
-	if state == MatchFlowRoot.MatchState.BUFF:
-		_on_buff_phase_started()
-
-
-func _on_buff_phase_started() -> void:
-	if not is_host():
-		return
-
-	if buff_database == null:
-		print("HOST BUFF ROLL BLOCKED: buff_database missing")
-		return
-
-	var mutation := buff_database.draw_random_mutation()
-
-	if mutation == null:
-		print("HOST BUFF ROLL BLOCKED: no mutation")
-		return
-
-	var mutation_id := mutation.get_safe_mutation_id()
-
-	if print_debug:
-		print("HOST BUFF ROLLED: ", mutation_id)
-
-	GDSync.call_func_all(_receive_buff_reward, mutation_id)
-
-
-func _receive_buff_reward(mutation_id: String) -> void:
-	if buff_database == null:
-		print("BUFF RECEIVE FAILED: buff_database missing")
-		return
-
-	if buff_flow_handler == null:
-		print("BUFF RECEIVE FAILED: buff_flow_handler missing")
-		return
-
-	var mutation := buff_database.get_mutation_by_id(mutation_id)
-
-	if mutation == null:
-		print("BUFF RECEIVE FAILED: ", mutation_id)
-		return
-
-	if print_debug:
-		print("BUFF RECEIVE: ", mutation.mutation_name, " | HOST: ", is_host())
-
-	buff_flow_handler.begin_buff_flow_with_reward(mutation)
+	return blessing
 
 
 func _process_draw_request(
@@ -400,6 +538,68 @@ func _receive_confirmed_draw(
 		pile_type,
 		not is_host()
 	)
+
+
+func _process_placement_request(payload: Dictionary) -> void:
+	print("PLACEMENT REQUEST RECEIVED: ", payload)
+
+	if not _is_valid_placement_request(payload):
+		print("PLACEMENT REQUEST REJECTED")
+		return
+
+	_broadcast_confirmed_placement(payload)
+
+
+func _is_valid_placement_request(payload: Dictionary) -> bool:
+	if payload.is_empty():
+		print("PLACEMENT VALIDATION FAILED: payload empty")
+		return false
+
+	var owner: SlotRow.SlotOwner = payload.get("owner", SlotRow.SlotOwner.PLAYER)
+	var card_id: String = payload.get("placed_card_runtime_id", "")
+	var slot_owner: SlotRow.SlotOwner = payload.get("target_slot_owner", SlotRow.SlotOwner.PLAYER)
+	var slot_index: int = payload.get("target_slot_index", -1)
+
+	var card := find_card_anywhere(card_id)
+
+	if card == null:
+		print("PLACEMENT VALIDATION FAILED: card missing ", card_id)
+		return false
+
+	if not _card_belongs_to_owner_hand(card, owner):
+		print("PLACEMENT VALIDATION FAILED: card wrong owner")
+		return false
+
+	if slots_root == null:
+		print("PLACEMENT VALIDATION FAILED: slots_root missing")
+		return false
+
+	var slot := slots_root.get_slot(slot_owner, slot_index)
+
+	if slot == null:
+		print("PLACEMENT VALIDATION FAILED: slot missing")
+		return false
+
+	if not slot.is_empty():
+		print("PLACEMENT VALIDATION FAILED: slot occupied")
+		return false
+
+	return true
+
+
+func _broadcast_confirmed_placement(payload: Dictionary) -> void:
+	if print_debug:
+		print("PLACEMENT CONFIRMED: ", payload)
+
+	GDSync.call_func_all(_receive_confirmed_placement, payload)
+
+
+func _receive_confirmed_placement(payload: Dictionary) -> void:
+	if placement_controller == null:
+		print("CONFIRMED PLACEMENT FAILED: placement_controller missing")
+		return
+
+	placement_controller.apply_confirmed_placement(payload)
 
 
 func _assign_local_owner() -> void:
@@ -560,192 +760,3 @@ func _get_owner_name(owner: SlotRow.SlotOwner) -> String:
 		return "P1"
 
 	return "P2"
-
-func request_blessing_confirm(
-	owner: SlotRow.SlotOwner,
-	target_card_runtime_id: String,
-	blessing_id: String
-) -> void:
-	if is_host():
-		_process_blessing_confirm_request(
-			owner,
-			target_card_runtime_id,
-			blessing_id
-		)
-		return
-
-	GDSync.call_func(
-		request_blessing_confirm,
-		owner,
-		target_card_runtime_id,
-		blessing_id
-	)
-
-
-func _process_blessing_confirm_request(
-	owner: SlotRow.SlotOwner,
-	target_card_runtime_id: String,
-	blessing_id: String
-) -> void:
-	var card := find_card_anywhere(target_card_runtime_id)
-
-	if card == null:
-		print("BLESSING REQUEST REJECTED: card missing ", target_card_runtime_id)
-		return
-
-	if not _card_belongs_to_owner_hand(card, owner):
-		print("BLESSING REQUEST REJECTED: wrong owner")
-		return
-
-	var blessing := _get_active_blessing_by_id(blessing_id)
-
-	if blessing == null:
-		print("BLESSING REQUEST REJECTED: blessing missing ", blessing_id)
-		return
-
-	_broadcast_confirmed_blessing(owner, target_card_runtime_id, blessing_id)
-
-
-func _broadcast_confirmed_blessing(
-	owner: SlotRow.SlotOwner,
-	target_card_runtime_id: String,
-	blessing_id: String
-) -> void:
-	if print_debug:
-		print(
-			"BLESSING CONFIRMED: ",
-			_get_owner_name(owner),
-			" ",
-			target_card_runtime_id,
-			" ",
-			blessing_id
-		)
-
-	GDSync.call_func_all(
-		_receive_confirmed_blessing,
-		owner,
-		target_card_runtime_id,
-		blessing_id
-	)
-
-
-func _receive_confirmed_blessing(
-	owner: SlotRow.SlotOwner,
-	target_card_runtime_id: String,
-	blessing_id: String
-) -> void:
-	var card := find_card_anywhere(target_card_runtime_id)
-
-	if card == null:
-		print("CONFIRMED BLESSING FAILED: card missing ", target_card_runtime_id)
-		return
-
-	var blessing := _get_active_blessing_by_id(blessing_id)
-
-	if blessing == null:
-		print("CONFIRMED BLESSING FAILED: blessing missing ", blessing_id)
-		return
-
-	print("CONFIRMED BLESSING ABOUT TO APPLY: ", blessing_id)
-
-	var applied := BlessingApplyHelper.new().apply_blessing(
-		card,
-		blessing
-	)
-
-	if not applied:
-		print("CONFIRMED BLESSING FAILED: apply failed")
-		return
-
-	if print_debug:
-		print(
-			"CONFIRMED BLESSING APPLIED: ",
-			_get_owner_name(owner),
-			" ",
-			blessing.get_display_name(),
-			" -> ",
-			card.card_name
-		)
-
-
-func _get_active_blessing_by_id(blessing_id: String) -> Blessing:
-	if blessing_flow_handler == null:
-		return null
-
-	var blessing := blessing_flow_handler.get_active_blessing()
-
-	if blessing == null:
-		return null
-
-	var clean_id := blessing_id.strip_edges().to_snake_case()
-	var active_id := blessing.blessing_id.strip_edges().to_snake_case()
-
-	if active_id != clean_id:
-		return null
-
-	return blessing
-
-func request_placement(payload: Dictionary) -> void:
-	if is_host():
-		_process_placement_request(payload)
-		return
-
-func _process_placement_request(payload: Dictionary) -> void:
-	print("PLACEMENT REQUEST RECEIVED: ", payload)
-
-	if not _is_valid_placement_request(payload):
-		print("PLACEMENT REQUEST REJECTED")
-		return
-
-	_broadcast_confirmed_placement(payload)
-
-	GDSync.call_func(request_placement, payload)
-
-func _is_valid_placement_request(payload: Dictionary) -> bool:
-	if payload.is_empty():
-		print("PLACEMENT VALIDATION FAILED: payload empty")
-		return false
-
-	var owner: SlotRow.SlotOwner = payload.get("owner", SlotRow.SlotOwner.PLAYER)
-	var card_id: String = payload.get("placed_card_runtime_id", "")
-	var slot_owner: SlotRow.SlotOwner = payload.get("target_slot_owner", SlotRow.SlotOwner.PLAYER)
-	var slot_index: int = payload.get("target_slot_index", -1)
-
-	var card := find_card_anywhere(card_id)
-
-	if card == null:
-		print("PLACEMENT VALIDATION FAILED: card missing ", card_id)
-		return false
-
-	if not _card_belongs_to_owner_hand(card, owner):
-		print("PLACEMENT VALIDATION FAILED: card wrong owner")
-		return false
-
-	if slots_root == null:
-		print("PLACEMENT VALIDATION FAILED: slots_root missing")
-		return false
-
-	var slot := slots_root.get_slot(slot_owner, slot_index)
-
-	if slot == null:
-		print("PLACEMENT VALIDATION FAILED: slot missing")
-		return false
-
-	if not slot.is_empty():
-		print("PLACEMENT VALIDATION FAILED: slot occupied")
-		return false
-
-	return true
-func _broadcast_confirmed_placement(payload: Dictionary) -> void:
-	if print_debug:
-		print("PLACEMENT CONFIRMED: ", payload)
-
-	GDSync.call_func_all(_receive_confirmed_placement, payload)
-
-
-func _receive_confirmed_placement(payload: Dictionary) -> void:
-	if placement_controller == null:
-		print("CONFIRMED PLACEMENT FAILED: placement_controller missing")
-		return
-
-	placement_controller.apply_confirmed_placement(payload)
