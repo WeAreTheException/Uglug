@@ -10,6 +10,8 @@ class_name MatchNetworkRoot
 @export var buff_flow_handler: BuffFlowHandler
 @export var buff_database: BuffDatabase
 
+@export var blessing_flow_handler: BlessingFlowHandler
+
 @export var enable_lookup_debug := false
 @export var lookup_debug_key: Key = KEY_L
 
@@ -36,6 +38,8 @@ func _ready() -> void:
 	GDSync.expose_func(_receive_buff_reward)
 	GDSync.expose_func(request_buff_confirm)
 	GDSync.expose_func(_receive_confirmed_buff)
+	GDSync.expose_func(request_blessing_confirm)
+	GDSync.expose_func(_receive_confirmed_blessing)
 
 	_assign_local_owner()
 	_print_network_status()
@@ -552,3 +556,119 @@ func _get_owner_name(owner: SlotRow.SlotOwner) -> String:
 		return "P1"
 
 	return "P2"
+
+func request_blessing_confirm(
+	owner: SlotRow.SlotOwner,
+	target_card_runtime_id: String,
+	blessing_id: String
+) -> void:
+	if is_host():
+		_process_blessing_confirm_request(
+			owner,
+			target_card_runtime_id,
+			blessing_id
+		)
+		return
+
+	GDSync.call_func(
+		request_blessing_confirm,
+		owner,
+		target_card_runtime_id,
+		blessing_id
+	)
+
+
+func _process_blessing_confirm_request(
+	owner: SlotRow.SlotOwner,
+	target_card_runtime_id: String,
+	blessing_id: String
+) -> void:
+	var card := find_card_anywhere(target_card_runtime_id)
+
+	if card == null:
+		print("BLESSING REQUEST REJECTED: card missing ", target_card_runtime_id)
+		return
+
+	if not _card_belongs_to_owner_hand(card, owner):
+		print("BLESSING REQUEST REJECTED: wrong owner")
+		return
+
+	var blessing := _get_active_blessing_by_id(blessing_id)
+
+	if blessing == null:
+		print("BLESSING REQUEST REJECTED: blessing missing ", blessing_id)
+		return
+
+	_broadcast_confirmed_blessing(owner, target_card_runtime_id, blessing_id)
+
+
+func _broadcast_confirmed_blessing(
+	owner: SlotRow.SlotOwner,
+	target_card_runtime_id: String,
+	blessing_id: String
+) -> void:
+	if print_debug:
+		print(
+			"BLESSING CONFIRMED: ",
+			_get_owner_name(owner),
+			" ",
+			target_card_runtime_id,
+			" ",
+			blessing_id
+		)
+
+	GDSync.call_func_all(
+		_receive_confirmed_blessing,
+		owner,
+		target_card_runtime_id,
+		blessing_id
+	)
+
+
+func _receive_confirmed_blessing(
+	owner: SlotRow.SlotOwner,
+	target_card_runtime_id: String,
+	blessing_id: String
+) -> void:
+	var card := find_card_anywhere(target_card_runtime_id)
+
+	if card == null:
+		print("CONFIRMED BLESSING FAILED: card missing ", target_card_runtime_id)
+		return
+
+	var blessing := _get_active_blessing_by_id(blessing_id)
+
+	if blessing == null:
+		print("CONFIRMED BLESSING FAILED: blessing missing ", blessing_id)
+		return
+
+	var applied := false
+
+	if not applied:
+		print("CONFIRMED BLESSING FAILED: apply failed")
+		return
+
+	if print_debug:
+		print(
+			"CONFIRMED BLESSING APPLIED: ",
+			_get_owner_name(owner),
+			" ",
+			blessing.get_display_name(),
+			" -> ",
+			card.card_name
+		)
+
+
+func _get_active_blessing_by_id(blessing_id: String) -> Blessing:
+	if blessing_flow_handler == null:
+		return null
+
+	var blessing := blessing_flow_handler.get_active_blessing()
+
+	if blessing == null:
+		return null
+
+	if blessing.blessing_id != blessing_id.strip_edges():
+		return null
+
+	return blessing

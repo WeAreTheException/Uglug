@@ -6,6 +6,7 @@ signal blessing_applied(card: CardRoot, blessing: Blessing)
 @export var blessing_flow_handler: BlessingFlowHandler
 @export var selection_state: BlessingSelectionState
 @export var turn_order_state: MatchTurnOrderState
+@export var match_network_root: MatchNetworkRoot
 
 @export var enable_debug_confirm_key: bool = true
 @export var debug_confirm_key: Key = KEY_ENTER
@@ -13,6 +14,7 @@ signal blessing_applied(card: CardRoot, blessing: Blessing)
 
 var is_active: bool = false
 var has_confirmed: bool = false
+var apply_helper := BlessingApplyHelper.new()
 
 
 func _ready() -> void:
@@ -71,28 +73,49 @@ func confirm_blessing() -> bool:
 
 	has_confirmed = true
 
-	_apply_blessing(card, blessing)
-	blessing_applied.emit(card, blessing)
+	if match_network_root != null:
+		match_network_root.request_blessing_confirm(
+			owner,
+			card.get_runtime_id(),
+			blessing.blessing_id
+		)
 
-	if print_debug:
-		print("BLESSING APPLIED: ", blessing.get_display_name(), " -> ", card.card_name)
+		if print_debug:
+			print(
+				"BLESSING CONFIRM REQUEST SENT: ",
+				blessing.get_display_name(),
+				" -> ",
+				card.card_name
+			)
+			print("BLESSING CONFIRM CARD ID: ", card.get_runtime_id())
+	else:
+		var applied := apply_helper.apply_blessing(card, blessing)
+
+		if not applied:
+			print("Blessing apply blocked: local apply failed")
+			has_confirmed = false
+			return false
+
+		blessing_applied.emit(card, blessing)
+
+		if print_debug:
+			print("BLESSING APPLIED LOCAL: ", blessing.get_display_name(), " -> ", card.card_name)
 
 	_finish_after_apply()
 	return true
 
 
-func _apply_blessing(card: CardRoot, blessing: Blessing) -> void:
-	if _is_revenant_blessing(blessing):
-		card.mark_revenant()
-		return
+func apply_confirmed_blessing(
+	card: CardRoot,
+	blessing: Blessing
+) -> bool:
+	var applied := apply_helper.apply_blessing(card, blessing)
 
-	var card_blessings := CardBlessingLookupHelper.new().get_card_blessings(card)
+	if not applied:
+		return false
 
-	if card_blessings == null:
-		print("Blessing apply blocked: CardBlessings missing on ", card.card_name)
-		return
-
-	card_blessings.add_blessing(blessing)
+	blessing_applied.emit(card, blessing)
+	return true
 
 
 func _finish_after_apply() -> void:
@@ -118,13 +141,3 @@ func _get_controlled_owner() -> SlotRow.SlotOwner:
 		return SlotRow.SlotOwner.PLAYER
 
 	return turn_order_state.controlled_owner
-
-
-func _is_revenant_blessing(blessing: Blessing) -> bool:
-	if blessing == null:
-		return false
-
-	if blessing is RevenantBlessing:
-		return true
-
-	return blessing.blessing_id == "revenant"
