@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://q5ikju65wtdc"]
+
+[ext_resource type="PackedScene" uid="uid://1wr1e57v7trd" path="res://Revamp/PlayerHand/Player_Hand.tscn" id="1_cguwc"]
+[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="2_wicfy"]
+[ext_resource type="Resource" uid="uid://dbgpqc3vdl8t" path="res://Revamp/CardPresets/Duriant.tres" id="3_sreuk"]
+[ext_resource type="Resource" uid="uid://bkvgy3ptdrbuj" path="res://Revamp/CardPresets/TestCardPresets/AntlerAntler.tres" id="4_tq6uv"]
+[ext_resource type="Resource" uid="uid://ci7yvhc8pfst6" path="res://Revamp/CardPresets/QueenAnt.tres" id="5_12c36"]
+
+[node name="Node2D" type="Node2D" unique_id=1069685246]
+
+[node name="PlayerHandRoot" parent="." unique_id=371738706 instance=ExtResource("1_cguwc")]
+position = Vector2(1068, 588)
+starting_cards = Array[ExtResource("2_wicfy")]([ExtResource("3_sreuk"), ExtResource("4_tq6uv"), ExtResource("5_12c36"), null])

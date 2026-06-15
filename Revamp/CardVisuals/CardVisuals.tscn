@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://cafcxy3c8eco5" path="res://Revamp/CardVisuals/CardMainVisuals.gd" id="2_a8btx"]
 [ext_resource type="Texture2D" uid="uid://bt8o5l5yrmihl" path="res://Art/AntBack/CardBackground.png" id="3_4t10r"]
 [ext_resource type="Shader" uid="uid://b12e0umk1s7xs" path="res://Cards/Panner.gdshader" id="4_460t8"]
-[ext_resource type="Shader" path="res://Balatro.gdshader" id="5_0pq8k"]
+[ext_resource type="Shader" uid="uid://n3l4egojry4s" path="res://Balatro.gdshader" id="5_0pq8k"]
 [ext_resource type="Shader" uid="uid://clsxlhuocr8hn" path="res://Cards/BackgroundSlide.gdshader" id="6_g780n"]
 [ext_resource type="Shader" uid="uid://ck3gs6whq2t57" path="res://Cards/AntSway.gdshader" id="7_v8bk3"]
 [ext_resource type="Texture2D" uid="uid://b8a1gr84h2iie" path="res://Art/Ants/WorkerAnt_Standalone.png" id="8_wvfxw"]
@@ -17,8 +17,12 @@
 [ext_resource type="Shader" uid="uid://dt77y6ccd1hxy" path="res://Cards/SigilOutline.gdshader" id="13_8ia1o"]
 [ext_resource type="Script" uid="uid://bq48m50dnrwib" path="res://Revamp/Card/CardScripts/StatsVisual.gd" id="15_5t0dk"]
 [ext_resource type="Texture2D" uid="uid://bdi7eyt5cmur0" path="res://Art/Numbers/1.png" id="16_4yngs"]
+[ext_resource type="Texture2D" uid="uid://52i5rsrcuyfc" path="res://Art/Mutations/Guardiant_Sigil.PNG" id="16_460t8"]
 [ext_resource type="Texture2D" uid="uid://clk0ori80b5gg" path="res://Art/Numbers/2.png" id="17_8nq5a"]
+[ext_resource type="Texture2D" uid="uid://c8ymxpi2ol5u" path="res://Art/Mutations/Observant_Sigil.PNG" id="17_v8bk3"]
 [ext_resource type="Texture2D" uid="uid://bnj2kyvgakfq3" path="res://Art/Numbers/3.png" id="18_8aa6v"]
+[ext_resource type="Texture2D" uid="uid://c8kf7vqpx34gh" path="res://Art/Mutations/Duriant_Sigil.PNG" id="18_wvfxw"]
+[ext_resource type="Texture2D" uid="uid://dysykkevjmrhp" path="res://Art/Mutations/Draculant_Sigil.PNG" id="19_d8086"]
 [ext_resource type="Texture2D" uid="uid://4f3gn63utyru" path="res://Art/Numbers/4.png" id="19_kawbk"]
 [ext_resource type="Texture2D" uid="uid://c1fev2dw4ehne" path="res://Art/Numbers/5.png" id="20_6t487"]
 [ext_resource type="Texture2D" uid="uid://bq8esv4xpuv68" path="res://Art/Numbers/6.png" id="21_457k1"]
@@ -102,6 +106,9 @@ shader_parameter/rotation = Transform2D(1, -1, 1, 1, 0, 0)
 shader = ExtResource("13_8ia1o")
 shader_parameter/line_color = Color(0.105882354, 0.09019608, 0.08627451, 1)
 shader_parameter/line_thickness = 10.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4t10r"]
+size = Vector2(1568.6804, 1568.6799)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0l3ys"]
 shader = ExtResource("13_8ia1o")
@@ -227,28 +234,73 @@ position = Vector2(0, 96)
 scale = Vector2(0.028686536, 0.028686536)
 metadata/_edit_lock_ = true
 
-[node name="BaseSprite" type="Sprite2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/BaseMutation" unique_id=935391738]
+[node name="SigilSlot" type="Node2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/BaseMutation" unique_id=1275122917]
+metadata/_edit_lock_ = true
+
+[node name="BaseSprite" type="Sprite2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/BaseMutation/SigilSlot" unique_id=935391738]
 material = SubResource("ShaderMaterial_6nr3l")
-position = Vector2(0.00012207031, 3.0517578e-05)
 scale = Vector2(4.4620237, 4.4620233)
+texture = ExtResource("16_460t8")
+
+[node name="MutationInput" type="Area2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/BaseMutation/SigilSlot" unique_id=123293917]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/BaseMutation/SigilSlot/MutationInput" unique_id=1714394200]
+position = Vector2(0, 52.29004)
+shape = SubResource("RectangleShape2D_4t10r")
 
 [node name="AdditonalMutation" type="Node2D" parent="SubViewport/Visuals/MutationVisuals/Mutations" unique_id=100591237]
-metadata/_edit_lock_ = true
 
 [node name="Additional1" type="Sprite2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation" unique_id=185873266]
 material = SubResource("ShaderMaterial_0l3ys")
-position = Vector2(-64, -75)
-scale = Vector2(0.128, 0.12799999)
+position = Vector2(-64.25001, -76)
+scale = Vector2(0.12699999, 0.123999976)
+texture = ExtResource("17_v8bk3")
+metadata/_edit_lock_ = true
+
+[node name="SigilSlot" type="Node2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation/Additional1" unique_id=264549928]
+
+[node name="MutationInput2" type="Area2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation/Additional1/SigilSlot" unique_id=178151423]
+position = Vector2(31.249924, -9.1552734e-05)
+scale = Vector2(0.22411354, 0.22411355)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation/Additional1/SigilSlot/MutationInput2" unique_id=31178376]
+position = Vector2(-261.44653, 52.29004)
+shape = SubResource("RectangleShape2D_4t10r")
 
 [node name="Additional2" type="Sprite2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation" unique_id=1787102359]
 material = SubResource("ShaderMaterial_l5g41")
 position = Vector2(66, 0)
 scale = Vector2(0.128, 0.12799999)
+texture = ExtResource("18_wvfxw")
+
+[node name="SigilSlot" type="Node2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation/Additional2" unique_id=1744429033]
+
+[node name="MutationInput4" type="Area2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation/Additional2/SigilSlot" unique_id=2022022863]
+position = Vector2(-7.812378, -0.00012207031)
+scale = Vector2(0.22411355, 0.22411352)
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation/Additional2/SigilSlot/MutationInput4" unique_id=889317424]
+position = Vector2(0, 52.29004)
+shape = SubResource("RectangleShape2D_4t10r")
 
 [node name="Additional3" type="Sprite2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation" unique_id=259294942]
 material = SubResource("ShaderMaterial_hdaxf")
 position = Vector2(-64, 32)
 scale = Vector2(0.128, 0.12799999)
+texture = ExtResource("19_d8086")
+
+[node name="SigilSlot2" type="Node2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation/Additional3" unique_id=828449294]
+position = Vector2(1015.6249, -249.99988)
+scale = Vector2(1, 0.9999999)
+
+[node name="MutationInput3" type="Area2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation/Additional3/SigilSlot2" unique_id=1029004044]
+position = Vector2(-1042.9689, 234.375)
+scale = Vector2(0.22411358, 0.22411357)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation/Additional3/SigilSlot2/MutationInput3" unique_id=1350806003]
+position = Vector2(0, 52.29004)
+shape = SubResource("RectangleShape2D_4t10r")
 
 [node name="StatsVisual" type="Node2D" parent="SubViewport/Visuals" unique_id=769110726 node_paths=PackedStringArray("attack", "health", "cost", "name_label")]
 z_index = 7
