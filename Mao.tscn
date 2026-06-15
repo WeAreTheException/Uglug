@@ -65,6 +65,7 @@
 [ext_resource type="Script" uid="uid://qkm73v3qftgr" path="res://MatchLocalViewApplier.gd" id="57_2n6q5"]
 [ext_resource type="Script" uid="uid://ddq57bg6lcsk1" path="res://Revamp/Multiplayer/MatchNetworkRoot.gd" id="57_8mjsp"]
 [ext_resource type="Script" uid="uid://cy3sful3ggumm" path="res://LocalGameplayReferenceBinder.gd" id="66_5j00x"]
+[ext_resource type="PackedScene" uid="uid://cvdlgiknngjmw" path="res://Revamp/Board/Background.tscn" id="66_af7hx"]
 
 [node name="Mao" type="Node2D" unique_id=550121538]
 
@@ -441,3 +442,6 @@ deck_system_root = NodePath("../../Core/Deck")
 placement_controller = NodePath("../../Scripts/Core/PlacementController")
 sacrifice_controller = NodePath("../../Scripts/Core/SacrificeController")
 sacrifice_board_binder = NodePath("../../Scripts/Core/SacrificeController/SacrificeBoardSelectionBinder")
+
+[node name="Background" parent="." unique_id=40767625 instance=ExtResource("66_af7hx")]
+position = Vector2(396, 360)
