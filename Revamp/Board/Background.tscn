@@ -10,7 +10,6 @@
 [ext_resource type="Texture2D" uid="uid://7ekuxdrk3yyj" path="res://Art/Background/BG_Treeline.png" id="7_33ddm"]
 [ext_resource type="Texture2D" uid="uid://t7xaf0ur302a" path="res://Art/Background/BG_Trees.png" id="8_hmkl7"]
 [ext_resource type="Texture2D" uid="uid://bq163o0yr7tcm" path="res://Art/Background/BG_Yello.jpg" id="9_ac0qm"]
-[ext_resource type="PackedScene" uid="uid://rir2t85e314a" path="res://Mao_UI_Mockup.tscn" id="10_nib0g"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_c3ppa"]
 shader = ExtResource("2_b10xy")
@@ -101,5 +100,3 @@ offset_right = 1920.0
 offset_bottom = 1080.0
 texture = ExtResource("9_ac0qm")
 expand_mode = 1
-
-[node name="Mao" parent="CanvasLayer" unique_id=550121538 instance=ExtResource("10_nib0g")]
