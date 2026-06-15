@@ -15,6 +15,10 @@ class_name MainMenuRoot
 @export var map_spawn_locations: MapSpawnLocations
 @export var status_label: Label
 
+@export var print_map_spawn_debug := false
+@export var print_lobby_browse_debug := false
+@export var print_own_lobby_click_debug := false
+
 
 func _ready() -> void:
 	create_lobby_popup.visible = false
@@ -65,19 +69,23 @@ func _on_connection_failed(error: int) -> void:
 
 
 func _on_lobby_browse_started() -> void:
-	print("Browsing lobbies...")
+	if print_lobby_browse_debug:
+		print("Browsing lobbies...")
 
 
 func _on_own_lobby_clicked(_lobby_info: Dictionary) -> void:
-	print("Clicked own lobby. Ignoring join request.")
+	if print_own_lobby_click_debug:
+		print("Clicked own lobby. Ignoring join request.")
 
 
 func _test_spawn_locations() -> void:
 	if map_spawn_locations == null:
-		print("Spawn test failed: MapSpawnLocations not assigned.")
+		if print_map_spawn_debug:
+			print("Spawn test failed: MapSpawnLocations not assigned.")
 		return
 
-	map_spawn_locations.print_spawn_debug()
+	if print_map_spawn_debug:
+		map_spawn_locations.print_spawn_debug()
 
 
 func _set_status(text: String) -> void:
