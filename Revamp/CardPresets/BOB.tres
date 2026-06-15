@@ -6,6 +6,7 @@
 
 [resource]
 script = ExtResource("2_1hbjw")
+card_id = "bob"
 name = "BOB"
 attack = 3
 cost = 2

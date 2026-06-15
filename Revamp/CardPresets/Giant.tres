@@ -6,6 +6,7 @@
 
 [resource]
 script = ExtResource("2_uvnor")
+card_id = "giant"
 name = "Giant"
 attack = 4
 health = 6

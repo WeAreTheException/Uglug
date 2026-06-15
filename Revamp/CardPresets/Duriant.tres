@@ -7,6 +7,7 @@
 
 [resource]
 script = ExtResource("2_2hy2u")
+card_id = "duriant"
 name = "Duriant"
 card_type = 5
 attack = 1

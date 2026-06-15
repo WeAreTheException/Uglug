@@ -43,6 +43,7 @@ shader_parameter/freezeSecondHalf = false
 [node name="Background" type="Node2D" unique_id=40767625]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2113234373]
+layer = -1
 
 [node name="Sky" type="TextureRect" parent="CanvasLayer" unique_id=1594964411]
 offset_right = 1920.0

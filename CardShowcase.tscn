@@ -71,6 +71,7 @@ test_data = ExtResource("9_dldk5")
 position = Vector2(1405, 263)
 scale = Vector2(0.9, 0.9)
 test_data = ExtResource("10_qbxoq")
+starts_as_revenant_for_debug = true
 
 [node name="Card10" parent="." unique_id=1813721229 instance=ExtResource("1_7aqf4")]
 position = Vector2(1557, 263)

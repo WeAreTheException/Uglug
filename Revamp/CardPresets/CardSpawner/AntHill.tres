@@ -7,6 +7,7 @@
 
 [resource]
 script = ExtResource("2_wvsyy")
+card_id = "ant_hill"
 name = "Ant Hill"
 health = 3
 cost = 2

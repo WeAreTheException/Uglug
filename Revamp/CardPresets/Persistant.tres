@@ -7,7 +7,8 @@
 
 [resource]
 script = ExtResource("2_w52ji")
-name = "Persistent"
+card_id = "persistant"
+name = "Persistant"
 attack = 1
 health = 2
 cost = 1
