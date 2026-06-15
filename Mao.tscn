@@ -306,6 +306,7 @@ blessing_flow_handler = NodePath("../BlessingFlowHandler")
 selection_state = NodePath("../BlessingSelectionState")
 turn_order_state = NodePath("../../../MatchFlowRoot/MatchTurnOrderState")
 match_network_root = NodePath("../../../../Multiplayer/MatchNetworkRoot")
+print_debug = false
 
 [node name="SacrificeController" type="Node" parent="Scripts/Core" unique_id=1432478239 node_paths=PackedStringArray("player_hand", "sacrifice_selection_root", "requirement", "pending_boat", "committer", "revenant_warning")]
 script = ExtResource("10_1j514")

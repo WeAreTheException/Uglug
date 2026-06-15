@@ -24,6 +24,7 @@ signal card_placed(event: Dictionary)
 @export var enable_right_click_cancel: bool = true
 @export var enable_payload_debug: bool = false
 @export var payload_debug_key: Key = KEY_P
+@export var print_debug: bool = true
 
 var slot_resolver := PlacementSlotResolverHelper.new()
 var slot_validator := PlacementSlotValidatorHelper.new()
@@ -42,7 +43,7 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventKey:
 		if event.pressed and not event.echo:
 			if enable_payload_debug and event.keycode == payload_debug_key:
-				print("PLACEMENT PAYLOAD DEBUG: ", build_current_placement_payload_debug())
+				_print("PLACEMENT PAYLOAD DEBUG: " + str(build_current_placement_payload_debug()))
 
 	if not enable_right_click_cancel:
 		return
@@ -59,10 +60,27 @@ func _input(event: InputEvent) -> void:
 
 
 func start_placement(card: CardRoot, owner: SlotRow.SlotOwner) -> void:
+	_print(
+		"PLACEMENT START REQUEST | card="
+		+ _get_card_name_debug(card)
+		+ " owner="
+		+ str(owner)
+	)
 	start_flow.start(self, card, owner)
 
 
 func request_preview_slot(slot: Slot) -> void:
+	_print(
+		"PLACEMENT PREVIEW REQUEST | placing="
+		+ str(is_placing())
+		+ " slot_valid="
+		+ str(is_valid_placement_slot(slot))
+		+ " active_owner="
+		+ str(_get_active_owner_debug())
+		+ " slot_owner="
+		+ str(_get_slot_owner_debug(slot))
+	)
+
 	if not is_placing() or not is_valid_placement_slot(slot):
 		return
 
@@ -79,6 +97,17 @@ func request_preview_slot(slot: Slot) -> void:
 
 
 func confirm_placement() -> void:
+	_print(
+		"PLACEMENT CONFIRM REQUEST | placing="
+		+ str(is_placing())
+		+ " confirming="
+		+ str(is_confirming())
+		+ " active_owner="
+		+ str(_get_active_owner_debug())
+		+ " preview_slot="
+		+ str(_get_preview_slot_debug())
+	)
+
 	confirm_flow.confirm(self)
 
 
@@ -253,6 +282,64 @@ func _finish_confirmed_placement(event: Dictionary) -> void:
 		slots_root.refresh_board_mutations()
 
 
+func _get_confirmed_target_slot(
+	owner: SlotRow.SlotOwner,
+	slot_owner: SlotRow.SlotOwner,
+	logical_slot_index: int
+) -> Slot:
+	if slots_root == null:
+		return null
+
+	var local_slot_owner := _get_local_visual_slot_owner(slot_owner)
+	var local_index := _get_local_visual_slot_index(owner, logical_slot_index)
+
+	return slots_root.get_slot(local_slot_owner, local_index)
+
+
+func _get_local_visual_slot_owner(slot_owner: SlotRow.SlotOwner) -> SlotRow.SlotOwner:
+	if match_network_root == null:
+		return slot_owner
+
+	var local_owner := match_network_root.get_local_owner()
+
+	if local_owner == SlotRow.SlotOwner.PLAYER:
+		return slot_owner
+
+	if slot_owner == SlotRow.SlotOwner.PLAYER:
+		return SlotRow.SlotOwner.OPPONENT
+
+	return SlotRow.SlotOwner.PLAYER
+
+
+func _get_local_visual_slot_index(
+	owner: SlotRow.SlotOwner,
+	logical_slot_index: int
+) -> int:
+	if _should_mirror_confirmed_slot(owner):
+		return _mirror_slot_index(logical_slot_index)
+
+	return logical_slot_index
+
+
+func _should_mirror_confirmed_slot(owner: SlotRow.SlotOwner) -> bool:
+	if match_network_root == null:
+		return false
+
+	return match_network_root.get_local_owner() != owner
+
+
+func _mirror_slot_index(slot_index: int) -> int:
+	var max_slots := 4
+
+	if slots_root != null:
+		var slots := slots_root.get_slots_for_owner(SlotRow.SlotOwner.PLAYER)
+
+		if not slots.is_empty():
+			max_slots = slots.size()
+
+	return (max_slots + 1) - slot_index
+
+
 func _find_card_for_confirmed_placement(runtime_id: String) -> CardRoot:
 	var clean_id := runtime_id.strip_edges()
 
@@ -301,59 +388,44 @@ func _on_card_unprimed(_card: CardRoot) -> void:
 
 
 func block(reason: String) -> void:
+	_print("PLACEMENT BLOCKED: " + reason)
 	placement_blocked.emit(reason)
-	
-func _get_confirmed_target_slot(
-	owner: SlotRow.SlotOwner,
-	slot_owner: SlotRow.SlotOwner,
-	logical_slot_index: int
-) -> Slot:
+
+
+func _get_card_name_debug(card: CardRoot) -> String:
+	if card == null:
+		return "null"
+
+	return card.card_name
+
+
+func _get_active_owner_debug() -> int:
+	if placement_state == null:
+		return -1
+
+	return int(placement_state.active_owner)
+
+
+func _get_preview_slot_debug() -> String:
+	if placement_state == null:
+		return "null"
+
+	if placement_state.preview_slot == null:
+		return "null"
+
+	return str(placement_state.preview_slot.slot_index)
+
+
+func _get_slot_owner_debug(slot: Slot) -> int:
 	if slots_root == null:
-		return null
+		return -1
 
-	var local_slot_owner := _get_local_visual_slot_owner(slot_owner)
-	var local_index := _get_local_visual_slot_index(owner, logical_slot_index)
+	if slot == null:
+		return -1
 
-	return slots_root.get_slot(local_slot_owner, local_index)
-
-
-func _get_local_visual_slot_index(
-	owner: SlotRow.SlotOwner,
-	logical_slot_index: int
-) -> int:
-	if _should_mirror_confirmed_slot(owner):
-		return _mirror_slot_index(logical_slot_index)
-
-	return logical_slot_index
+	return int(slots_root.get_owner_of_slot(slot))
 
 
-func _should_mirror_confirmed_slot(owner: SlotRow.SlotOwner) -> bool:
-	if match_network_root == null:
-		return false
-
-	return match_network_root.get_local_owner() != owner
-
-
-func _mirror_slot_index(slot_index: int) -> int:
-	var max_slots := 4
-
-	if slots_root != null:
-		var slots := slots_root.get_slots_for_owner(SlotRow.SlotOwner.PLAYER)
-		if not slots.is_empty():
-			max_slots = slots.size()
-
-	return (max_slots + 1) - slot_index
-
-func _get_local_visual_slot_owner(slot_owner: SlotRow.SlotOwner) -> SlotRow.SlotOwner:
-	if match_network_root == null:
-		return slot_owner
-
-	var local_owner := match_network_root.get_local_owner()
-
-	if local_owner == SlotRow.SlotOwner.PLAYER:
-		return slot_owner
-
-	if slot_owner == SlotRow.SlotOwner.PLAYER:
-		return SlotRow.SlotOwner.OPPONENT
-
-	return SlotRow.SlotOwner.PLAYER
+func _print(message: String) -> void:
+	if print_debug:
+		print(message)
