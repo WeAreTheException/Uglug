@@ -65,7 +65,6 @@
 [ext_resource type="Script" uid="uid://qkm73v3qftgr" path="res://MatchLocalViewApplier.gd" id="57_2n6q5"]
 [ext_resource type="Script" uid="uid://ddq57bg6lcsk1" path="res://Revamp/Multiplayer/MatchNetworkRoot.gd" id="57_8mjsp"]
 [ext_resource type="Script" uid="uid://cy3sful3ggumm" path="res://LocalGameplayReferenceBinder.gd" id="66_5j00x"]
-[ext_resource type="PackedScene" uid="uid://21w8glb26358" path="res://Art/WizantAnim/WizantAnim.tscn" id="67_af7hx"]
 
 [node name="Mao" type="Node2D" unique_id=550121538]
 
@@ -236,14 +235,13 @@ buff_pool = Array[ExtResource("3_3vc3c")]([ExtResource("26_yjq0i"), ExtResource(
 print_debug = false
 run_smoke_test_on_ready = false
 
-[node name="BuffCardSelectionHandler" type="Node" parent="Scripts/Core/Buff" unique_id=1583935419 node_paths=PackedStringArray("buff_flow_handler", "selection_state", "turn_order_state", "player_one_hand", "player_two_hand", "instruction_label")]
+[node name="BuffCardSelectionHandler" type="Node" parent="Scripts/Core/Buff" unique_id=1583935419 node_paths=PackedStringArray("buff_flow_handler", "selection_state", "turn_order_state", "player_one_hand", "player_two_hand")]
 script = ExtResource("51_3j6fp")
 buff_flow_handler = NodePath("../BuffFlowHandler")
 selection_state = NodePath("../BuffSelectionState")
 turn_order_state = NodePath("../../../MatchFlowRoot/MatchTurnOrderState")
 player_one_hand = NodePath("../../../../Core/PlayerHAnd")
 player_two_hand = NodePath("../../../../Core/OpponenetHAnd")
-instruction_label = NodePath("")
 
 [node name="BuffMutationApplyHandler" type="Node" parent="Scripts/Core/Buff" unique_id=1110353445 node_paths=PackedStringArray("buff_flow_handler", "selection_state", "turn_order_state", "staging_handler", "match_network_root")]
 script = ExtResource("52_72iem")
@@ -289,14 +287,13 @@ turn_order_state = NodePath("../../../MatchFlowRoot/MatchTurnOrderState")
 match_network_root = NodePath("../../../../Multiplayer/MatchNetworkRoot")
 print_debug = false
 
-[node name="SacrificeController" type="Node" parent="Scripts/Core" unique_id=1432478239 node_paths=PackedStringArray("player_hand", "sacrifice_selection_root", "requirement", "pending_boat", "committer", "revenant_warning")]
+[node name="SacrificeController" type="Node" parent="Scripts/Core" unique_id=1432478239 node_paths=PackedStringArray("player_hand", "sacrifice_selection_root", "requirement", "pending_boat", "committer")]
 script = ExtResource("10_1j514")
 player_hand = NodePath("../../../Core/PlayerHAnd")
 sacrifice_selection_root = NodePath("SacrificeSelectionRoot")
 requirement = NodePath("SacrificeRequirement")
 pending_boat = NodePath("PendingSacrificeBoat")
 committer = NodePath("SacrificeComitter")
-revenant_warning = NodePath("")
 auto_sacrifice_when_cost_met = true
 
 [node name="SacrificeRequirement" type="Node" parent="Scripts/Core/SacrificeController" unique_id=1332384962]
@@ -444,5 +441,3 @@ deck_system_root = NodePath("../../Core/Deck")
 placement_controller = NodePath("../../Scripts/Core/PlacementController")
 sacrifice_controller = NodePath("../../Scripts/Core/SacrificeController")
 sacrifice_board_binder = NodePath("../../Scripts/Core/SacrificeController/SacrificeBoardSelectionBinder")
-
-[node name="Node2D" parent="." unique_id=1060986998 instance=ExtResource("67_af7hx")]

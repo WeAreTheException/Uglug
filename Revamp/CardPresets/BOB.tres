@@ -10,5 +10,4 @@ name = "BOB"
 attack = 3
 cost = 2
 ant_texture = ExtResource("2_gh4ig")
-deck_amount = 2
 metadata/_custom_type_script = "uid://duslcpxrhurv8"
