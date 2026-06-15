@@ -214,6 +214,15 @@ func request_sort_by_mutation_count() -> void:
 
 
 func request_sacrifice() -> void:
+	print(
+		"HAND REQUEST SACRIFICE | hand=",
+		name,
+		" primed=",
+		get_primed_card().card_name if get_primed_card() != null else "null",
+		" selected_count=",
+		get_selected_sacrifice_cards().size()
+	)
+
 	sacrifice_requested.emit(
 		get_primed_card(),
 		get_selected_sacrifice_cards()

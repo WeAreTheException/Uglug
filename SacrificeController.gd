@@ -270,9 +270,18 @@ func _connect_selection_root() -> void:
 
 
 func _on_sacrifice_requested(
-	_primed_card: CardRoot,
-	_cards: Array[CardRoot]
+	primed_card: CardRoot,
+	cards: Array[CardRoot]
 ) -> void:
+	print(
+		"SACRIFICE CONTROLLER RECEIVED | hand=",
+		player_hand.name if player_hand != null else "null",
+		" primed=",
+		primed_card.card_name if primed_card != null else "null",
+		" cards=",
+		cards.size()
+	)
+
 	request_sacrifice()
 
 
