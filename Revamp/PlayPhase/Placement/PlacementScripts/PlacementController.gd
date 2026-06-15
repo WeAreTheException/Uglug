@@ -372,7 +372,7 @@ func _on_pending_sacrifice_started(
 	primed_card: CardRoot,
 	_cards: Array[CardRoot]
 ) -> void:
-	start_placement(primed_card, get_placing_owner())
+	start_placement(primed_card, _get_current_local_placement_owner())
 
 
 func _on_pending_sacrifice_undone(
@@ -429,3 +429,9 @@ func _get_slot_owner_debug(slot: Slot) -> int:
 func _print(message: String) -> void:
 	if print_debug:
 		print(message)
+
+func _get_current_local_placement_owner() -> SlotRow.SlotOwner:
+	if match_network_root != null:
+		return match_network_root.get_local_owner()
+
+	return get_placing_owner()
