@@ -25,15 +25,13 @@ func display_runtimes(runtimes: Array[MutationRuntime]) -> void:
 			_set_sigil_in_container(
 				base_sigil_container,
 				0,
-				runtime.mutation.sigil_texture,
-				runtime.is_greyed_out
+				runtime
 			)
 		else:
 			_set_sigil_in_container(
 				additional_sigil_container,
 				i - 1,
-				runtime.mutation.sigil_texture,
-				runtime.is_greyed_out
+				runtime
 			)
 
 
@@ -45,8 +43,7 @@ func clear_all() -> void:
 func _set_sigil_in_container(
 	container: Node2D,
 	index: int,
-	texture: Texture2D,
-	greyed_out: bool
+	runtime: MutationRuntime
 ) -> void:
 	if container == null:
 		return
@@ -57,14 +54,12 @@ func _set_sigil_in_container(
 	if index >= container.get_child_count():
 		return
 
-	var sprite := container.get_child(index) as Sprite2D
+	var slot := container.get_child(index) as SigilSlot
 
-	if sprite == null:
+	if slot == null:
 		return
 
-	sprite.texture = texture
-	sprite.visible = texture != null
-	sprite.modulate.a = greyed_out_alpha if greyed_out else 1.0
+	slot.setup_runtime(runtime, greyed_out_alpha)
 
 
 func _clear_container(container: Node2D) -> void:
@@ -72,11 +67,9 @@ func _clear_container(container: Node2D) -> void:
 		return
 
 	for child in container.get_children():
-		var sprite := child as Sprite2D
+		var slot := child as SigilSlot
 
-		if sprite == null:
+		if slot == null:
 			continue
 
-		sprite.texture = null
-		sprite.visible = false
-		sprite.modulate.a = 1.0
+		slot.clear()
