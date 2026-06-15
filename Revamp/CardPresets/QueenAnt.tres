@@ -7,6 +7,7 @@
 
 [resource]
 script = ExtResource("2_bcymb")
+card_id = "queen_ant"
 name = "Queen Ant"
 attack = 2
 health = 4

@@ -6,6 +6,7 @@
 
 [resource]
 script = ExtResource("2_k5rwu")
+card_id = "lieutenant"
 name = "Lieutenant"
 attack = 3
 health = 3

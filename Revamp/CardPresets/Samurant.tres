@@ -6,6 +6,7 @@
 
 [resource]
 script = ExtResource("2_jxmdk")
+card_id = "samurant"
 name = "Samurant"
 attack = 2
 health = 2

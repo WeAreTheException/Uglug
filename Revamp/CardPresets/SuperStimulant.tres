@@ -7,6 +7,7 @@
 
 [resource]
 script = ExtResource("2_77v3d")
+card_id = "super_simulant"
 name = "Super Stimulant"
 attack = 1
 health = 2
