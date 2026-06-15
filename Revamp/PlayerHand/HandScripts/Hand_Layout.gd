@@ -4,21 +4,67 @@ class_name Hand_Layout
 enum LayoutMode {
 	IDLE,
 	PLAY,
-	BLESSING
+	BLESSING,
+	BUFF
 }
 
 @export var idle_layout: Hand_IdleLayout
 @export var play_layout: Hand_PlayLayout
 @export var blessing_layout: Hand_BlessingLayout
+@export var buffing_layout: Hand_BuffingLayout
 @export var layout_tweener: Hand_LayoutTweener
 
 @export var move_time: float = 0.15
 @export var hand_width_reference: float = 550.0
 @export var normal_z_start: int = 0
 
+@export var enable_debug_layout_keys: bool = false
+@export var debug_idle_key: Key = KEY_1
+@export var debug_play_key: Key = KEY_2
+@export var debug_blessing_key: Key = KEY_3
+@export var debug_buff_key: Key = KEY_4
+
 var current_mode: LayoutMode = LayoutMode.IDLE
 var exclusion := HandLayoutExclusionHelper.new()
 var index_resolver := HandInsertIndexResolverHelper.new()
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not enable_debug_layout_keys:
+		return
+
+	if not event is InputEventKey:
+		return
+
+	if not event.pressed:
+		return
+
+	if event.echo:
+		return
+
+	if event.keycode == debug_idle_key:
+		set_layout_mode(LayoutMode.IDLE)
+		_request_arrange_from_parent()
+		print("DEBUG HAND LAYOUT: IDLE")
+		return
+
+	if event.keycode == debug_play_key:
+		set_layout_mode(LayoutMode.PLAY)
+		_request_arrange_from_parent()
+		print("DEBUG HAND LAYOUT: PLAY")
+		return
+
+	if event.keycode == debug_blessing_key:
+		set_layout_mode(LayoutMode.BLESSING)
+		_request_arrange_from_parent()
+		print("DEBUG HAND LAYOUT: BLESSING")
+		return
+
+	if event.keycode == debug_buff_key:
+		set_layout_mode(LayoutMode.BUFF)
+		_request_arrange_from_parent()
+		print("DEBUG HAND LAYOUT: BUFF")
+		return
 
 
 func set_layout_mode(mode: LayoutMode) -> void:
@@ -66,7 +112,7 @@ func _arrange_card(card: CardRoot, index: int, count: int) -> void:
 
 	var normalization_width: float = hand_width_reference
 
-	if current_mode == LayoutMode.BLESSING:
+	if _uses_upward_phase_layout():
 		normalization_width = max(total_width / 2.0, 1.0)
 
 	var normalized_x: float = clampf(
@@ -77,7 +123,7 @@ func _arrange_card(card: CardRoot, index: int, count: int) -> void:
 
 	var y_pos: float = 0.0
 
-	if current_mode == LayoutMode.BLESSING:
+	if _uses_upward_phase_layout():
 		y_pos = (1.0 - normalized_x * normalized_x) * _get_curve_height()
 	else:
 		y_pos = -(1.0 - normalized_x * normalized_x) * _get_curve_height()
@@ -116,7 +162,14 @@ func _get_active_layout() -> Node:
 		LayoutMode.BLESSING:
 			return blessing_layout
 
+		LayoutMode.BUFF:
+			return buffing_layout
+
 	return idle_layout
+
+
+func _uses_upward_phase_layout() -> bool:
+	return current_mode == LayoutMode.BLESSING or current_mode == LayoutMode.BUFF
 
 
 func _get_card_spacing() -> float:
@@ -149,3 +202,13 @@ func _get_y_offset() -> float:
 		return layout.y_offset
 
 	return 0.0
+
+
+func _request_arrange_from_parent() -> void:
+	var parent := get_parent()
+
+	if parent == null:
+		return
+
+	if parent.has_method("arrange_cards"):
+		parent.arrange_cards()

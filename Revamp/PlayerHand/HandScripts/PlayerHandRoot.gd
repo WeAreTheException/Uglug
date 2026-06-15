@@ -75,6 +75,7 @@ func spawn_card(data: CardData) -> CardRoot:
 
 	return card
 
+
 func spawn_card_with_runtime_id(
 	data: CardData,
 	runtime_id: String
@@ -90,7 +91,8 @@ func spawn_card_with_runtime_id(
 	_setup_spawned_card_context(card)
 
 	return card
-	
+
+
 func spawn_card_from_effect(
 	data: CardData,
 	ignore_hand_limit: bool = true
@@ -140,7 +142,8 @@ func spawn_card_from_effect_with_runtime_id(
 		arrange_cards()
 
 	return spawned_card
-	
+
+
 func return_existing_card_to_hand(card: CardRoot) -> void:
 	if card == null:
 		return
@@ -233,6 +236,9 @@ func enter_idle_state() -> void:
 	if interaction_root != null and interaction_root.can_unprime():
 		interaction_root.toggle_prime()
 
+	if hand_layout != null:
+		hand_layout.set_layout_mode(Hand_Layout.LayoutMode.IDLE)
+
 	if state_machine != null:
 		state_machine.change_state(Hand_StateMachine.IDLE)
 
@@ -240,6 +246,9 @@ func enter_idle_state() -> void:
 
 
 func enter_play_state() -> void:
+	if hand_layout != null:
+		hand_layout.set_layout_mode(Hand_Layout.LayoutMode.PLAY)
+
 	if state_machine != null:
 		state_machine.change_state(Hand_StateMachine.PLAY)
 
@@ -247,6 +256,9 @@ func enter_play_state() -> void:
 
 
 func enter_sacrifice_state() -> void:
+	if hand_layout != null:
+		hand_layout.set_layout_mode(Hand_Layout.LayoutMode.PLAY)
+
 	if state_machine != null:
 		state_machine.change_state(Hand_StateMachine.SACRIFICE)
 
@@ -257,6 +269,9 @@ func enter_buff_state() -> void:
 	if interaction_root != null and interaction_root.can_unprime():
 		interaction_root.toggle_prime()
 
+	if hand_layout != null:
+		hand_layout.set_layout_mode(Hand_Layout.LayoutMode.BUFF)
+
 	if state_machine != null:
 		state_machine.change_state(Hand_StateMachine.BUFF)
 
@@ -266,6 +281,9 @@ func enter_buff_state() -> void:
 func enter_blessing_state() -> void:
 	if interaction_root != null and interaction_root.can_unprime():
 		interaction_root.toggle_prime()
+
+	if hand_layout != null:
+		hand_layout.set_layout_mode(Hand_Layout.LayoutMode.BLESSING)
 
 	if state_machine != null:
 		state_machine.change_state(Hand_StateMachine.BLESSING)
@@ -316,6 +334,7 @@ func get_index_of_card(card: CardRoot) -> int:
 
 	return card_spawner.get_cards().find(card)
 
+
 func find_card_by_runtime_id(runtime_id: String) -> CardRoot:
 	var clean_id := runtime_id.strip_edges()
 
@@ -336,8 +355,8 @@ func find_card_by_runtime_id(runtime_id: String) -> CardRoot:
 			return card
 
 	return null
-	
-	
+
+
 func remove_card_from_hand(card: CardRoot) -> void:
 	if card_spawner != null:
 		card_spawner.remove_card(card)
@@ -385,6 +404,7 @@ func _setup_spawned_card_context(card: CardRoot) -> void:
 
 	if deck_system_root != null:
 		card.setup_deck_system_context(deck_system_root)
+
 
 func clear_cards(free_cards: bool = true) -> void:
 	if card_spawner == null:

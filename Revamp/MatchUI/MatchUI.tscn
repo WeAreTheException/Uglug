@@ -155,6 +155,8 @@ metadata/_edit_lock_ = true
 [node name="InitatorStuff" type="Node2D" parent="." unique_id=1780550570]
 
 [node name="InitiatorBacking" type="Panel" parent="InitatorStuff" unique_id=1921646166]
+z_index = -101
+z_as_relative = false
 offset_left = 540.0
 offset_top = 708.0
 offset_right = 1308.0

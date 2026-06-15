@@ -2,11 +2,12 @@
 
 [ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="1_oypj7"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="2_1hbjw"]
+[ext_resource type="Texture2D" uid="uid://ss77d37y7psp" path="res://Art/Ants/BOB.PNG" id="2_gh4ig"]
 
 [resource]
 script = ExtResource("2_1hbjw")
 name = "BOB"
 attack = 3
 cost = 2
-deck_amount = 2
+ant_texture = ExtResource("2_gh4ig")
 metadata/_custom_type_script = "uid://duslcpxrhurv8"

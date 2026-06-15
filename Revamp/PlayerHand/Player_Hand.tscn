@@ -3,18 +3,19 @@
 [ext_resource type="Script" uid="uid://dky0qijhuns34" path="res://Revamp/PlayerHand/HandScripts/PlayerHandRoot.gd" id="1_wk34g"]
 [ext_resource type="PackedScene" uid="uid://5qb61nfrd521" path="res://Revamp/Card/Card.tscn" id="2_0sjxa"]
 [ext_resource type="Resource" uid="uid://bn1jyervrnsg" path="res://Revamp/CardPresets/WorkerAnt.tres" id="4_trvsu"]
-[ext_resource type="Script" path="res://Revamp/PlayerHand/Hand_BlessingLayout.gd" id="8_egog8"]
+[ext_resource type="Script" uid="uid://bvq6ifc7m416p" path="res://Revamp/PlayerHand/Hand_BlessingLayout.gd" id="8_egog8"]
 [ext_resource type="Script" uid="uid://cx7ytvwjib41h" path="res://Revamp/PlayerHand/HandScripts/Hand_CardSpawner.gd" id="8_wk34g"]
 [ext_resource type="Script" uid="uid://rn83njv8p4kt" path="res://Revamp/PlayerHand/HandScripts/Hand_Layout.gd" id="9_m7nbq"]
 [ext_resource type="Script" uid="uid://dmvbt4sjx6ifh" path="res://Revamp/PlayerHand/HandScripts/Hand_IdleLayout.gd" id="10_4g7iw"]
+[ext_resource type="Script" uid="uid://ckb3jny46katx" path="res://Revamp/PlayerHand/Hand_BuffingLayout.gd" id="10_wk34g"]
 [ext_resource type="Script" uid="uid://c5qfeoak4so6x" path="res://Revamp/PlayerHand/HandScripts/Hand_PlayLayout.gd" id="11_hl46v"]
 [ext_resource type="Script" uid="uid://bmjuhkjrl4oox" path="res://Revamp/PlayerHand/HandScripts/Hand_LayoutTweener.gd" id="12_0pi77"]
 [ext_resource type="Script" uid="uid://er8ieaipml0v" path="res://Revamp/PlayerHand/Hand_BuffState.gd" id="12_ny603"]
 [ext_resource type="Script" uid="uid://841oxfew2uwc" path="res://Revamp/PlayerHand/HandScripts/Hand_SortController.gd" id="13_vr0u0"]
 [ext_resource type="Script" uid="uid://5ruciqocnwlo" path="res://Revamp/PlayerHand/HandScripts/Hand_StateMachine.gd" id="14_osyj2"]
 [ext_resource type="Script" uid="uid://cm4b6wc4w0c7l" path="res://Revamp/PlayerHand/HandScripts/Hand_IdleState.gd" id="15_7io4m"]
-[ext_resource type="Script" uid="uid://4jrxq5rqw5sb" path="res://Revamp/PlayerHand/HandScripts/HandBlessingState.gd" id="15_trvsu"]
 [ext_resource type="Script" uid="uid://cuj41kj4wdfe6" path="res://Revamp/PlayerHand/HandScripts/Hand_PlayState.gd" id="16_h0o3w"]
+[ext_resource type="Script" uid="uid://jlqnw0n06j1a" path="res://Revamp/PlayerHand/Hand_BlessingState.gd" id="16_wk34g"]
 [ext_resource type="Script" uid="uid://b6rdy4721olnv" path="res://Revamp/PlayerHand/HandScripts/Hand_SacrificeState.gd" id="17_nwl14"]
 [ext_resource type="Script" uid="uid://i8wpg3dhkch5" path="res://Revamp/PlayerHand/HandScripts/Hand_InteractionRoot.gd" id="18_phdwp"]
 [ext_resource type="Script" uid="uid://c2wk7vpjcufax" path="res://Revamp/PlayerHand/HandScripts/Hand_DragController.gd" id="19_vd81n"]
@@ -47,12 +48,14 @@ script = ExtResource("8_wk34g")
 enable_debug_spawn_test = true
 debug_spawn_card = ExtResource("4_trvsu")
 
-[node name="Hand_Layout" type="Node2D" parent="." unique_id=1869482169 node_paths=PackedStringArray("idle_layout", "play_layout", "blessing_layout", "layout_tweener")]
+[node name="Hand_Layout" type="Node2D" parent="." unique_id=1869482169 node_paths=PackedStringArray("idle_layout", "play_layout", "blessing_layout", "buffing_layout", "layout_tweener")]
 script = ExtResource("9_m7nbq")
 idle_layout = NodePath("Hand_IdleLayout")
 play_layout = NodePath("Hand_PlayLayout")
 blessing_layout = NodePath("Hand_BlessingLayout")
+buffing_layout = NodePath("Hand_BuffingLayout")
 layout_tweener = NodePath("Hand_LayoutTweener")
+enable_debug_layout_keys = true
 
 [node name="Hand_IdleLayout" type="Node2D" parent="Hand_Layout" unique_id=1708688104]
 script = ExtResource("10_4g7iw")
@@ -69,11 +72,14 @@ script = ExtResource("12_0pi77")
 
 [node name="Hand_BlessingLayout" type="Node2D" parent="Hand_Layout" unique_id=139527391]
 script = ExtResource("8_egog8")
-card_spacing = 160.0
-curve_height = 20.0
-max_rotation_degrees = -5.0
-target_scale = Vector2(0.85, 0.85)
-y_offset = -200.0
+card_spacing = 300.0
+curve_height = 95.0
+max_rotation_degrees = -25.0
+target_scale = Vector2(1.3, 1.3)
+y_offset = -350.0
+
+[node name="Hand_BuffingLayout" type="Node2D" parent="Hand_Layout" unique_id=164285583]
+script = ExtResource("10_wk34g")
 
 [node name="Hand_StateMachine" type="Node" parent="." unique_id=101836643 node_paths=PackedStringArray("idle_state", "play_state", "sacrifice_state", "blessing_state", "buff_state")]
 script = ExtResource("14_osyj2")
@@ -96,7 +102,7 @@ script = ExtResource("12_ny603")
 script = ExtResource("17_nwl14")
 
 [node name="Hand_BlessingState" type="Node" parent="Hand_StateMachine" unique_id=2117909623]
-script = ExtResource("15_trvsu")
+script = ExtResource("16_wk34g")
 
 [node name="Hand_SortController" type="Node" parent="." unique_id=447247999]
 script = ExtResource("13_vr0u0")
