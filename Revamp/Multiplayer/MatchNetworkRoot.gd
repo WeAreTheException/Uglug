@@ -13,15 +13,23 @@ class_name MatchNetworkRoot
 @export var enable_ping_debug := false
 @export var ping_debug_key: Key = KEY_N
 
+@export var enable_draw_debug := false
+@export var draw_debug_key: Key = KEY_D
+@export var debug_draw_owner: SlotRow.SlotOwner = SlotRow.SlotOwner.PLAYER
+@export var debug_draw_pile_type := "warrior"
+
 @export var print_debug := true
 
 var local_owner: SlotRow.SlotOwner = SlotRow.SlotOwner.PLAYER
+var has_broadcast_setup_payload := false
 
 
 func _ready() -> void:
 	GDSync.expose_node(self)
 	GDSync.expose_func(_receive_match_setup_payload)
 	GDSync.expose_func(_receive_network_ping)
+	GDSync.expose_func(request_draw)
+	GDSync.expose_func(_receive_confirmed_draw)
 
 	_assign_local_owner()
 	_print_network_status()
@@ -43,6 +51,9 @@ func _input(event: InputEvent) -> void:
 	if enable_ping_debug and key_event.keycode == ping_debug_key:
 		_send_ping_debug()
 
+	if enable_draw_debug and key_event.keycode == draw_debug_key:
+		request_draw(debug_draw_owner, debug_draw_pile_type)
+
 
 func is_host() -> bool:
 	return GDSync.is_host()
@@ -58,6 +69,17 @@ func get_local_client_id() -> int:
 
 func get_local_owner() -> SlotRow.SlotOwner:
 	return local_owner
+
+
+func request_draw(
+	owner: SlotRow.SlotOwner,
+	pile_type: String
+) -> void:
+	if is_host():
+		_process_draw_request(owner, pile_type)
+		return
+
+	GDSync.call_func(request_draw, owner, pile_type)
 
 
 func find_card_anywhere(runtime_id: String) -> CardRoot:
@@ -81,6 +103,94 @@ func find_card_anywhere(runtime_id: String) -> CardRoot:
 		return slots_root.find_card_by_runtime_id(clean_id)
 
 	return null
+
+
+func _process_draw_request(
+	owner: SlotRow.SlotOwner,
+	pile_type: String
+) -> void:
+	if deck_system_root == null:
+		print("DRAW REQUEST REJECTED: deck_system_root missing")
+		return
+
+	if not _is_valid_draw_request(owner, pile_type):
+		return
+
+	var entry := deck_system_root.pop_draw_entry_for_owner(owner, pile_type)
+
+	if entry.is_empty():
+		print("DRAW REQUEST REJECTED: empty draw result")
+		return
+
+	var card_id: String = entry.get("card_id", "")
+	var runtime_id: String = entry.get("runtime_id", "")
+
+	_broadcast_confirmed_draw(owner, card_id, runtime_id, pile_type)
+
+
+func _is_valid_draw_request(
+	owner: SlotRow.SlotOwner,
+	pile_type: String
+) -> bool:
+	if pile_type != DeckSystemRoot.DRAW_PILE_WARRIOR:
+		if pile_type != DeckSystemRoot.DRAW_PILE_WORKER:
+			print("DRAW REQUEST REJECTED: bad pile type ", pile_type)
+			return false
+
+	if match_flow_root == null:
+		return true
+
+	if match_flow_root.current_state != MatchFlowRoot.MatchState.AUTO_DRAW:
+		if print_debug:
+			print("DRAW REQUEST WARNING: draw outside AUTO_DRAW")
+
+	return true
+
+
+func _broadcast_confirmed_draw(
+	owner: SlotRow.SlotOwner,
+	card_id: String,
+	runtime_id: String,
+	pile_type: String
+) -> void:
+	if print_debug:
+		print(
+			"DRAW CONFIRMED: ",
+			_get_owner_name(owner),
+			" ",
+			pile_type,
+			" ",
+			card_id,
+			" ",
+			runtime_id
+		)
+
+	GDSync.call_func_all(
+		_receive_confirmed_draw,
+		owner,
+		card_id,
+		runtime_id,
+		pile_type
+	)
+
+
+func _receive_confirmed_draw(
+	owner: SlotRow.SlotOwner,
+	card_id: String,
+	runtime_id: String,
+	pile_type: String
+) -> void:
+	if deck_system_root == null:
+		print("CONFIRMED DRAW FAILED: deck_system_root missing")
+		return
+
+	deck_system_root.apply_confirmed_draw(
+		owner,
+		card_id,
+		runtime_id,
+		pile_type,
+		not is_host()
+	)
 
 
 func _assign_local_owner() -> void:
@@ -117,6 +227,9 @@ func _connect_deck_setup() -> void:
 
 
 func _try_broadcast_existing_setup_payload() -> void:
+	if has_broadcast_setup_payload:
+		return
+
 	if deck_system_root == null:
 		return
 
@@ -132,6 +245,9 @@ func _on_starting_hands_dealt() -> void:
 	if not is_host():
 		return
 
+	if has_broadcast_setup_payload:
+		return
+
 	if deck_system_root == null:
 		return
 
@@ -145,6 +261,8 @@ func _on_starting_hands_dealt() -> void:
 
 
 func _broadcast_match_setup_payload(payload: Dictionary) -> void:
+	has_broadcast_setup_payload = true
+
 	if print_debug:
 		print("MATCH SETUP READY: HOST")
 
@@ -175,6 +293,7 @@ func _find_card_in_hand(
 
 func _send_ping_debug() -> void:
 	print("NETWORK PING SENDING")
+
 	GDSync.call_func_all(
 		_receive_network_ping,
 		"hello from " + str(GDSync.get_client_id())
@@ -212,3 +331,13 @@ func _run_lookup_debug() -> void:
 
 	print("LOOKUP DEBUG ID: ", runtime_id)
 	print("LOOKUP DEBUG FOUND: ", found_card == first_card)
+
+
+func _get_owner_name(owner: SlotRow.SlotOwner) -> String:
+	if turn_order_state != null:
+		return turn_order_state.get_owner_name(owner)
+
+	if owner == SlotRow.SlotOwner.PLAYER:
+		return "P1"
+
+	return "P2"

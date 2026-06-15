@@ -435,8 +435,7 @@ deck_system_root = NodePath("../../Core/Deck")
 turn_order_state = NodePath("../../Scripts/MatchFlowRoot/MatchTurnOrderState")
 match_score_state = NodePath("../../Scripts/MatchFlowRoot/MatchScoreState")
 slots_root = NodePath("../../Core/Board")
-enable_lookup_debug = true
-enable_ping_debug = true
+enable_draw_debug = true
 
 [node name="MatchLocalViewApplier" type="Node" parent="Multiplayer" unique_id=1811884870 node_paths=PackedStringArray("match_network_root", "player_one_hand", "player_two_hand")]
 script = ExtResource("57_2n6q5")
