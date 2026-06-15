@@ -4,11 +4,7 @@
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="2_w52ji"]
 [ext_resource type="Texture2D" uid="uid://qj0rq272pn56" path="res://Revamp/Giant_Sprite.png" id="3_sm2wd"]
 [ext_resource type="Texture2D" uid="uid://j75yocnxblk4" path="res://Art/RedBackground.png" id="4_718sv"]
-[ext_resource type="Script" uid="uid://cm2da67ckyqv6" path="res://Mutations/MutationPresets/MutationBehaviourHandlers/YAttack.gd" id="4_yln6s"]
-
-[sub_resource type="Resource" id="Resource_eoc34"]
-script = ExtResource("4_yln6s")
-metadata/_custom_type_script = "uid://cm2da67ckyqv6"
+[ext_resource type="Resource" uid="uid://ceeskmu01vy5g" path="res://Mutations/MutationPresets/YAttack.tres" id="4_o7n5u"]
 
 [resource]
 script = ExtResource("2_w52ji")
@@ -17,6 +13,6 @@ attack = 1
 cost = 1
 background_texture = ExtResource("4_718sv")
 ant_texture = ExtResource("3_sm2wd")
-base_mutations = Array[ExtResource("1_o7n5u")]([SubResource("Resource_eoc34")])
+base_mutations = Array[ExtResource("1_o7n5u")]([ExtResource("4_o7n5u")])
 deck_amount = 2
 metadata/_custom_type_script = "uid://duslcpxrhurv8"
