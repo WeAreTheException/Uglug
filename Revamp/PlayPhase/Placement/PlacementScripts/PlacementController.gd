@@ -311,9 +311,10 @@ func _get_confirmed_target_slot(
 	if slots_root == null:
 		return null
 
+	var local_slot_owner := _get_local_visual_slot_owner(slot_owner)
 	var local_index := _get_local_visual_slot_index(owner, logical_slot_index)
 
-	return slots_root.get_slot(slot_owner, local_index)
+	return slots_root.get_slot(local_slot_owner, local_index)
 
 
 func _get_local_visual_slot_index(
@@ -342,3 +343,17 @@ func _mirror_slot_index(slot_index: int) -> int:
 			max_slots = slots.size()
 
 	return (max_slots + 1) - slot_index
+
+func _get_local_visual_slot_owner(slot_owner: SlotRow.SlotOwner) -> SlotRow.SlotOwner:
+	if match_network_root == null:
+		return slot_owner
+
+	var local_owner := match_network_root.get_local_owner()
+
+	if local_owner == SlotRow.SlotOwner.PLAYER:
+		return slot_owner
+
+	if slot_owner == SlotRow.SlotOwner.PLAYER:
+		return SlotRow.SlotOwner.OPPONENT
+
+	return SlotRow.SlotOwner.PLAYER
