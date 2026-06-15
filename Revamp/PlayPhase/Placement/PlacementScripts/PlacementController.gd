@@ -203,11 +203,16 @@ func build_current_placement_payload() -> Dictionary:
 	if sacrifice_controller == null:
 		return {}
 
+	var network_owner := placement_state.active_owner
+
+	if match_network_root != null:
+		network_owner = match_network_root.get_local_owner()
+
 	return payload_builder.build_payload(
 		slots_root,
 		placement_state.active_card,
 		placement_state.preview_slot,
-		placement_state.active_owner,
+		network_owner,
 		sacrifice_controller.get_pending_sacrifice_cards()
 	)
 
@@ -372,7 +377,7 @@ func _on_pending_sacrifice_started(
 	primed_card: CardRoot,
 	_cards: Array[CardRoot]
 ) -> void:
-	start_placement(primed_card, _get_current_local_placement_owner())
+	start_placement(primed_card, get_placing_owner())
 
 
 func _on_pending_sacrifice_undone(
