@@ -4,6 +4,7 @@ class_name CardVisualsRoot
 @export var main_visuals: CardMainVisuals
 @export var mutation_visuals: CardMutationVisuals
 @export var stats_visual: StatsVisuals
+@export var mutation_tooltip: MutationToolTip
 
 @export var viewport_sprite: Sprite2D
 @export var revenant_overlay: Sprite2D
@@ -20,6 +21,7 @@ func setup_from_card(source_card: CardRoot) -> void:
 	card = source_card
 
 	setup_revenant_overlay()
+	_connect_mutation_visuals()
 
 	if card.card_data != null:
 		setup_from_card_data(card.card_data)
@@ -105,6 +107,40 @@ func refresh_revenant_visual() -> void:
 		apply_revenant_visual()
 	else:
 		remove_revenant_visual()
+
+
+func _connect_mutation_visuals() -> void:
+	if mutation_visuals == null:
+		print("TOOLTIP CONNECT BLOCKED: mutation_visuals missing")
+		return
+
+	if not mutation_visuals.sigil_right_clicked.is_connected(_on_sigil_right_clicked):
+		mutation_visuals.sigil_right_clicked.connect(_on_sigil_right_clicked)
+
+	if not mutation_visuals.sigil_left_clicked.is_connected(_on_sigil_left_clicked):
+		mutation_visuals.sigil_left_clicked.connect(_on_sigil_left_clicked)
+
+
+func _on_sigil_right_clicked(slot: SigilSlot) -> void:
+	if slot == null:
+		print("TOOLTIP BLOCKED: right-click slot null")
+		return
+
+	print("CARD VISUALS ROOT GOT RIGHT CLICK: ", slot.get_mutation_name())
+
+	if mutation_tooltip == null:
+		print("TOOLTIP BLOCKED: mutation_tooltip missing")
+		return
+
+	mutation_tooltip.toggle_mutation(slot.get_mutation())
+
+
+func _on_sigil_left_clicked(slot: SigilSlot) -> void:
+	if slot == null:
+		print("TOOLTIP BLOCKED: left-click slot null")
+		return
+
+	print("CARD VISUALS ROOT GOT LEFT CLICK: ", slot.get_mutation_name())
 
 
 func _on_mutations_changed() -> void:

@@ -26,6 +26,7 @@
 [ext_resource type="Texture2D" uid="uid://bq8esv4xpuv68" path="res://Art/Numbers/6.png" id="21_457k1"]
 [ext_resource type="Texture2D" uid="uid://d1ypj3toan6r1" path="res://Art/Blood.png" id="22_fl5ur"]
 [ext_resource type="Script" uid="uid://dkvlofq6d7n7m" path="res://Revamp/CardVisuals/ViewPortDisplayController.gd" id="24_4t10r"]
+[ext_resource type="PackedScene" uid="uid://bocxu8xu5hh8b" path="res://Mutations/ToolTip/MutationToolTip.tscn" id="28_v8bk3"]
 [ext_resource type="Texture2D" uid="uid://cgs5k6p3mggyf" path="res://Art/Ants/AntSprite.png" id="29_wvfxw"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_460t8"]
@@ -124,11 +125,12 @@ shader_parameter/line_thickness = 10.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4t10r"]
 size = Vector2(1568.6804, 1568.6799)
 
-[node name="CardVisualsRoot" type="Node2D" unique_id=1593445486 node_paths=PackedStringArray("main_visuals", "mutation_visuals", "stats_visual", "viewport_sprite", "revenant_overlay")]
+[node name="CardVisualsRoot" type="Node2D" unique_id=1593445486 node_paths=PackedStringArray("main_visuals", "mutation_visuals", "stats_visual", "mutation_tooltip", "viewport_sprite", "revenant_overlay")]
 script = ExtResource("1_gy5gi")
 main_visuals = NodePath("SubViewport/Visuals/MainVisuals")
 mutation_visuals = NodePath("SubViewport/Visuals/MutationVisuals")
 stats_visual = NodePath("SubViewport/Visuals/StatsVisual")
+mutation_tooltip = NodePath("MutationToolTip")
 viewport_sprite = NodePath("ViewportSprite")
 revenant_overlay = NodePath("RevenantOverlay")
 revenant_shader = ExtResource("2_460t8")
@@ -237,6 +239,8 @@ metadata/_edit_lock_ = true
 script = ExtResource("15_d8086")
 sprite = NodePath("BaseSprite")
 input = NodePath("../../../../../../BaseSigilInput")
+hover_outline_color = Color(0.77245206, 0.47042382, 0.6667624, 1)
+pressed_outline_color = Color(0.105882354, 0.09019608, 0.08627451, 1)
 metadata/_edit_lock_ = true
 
 [node name="BaseSprite" type="Sprite2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/BaseMutation/SigilSlot" unique_id=935391738]
@@ -252,6 +256,8 @@ scale = Vector2(0.12699999, 0.12399998)
 script = ExtResource("15_d8086")
 sprite = NodePath("Additional1")
 input = NodePath("../../../../../../AddSigil1")
+hover_outline_color = Color(0.77254903, 0.47058824, 0.6666667, 1)
+pressed_outline_color = Color(0.105882354, 0.09019608, 0.08627451, 1)
 metadata/_edit_lock_ = true
 
 [node name="Additional1" type="Sprite2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation/SigilSlot" unique_id=185873266]
@@ -266,10 +272,14 @@ scale = Vector2(0.128, 0.128)
 script = ExtResource("15_d8086")
 sprite = NodePath("../SigilSlot3/Additional3")
 input = NodePath("../../../../../../AddSigil2")
+hover_outline_color = Color(0.77254903, 0.47058824, 0.6666667, 1)
+pressed_outline_color = Color(0.105882354, 0.09019608, 0.08627451, 1)
+metadata/_edit_lock_ = true
 
 [node name="Additional2" type="Sprite2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation/SigilSlot2" unique_id=1787102359]
 material = SubResource("ShaderMaterial_l5g41")
 scale = Vector2(1, 0.99999994)
+metadata/_edit_lock_ = true
 
 [node name="SigilSlot3" type="Node2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation" unique_id=828449294 node_paths=PackedStringArray("sprite", "input")]
 position = Vector2(-63.750015, 41.25)
@@ -277,11 +287,15 @@ scale = Vector2(0.128, 0.12799999)
 script = ExtResource("15_d8086")
 sprite = NodePath("Additional3")
 input = NodePath("../../../../../../AddSigil3")
+hover_outline_color = Color(0.77254903, 0.47058824, 0.6666667, 1)
+pressed_outline_color = Color(0.105882354, 0.09019608, 0.08627451, 1)
+metadata/_edit_lock_ = true
 
 [node name="Additional3" type="Sprite2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation/SigilSlot3" unique_id=259294942]
 material = SubResource("ShaderMaterial_hdaxf")
 position = Vector2(4.7683716e-05, -1.5258789e-05)
 scale = Vector2(1, 0.99999994)
+metadata/_edit_lock_ = true
 
 [node name="StatsVisual" type="Node2D" parent="SubViewport/Visuals" unique_id=769110726 node_paths=PackedStringArray("attack", "health", "cost", "name_label")]
 z_index = 7
@@ -345,6 +359,7 @@ viewport_sprite = NodePath("../ViewportSprite")
 metadata/_edit_lock_ = true
 
 [node name="AntSprite" type="Sprite2D" parent="." unique_id=425635481]
+visible = false
 scale = Vector2(0.121008396, 0.117200226)
 texture = ExtResource("29_wvfxw")
 
@@ -392,3 +407,9 @@ position = Vector2(0.00018310547, 0)
 scale = Vector2(1, 1.0000001)
 shape = SubResource("RectangleShape2D_4t10r")
 metadata/_edit_lock_ = true
+
+[node name="MutationToolTip" parent="." unique_id=783565587 instance=ExtResource("28_v8bk3")]
+offset_left = -87.0
+offset_top = -228.0
+offset_right = 87.0
+offset_bottom = -108.0

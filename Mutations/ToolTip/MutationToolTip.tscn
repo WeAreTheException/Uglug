@@ -1,12 +1,17 @@
 [gd_scene format=3 uid="uid://bocxu8xu5hh8b"]
 
-[node name="MutationToolTip" type="Control" unique_id=783565587]
+[ext_resource type="Script" uid="uid://cmbtqx5ng27nb" path="res://Revamp/MutationTooltTip/MutationToolTip.gd" id="1_ccbyw"]
+
+[node name="MutationToolTip" type="Control" unique_id=783565587 node_paths=PackedStringArray("name_label", "description_label")]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 174.0
 offset_bottom = 120.0
 pivot_offset = Vector2(87, 60)
 mouse_filter = 2
+script = ExtResource("1_ccbyw")
+name_label = NodePath("Panel/NameLabel")
+description_label = NodePath("Panel/DescriptionLabel")
 
 [node name="Panel" type="Panel" parent="." unique_id=440085595]
 layout_mode = 1
