@@ -8,4 +8,4 @@
 
 [node name="PlayerHandRoot" parent="." unique_id=371738706 instance=ExtResource("1_cguwc")]
 position = Vector2(1068, 588)
-starting_cards = Array[ExtResource("2_wicfy")]([ExtResource("4_tq6uv"), null])
+starting_cards = Array[ExtResource("2_wicfy")]([ExtResource("4_tq6uv"), ExtResource("4_tq6uv"), ExtResource("4_tq6uv"), ExtResource("4_tq6uv")])
