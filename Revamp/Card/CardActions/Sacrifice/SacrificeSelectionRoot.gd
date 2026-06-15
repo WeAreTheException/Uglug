@@ -3,7 +3,6 @@ class_name SacrificeSelectionRoot
 
 signal selection_changed(cards: Array[CardRoot])
 signal selection_cleared
-signal selection_blocked(reason: String)
 
 var hand_cards: Array[CardRoot] = []
 var board_cards: Array[CardRoot] = []
@@ -33,7 +32,6 @@ func set_hand_cards(cards: Array[CardRoot]) -> void:
 			hand_cards.append(card)
 		else:
 			card.set_sacrifice_selected(false)
-			selection_blocked.emit("Sacrifice worth limit reached.")
 
 	_emit_changed()
 
@@ -65,7 +63,6 @@ func add_board_card(card: CardRoot) -> bool:
 		return false
 
 	if not _can_add_card(card):
-		selection_blocked.emit("Sacrifice worth limit reached.")
 		return false
 
 	board_cards.append(card)

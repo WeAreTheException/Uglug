@@ -78,17 +78,28 @@ func undo_pending_sacrifice() -> void:
 	var restored_cards: Array[CardRoot] = []
 
 	for entry in entries:
-		var card := entry["card"] as CardRoot
+		var card := entry.get("card", null) as CardRoot
 
 		if card == null:
 			continue
 
-		card.visible = true
-		card.reset_sacrifice_feedback()
-		card.clear_hand_feedback()
+		var source: String = entry.get("source", "")
+
+		if source == "board":
+			var slot := entry.get("slot", null) as Slot
+			_restore_pending_board_card(card, slot)
+		else:
+			card.visible = true
+			card.reset_sacrifice_feedback()
+			card.clear_hand_feedback()
+
 		restored_cards.append(card)
 
 	pending_sacrifice_undone.emit(old_primed, restored_cards)
+
+	if player_hand != null:
+		player_hand.return_primed_card_to_prime_location()
+
 	_update_warning()
 	_update_requirement_state()
 
@@ -159,6 +170,8 @@ func _begin_pending_sacrifice(
 		player_hand.clear_sacrifice_selection()
 
 	var pending_cards := pending_boat.begin_pending(primed_card, entries)
+	
+	_release_pending_board_cards_from_slots(entries)
 
 	if has_pending_revenant:
 		_show_warning()
@@ -167,9 +180,24 @@ func _begin_pending_sacrifice(
 
 	is_processing = false
 
+	await get_tree().process_frame
 	pending_sacrifice_started.emit(primed_card, pending_cards)
 	_update_requirement_state()
 
+func _release_pending_board_cards_from_slots(entries: Array[Dictionary]) -> void:
+	for entry in entries:
+		if entry.get("source", "") != "board":
+			continue
+
+		var card := entry.get("card", null) as CardRoot
+
+		if card == null:
+			continue
+
+		var board_presence := _get_board_presence(card)
+
+		if board_presence != null and board_presence.is_on_board():
+			board_presence.leave_slot(card)
 
 func _build_pending_entry(card: CardRoot) -> Dictionary:
 	if card == null:
@@ -267,14 +295,6 @@ func _on_sacrifice_requested(
 	primed_card: CardRoot,
 	cards: Array[CardRoot]
 ) -> void:
-	print(
-		"SACRIFICE CONTROLLER RECEIVED | hand=",
-		player_hand.name if player_hand != null else "null",
-		" primed=",
-		primed_card.card_name if primed_card != null else "null",
-		" cards=",
-		cards.size()
-	)
 
 	request_sacrifice()
 
@@ -440,3 +460,26 @@ func _disconnect_hand() -> void:
 
 	if player_hand.sacrifice_selection_changed.is_connected(_on_hand_selection_changed):
 		player_hand.sacrifice_selection_changed.disconnect(_on_hand_selection_changed)
+
+func _restore_pending_board_card(
+	card: CardRoot,
+	slot: Slot
+) -> void:
+	if card == null:
+		return
+
+	if slot == null:
+		return
+
+	card.visible = true
+	card.reset_sacrifice_feedback()
+	card.clear_hand_feedback()
+
+	var board_presence := _get_board_presence(card)
+
+	if board_presence != null:
+		board_presence.enter_slot(slot, card)
+	else:
+		slot.assign_card(card)
+
+	card.global_position = slot.get_card_anchor_global_position()
