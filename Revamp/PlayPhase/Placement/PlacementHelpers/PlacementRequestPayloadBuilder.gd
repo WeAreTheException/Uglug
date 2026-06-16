@@ -37,28 +37,3 @@ func _get_runtime_ids(cards: Array[CardRoot]) -> Array[String]:
 		result.append(card.get_runtime_id())
 
 	return result
-
-func build_payload_with_slot_index(
-	board: SlotsRoot,
-	placed_card: CardRoot,
-	target_slot: Slot,
-	owner: SlotRow.SlotOwner,
-	target_slot_index: int,
-	sacrificed_cards: Array[CardRoot]
-) -> Dictionary:
-	if board == null:
-		return {}
-
-	if placed_card == null:
-		return {}
-
-	if target_slot == null:
-		return {}
-
-	return {
-	"owner": owner,
-	"placed_card_runtime_id": placed_card.get_runtime_id(),
-	"target_slot_owner": owner,
-	"target_slot_index": target_slot.slot_index,
-	"sacrificed_card_runtime_ids": _get_runtime_ids(sacrificed_cards)
-}
