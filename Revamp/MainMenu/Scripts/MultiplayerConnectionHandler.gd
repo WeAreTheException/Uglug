@@ -5,6 +5,8 @@ signal connection_started
 signal connection_succeeded
 signal connection_failed(error: int)
 
+@export var steam_identity: SteamPlayerIdentity
+
 @export var force_connection_failure := false
 @export var print_connection_debug := false
 
@@ -41,7 +43,7 @@ func _on_connected() -> void:
 	is_connecting = false
 	is_connected_to_gdsync = true
 
-	var username := _build_unique_username()
+	var username := _build_username()
 	GDSync.player_set_username(username)
 
 	if print_connection_debug:
@@ -62,8 +64,19 @@ func _on_connection_failed(error: int) -> void:
 	connection_failed.emit(error)
 
 
-func _build_unique_username() -> String:
-	var client_id := str(GDSync.get_client_id())
-	var random_id := str(randi_range(1000, 9999))
+func _build_username() -> String:
+	var client_id := _get_client_id_as_int()
 
-	return "Player" + client_id + random_id
+	if steam_identity != null:
+		return steam_identity.get_display_name_for_id(client_id)
+
+	return PlaceholderPlayerNames.get_name_for_id(client_id)
+
+
+func _get_client_id_as_int() -> int:
+	var raw_client_id := str(GDSync.get_client_id())
+
+	if raw_client_id.is_valid_int():
+		return raw_client_id.to_int()
+
+	return abs(raw_client_id.hash())

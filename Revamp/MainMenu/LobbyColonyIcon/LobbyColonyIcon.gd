@@ -5,7 +5,8 @@ signal lobby_clicked(lobby_info: Dictionary)
 
 @export var name_label: Label
 @export var player_icon: Sprite2D
-@export var colony_visual: CanvasItem
+@export var public_lobby_visual: CanvasItem
+@export var private_lobby_visual: CanvasItem
 @export var bounce_feedback: LobbyBounceFeedback
 @export var lock_sprite: Sprite2D
 @export var private_tooltip: Label
@@ -48,7 +49,7 @@ func setup(source_lobby_info: Dictionary) -> void:
 	input_pickable = not is_own_lobby
 
 	if name_label != null:
-		name_label.text = display_name + "'s Game"
+		name_label.text = display_name
 
 	if is_private_lobby:
 		_set_private_visual()
@@ -114,28 +115,36 @@ func _set_public_visual() -> void:
 	if bounce_feedback != null:
 		bounce_feedback.start_bounce()
 
+	if public_lobby_visual != null:
+		public_lobby_visual.visible = true
+		public_lobby_visual.modulate = Color.WHITE
+
+	if private_lobby_visual != null:
+		private_lobby_visual.visible = false
+
 	if lock_sprite != null:
 		lock_sprite.visible = false
 
 	if private_tooltip != null:
 		private_tooltip.visible = false
 
-	if colony_visual != null:
-		colony_visual.modulate = Color.WHITE
-
 
 func _set_private_visual() -> void:
 	if bounce_feedback != null:
 		bounce_feedback.stop_bounce()
+
+	if public_lobby_visual != null:
+		public_lobby_visual.visible = false
+
+	if private_lobby_visual != null:
+		private_lobby_visual.visible = true
+		private_lobby_visual.modulate = Color.WHITE
 
 	if lock_sprite != null:
 		lock_sprite.visible = true
 
 	if private_tooltip != null:
 		private_tooltip.visible = false
-
-	if colony_visual != null:
-		colony_visual.modulate = Color(0.65, 0.65, 0.65, 1.0)
 
 
 func _disable_own_lobby_feedback() -> void:

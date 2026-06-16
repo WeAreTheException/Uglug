@@ -36,13 +36,20 @@
 
 [sub_resource type="Resource" id="Resource_ingbf"]
 script = ExtResource("6_uqw47")
-random_warrior_cards = 0
-fixed_worker_cards = 1
 metadata/_custom_type_script = "uid://ckysxojcj6pel"
 
 [sub_resource type="Resource" id="Resource_uqw47"]
 script = ExtResource("5_uqw47")
 starting_hand_override = SubResource("Resource_ingbf")
+metadata/_custom_type_script = "uid://dutbidhjeof0i"
+
+[sub_resource type="Resource" id="Resource_tcmww"]
+script = ExtResource("6_uqw47")
+metadata/_custom_type_script = "uid://ckysxojcj6pel"
+
+[sub_resource type="Resource" id="Resource_nxewr"]
+script = ExtResource("5_uqw47")
+starting_hand_override = SubResource("Resource_tcmww")
 metadata/_custom_type_script = "uid://dutbidhjeof0i"
 
 [node name="DeckSystemRoot" type="Node2D" unique_id=93691211 node_paths=PackedStringArray("match_setup", "player_one_draw_pile", "player_two_draw_pile", "worker_source", "card_database")]
@@ -63,6 +70,7 @@ mode_config = NodePath("../MatchDeckModeConfig")
 seed_config = NodePath("../MatchSeedConfig")
 classic_class = ExtResource("3_sc7fg")
 player_one_loadout = SubResource("Resource_uqw47")
+player_two_loadout = SubResource("Resource_nxewr")
 
 [node name="MatchSeedConfig" type="Node" parent="MatchSetup" unique_id=2122245150]
 script = ExtResource("3_cynwi")
