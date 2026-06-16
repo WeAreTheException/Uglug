@@ -61,9 +61,9 @@
 [ext_resource type="Script" uid="uid://cstbr8ehhhhio" path="res://Revamp/Blessings/BlessingCardSelectionHandler.gd" id="52_qqxe6"]
 [ext_resource type="Script" uid="uid://dxkdv76ah1to1" path="res://Revamp/Blessings/BlessingApplyHandler.gd" id="53_8mjsp"]
 [ext_resource type="Script" uid="uid://dbw5dxwuc5h4h" path="res://Revamp/Buff/BuffCardStagingHandler.gd" id="53_nmm8s"]
-[ext_resource type="Script" uid="uid://qkm73v3qftgr" path="res://MatchLocalViewApplier.gd" id="57_2n6q5"]
+[ext_resource type="Script" uid="uid://qkm73v3qftgr" path="res://Revamp/Multiplayer/MatchLocalViewApplier.gd" id="57_2n6q5"]
 [ext_resource type="Script" uid="uid://ddq57bg6lcsk1" path="res://Revamp/Multiplayer/MatchNetworkRoot.gd" id="57_8mjsp"]
-[ext_resource type="Script" uid="uid://cy3sful3ggumm" path="res://LocalGameplayReferenceBinder.gd" id="66_5j00x"]
+[ext_resource type="Script" uid="uid://cy3sful3ggumm" path="res://Revamp/Multiplayer/LocalGameplayReferenceBinder.gd" id="66_5j00x"]
 [ext_resource type="PackedScene" uid="uid://cvdlgiknngjmw" path="res://Revamp/Board/Background.tscn" id="66_af7hx"]
 
 [node name="Mao" type="Node2D" unique_id=550121538]
@@ -281,7 +281,6 @@ blessing_flow_handler = NodePath("../BlessingFlowHandler")
 selection_state = NodePath("../BlessingSelectionState")
 turn_order_state = NodePath("../../../MatchFlowRoot/MatchTurnOrderState")
 match_network_root = NodePath("../../../../Multiplayer/MatchNetworkRoot")
-print_debug = false
 
 [node name="SacrificeController" type="Node" parent="Scripts/Core" unique_id=1432478239 node_paths=PackedStringArray("player_hand", "sacrifice_selection_root", "requirement", "pending_boat", "committer")]
 script = ExtResource("10_1j514")
@@ -309,12 +308,11 @@ position = Vector2(132, 504)
 script = ExtResource("11_5f7hr")
 metadata/_custom_type_script = "uid://db4xai716j06p"
 
-[node name="SacrificeBoardSelectionBinder" type="Node" parent="Scripts/Core/SacrificeController" unique_id=571826404 node_paths=PackedStringArray("slots_root", "selection_root", "player_hand", "turn_order_state")]
+[node name="SacrificeBoardSelectionBinder" type="Node" parent="Scripts/Core/SacrificeController" unique_id=571826404 node_paths=PackedStringArray("slots_root", "selection_root", "player_hand")]
 script = ExtResource("12_3j6fp")
 slots_root = NodePath("../../../../Core/Board")
 selection_root = NodePath("../SacrificeSelectionRoot")
 player_hand = NodePath("../../../../Core/PlayerHAnd")
-turn_order_state = NodePath("../../../MatchFlowRoot/MatchTurnOrderState")
 
 [node name="PlacementController" type="Node" parent="Scripts/Core" unique_id=1405375079 node_paths=PackedStringArray("slots_root", "player_hand", "sacrifice_controller", "match_network_root", "placement_state", "input_router", "placement_preview", "placement_executor", "event_emitter", "placement_cancel")]
 script = ExtResource("13_ubws4")
