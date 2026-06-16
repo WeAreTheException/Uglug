@@ -138,30 +138,7 @@ func end_match(
 
 
 func advance_debug_state() -> void:
-	if current_state == MatchState.GAME_END:
-		if print_debug:
-			print("MATCH ADVANCE BLOCKED: game ended")
-		return
-
-	if is_transition_locked():
-		if print_debug:
-			print("MATCH ADVANCE BLOCKED: transition locked")
-		return
-
-	if state_advance_helper.should_advance_round(current_state):
-		advance_round()
-		return
-
-	if current_state == MatchState.NONE:
-		start_match()
-		return
-
-	var next_state: MatchState = state_advance_helper.get_next_state(
-		current_state,
-		current_round
-	)
-
-	set_state(next_state)
+	host_advance_match_state()
 
 
 func advance_round() -> void:
@@ -270,10 +247,44 @@ func _print_current_state() -> void:
 	print(
 		"MATCH STATE: ",
 		get_state_name(current_state),
+		" | ROUND: ",
+		current_round,
 		" | ACTIVE: ",
 		get_active_owner_name(),
+		" | ATTACK FIRST: ",
+		_get_attacking_first_owner_name(),
+		" | LEAD PLACE: ",
+		_get_lead_placement_owner_name(),
+		" | RESPONSE PLACE: ",
+		_get_response_placement_owner_name(),
 		" | CONTROLLED: ",
 		get_controlled_owner_name()
+	)
+
+func _get_attacking_first_owner_name() -> String:
+	if turn_order_state == null:
+		return "NONE"
+
+	return turn_order_state.get_owner_name(
+		turn_order_state.attacking_first_owner
+	)
+
+
+func _get_lead_placement_owner_name() -> String:
+	if turn_order_state == null:
+		return "NONE"
+
+	return turn_order_state.get_owner_name(
+		turn_order_state.lead_placement_owner
+	)
+
+
+func _get_response_placement_owner_name() -> String:
+	if turn_order_state == null:
+		return "NONE"
+
+	return turn_order_state.get_owner_name(
+		turn_order_state.response_placement_owner
 	)
 
 
@@ -285,3 +296,84 @@ func _get_owner_name(owner: SlotRow.SlotOwner) -> String:
 		return "P1"
 
 	return "P2"
+
+func host_advance_match_state() -> bool:
+	if not GDSync.is_host():
+		return false
+
+	if current_state == MatchState.GAME_END:
+		if print_debug:
+			print("MATCH ADVANCE BLOCKED: game ended")
+		return false
+
+	if is_transition_locked():
+		if print_debug:
+			print("MATCH ADVANCE BLOCKED: transition locked")
+		return false
+
+	if state_advance_helper.should_advance_round(current_state):
+		advance_round()
+		return true
+
+	if current_state == MatchState.NONE:
+		start_match()
+		return true
+
+	var next_state := state_advance_helper.get_next_state(
+		current_state,
+		current_round
+	)
+
+	set_state(next_state)
+	return true
+
+func get_network_snapshot() -> Dictionary:
+	var payload := {
+		"state": int(current_state),
+		"round": current_round,
+		"transition_lock_count": transition_lock_count,
+		"has_match_winner": has_match_winner,
+		"winner": int(match_winner),
+		"final_score": final_score,
+		"active_owner": int(SlotRow.SlotOwner.PLAYER),
+		"attacking_first_owner": int(SlotRow.SlotOwner.PLAYER),
+		"lead_placement_owner": int(SlotRow.SlotOwner.PLAYER),
+		"response_placement_owner": int(SlotRow.SlotOwner.OPPONENT),
+	}
+
+	if turn_order_state != null:
+		payload["active_owner"] = int(turn_order_state.active_owner)
+		payload["attacking_first_owner"] = int(turn_order_state.attacking_first_owner)
+		payload["lead_placement_owner"] = int(turn_order_state.lead_placement_owner)
+		payload["response_placement_owner"] = int(turn_order_state.response_placement_owner)
+
+	return payload
+
+
+func apply_network_snapshot(payload: Dictionary) -> void:
+	var old_state := current_state
+	var old_round := current_round
+
+	current_round = int(payload.get("round", current_round))
+	transition_lock_count = int(payload.get("transition_lock_count", 0))
+	has_match_winner = bool(payload.get("has_match_winner", false))
+	final_score = int(payload.get("final_score", final_score))
+	match_winner = int(payload.get("winner", match_winner)) as SlotRow.SlotOwner
+
+	if turn_order_state != null:
+		turn_order_state.apply_network_owners(
+			int(payload.get("active_owner", turn_order_state.active_owner)) as SlotRow.SlotOwner,
+			int(payload.get("attacking_first_owner", turn_order_state.attacking_first_owner)) as SlotRow.SlotOwner,
+			int(payload.get("lead_placement_owner", turn_order_state.lead_placement_owner)) as SlotRow.SlotOwner,
+			int(payload.get("response_placement_owner", turn_order_state.response_placement_owner)) as SlotRow.SlotOwner
+		)
+
+	current_state = int(payload.get("state", current_state)) as MatchState
+	is_running = current_state != MatchState.NONE and current_state != MatchState.GAME_END
+
+	if old_round != current_round:
+		round_changed.emit(current_round)
+
+	if old_state != current_state:
+		_print_current_state()
+		match_state_changed.emit(current_state)

@@ -36,13 +36,10 @@ func get_next_state(
 			return MatchFlowRoot.MatchState.COMBAT
 
 		MatchFlowRoot.MatchState.COMBAT:
-			if round_number == 1:
-				return MatchFlowRoot.MatchState.DOMINANT_REVEAL
-
 			return MatchFlowRoot.MatchState.ROUND_END
 
-		MatchFlowRoot.MatchState.DOMINANT_REVEAL:
-			return MatchFlowRoot.MatchState.ROUND_END
+		MatchFlowRoot.MatchState.ROUND_END:
+			return MatchFlowRoot.MatchState.ROUND_INTRO
 
 		MatchFlowRoot.MatchState.GAME_END:
 			return MatchFlowRoot.MatchState.GAME_END

@@ -33,6 +33,11 @@
 [ext_resource type="Resource" uid="uid://b10yu2ml8hwx2" path="res://Revamp/CardPresets/Stimulant.tres" id="31_4fbyu"]
 [ext_resource type="Resource" uid="uid://cu38anwcrq117" path="res://Revamp/CardPresets/SuperStimulant.tres" id="32_vhms2"]
 [ext_resource type="Resource" uid="uid://bn1jyervrnsg" path="res://Revamp/CardPresets/WorkerAnt.tres" id="33_g13o2"]
+[ext_resource type="Resource" uid="uid://0c6lqenucx25" path="res://Revamp/CardPresets/StraightChops/Aviant.tres" id="34_i06y6"]
+[ext_resource type="Resource" uid="uid://b1dt5378u5ga8" path="res://Revamp/CardPresets/Sustain/Guardiant.tres" id="35_lq2ut"]
+[ext_resource type="Resource" uid="uid://c64jbnvj0pbwk" path="res://Revamp/CardPresets/CardSpawner/AntHill.tres" id="36_ukkbw"]
+[ext_resource type="Resource" uid="uid://mnht3u87f5og" path="res://Revamp/CardPresets/CardSpawner/Pregnant.tres" id="37_18837"]
+[ext_resource type="Resource" uid="uid://c7b01c40e24r" path="res://Revamp/CardPresets/CardSpawner/Santa.tres" id="38_4fbyu"]
 
 [sub_resource type="Resource" id="Resource_ingbf"]
 script = ExtResource("6_uqw47")
@@ -98,4 +103,4 @@ deck_system_root = NodePath("..")
 
 [node name="CardDatabase" type="Node" parent="." unique_id=814676696]
 script = ExtResource("14_uqw47")
-cards = Array[ExtResource("5_ingbf")]([ExtResource("15_mm7cs"), ExtResource("16_n3vl6"), ExtResource("17_24wpt"), ExtResource("18_rsy82"), ExtResource("19_iv01p"), ExtResource("20_cs6vi"), ExtResource("21_faj4b"), ExtResource("22_nxewr"), ExtResource("23_tcmww"), ExtResource("24_5ldio"), ExtResource("25_wdu31"), ExtResource("26_p1lgn"), ExtResource("27_i06y6"), ExtResource("28_lq2ut"), ExtResource("29_ukkbw"), ExtResource("30_18837"), ExtResource("31_4fbyu"), ExtResource("32_vhms2"), ExtResource("33_g13o2")])
+cards = Array[ExtResource("5_ingbf")]([ExtResource("15_mm7cs"), ExtResource("16_n3vl6"), ExtResource("17_24wpt"), ExtResource("18_rsy82"), ExtResource("19_iv01p"), ExtResource("20_cs6vi"), ExtResource("21_faj4b"), ExtResource("22_nxewr"), ExtResource("23_tcmww"), ExtResource("24_5ldio"), ExtResource("25_wdu31"), ExtResource("26_p1lgn"), ExtResource("27_i06y6"), ExtResource("28_lq2ut"), ExtResource("29_ukkbw"), ExtResource("30_18837"), ExtResource("31_4fbyu"), ExtResource("32_vhms2"), ExtResource("33_g13o2"), ExtResource("34_i06y6"), ExtResource("35_lq2ut"), ExtResource("36_ukkbw"), ExtResource("37_18837"), ExtResource("38_4fbyu")])

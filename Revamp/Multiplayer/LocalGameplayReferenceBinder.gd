@@ -27,5 +27,5 @@ func _apply_local_refs() -> void:
 		sacrifice_controller.set_player_hand(local_hand)
 
 	if sacrifice_board_binder != null:
-		sacrifice_board_binder.player_hand = local_hand
-		sacrifice_board_binder.allowed_owner = owner
+		sacrifice_board_binder.set_player_hand(local_hand)
+		sacrifice_board_binder.allowed_owner = SlotRow.SlotOwner.PLAYER

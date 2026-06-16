@@ -5,7 +5,7 @@ signal auto_draw_started(round_number: int)
 signal auto_draw_finished(round_number: int)
 
 @export var match_flow_root: MatchFlowRoot
-@export var deck_system_root: DeckSystemRoot
+@export var match_network_root: MatchNetworkRoot
 
 @export var warrior_draw_count_per_owner: int = 1
 @export var card_draw_delay: float = 0.12
@@ -40,8 +40,8 @@ func run_auto_draw() -> void:
 
 	drawn_rounds.append(round_number)
 
-	if deck_system_root == null:
-		print("auto draw blocked: deck_system_root missing")
+	if match_network_root == null:
+		print("auto draw blocked: match_network_root missing")
 		return
 
 	match_flow_root.lock_transition()
@@ -51,17 +51,29 @@ func run_auto_draw() -> void:
 
 	auto_draw_started.emit(round_number)
 
-	for i in warrior_draw_count_per_owner:
-		deck_system_root.draw_warrior_for_owner(SlotRow.SlotOwner.PLAYER)
+	for i in range(warrior_draw_count_per_owner):
+		match_network_root.request_draw(
+			SlotRow.SlotOwner.PLAYER,
+			DeckSystemRoot.DRAW_PILE_WARRIOR
+		)
 		await get_tree().create_timer(card_draw_delay).timeout
 
-		deck_system_root.draw_worker_for_owner(SlotRow.SlotOwner.PLAYER)
+		match_network_root.request_draw(
+			SlotRow.SlotOwner.PLAYER,
+			DeckSystemRoot.DRAW_PILE_WORKER
+		)
 		await get_tree().create_timer(card_draw_delay).timeout
 
-		deck_system_root.draw_warrior_for_owner(SlotRow.SlotOwner.OPPONENT)
+		match_network_root.request_draw(
+			SlotRow.SlotOwner.OPPONENT,
+			DeckSystemRoot.DRAW_PILE_WARRIOR
+		)
 		await get_tree().create_timer(card_draw_delay).timeout
 
-		deck_system_root.draw_worker_for_owner(SlotRow.SlotOwner.OPPONENT)
+		match_network_root.request_draw(
+			SlotRow.SlotOwner.OPPONENT,
+			DeckSystemRoot.DRAW_PILE_WORKER
+		)
 		await get_tree().create_timer(card_draw_delay).timeout
 
 	if print_debug:

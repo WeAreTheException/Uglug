@@ -40,6 +40,7 @@ func _ready() -> void:
 	_setup_mutation_refresher()
 	_setup_attack_order_handler()
 	_setup_preset_handler()
+	debug_print_slots()
 
 
 func _setup_registry() -> void:
@@ -264,3 +265,24 @@ func show_direct_damage_feedback(slot: Slot) -> void:
 		return
 
 	await slot.show_damaged_feedback()
+
+func debug_print_slots() -> void:
+	print("=== SLOT DEBUG | HOST: ", GDSync.is_host(), " ===")
+
+	for owner in [SlotRow.SlotOwner.PLAYER, SlotRow.SlotOwner.OPPONENT]:
+		var slots := get_slots_for_owner(owner)
+
+		for slot in slots:
+			if slot == null:
+				continue
+
+			print(
+				"owner=",
+				owner,
+				" node=",
+				slot.name,
+				" slot_index=",
+				slot.slot_index,
+				" global_x=",
+				slot.global_position.x
+			)
