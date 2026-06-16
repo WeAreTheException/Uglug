@@ -50,14 +50,14 @@ border_width_right = 3
 border_width_bottom = 3
 border_color = Color(0.8291633, 0.14043778, 0.35698447, 1)
 
-[node name="MatchUI" type="Control" unique_id=1584030534 node_paths=PackedStringArray("tugga_display", "attack_order_arrow_display", "player_name_label", "enemy_name_label")]
+[node name="MatchUI" type="Control" unique_id=1584030534 node_paths=PackedStringArray("tugga_display", "attack_order_arrow_display", "host_name_label", "client_name_label")]
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_0cu85")
 tugga_display = NodePath("TuggaStuff")
 attack_order_arrow_display = NodePath("AttackOrderArrow")
-player_name_label = NodePath("PlayerName")
-enemy_name_label = NodePath("EnemyName")
+host_name_label = NodePath("PlayerName")
+client_name_label = NodePath("EnemyName")
 
 [node name="AttackOrderArrow" type="Control" parent="." unique_id=279434668 node_paths=PackedStringArray("left_to_right_arrow", "right_to_left_arrow")]
 anchors_preset = 0
