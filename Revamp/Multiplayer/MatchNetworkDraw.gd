@@ -1,11 +1,24 @@
 extends Node
 class_name MatchNetworkDraw
 
+@export var enable_draw_debug := false
+@export var draw_debug_key: Key = KEY_D
+@export var debug_draw_owner: SlotRow.SlotOwner = SlotRow.SlotOwner.PLAYER
+@export var debug_draw_pile_type := DeckSystemRoot.DRAW_PILE_WARRIOR
+
 var root: MatchNetworkRoot = null
 
 
 func setup(source_root: MatchNetworkRoot) -> void:
 	root = source_root
+
+
+func handle_debug_input(key_event: InputEventKey) -> void:
+	if not enable_draw_debug:
+		return
+
+	if key_event.keycode == draw_debug_key:
+		request_draw(debug_draw_owner, debug_draw_pile_type)
 
 
 func request_draw(

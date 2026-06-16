@@ -18,16 +18,8 @@ class_name MatchNetworkRoot
 @export var blessing_network: MatchNetworkBlessing
 @export var placement_network: MatchNetworkPlacement
 
-@export var enable_lookup_debug := false
-@export var lookup_debug_key: Key = KEY_L
-
 @export var enable_ping_debug := false
 @export var ping_debug_key: Key = KEY_N
-
-@export var enable_draw_debug := false
-@export var draw_debug_key: Key = KEY_D
-@export var debug_draw_owner: SlotRow.SlotOwner = SlotRow.SlotOwner.PLAYER
-@export var debug_draw_pile_type := DeckSystemRoot.DRAW_PILE_WARRIOR
 
 @export var print_debug := true
 
@@ -65,14 +57,14 @@ func _input(event: InputEvent) -> void:
 	if not key_event.pressed or key_event.echo:
 		return
 
-	if enable_lookup_debug and key_event.keycode == lookup_debug_key:
-		_run_lookup_debug()
-
 	if enable_ping_debug and key_event.keycode == ping_debug_key:
 		_send_ping_debug()
 
-	if enable_draw_debug and key_event.keycode == draw_debug_key:
-		request_draw(debug_draw_owner, debug_draw_pile_type)
+	if lookup_network != null:
+		lookup_network.handle_debug_input(key_event)
+
+	if draw_network != null:
+		draw_network.handle_debug_input(key_event)
 
 
 func is_host() -> bool:
@@ -124,11 +116,7 @@ func request_buff_confirm(
 		print("REQUEST BUFF FAILED: buff_network missing")
 		return
 
-	buff_network.request_buff_confirm(
-		owner,
-		target_card_runtime_id,
-		mutation_id
-	)
+	buff_network.request_buff_confirm(owner, target_card_runtime_id, mutation_id)
 
 
 func _receive_buff_reward(mutation_id: String) -> void:
@@ -148,11 +136,7 @@ func _receive_confirmed_buff(
 		print("CONFIRMED BUFF FAILED: buff_network missing")
 		return
 
-	buff_network.receive_confirmed_buff(
-		owner,
-		target_card_runtime_id,
-		mutation_id
-	)
+	buff_network.receive_confirmed_buff(owner, target_card_runtime_id, mutation_id)
 
 
 func request_blessing_confirm(
@@ -345,36 +329,3 @@ func _send_ping_debug() -> void:
 
 func _receive_network_ping(message: String) -> void:
 	print("NETWORK PING RECEIVED: ", message, " | HOST: ", is_host())
-
-
-func _run_lookup_debug() -> void:
-	if deck_system_root == null:
-		print("LOOKUP DEBUG FAILED: deck_system_root missing")
-		return
-
-	if lookup_network == null:
-		print("LOOKUP DEBUG FAILED: lookup_network missing")
-		return
-
-	var hand := deck_system_root.player_one_hand
-
-	if hand == null:
-		print("LOOKUP DEBUG FAILED: P1 hand missing")
-		return
-
-	if hand.card_spawner == null:
-		print("LOOKUP DEBUG FAILED: P1 card_spawner missing")
-		return
-
-	var cards := hand.card_spawner.get_cards()
-
-	if cards.is_empty():
-		print("LOOKUP DEBUG FAILED: P1 hand empty")
-		return
-
-	var first_card: CardRoot = cards[0]
-	var runtime_id := first_card.get_runtime_id()
-	var found_card := lookup_network.find_card_anywhere(runtime_id)
-
-	print("LOOKUP DEBUG ID: ", runtime_id)
-	print("LOOKUP DEBUG FOUND: ", found_card == first_card)
