@@ -56,9 +56,9 @@ func build_payload_with_slot_index(
 		return {}
 
 	return {
-		"owner": owner,
-		"placed_card_runtime_id": placed_card.get_runtime_id(),
-		"target_slot_owner": owner,
-		"target_slot_index": target_slot_index,
-		"sacrificed_card_runtime_ids": _get_runtime_ids(sacrificed_cards)
-	}
+	"owner": owner,
+	"placed_card_runtime_id": placed_card.get_runtime_id(),
+	"target_slot_owner": owner,
+	"target_slot_index": target_slot.slot_index,
+	"sacrificed_card_runtime_ids": _get_runtime_ids(sacrificed_cards)
+}

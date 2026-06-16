@@ -199,17 +199,11 @@ func build_current_placement_payload() -> Dictionary:
 	if match_network_root != null:
 		network_owner = match_network_root.get_local_owner()
 
-	var network_slot_index := _get_network_slot_index(
-		network_owner,
-		placement_state.preview_slot
-	)
-
-	return payload_builder.build_payload_with_slot_index(
+	return payload_builder.build_payload(
 		slots_root,
 		placement_state.active_card,
 		placement_state.preview_slot,
 		network_owner,
-		network_slot_index,
 		sacrifice_controller.get_pending_sacrifice_cards()
 	)
 
@@ -305,6 +299,9 @@ func _get_local_visual_slot_index(
 
 func _should_mirror_confirmed_slot(owner: SlotRow.SlotOwner) -> bool:
 	if match_network_root == null:
+		return false
+
+	if match_network_root.is_host():
 		return false
 
 	return match_network_root.get_local_owner() != owner
