@@ -225,12 +225,14 @@ animation_handler = NodePath("../BuffPhaseAnimationHandler")
 enable_debug_preview_key = false
 debug_preview_mutation = ExtResource("40_2ph70")
 enable_debug_forced_reward_key = true
+print_debug = false
 
 [node name="BuffPhaseAnimationHandler" type="Node" parent="Scripts/Core/Buff" unique_id=278124127 node_paths=PackedStringArray("reward_parent")]
 script = ExtResource("31_nmm8s")
 larvae_reward_scene = ExtResource("29_72iem")
 larvae_draggers_scene = ExtResource("32_qb8ua")
 reward_parent = NodePath("../../../../Core/MatchFlowUI")
+print_debug = false
 
 [node name="BuffDatabase" type="Node" parent="Scripts/Core/Buff" unique_id=1175133697]
 script = ExtResource("38_i8ogu")
@@ -245,6 +247,7 @@ selection_state = NodePath("../BuffSelectionState")
 turn_order_state = NodePath("../../../MatchFlowRoot/MatchTurnOrderState")
 player_one_hand = NodePath("../../../../Core/PlayerHAnd")
 player_two_hand = NodePath("../../../../Core/OpponenetHAnd")
+print_debug = false
 
 [node name="BuffMutationApplyHandler" type="Node" parent="Scripts/Core/Buff" unique_id=1110353445 node_paths=PackedStringArray("buff_flow_handler", "selection_state", "turn_order_state", "staging_handler", "match_network_root")]
 script = ExtResource("52_72iem")
@@ -253,6 +256,7 @@ selection_state = NodePath("../BuffSelectionState")
 turn_order_state = NodePath("../../../MatchFlowRoot/MatchTurnOrderState")
 staging_handler = NodePath("../BuffCardStagingHandler")
 match_network_root = NodePath("../../../../Multiplayer/MatchNetworkRoot")
+print_debug = false
 
 [node name="BuffCardStagingHandler" type="Node" parent="Scripts/Core/Buff" unique_id=617262833 node_paths=PackedStringArray("buff_flow_handler", "selection_state", "buff_card_location", "player_one_hand", "player_two_hand")]
 script = ExtResource("53_nmm8s")
@@ -273,6 +277,7 @@ script = ExtResource("25_n5v11")
 script = ExtResource("26_7gy8c")
 match_flow_root = NodePath("../../../MatchFlowRoot")
 blessing_to_apply = ExtResource("51_ufjv4")
+print_debug = false
 
 [node name="BlessingCardSelectionHandler" type="Node" parent="Scripts/Core/Blessing" unique_id=964488475 node_paths=PackedStringArray("blessing_flow_handler", "selection_state", "turn_order_state", "player_one_hand", "player_two_hand")]
 script = ExtResource("52_qqxe6")
@@ -288,6 +293,7 @@ blessing_flow_handler = NodePath("../BlessingFlowHandler")
 selection_state = NodePath("../BlessingSelectionState")
 turn_order_state = NodePath("../../../MatchFlowRoot/MatchTurnOrderState")
 match_network_root = NodePath("../../../../Multiplayer/MatchNetworkRoot")
+print_debug = false
 
 [node name="SacrificeController" type="Node" parent="Scripts/Core" unique_id=1432478239 node_paths=PackedStringArray("player_hand", "sacrifice_selection_root", "requirement", "pending_boat", "committer")]
 script = ExtResource("10_1j514")
@@ -334,6 +340,7 @@ placement_executor = NodePath("PlacementExecutor")
 event_emitter = NodePath("PlacementEventEmitter")
 placement_cancel = NodePath("PlacementCancel")
 enable_payload_debug = true
+print_debug = false
 
 [node name="PlacementState" type="Node" parent="Scripts/Core/PlacementController" unique_id=1456688179]
 script = ExtResource("14_5sdof")

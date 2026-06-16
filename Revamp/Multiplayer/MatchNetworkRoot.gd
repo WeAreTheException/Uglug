@@ -1,8 +1,7 @@
 extends Node
 class_name MatchNetworkRoot
 
-@export var enable_match_advance_debug := true
-@export var match_advance_debug_key: Key = KEY_M
+
 @export var match_flow_root: MatchFlowRoot
 @export var deck_system_root: DeckSystemRoot
 @export var turn_order_state: MatchTurnOrderState
@@ -21,9 +20,10 @@ class_name MatchNetworkRoot
 @export var placement_network: MatchNetworkPlacement
 @export var flow_network: MatchNetworkFlow
 
+@export var enable_match_advance_debug := true
+@export var match_advance_debug_key: Key = KEY_M
 @export var enable_ping_debug := false
 @export var ping_debug_key: Key = KEY_N
-
 @export var print_debug := true
 
 var local_owner: SlotRow.SlotOwner = SlotRow.SlotOwner.PLAYER

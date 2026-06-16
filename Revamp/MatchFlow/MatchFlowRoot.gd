@@ -247,10 +247,44 @@ func _print_current_state() -> void:
 	print(
 		"MATCH STATE: ",
 		get_state_name(current_state),
+		" | ROUND: ",
+		current_round,
 		" | ACTIVE: ",
 		get_active_owner_name(),
+		" | ATTACK FIRST: ",
+		_get_attacking_first_owner_name(),
+		" | LEAD PLACE: ",
+		_get_lead_placement_owner_name(),
+		" | RESPONSE PLACE: ",
+		_get_response_placement_owner_name(),
 		" | CONTROLLED: ",
 		get_controlled_owner_name()
+	)
+
+func _get_attacking_first_owner_name() -> String:
+	if turn_order_state == null:
+		return "NONE"
+
+	return turn_order_state.get_owner_name(
+		turn_order_state.attacking_first_owner
+	)
+
+
+func _get_lead_placement_owner_name() -> String:
+	if turn_order_state == null:
+		return "NONE"
+
+	return turn_order_state.get_owner_name(
+		turn_order_state.lead_placement_owner
+	)
+
+
+func _get_response_placement_owner_name() -> String:
+	if turn_order_state == null:
+		return "NONE"
+
+	return turn_order_state.get_owner_name(
+		turn_order_state.response_placement_owner
 	)
 
 
