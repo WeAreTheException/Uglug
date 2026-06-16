@@ -199,21 +199,17 @@ func build_current_placement_payload() -> Dictionary:
 	if match_network_root != null:
 		network_owner = match_network_root.get_local_owner()
 
-	var sacrifices := sacrifice_controller.get_pending_sacrifice_cards()
-
-	print(
-		"PAYLOAD SACRIFICE DEBUG | active_card=",
-		placement_state.active_card.card_name if placement_state.active_card != null else "null",
-		" | pending_count=",
-		sacrifices.size(),
-		" | pending=",
-		sacrifices.map(func(card): return card.card_name)
+	var target_slot_index := _get_network_slot_index(
+		network_owner,
+		placement_state.preview_slot
 	)
-	return payload_builder.build_payload(
+
+	return payload_builder.build_payload_with_slot_index(
 		slots_root,
 		placement_state.active_card,
 		placement_state.preview_slot,
 		network_owner,
+		target_slot_index,
 		sacrifice_controller.get_pending_sacrifice_cards()
 	)
 
