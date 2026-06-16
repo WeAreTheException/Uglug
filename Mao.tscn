@@ -63,8 +63,13 @@
 [ext_resource type="Script" uid="uid://dbw5dxwuc5h4h" path="res://Revamp/Buff/BuffCardStagingHandler.gd" id="53_nmm8s"]
 [ext_resource type="Script" uid="uid://qkm73v3qftgr" path="res://Revamp/Multiplayer/MatchLocalViewApplier.gd" id="57_2n6q5"]
 [ext_resource type="Script" uid="uid://ddq57bg6lcsk1" path="res://Revamp/Multiplayer/MatchNetworkRoot.gd" id="57_8mjsp"]
+[ext_resource type="Script" uid="uid://bhcy41nxe3s4n" path="res://Revamp/Multiplayer/MatchNetworkLookup.gd" id="63_5j00x"]
+[ext_resource type="Script" uid="uid://2mkkfsgkiexj" path="res://Revamp/Multiplayer/MatchNetworkDraw.gd" id="64_af7hx"]
+[ext_resource type="Script" uid="uid://c2c2hqgcay1nf" path="res://Revamp/Multiplayer/MatchNetworkPlacement.gd" id="65_fd62j"]
 [ext_resource type="Script" uid="uid://cy3sful3ggumm" path="res://Revamp/Multiplayer/LocalGameplayReferenceBinder.gd" id="66_5j00x"]
 [ext_resource type="PackedScene" uid="uid://cvdlgiknngjmw" path="res://Revamp/Board/Background.tscn" id="66_af7hx"]
+[ext_resource type="Script" uid="uid://63l7crrnpitr" path="res://Revamp/Multiplayer/MatchNetworkBlessing.gd" id="66_q844d"]
+[ext_resource type="Script" uid="uid://con1w5rh38kav" path="res://Revamp/Multiplayer/MatchNetworkBuff.gd" id="67_gfrq6"]
 
 [node name="Mao" type="Node2D" unique_id=550121538]
 
@@ -409,7 +414,7 @@ score_state = NodePath("../../Scripts/MatchFlowRoot/MatchScoreState")
 
 [node name="Multiplayer" type="Node" parent="." unique_id=297260751]
 
-[node name="MatchNetworkRoot" type="Node" parent="Multiplayer" unique_id=1636531151 node_paths=PackedStringArray("match_flow_root", "deck_system_root", "turn_order_state", "match_score_state", "slots_root", "buff_flow_handler", "buff_database", "blessing_flow_handler", "placement_controller")]
+[node name="MatchNetworkRoot" type="Node" parent="Multiplayer" unique_id=1636531151 node_paths=PackedStringArray("match_flow_root", "deck_system_root", "turn_order_state", "match_score_state", "slots_root", "buff_flow_handler", "buff_database", "blessing_flow_handler", "placement_controller", "lookup_network", "draw_network", "buff_network", "blessing_network", "placement_network")]
 script = ExtResource("57_8mjsp")
 match_flow_root = NodePath("../../Scripts/MatchFlowRoot")
 deck_system_root = NodePath("../../Core/Deck")
@@ -420,7 +425,27 @@ buff_flow_handler = NodePath("../../Scripts/Core/Buff/BuffFlowHandler")
 buff_database = NodePath("../../Scripts/Core/Buff/BuffDatabase")
 blessing_flow_handler = NodePath("../../Scripts/Core/Blessing/BlessingFlowHandler")
 placement_controller = NodePath("../../Scripts/Core/PlacementController")
+lookup_network = NodePath("MatchNetworkLookup")
+draw_network = NodePath("MatchNetworkDraw")
+buff_network = NodePath("MatchNetworkBuff")
+blessing_network = NodePath("MatchNetworkBlessing")
+placement_network = NodePath("MatchNetworkPlacement")
 print_debug = false
+
+[node name="MatchNetworkLookup" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=2049736294]
+script = ExtResource("63_5j00x")
+
+[node name="MatchNetworkDraw" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=1641787042]
+script = ExtResource("64_af7hx")
+
+[node name="MatchNetworkPlacement" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=207070248]
+script = ExtResource("65_fd62j")
+
+[node name="MatchNetworkBlessing" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=632633305]
+script = ExtResource("66_q844d")
+
+[node name="MatchNetworkBuff" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=769336365]
+script = ExtResource("67_gfrq6")
 
 [node name="MatchLocalViewApplier" type="Node" parent="Multiplayer" unique_id=1811884870 node_paths=PackedStringArray("match_network_root", "player_one_hand", "player_two_hand")]
 script = ExtResource("57_2n6q5")

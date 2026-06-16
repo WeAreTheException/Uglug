@@ -1,0 +1,127 @@
+extends Node
+class_name MatchNetworkDraw
+
+var root: MatchNetworkRoot = null
+
+
+func setup(source_root: MatchNetworkRoot) -> void:
+	root = source_root
+
+
+func request_draw(
+	owner: SlotRow.SlotOwner,
+	pile_type: String
+) -> void:
+	if root == null:
+		return
+
+	if root.is_host():
+		_process_draw_request(owner, pile_type)
+		return
+
+	GDSync.call_func(root.request_draw, owner, pile_type)
+
+
+func receive_confirmed_draw(
+	owner: SlotRow.SlotOwner,
+	card_id: String,
+	runtime_id: String,
+	pile_type: String
+) -> void:
+	if root == null:
+		return
+
+	print(
+		"CONFIRMED DRAW RECEIVED: ",
+		root.get_owner_name(owner),
+		" ",
+		pile_type,
+		" ",
+		card_id,
+		" | HOST: ",
+		root.is_host(),
+		" | SETUP READY: ",
+		root.has_received_setup_payload
+	)
+
+	if not root.has_received_setup_payload:
+		print("CONFIRMED DRAW IGNORED: setup payload not ready")
+		return
+
+	if root.deck_system_root == null:
+		print("CONFIRMED DRAW FAILED: deck_system_root missing")
+		return
+
+	root.deck_system_root.apply_confirmed_draw(
+		owner,
+		card_id,
+		runtime_id,
+		pile_type,
+		not root.is_host()
+	)
+
+
+func _process_draw_request(
+	owner: SlotRow.SlotOwner,
+	pile_type: String
+) -> void:
+	if root.deck_system_root == null:
+		print("DRAW REQUEST REJECTED: deck_system_root missing")
+		return
+
+	if not _is_valid_draw_request(pile_type):
+		return
+
+	var entry := root.deck_system_root.pop_draw_entry_for_owner(owner, pile_type)
+
+	if entry.is_empty():
+		print("DRAW REQUEST REJECTED: empty draw result")
+		return
+
+	var card_id: String = entry.get("card_id", "")
+	var runtime_id: String = entry.get("runtime_id", "")
+
+	_broadcast_confirmed_draw(owner, card_id, runtime_id, pile_type)
+
+
+func _is_valid_draw_request(pile_type: String) -> bool:
+	if pile_type != DeckSystemRoot.DRAW_PILE_WARRIOR:
+		if pile_type != DeckSystemRoot.DRAW_PILE_WORKER:
+			print("DRAW REQUEST REJECTED: bad pile type ", pile_type)
+			return false
+
+	if root.match_flow_root == null:
+		return true
+
+	if root.match_flow_root.current_state != MatchFlowRoot.MatchState.AUTO_DRAW:
+		if root.print_debug:
+			print("DRAW REQUEST WARNING: draw outside AUTO_DRAW")
+
+	return true
+
+
+func _broadcast_confirmed_draw(
+	owner: SlotRow.SlotOwner,
+	card_id: String,
+	runtime_id: String,
+	pile_type: String
+) -> void:
+	if root.print_debug:
+		print(
+			"DRAW CONFIRMED: ",
+			root.get_owner_name(owner),
+			" ",
+			pile_type,
+			" ",
+			card_id,
+			" ",
+			runtime_id
+		)
+
+	GDSync.call_func_all(
+		root._receive_confirmed_draw,
+		owner,
+		card_id,
+		runtime_id,
+		pile_type
+	)
