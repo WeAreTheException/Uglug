@@ -307,12 +307,7 @@ func _should_mirror_confirmed_slot(owner: SlotRow.SlotOwner) -> bool:
 	if match_network_root == null:
 		return false
 
-	var local_owner := match_network_root.get_local_owner()
-
-	if local_owner == SlotRow.SlotOwner.OPPONENT:
-		return true
-
-	return local_owner != owner
+	return match_network_root.get_local_owner() != owner
 
 
 func _mirror_slot_index(slot_index: int) -> int:
