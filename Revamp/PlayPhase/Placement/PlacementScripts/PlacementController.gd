@@ -294,32 +294,13 @@ func _get_local_visual_slot_owner(slot_owner: SlotRow.SlotOwner) -> SlotRow.Slot
 
 
 func _get_local_visual_slot_index(
-	owner: SlotRow.SlotOwner,
+	_owner: SlotRow.SlotOwner,
 	logical_slot_index: int
 ) -> int:
-	if _should_mirror_confirmed_slot(owner):
+	if _is_client_visual_board_flipped():
 		return _mirror_slot_index(logical_slot_index)
 
 	return logical_slot_index
-
-
-func _should_mirror_confirmed_slot(owner: SlotRow.SlotOwner) -> bool:
-	if match_network_root == null:
-		return false
-
-	return match_network_root.get_local_owner() != owner
-
-
-func _mirror_slot_index(slot_index: int) -> int:
-	var max_slots := 4
-
-	if slots_root != null:
-		var slots := slots_root.get_slots_for_owner(SlotRow.SlotOwner.PLAYER)
-
-		if not slots.is_empty():
-			max_slots = slots.size()
-
-	return (max_slots + 1) - slot_index
 
 
 func _find_card_for_confirmed_placement(runtime_id: String) -> CardRoot:
@@ -419,33 +400,31 @@ func _get_current_local_placement_owner() -> SlotRow.SlotOwner:
 	return get_placing_owner()
 
 func _get_network_slot_index(
-	network_owner: SlotRow.SlotOwner,
+	_network_owner: SlotRow.SlotOwner,
 	target_slot: Slot
 ) -> int:
 	if target_slot == null:
-		print("SLOT INDEX DEBUG: target_slot null")
 		return -1
 
-	var visual_owner := SlotRow.SlotOwner.PLAYER
-
-	if slots_root != null:
-		visual_owner = slots_root.get_owner_of_slot(target_slot)
-
-	print(
-		"SLOT INDEX DEBUG | node=",
-		target_slot.name,
-		" | slot.slot_index=",
-		target_slot.slot_index,
-		" | visual_owner=",
-		visual_owner,
-		" | network_owner=",
-		network_owner
-	)
-
-	if slots_root == null:
-		return target_slot.slot_index
-
-	if visual_owner != network_owner:
+	if _is_client_visual_board_flipped():
 		return _mirror_slot_index(target_slot.slot_index)
 
 	return target_slot.slot_index
+
+func _is_client_visual_board_flipped() -> bool:
+	if match_network_root == null:
+		return false
+
+	return match_network_root.get_local_owner() == SlotRow.SlotOwner.OPPONENT
+
+
+func _mirror_slot_index(slot_index: int) -> int:
+	var max_slots := 4
+
+	if slots_root != null:
+		var slots := slots_root.get_slots_for_owner(SlotRow.SlotOwner.PLAYER)
+
+		if not slots.is_empty():
+			max_slots = slots.size()
+
+	return (max_slots + 1) - slot_index
