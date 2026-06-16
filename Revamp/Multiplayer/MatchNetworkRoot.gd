@@ -1,6 +1,8 @@
 extends Node
 class_name MatchNetworkRoot
 
+@export var enable_match_advance_debug := true
+@export var match_advance_debug_key: Key = KEY_M
 @export var match_flow_root: MatchFlowRoot
 @export var deck_system_root: DeckSystemRoot
 @export var turn_order_state: MatchTurnOrderState
@@ -68,6 +70,9 @@ func _input(event: InputEvent) -> void:
 
 	if draw_network != null:
 		draw_network.handle_debug_input(key_event)
+	
+	if enable_match_advance_debug and key_event.keycode == match_advance_debug_key:
+		request_advance_match_state()
 
 
 func is_host() -> bool:
