@@ -134,8 +134,11 @@ func apply_confirmed_placement(payload: Dictionary) -> void:
 	if not _can_place_on_confirmed_slot(slot, payload):
 		block("Confirmed placement blocked: slot occupied.")
 		return
-
+		
+	_commit_confirmed_sacrifices(payload)
+		
 	var source_hand := _get_source_hand_for_owner(owner)
+	
 	var event := placement_executor.confirm_network_placement(
 		card,
 		slot,
@@ -149,6 +152,36 @@ func apply_confirmed_placement(payload: Dictionary) -> void:
 
 	_finish_confirmed_placement(event)
 
+func _commit_confirmed_sacrifices(payload: Dictionary) -> void:
+	var sacrificed_ids: Array = payload.get("sacrificed_card_runtime_ids", [])
+
+	if sacrificed_ids.is_empty():
+		return
+
+	for runtime_id in sacrificed_ids:
+		var card := _find_card_for_confirmed_placement(str(runtime_id))
+
+		if card == null:
+			continue
+
+		_remove_confirmed_sacrifice_card(card)
+
+func _remove_confirmed_sacrifice_card(card: CardRoot) -> void:
+	if card == null:
+		return
+
+	card.play_committed_sacrifice()
+
+	var board_presence: BoardPresence = card.board_presence
+
+	if board_presence != null and board_presence.is_on_board():
+		board_presence.leave_slot(card)
+
+	if player_hand != null and player_hand.has_card(card):
+		player_hand.remove_card_from_hand(card)
+
+	card.queue_free()
+
 func _can_place_on_confirmed_slot(
 	slot: Slot,
 	payload: Dictionary
@@ -159,7 +192,7 @@ func _can_place_on_confirmed_slot(
 	if slot.is_empty():
 		return true
 
-	var occupying_card: CardRoot = slot.get_card() as CardRoot
+	var occupying_card: CardRoot = slot.current_card
 
 	if occupying_card == null:
 		return false

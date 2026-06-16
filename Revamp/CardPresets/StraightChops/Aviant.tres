@@ -10,6 +10,7 @@ script = ExtResource("2_wsm8g")
 card_id = "aviant"
 name = "Aviant"
 attack = 1
+cost = 1
 ant_texture = ExtResource("2_sib7n")
 base_mutations = Array[ExtResource("1_meods")]([ExtResource("3_oc2ah"), null])
 metadata/_custom_type_script = "uid://duslcpxrhurv8"
