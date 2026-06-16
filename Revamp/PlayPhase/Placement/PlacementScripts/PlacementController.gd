@@ -301,9 +301,6 @@ func _should_mirror_confirmed_slot(owner: SlotRow.SlotOwner) -> bool:
 	if match_network_root == null:
 		return false
 
-	if match_network_root.is_host():
-		return false
-
 	return match_network_root.get_local_owner() != owner
 
 
@@ -420,12 +417,27 @@ func _get_network_slot_index(
 	target_slot: Slot
 ) -> int:
 	if target_slot == null:
+		print("SLOT INDEX DEBUG: target_slot null")
 		return -1
+
+	var visual_owner := SlotRow.SlotOwner.PLAYER
+
+	if slots_root != null:
+		visual_owner = slots_root.get_owner_of_slot(target_slot)
+
+	print(
+		"SLOT INDEX DEBUG | node=",
+		target_slot.name,
+		" | slot.slot_index=",
+		target_slot.slot_index,
+		" | visual_owner=",
+		visual_owner,
+		" | network_owner=",
+		network_owner
+	)
 
 	if slots_root == null:
 		return target_slot.slot_index
-
-	var visual_owner := slots_root.get_owner_of_slot(target_slot)
 
 	if visual_owner != network_owner:
 		return _mirror_slot_index(target_slot.slot_index)
