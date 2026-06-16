@@ -358,8 +358,30 @@ func find_card_by_runtime_id(runtime_id: String) -> CardRoot:
 
 
 func remove_card_from_hand(card: CardRoot) -> void:
+	if card == null:
+		return
+
+	if not is_instance_valid(card):
+		return
+
+	clear_sacrifice_selection()
+
+	if interaction_root != null:
+		if interaction_root.get_primed_card() == card:
+			interaction_root.clear_primed_card()
+
+	if hand_layout != null:
+		hand_layout.clear_ignored_card()
+		hand_layout.clear_primed_card()
+
 	if card_spawner != null:
 		card_spawner.remove_card(card)
+
+	card_removed.emit(card)
+	hand_changed.emit()
+
+	arrange_cards()
+	emit_prime_state()
 
 
 func restore_card_to_hand(card: CardRoot, index: int) -> void:
