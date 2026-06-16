@@ -131,7 +131,7 @@ func apply_confirmed_placement(payload: Dictionary) -> void:
 		block("Confirmed placement blocked: slot missing.")
 		return
 
-	if not slot.is_empty():
+	if not _can_place_on_confirmed_slot(slot, payload):
 		block("Confirmed placement blocked: slot occupied.")
 		return
 
@@ -149,6 +149,24 @@ func apply_confirmed_placement(payload: Dictionary) -> void:
 
 	_finish_confirmed_placement(event)
 
+func _can_place_on_confirmed_slot(
+	slot: Slot,
+	payload: Dictionary
+) -> bool:
+	if slot == null:
+		return false
+
+	if slot.is_empty():
+		return true
+
+	var occupying_card: CardRoot = slot.get_card() as CardRoot
+
+	if occupying_card == null:
+		return false
+
+	var sacrificed_ids: Array = payload.get("sacrificed_card_runtime_ids", [])
+
+	return sacrificed_ids.has(occupying_card.get_runtime_id())
 
 func cancel_placement(undo_pending_sacrifice: bool = true) -> void:
 	if placement_state == null or not placement_state.has_active_card():

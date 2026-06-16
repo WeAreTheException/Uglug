@@ -82,8 +82,17 @@ func _is_valid_placement_request(payload: Dictionary) -> bool:
 		return false
 
 	if not slot.is_empty():
-		print("PLACEMENT VALIDATION FAILED: slot occupied")
-		return false
+		var occupying_card: CardRoot = slot.get_card() as CardRoot
+
+		if occupying_card == null:
+			print("PLACEMENT VALIDATION FAILED: slot occupied but card missing")
+			return false
+
+		var sacrificed_ids: Array = payload.get("sacrificed_card_runtime_ids", [])
+
+		if not sacrificed_ids.has(occupying_card.get_runtime_id()):
+			print("PLACEMENT VALIDATION FAILED: slot occupied")
+			return false
 
 	return true
 
