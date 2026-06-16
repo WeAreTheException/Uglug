@@ -32,6 +32,7 @@ var setup_helper := PlacementControllerSetupHelper.new()
 var start_flow := PlacementStartFlowHelper.new()
 var confirm_flow := PlacementConfirmFlowHelper.new()
 var payload_builder := PlacementRequestPayloadBuilder.new()
+var finish_flow := PlacementFinishFlowHelper.new()
 
 
 func _ready() -> void:
@@ -70,16 +71,6 @@ func start_placement(card: CardRoot, owner: SlotRow.SlotOwner) -> void:
 
 
 func request_preview_slot(slot: Slot) -> void:
-	_print(
-		"PLACEMENT PREVIEW REQUEST | placing="
-		+ str(is_placing())
-		+ " slot_valid="
-		+ str(is_valid_placement_slot(slot))
-		+ " active_owner="
-		+ str(_get_active_owner_debug())
-		+ " slot_owner="
-		+ str(_get_slot_owner_debug(slot))
-	)
 
 	if not is_placing() or not is_valid_placement_slot(slot):
 		return
@@ -140,11 +131,14 @@ func apply_confirmed_placement(payload: Dictionary) -> void:
 		block("Confirmed placement blocked: slot missing.")
 		return
 
-	if not slot.is_empty():
+	if not _can_place_on_confirmed_slot(slot, payload):
 		block("Confirmed placement blocked: slot occupied.")
 		return
-
+		
+	_commit_confirmed_sacrifices(payload)
+		
 	var source_hand := _get_source_hand_for_owner(owner)
+	
 	var event := placement_executor.confirm_network_placement(
 		card,
 		slot,
@@ -158,6 +152,54 @@ func apply_confirmed_placement(payload: Dictionary) -> void:
 
 	_finish_confirmed_placement(event)
 
+func _commit_confirmed_sacrifices(payload: Dictionary) -> void:
+	var sacrificed_ids: Array = payload.get("sacrificed_card_runtime_ids", [])
+
+	if sacrificed_ids.is_empty():
+		return
+
+	for runtime_id in sacrificed_ids:
+		var card := _find_card_for_confirmed_placement(str(runtime_id))
+
+		if card == null:
+			continue
+
+		_remove_confirmed_sacrifice_card(card)
+
+func _remove_confirmed_sacrifice_card(card: CardRoot) -> void:
+	if card == null:
+		return
+
+	card.play_committed_sacrifice()
+
+	var board_presence: BoardPresence = card.board_presence
+
+	if board_presence != null and board_presence.is_on_board():
+		board_presence.leave_slot(card)
+
+	if player_hand != null and player_hand.has_card(card):
+		player_hand.remove_card_from_hand(card)
+
+	card.queue_free()
+
+func _can_place_on_confirmed_slot(
+	slot: Slot,
+	payload: Dictionary
+) -> bool:
+	if slot == null:
+		return false
+
+	if slot.is_empty():
+		return true
+
+	var occupying_card: CardRoot = slot.current_card
+
+	if occupying_card == null:
+		return false
+
+	var sacrificed_ids: Array = payload.get("sacrificed_card_runtime_ids", [])
+
+	return sacrificed_ids.has(occupying_card.get_runtime_id())
 
 func cancel_placement(undo_pending_sacrifice: bool = true) -> void:
 	if placement_state == null or not placement_state.has_active_card():
@@ -208,11 +250,17 @@ func build_current_placement_payload() -> Dictionary:
 	if match_network_root != null:
 		network_owner = match_network_root.get_local_owner()
 
-	return payload_builder.build_payload(
+	var target_slot_index := _get_network_slot_index(
+		network_owner,
+		placement_state.preview_slot
+	)
+
+	return payload_builder.build_payload_with_slot_index(
 		slots_root,
 		placement_state.active_card,
 		placement_state.preview_slot,
 		network_owner,
+		target_slot_index,
 		sacrifice_controller.get_pending_sacrifice_cards()
 	)
 
@@ -264,27 +312,7 @@ func undo_pending_sacrifice() -> void:
 
 
 func _finish_confirmed_placement(event: Dictionary) -> void:
-	var emitted_event := event.duplicate(true)
-
-	if placement_preview != null:
-		placement_preview.clear_preview()
-
-	if sacrifice_controller != null:
-		sacrifice_controller.commit_pending_sacrifice()
-
-	if event_emitter != null:
-		event_emitter.emit_card_placed(emitted_event)
-
-	card_placed.emit(emitted_event)
-	placement_finished.emit(emitted_event)
-
-	if placement_state != null:
-		placement_state.reset()
-
-	set_hand_input_enabled(true)
-
-	if slots_root != null:
-		slots_root.refresh_board_mutations()
+	finish_flow.finish_placement(self, event)
 
 
 func _get_confirmed_target_slot(
@@ -317,32 +345,13 @@ func _get_local_visual_slot_owner(slot_owner: SlotRow.SlotOwner) -> SlotRow.Slot
 
 
 func _get_local_visual_slot_index(
-	owner: SlotRow.SlotOwner,
+	_owner: SlotRow.SlotOwner,
 	logical_slot_index: int
 ) -> int:
-	if _should_mirror_confirmed_slot(owner):
+	if _is_client_visual_board_flipped():
 		return _mirror_slot_index(logical_slot_index)
 
 	return logical_slot_index
-
-
-func _should_mirror_confirmed_slot(owner: SlotRow.SlotOwner) -> bool:
-	if match_network_root == null:
-		return false
-
-	return match_network_root.get_local_owner() != owner
-
-
-func _mirror_slot_index(slot_index: int) -> int:
-	var max_slots := 4
-
-	if slots_root != null:
-		var slots := slots_root.get_slots_for_owner(SlotRow.SlotOwner.PLAYER)
-
-		if not slots.is_empty():
-			max_slots = slots.size()
-
-	return (max_slots + 1) - slot_index
 
 
 func _find_card_for_confirmed_placement(runtime_id: String) -> CardRoot:
@@ -440,3 +449,33 @@ func _get_current_local_placement_owner() -> SlotRow.SlotOwner:
 		return match_network_root.get_local_owner()
 
 	return get_placing_owner()
+
+func _get_network_slot_index(
+	_network_owner: SlotRow.SlotOwner,
+	target_slot: Slot
+) -> int:
+	if target_slot == null:
+		return -1
+
+	if _is_client_visual_board_flipped():
+		return _mirror_slot_index(target_slot.slot_index)
+
+	return target_slot.slot_index
+
+func _is_client_visual_board_flipped() -> bool:
+	if match_network_root == null:
+		return false
+
+	return match_network_root.get_local_owner() == SlotRow.SlotOwner.OPPONENT
+
+
+func _mirror_slot_index(slot_index: int) -> int:
+	var max_slots := 4
+
+	if slots_root != null:
+		var slots := slots_root.get_slots_for_owner(SlotRow.SlotOwner.PLAYER)
+
+		if not slots.is_empty():
+			max_slots = slots.size()
+
+	return (max_slots + 1) - slot_index

@@ -90,3 +90,23 @@ func get_lead_placement_owner() -> SlotRow.SlotOwner:
 
 func get_response_placement_owner() -> SlotRow.SlotOwner:
 	return response_placement_owner
+
+func apply_network_owners(
+	new_active_owner: SlotRow.SlotOwner,
+	new_attacking_first_owner: SlotRow.SlotOwner,
+	new_lead_placement_owner: SlotRow.SlotOwner,
+	new_response_placement_owner: SlotRow.SlotOwner
+) -> void:
+	var active_changed := active_owner != new_active_owner
+	var attacking_changed := attacking_first_owner != new_attacking_first_owner
+
+	active_owner = new_active_owner
+	attacking_first_owner = new_attacking_first_owner
+	lead_placement_owner = new_lead_placement_owner
+	response_placement_owner = new_response_placement_owner
+
+	if active_changed:
+		active_owner_changed.emit(active_owner)
+
+	if attacking_changed:
+		attacking_first_owner_changed.emit(attacking_first_owner)

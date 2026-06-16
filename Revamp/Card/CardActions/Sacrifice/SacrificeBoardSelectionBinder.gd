@@ -4,10 +4,8 @@ class_name SacrificeBoardSelectionBinder
 @export var slots_root: SlotsRoot
 @export var selection_root: SacrificeSelectionRoot
 @export var player_hand: PlayerHandRoot
-@export var turn_order_state: MatchTurnOrderState
 
 @export var allowed_owner: SlotRow.SlotOwner = SlotRow.SlotOwner.PLAYER
-@export var use_controlled_owner: bool = true
 @export var print_debug: bool = true
 
 var is_sacrifice_active: bool = false
@@ -25,9 +23,17 @@ func setup(
 ) -> void:
 	slots_root = source_slots_root
 	selection_root = source_selection_root
-	player_hand = source_player_hand
+	set_player_hand(source_player_hand)
 
 	_connect_slots_root()
+
+
+func set_player_hand(new_hand: PlayerHandRoot) -> void:
+	if player_hand == new_hand:
+		return
+
+	_disconnect_player_hand()
+	player_hand = new_hand
 	_connect_player_hand()
 
 
@@ -47,6 +53,14 @@ func _connect_player_hand() -> void:
 		player_hand.hand_state_changed.connect(_on_hand_state_changed)
 
 
+func _disconnect_player_hand() -> void:
+	if player_hand == null:
+		return
+
+	if player_hand.hand_state_changed.is_connected(_on_hand_state_changed):
+		player_hand.hand_state_changed.disconnect(_on_hand_state_changed)
+
+
 func _on_hand_state_changed(state_name: String) -> void:
 	is_sacrifice_active = state_name.to_lower().contains("sacrifice")
 
@@ -58,10 +72,14 @@ func _on_slot_clicked(slot: Slot) -> void:
 	if slot == null:
 		return
 
+	_print("BOARD SACRIFICE CLICK SEEN")
+
 	if selection_root == null:
+		_print("BOARD SACRIFICE BLOCKED: selection_root missing")
 		return
 
 	if not is_sacrifice_active:
+		_print("BOARD SACRIFICE BLOCKED: sacrifice not active")
 		return
 
 	if not _is_allowed_slot(slot):
@@ -88,23 +106,20 @@ func _toggle_board_card(card: CardRoot) -> void:
 		_print("BOARD SACRIFICE UNSELECTED: %s" % card.card_name)
 		return
 
-	selection_root.add_board_card(card)
-	card.set_sacrifice_selected(true)
-	_print("BOARD SACRIFICE SELECTED: %s" % card.card_name)
+	if selection_root.add_board_card(card):
+		card.set_sacrifice_selected(true)
+		_print("BOARD SACRIFICE SELECTED: %s" % card.card_name)
+		return
+
+	card.set_sacrifice_selected(false)
+	_print("BOARD SACRIFICE BLOCKED: worth limit")
 
 
 func _is_allowed_slot(slot: Slot) -> bool:
 	if slots_root == null:
 		return false
 
-	return slots_root.get_owner_of_slot(slot) == _get_allowed_owner()
-
-
-func _get_allowed_owner() -> SlotRow.SlotOwner:
-	if use_controlled_owner and turn_order_state != null:
-		return turn_order_state.controlled_owner
-
-	return allowed_owner
+	return slots_root.get_owner_of_slot(slot) == allowed_owner
 
 
 func _is_primed_card(card: CardRoot) -> bool:
