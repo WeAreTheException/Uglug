@@ -445,6 +445,4 @@ sacrifice_board_binder = NodePath("../../Scripts/Core/SacrificeController/Sacrif
 
 [node name="Background" parent="." unique_id=40767625 instance=ExtResource("66_af7hx")]
 position = Vector2(396, 360)
-
-[node name="Background2" parent="." unique_id=271520361 instance=ExtResource("66_af7hx")]
-position = Vector2(396, 360)
+metadata/_edit_lock_ = true

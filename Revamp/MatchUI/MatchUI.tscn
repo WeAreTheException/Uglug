@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://c7cg4mnmqjf1h" path="res://Revamp/MatchUI/TuggaBattleScaleDisplay.gd" id="1_xe135"]
 [ext_resource type="Script" uid="uid://c5j44dhlx1div" path="res://Revamp/DirectDamage/MatchScoreState.gd" id="2_1duyo"]
 [ext_resource type="Script" uid="uid://dw1k6pcwy2emf" path="res://Revamp/MatchUI/AttackOrderArrowDisplay.gd" id="2_i6ny6"]
+[ext_resource type="FontFile" uid="uid://m0pv3sk8qbih" path="res://Art/AntBack/antrf___.ttf" id="4_smxsq"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nco33"]
 bg_color = Color(0.86036915, 0.8603692, 0.8603691, 1)
@@ -49,12 +50,14 @@ border_width_right = 3
 border_width_bottom = 3
 border_color = Color(0.8291633, 0.14043778, 0.35698447, 1)
 
-[node name="MatchUI" type="Control" unique_id=1584030534 node_paths=PackedStringArray("tugga_display", "attack_order_arrow_display")]
+[node name="MatchUI" type="Control" unique_id=1584030534 node_paths=PackedStringArray("tugga_display", "attack_order_arrow_display", "player_name_label", "enemy_name_label")]
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_0cu85")
 tugga_display = NodePath("TuggaStuff")
 attack_order_arrow_display = NodePath("AttackOrderArrow")
+player_name_label = NodePath("PlayerName")
+enemy_name_label = NodePath("EnemyName")
 
 [node name="AttackOrderArrow" type="Control" parent="." unique_id=279434668 node_paths=PackedStringArray("left_to_right_arrow", "right_to_left_arrow")]
 anchors_preset = 0
@@ -275,22 +278,37 @@ offset_bottom = 40.000008
 rotation = 0.7853982
 theme_override_styles/panel = SubResource("StyleBoxFlat_ioqil")
 
-[node name="PlayerName" type="TextEdit" parent="." unique_id=1805308345]
+[node name="PlayerName" type="Label" parent="." unique_id=2085924769]
 layout_mode = 0
 offset_left = 480.0
 offset_top = 12.0
 offset_right = 624.0
 offset_bottom = 60.0
-placeholder_text = "Swagsterdevil"
+theme_override_colors/font_color = Color(1, 0.91764706, 0.84313726, 1)
+theme_override_colors/font_outline_color = Color(0.06469653, 0.06469653, 0.06469653, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("4_smxsq")
+theme_override_font_sizes/font_size = 24
+text = "asdadsd"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="Enemy" type="Node2D" parent="." unique_id=1937094296]
-
-[node name="EnemyName" type="TextEdit" parent="Enemy" unique_id=1756216035]
+[node name="EnemyName" type="Label" parent="." unique_id=422156438]
+layout_mode = 0
 offset_left = 1212.0
 offset_top = 12.0
 offset_right = 1368.0
 offset_bottom = 60.0
-placeholder_text = "Swagsterdevil"
+theme_override_colors/font_color = Color(1, 0.91764706, 0.84313726, 1)
+theme_override_colors/font_outline_color = Color(0.09239707, 0.09239706, 0.09239706, 1)
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("4_smxsq")
+theme_override_font_sizes/font_size = 24
+text = "asdads"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Enemy" type="Node2D" parent="." unique_id=1937094296]
 
 [node name="Control" type="Control" parent="." unique_id=1770342218]
 anchors_preset = 0
