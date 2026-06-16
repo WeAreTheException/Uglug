@@ -70,6 +70,7 @@
 [ext_resource type="PackedScene" uid="uid://cvdlgiknngjmw" path="res://Revamp/Board/Background.tscn" id="66_af7hx"]
 [ext_resource type="Script" uid="uid://63l7crrnpitr" path="res://Revamp/Multiplayer/MatchNetworkBlessing.gd" id="66_q844d"]
 [ext_resource type="Script" uid="uid://con1w5rh38kav" path="res://Revamp/Multiplayer/MatchNetworkBuff.gd" id="67_gfrq6"]
+[ext_resource type="Script" uid="uid://4awjofgv2dfc" path="res://MatchNetworkFlow.gd" id="68_8hx3r"]
 
 [node name="Mao" type="Node2D" unique_id=550121538]
 
@@ -414,7 +415,7 @@ score_state = NodePath("../../Scripts/MatchFlowRoot/MatchScoreState")
 
 [node name="Multiplayer" type="Node" parent="." unique_id=297260751]
 
-[node name="MatchNetworkRoot" type="Node" parent="Multiplayer" unique_id=1636531151 node_paths=PackedStringArray("match_flow_root", "deck_system_root", "turn_order_state", "match_score_state", "slots_root", "buff_flow_handler", "buff_database", "blessing_flow_handler", "placement_controller", "lookup_network", "draw_network", "buff_network", "blessing_network", "placement_network")]
+[node name="MatchNetworkRoot" type="Node" parent="Multiplayer" unique_id=1636531151 node_paths=PackedStringArray("match_flow_root", "deck_system_root", "turn_order_state", "match_score_state", "slots_root", "buff_flow_handler", "buff_database", "blessing_flow_handler", "placement_controller", "lookup_network", "draw_network", "buff_network", "blessing_network", "placement_network", "flow_network")]
 script = ExtResource("57_8mjsp")
 match_flow_root = NodePath("../../Scripts/MatchFlowRoot")
 deck_system_root = NodePath("../../Core/Deck")
@@ -430,6 +431,7 @@ draw_network = NodePath("MatchNetworkDraw")
 buff_network = NodePath("MatchNetworkBuff")
 blessing_network = NodePath("MatchNetworkBlessing")
 placement_network = NodePath("MatchNetworkPlacement")
+flow_network = NodePath("MatchNetworkFlow")
 print_debug = false
 
 [node name="MatchNetworkLookup" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=2049736294]
@@ -446,6 +448,9 @@ script = ExtResource("66_q844d")
 
 [node name="MatchNetworkBuff" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=769336365]
 script = ExtResource("67_gfrq6")
+
+[node name="MatchNetworkFlow" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=880320439]
+script = ExtResource("68_8hx3r")
 
 [node name="MatchLocalViewApplier" type="Node" parent="Multiplayer" unique_id=1811884870 node_paths=PackedStringArray("match_network_root", "player_one_hand", "player_two_hand")]
 script = ExtResource("57_2n6q5")

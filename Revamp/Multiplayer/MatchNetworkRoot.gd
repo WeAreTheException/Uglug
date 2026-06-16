@@ -17,6 +17,7 @@ class_name MatchNetworkRoot
 @export var buff_network: MatchNetworkBuff
 @export var blessing_network: MatchNetworkBlessing
 @export var placement_network: MatchNetworkPlacement
+@export var flow_network: MatchNetworkFlow
 
 @export var enable_ping_debug := false
 @export var ping_debug_key: Key = KEY_N
@@ -40,6 +41,8 @@ func _ready() -> void:
 	GDSync.expose_func(_receive_confirmed_blessing)
 	GDSync.expose_func(request_placement)
 	GDSync.expose_func(_receive_confirmed_placement)
+	GDSync.expose_func(request_advance_match_state)
+	GDSync.expose_func(_receive_match_state_snapshot)
 
 	_setup_children()
 	_assign_local_owner()
@@ -219,6 +222,9 @@ func _setup_children() -> void:
 
 	if placement_network != null:
 		placement_network.setup(self)
+	
+	if flow_network != null:
+		flow_network.setup(self)
 
 
 func _connect_match_flow() -> void:
@@ -230,6 +236,9 @@ func _connect_match_flow() -> void:
 
 
 func _on_match_state_changed(state: MatchFlowRoot.MatchState) -> void:
+	if not is_host():
+		return
+
 	if state == MatchFlowRoot.MatchState.BUFF:
 		if buff_network != null:
 			buff_network.on_buff_phase_started()
@@ -329,3 +338,19 @@ func _send_ping_debug() -> void:
 
 func _receive_network_ping(message: String) -> void:
 	print("NETWORK PING RECEIVED: ", message, " | HOST: ", is_host())
+
+
+func request_advance_match_state() -> void:
+	if flow_network == null:
+		print("REQUEST MATCH ADVANCE FAILED: flow_network missing")
+		return
+
+	flow_network.request_advance_match_state()
+
+
+func _receive_match_state_snapshot(payload: Dictionary) -> void:
+	if flow_network == null:
+		print("MATCH SNAPSHOT RECEIVE FAILED: flow_network missing")
+		return
+
+	flow_network.receive_match_state_snapshot(payload)
