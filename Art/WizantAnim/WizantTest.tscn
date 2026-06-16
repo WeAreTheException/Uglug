@@ -3,10 +3,10 @@
 [ext_resource type="PackedScene" uid="uid://21w8glb26358" path="res://Art/WizantAnim/WizantAnim.tscn" id="1_nid77"]
 [ext_resource type="PackedScene" uid="uid://1wr1e57v7trd" path="res://Revamp/PlayerHand/Player_Hand.tscn" id="2_u45uh"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="3_nai6m"]
-[ext_resource type="Resource" uid="uid://0c6lqenucx25" path="res://Revamp/CardPresets/StraightChops/Aviant.tres" id="4_5khfc"]
+[ext_resource type="Resource" uid="uid://0c6lqenucx25" path="res://Revamp/CardPresets/Aviant.tres" id="4_5khfc"]
 [ext_resource type="Resource" uid="uid://c2bo8r00gukg4" path="res://Revamp/CardPresets/Empowerant.tres" id="5_rq2xd"]
 [ext_resource type="Resource" uid="uid://ci7yvhc8pfst6" path="res://Revamp/CardPresets/QueenAnt.tres" id="6_0uvx7"]
-[ext_resource type="Resource" uid="uid://b1dt5378u5ga8" path="res://Revamp/CardPresets/Sustain/Guardiant.tres" id="7_dqxfk"]
+[ext_resource type="Resource" uid="uid://b1dt5378u5ga8" path="res://Revamp/CardPresets/Guardiant.tres" id="7_dqxfk"]
 
 [node name="Node2D" type="Node2D" unique_id=1211598551]
 

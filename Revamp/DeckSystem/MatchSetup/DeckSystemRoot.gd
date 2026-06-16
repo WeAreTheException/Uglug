@@ -14,7 +14,6 @@ const DRAW_PILE_WORKER := "worker"
 @export var player_two_draw_pile: DrawPileRoot
 @export var worker_source: WorkerSource
 @export var build_on_ready: bool = false
-@export var card_database: CardDatabase
 
 @export var animate_starting_hand_deal: bool = true
 @export var starting_hand_start_delay: float = 0.25
@@ -25,6 +24,7 @@ const DRAW_PILE_WORKER := "worker"
 
 var payload_builder := MatchSetupPayloadBuilder.new()
 var last_setup_payload: Dictionary = {}
+var card_lookup_cache: Dictionary = {}
 
 
 func _ready() -> void:
@@ -69,6 +69,13 @@ func build_match_decks() -> void:
 	var p1_start: Array[CardData] = _to_card_data_array(result["p1_starting_hand"])
 	var p2_start: Array[CardData] = _to_card_data_array(result["p2_starting_hand"])
 
+	card_lookup_cache.clear()
+	_register_card_data_array(p1_draw)
+	_register_card_data_array(p2_draw)
+	_register_card_data_array(p1_start)
+	_register_card_data_array(p2_start)
+	_register_worker_source_card()
+
 	last_setup_payload = payload_builder.build_payload(
 		_get_match_seed(),
 		p1_start,
@@ -107,6 +114,7 @@ func build_match_decks() -> void:
 
 func apply_match_setup_payload(payload: Dictionary) -> void:
 	_setup_hand_contexts()
+	_rebuild_card_lookup_cache_from_setup()
 	_clear_match_cards()
 
 	if player_one_draw_pile != null:
@@ -129,16 +137,22 @@ func get_last_setup_payload() -> Dictionary:
 
 
 func get_card_data(card_id: String) -> CardData:
-	if card_database == null:
-		print("DeckSystemRoot card lookup failed: card_database missing")
+	var clean_id := card_id.strip_edges()
+
+	if clean_id == "":
+		print("DeckSystemRoot card lookup failed: empty card_id")
 		return null
 
-	var card_data := card_database.get_card_by_id(card_id)
+	if card_lookup_cache.has(clean_id):
+		return card_lookup_cache[clean_id] as CardData
 
-	if card_data == null:
-		print("DeckSystemRoot card lookup failed: ", card_id)
+	_rebuild_card_lookup_cache_from_setup()
 
-	return card_data
+	if card_lookup_cache.has(clean_id):
+		return card_lookup_cache[clean_id] as CardData
+
+	print("DeckSystemRoot card lookup failed: ", clean_id)
+	return null
 
 
 func get_hand_for_card_owner(source_card: CardRoot) -> PlayerHandRoot:
@@ -404,6 +418,8 @@ func _build_worker_draw_entry(owner: SlotRow.SlotOwner) -> Dictionary:
 		print("worker draw blocked: worker card missing")
 		return {}
 
+	_register_card_data(worker)
+
 	return {
 		"card_id": worker.get_safe_card_id(),
 		"runtime_id": _build_runtime_id(owner, DRAW_PILE_WORKER, worker)
@@ -517,6 +533,56 @@ func _build_runtime_id(
 		+ "_"
 		+ str(Time.get_ticks_usec())
 	)
+
+
+func _rebuild_card_lookup_cache_from_setup() -> void:
+	if match_setup == null:
+		return
+
+	var result: Dictionary = match_setup.build_match_decks()
+
+	if result.is_empty():
+		return
+
+	card_lookup_cache.clear()
+
+	_register_card_data_array(_to_card_data_array(result.get("p1_draw_pile", [])))
+	_register_card_data_array(_to_card_data_array(result.get("p2_draw_pile", [])))
+	_register_card_data_array(_to_card_data_array(result.get("p1_starting_hand", [])))
+	_register_card_data_array(_to_card_data_array(result.get("p2_starting_hand", [])))
+	_register_worker_source_card()
+
+
+func _register_card_data_array(cards: Array[CardData]) -> void:
+	for card_data: CardData in cards:
+		_register_card_data(card_data)
+
+
+func _register_card_data(card_data: CardData) -> void:
+	if card_data == null:
+		return
+
+	var safe_id := card_data.get_safe_card_id().strip_edges()
+
+	if safe_id != "":
+		card_lookup_cache[safe_id] = card_data
+
+	var explicit_id := card_data.card_id.strip_edges()
+
+	if explicit_id != "":
+		card_lookup_cache[explicit_id] = card_data
+
+
+func _register_worker_source_card() -> void:
+	if worker_source == null:
+		return
+
+	var worker := worker_source.get_worker_card()
+
+	if worker == null:
+		return
+
+	_register_card_data(worker)
 
 
 func _apply_payload_debug() -> void:

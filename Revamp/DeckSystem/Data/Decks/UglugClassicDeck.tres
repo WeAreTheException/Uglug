@@ -6,7 +6,7 @@
 [ext_resource type="Resource" uid="uid://di7qn14ht770q" path="res://Revamp/DeckSystem/Data/UglugClassicStartingHand.tres" id="3_106yo"]
 [ext_resource type="Resource" uid="uid://bxrcjm4w1dy82" path="res://Revamp/CardPresets/Anthrax.tres" id="3_qbfal"]
 [ext_resource type="Resource" uid="uid://c64jbnvj0pbwk" path="res://Revamp/CardPresets/CardSpawner/AntHill.tres" id="4_qbfal"]
-[ext_resource type="Resource" uid="uid://0c6lqenucx25" path="res://Revamp/CardPresets/StraightChops/Aviant.tres" id="5_dfkt1"]
+[ext_resource type="Resource" uid="uid://0c6lqenucx25" path="res://Revamp/CardPresets/Aviant.tres" id="5_dfkt1"]
 [ext_resource type="Resource" uid="uid://2d6xo4jns8it" path="res://Revamp/CardPresets/BOB.tres" id="6_si318"]
 [ext_resource type="Resource" uid="uid://b8tgum0dpv4iv" path="res://Revamp/CardPresets/Deterrant.tres" id="7_n8v14"]
 [ext_resource type="Resource" uid="uid://b350kw1jayfdj" path="res://Revamp/CardPresets/Draculant.tres" id="8_0oyej"]
@@ -23,7 +23,7 @@
 [ext_resource type="Resource" uid="uid://dwpj7bg5ognwt" path="res://Revamp/CardPresets/Samurant.tres" id="19_p88jp"]
 [ext_resource type="Resource" uid="uid://b10yu2ml8hwx2" path="res://Revamp/CardPresets/Stimulant.tres" id="20_0rd41"]
 [ext_resource type="Resource" uid="uid://cu38anwcrq117" path="res://Revamp/CardPresets/SuperStimulant.tres" id="21_qcpcq"]
-[ext_resource type="Resource" uid="uid://b1dt5378u5ga8" path="res://Revamp/CardPresets/Sustain/Guardiant.tres" id="22_6ihe4"]
+[ext_resource type="Resource" uid="uid://b1dt5378u5ga8" path="res://Revamp/CardPresets/Guardiant.tres" id="22_6ihe4"]
 
 [sub_resource type="Resource" id="Resource_dfkt1"]
 script = ExtResource("1_1o8w7")

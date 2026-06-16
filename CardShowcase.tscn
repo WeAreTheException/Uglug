@@ -20,10 +20,10 @@
 [ext_resource type="Resource" uid="uid://bckromx6ufd8m" path="res://Revamp/CardPresets/Escucheant.tres" id="18_ohpag"]
 [ext_resource type="Resource" uid="uid://bxfxi0h5itrdu" path="res://Revamp/CardPresets/Lieutenant.tres" id="19_u0etf"]
 [ext_resource type="Resource" uid="uid://cu38anwcrq117" path="res://Revamp/CardPresets/SuperStimulant.tres" id="20_nvlb2"]
-[ext_resource type="Resource" uid="uid://b1dt5378u5ga8" path="res://Revamp/CardPresets/Sustain/Guardiant.tres" id="21_jojc2"]
+[ext_resource type="Resource" uid="uid://b1dt5378u5ga8" path="res://Revamp/CardPresets/Guardiant.tres" id="21_jojc2"]
 [ext_resource type="Resource" uid="uid://c64jbnvj0pbwk" path="res://Revamp/CardPresets/CardSpawner/AntHill.tres" id="22_h7u5s"]
 [ext_resource type="Resource" uid="uid://mnht3u87f5og" path="res://Revamp/CardPresets/CardSpawner/Pregnant.tres" id="23_7kb0t"]
-[ext_resource type="Resource" uid="uid://0c6lqenucx25" path="res://Revamp/CardPresets/StraightChops/Aviant.tres" id="24_rn6h6"]
+[ext_resource type="Resource" uid="uid://0c6lqenucx25" path="res://Revamp/CardPresets/Aviant.tres" id="24_rn6h6"]
 
 [node name="Node2D" type="Node2D" unique_id=1502507609]
 
