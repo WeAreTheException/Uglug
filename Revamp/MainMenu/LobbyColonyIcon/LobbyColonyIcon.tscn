@@ -4,16 +4,31 @@
 [ext_resource type="Texture2D" uid="uid://cxc62tmwvs36" path="res://Art/HurtSprite.png" id="2_pw6qh"]
 [ext_resource type="Script" uid="uid://dv43dd1ulrin2" path="res://Revamp/MainMenu/LobbyColonyIcon/LobbyBounceFeedback.gd" id="3_5upnk"]
 [ext_resource type="Texture2D" uid="uid://clnfhl8kmi81h" path="res://Revamp/MainMenu/PlaceholderArt/PlaceholderLockSprite.png" id="3_34jfq"]
+[ext_resource type="FontFile" uid="uid://m0pv3sk8qbih" path="res://Art/AntBack/antrf___.ttf" id="4_pwdvd"]
+[ext_resource type="Texture2D" uid="uid://cc4ocag1vy2ry" path="res://Revamp/MainMenu/LobbyColonyIcon/PublicLobby.png" id="5_r0187"]
+[ext_resource type="Texture2D" uid="uid://ctaca0j33sko4" path="res://Revamp/MainMenu/LobbyColonyIcon/PrivateLobby.png" id="6_wy54h"]
+[ext_resource type="Shader" uid="uid://dt77y6ccd1hxy" path="res://Cards/SigilOutline.gdshader" id="6_yi6la"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_td5jp"]
 size = Vector2(145, 142)
 
-[node name="LobbyColonyIcon" type="Area2D" unique_id=316670724 node_paths=PackedStringArray("name_label", "player_icon", "colony_visual", "bounce_feedback", "lock_sprite", "private_tooltip")]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_k7g6p"]
+shader = ExtResource("6_yi6la")
+shader_parameter/line_color = Color(0.072842635, 0.072842635, 0.072842635, 1)
+shader_parameter/line_thickness = 10.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yi6la"]
+shader = ExtResource("6_yi6la")
+shader_parameter/line_color = Color(1, 0.91764706, 0.84313726, 1)
+shader_parameter/line_thickness = 10.0
+
+[node name="LobbyColonyIcon" type="Area2D" unique_id=316670724 node_paths=PackedStringArray("name_label", "player_icon", "public_lobby_visual", "private_lobby_visual", "bounce_feedback", "lock_sprite", "private_tooltip")]
 z_index = 20
 script = ExtResource("1_7kys0")
 name_label = NodePath("BounceRoot/NameLabel")
 player_icon = NodePath("BounceRoot/PlayerIcon")
-colony_visual = NodePath("ColonyAreaVisual")
+public_lobby_visual = NodePath("PublicLobby")
+private_lobby_visual = NodePath("PrivateLobby")
 bounce_feedback = NodePath("BounceRoot")
 lock_sprite = NodePath("LockSprite")
 private_tooltip = NodePath("PrivateToolTip")
@@ -33,13 +48,22 @@ scale = Vector2(0.12041667, 0.07607528)
 texture = ExtResource("2_pw6qh")
 
 [node name="NameLabel" type="Label" parent="BounceRoot" unique_id=1184373755]
-offset_right = 145.0
-offset_bottom = 23.0
+anchors_preset = -1
+offset_left = 1.0
+offset_top = -23.0
+offset_right = 146.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/outline_size = 10
+theme_override_constants/shadow_outline_size = 1
+theme_override_fonts/font = ExtResource("4_pwdvd")
+theme_override_font_sizes/font_size = 24
 text = "PlayerName"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="LockSprite" type="Sprite2D" parent="." unique_id=520031428]
-visible = false
-position = Vector2(73, 71)
+position = Vector2(144, 132)
 scale = Vector2(0.3653846, 0.36538464)
 texture = ExtResource("3_34jfq")
 
@@ -49,3 +73,19 @@ offset_left = 18.0
 offset_top = -23.0
 offset_right = 124.0
 text = "Private Lobby"
+
+[node name="PublicLobby" type="TextureRect" parent="." unique_id=2098234723]
+visible = false
+material = SubResource("ShaderMaterial_k7g6p")
+offset_right = 144.0
+offset_bottom = 144.0
+texture = ExtResource("5_r0187")
+expand_mode = 1
+
+[node name="PrivateLobby" type="TextureRect" parent="." unique_id=1511732883]
+visible = false
+material = SubResource("ShaderMaterial_yi6la")
+offset_right = 144.0
+offset_bottom = 144.0
+texture = ExtResource("6_wy54h")
+expand_mode = 1
