@@ -27,16 +27,24 @@ func _ready() -> void:
 	input_pickable = true
 	base_scale = scale
 
-	if name_label != null:
-		name_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_set_mouse_ignore(name_label)
+	_set_mouse_ignore(player_icon)
+	_set_mouse_ignore(public_lobby_visual)
+	_set_mouse_ignore(private_lobby_visual)
+	_set_mouse_ignore(lock_sprite)
+	_set_mouse_ignore(private_tooltip)
 
 	if private_tooltip != null:
 		private_tooltip.visible = false
-		private_tooltip.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
-	input_event.connect(_on_input_event)
-	mouse_entered.connect(_on_mouse_entered)
-	mouse_exited.connect(_on_mouse_exited)
+	if not input_event.is_connected(_on_input_event):
+		input_event.connect(_on_input_event)
+
+	if not mouse_entered.is_connected(_on_mouse_entered):
+		mouse_entered.connect(_on_mouse_entered)
+
+	if not mouse_exited.is_connected(_on_mouse_exited):
+		mouse_exited.connect(_on_mouse_exited)
 
 
 func setup(source_lobby_info: Dictionary) -> void:
@@ -50,6 +58,8 @@ func setup(source_lobby_info: Dictionary) -> void:
 
 	if name_label != null:
 		name_label.text = display_name
+		name_label.add_theme_color_override("font_outline_color", Color.BLACK)
+		name_label.add_theme_constant_override("outline_size", 4)
 
 	if is_private_lobby:
 		_set_private_visual()
@@ -85,7 +95,9 @@ func _on_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> voi
 		return
 
 	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		var mouse_event := event as InputEventMouseButton
+
+		if mouse_event.button_index == MOUSE_BUTTON_LEFT and mouse_event.pressed:
 			_play_click_ripple()
 			lobby_clicked.emit(lobby_info)
 
@@ -159,3 +171,15 @@ func _disable_own_lobby_feedback() -> void:
 
 	if private_tooltip != null:
 		private_tooltip.visible = false
+
+
+func _set_mouse_ignore(node: Node) -> void:
+	if node == null:
+		return
+
+	if node is Control:
+		var control := node as Control
+		control.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+	for child in node.get_children():
+		_set_mouse_ignore(child)

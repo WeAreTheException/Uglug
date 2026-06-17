@@ -1,7 +1,8 @@
 [gd_scene format=3 uid="uid://21w8glb26358"]
 
 [ext_resource type="Shader" uid="uid://cnas0qc66obri" path="res://GreenScreen.gdshader" id="1_bb25q"]
-[ext_resource type="VideoStream" uid="uid://cmj1dy34vagxs" path="res://Art/WizantAnim/Wizant_GreensScreen.ogv" id="2_ru1o7"]
+[ext_resource type="Script" uid="uid://choypsxnhsnwf" path="res://Art/WizantAnim/RevenantVideoHandler.gd" id="1_ru1o7"]
+[ext_resource type="VideoStream" uid="uid://cymr7f4io0xnx" path="res://Art/WizantAnim/Wizant.ogv" id="3_m4pko"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_m4pko"]
 shader = ExtResource("1_bb25q")
@@ -10,11 +11,16 @@ shader_parameter/similarity = 0.4
 shader_parameter/smoothness = 0.08
 shader_parameter/spill = 0.1
 
-[node name="Node2D" type="Node2D" unique_id=1060986998]
+[node name="WizantAnim" type="Node2D" unique_id=1060986998 node_paths=PackedStringArray("intro_player")]
+script = ExtResource("1_ru1o7")
+intro_player = NodePath("Wizant_intro")
+play_intro_on_ready = true
+debug_auto_outro_after_intro = true
+debug_outro_fade_time = 1.0
 
-[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="." unique_id=1745805847]
+[node name="Wizant_intro" type="VideoStreamPlayer" parent="." unique_id=1745805847]
 material = SubResource("ShaderMaterial_m4pko")
 offset_right = 40.0
 offset_bottom = 40.0
-stream = ExtResource("2_ru1o7")
+stream = ExtResource("3_m4pko")
 autoplay = true
