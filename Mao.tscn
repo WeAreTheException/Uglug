@@ -100,7 +100,7 @@ prime_location = NodePath("../PrimeCardLocation")
 position = Vector2(312, 504)
 
 [node name="BuffCardLocation" type="Node2D" parent="Core" unique_id=1437677715]
-position = Vector2(1198, 492)
+position = Vector2(400, 500)
 
 [node name="MatchFlowUI" type="Node2D" parent="Core" unique_id=1660901840]
 metadata/_edit_lock_ = true
@@ -233,6 +233,7 @@ script = ExtResource("31_nmm8s")
 larvae_reward_scene = ExtResource("29_72iem")
 larvae_draggers_scene = ExtResource("32_qb8ua")
 reward_parent = NodePath("../../../../Core/MatchFlowUI")
+reward_center_position = Vector2(100, 500)
 print_debug = false
 
 [node name="BuffDatabase" type="Node" parent="Scripts/Core/Buff" unique_id=1175133697]
@@ -298,6 +299,7 @@ match_network_root = NodePath("../../../../Multiplayer/MatchNetworkRoot")
 print_debug = false
 
 [node name="WizantAnim" parent="Scripts/Core/Blessing" unique_id=1060986998 instance=ExtResource("46_bvwb1")]
+visible = false
 play_intro_on_ready = false
 
 [node name="SacrificeController" type="Node" parent="Scripts/Core" unique_id=1432478239 node_paths=PackedStringArray("player_hand", "sacrifice_selection_root", "requirement", "pending_boat", "committer")]

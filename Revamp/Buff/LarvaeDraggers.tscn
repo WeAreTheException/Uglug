@@ -7,6 +7,7 @@
 script = ExtResource("1_xfe40")
 larvae_anchor = NodePath("LarvaeAnchor")
 larvae_local_offset = Vector2(55, 0)
+center_position = Vector2(100, 500)
 
 [node name="Workers" type="Node2D" parent="." unique_id=680969544]
 
