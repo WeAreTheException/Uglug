@@ -123,7 +123,7 @@ func _finish_after_apply() -> void:
 		selection_state.clear_selections()
 
 	if blessing_flow_handler != null:
-		blessing_flow_handler.finish_blessing_flow()
+		blessing_flow_handler.request_finish_blessing_flow()
 
 
 func _on_blessing_started() -> void:
