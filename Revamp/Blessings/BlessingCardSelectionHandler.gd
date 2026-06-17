@@ -4,6 +4,7 @@ class_name BlessingCardSelectionHandler
 @export var blessing_flow_handler: BlessingFlowHandler
 @export var selection_state: BlessingSelectionState
 @export var turn_order_state: MatchTurnOrderState
+@export var phase_timer: MatchPhaseTimer
 
 @export var player_one_hand: PlayerHandRoot
 @export var player_two_hand: PlayerHandRoot
@@ -46,6 +47,9 @@ func _connect_hand(hand: PlayerHandRoot) -> void:
 
 
 func _on_blessing_started() -> void:
+	if phase_timer != null:
+		phase_timer.start_for_state(MatchFlowRoot.MatchState.BLESSING)
+		
 	is_active = true
 
 	_set_instruction_visible(true)

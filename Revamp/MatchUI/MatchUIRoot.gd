@@ -4,6 +4,7 @@ class_name MatchUIRoot
 @export var match_flow_root: MatchFlowRoot
 @export var slots_root: SlotsRoot
 @export var score_state: MatchScoreState
+@export var phase_timer: MatchPhaseTimer
 
 @export var tugga_display: TuggaBattleScaleDisplay
 @export var attack_order_arrow_display: AttackOrderArrowDisplay
@@ -11,15 +12,24 @@ class_name MatchUIRoot
 @export var host_name_label: Label
 @export var client_name_label: Label
 
+@export var phase_title_label: Label
+@export var phase_timer_label: Label
+@export var initiator_name_label: Label
+
 @export var name_outline_size: int = 4
 @export var print_name_debug: bool = false
+@export var print_phase_debug: bool = false
 
 
 func _ready() -> void:
 	_resolve_score_state()
 	_setup_children()
 	_setup_name_labels()
+	_connect_match_flow()
+	_connect_phase_timer()
+	_refresh_phase_labels()
 	call_deferred("_setup_name_labels")
+	call_deferred("_refresh_phase_labels")
 
 
 func setup_match_context(
@@ -32,6 +42,13 @@ func setup_match_context(
 	_resolve_score_state()
 	_setup_children()
 	_setup_name_labels()
+	_connect_match_flow()
+	_refresh_phase_labels()
+
+
+func setup_phase_timer(source_phase_timer: MatchPhaseTimer) -> void:
+	phase_timer = source_phase_timer
+	_connect_phase_timer()
 
 
 func _resolve_score_state() -> void:
@@ -53,6 +70,143 @@ func _setup_children() -> void:
 			slots_root,
 			_get_turn_order_state()
 		)
+
+
+func _connect_match_flow() -> void:
+	if match_flow_root == null:
+		return
+
+	if not match_flow_root.match_state_changed.is_connected(_on_match_state_changed):
+		match_flow_root.match_state_changed.connect(_on_match_state_changed)
+
+	if not match_flow_root.round_changed.is_connected(_on_round_changed):
+		match_flow_root.round_changed.connect(_on_round_changed)
+
+
+func _connect_phase_timer() -> void:
+	if phase_timer == null:
+		return
+
+	if not phase_timer.timer_started.is_connected(_on_phase_timer_started):
+		phase_timer.timer_started.connect(_on_phase_timer_started)
+
+	if not phase_timer.timer_ticked.is_connected(_on_phase_timer_ticked):
+		phase_timer.timer_ticked.connect(_on_phase_timer_ticked)
+
+	if not phase_timer.timer_finished.is_connected(_on_phase_timer_finished):
+		phase_timer.timer_finished.connect(_on_phase_timer_finished)
+
+
+func _on_match_state_changed(_state: MatchFlowRoot.MatchState) -> void:
+	_refresh_phase_labels()
+
+
+func _on_round_changed(_round_number: int) -> void:
+	_refresh_phase_labels()
+
+
+func _on_phase_timer_started(
+	_state: MatchFlowRoot.MatchState,
+	duration: float
+) -> void:
+	_update_phase_timer_text(duration)
+
+
+func _on_phase_timer_ticked(
+	_state: MatchFlowRoot.MatchState,
+	remaining: float
+) -> void:
+	_update_phase_timer_text(remaining)
+
+
+func _on_phase_timer_finished(_state: MatchFlowRoot.MatchState) -> void:
+	_update_phase_timer_text(0.0)
+
+
+func _refresh_phase_labels() -> void:
+	_update_phase_title()
+	_update_initiator_name()
+
+	if print_phase_debug:
+		print(
+			"MATCH UI PHASE REFRESH | phase=",
+			_get_phase_title_text(),
+			" initiator=",
+			_get_initiator_text()
+		)
+
+
+func _update_phase_title() -> void:
+	if phase_title_label == null:
+		return
+
+	phase_title_label.text = _get_phase_title_text()
+
+
+func _update_phase_timer_text(seconds: float) -> void:
+	if phase_timer_label == null:
+		return
+
+	var total_seconds: int = max(int(ceil(seconds)), 0)
+	var minutes: int = total_seconds / 60
+	var remainder: int = total_seconds % 60
+
+	phase_timer_label.text = "%d:%02d" % [minutes, remainder]
+
+
+func _update_initiator_name() -> void:
+	if initiator_name_label == null:
+		return
+
+	initiator_name_label.text = _get_initiator_text()
+
+
+func _get_phase_title_text() -> String:
+	if match_flow_root == null:
+		return "PHASE"
+
+	match match_flow_root.current_state:
+		MatchFlowRoot.MatchState.ROUND_INTRO:
+			return "ROUND " + str(match_flow_root.current_round)
+
+		MatchFlowRoot.MatchState.AUTO_DRAW:
+			return "AUTO DRAW"
+
+		MatchFlowRoot.MatchState.BLESSING:
+			return "BLESSING"
+
+		MatchFlowRoot.MatchState.BUFF:
+			return "BUFF"
+
+		MatchFlowRoot.MatchState.LEAD_PLACEMENT:
+			return "PLACE"
+
+		MatchFlowRoot.MatchState.RESPONSE_PLACEMENT:
+			return "PLACE"
+
+		MatchFlowRoot.MatchState.COMBAT:
+			return "COMBAT"
+
+		MatchFlowRoot.MatchState.ROUND_END:
+			return "ROUND END"
+
+		MatchFlowRoot.MatchState.GAME_END:
+			return "GAME END"
+
+	return "PHASE"
+
+
+func _get_initiator_text() -> String:
+	var turn_order_state := _get_turn_order_state()
+
+	if turn_order_state == null:
+		return ""
+
+	var owner_name := turn_order_state.get_owner_name(
+		turn_order_state.attacking_first_owner
+	)
+
+	return owner_name + " attacks first"
 
 
 func _setup_name_labels() -> void:

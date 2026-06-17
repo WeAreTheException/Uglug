@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://drlu1efs8taqn" path="res://Revamp/MatchUI/MatchUIRoot.gd" id="1_0cu85"]
 [ext_resource type="Script" uid="uid://c7cg4mnmqjf1h" path="res://Revamp/MatchUI/TuggaBattleScaleDisplay.gd" id="1_xe135"]
 [ext_resource type="Script" uid="uid://c5j44dhlx1div" path="res://Revamp/DirectDamage/MatchScoreState.gd" id="2_1duyo"]
-[ext_resource type="Script" uid="uid://dw1k6pcwy2emf" path="res://Revamp/MatchUI/AttackOrderArrowDisplay.gd" id="2_i6ny6"]
+[ext_resource type="Script" path="res://Revamp/MatchUI/AttackOrderArrowDisplay.gd" id="2_i6ny6"]
 [ext_resource type="FontFile" uid="uid://m0pv3sk8qbih" path="res://Art/AntBack/antrf___.ttf" id="4_smxsq"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nco33"]
@@ -50,7 +50,7 @@ border_width_right = 3
 border_width_bottom = 3
 border_color = Color(0.8291633, 0.14043778, 0.35698447, 1)
 
-[node name="MatchUI" type="Control" unique_id=1584030534 node_paths=PackedStringArray("tugga_display", "attack_order_arrow_display", "host_name_label", "client_name_label")]
+[node name="MatchUI" type="Control" unique_id=1584030534 node_paths=PackedStringArray("tugga_display", "attack_order_arrow_display", "host_name_label", "client_name_label", "phase_title_label", "phase_timer_label", "initiator_name_label")]
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_0cu85")
@@ -58,6 +58,9 @@ tugga_display = NodePath("TuggaStuff")
 attack_order_arrow_display = NodePath("AttackOrderArrow")
 host_name_label = NodePath("PlayerName")
 client_name_label = NodePath("EnemyName")
+phase_title_label = NodePath("PhaseStuff/PhaseTitle")
+phase_timer_label = NodePath("PhaseStuff/PhaseTimer")
+initiator_name_label = NodePath("InitatorStuff/InitiatorName")
 
 [node name="AttackOrderArrow" type="Control" parent="." unique_id=279434668 node_paths=PackedStringArray("left_to_right_arrow", "right_to_left_arrow")]
 anchors_preset = 0
@@ -166,7 +169,7 @@ offset_right = 1308.0
 offset_bottom = 742.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_2wytx")
 
-[node name="InitiatorNAme" type="Label" parent="InitatorStuff" unique_id=817725613]
+[node name="InitiatorName" type="Label" parent="InitatorStuff" unique_id=817725613]
 visible = false
 offset_left = 540.0
 offset_top = 708.0

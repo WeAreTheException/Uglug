@@ -4,6 +4,7 @@ class_name BuffCardSelectionHandler
 @export var buff_flow_handler: BuffFlowHandler
 @export var selection_state: BuffSelectionState
 @export var turn_order_state: MatchTurnOrderState
+@export var phase_timer: MatchPhaseTimer
 
 @export var player_one_hand: PlayerHandRoot
 @export var player_two_hand: PlayerHandRoot
@@ -95,6 +96,9 @@ func _on_reward_delivery_finished() -> void:
 		return
 
 	_set_instruction_visible(true)
+
+	if phase_timer != null:
+		phase_timer.start_for_state(MatchFlowRoot.MatchState.BUFF)
 
 
 func _on_card_pressed(card: CardRoot) -> void:

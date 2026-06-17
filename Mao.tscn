@@ -73,6 +73,7 @@
 [ext_resource type="Script" uid="uid://63l7crrnpitr" path="res://Revamp/Multiplayer/MatchNetworkBlessing.gd" id="66_q844d"]
 [ext_resource type="Script" uid="uid://con1w5rh38kav" path="res://Revamp/Multiplayer/MatchNetworkBuff.gd" id="67_gfrq6"]
 [ext_resource type="Script" uid="uid://4awjofgv2dfc" path="res://MatchNetworkFlow.gd" id="68_8hx3r"]
+[ext_resource type="Script" uid="uid://coo0pgldjiw6w" path="res://MatchPhaseTimer.gd" id="73_fk48e"]
 
 [node name="Mao" type="Node2D" unique_id=550121538]
 
@@ -243,11 +244,12 @@ buff_pool = Array[ExtResource("3_3vc3c")]([ExtResource("26_yjq0i"), ExtResource(
 print_debug = false
 run_smoke_test_on_ready = false
 
-[node name="BuffCardSelectionHandler" type="Node" parent="Scripts/Core/Buff" unique_id=1583935419 node_paths=PackedStringArray("buff_flow_handler", "selection_state", "turn_order_state", "player_one_hand", "player_two_hand")]
+[node name="BuffCardSelectionHandler" type="Node" parent="Scripts/Core/Buff" unique_id=1583935419 node_paths=PackedStringArray("buff_flow_handler", "selection_state", "turn_order_state", "phase_timer", "player_one_hand", "player_two_hand")]
 script = ExtResource("51_3j6fp")
 buff_flow_handler = NodePath("../BuffFlowHandler")
 selection_state = NodePath("../BuffSelectionState")
 turn_order_state = NodePath("../../../MatchFlowRoot/MatchTurnOrderState")
+phase_timer = NodePath("../../../../Multiplayer/MatchPhaseTimer")
 player_one_hand = NodePath("../../../../Core/PlayerHAnd")
 player_two_hand = NodePath("../../../../Core/OpponenetHAnd")
 print_debug = false
@@ -283,11 +285,12 @@ blessing_to_apply = ExtResource("51_ufjv4")
 blessing_animation_handler = NodePath("../WizantAnim")
 print_debug = false
 
-[node name="BlessingCardSelectionHandler" type="Node" parent="Scripts/Core/Blessing" unique_id=964488475 node_paths=PackedStringArray("blessing_flow_handler", "selection_state", "turn_order_state", "player_one_hand", "player_two_hand")]
+[node name="BlessingCardSelectionHandler" type="Node" parent="Scripts/Core/Blessing" unique_id=964488475 node_paths=PackedStringArray("blessing_flow_handler", "selection_state", "turn_order_state", "phase_timer", "player_one_hand", "player_two_hand")]
 script = ExtResource("52_qqxe6")
 blessing_flow_handler = NodePath("../BlessingFlowHandler")
 selection_state = NodePath("../BlessingSelectionState")
 turn_order_state = NodePath("../../../MatchFlowRoot/MatchTurnOrderState")
+phase_timer = NodePath("../../../../Multiplayer/MatchPhaseTimer")
 player_one_hand = NodePath("../../../../Core/PlayerHAnd")
 player_two_hand = NodePath("../../../../Core/OpponenetHAnd")
 
@@ -300,7 +303,6 @@ match_network_root = NodePath("../../../../Multiplayer/MatchNetworkRoot")
 print_debug = false
 
 [node name="WizantAnim" parent="Scripts/Core/Blessing" unique_id=1060986998 instance=ExtResource("46_bvwb1")]
-visible = false
 play_intro_on_ready = false
 
 [node name="SacrificeController" type="Node" parent="Scripts/Core" unique_id=1432478239 node_paths=PackedStringArray("player_hand", "sacrifice_selection_root", "requirement", "pending_boat", "committer")]
@@ -423,11 +425,12 @@ offset_bottom = 1044.0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MatchUI" parent="Control" unique_id=495517401 node_paths=PackedStringArray("match_flow_root", "slots_root", "score_state") instance=ExtResource("1_2n6q5")]
+[node name="MatchUI" parent="Control" unique_id=495517401 node_paths=PackedStringArray("match_flow_root", "slots_root", "score_state", "phase_timer") instance=ExtResource("1_2n6q5")]
 layout_mode = 0
 match_flow_root = NodePath("../../Scripts/MatchFlowRoot")
 slots_root = NodePath("../../Core/Board")
 score_state = NodePath("../../Scripts/MatchFlowRoot/MatchScoreState")
+phase_timer = NodePath("../../Multiplayer/MatchPhaseTimer")
 
 [node name="BuffConfirmButton" type="Button" parent="Control" unique_id=685589739 node_paths=PackedStringArray("buff_flow_handler", "buff_apply_handler")]
 z_index = 10
@@ -524,6 +527,10 @@ deck_system_root = NodePath("../../Core/Deck")
 placement_controller = NodePath("../../Scripts/Core/PlacementController")
 sacrifice_controller = NodePath("../../Scripts/Core/SacrificeController")
 sacrifice_board_binder = NodePath("../../Scripts/Core/SacrificeController/SacrificeBoardSelectionBinder")
+
+[node name="MatchPhaseTimer" type="Node" parent="Multiplayer" unique_id=767461142 node_paths=PackedStringArray("match_flow_root")]
+script = ExtResource("73_fk48e")
+match_flow_root = NodePath("../../Scripts/MatchFlowRoot")
 
 [node name="Background" parent="." unique_id=40767625 instance=ExtResource("66_af7hx")]
 position = Vector2(396, 360)
