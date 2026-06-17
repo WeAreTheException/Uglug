@@ -65,6 +65,7 @@
 [ext_resource type="Script" uid="uid://qkm73v3qftgr" path="res://Revamp/Multiplayer/MatchLocalViewApplier.gd" id="57_2n6q5"]
 [ext_resource type="Script" uid="uid://ddq57bg6lcsk1" path="res://Revamp/Multiplayer/MatchNetworkRoot.gd" id="57_8mjsp"]
 [ext_resource type="Script" uid="uid://bhcy41nxe3s4n" path="res://Revamp/Multiplayer/MatchNetworkLookup.gd" id="63_5j00x"]
+[ext_resource type="Script" uid="uid://bbr61twl85oqk" path="res://PhaseConfirmButton.gd" id="63_uv74c"]
 [ext_resource type="Script" uid="uid://2mkkfsgkiexj" path="res://Revamp/Multiplayer/MatchNetworkDraw.gd" id="64_af7hx"]
 [ext_resource type="Script" uid="uid://c2c2hqgcay1nf" path="res://Revamp/Multiplayer/MatchNetworkPlacement.gd" id="65_fd62j"]
 [ext_resource type="Script" uid="uid://cy3sful3ggumm" path="res://Revamp/Multiplayer/LocalGameplayReferenceBinder.gd" id="66_5j00x"]
@@ -427,6 +428,49 @@ layout_mode = 0
 match_flow_root = NodePath("../../Scripts/MatchFlowRoot")
 slots_root = NodePath("../../Core/Board")
 score_state = NodePath("../../Scripts/MatchFlowRoot/MatchScoreState")
+
+[node name="BuffConfirmButton" type="Button" parent="Control" unique_id=685589739 node_paths=PackedStringArray("buff_flow_handler", "buff_apply_handler")]
+z_index = 10
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 312.0
+offset_top = 696.0
+offset_right = 516.0
+offset_bottom = 768.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 36
+text = "Confirm"
+script = ExtResource("63_uv74c")
+buff_flow_handler = NodePath("../../Scripts/Core/Buff/BuffFlowHandler")
+buff_apply_handler = NodePath("../../Scripts/Core/Buff/BuffMutationApplyHandler")
+use_for_buff = true
+
+[node name="BlessingConfirmButton" type="Button" parent="Control" unique_id=839450790 node_paths=PackedStringArray("blessing_flow_handler", "blessing_apply_handler")]
+z_index = 10
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 833.0
+offset_top = 876.0
+offset_right = 1037.0
+offset_bottom = 948.0
+grow_horizontal = 2
+grow_vertical = 0
+pivot_offset = Vector2(102, 36)
+theme_override_font_sizes/font_size = 36
+text = "Confirm"
+script = ExtResource("63_uv74c")
+blessing_flow_handler = NodePath("../../Scripts/Core/Blessing/BlessingFlowHandler")
+blessing_apply_handler = NodePath("../../Scripts/Core/Blessing/BlessingApplyHandler")
+use_for_blessing = true
 
 [node name="Multiplayer" type="Node" parent="." unique_id=297260751]
 

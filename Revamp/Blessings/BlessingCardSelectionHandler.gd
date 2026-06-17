@@ -8,6 +8,9 @@ class_name BlessingCardSelectionHandler
 @export var player_one_hand: PlayerHandRoot
 @export var player_two_hand: PlayerHandRoot
 
+@export var instruction_label: CanvasItem
+@export var instruction_text: String = "Choose a card to receive the blessing"
+
 @export var print_debug: bool = true
 
 var is_active: bool = false
@@ -17,6 +20,7 @@ func _ready() -> void:
 	_connect_blessing_flow()
 	_connect_hand(player_one_hand)
 	_connect_hand(player_two_hand)
+	_set_instruction_visible(false)
 
 
 func _connect_blessing_flow() -> void:
@@ -44,12 +48,16 @@ func _connect_hand(hand: PlayerHandRoot) -> void:
 func _on_blessing_started() -> void:
 	is_active = true
 
+	_set_instruction_visible(true)
+
 	if print_debug:
 		print("BLESSING CARD SELECTION STARTED")
 
 
 func _on_blessing_finished() -> void:
 	is_active = false
+
+	_set_instruction_visible(false)
 
 	if print_debug:
 		print("BLESSING CARD SELECTION FINISHED")
@@ -76,6 +84,20 @@ func _on_card_pressed(card: CardRoot) -> void:
 
 	if print_debug:
 		print("BLESSING SELECTED: ", _get_owner_name(owner), " -> ", card.card_name)
+
+
+func _set_instruction_visible(value: bool) -> void:
+	if instruction_label == null:
+		return
+
+	instruction_label.visible = value
+
+	if value:
+		if instruction_label is Label:
+			(instruction_label as Label).text = instruction_text
+
+		if instruction_label is RichTextLabel:
+			(instruction_label as RichTextLabel).text = instruction_text
 
 
 func _get_owner_for_card(card: CardRoot) -> SlotRow.SlotOwner:
