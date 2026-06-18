@@ -181,9 +181,9 @@ func _process_buff_confirm_request(
 		print("BUFF REQUEST REJECTED: card cannot receive mutation")
 		return
 
-	_broadcast_confirmed_buff(owner, target_card_runtime_id, mutation_id)
-
 	confirmed_owners[owner] = true
+
+	_broadcast_confirmed_buff(owner, target_card_runtime_id, mutation_id)
 	_try_finish_if_all_confirmed()
 
 
@@ -296,7 +296,16 @@ func _get_fallback_card(owner: SlotRow.SlotOwner, mutation: Mutation) -> CardRoo
 
 
 func _finish_buff_phase() -> void:
+	if root == null:
+		return
+
+	GDSync.call_func_all(root._receive_buff_flow_finished)
+
+func receive_buff_flow_finished() -> void:
+	confirmed_owners.clear()
+
+	if root == null:
+		return
+
 	if root.buff_flow_handler != null:
 		root.buff_flow_handler.finish_buff_flow()
-
-	confirmed_owners.clear()

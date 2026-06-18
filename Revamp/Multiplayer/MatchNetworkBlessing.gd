@@ -113,9 +113,9 @@ func _process_blessing_confirm_request(
 		print("BLESSING REQUEST REJECTED: blessing missing ", blessing_id)
 		return
 
-	_broadcast_confirmed_blessing(owner, target_card_runtime_id, blessing_id)
-
 	confirmed_owners[owner] = true
+
+	_broadcast_confirmed_blessing(owner, target_card_runtime_id, blessing_id)
 	_try_finish_if_all_confirmed()
 
 
@@ -216,10 +216,10 @@ func _get_fallback_card(owner: SlotRow.SlotOwner) -> CardRoot:
 
 
 func _finish_blessing_phase() -> void:
-	if root.blessing_flow_handler != null:
-		root.blessing_flow_handler.request_finish_blessing_flow()
+	if root == null:
+		return
 
-	confirmed_owners.clear()
+	GDSync.call_func_all(root._receive_blessing_flow_finished)
 
 
 func _get_active_blessing_by_id(blessing_id: String) -> Blessing:
@@ -238,3 +238,12 @@ func _get_active_blessing_by_id(blessing_id: String) -> Blessing:
 		return null
 
 	return blessing
+
+func receive_blessing_flow_finished() -> void:
+	confirmed_owners.clear()
+
+	if root == null:
+		return
+
+	if root.blessing_flow_handler != null:
+		root.blessing_flow_handler.force_finish_blessing_flow()

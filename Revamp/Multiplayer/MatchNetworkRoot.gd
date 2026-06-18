@@ -45,6 +45,8 @@ func _ready() -> void:
 	GDSync.expose_func(_receive_confirmed_placement)
 	GDSync.expose_func(request_advance_match_state)
 	GDSync.expose_func(_receive_match_state_snapshot)
+	GDSync.expose_func(_receive_blessing_flow_finished)
+	GDSync.expose_func(_receive_buff_flow_finished)
 
 	_setup_children()
 	_assign_local_owner()
@@ -359,3 +361,16 @@ func _receive_match_state_snapshot(payload: Dictionary) -> void:
 		return
 
 	flow_network.receive_match_state_snapshot(payload)
+
+func _receive_blessing_flow_finished() -> void:
+	if blessing_network == null:
+		return
+
+	blessing_network.receive_blessing_flow_finished()
+
+
+func _receive_buff_flow_finished() -> void:
+	if buff_network == null:
+		return
+
+	buff_network.receive_buff_flow_finished()
