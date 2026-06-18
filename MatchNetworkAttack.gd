@@ -321,6 +321,18 @@ func _play_client_attack_visual(payload: Dictionary) -> void:
 	await attacker_card.attack.animation_runner.play_network_attack_step(
 		attacker_slot,
 		target_slot,
-		attacker_owner,
+		_get_visual_owner_for_local_client(attacker_owner),
 		root.slots_root.attack_animation_layer
 	)
+
+func _get_visual_owner_for_local_client(owner: SlotRow.SlotOwner) -> SlotRow.SlotOwner:
+	if root == null:
+		return owner
+
+	if root.is_host():
+		return owner
+
+	if owner == SlotRow.SlotOwner.PLAYER:
+		return SlotRow.SlotOwner.OPPONENT
+
+	return SlotRow.SlotOwner.PLAYER
