@@ -207,3 +207,20 @@ func _on_card_hovered(_card: CardRoot) -> void:
 
 func _on_card_unhovered(_card: CardRoot) -> void:
 	is_hovered = false
+
+func play_network_hurt_feedback() -> void:
+	if card == null:
+		return
+
+	if is_playing:
+		return
+
+	is_playing = true
+
+	if feedback_handler != null:
+		feedback_handler.play(card)
+
+	if animation_runner != null:
+		await animation_runner.play(card)
+
+	is_playing = false

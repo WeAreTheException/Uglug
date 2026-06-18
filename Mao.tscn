@@ -73,9 +73,9 @@
 [ext_resource type="PackedScene" uid="uid://cvdlgiknngjmw" path="res://Revamp/Board/Background.tscn" id="66_af7hx"]
 [ext_resource type="Script" uid="uid://63l7crrnpitr" path="res://Revamp/Multiplayer/MatchNetworkBlessing.gd" id="66_q844d"]
 [ext_resource type="Script" uid="uid://con1w5rh38kav" path="res://Revamp/Multiplayer/MatchNetworkBuff.gd" id="67_gfrq6"]
-[ext_resource type="Script" uid="uid://4awjofgv2dfc" path="res://MatchNetworkFlow.gd" id="68_8hx3r"]
+[ext_resource type="Script" uid="uid://4awjofgv2dfc" path="res://Revamp/Multiplayer/MatchNetworkFlow.gd" id="68_8hx3r"]
 [ext_resource type="Script" uid="uid://coo0pgldjiw6w" path="res://MatchPhaseTimer.gd" id="73_fk48e"]
-[ext_resource type="Script" uid="uid://00f6bgoq0mgc" path="res://MatchNetworkAttack.gd" id="73_nc85t"]
+[ext_resource type="Script" uid="uid://00f6bgoq0mgc" path="res://Revamp/Multiplayer/MatchNetworkAttack.gd" id="73_nc85t"]
 [ext_resource type="Script" uid="uid://dx8ow48eguxe7" path="res://MatchPlacementCompletionHandler.gd" id="74_yjh5v"]
 
 [node name="Mao" type="Node2D" unique_id=550121538]

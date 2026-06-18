@@ -275,6 +275,14 @@ func receive_attack_started(payload: Dictionary) -> void:
 func receive_attack_hit(payload: Dictionary) -> void:
 	print("ATTACK HIT RECEIVED: ", payload)
 
+	if root == null:
+		return
+
+	if root.is_host():
+		return
+
+	_play_client_hit_visual(payload)
+
 
 func receive_attack_finished(payload: Dictionary) -> void:
 	print("ATTACK FINISHED RECEIVED: ", payload)
@@ -336,3 +344,34 @@ func _get_visual_owner_for_local_client(owner: SlotRow.SlotOwner) -> SlotRow.Slo
 		return SlotRow.SlotOwner.OPPONENT
 
 	return SlotRow.SlotOwner.PLAYER
+
+func _play_client_hit_visual(payload: Dictionary) -> void:
+	if root == null:
+		return
+
+	if root.slots_root == null:
+		return
+
+	var target_id: String = payload.get("target_card_runtime_id", "")
+
+	if target_id.strip_edges() == "":
+		var target_owner: SlotRow.SlotOwner = int(payload.get("target_owner", -1)) as SlotRow.SlotOwner
+		var target_slot_index: int = int(payload.get("target_slot_index", -1))
+		var target_slot := root.slots_root.get_slot(target_owner, target_slot_index)
+
+		if target_slot != null:
+			await root.slots_root.show_direct_damage_feedback(target_slot)
+
+		return
+
+	var target_card := root.slots_root.find_card_by_runtime_id(target_id)
+
+	if target_card == null:
+		print("CLIENT HIT VISUAL FAILED: target card missing")
+		return
+
+	if target_card.hurt == null:
+		print("CLIENT HIT VISUAL FAILED: target hurt missing")
+		return
+
+	await target_card.hurt.play_network_hurt_feedback()
