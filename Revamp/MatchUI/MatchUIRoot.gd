@@ -29,10 +29,11 @@ func _ready() -> void:
 	_setup_name_labels()
 	_connect_match_flow()
 	_connect_phase_timer()
+	_setup_end_turn_button()
 	_refresh_phase_labels()
 	call_deferred("_setup_name_labels")
+	call_deferred("_setup_end_turn_button")
 	call_deferred("_refresh_phase_labels")
-
 
 func setup_match_context(
 	source_match_flow_root: MatchFlowRoot,
@@ -293,3 +294,15 @@ func _get_turn_order_state() -> MatchTurnOrderState:
 		return null
 
 	return match_flow_root.turn_order_state
+
+
+func _setup_end_turn_button() -> void:
+	if placement_completion_handler == null:
+		print("MATCH UI END TURN SETUP FAILED: placement_completion_handler missing")
+		return
+
+	if end_turn_button == null:
+		print("MATCH UI END TURN SETUP FAILED: end_turn_button missing")
+		return
+
+	placement_completion_handler.setup_end_turn_button(end_turn_button)
