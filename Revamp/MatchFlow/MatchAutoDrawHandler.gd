@@ -79,6 +79,6 @@ func run_auto_draw() -> void:
 	if print_debug:
 		print("AUTO DRAW FINISHED: ROUND ", round_number)
 
-	auto_draw_finished.emit(round_number)
-
 	match_flow_root.unlock_transition()
+	
+	auto_draw_finished.emit(round_number)
