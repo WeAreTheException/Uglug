@@ -77,8 +77,9 @@ func _run_timer() -> void:
 	timer_finished.emit(finished_state)
 
 
-func _on_match_state_changed(_state: MatchFlowRoot.MatchState) -> void:
-	stop_timer()
+func _on_match_state_changed(state: MatchFlowRoot.MatchState) -> void:
+	if state != active_state:
+		stop_timer()
 
 
 func _get_duration_for_state(state: MatchFlowRoot.MatchState) -> float:
