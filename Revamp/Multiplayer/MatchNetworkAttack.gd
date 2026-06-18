@@ -357,7 +357,9 @@ func _play_client_hit_visual(payload: Dictionary) -> void:
 	if target_id.strip_edges() == "":
 		var target_owner: SlotRow.SlotOwner = int(payload.get("target_owner", -1)) as SlotRow.SlotOwner
 		var target_slot_index: int = int(payload.get("target_slot_index", -1))
-		var target_slot := root.slots_root.get_slot(target_owner, target_slot_index)
+		
+		var visual_target_owner := _get_visual_owner_for_local_client(target_owner)
+		var target_slot := root.slots_root.get_slot(visual_target_owner, target_slot_index)
 
 		if target_slot != null:
 			await root.slots_root.show_direct_damage_feedback(target_slot)
