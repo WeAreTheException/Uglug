@@ -6,6 +6,7 @@ class_name MatchNetworkBlessing
 
 var root: MatchNetworkRoot = null
 var confirmed_owners: Dictionary = {}
+var is_phase_finishing: bool = false
 
 
 func setup(source_root: MatchNetworkRoot) -> void:
@@ -57,7 +58,18 @@ func receive_confirmed_blessing(
 		print("CONFIRMED BLESSING FAILED: blessing missing ", blessing_id)
 		return
 
-	print("CONFIRMED BLESSING ABOUT TO APPLY: ", blessing_id)
+	if _card_already_has_blessing(card, blessing):
+		if root.print_debug:
+			print(
+				"CONFIRMED BLESSING SKIPPED: already applied | ",
+				root.get_owner_name(owner),
+				" ",
+				card.card_name
+			)
+		return
+
+	if root.print_debug:
+		print("CONFIRMED BLESSING ABOUT TO APPLY: ", blessing_id)
 
 	var applied := BlessingApplyHelper.new().apply_blessing(card, blessing)
 
@@ -76,6 +88,17 @@ func receive_confirmed_blessing(
 		)
 
 
+func receive_blessing_flow_finished() -> void:
+	confirmed_owners.clear()
+	is_phase_finishing = false
+
+	if root == null:
+		return
+
+	if root.blessing_flow_handler != null:
+		root.blessing_flow_handler.request_finish_blessing_flow()
+
+
 func _connect_timer() -> void:
 	if phase_timer == null:
 		return
@@ -89,6 +112,10 @@ func _process_blessing_confirm_request(
 	target_card_runtime_id: String,
 	blessing_id: String
 ) -> void:
+	if is_phase_finishing:
+		print("BLESSING REQUEST REJECTED: phase already finishing")
+		return
+
 	if confirmed_owners.has(owner):
 		print("BLESSING REQUEST REJECTED: owner already confirmed")
 		return
@@ -152,6 +179,9 @@ func _on_timer_finished(state: MatchFlowRoot.MatchState) -> void:
 		return
 
 	if not root.is_host():
+		return
+
+	if is_phase_finishing:
 		return
 
 	if state != MatchFlowRoot.MatchState.BLESSING:
@@ -219,6 +249,11 @@ func _finish_blessing_phase() -> void:
 	if root == null:
 		return
 
+	if is_phase_finishing:
+		return
+
+	is_phase_finishing = true
+
 	GDSync.call_func_all(root._receive_blessing_flow_finished)
 
 
@@ -239,11 +274,24 @@ func _get_active_blessing_by_id(blessing_id: String) -> Blessing:
 
 	return blessing
 
-func receive_blessing_flow_finished() -> void:
-	confirmed_owners.clear()
 
-	if root == null:
-		return
+func _card_already_has_blessing(card: CardRoot, blessing: Blessing) -> bool:
+	if card == null:
+		return false
 
-	if root.blessing_flow_handler != null:
-		root.blessing_flow_handler.force_finish_blessing_flow()
+	if blessing == null:
+		return false
+
+	if card.runtime_state == null:
+		return false
+
+	var clean_id := blessing.blessing_id.strip_edges().to_snake_case()
+
+	for existing_blessing in card.runtime_state.blessings:
+		if existing_blessing == null:
+			continue
+
+		if existing_blessing.blessing_id.strip_edges().to_snake_case() == clean_id:
+			return true
+
+	return false
