@@ -13,12 +13,13 @@ class_name MatchNetworkRoot
 @export var blessing_flow_handler: BlessingFlowHandler
 @export var placement_controller: PlacementController
 
+@export var flow_network: MatchNetworkFlow
 @export var lookup_network: MatchNetworkLookup
 @export var draw_network: MatchNetworkDraw
 @export var buff_network: MatchNetworkBuff
 @export var blessing_network: MatchNetworkBlessing
 @export var placement_network: MatchNetworkPlacement
-@export var flow_network: MatchNetworkFlow
+@export var attack_network: MatchNetworkAttack
 
 @export var enable_match_advance_debug := true
 @export var match_advance_debug_key: Key = KEY_M
@@ -215,23 +216,26 @@ func get_owner_name(owner: SlotRow.SlotOwner) -> String:
 
 
 func _setup_children() -> void:
+	if flow_network != null:
+		flow_network.setup(self)
+		 
 	if lookup_network != null:
 		lookup_network.setup(self)
 
 	if draw_network != null:
 		draw_network.setup(self)
 
-	if buff_network != null:
-		buff_network.setup(self)
-
 	if blessing_network != null:
 		blessing_network.setup(self)
+	
+	if buff_network != null:
+		buff_network.setup(self)
 
 	if placement_network != null:
 		placement_network.setup(self)
 	
-	if flow_network != null:
-		flow_network.setup(self)
+	if attack_network != null:
+		attack_network.setup(self)
 
 
 func _connect_match_flow() -> void:

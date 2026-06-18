@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bukeona4oyi7j" path="res://Revamp/Board/SlotsRoot.gd" id="1_vhubw"]
 [ext_resource type="Script" uid="uid://dylxhiaox4q0u" path="res://Revamp/Board/SlotRow.gd" id="2_2k41x"]
+[ext_resource type="Resource" uid="uid://d34eaw1jxirr0" path="res://Revamp/CardPresets/Giant.tres" id="3_8cmln"]
 [ext_resource type="PackedScene" uid="uid://5qb61nfrd521" path="res://Revamp/Card/Card.tscn" id="5_1gkk1"]
 [ext_resource type="Script" uid="uid://dnat5rx3mmepn" path="res://Revamp/Board/BoardMutationRefresher.gd" id="7_4xfmt"]
 [ext_resource type="Script" uid="uid://fpn7jg867ngv" path="res://Revamp/Board/BoardSlotRegistry.gd" id="7_camp5"]
@@ -21,6 +22,14 @@ slot_preset_handler = NodePath("SlotPresetHandler")
 attack_order_handler = NodePath("AttackOrderHandler")
 card_scene = ExtResource("5_1gkk1")
 attack_animation_layer = NodePath("AttackAnimationLayer")
+player_slot_1_card = ExtResource("3_8cmln")
+player_slot_2_card = ExtResource("3_8cmln")
+player_slot_3_card = ExtResource("3_8cmln")
+player_slot_4_card = ExtResource("3_8cmln")
+opponent_slot_1_card = ExtResource("3_8cmln")
+opponent_slot_2_card = ExtResource("3_8cmln")
+opponent_slot_3_card = ExtResource("3_8cmln")
+opponent_slot_4_card = ExtResource("3_8cmln")
 
 [node name="BoardCardsLayer" type="Node2D" parent="." unique_id=1962797662]
 position = Vector2(564, 240)
@@ -69,7 +78,6 @@ position = Vector2(564, 264)
 
 [node name="AttackOrderHandler" type="Node" parent="." unique_id=381521499]
 script = ExtResource("9_1gkk1")
-opponent_left_to_right = false
 
 [node name="SlotPresetHandler" type="Node" parent="." unique_id=920475702]
 script = ExtResource("7_iq660")

@@ -94,10 +94,31 @@ func _run_owner_attack_order(owner: SlotRow.SlotOwner) -> void:
 
 	_start_anticipation(owner)
 
-	attack_order_handler.run_attack_order(owner)
+	var cards := attack_order_handler.get_attack_cards_in_order(owner)
 
-	while attack_order_handler.is_running:
-		await get_tree().process_frame
+	for card in cards:
+		if _is_game_ended():
+			break
+
+		if card == null:
+			continue
+
+		if not is_instance_valid(card):
+			continue
+
+		if match_network_root != null and match_network_root.attack_network != null:
+			var payload := match_network_root.attack_network.build_attack_payload(
+				card,
+				owner
+			)
+
+			if payload.is_empty():
+				continue
+
+		if card.attack == null:
+			continue
+
+		await card.attack.perform_attack()
 
 	_stop_anticipation(owner)
 

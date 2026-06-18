@@ -187,3 +187,20 @@ func _get_attack_priority(card: CardRoot) -> int:
 		return 0
 
 	return card.mutations.get_attack_priority()
+
+func get_attack_cards_in_order(slot_owner: SlotRow.SlotOwner) -> Array[CardRoot]:
+	var cards: Array[CardRoot] = []
+
+	if slots_root == null:
+		return cards
+
+	var entries := _build_attack_entries(slot_owner)
+	_sort_attack_entries(entries, slot_owner)
+
+	for entry in entries:
+		var card := _get_valid_card_from_entry(entry, slot_owner)
+
+		if card != null:
+			cards.append(card)
+
+	return cards
