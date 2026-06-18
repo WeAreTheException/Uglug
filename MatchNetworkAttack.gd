@@ -263,6 +263,14 @@ func receive_attack_sequence_started(payload: Dictionary) -> void:
 func receive_attack_started(payload: Dictionary) -> void:
 	print("ATTACK STARTED RECEIVED: ", payload)
 
+	if root == null:
+		return
+
+	if root.is_host():
+		return
+
+	_play_client_attack_visual(payload)
+
 
 func receive_attack_hit(payload: Dictionary) -> void:
 	print("ATTACK HIT RECEIVED: ", payload)
@@ -274,3 +282,45 @@ func receive_attack_finished(payload: Dictionary) -> void:
 
 func receive_attack_sequence_finished(payload: Dictionary) -> void:
 	print("ATTACK SEQUENCE FINISHED RECEIVED: ", payload)
+
+func _play_client_attack_visual(payload: Dictionary) -> void:
+	if root.slots_root == null:
+		return
+
+	var attacker_id: String = payload.get("attacker_card_runtime_id", "")
+	var attacker_owner: SlotRow.SlotOwner = int(payload.get("attacker_owner", -1)) as SlotRow.SlotOwner
+	var attacker_slot_index: int = int(payload.get("attacker_slot_index", -1))
+	var target_owner: SlotRow.SlotOwner = int(payload.get("target_owner", -1)) as SlotRow.SlotOwner
+	var target_slot_index: int = int(payload.get("target_slot_index", -1))
+
+	var attacker_card := root.slots_root.find_card_by_runtime_id(attacker_id)
+
+	if attacker_card == null:
+		print("CLIENT ATTACK VISUAL FAILED: attacker missing")
+		return
+
+	if attacker_card.attack == null:
+		print("CLIENT ATTACK VISUAL FAILED: attack missing")
+		return
+
+	if attacker_card.attack.animation_runner == null:
+		print("CLIENT ATTACK VISUAL FAILED: animation_runner missing")
+		return
+
+	var attacker_slot := root.slots_root.get_slot(attacker_owner, attacker_slot_index)
+	var target_slot := root.slots_root.get_slot(target_owner, target_slot_index)
+
+	if attacker_slot == null:
+		print("CLIENT ATTACK VISUAL FAILED: attacker slot missing")
+		return
+
+	if target_slot == null:
+		print("CLIENT ATTACK VISUAL FAILED: target slot missing")
+		return
+
+	await attacker_card.attack.animation_runner.play_network_attack_step(
+		attacker_slot,
+		target_slot,
+		attacker_owner,
+		root.slots_root.attack_animation_layer
+	)

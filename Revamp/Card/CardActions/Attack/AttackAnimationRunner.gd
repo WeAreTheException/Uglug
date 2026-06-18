@@ -270,3 +270,28 @@ func _get_rotation_side(difference: int, _attacker_owner: SlotRow.SlotOwner) -> 
 		side = 1.0
 
 	return side
+
+func play_network_attack_step(
+	attacker_slot: Slot,
+	target_slot: Slot,
+	attacker_owner: SlotRow.SlotOwner,
+	attack_animation_layer: Node2D
+) -> void:
+	if animated_target == null:
+		return
+
+	if attacker_slot == null:
+		return
+
+	if target_slot == null:
+		return
+
+	var context := AttackContext.new()
+
+	context.attacker_slot = attacker_slot
+	context.target_slot = target_slot
+	context.attacker_owner = attacker_owner
+	context.attack_animation_layer = attack_animation_layer
+
+	await play_to_impact(context)
+	await play_return()
