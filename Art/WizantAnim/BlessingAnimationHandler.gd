@@ -14,6 +14,7 @@ signal outro_finished
 
 @export var hide_when_finished: bool = true
 @export var print_debug: bool = true
+@export var skip_animation_for_debug: bool = false
 
 var is_playing_intro: bool = false
 var is_looping_idle: bool = false
@@ -58,6 +59,14 @@ func _process(_delta: float) -> void:
 func play_intro() -> void:
 	stop_all()
 
+	if skip_animation_for_debug:
+		if print_debug:
+			print("BLESSING ANIM INTRO SKIPPED")
+
+		visible = false
+		intro_finished.emit()
+		return
+
 	visible = true
 	modulate.a = 1.0
 
@@ -81,6 +90,15 @@ func play_intro() -> void:
 
 
 func play_outro() -> void:
+	if skip_animation_for_debug:
+		if print_debug:
+			print("BLESSING ANIM OUTRO SKIPPED")
+
+		stop_all()
+		visible = false
+		outro_finished.emit()
+		return
+
 	if video_player == null:
 		if print_debug:
 			print("BLESSING ANIM OUTRO BLOCKED: video_player missing")
@@ -99,9 +117,6 @@ func play_outro() -> void:
 	video_player.paused = false
 	video_player.stream_position = outro_start_time
 	video_player.play()
-
-	if print_debug:
-		print("BLESSING ANIM OUTRO PLAYED")
 
 
 func stop_all() -> void:

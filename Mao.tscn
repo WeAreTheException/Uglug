@@ -325,6 +325,7 @@ print_debug = false
 
 [node name="WizantAnim" parent="Scripts/Core/Blessing" unique_id=1060986998 instance=ExtResource("46_bvwb1")]
 play_intro_on_ready = false
+skip_animation_for_debug = true
 
 [node name="SacrificeController" type="Node" parent="Scripts/Core" unique_id=1432478239 node_paths=PackedStringArray("player_hand", "sacrifice_selection_root", "requirement", "pending_boat", "committer")]
 script = ExtResource("10_1j514")
