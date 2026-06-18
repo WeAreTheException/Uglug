@@ -6,11 +6,13 @@ class_name MatchNetworkBuff
 
 var root: MatchNetworkRoot = null
 var confirmed_owners: Dictionary = {}
+var is_phase_finishing: bool = false
 
 
 func setup(source_root: MatchNetworkRoot) -> void:
 	root = source_root
 	_connect_timer()
+	_connect_match_flow()
 
 
 func on_buff_phase_started() -> void:
@@ -21,6 +23,7 @@ func on_buff_phase_started() -> void:
 		return
 
 	confirmed_owners.clear()
+	is_phase_finishing = false
 
 	if root.buff_database == null:
 		print("HOST BUFF ROLL BLOCKED: buff_database missing")
@@ -129,6 +132,17 @@ func receive_confirmed_buff(
 		)
 
 
+func receive_buff_flow_finished() -> void:
+	if phase_timer != null:
+		phase_timer.stop_timer()
+
+	if root == null:
+		return
+
+	if root.buff_flow_handler != null:
+		root.buff_flow_handler.finish_buff_flow()
+
+
 func _connect_timer() -> void:
 	if phase_timer == null:
 		return
@@ -137,11 +151,32 @@ func _connect_timer() -> void:
 		phase_timer.timer_finished.connect(_on_timer_finished)
 
 
+func _connect_match_flow() -> void:
+	if root == null:
+		return
+
+	if root.match_flow_root == null:
+		return
+
+	if not root.match_flow_root.match_state_changed.is_connected(_on_match_state_changed):
+		root.match_flow_root.match_state_changed.connect(_on_match_state_changed)
+
+
+func _on_match_state_changed(state: MatchFlowRoot.MatchState) -> void:
+	if state == MatchFlowRoot.MatchState.BUFF:
+		confirmed_owners.clear()
+		is_phase_finishing = false
+
+
 func _process_buff_confirm_request(
 	owner: SlotRow.SlotOwner,
 	target_card_runtime_id: String,
 	mutation_id: String
 ) -> void:
+	if is_phase_finishing:
+		print("BUFF REQUEST REJECTED: phase already finishing")
+		return
+
 	if confirmed_owners.has(owner):
 		print("BUFF REQUEST REJECTED: owner already confirmed")
 		return
@@ -222,6 +257,9 @@ func _on_timer_finished(state: MatchFlowRoot.MatchState) -> void:
 	if not root.is_host():
 		return
 
+	if is_phase_finishing:
+		return
+
 	if state != MatchFlowRoot.MatchState.BUFF:
 		return
 
@@ -231,6 +269,9 @@ func _on_timer_finished(state: MatchFlowRoot.MatchState) -> void:
 
 
 func _resolve_unconfirmed_owner(owner: SlotRow.SlotOwner) -> void:
+	if is_phase_finishing:
+		return
+
 	if confirmed_owners.has(owner):
 		return
 
@@ -299,13 +340,9 @@ func _finish_buff_phase() -> void:
 	if root == null:
 		return
 
-	GDSync.call_func_all(root._receive_buff_flow_finished)
-
-func receive_buff_flow_finished() -> void:
-	confirmed_owners.clear()
-
-	if root == null:
+	if is_phase_finishing:
 		return
 
-	if root.buff_flow_handler != null:
-		root.buff_flow_handler.finish_buff_flow()
+	is_phase_finishing = true
+
+	GDSync.call_func_all(root._receive_buff_flow_finished)
