@@ -171,12 +171,13 @@ match_flow_root = NodePath("..")
 turn_order_state = NodePath("../MatchTurnOrderState")
 placement_controller = NodePath("../../Core/PlacementController")
 
-[node name="MatchCombatFlowHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=1772524559 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "slots_root", "anticipation_feedback")]
+[node name="MatchCombatFlowHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=1772524559 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "anticipation_feedback", "match_network_root", "slots_root")]
 script = ExtResource("24_n5v11")
 match_flow_root = NodePath("..")
 turn_order_state = NodePath("../MatchTurnOrderState")
-slots_root = NodePath("../../../Core/Board")
 anticipation_feedback = NodePath("../AttackAnticipationFeedbackHandler")
+match_network_root = NodePath("../../../Multiplayer/MatchNetworkRoot")
+slots_root = NodePath("../../../Core/Board")
 
 [node name="MatchDominiantRevealHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=1122772169 node_paths=PackedStringArray("match_flow_root")]
 script = ExtResource("27_a1qt2")

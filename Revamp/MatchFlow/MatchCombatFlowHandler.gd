@@ -6,9 +6,11 @@ signal combat_flow_finished
 
 @export var match_flow_root: MatchFlowRoot
 @export var turn_order_state: MatchTurnOrderState
-@export var slots_root: SlotsRoot
 @export var anticipation_feedback: AttackAnticipationFeedbackHandler
+@export var match_network_root: MatchNetworkRoot
+@export var slots_root: SlotsRoot
 
+@export var auto_advance_on_combat_finished: bool = true
 @export var use_attack_anticipation: bool = true
 @export var print_debug: bool = true
 
@@ -69,6 +71,8 @@ func begin_combat_flow() -> void:
 		match_flow_root.unlock_transition()
 
 	is_running = false
+
+	_try_auto_advance_after_combat()
 
 
 func _run_owner_attack_order(owner: SlotRow.SlotOwner) -> void:
@@ -156,3 +160,25 @@ func _get_owner_name(owner: SlotRow.SlotOwner) -> String:
 		return "P1"
 
 	return "P2"
+
+
+func _try_auto_advance_after_combat() -> void:
+	if not auto_advance_on_combat_finished:
+		return
+
+	if match_network_root == null:
+		return
+
+	if not match_network_root.is_host():
+		return
+
+	if match_flow_root == null:
+		return
+
+	if match_flow_root.current_state != MatchFlowRoot.MatchState.COMBAT:
+		return
+
+	if print_debug:
+		print("COMBAT COMPLETE: REQUESTING MATCH ADVANCE")
+
+	match_network_root.request_advance_match_state()
