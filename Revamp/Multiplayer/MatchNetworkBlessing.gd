@@ -12,6 +12,7 @@ var is_phase_finishing: bool = false
 func setup(source_root: MatchNetworkRoot) -> void:
 	root = source_root
 	_connect_timer()
+	_connect_match_flow()
 
 
 func request_blessing_confirm(
@@ -60,12 +61,7 @@ func receive_confirmed_blessing(
 
 	if _card_already_has_blessing(card, blessing):
 		if root.print_debug:
-			print(
-				"CONFIRMED BLESSING SKIPPED: already applied | ",
-				root.get_owner_name(owner),
-				" ",
-				card.card_name
-			)
+			print("CONFIRMED BLESSING SKIPPED: already applied | ", card.card_name)
 		return
 
 	if root.print_debug:
@@ -89,8 +85,8 @@ func receive_confirmed_blessing(
 
 
 func receive_blessing_flow_finished() -> void:
-	confirmed_owners.clear()
-	is_phase_finishing = false
+	if phase_timer != null:
+		phase_timer.stop_timer()
 
 	if root == null:
 		return
@@ -105,6 +101,23 @@ func _connect_timer() -> void:
 
 	if not phase_timer.timer_finished.is_connected(_on_timer_finished):
 		phase_timer.timer_finished.connect(_on_timer_finished)
+
+
+func _connect_match_flow() -> void:
+	if root == null:
+		return
+
+	if root.match_flow_root == null:
+		return
+
+	if not root.match_flow_root.match_state_changed.is_connected(_on_match_state_changed):
+		root.match_flow_root.match_state_changed.connect(_on_match_state_changed)
+
+
+func _on_match_state_changed(state: MatchFlowRoot.MatchState) -> void:
+	if state == MatchFlowRoot.MatchState.BLESSING:
+		confirmed_owners.clear()
+		is_phase_finishing = false
 
 
 func _process_blessing_confirm_request(
@@ -193,6 +206,9 @@ func _on_timer_finished(state: MatchFlowRoot.MatchState) -> void:
 
 
 func _resolve_unconfirmed_owner(owner: SlotRow.SlotOwner) -> void:
+	if is_phase_finishing:
+		return
+
 	if confirmed_owners.has(owner):
 		return
 
