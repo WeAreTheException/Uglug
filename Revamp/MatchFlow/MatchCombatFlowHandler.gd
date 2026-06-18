@@ -29,6 +29,11 @@ func _on_match_state_changed(state: MatchFlowRoot.MatchState) -> void:
 	if state != MatchFlowRoot.MatchState.COMBAT:
 		return
 
+	if match_network_root != null and not match_network_root.is_host():
+		if print_debug:
+			print("CLIENT COMBAT FLOW SKIPPED: waiting for host attack events")
+		return
+
 	begin_combat_flow()
 
 

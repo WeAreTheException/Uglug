@@ -72,9 +72,9 @@ right_to_left_arrow = NodePath("Right2Left")
 [node name="Left2Right" type="Panel" parent="AttackOrderArrow" unique_id=1940495874]
 layout_mode = 0
 offset_left = 557.0
-offset_top = 437.0
+offset_top = 441.0
 offset_right = 1293.0
-offset_bottom = 449.0
+offset_bottom = 453.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_nco33")
 
 [node name="Arrowhead" type="Panel" parent="AttackOrderArrow/Left2Right" unique_id=345086967]
