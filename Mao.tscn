@@ -74,6 +74,7 @@
 [ext_resource type="Script" uid="uid://con1w5rh38kav" path="res://Revamp/Multiplayer/MatchNetworkBuff.gd" id="67_gfrq6"]
 [ext_resource type="Script" uid="uid://4awjofgv2dfc" path="res://MatchNetworkFlow.gd" id="68_8hx3r"]
 [ext_resource type="Script" uid="uid://coo0pgldjiw6w" path="res://MatchPhaseTimer.gd" id="73_fk48e"]
+[ext_resource type="Script" uid="uid://dx8ow48eguxe7" path="res://MatchPlacementCompletionHandler.gd" id="74_yjh5v"]
 
 [node name="Mao" type="Node2D" unique_id=550121538]
 
@@ -212,6 +213,13 @@ script = ExtResource("20_vcbui")
 match_flow_root = NodePath("..")
 turn_order_state = NodePath("../MatchTurnOrderState")
 slots_root = NodePath("../../../Core/Board")
+
+[node name="MatchPlacementCompletionHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=754857941 node_paths=PackedStringArray("match_flow_root", "match_network_root", "turn_order_state", "phase_timer")]
+script = ExtResource("74_yjh5v")
+match_flow_root = NodePath("..")
+match_network_root = NodePath("../../../Multiplayer/MatchNetworkRoot")
+turn_order_state = NodePath("../MatchTurnOrderState")
+phase_timer = NodePath("../../../Multiplayer/MatchPhaseTimer")
 
 [node name="Core" type="Node" parent="Scripts" unique_id=343949318]
 
@@ -425,12 +433,13 @@ offset_bottom = 1044.0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MatchUI" parent="Control" unique_id=495517401 node_paths=PackedStringArray("match_flow_root", "slots_root", "score_state", "phase_timer") instance=ExtResource("1_2n6q5")]
+[node name="MatchUI" parent="Control" unique_id=495517401 node_paths=PackedStringArray("match_flow_root", "slots_root", "score_state", "phase_timer", "placement_completion_handler") instance=ExtResource("1_2n6q5")]
 layout_mode = 0
 match_flow_root = NodePath("../../Scripts/MatchFlowRoot")
 slots_root = NodePath("../../Core/Board")
 score_state = NodePath("../../Scripts/MatchFlowRoot/MatchScoreState")
 phase_timer = NodePath("../../Multiplayer/MatchPhaseTimer")
+placement_completion_handler = NodePath("../../Scripts/MatchFlowRoot/MatchPlacementCompletionHandler")
 
 [node name="BuffConfirmButton" type="Button" parent="Control" unique_id=685589739 node_paths=PackedStringArray("buff_flow_handler", "buff_apply_handler")]
 z_index = 10

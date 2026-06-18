@@ -5,9 +5,11 @@ class_name MatchUIRoot
 @export var slots_root: SlotsRoot
 @export var score_state: MatchScoreState
 @export var phase_timer: MatchPhaseTimer
+@export var placement_completion_handler: MatchPlacementCompletionHandler
 
 @export var tugga_display: TuggaBattleScaleDisplay
 @export var attack_order_arrow_display: AttackOrderArrowDisplay
+@export var end_turn_button: BaseButton
 
 @export var host_name_label: Label
 @export var client_name_label: Label
