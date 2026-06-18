@@ -68,9 +68,17 @@ func run_confirmed_attack(payload: Dictionary) -> void:
 		print("CONFIRMED ATTACK FAILED: attack missing")
 		return
 
+	_connect_attack_signals(card.attack)
+
 	print("CONFIRMED ATTACK EXECUTING: ", payload)
 
+	_broadcast_attack_sequence_started(payload)
+
 	await card.attack.perform_attack()
+
+	_broadcast_attack_sequence_finished(payload)
+
+	_disconnect_attack_signals(card.attack)
 	
 func is_valid_attack_payload(
 	payload: Dictionary,
