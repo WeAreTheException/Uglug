@@ -105,6 +105,9 @@ func get_insert_index_from_global_x(global_x: float, cards: Array[CardRoot]) -> 
 
 
 func _arrange_card(card: CardRoot, index: int, count: int) -> void:
+	if not is_instance_valid(card):
+		return
+
 	var card_spacing: float = _get_card_spacing()
 	var total_width: float = card_spacing * float(count - 1)
 	var start_x: float = -total_width / 2.0
@@ -148,6 +151,9 @@ func _get_layout_cards(cards: Array[CardRoot]) -> Array[CardRoot]:
 	var result: Array[CardRoot] = []
 
 	for card in cards:
+		if not is_instance_valid(card):
+			continue
+
 		if exclusion.should_include(card):
 			result.append(card)
 
