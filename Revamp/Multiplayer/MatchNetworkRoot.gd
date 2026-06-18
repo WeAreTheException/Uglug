@@ -48,6 +48,11 @@ func _ready() -> void:
 	GDSync.expose_func(_receive_match_state_snapshot)
 	GDSync.expose_func(_receive_blessing_flow_finished)
 	GDSync.expose_func(_receive_buff_flow_finished)
+	GDSync.expose_func(_receive_attack_sequence_started)
+	GDSync.expose_func(_receive_attack_started)
+	GDSync.expose_func(_receive_attack_hit)
+	GDSync.expose_func(_receive_attack_finished)
+	GDSync.expose_func(_receive_attack_sequence_finished)
 
 	_setup_children()
 	_assign_local_owner()
@@ -378,3 +383,37 @@ func _receive_buff_flow_finished() -> void:
 		return
 
 	buff_network.receive_buff_flow_finished()
+
+func _receive_attack_sequence_started(payload: Dictionary) -> void:
+	if attack_network == null:
+		return
+
+	attack_network.receive_attack_sequence_started(payload)
+
+
+func _receive_attack_started(payload: Dictionary) -> void:
+	if attack_network == null:
+		return
+
+	attack_network.receive_attack_started(payload)
+
+
+func _receive_attack_hit(payload: Dictionary) -> void:
+	if attack_network == null:
+		return
+
+	attack_network.receive_attack_hit(payload)
+
+
+func _receive_attack_finished(payload: Dictionary) -> void:
+	if attack_network == null:
+		return
+
+	attack_network.receive_attack_finished(payload)
+
+
+func _receive_attack_sequence_finished(payload: Dictionary) -> void:
+	if attack_network == null:
+		return
+
+	attack_network.receive_attack_sequence_finished(payload)

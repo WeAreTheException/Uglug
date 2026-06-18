@@ -154,3 +154,115 @@ func is_valid_attack_payload(
 
 	print("ATTACK VALIDATION PASSED: ", payload)
 	return true
+
+
+func _connect_attack_signals(attack: Attack) -> void:
+	if attack == null:
+		return
+
+	if not attack.attack_started.is_connected(_on_attack_started):
+		attack.attack_started.connect(_on_attack_started)
+
+	if not attack.attack_hit.is_connected(_on_attack_hit):
+		attack.attack_hit.connect(_on_attack_hit)
+
+	if not attack.attack_finished.is_connected(_on_attack_finished):
+		attack.attack_finished.connect(_on_attack_finished)
+
+
+func _disconnect_attack_signals(attack: Attack) -> void:
+	if attack == null:
+		return
+
+	if attack.attack_started.is_connected(_on_attack_started):
+		attack.attack_started.disconnect(_on_attack_started)
+
+	if attack.attack_hit.is_connected(_on_attack_hit):
+		attack.attack_hit.disconnect(_on_attack_hit)
+
+	if attack.attack_finished.is_connected(_on_attack_finished):
+		attack.attack_finished.disconnect(_on_attack_finished)
+
+
+func _on_attack_started(context: AttackContext) -> void:
+	_broadcast_attack_started(_build_event_payload(context))
+
+
+func _on_attack_hit(context: AttackContext) -> void:
+	_broadcast_attack_hit(_build_event_payload(context))
+
+
+func _on_attack_finished(context: AttackContext) -> void:
+	_broadcast_attack_finished(_build_event_payload(context))
+
+
+func _build_event_payload(context: AttackContext) -> Dictionary:
+	if context == null:
+		return {}
+
+	var attacker_id := ""
+	var target_id := ""
+	var attacker_slot_index := -1
+	var target_slot_index := -1
+
+	if context.attacker_card != null and is_instance_valid(context.attacker_card):
+		attacker_id = context.attacker_card.get_runtime_id()
+
+	if context.attacker_slot != null:
+		attacker_slot_index = context.attacker_slot.slot_index
+
+	if context.target_slot != null:
+		target_slot_index = context.target_slot.slot_index
+
+		if context.target_slot.current_card != null:
+			target_id = context.target_slot.current_card.get_runtime_id()
+
+	return {
+		"attacker_card_runtime_id": attacker_id,
+		"attacker_owner": int(context.attacker_owner),
+		"attacker_slot_index": attacker_slot_index,
+		"target_owner": int(context.target_owner),
+		"target_slot_index": target_slot_index,
+		"target_card_runtime_id": target_id,
+		"attack_event": context.get_attack_direction()
+	}
+
+
+func _broadcast_attack_sequence_started(payload: Dictionary) -> void:
+	GDSync.call_func_all(root._receive_attack_sequence_started, payload)
+
+
+func _broadcast_attack_started(payload: Dictionary) -> void:
+	GDSync.call_func_all(root._receive_attack_started, payload)
+
+
+func _broadcast_attack_hit(payload: Dictionary) -> void:
+	GDSync.call_func_all(root._receive_attack_hit, payload)
+
+
+func _broadcast_attack_finished(payload: Dictionary) -> void:
+	GDSync.call_func_all(root._receive_attack_finished, payload)
+
+
+func _broadcast_attack_sequence_finished(payload: Dictionary) -> void:
+	GDSync.call_func_all(root._receive_attack_sequence_finished, payload)
+
+
+func receive_attack_sequence_started(payload: Dictionary) -> void:
+	print("ATTACK SEQUENCE STARTED RECEIVED: ", payload)
+
+
+func receive_attack_started(payload: Dictionary) -> void:
+	print("ATTACK STARTED RECEIVED: ", payload)
+
+
+func receive_attack_hit(payload: Dictionary) -> void:
+	print("ATTACK HIT RECEIVED: ", payload)
+
+
+func receive_attack_finished(payload: Dictionary) -> void:
+	print("ATTACK FINISHED RECEIVED: ", payload)
+
+
+func receive_attack_sequence_finished(payload: Dictionary) -> void:
+	print("ATTACK SEQUENCE FINISHED RECEIVED: ", payload)
