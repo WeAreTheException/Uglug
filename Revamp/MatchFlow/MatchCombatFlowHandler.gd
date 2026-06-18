@@ -106,22 +106,27 @@ func _run_owner_attack_order(owner: SlotRow.SlotOwner) -> void:
 		if not is_instance_valid(card):
 			continue
 
-		if match_network_root != null and match_network_root.attack_network != null:
-			var payload := match_network_root.attack_network.build_attack_payload(
-				card,
-				owner
+		if match_network_root == null:
+			continue
+
+		if match_network_root.attack_network == null:
+			continue
+
+		var payload := match_network_root.attack_network.build_attack_payload(
+			card,
+			owner
 		)
 
-			if payload.is_empty():
-				continue
+		if payload.is_empty():
+			continue
 
-			if not match_network_root.attack_network.is_valid_attack_payload(
-				payload,
-				owner
-			):
-				continue
+		if not match_network_root.attack_network.is_valid_attack_payload(
+			payload,
+			owner
+		):
+			continue
 
-		await card.attack.perform_attack()
+		await match_network_root.attack_network.run_confirmed_attack(payload)
 
 	_stop_anticipation(owner)
 

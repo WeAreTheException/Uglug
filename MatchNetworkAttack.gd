@@ -55,7 +55,23 @@ func build_attack_payload(
 
 	return payload
 
+func run_confirmed_attack(payload: Dictionary) -> void:
+	var runtime_id: String = payload.get("attacker_card_runtime_id", "")
 
+	var card := root.slots_root.find_card_by_runtime_id(runtime_id)
+
+	if card == null:
+		print("CONFIRMED ATTACK FAILED: attacker missing")
+		return
+
+	if card.attack == null:
+		print("CONFIRMED ATTACK FAILED: attack missing")
+		return
+
+	print("CONFIRMED ATTACK EXECUTING: ", payload)
+
+	await card.attack.perform_attack()
+	
 func is_valid_attack_payload(
 	payload: Dictionary,
 	expected_owner: SlotRow.SlotOwner
