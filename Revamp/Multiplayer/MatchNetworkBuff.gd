@@ -120,6 +120,8 @@ func receive_confirmed_buff(
 	if not applied:
 		print("CONFIRMED BUFF FAILED: add failed")
 		return
+	
+	_play_confirmed_buff_feedback(card)
 
 	if root.print_debug:
 		print(
@@ -346,3 +348,22 @@ func _finish_buff_phase() -> void:
 	is_phase_finishing = true
 
 	GDSync.call_func_all(root._receive_buff_flow_finished)
+
+func _play_confirmed_buff_feedback(card: CardRoot) -> void:
+	if card == null:
+		return
+
+	if not is_instance_valid(card):
+		return
+
+	var original_scale := card.scale
+	var original_rotation := card.rotation_degrees
+
+	var tween := card.create_tween()
+	tween.tween_property(card, "scale", original_scale * 1.12, 0.12)
+	tween.tween_property(card, "rotation_degrees", original_rotation - 3.0, 0.04)
+	tween.tween_property(card, "rotation_degrees", original_rotation + 3.0, 0.04)
+	tween.tween_property(card, "rotation_degrees", original_rotation - 2.0, 0.04)
+	tween.tween_property(card, "rotation_degrees", original_rotation + 2.0, 0.04)
+	tween.tween_property(card, "rotation_degrees", original_rotation, 0.04)
+	tween.tween_property(card, "scale", original_scale, 0.12)
