@@ -282,16 +282,12 @@ func _card_already_has_blessing(card: CardRoot, blessing: Blessing) -> bool:
 	if blessing == null:
 		return false
 
-	if card.runtime_state == null:
-		return false
-
 	var clean_id := blessing.blessing_id.strip_edges().to_snake_case()
 
-	for existing_blessing in card.runtime_state.blessings:
-		if existing_blessing == null:
-			continue
+	if card.has_method("has_blessing"):
+		return card.has_blessing(clean_id)
 
-		if existing_blessing.blessing_id.strip_edges().to_snake_case() == clean_id:
-			return true
+	if card.has_method("has_blessing_id"):
+		return card.has_blessing_id(clean_id)
 
 	return false
