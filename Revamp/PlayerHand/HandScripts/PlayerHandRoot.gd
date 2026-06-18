@@ -435,3 +435,20 @@ func clear_cards(free_cards: bool = true) -> void:
 	card_spawner.clear_cards(free_cards)
 	arrange_cards()
 	emit_prime_state()
+
+func get_cards() -> Array[CardRoot]:
+	if card_spawner == null:
+		return []
+
+	var result: Array[CardRoot] = []
+
+	for card: CardRoot in card_spawner.get_cards():
+		if card == null:
+			continue
+
+		if not is_instance_valid(card):
+			continue
+
+		result.append(card)
+
+	return result

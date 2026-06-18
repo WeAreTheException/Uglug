@@ -101,6 +101,8 @@ func confirm_buff() -> bool:
 		if print_debug:
 			print("BUFF CONFIRM REQUEST SENT: ", mutation.mutation_name, " -> ", card.card_name)
 			print("BUFF CONFIRM CARD ID: ", card.get_runtime_id())
+
+		return true
 	else:
 		var applied := card.add_buff_mutation(mutation)
 

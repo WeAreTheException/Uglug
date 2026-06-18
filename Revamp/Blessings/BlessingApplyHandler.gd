@@ -88,6 +88,8 @@ func confirm_blessing() -> bool:
 				card.card_name
 			)
 			print("BLESSING CONFIRM CARD ID: ", card.get_runtime_id())
+
+		return true
 	else:
 		var applied := apply_helper.apply_blessing(card, blessing)
 

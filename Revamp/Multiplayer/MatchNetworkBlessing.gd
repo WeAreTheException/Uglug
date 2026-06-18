@@ -1,11 +1,16 @@
 extends Node
 class_name MatchNetworkBlessing
 
+@export var phase_timer: MatchPhaseTimer
+@export var selection_state: BlessingSelectionState
+
 var root: MatchNetworkRoot = null
+var confirmed_owners: Dictionary = {}
 
 
 func setup(source_root: MatchNetworkRoot) -> void:
 	root = source_root
+	_connect_timer()
 
 
 func request_blessing_confirm(
@@ -71,11 +76,23 @@ func receive_confirmed_blessing(
 		)
 
 
+func _connect_timer() -> void:
+	if phase_timer == null:
+		return
+
+	if not phase_timer.timer_finished.is_connected(_on_timer_finished):
+		phase_timer.timer_finished.connect(_on_timer_finished)
+
+
 func _process_blessing_confirm_request(
 	owner: SlotRow.SlotOwner,
 	target_card_runtime_id: String,
 	blessing_id: String
 ) -> void:
+	if confirmed_owners.has(owner):
+		print("BLESSING REQUEST REJECTED: owner already confirmed")
+		return
+
 	var card := root.find_card_anywhere(target_card_runtime_id)
 
 	if card == null:
@@ -97,6 +114,9 @@ func _process_blessing_confirm_request(
 		return
 
 	_broadcast_confirmed_blessing(owner, target_card_runtime_id, blessing_id)
+
+	confirmed_owners[owner] = true
+	_try_finish_if_all_confirmed()
 
 
 func _broadcast_confirmed_blessing(
@@ -120,6 +140,86 @@ func _broadcast_confirmed_blessing(
 		target_card_runtime_id,
 		blessing_id
 	)
+
+
+func _try_finish_if_all_confirmed() -> void:
+	if confirmed_owners.has(SlotRow.SlotOwner.PLAYER) and confirmed_owners.has(SlotRow.SlotOwner.OPPONENT):
+		_finish_blessing_phase()
+
+
+func _on_timer_finished(state: MatchFlowRoot.MatchState) -> void:
+	if root == null:
+		return
+
+	if not root.is_host():
+		return
+
+	if state != MatchFlowRoot.MatchState.BLESSING:
+		return
+
+	_resolve_unconfirmed_owner(SlotRow.SlotOwner.PLAYER)
+	_resolve_unconfirmed_owner(SlotRow.SlotOwner.OPPONENT)
+	_finish_blessing_phase()
+
+
+func _resolve_unconfirmed_owner(owner: SlotRow.SlotOwner) -> void:
+	if confirmed_owners.has(owner):
+		return
+
+	if root.blessing_flow_handler == null:
+		return
+
+	var blessing := root.blessing_flow_handler.get_active_blessing()
+
+	if blessing == null:
+		return
+
+	var card := _get_fallback_card(owner)
+
+	if card == null:
+		print("BLESSING TIMEOUT FAILED: no fallback card for ", root.get_owner_name(owner))
+		return
+
+	confirmed_owners[owner] = true
+
+	_broadcast_confirmed_blessing(
+		owner,
+		card.get_runtime_id(),
+		blessing.blessing_id.to_snake_case()
+	)
+
+
+func _get_fallback_card(owner: SlotRow.SlotOwner) -> CardRoot:
+	if selection_state != null:
+		var selected := selection_state.get_selected_card(owner)
+
+		if selected != null:
+			return selected
+
+	if root == null:
+		return null
+
+	if root.deck_system_root == null:
+		return null
+
+	var hand := root.deck_system_root.get_hand_for_owner(owner)
+
+	if hand == null:
+		return null
+
+	var cards := hand.get_cards()
+
+	if cards.is_empty():
+		return null
+
+	return cards.pick_random()
+
+
+func _finish_blessing_phase() -> void:
+	if root.blessing_flow_handler != null:
+		root.blessing_flow_handler.request_finish_blessing_flow()
+
+	confirmed_owners.clear()
 
 
 func _get_active_blessing_by_id(blessing_id: String) -> Blessing:

@@ -1,11 +1,16 @@
 extends Node
 class_name MatchNetworkBuff
 
+@export var phase_timer: MatchPhaseTimer
+@export var selection_state: BuffSelectionState
+
 var root: MatchNetworkRoot = null
+var confirmed_owners: Dictionary = {}
 
 
 func setup(source_root: MatchNetworkRoot) -> void:
 	root = source_root
+	_connect_timer()
 
 
 func on_buff_phase_started() -> void:
@@ -14,6 +19,8 @@ func on_buff_phase_started() -> void:
 
 	if not root.is_host():
 		return
+
+	confirmed_owners.clear()
 
 	if root.buff_database == null:
 		print("HOST BUFF ROLL BLOCKED: buff_database missing")
@@ -122,11 +129,23 @@ func receive_confirmed_buff(
 		)
 
 
+func _connect_timer() -> void:
+	if phase_timer == null:
+		return
+
+	if not phase_timer.timer_finished.is_connected(_on_timer_finished):
+		phase_timer.timer_finished.connect(_on_timer_finished)
+
+
 func _process_buff_confirm_request(
 	owner: SlotRow.SlotOwner,
 	target_card_runtime_id: String,
 	mutation_id: String
 ) -> void:
+	if confirmed_owners.has(owner):
+		print("BUFF REQUEST REJECTED: owner already confirmed")
+		return
+
 	if root.buff_database == null:
 		print("BUFF REQUEST REJECTED: buff_database missing")
 		return
@@ -164,6 +183,9 @@ func _process_buff_confirm_request(
 
 	_broadcast_confirmed_buff(owner, target_card_runtime_id, mutation_id)
 
+	confirmed_owners[owner] = true
+	_try_finish_if_all_confirmed()
+
 
 func _broadcast_confirmed_buff(
 	owner: SlotRow.SlotOwner,
@@ -186,3 +208,95 @@ func _broadcast_confirmed_buff(
 		target_card_runtime_id,
 		mutation_id
 	)
+
+
+func _try_finish_if_all_confirmed() -> void:
+	if confirmed_owners.has(SlotRow.SlotOwner.PLAYER) and confirmed_owners.has(SlotRow.SlotOwner.OPPONENT):
+		_finish_buff_phase()
+
+
+func _on_timer_finished(state: MatchFlowRoot.MatchState) -> void:
+	if root == null:
+		return
+
+	if not root.is_host():
+		return
+
+	if state != MatchFlowRoot.MatchState.BUFF:
+		return
+
+	_resolve_unconfirmed_owner(SlotRow.SlotOwner.PLAYER)
+	_resolve_unconfirmed_owner(SlotRow.SlotOwner.OPPONENT)
+	_finish_buff_phase()
+
+
+func _resolve_unconfirmed_owner(owner: SlotRow.SlotOwner) -> void:
+	if confirmed_owners.has(owner):
+		return
+
+	if root.buff_flow_handler == null:
+		return
+
+	var mutation := root.buff_flow_handler.get_active_reward_mutation()
+
+	if mutation == null:
+		return
+
+	var card := _get_fallback_card(owner, mutation)
+
+	if card == null:
+		print("BUFF TIMEOUT FAILED: no fallback card for ", root.get_owner_name(owner))
+		return
+
+	confirmed_owners[owner] = true
+
+	_broadcast_confirmed_buff(
+		owner,
+		card.get_runtime_id(),
+		mutation.get_safe_mutation_id()
+	)
+
+
+func _get_fallback_card(owner: SlotRow.SlotOwner, mutation: Mutation) -> CardRoot:
+	if selection_state != null:
+		var selected := selection_state.get_selected_card(owner)
+
+		if selected != null and selected.can_receive_buff_mutation(mutation):
+			return selected
+
+	if root == null:
+		return null
+
+	if root.deck_system_root == null:
+		return null
+
+	var hand := root.deck_system_root.get_hand_for_owner(owner)
+
+	if hand == null:
+		return null
+
+	var valid_cards: Array[CardRoot] = []
+
+	for card: CardRoot in hand.get_cards():
+		if card == null:
+			continue
+
+		if not is_instance_valid(card):
+			continue
+
+		if not card.can_receive_buff_mutation(mutation):
+			continue
+
+		valid_cards.append(card)
+
+	if valid_cards.is_empty():
+		return null
+
+	return valid_cards.pick_random()
+
+
+func _finish_buff_phase() -> void:
+	if root.buff_flow_handler != null:
+		root.buff_flow_handler.finish_buff_flow()
+
+	confirmed_owners.clear()

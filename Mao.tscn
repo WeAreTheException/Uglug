@@ -505,11 +505,15 @@ script = ExtResource("64_af7hx")
 [node name="MatchNetworkPlacement" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=207070248]
 script = ExtResource("65_fd62j")
 
-[node name="MatchNetworkBlessing" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=632633305]
+[node name="MatchNetworkBlessing" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=632633305 node_paths=PackedStringArray("phase_timer", "selection_state")]
 script = ExtResource("66_q844d")
+phase_timer = NodePath("../../MatchPhaseTimer")
+selection_state = NodePath("../../../Scripts/Core/Blessing/BlessingSelectionState")
 
-[node name="MatchNetworkBuff" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=769336365]
+[node name="MatchNetworkBuff" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=769336365 node_paths=PackedStringArray("phase_timer", "selection_state")]
 script = ExtResource("67_gfrq6")
+phase_timer = NodePath("../../MatchPhaseTimer")
+selection_state = NodePath("../../../Scripts/Core/Buff/BuffSelectionState")
 
 [node name="MatchNetworkFlow" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=880320439]
 script = ExtResource("68_8hx3r")
