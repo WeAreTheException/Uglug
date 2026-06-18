@@ -359,7 +359,12 @@ func _play_client_hit_visual(payload: Dictionary) -> void:
 		var target_slot_index: int = int(payload.get("target_slot_index", -1))
 		
 		var visual_target_owner := _get_visual_owner_for_local_client(target_owner)
-		var target_slot := root.slots_root.get_slot(visual_target_owner, target_slot_index)
+		var visual_slot_index := _get_visual_slot_index_for_local_client(target_slot_index)
+
+		var target_slot := root.slots_root.get_slot(
+			visual_target_owner,
+			visual_slot_index
+		)
 
 		if target_slot != null:
 			await root.slots_root.show_direct_damage_feedback(target_slot)
@@ -377,3 +382,12 @@ func _play_client_hit_visual(payload: Dictionary) -> void:
 		return
 
 	await target_card.hurt.play_network_hurt_feedback()
+
+func _get_visual_slot_index_for_local_client(slot_index: int) -> int:
+	if root == null:
+		return slot_index
+
+	if root.is_host():
+		return slot_index
+
+	return 5 - slot_index
