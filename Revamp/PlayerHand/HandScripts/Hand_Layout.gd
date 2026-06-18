@@ -18,9 +18,53 @@ enum LayoutMode {
 @export var hand_width_reference: float = 550.0
 @export var normal_z_start: int = 0
 
+@export var enable_debug_layout_keys: bool = false
+@export var debug_idle_key: Key = KEY_1
+@export var debug_play_key: Key = KEY_2
+@export var debug_blessing_key: Key = KEY_3
+@export var debug_buff_key: Key = KEY_4
+
 var current_mode: LayoutMode = LayoutMode.IDLE
 var exclusion := HandLayoutExclusionHelper.new()
 var index_resolver := HandInsertIndexResolverHelper.new()
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not enable_debug_layout_keys:
+		return
+
+	if not event is InputEventKey:
+		return
+
+	if not event.pressed:
+		return
+
+	if event.echo:
+		return
+
+	if event.keycode == debug_idle_key:
+		set_layout_mode(LayoutMode.IDLE)
+		_request_arrange_from_parent()
+		print("DEBUG HAND LAYOUT: IDLE")
+		return
+
+	if event.keycode == debug_play_key:
+		set_layout_mode(LayoutMode.PLAY)
+		_request_arrange_from_parent()
+		print("DEBUG HAND LAYOUT: PLAY")
+		return
+
+	if event.keycode == debug_blessing_key:
+		set_layout_mode(LayoutMode.BLESSING)
+		_request_arrange_from_parent()
+		print("DEBUG HAND LAYOUT: BLESSING")
+		return
+
+	if event.keycode == debug_buff_key:
+		set_layout_mode(LayoutMode.BUFF)
+		_request_arrange_from_parent()
+		print("DEBUG HAND LAYOUT: BUFF")
+		return
 
 
 func set_layout_mode(mode: LayoutMode) -> void:
@@ -61,9 +105,6 @@ func get_insert_index_from_global_x(global_x: float, cards: Array[CardRoot]) -> 
 
 
 func _arrange_card(card: CardRoot, index: int, count: int) -> void:
-	if not is_instance_valid(card):
-		return
-
 	var card_spacing: float = _get_card_spacing()
 	var total_width: float = card_spacing * float(count - 1)
 	var start_x: float = -total_width / 2.0
@@ -107,9 +148,6 @@ func _get_layout_cards(cards: Array[CardRoot]) -> Array[CardRoot]:
 	var result: Array[CardRoot] = []
 
 	for card in cards:
-		if not is_instance_valid(card):
-			continue
-
 		if exclusion.should_include(card):
 			result.append(card)
 
@@ -120,8 +158,10 @@ func _get_active_layout() -> Node:
 	match current_mode:
 		LayoutMode.PLAY:
 			return play_layout
+
 		LayoutMode.BLESSING:
 			return blessing_layout
+
 		LayoutMode.BUFF:
 			return buffing_layout
 
@@ -162,3 +202,13 @@ func _get_y_offset() -> float:
 		return layout.y_offset
 
 	return 0.0
+
+
+func _request_arrange_from_parent() -> void:
+	var parent := get_parent()
+
+	if parent == null:
+		return
+
+	if parent.has_method("arrange_cards"):
+		parent.arrange_cards()
