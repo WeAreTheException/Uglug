@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="CardData" format=3 uid="uid://0c6lqenucx25"]
 
-[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="1_meods"]
+[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Mutations/MutationBehaviourHandlers/Mutation.gd" id="1_y4j3o"]
 [ext_resource type="Texture2D" uid="uid://b1soqhrvsu86i" path="res://Art/Ants/Aviant.png" id="2_sib7n"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="2_wsm8g"]
 [ext_resource type="Resource" uid="uid://bs6mfmdmm2uj6" path="res://Mutations/MutationPresets/StraightChopsMutations/DirectAttack.tres" id="3_oc2ah"]
@@ -12,6 +12,6 @@ name = "Aviant"
 attack = 1
 cost = 1
 ant_texture = ExtResource("2_sib7n")
-base_mutations = Array[ExtResource("1_meods")]([ExtResource("3_oc2ah"), null])
+base_mutations = Array[ExtResource("1_y4j3o")]([ExtResource("3_oc2ah"), null])
 deck_amount = 2
 metadata/_custom_type_script = "uid://duslcpxrhurv8"

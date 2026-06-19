@@ -1,9 +1,9 @@
 [gd_resource type="Resource" script_class="CardData" format=3 uid="uid://b10yu2ml8hwx2"]
 
-[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="1_hxlom"]
+[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Mutations/MutationBehaviourHandlers/Mutation.gd" id="1_hxlom"]
 [ext_resource type="Texture2D" uid="uid://d23ib5ixgbhfl" path="res://Art/Ants/Stimulant.PNG" id="2_15gbe"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="2_c7jri"]
-[ext_resource type="Resource" uid="uid://cyutbyh2av6iv" path="res://Mutations/MutationPresets/SteroidDealer.tres" id="3_kbv62"]
+[ext_resource type="Resource" uid="uid://cyutbyh2av6iv" path="res://Mutations/MutationPresets/RallyMutations/SteroidDealer.tres" id="3_kbv62"]
 
 [resource]
 script = ExtResource("2_c7jri")

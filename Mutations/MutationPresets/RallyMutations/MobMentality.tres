@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="MobMentality" format=3 uid="uid://bqxd6swy88edw"]
+
+[ext_resource type="Script" uid="uid://ceyng8aj5mtue" path="res://Mutations/MutationBehaviourHandlers/MobMentality.gd" id="1_8dxua"]
+[ext_resource type="Texture2D" uid="uid://dmil2bgct30c1" path="res://Art/Mutations/Sigils/Empowerant_Sigil.png" id="2_cgq8q"]
+
+[resource]
+script = ExtResource("1_8dxua")
+mutation_name = "MobMentality"
+mutation_description = "DMG = amount of cards on your side"
+sigil_texture = ExtResource("2_cgq8q")

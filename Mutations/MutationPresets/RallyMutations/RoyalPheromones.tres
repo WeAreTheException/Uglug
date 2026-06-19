@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="RoyalPheromones" format=3 uid="uid://c0ojr71i4k50b"]
+
+[ext_resource type="Script" uid="uid://dhcajtdenp665" path="res://Mutations/MutationBehaviourHandlers/RoyalPheromones.gd" id="1_r60ac"]
+[ext_resource type="Texture2D" uid="uid://74u6wjrv13sy" path="res://Art/Mutations/Sigils/Queen_Ant_Sigil.png" id="2_h68v0"]
+
+[resource]
+script = ExtResource("1_r60ac")
+mutation_name = "RoyalPheromones"
+mutation_description = "Buff your workers +1 DMG +1HP"
+sigil_texture = ExtResource("2_h68v0")

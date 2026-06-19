@@ -1,9 +1,9 @@
 [gd_resource type="Resource" script_class="CardData" format=3 uid="uid://bckromx6ufd8m"]
 
-[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="1_8gjhy"]
+[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Mutations/MutationBehaviourHandlers/Mutation.gd" id="1_8gjhy"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="2_ag7g0"]
 [ext_resource type="Texture2D" uid="uid://ojno1o0wivmt" path="res://Art/Ants/Escutcheant.PNG" id="2_aviio"]
-[ext_resource type="Resource" uid="uid://b6afw5yomddli" path="res://Mutations/MutationPresets/Shield.tres" id="3_vs5mf"]
+[ext_resource type="Resource" uid="uid://b6afw5yomddli" path="res://Mutations/MutationPresets/SustainMutations/Shield.tres" id="3_vs5mf"]
 
 [resource]
 script = ExtResource("2_ag7g0")

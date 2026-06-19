@@ -1,5 +1,5 @@
 extends Mutation
-class_name MutuallyAssuredDestruction
+class_name IDieYouDie
 
 
 func on_death(card: CardRoot) -> void:

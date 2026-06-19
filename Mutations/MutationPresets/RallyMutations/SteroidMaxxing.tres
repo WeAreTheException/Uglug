@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="SteroidMaxxing" format=3 uid="uid://c0cebfc5tmmng"]
+
+[ext_resource type="Script" uid="uid://drdrq0r4lpax2" path="res://Mutations/MutationBehaviourHandlers/SteroidMaxxing.gd" id="1_gsedg"]
+[ext_resource type="Texture2D" uid="uid://dfjjb8nilpdfw" path="res://Art/Mutations/Sigils/Super_Stimulant_Sigil.png" id="2_6is1v"]
+
+[resource]
+script = ExtResource("1_gsedg")
+mutation_name = "SteroidMaxxing"
+mutation_description = "Buff all other slots +1DMG"
+sigil_texture = ExtResource("2_6is1v")

@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="CardData" format=3 uid="uid://b6naofddvwrc1"]
 
-[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="1_kpl6p"]
+[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Mutations/MutationBehaviourHandlers/Mutation.gd" id="1_lswrg"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="2_djvnq"]
 [ext_resource type="Texture2D" uid="uid://chdko376katyy" path="res://Art/Ants/Rhinocerant.PNG" id="2_iyf5u"]
 [ext_resource type="Resource" uid="uid://dp3xgqtqwogy3" path="res://Mutations/MutationPresets/StraightChopsMutations/Lance.tres" id="4_bo34x"]
@@ -14,5 +14,5 @@ attack = 3
 health = 3
 cost = 4
 ant_texture = ExtResource("2_iyf5u")
-base_mutations = Array[ExtResource("1_kpl6p")]([ExtResource("4_bo34x")])
+base_mutations = Array[ExtResource("1_lswrg")]([ExtResource("4_bo34x")])
 metadata/_custom_type_script = "uid://duslcpxrhurv8"

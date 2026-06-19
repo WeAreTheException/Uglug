@@ -1,9 +1,9 @@
 [gd_resource type="Resource" script_class="CardData" format=3 uid="uid://ci7yvhc8pfst6"]
 
-[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="1_sb4fw"]
+[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Mutations/MutationBehaviourHandlers/Mutation.gd" id="1_sb4fw"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="2_bcymb"]
 [ext_resource type="Texture2D" uid="uid://b55jkuhdyk7wl" path="res://Art/Ants/QueenAnt.png" id="2_dh821"]
-[ext_resource type="Resource" uid="uid://c0ojr71i4k50b" path="res://Mutations/MutationPresets/RoyalPheromones.tres" id="3_dh821"]
+[ext_resource type="Resource" uid="uid://c0ojr71i4k50b" path="res://Mutations/MutationPresets/RallyMutations/RoyalPheromones.tres" id="3_dh821"]
 
 [resource]
 script = ExtResource("2_bcymb")
