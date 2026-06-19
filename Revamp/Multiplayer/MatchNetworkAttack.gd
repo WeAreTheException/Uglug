@@ -486,7 +486,8 @@ func _build_death_payload(card: CardRoot) -> Dictionary:
 	return {
 		"card_runtime_id": card.get_runtime_id(),
 		"owner": int(owner),
-		"slot_index": slot.slot_index
+		"slot_index": slot.slot_index,
+		"is_revenant": card.is_revenant()
 	}
 
 
@@ -511,6 +512,9 @@ func _play_client_death_visual(payload: Dictionary) -> void:
 		return
 
 	var runtime_id: String = payload.get("card_runtime_id", "")
+	var owner: SlotRow.SlotOwner = int(payload.get("owner", SlotRow.SlotOwner.PLAYER)) as SlotRow.SlotOwner
+	var is_revenant: bool = bool(payload.get("is_revenant", false))
+
 	var card := root.slots_root.find_card_by_runtime_id(runtime_id)
 
 	if card == null:
@@ -521,4 +525,4 @@ func _play_client_death_visual(payload: Dictionary) -> void:
 		print("CLIENT DEATH VISUAL FAILED: die missing")
 		return
 
-	await card.die.play_network_die_visual()
+	await card.die.play_network_die_visual(is_revenant, owner)

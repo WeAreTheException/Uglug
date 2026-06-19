@@ -150,3 +150,7 @@ func _emit_all_changed() -> void:
 	worth_changed.emit(get_worth())
 
 	stats_changed.emit()
+
+func reset_damage_taken() -> void:
+	damage_taken = 0
+	_emit_all_changed()

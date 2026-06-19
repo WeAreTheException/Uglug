@@ -138,14 +138,25 @@ func _return_revenant_to_hand() -> void:
 	if not is_instance_valid(card):
 		return
 
+	var owner := SlotRow.SlotOwner.PLAYER
+
+	if card.slots_root != null:
+		var slot := card.get_current_slot()
+
+		if slot != null:
+			owner = card.slots_root.get_owner_of_slot(slot)
+
 	var target_hand: PlayerHandRoot = null
 
 	if card.deck_system_root != null:
-		target_hand = card.deck_system_root.get_hand_for_card_owner(card)
+		target_hand = card.deck_system_root.get_hand_for_owner(owner)
 
 	if target_hand == null:
 		print("REVENANT RETURN BLOCKED: target hand missing")
 		return
+
+	if card.stats != null:
+		card.stats.reset_damage_taken()
 
 	if card.board_presence != null and card.board_presence.is_on_board():
 		card.board_presence.leave_slot(card)
@@ -208,18 +219,24 @@ func _on_card_hovered(_card: CardRoot) -> void:
 func _on_card_unhovered(_card: CardRoot) -> void:
 	is_hovered = false
 
-func play_network_die_visual() -> void:
+func play_network_die_visual(
+	force_revenant_return: bool = false,
+	owner: SlotRow.SlotOwner = SlotRow.SlotOwner.PLAYER
+) -> void:
 	if card == null:
 		return
 
 	if animation_runner != null:
 		await animation_runner.play(card)
 
-	if card.is_revenant():
+	if force_revenant_return:
 		var target_hand: PlayerHandRoot = null
 
 		if card.deck_system_root != null:
-			target_hand = card.deck_system_root.get_hand_for_card_owner(card)
+			target_hand = card.deck_system_root.get_hand_for_owner(owner)
+
+		if card.stats != null:
+			card.stats.reset_damage_taken()
 
 		if card.board_presence != null:
 			card.board_presence.leave_slot(card)
@@ -228,6 +245,12 @@ func play_network_die_visual() -> void:
 			target_hand.return_existing_card_to_hand(card)
 			print("NETWORK REVENANT RETURNED TO HAND: ", card.card_name)
 			return
+
+	if card.board_presence != null:
+		card.board_presence.leave_slot(card)
+
+	if is_instance_valid(card):
+		card.queue_free()
 
 	if card.board_presence != null:
 		card.board_presence.leave_slot(card)
