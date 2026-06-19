@@ -133,21 +133,50 @@ func _get_valid_card_from_entry(
 
 func _is_card_attack_ready(card: CardRoot) -> bool:
 	if card == null:
+		print("ATTACK READY FAILED: card null")
 		return false
 
 	if not is_instance_valid(card):
+		print("ATTACK READY FAILED: card invalid")
 		return false
 
 	if card.attack == null:
+		print("ATTACK READY FAILED: attack missing | ", card.card_name)
 		return false
 
 	if card.die != null and card.die.is_unavailable_for_combat():
+		print(
+			"ATTACK READY FAILED: unavailable | ",
+			card.card_name,
+			" id=",
+			card.get_runtime_id(),
+			" has_died=",
+			card.die.has_died,
+			" is_dying=",
+			card.die.is_dying
+		)
 		return false
 
 	if card.stats != null and card.stats.is_dead():
+		print(
+			"ATTACK READY FAILED: dead stats | ",
+			card.card_name,
+			" id=",
+			card.get_runtime_id(),
+			" hp=",
+			card.stats.get_health(),
+			" max=",
+			card.stats.get_max_health()
+		)
 		return false
 
 	if card.get_current_slot() == null:
+		print(
+			"ATTACK READY FAILED: no slot | ",
+			card.card_name,
+			" id=",
+			card.get_runtime_id()
+		)
 		return false
 
 	return true
