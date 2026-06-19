@@ -7,6 +7,7 @@ signal starting_hands_dealt
 const DRAW_PILE_WARRIOR := "warrior"
 const DRAW_PILE_WORKER := "worker"
 
+@export var match_network_root: MatchNetworkRoot
 @export var player_one_hand: PlayerHandRoot
 @export var player_two_hand: PlayerHandRoot
 @export var match_setup: MatchDeckSetup
@@ -274,6 +275,13 @@ func draw_random_cards_from_effect_for_card_owner(
 	var owner := _get_owner_for_card(source_card)
 
 	for i: int in range(amount):
+		if match_network_root != null:
+			match_network_root.request_draw(
+				owner,
+				DRAW_PILE_WARRIOR
+			)
+			continue
+
 		var entry := pop_draw_entry_for_owner(owner, DRAW_PILE_WARRIOR)
 
 		if entry.is_empty():
@@ -309,6 +317,13 @@ func spawn_workers_from_effect_for_card_owner(
 	var owner := _get_owner_for_card(source_card)
 
 	for i: int in range(amount):
+		if match_network_root != null:
+			match_network_root.request_draw(
+				owner,
+				DRAW_PILE_WORKER
+			)
+			continue
+
 		var entry := pop_draw_entry_for_owner(owner, DRAW_PILE_WORKER)
 
 		if entry.is_empty():

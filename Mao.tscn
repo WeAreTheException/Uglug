@@ -83,8 +83,9 @@
 
 [node name="Core" type="Node2D" parent="." unique_id=878801964]
 
-[node name="Deck" parent="Core" unique_id=93691211 node_paths=PackedStringArray("player_one_hand", "player_two_hand") instance=ExtResource("28_a1qt2")]
+[node name="Deck" parent="Core" unique_id=93691211 node_paths=PackedStringArray("match_network_root", "player_one_hand", "player_two_hand") instance=ExtResource("28_a1qt2")]
 position = Vector2(1836, 492)
+match_network_root = NodePath("../../Multiplayer/MatchNetworkRoot")
 player_one_hand = NodePath("../PlayerHAnd")
 player_two_hand = NodePath("../OpponenetHAnd")
 
