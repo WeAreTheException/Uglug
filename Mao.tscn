@@ -508,11 +508,6 @@ use_for_blessing = true
 
 [node name="MatchNetworkRoot" type="Node" parent="Multiplayer" unique_id=1636531151 node_paths=PackedStringArray("match_flow_root", "deck_system_root", "turn_order_state", "match_score_state", "slots_root", "phase_timer", "timer_network", "buff_flow_handler", "buff_database", "blessing_flow_handler", "placement_controller", "flow_network", "lookup_network", "draw_network", "buff_network", "blessing_network", "placement_network", "attack_network")]
 script = ExtResource("57_8mjsp")
-enable_match_advance_debug = null
-match_advance_debug_key = null
-enable_ping_debug = null
-ping_debug_key = null
-print_debug = false
 match_flow_root = NodePath("../../Scripts/MatchFlowRoot")
 deck_system_root = NodePath("../../Core/Deck")
 turn_order_state = NodePath("../../Scripts/MatchFlowRoot/MatchTurnOrderState")
@@ -531,6 +526,11 @@ buff_network = NodePath("MatchNetworkBuff")
 blessing_network = NodePath("MatchNetworkBlessing")
 placement_network = NodePath("MatchNetworkPlacement")
 attack_network = NodePath("MatchNetworkAttack")
+enable_match_advance_debug = null
+match_advance_debug_key = null
+enable_ping_debug = null
+ping_debug_key = null
+print_debug = false
 
 [node name="MatchNetworkFlow" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=880320439]
 script = ExtResource("68_8hx3r")

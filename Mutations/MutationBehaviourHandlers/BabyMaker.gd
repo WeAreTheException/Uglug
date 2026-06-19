@@ -5,7 +5,21 @@ class_name BabyMaker
 @export var respect_hand_limit: bool = false
 
 
+func on_death_started_context(
+	_runtime: MutationRuntime,
+	context: DeathContext
+) -> void:
+	if context == null:
+		return
+
+	_spawn_workers(context.dead_card)
+
+
 func on_death(card: CardRoot) -> void:
+	_spawn_workers(card)
+
+
+func _spawn_workers(card: CardRoot) -> void:
 	if card == null:
 		return
 
