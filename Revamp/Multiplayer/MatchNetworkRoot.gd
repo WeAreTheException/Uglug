@@ -7,6 +7,8 @@ class_name MatchNetworkRoot
 @export var turn_order_state: MatchTurnOrderState
 @export var match_score_state: MatchScoreState
 @export var slots_root: SlotsRoot
+@export var phase_timer: MatchPhaseTimer
+@export var timer_network: MatchNetworkTimer
 
 @export var buff_flow_handler: BuffFlowHandler
 @export var buff_database: BuffDatabase

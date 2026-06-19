@@ -121,3 +121,29 @@ func _get_state_name(state: MatchFlowRoot.MatchState) -> String:
 		return match_flow_root.get_state_name(state)
 
 	return str(int(state))
+
+
+func apply_network_timer_started(
+	state: MatchFlowRoot.MatchState,
+	duration: float
+) -> void:
+	active_state = state
+	remaining_seconds = duration
+	is_running = false
+	timer_started.emit(state, duration)
+
+
+func apply_network_timer_ticked(
+	state: MatchFlowRoot.MatchState,
+	remaining: float
+) -> void:
+	active_state = state
+	remaining_seconds = remaining
+	timer_ticked.emit(state, remaining)
+
+
+func apply_network_timer_finished(state: MatchFlowRoot.MatchState) -> void:
+	active_state = state
+	remaining_seconds = 0.0
+	is_running = false
+	timer_finished.emit(state)

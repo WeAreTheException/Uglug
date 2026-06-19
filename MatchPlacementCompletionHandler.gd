@@ -86,7 +86,8 @@ func _begin_placement_state(state: MatchFlowRoot.MatchState) -> void:
 	active_owner = _get_active_owner_for_state(state)
 
 	if phase_timer != null:
-		phase_timer.start_for_state(state)
+		if match_network_root == null or match_network_root.is_host():
+			phase_timer.start_for_state(state)
 
 	_update_button_visible(_is_local_active_owner())
 
