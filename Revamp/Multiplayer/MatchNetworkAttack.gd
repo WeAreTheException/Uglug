@@ -303,6 +303,7 @@ func _play_client_attack_visual(payload: Dictionary) -> void:
 	var attacker_slot_index: int = int(payload.get("attacker_slot_index", -1))
 	var target_owner: SlotRow.SlotOwner = int(payload.get("target_owner", -1)) as SlotRow.SlotOwner
 	var target_slot_index: int = int(payload.get("target_slot_index", -1))
+	var attack_event: String = payload.get("attack_event", "FORWARD")
 
 	var attacker_card := root.slots_root.find_card_by_runtime_id(attacker_id)
 
@@ -318,8 +319,25 @@ func _play_client_attack_visual(payload: Dictionary) -> void:
 		print("CLIENT ATTACK VISUAL FAILED: animation_runner missing")
 		return
 
-	var attacker_slot := root.slots_root.get_slot(attacker_owner, attacker_slot_index)
-	var target_slot := root.slots_root.get_slot(target_owner, target_slot_index)
+	var visual_attacker_owner := _get_visual_owner_for_local_client(attacker_owner)
+	var visual_target_owner := _get_visual_owner_for_local_client(target_owner)
+
+	var visual_attacker_slot_index := attacker_slot_index
+	var visual_target_slot_index := target_slot_index
+
+	if not root.is_host() and attack_event != "FORWARD":
+		visual_attacker_slot_index = _get_visual_slot_index_for_local_client(attacker_slot_index)
+		visual_target_slot_index = _get_visual_slot_index_for_local_client(target_slot_index)
+
+	var attacker_slot := root.slots_root.get_slot(
+		visual_attacker_owner,
+		visual_attacker_slot_index
+	)
+
+	var target_slot := root.slots_root.get_slot(
+		visual_target_owner,
+		visual_target_slot_index
+	)
 
 	if attacker_slot == null:
 		print("CLIENT ATTACK VISUAL FAILED: attacker slot missing")
@@ -332,7 +350,7 @@ func _play_client_attack_visual(payload: Dictionary) -> void:
 	await attacker_card.attack.animation_runner.play_network_attack_step(
 		attacker_slot,
 		target_slot,
-		_get_visual_owner_for_local_client(attacker_owner),
+		visual_attacker_owner,
 		root.slots_root.attack_animation_layer
 	)
 
