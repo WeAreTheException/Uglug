@@ -4,6 +4,7 @@ class_name AttackAnticipationFeedbackHandler
 @export var match_flow_root: MatchFlowRoot
 @export var turn_order_state: MatchTurnOrderState
 @export var slots_root: SlotsRoot
+@export var match_network_root: MatchNetworkRoot
 
 @export var jitter_rotation_degrees: float = 1.5
 @export var jitter_time: float = 0.05
@@ -47,10 +48,29 @@ func start_round_anticipation() -> void:
 	current_owner = turn_order_state.attacking_first_owner
 	is_active = true
 
-	if print_debug:
-		print("ATTACK ANTICIPATION STARTED: ", _get_owner_name(current_owner))
+	var visual_owner := _get_visual_owner_for_local_client(current_owner)
 
-	start_for_owner(current_owner)
+	if print_debug:
+		print(
+			"ATTACK ANTICIPATION STARTED: ",
+			_get_owner_name(current_owner),
+			" | VISUAL: ",
+			_get_owner_name(visual_owner)
+		)
+
+	start_for_owner(visual_owner)
+
+func _get_visual_owner_for_local_client(owner: SlotRow.SlotOwner) -> SlotRow.SlotOwner:
+	if match_network_root == null:
+		return owner
+
+	if match_network_root.is_host():
+		return owner
+
+	if owner == SlotRow.SlotOwner.PLAYER:
+		return SlotRow.SlotOwner.OPPONENT
+
+	return SlotRow.SlotOwner.PLAYER
 
 
 func start_for_owner(owner: SlotRow.SlotOwner) -> void:

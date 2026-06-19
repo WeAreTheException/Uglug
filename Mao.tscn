@@ -216,11 +216,12 @@ script = ExtResource("34_f3uds")
 match_flow_root = NodePath("..")
 post_game_scene_path = "uid://bhhfwt6y6l505"
 
-[node name="AttackAnticipationFeedbackHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=1452981444 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "slots_root")]
+[node name="AttackAnticipationFeedbackHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=1452981444 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "slots_root", "match_network_root")]
 script = ExtResource("35_wop7f")
 match_flow_root = NodePath("..")
 turn_order_state = NodePath("../MatchTurnOrderState")
 slots_root = NodePath("../../../Core/Board")
+match_network_root = NodePath("../../../Multiplayer/MatchNetworkRoot")
 
 [node name="MatchFlowHandApplier" type="Node" parent="Scripts/MatchFlowRoot" unique_id=753206958 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "player_one_hand", "player_two_hand")]
 script = ExtResource("19_2n6q5")
