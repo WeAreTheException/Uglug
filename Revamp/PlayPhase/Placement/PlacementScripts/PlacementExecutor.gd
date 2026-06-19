@@ -50,10 +50,11 @@ func confirm_network_placement(
 
 	card.setup_board_context(board)
 
+	_release_card_from_source_hand(card, source_hand)
+
 	if not _assign_card_to_slot(card, slot):
 		return {}
 
-	_release_card_from_source_hand(card, source_hand)
 	board_mover.move_card_to_board_layer(card, slot, board)
 	board_mover.snap_card_to_slot(card, slot, placed_scale)
 
