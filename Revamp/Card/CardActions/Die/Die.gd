@@ -207,3 +207,16 @@ func _on_card_hovered(_card: CardRoot) -> void:
 
 func _on_card_unhovered(_card: CardRoot) -> void:
 	is_hovered = false
+
+func play_network_die_visual() -> void:
+	if card == null:
+		return
+
+	if animation_runner != null:
+		await animation_runner.play(card)
+
+	if card.board_presence != null:
+		card.board_presence.leave_slot(card)
+
+	if is_instance_valid(card):
+		card.queue_free()

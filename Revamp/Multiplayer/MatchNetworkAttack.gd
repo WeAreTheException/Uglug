@@ -2,6 +2,7 @@ extends Node
 class_name MatchNetworkAttack
 
 var root: MatchNetworkRoot = null
+var connected_death_handlers: Array[Die] = []
 
 
 func setup(source_root: MatchNetworkRoot) -> void:
@@ -69,6 +70,7 @@ func run_confirmed_attack(payload: Dictionary) -> void:
 		return
 
 	_connect_attack_signals(card.attack)
+	_connect_board_death_signals()
 
 	print("CONFIRMED ATTACK EXECUTING: ", payload)
 
@@ -78,6 +80,7 @@ func run_confirmed_attack(payload: Dictionary) -> void:
 
 	_broadcast_attack_sequence_finished(payload)
 
+	_disconnect_board_death_signals()
 	_disconnect_attack_signals(card.attack)
 	
 func is_valid_attack_payload(
@@ -391,3 +394,113 @@ func _get_visual_slot_index_for_local_client(slot_index: int) -> int:
 		return slot_index
 
 	return 5 - slot_index
+
+func _connect_board_death_signals() -> void:
+	connected_death_handlers.clear()
+
+	if root == null:
+		return
+
+	if root.slots_root == null:
+		return
+
+	for slot in root.slots_root.get_all_slots():
+		if slot == null:
+			continue
+
+		var card := slot.current_card
+
+		if card == null:
+			continue
+
+		if card.die == null:
+			continue
+
+		if not card.die.die_started.is_connected(_on_card_die_started):
+			card.die.die_started.connect(_on_card_die_started)
+
+		connected_death_handlers.append(card.die)
+
+
+func _disconnect_board_death_signals() -> void:
+	for die_handler in connected_death_handlers:
+		if die_handler == null:
+			continue
+
+		if not is_instance_valid(die_handler):
+			continue
+
+		if die_handler.die_started.is_connected(_on_card_die_started):
+			die_handler.die_started.disconnect(_on_card_die_started)
+
+	connected_death_handlers.clear()
+
+
+func _on_card_die_started(card: CardRoot) -> void:
+	var payload := _build_death_payload(card)
+
+	if payload.is_empty():
+		return
+
+	_broadcast_card_died(payload)
+
+
+func _build_death_payload(card: CardRoot) -> Dictionary:
+	if card == null:
+		return {}
+
+	if not is_instance_valid(card):
+		return {}
+
+	if root == null:
+		return {}
+
+	if root.slots_root == null:
+		return {}
+
+	var slot := card.get_current_slot()
+
+	if slot == null:
+		return {}
+
+	var owner := root.slots_root.get_owner_of_slot(slot)
+
+	return {
+		"card_runtime_id": card.get_runtime_id(),
+		"owner": int(owner),
+		"slot_index": slot.slot_index
+	}
+
+
+func _broadcast_card_died(payload: Dictionary) -> void:
+	GDSync.call_func_all(root._receive_card_died, payload)
+
+
+func receive_card_died(payload: Dictionary) -> void:
+	print("CARD DIED RECEIVED: ", payload)
+
+	if root == null:
+		return
+
+	if root.is_host():
+		return
+
+	_play_client_death_visual(payload)
+
+
+func _play_client_death_visual(payload: Dictionary) -> void:
+	if root.slots_root == null:
+		return
+
+	var runtime_id: String = payload.get("card_runtime_id", "")
+	var card := root.slots_root.find_card_by_runtime_id(runtime_id)
+
+	if card == null:
+		print("CLIENT DEATH VISUAL FAILED: card missing")
+		return
+
+	if card.die == null:
+		print("CLIENT DEATH VISUAL FAILED: die missing")
+		return
+
+	await card.die.play_network_die_visual()
