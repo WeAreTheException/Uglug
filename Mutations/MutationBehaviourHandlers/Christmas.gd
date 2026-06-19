@@ -8,18 +8,18 @@ class_name Christmas
 func on_placed_context(
 	_runtime: MutationRuntime,
 	card: CardRoot,
-	slot: Slot,
-	owner: SlotRow.SlotOwner
+	_slot: Slot,
+	_owner: SlotRow.SlotOwner
 ) -> void:
 	_draw_cards(card)
 
 
 func on_placed(
-	card: CardRoot,
+	_card: CardRoot,
 	_slot: Slot,
 	_owner: SlotRow.SlotOwner
 ) -> void:
-	_draw_cards(card)
+	pass
 
 
 func _draw_cards(card: CardRoot) -> void:

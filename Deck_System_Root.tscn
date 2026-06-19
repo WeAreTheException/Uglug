@@ -78,8 +78,8 @@ player_two_loadout = SubResource("Resource_nxewr")
 use_debug_deck_order = true
 debug_p1_starting_hand = Array[ExtResource("5_ingbf")]([ExtResource("16_n3vl6"), ExtResource("28_lq2ut"), ExtResource("20_cs6vi"), ExtResource("36_ukkbw"), ExtResource("37_18837"), ExtResource("38_4fbyu")])
 debug_p2_starting_hand = Array[ExtResource("5_ingbf")]([ExtResource("16_n3vl6"), ExtResource("28_lq2ut"), ExtResource("20_cs6vi"), ExtResource("36_ukkbw"), ExtResource("37_18837"), ExtResource("38_4fbyu")])
-debug_p1_draw_pile = Array[ExtResource("5_ingbf")]([ExtResource("35_lq2ut"), ExtResource("17_24wpt")])
-debug_p2_draw_pile = Array[ExtResource("5_ingbf")]([ExtResource("35_lq2ut"), ExtResource("17_24wpt")])
+debug_p1_draw_pile = Array[ExtResource("5_ingbf")]([ExtResource("35_lq2ut"), ExtResource("17_24wpt"), ExtResource("17_24wpt"), ExtResource("17_24wpt")])
+debug_p2_draw_pile = Array[ExtResource("5_ingbf")]([ExtResource("35_lq2ut"), ExtResource("17_24wpt"), ExtResource("17_24wpt"), ExtResource("17_24wpt")])
 
 [node name="MatchSeedConfig" type="Node" parent="MatchSetup" unique_id=2122245150]
 script = ExtResource("3_cynwi")
