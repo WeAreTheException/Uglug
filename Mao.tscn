@@ -6,9 +6,9 @@
 [ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="3_3vc3c"]
 [ext_resource type="Resource" uid="uid://jd5rbexi4lr4" path="res://Revamp/CardPresets/Persistant.tres" id="3_cxut3"]
 [ext_resource type="Resource" uid="uid://kmwnulcu4tml" path="res://Revamp/CardPresets/Antler.tres" id="4_o7028"]
-[ext_resource type="Resource" uid="uid://bckromx6ufd8m" path="res://Revamp/CardPresets/Escucheant.tres" id="5_qct7y"]
 [ext_resource type="Resource" uid="uid://dbgpqc3vdl8t" path="res://Revamp/CardPresets/Duriant.tres" id="6_bv6q5"]
 [ext_resource type="Script" uid="uid://8nr6ngjl24kj" path="res://MatchAutoAdvanceHandler.gd" id="6_lc0u2"]
+[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="8_o7028"]
 [ext_resource type="Script" uid="uid://61l5g8wkdar3" path="res://SacrificeController.gd" id="10_1j514"]
 [ext_resource type="Script" uid="uid://db4xai716j06p" path="res://Revamp/Card/CardActions/Sacrifice/SacrificeSelectionRoot.gd" id="11_5f7hr"]
 [ext_resource type="Script" uid="uid://ciopi88keoi3k" path="res://SacrificeRequirement.gd" id="11_at0h8"]
@@ -93,21 +93,18 @@ player_two_hand = NodePath("../OpponenetHAnd")
 
 [node name="Board" parent="Core" unique_id=1318716624 node_paths=PackedStringArray("direct_damage_router") instance=ExtResource("1_yq750")]
 position = Vector2(24, 0)
-player_slot_1_card = ExtResource("3_cxut3")
-player_slot_2_card = ExtResource("4_o7028")
-player_slot_3_card = ExtResource("3_cxut3")
-opponent_slot_1_card = ExtResource("5_qct7y")
-opponent_slot_3_card = ExtResource("6_bv6q5")
 direct_damage_router = NodePath("../../Scripts/Core/DirectDamageRouter")
 
 [node name="PlayerHAnd" parent="Core" unique_id=371738706 node_paths=PackedStringArray("prime_location", "cost_sort", "mutation_sort") instance=ExtResource("2_mi1n2")]
 position = Vector2(935.99994, 911.99994)
+starting_cards = Array[ExtResource("8_o7028")]([ExtResource("3_cxut3"), ExtResource("4_o7028"), ExtResource("6_bv6q5")])
 prime_location = NodePath("../PrimeCardLocation")
 cost_sort = NodePath("../../Control/CostSortButton")
 mutation_sort = NodePath("../../Control/MutationSortButton")
 
 [node name="OpponenetHAnd" parent="Core" unique_id=1415383407 node_paths=PackedStringArray("prime_location") instance=ExtResource("2_mi1n2")]
 position = Vector2(936, 912)
+starting_cards = Array[ExtResource("8_o7028")]([ExtResource("3_cxut3"), ExtResource("4_o7028"), ExtResource("6_bv6q5")])
 prime_location = NodePath("../PrimeCardLocation")
 
 [node name="PrimeCardLocation" type="Node2D" parent="Core" unique_id=2143511336]
