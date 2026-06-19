@@ -6,6 +6,11 @@ class_name MatchDeckSetup
 @export var classic_class: ClassDefinition
 @export var player_one_loadout: PlayerDeckLoadout
 @export var player_two_loadout: PlayerDeckLoadout
+@export var use_debug_deck_order: bool = false
+@export var debug_p1_starting_hand: Array[CardData] = []
+@export var debug_p2_starting_hand: Array[CardData] = []
+@export var debug_p1_draw_pile: Array[CardData] = []
+@export var debug_p2_draw_pile: Array[CardData] = []
 
 var root: DeckSystemRoot = null
 var classic_builder := ClassicSplitBuilderHelper.new()
@@ -19,6 +24,7 @@ func setup(source_root: DeckSystemRoot) -> void:
 
 func build_match_decks() -> Dictionary:
 	var result := {}
+
 	if _is_classic_split():
 		result = classic_builder.build(classic_class, _get_seed(), _get_worker_card())
 	else:
@@ -29,8 +35,15 @@ func build_match_decks() -> Dictionary:
 			_get_worker_card()
 		)
 
+	if use_debug_deck_order:
+		result["p1_starting_hand"] = debug_p1_starting_hand
+		result["p2_starting_hand"] = debug_p2_starting_hand
+		result["p1_draw_pile"] = debug_p1_draw_pile
+		result["p2_draw_pile"] = debug_p2_draw_pile
+
 	if _should_print_debug():
 		debug_printer.print_match_result(result, _get_seed())
+
 	return result
 
 
