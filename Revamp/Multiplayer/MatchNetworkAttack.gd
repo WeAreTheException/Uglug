@@ -78,7 +78,6 @@ func run_confirmed_attack(payload: Dictionary) -> void:
 
 	await card.attack.perform_attack()
 	
-	_broadcast_all_board_card_stats()
 	_broadcast_attack_sequence_finished(payload)
 
 	_disconnect_board_death_signals()
@@ -202,6 +201,7 @@ func _on_attack_started(context: AttackContext) -> void:
 
 func _on_attack_hit(context: AttackContext) -> void:
 	_broadcast_attack_hit(_build_event_payload(context))
+	call_deferred("_broadcast_all_board_card_stats")
 
 
 func _on_attack_finished(context: AttackContext) -> void:
