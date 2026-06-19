@@ -201,11 +201,11 @@ func _on_attack_started(context: AttackContext) -> void:
 
 func _on_attack_hit(context: AttackContext) -> void:
 	_broadcast_attack_hit(_build_event_payload(context))
-	call_deferred("_broadcast_all_board_card_stats")
 
 
 func _on_attack_finished(context: AttackContext) -> void:
 	_broadcast_attack_finished(_build_event_payload(context))
+	_broadcast_all_board_card_stats()
 
 
 func _build_event_payload(context: AttackContext) -> Dictionary:
