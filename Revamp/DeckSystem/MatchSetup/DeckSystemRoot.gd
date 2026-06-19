@@ -203,6 +203,22 @@ func apply_confirmed_draw(
 
 	var hand := get_hand_for_owner(owner)
 	var card_data := get_card_data(card_id)
+	print(
+		"APPLY CONFIRMED DRAW DEBUG | owner=",
+		owner,
+		" card_id=",
+		card_id,
+		" runtime_id=",
+		runtime_id,
+		" pile_type=",
+		pile_type,
+		" pop_local_pile=",
+		pop_local_pile,
+		" hand_null=",
+		hand == null,
+		" card_data_null=",
+		card_data == null
+	)
 
 	if hand == null:
 		print("confirmed draw blocked: hand missing")

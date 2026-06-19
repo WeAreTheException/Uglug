@@ -5,11 +5,24 @@ class_name Christmas
 @export var respect_hand_limit: bool = false
 
 
+func on_placed_context(
+	_runtime: MutationRuntime,
+	card: CardRoot,
+	slot: Slot,
+	owner: SlotRow.SlotOwner
+) -> void:
+	_draw_cards(card)
+
+
 func on_placed(
 	card: CardRoot,
 	_slot: Slot,
 	_owner: SlotRow.SlotOwner
 ) -> void:
+	_draw_cards(card)
+
+
+func _draw_cards(card: CardRoot) -> void:
 	if card == null:
 		return
 
