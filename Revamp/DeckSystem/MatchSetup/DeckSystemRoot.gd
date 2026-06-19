@@ -228,10 +228,17 @@ func apply_confirmed_draw(
 		print("confirmed draw blocked: card data missing ", card_id)
 		return null
 
-	var card := hand.spawn_card_with_runtime_id(card_data, runtime_id)
+	var card := hand.spawn_card_from_effect_with_runtime_id(
+		card_data,
+		runtime_id,
+		true
+	)
 
 	if card != null:
 		_apply_inherited_mutations_to_card(card, inherit_mutation_ids)
+		hand.arrange_cards()
+		hand.emit_prime_state()
+		print("CONFIRMED DRAW SPAWNED CARD: ", card.card_name, " ", runtime_id)
 
 	return card
 
