@@ -215,6 +215,20 @@ func play_network_die_visual() -> void:
 	if animation_runner != null:
 		await animation_runner.play(card)
 
+	if card.is_revenant():
+		var target_hand: PlayerHandRoot = null
+
+		if card.deck_system_root != null:
+			target_hand = card.deck_system_root.get_hand_for_card_owner(card)
+
+		if card.board_presence != null:
+			card.board_presence.leave_slot(card)
+
+		if target_hand != null:
+			target_hand.return_existing_card_to_hand(card)
+			print("NETWORK REVENANT RETURNED TO HAND: ", card.card_name)
+			return
+
 	if card.board_presence != null:
 		card.board_presence.leave_slot(card)
 
