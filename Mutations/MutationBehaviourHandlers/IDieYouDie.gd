@@ -2,11 +2,7 @@ extends Mutation
 class_name IDieYouDie
 
 
-func on_death(card: CardRoot) -> void:
-	await _kill_opposing_card(card, null)
-
-
-func on_death_context(
+func on_death_started_context(
 	_runtime: MutationRuntime,
 	context: DeathContext
 ) -> void:
@@ -14,6 +10,10 @@ func on_death_context(
 		return
 
 	await _kill_opposing_card(context.dead_card, context)
+
+
+func on_death(_card: CardRoot) -> void:
+	pass
 
 
 func _kill_opposing_card(
@@ -56,9 +56,8 @@ func _kill_opposing_card(
 	if opposing_card.die == null:
 		return
 
-	if opposing_card.die.has_method("is_unavailable_for_combat"):
-		if opposing_card.die.is_unavailable_for_combat():
-			return
+	if opposing_card.die.is_unavailable_for_combat():
+		return
 
 	var death_context := DeathContext.new()
 	death_context.setup(

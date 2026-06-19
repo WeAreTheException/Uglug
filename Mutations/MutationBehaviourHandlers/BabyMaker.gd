@@ -15,8 +15,8 @@ func on_death_started_context(
 	_spawn_workers(context.dead_card)
 
 
-func on_death(card: CardRoot) -> void:
-	_spawn_workers(card)
+func on_death(_card: CardRoot) -> void:
+	pass
 
 
 func _spawn_workers(card: CardRoot) -> void:
