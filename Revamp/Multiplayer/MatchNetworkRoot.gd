@@ -45,6 +45,9 @@ func _ready() -> void:
 	GDSync.expose_func(request_blessing_confirm)
 	GDSync.expose_func(_receive_confirmed_blessing)
 	GDSync.expose_func(request_placement)
+	GDSync.expose_func(_receive_timer_started)
+	GDSync.expose_func(_receive_timer_ticked)
+	GDSync.expose_func(_receive_timer_finished)
 	GDSync.expose_func(_receive_confirmed_placement)
 	GDSync.expose_func(request_advance_match_state)
 	GDSync.expose_func(_receive_match_state_snapshot)
@@ -242,6 +245,9 @@ func _setup_children() -> void:
 	if placement_network != null:
 		placement_network.setup(self)
 	
+	if timer_network != null:
+		timer_network.setup(self)
+	
 	if attack_network != null:
 		attack_network.setup(self)
 
@@ -426,3 +432,29 @@ func _receive_card_died(payload: Dictionary) -> void:
 		return
 
 	attack_network.receive_card_died(payload)
+
+func _receive_timer_started(
+	state_value: int,
+	duration: float
+) -> void:
+	if timer_network == null:
+		return
+
+	timer_network.receive_timer_started(state_value, duration)
+
+
+func _receive_timer_ticked(
+	state_value: int,
+	remaining: float
+) -> void:
+	if timer_network == null:
+		return
+
+	timer_network.receive_timer_ticked(state_value, remaining)
+
+
+func _receive_timer_finished(state_value: int) -> void:
+	if timer_network == null:
+		return
+
+	timer_network.receive_timer_finished(state_value)
