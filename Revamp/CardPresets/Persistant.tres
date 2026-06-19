@@ -10,7 +10,6 @@ script = ExtResource("2_w52ji")
 card_id = "persistant"
 name = "Persistant"
 attack = 1
-health = 2
 cost = 1
 ant_texture = ExtResource("2_p7342")
 base_mutations = Array[ExtResource("1_p7342")]([ExtResource("3_cb54b")])
