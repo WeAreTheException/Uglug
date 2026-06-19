@@ -232,7 +232,7 @@ func apply_confirmed_draw(
 		card_data,
 		runtime_id,
 		true
-	)
+)
 
 	if card != null:
 		_apply_inherited_mutations_to_card(card, inherit_mutation_ids)

@@ -63,12 +63,8 @@ match_setup = NodePath("MatchSetup/MatchDeckSetup")
 player_one_draw_pile = NodePath("DrawPile")
 player_two_draw_pile = NodePath("DrawPile2")
 worker_source = NodePath("WorkerPile")
-build_on_ready = null
-animate_starting_hand_deal = null
 starting_hand_start_delay = 1.0
 starting_hand_card_delay = 0.14
-enable_payload_apply_debug = null
-payload_apply_debug_key = null
 
 [node name="MatchSetup" type="Node" parent="." unique_id=1387449267]
 
