@@ -59,6 +59,7 @@ func _ready() -> void:
 	GDSync.expose_func(_receive_attack_finished)
 	GDSync.expose_func(_receive_attack_sequence_finished)
 	GDSync.expose_func(_receive_card_died)
+	GDSync.expose_func(_receive_card_stats_snapshot)
 
 	_setup_children()
 	_assign_local_owner()
@@ -458,3 +459,9 @@ func _receive_timer_finished(state_value: int) -> void:
 		return
 
 	timer_network.receive_timer_finished(state_value)
+
+func _receive_card_stats_snapshot(payload: Dictionary) -> void:
+	if attack_network == null:
+		return
+
+	attack_network.receive_card_stats_snapshot(payload)

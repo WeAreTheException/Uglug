@@ -77,7 +77,8 @@ func run_confirmed_attack(payload: Dictionary) -> void:
 	_broadcast_attack_sequence_started(payload)
 
 	await card.attack.perform_attack()
-
+	
+	_broadcast_all_board_card_stats()
 	_broadcast_attack_sequence_finished(payload)
 
 	_disconnect_board_death_signals()
@@ -526,3 +527,77 @@ func _play_client_death_visual(payload: Dictionary) -> void:
 		return
 
 	await card.die.play_network_die_visual(is_revenant, owner)
+
+func _broadcast_all_board_card_stats() -> void:
+	if root == null:
+		return
+
+	if root.slots_root == null:
+		return
+
+	for slot in root.slots_root.get_all_slots():
+		if slot == null:
+			continue
+
+		var card := slot.current_card
+
+		if card == null:
+			continue
+
+		if not is_instance_valid(card):
+			continue
+
+		var payload := _build_card_stats_payload(card)
+
+		if payload.is_empty():
+			continue
+
+		GDSync.call_func_all(root._receive_card_stats_snapshot, payload)
+
+
+func _build_card_stats_payload(card: CardRoot) -> Dictionary:
+	if card == null:
+		return {}
+
+	if not is_instance_valid(card):
+		return {}
+
+	if card.stats == null:
+		return {}
+
+	return {
+		"card_runtime_id": card.get_runtime_id(),
+		"attack": card.stats.get_attack(),
+		"health": card.stats.get_health(),
+		"max_health": card.stats.get_max_health(),
+		"cost": card.stats.get_cost(),
+		"worth": card.stats.get_worth()
+	}
+
+
+func receive_card_stats_snapshot(payload: Dictionary) -> void:
+	if root == null:
+		return
+
+	if root.is_host():
+		return
+
+	if root.slots_root == null:
+		return
+
+	var runtime_id: String = payload.get("card_runtime_id", "")
+	var card := root.slots_root.find_card_by_runtime_id(runtime_id)
+
+	if card == null:
+		return
+
+	if card.stats == null:
+		return
+
+	card.stats.apply_network_values(
+		int(payload.get("attack", 0)),
+		int(payload.get("health", 0)),
+		int(payload.get("cost", 0)),
+		int(payload.get("worth", 0)),
+		int(payload.get("max_health", 0))
+	)

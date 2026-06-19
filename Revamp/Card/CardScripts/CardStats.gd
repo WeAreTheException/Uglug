@@ -154,3 +154,19 @@ func _emit_all_changed() -> void:
 func reset_damage_taken() -> void:
 	damage_taken = 0
 	_emit_all_changed()
+
+func apply_network_values(
+	attack: int,
+	health: int,
+	cost: int,
+	worth: int,
+	max_health: int
+) -> void:
+	base_attack = attack
+	base_health = max_health
+	base_cost = cost
+	base_worth = worth
+	damage_taken = max(max_health - health, 0)
+	modifiers.clear()
+
+	_emit_all_changed()
