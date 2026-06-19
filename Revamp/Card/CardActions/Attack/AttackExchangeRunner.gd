@@ -87,17 +87,22 @@ func _sync_pending_death_state(exchange: AttackExchangeContext) -> void:
 		exchange.mark_target_pending_death()
 
 
-func _is_card_pending_dead(card: CardRoot) -> bool:
+func _is_card_pending_dead(card) -> bool:
 	if card == null:
 		return false
 
 	if not is_instance_valid(card):
 		return true
 
-	if card.stats == null:
+	var card_root := card as CardRoot
+
+	if card_root == null:
+		return true
+
+	if card_root.stats == null:
 		return false
 
-	return card.stats.is_dead()
+	return card_root.stats.is_dead()
 
 
 func _on_impact_attack_hit(context: AttackContext) -> void:
