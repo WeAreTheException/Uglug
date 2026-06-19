@@ -304,21 +304,24 @@ func draw_random_cards_from_effect_for_card_owner(
 	var owner := _get_owner_for_card(source_card)
 	var inherit_mutation_ids := _get_inheritable_mutation_ids(source_card)
 
-	for i: int in range(amount):
-		if match_network_root != null:
+	if match_network_root != null:
+		if not match_network_root.is_host():
+			return drawn_cards
+
+		for i: int in range(amount):
 			match_network_root.request_draw(
 				owner,
 				DRAW_PILE_WARRIOR,
 				inherit_mutation_ids
 			)
-			continue
 
+		return drawn_cards
+
+	for i: int in range(amount):
 		var entry := pop_draw_entry_for_owner(owner, DRAW_PILE_WARRIOR)
 
 		if entry.is_empty():
 			break
-
-		_apply_inherited_mutations_to_entry(entry, inherit_mutation_ids)
 
 		var spawned_card := apply_confirmed_draw(
 			owner,
@@ -351,21 +354,24 @@ func spawn_workers_from_effect_for_card_owner(
 	var owner := _get_owner_for_card(source_card)
 	var inherit_mutation_ids := _get_inheritable_mutation_ids(source_card)
 
-	for i: int in range(amount):
-		if match_network_root != null:
+	if match_network_root != null:
+		if not match_network_root.is_host():
+			return spawned_cards
+
+		for i: int in range(amount):
 			match_network_root.request_draw(
 				owner,
 				DRAW_PILE_WORKER,
 				inherit_mutation_ids
 			)
-			continue
 
+		return spawned_cards
+
+	for i: int in range(amount):
 		var entry := pop_draw_entry_for_owner(owner, DRAW_PILE_WORKER)
 
 		if entry.is_empty():
 			break
-
-		_apply_inherited_mutations_to_entry(entry, inherit_mutation_ids)
 
 		var spawned_card := apply_confirmed_draw(
 			owner,
