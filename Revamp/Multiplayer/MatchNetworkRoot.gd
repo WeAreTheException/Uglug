@@ -108,26 +108,34 @@ func get_local_owner() -> SlotRow.SlotOwner:
 
 func request_draw(
 	owner: SlotRow.SlotOwner,
-	pile_type: String
+	pile_type: String,
+	inherit_mutation_ids: Array[String] = []
 ) -> void:
 	if draw_network == null:
 		print("REQUEST DRAW FAILED: draw_network missing")
 		return
 
-	draw_network.request_draw(owner, pile_type)
+	draw_network.request_draw(owner, pile_type, inherit_mutation_ids)
 
 
 func _receive_confirmed_draw(
 	owner: SlotRow.SlotOwner,
 	card_id: String,
 	runtime_id: String,
-	pile_type: String
+	pile_type: String,
+	inherit_mutation_ids: Array[String] = []
 ) -> void:
 	if draw_network == null:
 		print("CONFIRMED DRAW FAILED: draw_network missing")
 		return
 
-	draw_network.receive_confirmed_draw(owner, card_id, runtime_id, pile_type)
+	draw_network.receive_confirmed_draw(
+		owner,
+		card_id,
+		runtime_id,
+		pile_type,
+		inherit_mutation_ids
+	)
 
 
 func request_buff_confirm(

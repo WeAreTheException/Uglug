@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://c1vh316hdjlc" path="res://Revamp/MatchUI/MatchUI.tscn" id="1_2n6q5"]
 [ext_resource type="PackedScene" uid="uid://bw8c7m7n5yuk8" path="res://Revamp/Board/Slots.tscn" id="1_yq750"]
 [ext_resource type="PackedScene" uid="uid://1wr1e57v7trd" path="res://Revamp/PlayerHand/Player_Hand.tscn" id="2_mi1n2"]
-[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Mutations/MutationPresets/MutationBehaviourHandlers/Mutation.gd" id="3_3vc3c"]
+[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Mutations/MutationBehaviourHandlers/Mutation.gd" id="3_3vc3c"]
 [ext_resource type="Script" uid="uid://8nr6ngjl24kj" path="res://MatchAutoAdvanceHandler.gd" id="6_lc0u2"]
 [ext_resource type="Script" uid="uid://61l5g8wkdar3" path="res://SacrificeController.gd" id="10_1j514"]
 [ext_resource type="Script" uid="uid://db4xai716j06p" path="res://Revamp/Card/CardActions/Sacrifice/SacrificeSelectionRoot.gd" id="11_5f7hr"]
@@ -25,36 +25,38 @@
 [ext_resource type="Script" uid="uid://difytxi1dyr27" path="res://Revamp/MatchFlow/MatchFlowRoot.gd" id="25_oekep"]
 [ext_resource type="Script" uid="uid://q2nybrneyr7f" path="res://Revamp/MatchFlow/Blessing/BlessingFlowHandler.gd" id="26_7gy8c"]
 [ext_resource type="Script" uid="uid://c6ap2csjp7k81" path="res://Revamp/MatchFlow/MatchTurnOrderState.gd" id="26_n5v11"]
-[ext_resource type="Resource" uid="uid://b4tpqnugaguvu" path="res://Mutations/MutationPresets/BabyMaker.tres" id="26_yjq0i"]
+[ext_resource type="Resource" uid="uid://b4tpqnugaguvu" path="res://Mutations/MutationPresets/InheritanceMutations/BabyMaker.tres" id="26_yjq0i"]
 [ext_resource type="Script" uid="uid://e0tr3sanyo1r" path="res://Revamp/MatchFlow/MatchAnnouncementDisplay.gd" id="27_7gy8c"]
+[ext_resource type="Resource" uid="uid://5sahtthq2tjm" path="res://Mutations/MutationPresets/InheritanceMutations/Christmas.tres" id="27_63uau"]
 [ext_resource type="Script" uid="uid://dxj656ms4qeq4" path="res://Revamp/MatchFlow/MatchDominantRevealHandler.gd" id="27_a1qt2"]
 [ext_resource type="Script" uid="uid://myowbycyd18l" path="res://Revamp/MatchFlow/MatchPlacementFlowHandler.gd" id="27_mf2my"]
 [ext_resource type="Script" uid="uid://crpvi6u42w8yj" path="res://Revamp/Buff/BuffFlowHandler.gd" id="28_5f7hr"]
-[ext_resource type="Resource" uid="uid://dcgqrr05c2pyg" path="res://Mutations/MutationPresets/DivergentFist.tres" id="28_5j00x"]
 [ext_resource type="Script" uid="uid://gc48h0ccwqjp" path="res://Revamp/Buff/BuffSelectionState.gd" id="28_8y4qw"]
 [ext_resource type="PackedScene" uid="uid://coux8hd7esj7g" path="res://Deck_System_Root.tscn" id="28_a1qt2"]
 [ext_resource type="Script" uid="uid://b50mccoppp1lb" path="res://Revamp/MatchFlow/MatchAutoDrawHandler.gd" id="28_mf2my"]
 [ext_resource type="PackedScene" uid="uid://dmgme20qfr6yi" path="res://Revamp/Buff/LarvaeRewardDisplay.tscn" id="29_72iem"]
-[ext_resource type="Resource" uid="uid://qm2l2rlbwj77" path="res://Mutations/MutationPresets/Heckler.tres" id="29_af7hx"]
-[ext_resource type="Resource" uid="uid://njutef00oac8" path="res://Mutations/MutationPresets/LifeSteal.tres" id="30_fd62j"]
+[ext_resource type="Resource" uid="uid://qm2l2rlbwj77" path="res://Mutations/MutationPresets/SustainMutations/Heckler.tres" id="29_af7hx"]
+[ext_resource type="Resource" uid="uid://njutef00oac8" path="res://Mutations/MutationPresets/InvestmentMutations/LifeSteal.tres" id="30_fd62j"]
 [ext_resource type="Script" uid="uid://cq06khkyy84o5" path="res://Revamp/DirectDamage/DirectDamageRouter.gd" id="30_venfy"]
 [ext_resource type="Script" uid="uid://c5j44dhlx1div" path="res://Revamp/DirectDamage/MatchScoreState.gd" id="31_3a8w1"]
 [ext_resource type="Script" uid="uid://dssf8rptp70gh" path="res://Revamp/Buff/BuffPhaseAnimationHandler.gd" id="31_nmm8s"]
-[ext_resource type="Resource" uid="uid://bk7bftdp5178x" path="res://Mutations/MutationPresets/MeFirst.tres" id="31_q844d"]
-[ext_resource type="Resource" uid="uid://bqxd6swy88edw" path="res://Mutations/MutationPresets/MobMentality.tres" id="32_gfrq6"]
+[ext_resource type="Resource" uid="uid://bk7bftdp5178x" path="res://Mutations/MutationPresets/StraightChopsMutations/MeFirst.tres" id="31_q844d"]
 [ext_resource type="PackedScene" uid="uid://di12gxvqynhg7" path="res://Revamp/Buff/LarvaeDraggers.tscn" id="32_qb8ua"]
-[ext_resource type="Resource" uid="uid://d6umheqx0qia" path="res://Mutations/MutationPresets/MutuallyAssuredDestruction.tres" id="33_8hx3r"]
-[ext_resource type="Resource" uid="uid://c0ojr71i4k50b" path="res://Mutations/MutationPresets/RoyalPheromones.tres" id="34_bvwb1"]
+[ext_resource type="Resource" uid="uid://d6umheqx0qia" path="res://Mutations/MutationPresets/RetaliationMutations/IDieYouDie.tres" id="33_8hx3r"]
+[ext_resource type="Resource" uid="uid://c0ojr71i4k50b" path="res://Mutations/MutationPresets/RallyMutations/RoyalPheromones.tres" id="34_bvwb1"]
 [ext_resource type="Script" uid="uid://cn5xfv13wsg1x" path="res://Revamp/MatchFlow/PostGameTransitionHandler.gd" id="34_f3uds"]
-[ext_resource type="Resource" uid="uid://dko3ngpbogrv1" path="res://Mutations/MutationPresets/Spiky.tres" id="35_uv74c"]
+[ext_resource type="Resource" uid="uid://bs6mfmdmm2uj6" path="res://Mutations/MutationPresets/StraightChopsMutations/DirectAttack.tres" id="35_cxut3"]
+[ext_resource type="Resource" uid="uid://dko3ngpbogrv1" path="res://Mutations/MutationPresets/RetaliationMutations/Spiky.tres" id="35_uv74c"]
 [ext_resource type="Script" uid="uid://cau0ky5b3kabf" path="res://Revamp/Board/AttackAnticipationFeedbackHandler.gd" id="35_wop7f"]
-[ext_resource type="Resource" uid="uid://c0cebfc5tmmng" path="res://Mutations/MutationPresets/SteroidMaxxing.tres" id="37_fk48e"]
+[ext_resource type="Resource" uid="uid://dp3xgqtqwogy3" path="res://Mutations/MutationPresets/StraightChopsMutations/Lance.tres" id="36_o7028"]
+[ext_resource type="Resource" uid="uid://c0cebfc5tmmng" path="res://Mutations/MutationPresets/RallyMutations/SteroidMaxxing.tres" id="37_fk48e"]
 [ext_resource type="Script" uid="uid://djtnl5koe1f0x" path="res://Revamp/Buff/BuffDatabase.gd" id="38_i8ogu"]
-[ext_resource type="Resource" uid="uid://b6afw5yomddli" path="res://Mutations/MutationPresets/Shield.tres" id="40_2ph70"]
-[ext_resource type="Resource" uid="uid://ceeskmu01vy5g" path="res://Mutations/MutationPresets/YAttack.tres" id="41_8y4qw"]
-[ext_resource type="Resource" uid="uid://cyutbyh2av6iv" path="res://Mutations/MutationPresets/SteroidDealer.tres" id="42_lyfvt"]
-[ext_resource type="Resource" uid="uid://cnn0fddifxool" path="res://Mutations/MutationPresets/ColonyNest.tres" id="44_3jt7k"]
-[ext_resource type="Resource" uid="uid://b4sniy31fo50g" path="res://Mutations/MutationPresets/TouchOfDeath.tres" id="44_cyp03"]
+[ext_resource type="Resource" uid="uid://b6afw5yomddli" path="res://Mutations/MutationPresets/SustainMutations/Shield.tres" id="40_2ph70"]
+[ext_resource type="Resource" uid="uid://qpp1tjh0bk7v" path="res://Mutations/MutationPresets/SustainMutations/RedRiot.tres" id="40_qct7y"]
+[ext_resource type="Resource" uid="uid://ceeskmu01vy5g" path="res://Mutations/MutationPresets/TargetMutations/YAttack.tres" id="41_8y4qw"]
+[ext_resource type="Resource" uid="uid://cyutbyh2av6iv" path="res://Mutations/MutationPresets/RallyMutations/SteroidDealer.tres" id="42_lyfvt"]
+[ext_resource type="Resource" uid="uid://cnn0fddifxool" path="res://Mutations/MutationPresets/InheritanceMutations/ColonyNest.tres" id="44_3jt7k"]
+[ext_resource type="Resource" uid="uid://b4sniy31fo50g" path="res://Mutations/MutationPresets/StraightChopsMutations/TouchOfDeath.tres" id="44_cyp03"]
 [ext_resource type="PackedScene" uid="uid://21w8glb26358" path="res://Art/WizantAnim/WizantAnim.tscn" id="46_bvwb1"]
 [ext_resource type="Script" uid="uid://b0a7u0d6w3wt5" path="res://Revamp/Buff/BuffCardSelectionHandler.gd" id="51_3j6fp"]
 [ext_resource type="Resource" uid="uid://d24tehq1c6xdf" path="res://Revamp/Blessings/RevenantBlessing.tres" id="51_ufjv4"]
@@ -83,9 +85,10 @@
 
 [node name="Core" type="Node2D" parent="." unique_id=878801964]
 
-[node name="Deck" parent="Core" unique_id=93691211 node_paths=PackedStringArray("match_network_root", "player_one_hand", "player_two_hand") instance=ExtResource("28_a1qt2")]
+[node name="Deck" parent="Core" unique_id=93691211 node_paths=PackedStringArray("match_network_root", "buff_database", "player_one_hand", "player_two_hand") instance=ExtResource("28_a1qt2")]
 position = Vector2(1836, 492)
 match_network_root = NodePath("../../Multiplayer/MatchNetworkRoot")
+buff_database = NodePath("../../Scripts/Core/Buff/BuffDatabase")
 player_one_hand = NodePath("../PlayerHAnd")
 player_two_hand = NodePath("../OpponenetHAnd")
 
@@ -264,7 +267,7 @@ print_debug = false
 
 [node name="BuffDatabase" type="Node" parent="Scripts/Core/Buff" unique_id=1175133697]
 script = ExtResource("38_i8ogu")
-buff_pool = Array[ExtResource("3_3vc3c")]([ExtResource("26_yjq0i"), ExtResource("44_3jt7k"), ExtResource("28_5j00x"), ExtResource("29_af7hx"), ExtResource("30_fd62j"), ExtResource("31_q844d"), ExtResource("32_gfrq6"), ExtResource("33_8hx3r"), ExtResource("34_bvwb1"), ExtResource("40_2ph70"), ExtResource("35_uv74c"), ExtResource("42_lyfvt"), ExtResource("37_fk48e"), ExtResource("44_cyp03"), ExtResource("41_8y4qw")])
+buff_pool = Array[ExtResource("3_3vc3c")]([ExtResource("26_yjq0i"), ExtResource("27_63uau"), ExtResource("44_3jt7k"), ExtResource("30_fd62j"), ExtResource("34_bvwb1"), ExtResource("42_lyfvt"), ExtResource("37_fk48e"), ExtResource("33_8hx3r"), ExtResource("35_uv74c"), ExtResource("35_cxut3"), ExtResource("36_o7028"), ExtResource("31_q844d"), ExtResource("44_cyp03"), ExtResource("29_af7hx"), ExtResource("40_qct7y"), ExtResource("40_2ph70"), ExtResource("41_8y4qw")])
 print_debug = false
 run_smoke_test_on_ready = false
 
@@ -505,6 +508,11 @@ use_for_blessing = true
 
 [node name="MatchNetworkRoot" type="Node" parent="Multiplayer" unique_id=1636531151 node_paths=PackedStringArray("match_flow_root", "deck_system_root", "turn_order_state", "match_score_state", "slots_root", "phase_timer", "timer_network", "buff_flow_handler", "buff_database", "blessing_flow_handler", "placement_controller", "flow_network", "lookup_network", "draw_network", "buff_network", "blessing_network", "placement_network", "attack_network")]
 script = ExtResource("57_8mjsp")
+enable_match_advance_debug = null
+match_advance_debug_key = null
+enable_ping_debug = null
+ping_debug_key = null
+print_debug = false
 match_flow_root = NodePath("../../Scripts/MatchFlowRoot")
 deck_system_root = NodePath("../../Core/Deck")
 turn_order_state = NodePath("../../Scripts/MatchFlowRoot/MatchTurnOrderState")
@@ -523,7 +531,6 @@ buff_network = NodePath("MatchNetworkBuff")
 blessing_network = NodePath("MatchNetworkBlessing")
 placement_network = NodePath("MatchNetworkPlacement")
 attack_network = NodePath("MatchNetworkAttack")
-print_debug = false
 
 [node name="MatchNetworkFlow" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=880320439]
 script = ExtResource("68_8hx3r")
@@ -533,6 +540,10 @@ script = ExtResource("63_5j00x")
 
 [node name="MatchNetworkDraw" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=1641787042]
 script = ExtResource("64_af7hx")
+enable_draw_debug = null
+draw_debug_key = null
+debug_draw_owner = null
+debug_draw_pile_type = null
 
 [node name="MatchNetworkBlessing" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=632633305 node_paths=PackedStringArray("phase_timer", "selection_state")]
 script = ExtResource("66_q844d")

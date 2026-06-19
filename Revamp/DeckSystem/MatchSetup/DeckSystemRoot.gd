@@ -8,6 +8,7 @@ const DRAW_PILE_WARRIOR := "warrior"
 const DRAW_PILE_WORKER := "worker"
 
 @export var match_network_root: MatchNetworkRoot
+@export var buff_database: BuffDatabase
 @export var player_one_hand: PlayerHandRoot
 @export var player_two_hand: PlayerHandRoot
 @export var match_setup: MatchDeckSetup
@@ -194,7 +195,8 @@ func apply_confirmed_draw(
 	card_id: String,
 	runtime_id: String,
 	pile_type: String,
-	pop_local_pile: bool
+	pop_local_pile: bool,
+	inherit_mutation_ids: Array[String] = []
 ) -> CardRoot:
 	if pop_local_pile and pile_type == DRAW_PILE_WARRIOR:
 		_pop_and_check_local_draw_pile(owner, card_id, runtime_id)
@@ -210,9 +212,36 @@ func apply_confirmed_draw(
 		print("confirmed draw blocked: card data missing ", card_id)
 		return null
 
-	return hand.spawn_card_with_runtime_id(card_data, runtime_id)
+	var card := hand.spawn_card_with_runtime_id(card_data, runtime_id)
+
+	if card != null:
+		_apply_inherited_mutations_to_card(card, inherit_mutation_ids)
+
+	return card
 
 
+func _apply_inherited_mutations_to_card(
+	card: CardRoot,
+	inherit_mutation_ids: Array[String]
+) -> void:
+	if card == null:
+		return
+
+	if inherit_mutation_ids.is_empty():
+		return
+
+	if card.mutations == null:
+		return
+
+	for mutation_id in inherit_mutation_ids:
+		var mutation := _find_mutation_by_id(mutation_id)
+
+		if mutation == null:
+			print("INHERIT MUTATION FAILED: ", mutation_id)
+			continue
+
+		card.mutations.add_buff_mutation(mutation)
+		
 func draw_warrior_for_owner(owner: SlotRow.SlotOwner) -> void:
 	var entry := pop_draw_entry_for_owner(owner, DRAW_PILE_WARRIOR)
 
@@ -273,12 +302,14 @@ func draw_random_cards_from_effect_for_card_owner(
 		return drawn_cards
 
 	var owner := _get_owner_for_card(source_card)
+	var inherit_mutation_ids := _get_inheritable_mutation_ids(source_card)
 
 	for i: int in range(amount):
 		if match_network_root != null:
 			match_network_root.request_draw(
 				owner,
-				DRAW_PILE_WARRIOR
+				DRAW_PILE_WARRIOR,
+				inherit_mutation_ids
 			)
 			continue
 
@@ -287,12 +318,15 @@ func draw_random_cards_from_effect_for_card_owner(
 		if entry.is_empty():
 			break
 
+		_apply_inherited_mutations_to_entry(entry, inherit_mutation_ids)
+
 		var spawned_card := apply_confirmed_draw(
 			owner,
 			entry.get("card_id", ""),
 			entry.get("runtime_id", ""),
 			DRAW_PILE_WARRIOR,
-			false
+			false,
+			inherit_mutation_ids
 		)
 
 		if spawned_card != null:
@@ -315,12 +349,14 @@ func spawn_workers_from_effect_for_card_owner(
 		return spawned_cards
 
 	var owner := _get_owner_for_card(source_card)
+	var inherit_mutation_ids := _get_inheritable_mutation_ids(source_card)
 
 	for i: int in range(amount):
 		if match_network_root != null:
 			match_network_root.request_draw(
 				owner,
-				DRAW_PILE_WORKER
+				DRAW_PILE_WORKER,
+				inherit_mutation_ids
 			)
 			continue
 
@@ -329,12 +365,15 @@ func spawn_workers_from_effect_for_card_owner(
 		if entry.is_empty():
 			break
 
+		_apply_inherited_mutations_to_entry(entry, inherit_mutation_ids)
+
 		var spawned_card := apply_confirmed_draw(
 			owner,
 			entry.get("card_id", ""),
 			entry.get("runtime_id", ""),
 			DRAW_PILE_WORKER,
-			false
+			false,
+			inherit_mutation_ids
 		)
 
 		if spawned_card != null:
@@ -342,6 +381,18 @@ func spawn_workers_from_effect_for_card_owner(
 
 	return spawned_cards
 
+func _apply_inherited_mutations_to_entry(
+	entry: Dictionary,
+	inherit_mutation_ids: Array[String]
+) -> void:
+	if entry.is_empty():
+		return
+
+	if inherit_mutation_ids.is_empty():
+		entry["inherited_mutation_ids"] = []
+		return
+
+	entry["inherited_mutation_ids"] = inherit_mutation_ids.duplicate()
 
 func find_card_anywhere(runtime_id: String) -> CardRoot:
 	var clean_id := runtime_id.strip_edges()
@@ -607,3 +658,38 @@ func _apply_payload_debug() -> void:
 
 	print("PAYLOAD APPLY DEBUG: applying last setup payload")
 	apply_match_setup_payload(last_setup_payload)
+
+func _get_inheritable_mutation_ids(source_card: CardRoot) -> Array[String]:
+	var ids: Array[String] = []
+
+	if source_card == null:
+		return ids
+
+	if not is_instance_valid(source_card):
+		return ids
+
+	if source_card.mutations == null:
+		return ids
+
+	for mutation in source_card.mutations.get_inheritable_mutations():
+		if mutation == null:
+			continue
+
+		var id := mutation.get_safe_mutation_id()
+
+		if id.strip_edges() != "":
+			ids.append(id)
+
+	return ids
+
+func _find_mutation_by_id(mutation_id: String) -> Mutation:
+	var clean_id := mutation_id.strip_edges()
+
+	if clean_id == "":
+		return null
+
+	if buff_database == null:
+		print("INHERIT MUTATION FAILED: buff_database missing")
+		return null
+
+	return buff_database.get_mutation_by_id(clean_id)

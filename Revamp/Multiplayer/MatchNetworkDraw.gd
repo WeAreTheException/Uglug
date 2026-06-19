@@ -23,23 +23,25 @@ func handle_debug_input(key_event: InputEventKey) -> void:
 
 func request_draw(
 	owner: SlotRow.SlotOwner,
-	pile_type: String
+	pile_type: String,
+	inherit_mutation_ids: Array[String] = []
 ) -> void:
 	if root == null:
 		return
 
 	if root.is_host():
-		_process_draw_request(owner, pile_type)
+		_process_draw_request(owner, pile_type, inherit_mutation_ids)
 		return
 
-	GDSync.call_func(root.request_draw, owner, pile_type)
+	GDSync.call_func(root.request_draw, owner, pile_type, inherit_mutation_ids)
 
 
 func receive_confirmed_draw(
 	owner: SlotRow.SlotOwner,
 	card_id: String,
 	runtime_id: String,
-	pile_type: String
+	pile_type: String,
+	inherit_mutation_ids: Array[String] = []
 ) -> void:
 	if root == null:
 		return
@@ -51,6 +53,8 @@ func receive_confirmed_draw(
 		pile_type,
 		" ",
 		card_id,
+		" inherit=",
+		inherit_mutation_ids,
 		" | HOST: ",
 		root.is_host(),
 		" | SETUP READY: ",
@@ -70,13 +74,15 @@ func receive_confirmed_draw(
 		card_id,
 		runtime_id,
 		pile_type,
-		not root.is_host()
+		not root.is_host(),
+		inherit_mutation_ids
 	)
 
 
 func _process_draw_request(
 	owner: SlotRow.SlotOwner,
-	pile_type: String
+	pile_type: String,
+	inherit_mutation_ids: Array[String] = []
 ) -> void:
 	if root.deck_system_root == null:
 		print("DRAW REQUEST REJECTED: deck_system_root missing")
@@ -94,7 +100,13 @@ func _process_draw_request(
 	var card_id: String = entry.get("card_id", "")
 	var runtime_id: String = entry.get("runtime_id", "")
 
-	_broadcast_confirmed_draw(owner, card_id, runtime_id, pile_type)
+	_broadcast_confirmed_draw(
+		owner,
+		card_id,
+		runtime_id,
+		pile_type,
+		inherit_mutation_ids
+	)
 
 
 func _is_valid_draw_request(pile_type: String) -> bool:
@@ -117,7 +129,8 @@ func _broadcast_confirmed_draw(
 	owner: SlotRow.SlotOwner,
 	card_id: String,
 	runtime_id: String,
-	pile_type: String
+	pile_type: String,
+	inherit_mutation_ids: Array[String] = []
 ) -> void:
 	if root.print_debug:
 		print(
@@ -128,7 +141,9 @@ func _broadcast_confirmed_draw(
 			" ",
 			card_id,
 			" ",
-			runtime_id
+			runtime_id,
+			" inherit=",
+			inherit_mutation_ids
 		)
 
 	GDSync.call_func_all(
@@ -136,5 +151,6 @@ func _broadcast_confirmed_draw(
 		owner,
 		card_id,
 		runtime_id,
-		pile_type
+		pile_type,
+		inherit_mutation_ids
 	)
