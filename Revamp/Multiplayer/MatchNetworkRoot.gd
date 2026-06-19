@@ -115,8 +115,13 @@ func request_draw(
 		print("REQUEST DRAW FAILED: draw_network missing")
 		return
 
-	draw_network.request_draw(owner, pile_type, inherit_mutation_ids)
+	var payload := {
+		"owner": int(owner),
+		"pile_type": pile_type,
+		"inherit_mutation_ids": inherit_mutation_ids.duplicate()
+	}
 
+	draw_network.request_draw(payload)
 
 func _receive_confirmed_draw(
 	owner: SlotRow.SlotOwner,

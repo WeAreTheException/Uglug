@@ -540,10 +540,6 @@ script = ExtResource("63_5j00x")
 
 [node name="MatchNetworkDraw" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=1641787042]
 script = ExtResource("64_af7hx")
-enable_draw_debug = null
-draw_debug_key = null
-debug_draw_owner = null
-debug_draw_pile_type = null
 
 [node name="MatchNetworkBlessing" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=632633305 node_paths=PackedStringArray("phase_timer", "selection_state")]
 script = ExtResource("66_q844d")

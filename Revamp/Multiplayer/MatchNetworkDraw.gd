@@ -18,22 +18,22 @@ func handle_debug_input(key_event: InputEventKey) -> void:
 		return
 
 	if key_event.keycode == draw_debug_key:
-		request_draw(debug_draw_owner, debug_draw_pile_type)
+		request_draw({
+			"owner": int(debug_draw_owner),
+			"pile_type": debug_draw_pile_type,
+			"inherit_mutation_ids": []
+		})
 
 
-func request_draw(
-	owner: SlotRow.SlotOwner,
-	pile_type: String,
-	inherit_mutation_ids: Array[String] = []
-) -> void:
+func request_draw(payload: Dictionary) -> void:
 	if root == null:
 		return
 
 	if root.is_host():
-		_process_draw_request(owner, pile_type, inherit_mutation_ids)
+		_process_draw_request(payload)
 		return
 
-	GDSync.call_func(root.request_draw, owner, pile_type, inherit_mutation_ids)
+	GDSync.call_func(root.request_draw, payload)
 
 
 func receive_confirmed_draw(
@@ -79,14 +79,18 @@ func receive_confirmed_draw(
 	)
 
 
-func _process_draw_request(
-	owner: SlotRow.SlotOwner,
-	pile_type: String,
-	inherit_mutation_ids: Array[String] = []
-) -> void:
+func _process_draw_request(payload: Dictionary) -> void:
 	if root.deck_system_root == null:
 		print("DRAW REQUEST REJECTED: deck_system_root missing")
 		return
+
+	if payload.is_empty():
+		print("DRAW REQUEST REJECTED: payload empty")
+		return
+
+	var owner: SlotRow.SlotOwner = int(payload.get("owner", SlotRow.SlotOwner.PLAYER)) as SlotRow.SlotOwner
+	var pile_type: String = payload.get("pile_type", "")
+	var inherit_mutation_ids: Array = payload.get("inherit_mutation_ids", [])
 
 	if not _is_valid_draw_request(pile_type):
 		return
@@ -105,7 +109,7 @@ func _process_draw_request(
 		card_id,
 		runtime_id,
 		pile_type,
-		inherit_mutation_ids
+		_to_string_array(inherit_mutation_ids)
 	)
 
 
@@ -154,3 +158,16 @@ func _broadcast_confirmed_draw(
 		pile_type,
 		inherit_mutation_ids
 	)
+
+func _to_string_array(source: Array) -> Array[String]:
+	var result: Array[String] = []
+
+	for item in source:
+		var value := str(item).strip_edges()
+
+		if value == "":
+			continue
+
+		result.append(value)
+
+	return result
