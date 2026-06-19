@@ -17,6 +17,7 @@ signal timer_finished(state: MatchFlowRoot.MatchState)
 var is_running: bool = false
 var active_state: MatchFlowRoot.MatchState = MatchFlowRoot.MatchState.NONE
 var remaining_seconds: float = 0.0
+var timer_run_id: int = 0
 
 
 func _ready() -> void:
@@ -31,9 +32,13 @@ func start_for_state(state: MatchFlowRoot.MatchState) -> void:
 	var duration := _get_duration_for_state(state)
 
 	if duration <= 0.0:
+		stop_timer()
 		return
 
 	stop_timer()
+
+	timer_run_id += 1
+	var local_run_id := timer_run_id
 
 	active_state = state
 	remaining_seconds = duration
@@ -43,10 +48,11 @@ func start_for_state(state: MatchFlowRoot.MatchState) -> void:
 		print("PHASE TIMER STARTED: ", _get_state_name(state), " | ", duration)
 
 	timer_started.emit(active_state, duration)
-	_run_timer()
+	_run_timer(local_run_id)
 
 
 func stop_timer() -> void:
+	timer_run_id += 1
 	is_running = false
 	active_state = MatchFlowRoot.MatchState.NONE
 	remaining_seconds = 0.0
@@ -56,11 +62,22 @@ func get_remaining_seconds() -> float:
 	return remaining_seconds
 
 
-func _run_timer() -> void:
-	while is_running and remaining_seconds > 0.0:
+func _run_timer(local_run_id: int) -> void:
+	while (
+		is_running
+		and local_run_id == timer_run_id
+		and remaining_seconds > 0.0
+	):
 		timer_ticked.emit(active_state, remaining_seconds)
 		await get_tree().create_timer(tick_interval).timeout
+
+		if local_run_id != timer_run_id:
+			return
+
 		remaining_seconds -= tick_interval
+
+	if local_run_id != timer_run_id:
+		return
 
 	if not is_running:
 		return
