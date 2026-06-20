@@ -361,9 +361,6 @@ func _on_starting_hands_dealt() -> void:
 
 
 func _broadcast_match_setup_payload(payload: Dictionary) -> void:
-	if has_received_setup_payload:
-		return
-
 	has_received_setup_payload = true
 
 	if print_debug:
