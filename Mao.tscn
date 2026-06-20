@@ -579,6 +579,8 @@ script = ExtResource("78_o7028")
 
 [node name="MatchNetworkDebugSync" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=1984824557]
 script = ExtResource("81_o7028")
+compare_snapshot_key = 57
+print_full_snapshot_key = 56
 
 [node name="MatchLocalViewApplier" type="Node" parent="Multiplayer" unique_id=1811884870 node_paths=PackedStringArray("match_network_root", "player_one_hand", "player_two_hand")]
 script = ExtResource("57_2n6q5")

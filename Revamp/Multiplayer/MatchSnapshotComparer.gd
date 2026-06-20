@@ -63,29 +63,30 @@ func _compare_draw_piles(host: Dictionary, local: Dictionary) -> bool:
 func _compare_board_runtime_ids(host: Dictionary, local: Dictionary) -> bool:
 	var has_mismatch := false
 
-	var host_board: Array = host.get("board", [])
-	var local_board: Array = local.get("board", [])
+	var host_slots := _build_board_lookup(host.get("board", []))
+	var local_slots := _build_board_lookup(local.get("board", []))
 
-	var count: int = max(host_board.size(), local_board.size())
+	var all_keys: Array[String] = []
 
-	for i in range(count):
-		var host_slot: Dictionary = {}
-		var local_slot: Dictionary = {}
+	for key in host_slots.keys():
+		if not all_keys.has(key):
+			all_keys.append(key)
 
-		if i < host_board.size():
-			host_slot = host_board[i]
+	for key in local_slots.keys():
+		if not all_keys.has(key):
+			all_keys.append(key)
 
-		if i < local_board.size():
-			local_slot = local_board[i]
+	all_keys.sort()
 
-		var host_runtime := _get_slot_runtime_id(host_slot)
-		var local_runtime := _get_slot_runtime_id(local_slot)
+	for key in all_keys:
+		var host_runtime := _get_slot_runtime_id(host_slots.get(key, {}))
+		var local_runtime := _get_slot_runtime_id(local_slots.get(key, {}))
 
 		if host_runtime != local_runtime:
 			print(
-				"SNAPSHOT MISMATCH: board[",
-				i,
-				"] runtime_id | host=",
+				"SNAPSHOT MISMATCH: board.",
+				key,
+				" runtime_id | host=",
 				host_runtime,
 				" local=",
 				local_runtime
@@ -93,6 +94,22 @@ func _compare_board_runtime_ids(host: Dictionary, local: Dictionary) -> bool:
 			has_mismatch = true
 
 	return has_mismatch
+
+
+func _build_board_lookup(board: Array) -> Dictionary:
+	var result := {}
+
+	for slot_payload in board:
+		if not slot_payload is Dictionary:
+			continue
+
+		var owner := int(slot_payload.get("owner", -1))
+		var slot_index := int(slot_payload.get("slot_index", -1))
+		var key := str(owner) + ":" + str(slot_index)
+
+		result[key] = slot_payload
+
+	return result
 
 
 func _get_slot_runtime_id(slot_payload: Dictionary) -> String:
