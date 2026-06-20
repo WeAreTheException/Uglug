@@ -121,6 +121,20 @@ func apply_confirmed_placement(payload: Dictionary) -> void:
 	var owner: SlotRow.SlotOwner = payload.get("owner", SlotRow.SlotOwner.PLAYER)
 
 	var card := _find_card_for_confirmed_placement(card_id)
+	print(
+		"CONFIRMED PLACEMENT CARD DEBUG | runtime_id=",
+		card_id,
+		" found=",
+		card != null,
+		" card_name=",
+		card.card_name if card != null else "null",
+		" parent=",
+		card.get_parent().name if card != null and card.get_parent() != null else "null",
+		" in_p1_hand=",
+		match_network_root.deck_system_root.player_one_hand.has_card(card) if card != null and match_network_root != null and match_network_root.deck_system_root != null and match_network_root.deck_system_root.player_one_hand != null else false,
+		" in_p2_hand=",
+		match_network_root.deck_system_root.player_two_hand.has_card(card) if card != null and match_network_root != null and match_network_root.deck_system_root != null and match_network_root.deck_system_root.player_two_hand != null else false
+	)
 	var slot := _get_confirmed_target_slot(owner, slot_owner, slot_index)
 
 	if card == null:

@@ -392,7 +392,6 @@ placement_preview = NodePath("PlacementPreview")
 placement_executor = NodePath("PlacementExecutor")
 event_emitter = NodePath("PlacementEventEmitter")
 placement_cancel = NodePath("PlacementCancel")
-print_debug = false
 
 [node name="PlacementState" type="Node" parent="Scripts/Core/PlacementController" unique_id=1456688179]
 script = ExtResource("14_5sdof")
