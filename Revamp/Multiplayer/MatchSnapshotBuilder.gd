@@ -169,34 +169,26 @@ func _get_canonical_slot_index(root: MatchNetworkRoot, slot: Slot) -> int:
 func _build_draw_pile(root: MatchNetworkRoot, owner: SlotRow.SlotOwner) -> Dictionary:
 	if root.deck_system_root == null:
 		return {
-			"count": -1
+			"count": -1,
+			"entries": []
 		}
 
 	var draw_pile := root.deck_system_root.get_draw_pile_for_owner(owner)
 
 	if draw_pile == null:
 		return {
-			"count": -1
+			"count": -1,
+			"entries": []
 		}
 
-	if draw_pile.has_method("get_card_count"):
-		return {
-			"count": int(draw_pile.get_card_count())
-		}
+	var entries: Array = []
 
-	if draw_pile.has_method("get_count"):
-		return {
-			"count": int(draw_pile.get_count())
-		}
-
-	var entries = draw_pile.get("entries")
-	if entries is Array:
-		return {
-			"count": entries.size()
-		}
+	if draw_pile.has_method("get_entries"):
+		entries = _clean_draw_entries(draw_pile.get_entries())
 
 	return {
-		"count": -1
+		"count": draw_pile.cards_left(),
+		"entries": entries
 	}
 
 
@@ -271,3 +263,18 @@ func _get_mutation_id(mutation) -> String:
 		return ""
 
 	return str(id)
+
+func _clean_draw_entries(entries: Array) -> Array:
+	var result: Array = []
+
+	for entry in entries:
+		if not entry is Dictionary:
+			continue
+
+		result.append({
+			"card_id": str(entry.get("card_id", "")),
+			"runtime_id": str(entry.get("runtime_id", "")),
+			"inherited_mutation_ids": entry.get("inherited_mutation_ids", []).duplicate()
+		})
+
+	return result

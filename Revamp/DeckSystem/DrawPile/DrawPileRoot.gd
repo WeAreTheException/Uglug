@@ -86,3 +86,12 @@ func _refresh_views() -> void:
 
 func get_card_count() -> int:
 	return cards_left()
+
+func get_entries() -> Array:
+	if instance == null:
+		return []
+
+	if instance.has_method("get_entries"):
+		return instance.get_entries()
+
+	return []

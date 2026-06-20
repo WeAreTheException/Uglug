@@ -83,3 +83,6 @@ func _build_local_runtime_id(card_data: CardData, index: int) -> String:
 		+ "_"
 		+ str(Time.get_ticks_usec())
 	)
+
+func get_entries() -> Array[Dictionary]:
+	return entries.duplicate(true)

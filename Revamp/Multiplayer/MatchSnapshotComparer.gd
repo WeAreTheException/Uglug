@@ -48,8 +48,11 @@ func _compare_draw_piles(host: Dictionary, local: Dictionary) -> bool:
 	var local_piles: Dictionary = local.get("draw_piles", {})
 
 	for key in ["player", "opponent"]:
-		var host_count := int(host_piles.get(key, {}).get("count", -1))
-		var local_count := int(local_piles.get(key, {}).get("count", -1))
+		var host_pile: Dictionary = host_piles.get(key, {})
+		var local_pile: Dictionary = local_piles.get(key, {})
+
+		var host_count := int(host_pile.get("count", -1))
+		var local_count := int(local_pile.get("count", -1))
 
 		if host_count != local_count:
 			print(
@@ -59,6 +62,17 @@ func _compare_draw_piles(host: Dictionary, local: Dictionary) -> bool:
 				host_count,
 				" local=",
 				local_count
+			)
+			has_mismatch = true
+
+		var host_entries: Array = host_pile.get("entries", [])
+		var local_entries: Array = local_pile.get("entries", [])
+
+		if host_entries != local_entries:
+			print(
+				"SNAPSHOT MISMATCH: draw_piles.",
+				key,
+				".entries"
 			)
 			has_mismatch = true
 
