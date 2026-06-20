@@ -23,6 +23,7 @@ const DRAW_PILE_WORKER := "worker"
 
 @export var enable_payload_apply_debug := false
 @export var payload_apply_debug_key: Key = KEY_P
+@export var print_debug: bool = false
 
 var payload_builder := MatchSetupPayloadBuilder.new()
 var last_setup_payload: Dictionary = {}
@@ -86,7 +87,8 @@ func build_match_decks() -> void:
 		p2_draw
 	)
 
-	print("MATCH SETUP PAYLOAD: ", last_setup_payload)
+	if print_debug:
+		print("MATCH SETUP PAYLOAD: ", last_setup_payload)
 
 	if player_one_draw_pile != null:
 		player_one_draw_pile.setup_with_entries(
@@ -203,22 +205,23 @@ func apply_confirmed_draw(
 
 	var hand := get_hand_for_owner(owner)
 	var card_data := get_card_data(card_id)
-	print(
-		"APPLY CONFIRMED DRAW DEBUG | owner=",
-		owner,
-		" card_id=",
-		card_id,
-		" runtime_id=",
-		runtime_id,
-		" pile_type=",
-		pile_type,
-		" pop_local_pile=",
-		pop_local_pile,
-		" hand_null=",
-		hand == null,
-		" card_data_null=",
-		card_data == null
-	)
+	if print_debug:
+		print(
+			"APPLY CONFIRMED DRAW DEBUG | owner=",
+			owner,
+			" card_id=",
+			card_id,
+			" runtime_id=",
+			runtime_id,
+			" pile_type=",
+			pile_type,
+			" pop_local_pile=",
+			pop_local_pile,
+			" hand_null=",
+			hand == null,
+			" card_data_null=",
+			card_data == null
+		)
 
 	if hand == null:
 		print("confirmed draw blocked: hand missing")
@@ -238,7 +241,8 @@ func apply_confirmed_draw(
 		_apply_inherited_mutations_to_card(card, inherit_mutation_ids)
 		hand.arrange_cards()
 		hand.emit_prime_state()
-		print("CONFIRMED DRAW SPAWNED CARD: ", card.card_name, " ", runtime_id)
+		if print_debug:
+			print("CONFIRMED DRAW SPAWNED CARD: ", card.card_name, " ", runtime_id)
 
 	return card
 

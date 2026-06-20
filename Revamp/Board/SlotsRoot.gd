@@ -29,6 +29,7 @@ signal slot_unhovered(slot: Slot)
 @export var opponent_slot_4_card: CardData
 
 @export var direct_damage_router: DirectDamageRouter
+@export var print_debug: bool = false
 
 var player_slots: Array[Slot] = []
 var opponent_slots: Array[Slot] = []
@@ -40,7 +41,9 @@ func _ready() -> void:
 	_setup_mutation_refresher()
 	_setup_attack_order_handler()
 	_setup_preset_handler()
-	debug_print_slots()
+
+	if print_debug:
+		debug_print_slots()
 
 
 func _setup_registry() -> void:

@@ -1,6 +1,8 @@
 extends Node
 class_name MatchNetworkAttack
 
+@export var print_debug: bool = false
+
 var root: MatchNetworkRoot = null
 var connected_death_handlers: Array[Die] = []
 
@@ -52,7 +54,8 @@ func build_attack_payload(
 		"attacker_slot_index": attacker_slot.slot_index
 	}
 
-	print("ATTACK PAYLOAD BUILT: ", payload)
+	if print_debug:
+		print("ATTACK PAYLOAD BUILT: ", payload)
 
 	return payload
 
@@ -72,7 +75,8 @@ func run_confirmed_attack(payload: Dictionary) -> void:
 	_connect_attack_signals(card.attack)
 	_connect_board_death_signals()
 
-	print("CONFIRMED ATTACK EXECUTING: ", payload)
+	if print_debug:
+		print("CONFIRMED ATTACK EXECUTING: ", payload)
 
 	_broadcast_attack_sequence_started(payload)
 
@@ -163,7 +167,8 @@ func is_valid_attack_payload(
 		print("ATTACK VALIDATION FAILED: card unavailable")
 		return false
 
-	print("ATTACK VALIDATION PASSED: ", payload)
+	if print_debug:
+		print("ATTACK VALIDATION PASSED: ", payload)
 	return true
 
 
@@ -261,11 +266,13 @@ func _broadcast_attack_sequence_finished(payload: Dictionary) -> void:
 
 
 func receive_attack_sequence_started(payload: Dictionary) -> void:
-	print("ATTACK SEQUENCE STARTED RECEIVED: ", payload)
+	if print_debug:
+		print("ATTACK SEQUENCE STARTED RECEIVED: ", payload)
 
 
 func receive_attack_started(payload: Dictionary) -> void:
-	print("ATTACK STARTED RECEIVED: ", payload)
+	if print_debug:
+		print("ATTACK STARTED RECEIVED: ", payload)
 
 	if root == null:
 		return
@@ -277,7 +284,8 @@ func receive_attack_started(payload: Dictionary) -> void:
 
 
 func receive_attack_hit(payload: Dictionary) -> void:
-	print("ATTACK HIT RECEIVED: ", payload)
+	if print_debug:
+		print("ATTACK HIT RECEIVED: ", payload)
 
 	if root == null:
 		return
@@ -289,11 +297,13 @@ func receive_attack_hit(payload: Dictionary) -> void:
 
 
 func receive_attack_finished(payload: Dictionary) -> void:
-	print("ATTACK FINISHED RECEIVED: ", payload)
+	if print_debug:
+		print("ATTACK FINISHED RECEIVED: ", payload)
 
 
 func receive_attack_sequence_finished(payload: Dictionary) -> void:
-	print("ATTACK SEQUENCE FINISHED RECEIVED: ", payload)
+	if print_debug:
+		print("ATTACK SEQUENCE FINISHED RECEIVED: ", payload)
 
 func _play_client_attack_visual(payload: Dictionary) -> void:
 	if root.slots_root == null:
@@ -497,7 +507,8 @@ func _broadcast_card_died(payload: Dictionary) -> void:
 
 
 func receive_card_died(payload: Dictionary) -> void:
-	print("CARD DIED RECEIVED: ", payload)
+	if print_debug:
+		print("CARD DIED RECEIVED: ", payload)
 
 	if root == null:
 		return

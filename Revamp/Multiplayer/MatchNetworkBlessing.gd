@@ -3,6 +3,7 @@ class_name MatchNetworkBlessing
 
 @export var phase_timer: MatchPhaseTimer
 @export var selection_state: BlessingSelectionState
+@export var print_debug: bool = false
 
 var root: MatchNetworkRoot = null
 var confirmed_owners: Dictionary = {}

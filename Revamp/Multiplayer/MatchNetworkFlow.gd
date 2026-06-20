@@ -1,6 +1,8 @@
 extends Node
 class_name MatchNetworkFlow
 
+@export var print_debug: bool = false
+
 var root: MatchNetworkRoot = null
 
 

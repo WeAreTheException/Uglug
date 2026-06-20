@@ -5,6 +5,7 @@ class_name MatchNetworkDraw
 @export var draw_debug_key: Key = KEY_D
 @export var debug_draw_owner: SlotRow.SlotOwner = SlotRow.SlotOwner.PLAYER
 @export var debug_draw_pile_type := DeckSystemRoot.DRAW_PILE_WARRIOR
+@export var print_debug: bool = false
 
 var root: MatchNetworkRoot = null
 
@@ -46,20 +47,21 @@ func receive_confirmed_draw(
 	if root == null:
 		return
 
-	print(
-		"CONFIRMED DRAW RECEIVED: ",
-		root.get_owner_name(owner),
-		" ",
-		pile_type,
-		" ",
-		card_id,
-		" inherit=",
-		inherit_mutation_ids,
-		" | HOST: ",
-		root.is_host(),
-		" | SETUP READY: ",
-		root.has_received_setup_payload
-	)
+	if print_debug:
+		print(
+			"CONFIRMED DRAW RECEIVED: ",
+			root.get_owner_name(owner),
+			" ",
+			pile_type,
+			" ",
+			card_id,
+			" inherit=",
+			inherit_mutation_ids,
+			" | HOST: ",
+			root.is_host(),
+			" | SETUP READY: ",
+			root.has_received_setup_payload
+		)
 
 	if not root.has_received_setup_payload:
 		print("CONFIRMED DRAW IGNORED: setup payload not ready")
@@ -124,7 +126,8 @@ func _is_valid_draw_request(pile_type: String) -> bool:
 
 	if root.match_flow_root.current_state != MatchFlowRoot.MatchState.AUTO_DRAW:
 		if root.print_debug:
-			print("DRAW REQUEST WARNING: draw outside AUTO_DRAW")
+			if print_debug:
+				print("DRAW REQUEST WARNING: draw outside AUTO_DRAW")
 
 	return true
 
@@ -137,18 +140,19 @@ func _broadcast_confirmed_draw(
 	inherit_mutation_ids: Array[String] = []
 ) -> void:
 	if root.print_debug:
-		print(
-			"DRAW CONFIRMED: ",
-			root.get_owner_name(owner),
-			" ",
-			pile_type,
-			" ",
-			card_id,
-			" ",
-			runtime_id,
-			" inherit=",
-			inherit_mutation_ids
-		)
+		if print_debug:
+			print(
+				"DRAW CONFIRMED: ",
+				root.get_owner_name(owner),
+				" ",
+				pile_type,
+				" ",
+				card_id,
+				" ",
+				runtime_id,
+				" inherit=",
+				inherit_mutation_ids
+			)
 
 	GDSync.call_func_all(
 		root._receive_confirmed_draw,

@@ -1,6 +1,8 @@
 extends Node
 class_name MatchNetworkPlacement
 
+@export var print_debug: bool = false
+
 var root: MatchNetworkRoot = null
 
 
@@ -12,12 +14,8 @@ func request_placement(payload: Dictionary) -> void:
 	if root == null:
 		return
 
-	print(
-		"REQUEST PLACEMENT CALLED | HOST: ",
-		root.is_host(),
-		" payload: ",
-		payload
-	)
+	if print_debug:
+		print("REQUEST PLACEMENT CALLED | HOST: ",root.is_host()," payload: ",payload)
 
 	if root.is_host():
 		_process_placement_request(payload)
@@ -38,7 +36,8 @@ func receive_confirmed_placement(payload: Dictionary) -> void:
 
 
 func _process_placement_request(payload: Dictionary) -> void:
-	print("PLACEMENT REQUEST RECEIVED: ", payload)
+	if print_debug:
+		print("PLACEMENT REQUEST RECEIVED: ", payload)
 
 	if not _is_valid_placement_request(payload):
 		print("PLACEMENT REQUEST REJECTED")
