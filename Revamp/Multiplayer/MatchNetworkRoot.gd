@@ -65,6 +65,8 @@ func _ready() -> void:
 	GDSync.expose_func(_receive_confirmed_match_winner)
 	GDSync.expose_func(request_debug_snapshot_compare)
 	GDSync.expose_func(_receive_debug_snapshot_compare)
+	GDSync.expose_func(request_debug_resync_preview)
+	GDSync.expose_func(_receive_debug_resync_preview)
 
 	_setup_children()
 	_assign_local_owner()
@@ -359,6 +361,9 @@ func _on_starting_hands_dealt() -> void:
 
 
 func _broadcast_match_setup_payload(payload: Dictionary) -> void:
+	if has_received_setup_payload:
+		return
+
 	has_received_setup_payload = true
 
 	if print_debug:
@@ -567,3 +572,18 @@ func _receive_debug_snapshot_compare(payload: Dictionary) -> void:
 		return
 
 	debug_sync_network.receive_snapshot_compare(payload)
+
+func request_debug_resync_preview() -> void:
+	if debug_sync_network == null:
+		print("DEBUG RESYNC PREVIEW FAILED: debug_sync_network missing")
+		return
+
+	debug_sync_network.request_resync_preview()
+
+
+func _receive_debug_resync_preview(payload: Dictionary) -> void:
+	if debug_sync_network == null:
+		print("DEBUG RESYNC PREVIEW RECEIVE FAILED: debug_sync_network missing")
+		return
+
+	debug_sync_network.receive_resync_preview(payload)

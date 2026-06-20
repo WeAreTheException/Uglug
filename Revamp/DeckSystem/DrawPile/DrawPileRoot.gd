@@ -83,3 +83,6 @@ func _refresh_views() -> void:
 		counter.set_count(count)
 
 	pile_changed.emit(count)
+
+func get_card_count() -> int:
+	return cards_left()
