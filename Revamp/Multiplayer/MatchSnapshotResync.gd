@@ -120,8 +120,9 @@ func apply_resync(root: MatchNetworkRoot, host_snapshot: Dictionary) -> void:
 
 	_restore_score(root, host_snapshot)
 	_restore_draw_piles(root, host_snapshot)
+	_restore_hands(root, host_snapshot)
 
-	print("=== DEBUG RESYNC DONE: score + draw piles only ===")
+	print("=== DEBUG RESYNC DONE: score + draw piles + hands ===")
 
 
 func _restore_score(root: MatchNetworkRoot, snapshot: Dictionary) -> void:
@@ -178,3 +179,118 @@ func _restore_draw_pile(
 		" count=",
 		entries.size()
 	)
+
+func _restore_hands(root: MatchNetworkRoot, snapshot: Dictionary) -> void:
+	if root.deck_system_root == null:
+		return
+
+	var hands: Dictionary = snapshot.get("hands", {})
+
+	_restore_hand(
+		root,
+		SlotRow.SlotOwner.PLAYER,
+		hands.get("player", {})
+	)
+
+	_restore_hand(
+		root,
+		SlotRow.SlotOwner.OPPONENT,
+		hands.get("opponent", {})
+	)
+
+
+func _restore_hand(
+	root: MatchNetworkRoot,
+	owner: SlotRow.SlotOwner,
+	hand_payload: Dictionary
+) -> void:
+	var hand := root.deck_system_root.get_hand_for_owner(owner)
+
+	if hand == null:
+		return
+
+	hand.clear_cards(true)
+
+	var cards: Array = hand_payload.get("cards", [])
+
+	for card_payload in cards:
+		if not card_payload is Dictionary:
+			continue
+
+		_spawn_hand_card_from_payload(root, hand, card_payload)
+
+	hand.arrange_cards()
+	hand.emit_prime_state()
+
+	print(
+		"RESYNC HAND: owner=",
+		int(owner),
+		" count=",
+		cards.size()
+	)
+
+
+func _spawn_hand_card_from_payload(
+	root: MatchNetworkRoot,
+	hand: PlayerHandRoot,
+	card_payload: Dictionary
+) -> CardRoot:
+	if root.deck_system_root == null:
+		return null
+
+	var card_id := str(card_payload.get("card_id", ""))
+	var runtime_id := str(card_payload.get("runtime_id", ""))
+
+	var card_data := root.deck_system_root.get_card_data(card_id)
+
+	if card_data == null:
+		print("RESYNC HAND CARD FAILED: missing card_data ", card_id)
+		return null
+
+	var card := hand.spawn_card_with_runtime_id(card_data, runtime_id)
+
+	if card == null:
+		print("RESYNC HAND CARD FAILED: spawn failed ", card_id)
+		return null
+
+	_apply_card_snapshot_details(root, card, card_payload)
+
+	return card
+
+
+func _apply_card_snapshot_details(
+	root: MatchNetworkRoot,
+	card: CardRoot,
+	card_payload: Dictionary
+) -> void:
+	if card == null:
+		return
+
+	_apply_card_mutations(root, card, card_payload.get("mutations", []))
+
+
+func _apply_card_mutations(
+	root: MatchNetworkRoot,
+	card: CardRoot,
+	mutation_ids: Array
+) -> void:
+	if root.deck_system_root == null:
+		return
+
+	if card.mutations == null:
+		return
+
+	for mutation_id in mutation_ids:
+		var clean_id := str(mutation_id).strip_edges()
+
+		if clean_id == "":
+			continue
+
+		var mutation := root.deck_system_root._find_mutation_by_id(clean_id)
+
+		if mutation == null:
+			print("RESYNC MUTATION FAILED: ", clean_id)
+			continue
+
+		if card.mutations.can_add_buff_mutation(mutation):
+			card.mutations.add_buff_mutation(mutation)
