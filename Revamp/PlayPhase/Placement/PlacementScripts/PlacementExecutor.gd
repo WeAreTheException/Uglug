@@ -76,10 +76,35 @@ func _release_card_from_source_hand(
 	card: CardRoot,
 	source_hand: PlayerHandRoot
 ) -> void:
-	if source_hand == null:
+	if card == null:
 		return
 
-	source_hand.release_primed_card_for_placement(card)
+	if source_hand != null:
+		source_hand.remove_card_from_hand(card)
+		source_hand.release_primed_card_for_placement(card)
+		source_hand.arrange_cards()
+		source_hand.emit_prime_state()
+
+	if controller == null:
+		return
+
+	if controller.match_network_root == null:
+		return
+
+	if controller.match_network_root.deck_system_root == null:
+		return
+
+	var deck_root := controller.match_network_root.deck_system_root
+
+	if deck_root.player_one_hand != null:
+		deck_root.player_one_hand.remove_card_from_hand(card)
+		deck_root.player_one_hand.arrange_cards()
+		deck_root.player_one_hand.emit_prime_state()
+
+	if deck_root.player_two_hand != null:
+		deck_root.player_two_hand.remove_card_from_hand(card)
+		deck_root.player_two_hand.arrange_cards()
+		deck_root.player_two_hand.emit_prime_state()
 
 
 func _notify_card_placed(
