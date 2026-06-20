@@ -16,34 +16,38 @@ description_label = NodePath("Panel/DescriptionLabel")
 [node name="Panel" type="Panel" parent="." unique_id=440085595]
 layout_mode = 1
 anchors_preset = -1
-anchor_right = 0.67300004
-anchor_bottom = 1.0
-offset_right = 56.897995
+anchor_right = 0.82800007
+anchor_bottom = 0.55
+offset_right = -0.072006226
 grow_horizontal = 2
 grow_vertical = 2
-pivot_offset = Vector2(87, 60)
+pivot_offset = Vector2(73, 60)
 mouse_filter = 2
 
 [node name="NameLabel" type="Label" parent="Panel" unique_id=1327250483]
-layout_mode = 0
-offset_left = 10.0
-offset_top = 8.0
-offset_right = 165.0
-offset_bottom = 34.0
-pivot_offset = Vector2(78, 13)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_right = -6.0
+offset_bottom = -40.0
+pivot_offset = Vector2(72, 13)
+theme_override_font_sizes/font_size = 14
+text = "Royal Pheromones"
 horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="DescriptionLabel" type="Label" parent="Panel" unique_id=1444951111]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.503
-anchor_top = 0.5
-anchor_right = 0.503
-anchor_bottom = 0.5
-offset_left = -78.025
-offset_top = -26.0
-offset_right = 76.975
-offset_bottom = 48.0
-pivot_offset = Vector2(78, 37)
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 27.0
+offset_right = -11.0
+offset_bottom = -8.0
+pivot_offset = Vector2(68, 16)
 theme_override_font_sizes/font_size = 10
+text = "Buff your workers +1 DMG +1HP"
 autowrap_mode = 2
