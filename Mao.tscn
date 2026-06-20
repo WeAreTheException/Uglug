@@ -80,6 +80,7 @@
 [ext_resource type="Script" uid="uid://00f6bgoq0mgc" path="res://Revamp/Multiplayer/MatchNetworkAttack.gd" id="73_nc85t"]
 [ext_resource type="Script" uid="uid://c62i7pwt3r30f" path="res://MatchNetworkTimer.gd" id="74_c8bx1"]
 [ext_resource type="Script" uid="uid://dx8ow48eguxe7" path="res://MatchPlacementCompletionHandler.gd" id="74_yjh5v"]
+[ext_resource type="Script" uid="uid://ji2tm3gnhj4o" path="res://MatchNetworkScore.gd" id="78_o7028"]
 
 [node name="Mao" type="Node2D" unique_id=550121538]
 
@@ -330,6 +331,7 @@ match_network_root = NodePath("../../../../Multiplayer/MatchNetworkRoot")
 print_debug = false
 
 [node name="WizantAnim" parent="Scripts/Core/Blessing" unique_id=1060986998 instance=ExtResource("46_bvwb1")]
+visible = false
 play_intro_on_ready = false
 skip_animation_for_debug = true
 
@@ -398,10 +400,11 @@ script = ExtResource("18_oekep")
 [node name="PlacementCancel" type="Node" parent="Scripts/Core/PlacementController" unique_id=1193513979]
 script = ExtResource("19_n5v11")
 
-[node name="DirectDamageRouter" type="Node" parent="Scripts/Core" unique_id=396013123 node_paths=PackedStringArray("score_state", "slots_root")]
+[node name="DirectDamageRouter" type="Node" parent="Scripts/Core" unique_id=396013123 node_paths=PackedStringArray("score_state", "slots_root", "match_network_root")]
 script = ExtResource("30_venfy")
 score_state = NodePath("../../MatchFlowRoot/MatchScoreState")
 slots_root = NodePath("../../../Core/Board")
+match_network_root = NodePath("../../../Multiplayer/MatchNetworkRoot")
 
 [node name="Control" type="Control" parent="." unique_id=746986057 node_paths=PackedStringArray("player_hand", "count_label")]
 layout_mode = 3
@@ -506,7 +509,7 @@ use_for_blessing = true
 
 [node name="Multiplayer" type="Node" parent="." unique_id=297260751]
 
-[node name="MatchNetworkRoot" type="Node" parent="Multiplayer" unique_id=1636531151 node_paths=PackedStringArray("match_flow_root", "deck_system_root", "turn_order_state", "match_score_state", "slots_root", "phase_timer", "timer_network", "buff_flow_handler", "buff_database", "blessing_flow_handler", "placement_controller", "flow_network", "lookup_network", "draw_network", "buff_network", "blessing_network", "placement_network", "attack_network")]
+[node name="MatchNetworkRoot" type="Node" parent="Multiplayer" unique_id=1636531151 node_paths=PackedStringArray("match_flow_root", "deck_system_root", "turn_order_state", "match_score_state", "slots_root", "phase_timer", "timer_network", "buff_flow_handler", "buff_database", "blessing_flow_handler", "placement_controller", "flow_network", "lookup_network", "draw_network", "buff_network", "blessing_network", "placement_network", "attack_network", "score_network")]
 script = ExtResource("57_8mjsp")
 match_flow_root = NodePath("../../Scripts/MatchFlowRoot")
 deck_system_root = NodePath("../../Core/Deck")
@@ -526,10 +529,7 @@ buff_network = NodePath("MatchNetworkBuff")
 blessing_network = NodePath("MatchNetworkBlessing")
 placement_network = NodePath("MatchNetworkPlacement")
 attack_network = NodePath("MatchNetworkAttack")
-enable_match_advance_debug = null
-match_advance_debug_key = null
-enable_ping_debug = null
-ping_debug_key = null
+score_network = NodePath("MatchNetworkScore")
 print_debug = false
 
 [node name="MatchNetworkFlow" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=880320439]
@@ -559,6 +559,9 @@ script = ExtResource("73_nc85t")
 
 [node name="MatchNetworkTimer" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=2113443062]
 script = ExtResource("74_c8bx1")
+
+[node name="MatchNetworkScore" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=1627466998]
+script = ExtResource("78_o7028")
 
 [node name="MatchLocalViewApplier" type="Node" parent="Multiplayer" unique_id=1811884870 node_paths=PackedStringArray("match_network_root", "player_one_hand", "player_two_hand")]
 script = ExtResource("57_2n6q5")

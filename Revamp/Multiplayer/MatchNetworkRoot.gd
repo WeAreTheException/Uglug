@@ -22,6 +22,7 @@ class_name MatchNetworkRoot
 @export var blessing_network: MatchNetworkBlessing
 @export var placement_network: MatchNetworkPlacement
 @export var attack_network: MatchNetworkAttack
+@export var score_network: MatchNetworkScore
 
 @export var enable_match_advance_debug := true
 @export var match_advance_debug_key: Key = KEY_M
@@ -60,6 +61,7 @@ func _ready() -> void:
 	GDSync.expose_func(_receive_attack_sequence_finished)
 	GDSync.expose_func(_receive_card_died)
 	GDSync.expose_func(_receive_card_stats_snapshot)
+	GDSync.expose_func(_receive_confirmed_match_winner)
 
 	_setup_children()
 	_assign_local_owner()
@@ -264,6 +266,9 @@ func _setup_children() -> void:
 	
 	if attack_network != null:
 		attack_network.setup(self)
+	
+	if score_network != null:
+		score_network.setup(self)
 
 
 func _connect_match_flow() -> void:
@@ -478,3 +483,63 @@ func _receive_card_stats_snapshot(payload: Dictionary) -> void:
 		return
 
 	attack_network.receive_card_stats_snapshot(payload)
+
+func request_score_damage(
+	attacker_owner: SlotRow.SlotOwner,
+	amount: int
+) -> void:
+	if score_network == null:
+		print("REQUEST SCORE DAMAGE FAILED: score_network missing")
+		return
+
+	score_network.request_score_damage(attacker_owner, amount)
+
+
+func _receive_confirmed_score_change(payload: Dictionary) -> void:
+	if match_score_state == null:
+		print("CONFIRMED SCORE FAILED: match_score_state missing")
+		return
+
+	var previous_score: int = int(payload.get("previous_score", match_score_state.score))
+	var new_score: int = int(payload.get("new_score", match_score_state.score))
+	var attacker_owner: SlotRow.SlotOwner = int(payload.get("attacker_owner", SlotRow.SlotOwner.PLAYER)) as SlotRow.SlotOwner
+	var amount: int = int(payload.get("amount", 0))
+	var event_id: int = int(payload.get("event_id", -1))
+
+	match_score_state.apply_confirmed_score_change(
+		previous_score,
+		new_score,
+		attacker_owner,
+		amount,
+		event_id,
+		is_host()
+	)
+
+func _receive_confirmed_match_winner(payload: Dictionary) -> void:
+	if match_flow_root == null:
+		print("CONFIRMED WIN FAILED: match_flow_root missing")
+		return
+
+	var winner: SlotRow.SlotOwner = int(payload.get("winner", SlotRow.SlotOwner.PLAYER)) as SlotRow.SlotOwner
+	var final_score: int = int(payload.get("final_score", 0))
+	var event_id: int = int(payload.get("event_id", -1))
+
+	if print_debug:
+		print(
+			"MATCH WIN CONFIRMED | role=",
+			_get_local_role_name(),
+			" event_id=",
+			event_id,
+			" winner=",
+			get_owner_name(winner),
+			" final_score=",
+			final_score
+		)
+
+	match_flow_root.apply_confirmed_match_end(winner, final_score)
+	
+func _get_local_role_name() -> String:
+	if is_host():
+		return "HOST"
+
+	return "CLIENT"

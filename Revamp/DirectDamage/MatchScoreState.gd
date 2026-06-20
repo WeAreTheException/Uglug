@@ -69,3 +69,35 @@ func _get_owner_name(owner: SlotRow.SlotOwner) -> String:
 		return "P1"
 
 	return "P2"
+
+func apply_confirmed_score_change(
+	previous_score: int,
+	new_score: int,
+	attacker_owner: SlotRow.SlotOwner,
+	amount: int,
+	event_id: int,
+	is_local_host: bool
+) -> void:
+	score = new_score
+	score_changed.emit(score)
+
+	if print_debug:
+		var role := "CLIENT"
+
+		if is_local_host:
+			role = "HOST"
+
+		print(
+			"SCORE CONFIRMED | role=",
+			role,
+			" event_id=",
+			event_id,
+			" previous=",
+			previous_score,
+			" new=",
+			new_score,
+			" attacker=",
+			_get_owner_name(attacker_owner),
+			" amount=",
+			amount
+		)

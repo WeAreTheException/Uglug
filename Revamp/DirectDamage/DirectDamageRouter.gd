@@ -22,6 +22,7 @@ signal direct_damage_applied(
 @export var score_state: MatchScoreState
 @export var slots_root: SlotsRoot
 @export var print_debug: bool = true
+@export var match_network_root: MatchNetworkRoot
 
 
 func request_direct_damage(
@@ -233,6 +234,13 @@ func _apply_score_damage(context: DirectDamageContext) -> void:
 
 	if slots_root != null:
 		await slots_root.show_direct_damage_feedback(context.target_slot)
+
+	if match_network_root != null:
+		match_network_root.request_score_damage(
+			context.attacker_owner,
+			context.amount
+		)
+		return
 
 	if score_state == null:
 		return

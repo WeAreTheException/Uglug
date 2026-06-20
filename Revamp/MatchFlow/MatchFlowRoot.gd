@@ -218,8 +218,18 @@ func _on_score_threshold_reached(
 	winner: SlotRow.SlotOwner,
 	score: int
 ) -> void:
+	if not GDSync.is_host():
+		if print_debug:
+			print("CLIENT SCORE THRESHOLD IGNORED: waiting for confirmed win")
+		return
+
 	end_match(winner, score)
 
+func apply_confirmed_match_end(
+	winner: SlotRow.SlotOwner,
+	score: int
+) -> void:
+	end_match(winner, score)
 
 func _build_starting_hands_once() -> void:
 	if has_built_starting_hands:
