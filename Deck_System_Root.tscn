@@ -76,8 +76,8 @@ classic_class = ExtResource("3_sc7fg")
 player_one_loadout = SubResource("Resource_uqw47")
 player_two_loadout = SubResource("Resource_nxewr")
 use_debug_deck_order = true
-debug_p1_starting_hand = Array[ExtResource("5_ingbf")]([ExtResource("16_n3vl6"), ExtResource("28_lq2ut"), ExtResource("20_cs6vi"), ExtResource("36_ukkbw"), ExtResource("37_18837"), ExtResource("38_4fbyu")])
-debug_p2_starting_hand = Array[ExtResource("5_ingbf")]([ExtResource("16_n3vl6"), ExtResource("28_lq2ut"), ExtResource("20_cs6vi"), ExtResource("36_ukkbw"), ExtResource("37_18837"), ExtResource("38_4fbyu")])
+debug_p1_starting_hand = Array[ExtResource("5_ingbf")]([ExtResource("29_ukkbw"), ExtResource("31_4fbyu"), ExtResource("32_vhms2"), ExtResource("22_nxewr"), ExtResource("33_g13o2"), ExtResource("33_g13o2"), ExtResource("33_g13o2")])
+debug_p2_starting_hand = Array[ExtResource("5_ingbf")]([ExtResource("29_ukkbw"), ExtResource("31_4fbyu"), ExtResource("32_vhms2"), ExtResource("22_nxewr"), ExtResource("33_g13o2"), ExtResource("33_g13o2"), ExtResource("33_g13o2")])
 debug_p1_draw_pile = Array[ExtResource("5_ingbf")]([ExtResource("35_lq2ut"), ExtResource("17_24wpt"), ExtResource("17_24wpt"), ExtResource("17_24wpt")])
 debug_p2_draw_pile = Array[ExtResource("5_ingbf")]([ExtResource("35_lq2ut"), ExtResource("17_24wpt"), ExtResource("17_24wpt"), ExtResource("17_24wpt")])
 
