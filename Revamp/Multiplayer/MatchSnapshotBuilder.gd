@@ -105,6 +105,7 @@ func _build_board(root: MatchNetworkRoot) -> Array:
 			continue
 
 		var owner := _get_canonical_slot_owner(root, slot)
+		var slot_index := _get_canonical_slot_index(root, slot)
 		var card_payload = null
 
 		if slot.current_card != null:
@@ -112,7 +113,7 @@ func _build_board(root: MatchNetworkRoot) -> Array:
 
 		result.append({
 			"owner": int(owner),
-			"slot_index": slot.slot_index,
+			"slot_index": slot_index,
 			"card": card_payload
 		})
 
@@ -139,6 +140,32 @@ func _build_draw_piles(root: MatchNetworkRoot) -> Dictionary:
 	}
 
 
+func _get_canonical_slot_index(root: MatchNetworkRoot, slot: Slot) -> int:
+	if root == null:
+		return slot.slot_index
+
+	if root.slots_root == null:
+		return slot.slot_index
+
+	if root.is_host():
+		return slot.slot_index
+
+	var local_owner := root.slots_root.get_owner_of_slot(slot)
+	var slots := root.slots_root.get_slots_for_owner(local_owner)
+	var max_index := 0
+
+	for test_slot: Slot in slots:
+		if test_slot == null:
+			continue
+
+		max_index = max(max_index, test_slot.slot_index)
+
+	if max_index <= 0:
+		return slot.slot_index
+
+	return max_index + 1 - slot.slot_index
+	
+	
 func _build_draw_pile(root: MatchNetworkRoot, owner: SlotRow.SlotOwner) -> Dictionary:
 	if root.deck_system_root == null:
 		return {
