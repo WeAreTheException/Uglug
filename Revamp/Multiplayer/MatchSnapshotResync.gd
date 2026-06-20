@@ -111,3 +111,70 @@ func _preview_score(root: MatchNetworkRoot, snapshot: Dictionary) -> void:
 
 func _preview_draw_piles(snapshot: Dictionary) -> void:
 	print("Would restore draw pile counts: ", snapshot.get("draw_piles", {}))
+
+func apply_resync(root: MatchNetworkRoot, host_snapshot: Dictionary) -> void:
+	if root == null:
+		return
+
+	print("=== APPLYING DEBUG RESYNC ===")
+
+	_restore_score(root, host_snapshot)
+	_restore_draw_piles(root, host_snapshot)
+
+	print("=== DEBUG RESYNC DONE: score + draw piles only ===")
+
+
+func _restore_score(root: MatchNetworkRoot, snapshot: Dictionary) -> void:
+	if root.match_score_state == null:
+		return
+
+	var score := int(snapshot.get("score", 0))
+
+	root.match_score_state.score = score
+	root.match_score_state.score_changed.emit(score)
+
+	print("RESYNC SCORE: ", score)
+
+
+func _restore_draw_piles(root: MatchNetworkRoot, snapshot: Dictionary) -> void:
+	if root.deck_system_root == null:
+		return
+
+	var draw_piles: Dictionary = snapshot.get("draw_piles", {})
+
+	_restore_draw_pile(
+		root,
+		SlotRow.SlotOwner.PLAYER,
+		draw_piles.get("player", {})
+	)
+
+	_restore_draw_pile(
+		root,
+		SlotRow.SlotOwner.OPPONENT,
+		draw_piles.get("opponent", {})
+	)
+
+
+func _restore_draw_pile(
+	root: MatchNetworkRoot,
+	owner: SlotRow.SlotOwner,
+	pile_payload: Dictionary
+) -> void:
+	var draw_pile := root.deck_system_root.get_draw_pile_for_owner(owner)
+
+	if draw_pile == null:
+		return
+
+	var entries: Array = pile_payload.get("entries", [])
+
+	if draw_pile.has_method("restore_entries"):
+		draw_pile.restore_entries(entries)
+	else:
+		draw_pile.setup_with_entries(entries)
+
+	print(
+		"RESYNC DRAW PILE: owner=",
+		int(owner),
+		" count=",
+		entries.size()
+	)

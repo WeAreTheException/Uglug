@@ -95,3 +95,6 @@ func get_entries() -> Array:
 		return instance.get_entries()
 
 	return []
+
+func restore_entries(entries: Array) -> void:
+	setup_with_entries(entries)

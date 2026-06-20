@@ -5,6 +5,7 @@ class_name MatchNetworkDebugSync
 @export var print_full_snapshot_key: Key = KEY_7
 @export var compare_snapshot_key: Key = KEY_8
 @export var preview_resync_key: Key = KEY_9
+@export var apply_resync_key: Key = KEY_0
 
 var root: MatchNetworkRoot = null
 var builder := MatchSnapshotBuilder.new()
@@ -28,6 +29,9 @@ func handle_debug_input(key_event: InputEventKey) -> void:
 
 	if key_event.keycode == preview_resync_key:
 		request_resync_preview()
+	
+	if key_event.keycode == apply_resync_key:
+		request_resync_apply()
 
 
 func print_local_snapshot() -> void:
@@ -106,3 +110,36 @@ func _host_send_resync_preview() -> void:
 
 	print("HOST SNAPSHOT SENT FOR RESYNC PREVIEW")
 	GDSync.call_func_all(root._receive_debug_resync_preview, snapshot)
+
+func request_resync_apply() -> void:
+	if root == null:
+		return
+
+	if root.is_host():
+		_host_send_resync_apply()
+		return
+
+	GDSync.call_func_on(1, root.request_debug_resync_apply)
+
+
+func receive_resync_apply(host_snapshot: Dictionary) -> void:
+	if root == null:
+		return
+
+	if root.is_host():
+		return
+
+	resync.apply_resync(root, host_snapshot)
+
+
+func _host_send_resync_apply() -> void:
+	if root == null:
+		return
+
+	if not root.is_host():
+		return
+
+	var snapshot := builder.build(root)
+
+	print("HOST SNAPSHOT SENT FOR RESYNC APPLY")
+	GDSync.call_func_all(root._receive_debug_resync_apply, snapshot)
