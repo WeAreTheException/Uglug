@@ -23,6 +23,7 @@ class_name MatchNetworkRoot
 @export var placement_network: MatchNetworkPlacement
 @export var attack_network: MatchNetworkAttack
 @export var score_network: MatchNetworkScore
+@export var debug_sync_network: MatchNetworkDebugSync
 
 @export var enable_match_advance_debug := true
 @export var match_advance_debug_key: Key = KEY_M
@@ -62,6 +63,8 @@ func _ready() -> void:
 	GDSync.expose_func(_receive_card_died)
 	GDSync.expose_func(_receive_card_stats_snapshot)
 	GDSync.expose_func(_receive_confirmed_match_winner)
+	GDSync.expose_func(request_debug_snapshot_compare)
+	GDSync.expose_func(_receive_debug_snapshot_compare)
 
 	_setup_children()
 	_assign_local_owner()
@@ -90,6 +93,9 @@ func _input(event: InputEvent) -> void:
 	
 	if enable_match_advance_debug and key_event.keycode == match_advance_debug_key:
 		request_advance_match_state()
+	
+	if debug_sync_network != null:
+		debug_sync_network.handle_debug_input(key_event)
 
 
 func is_host() -> bool:
@@ -269,6 +275,9 @@ func _setup_children() -> void:
 	
 	if score_network != null:
 		score_network.setup(self)
+	
+	if debug_sync_network != null:
+		debug_sync_network.setup(self)
 
 
 func _connect_match_flow() -> void:
@@ -543,3 +552,18 @@ func _get_local_role_name() -> String:
 		return "HOST"
 
 	return "CLIENT"
+
+func request_debug_snapshot_compare() -> void:
+	if debug_sync_network == null:
+		print("DEBUG SNAPSHOT COMPARE FAILED: debug_sync_network missing")
+		return
+
+	debug_sync_network.request_snapshot_compare()
+
+
+func _receive_debug_snapshot_compare(payload: Dictionary) -> void:
+	if debug_sync_network == null:
+		print("DEBUG SNAPSHOT RECEIVE FAILED: debug_sync_network missing")
+		return
+
+	debug_sync_network.receive_snapshot_compare(payload)

@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://bw8c7m7n5yuk8" path="res://Revamp/Board/Slots.tscn" id="1_yq750"]
 [ext_resource type="PackedScene" uid="uid://1wr1e57v7trd" path="res://Revamp/PlayerHand/Player_Hand.tscn" id="2_mi1n2"]
 [ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Mutations/MutationBehaviourHandlers/Mutation.gd" id="3_3vc3c"]
-[ext_resource type="Script" uid="uid://8nr6ngjl24kj" path="res://MatchAutoAdvanceHandler.gd" id="6_lc0u2"]
+[ext_resource type="Script" uid="uid://8nr6ngjl24kj" path="res://Revamp/MatchFlow/MatchAutoAdvanceHandler.gd" id="6_lc0u2"]
 [ext_resource type="Script" uid="uid://61l5g8wkdar3" path="res://SacrificeController.gd" id="10_1j514"]
 [ext_resource type="Script" uid="uid://db4xai716j06p" path="res://Revamp/Card/CardActions/Sacrifice/SacrificeSelectionRoot.gd" id="11_5f7hr"]
 [ext_resource type="Script" uid="uid://ciopi88keoi3k" path="res://SacrificeRequirement.gd" id="11_at0h8"]
@@ -17,9 +17,9 @@
 [ext_resource type="Script" uid="uid://6ycktn6tay80" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementPreview.gd" id="16_5ixgq"]
 [ext_resource type="Script" uid="uid://yc6i5trydgut" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementExecutor.gd" id="17_8ve8k"]
 [ext_resource type="Script" uid="uid://c18hwqs033t7x" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementEventEmitter.gd" id="18_oekep"]
-[ext_resource type="Script" uid="uid://co47jo7seu3wu" path="res://MatchFlowHandApplier.gd" id="19_2n6q5"]
+[ext_resource type="Script" uid="uid://co47jo7seu3wu" path="res://Revamp/MatchFlow/MatchFlowHandApplier.gd" id="19_2n6q5"]
 [ext_resource type="Script" uid="uid://cmcxm3mp7ljvv" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementCancel.gd" id="19_n5v11"]
-[ext_resource type="Script" uid="uid://bfhpukgxqjd0m" path="res://MatchFlowBoardApplier.gd" id="20_vcbui"]
+[ext_resource type="Script" uid="uid://bfhpukgxqjd0m" path="res://Revamp/MatchFlowBoardApplier.gd" id="20_vcbui"]
 [ext_resource type="Script" uid="uid://dhe454wat35an" path="res://Revamp/MatchFlow/MatchCombatFlowHandler.gd" id="24_n5v11"]
 [ext_resource type="Script" uid="uid://c0jbty6yowib5" path="res://Revamp/MatchFlow/Blessing/BlessingSelectionState.gd" id="25_n5v11"]
 [ext_resource type="Script" uid="uid://difytxi1dyr27" path="res://Revamp/MatchFlow/MatchFlowRoot.gd" id="25_oekep"]
@@ -65,7 +65,7 @@
 [ext_resource type="Script" uid="uid://cstbr8ehhhhio" path="res://Revamp/Blessings/BlessingCardSelectionHandler.gd" id="52_qqxe6"]
 [ext_resource type="Script" uid="uid://dxkdv76ah1to1" path="res://Revamp/Blessings/BlessingApplyHandler.gd" id="53_8mjsp"]
 [ext_resource type="Script" uid="uid://dbw5dxwuc5h4h" path="res://Revamp/Buff/BuffCardStagingHandler.gd" id="53_nmm8s"]
-[ext_resource type="Script" uid="uid://qkm73v3qftgr" path="res://Revamp/Multiplayer/MatchLocalViewApplier.gd" id="57_2n6q5"]
+[ext_resource type="Script" uid="uid://qkm73v3qftgr" path="res://Revamp/MatchFlow/MatchLocalViewApplier.gd" id="57_2n6q5"]
 [ext_resource type="Script" uid="uid://ddq57bg6lcsk1" path="res://Revamp/Multiplayer/MatchNetworkRoot.gd" id="57_8mjsp"]
 [ext_resource type="Script" uid="uid://bhcy41nxe3s4n" path="res://Revamp/Multiplayer/MatchNetworkLookup.gd" id="63_5j00x"]
 [ext_resource type="Script" uid="uid://bbr61twl85oqk" path="res://PhaseConfirmButton.gd" id="63_uv74c"]
@@ -76,11 +76,12 @@
 [ext_resource type="Script" uid="uid://63l7crrnpitr" path="res://Revamp/Multiplayer/MatchNetworkBlessing.gd" id="66_q844d"]
 [ext_resource type="Script" uid="uid://con1w5rh38kav" path="res://Revamp/Multiplayer/MatchNetworkBuff.gd" id="67_gfrq6"]
 [ext_resource type="Script" uid="uid://4awjofgv2dfc" path="res://Revamp/Multiplayer/MatchNetworkFlow.gd" id="68_8hx3r"]
-[ext_resource type="Script" uid="uid://coo0pgldjiw6w" path="res://MatchPhaseTimer.gd" id="73_fk48e"]
+[ext_resource type="Script" uid="uid://coo0pgldjiw6w" path="res://Revamp/Multiplayer/MatchPhaseTimer.gd" id="73_fk48e"]
 [ext_resource type="Script" uid="uid://00f6bgoq0mgc" path="res://Revamp/Multiplayer/MatchNetworkAttack.gd" id="73_nc85t"]
-[ext_resource type="Script" uid="uid://c62i7pwt3r30f" path="res://MatchNetworkTimer.gd" id="74_c8bx1"]
-[ext_resource type="Script" uid="uid://dx8ow48eguxe7" path="res://MatchPlacementCompletionHandler.gd" id="74_yjh5v"]
-[ext_resource type="Script" uid="uid://ji2tm3gnhj4o" path="res://MatchNetworkScore.gd" id="78_o7028"]
+[ext_resource type="Script" uid="uid://c62i7pwt3r30f" path="res://Revamp/Multiplayer/MatchNetworkTimer.gd" id="74_c8bx1"]
+[ext_resource type="Script" uid="uid://dx8ow48eguxe7" path="res://Revamp/MatchFlow/MatchPlacementCompletionHandler.gd" id="74_yjh5v"]
+[ext_resource type="Script" uid="uid://ji2tm3gnhj4o" path="res://Revamp/Multiplayer/MatchNetworkScore.gd" id="78_o7028"]
+[ext_resource type="Script" uid="uid://bnbuh7nx3k3f2" path="res://MatchNetworkDebugSync.gd" id="81_o7028"]
 
 [node name="Mao" type="Node2D" unique_id=550121538]
 
@@ -392,6 +393,7 @@ placement_preview = NodePath("PlacementPreview")
 placement_executor = NodePath("PlacementExecutor")
 event_emitter = NodePath("PlacementEventEmitter")
 placement_cancel = NodePath("PlacementCancel")
+print_debug = false
 
 [node name="PlacementState" type="Node" parent="Scripts/Core/PlacementController" unique_id=1456688179]
 script = ExtResource("14_5sdof")
@@ -520,7 +522,7 @@ use_for_blessing = true
 
 [node name="Multiplayer" type="Node" parent="." unique_id=297260751]
 
-[node name="MatchNetworkRoot" type="Node" parent="Multiplayer" unique_id=1636531151 node_paths=PackedStringArray("match_flow_root", "deck_system_root", "turn_order_state", "match_score_state", "slots_root", "phase_timer", "timer_network", "buff_flow_handler", "buff_database", "blessing_flow_handler", "placement_controller", "flow_network", "lookup_network", "draw_network", "buff_network", "blessing_network", "placement_network", "attack_network", "score_network")]
+[node name="MatchNetworkRoot" type="Node" parent="Multiplayer" unique_id=1636531151 node_paths=PackedStringArray("match_flow_root", "deck_system_root", "turn_order_state", "match_score_state", "slots_root", "phase_timer", "timer_network", "buff_flow_handler", "buff_database", "blessing_flow_handler", "placement_controller", "flow_network", "lookup_network", "draw_network", "buff_network", "blessing_network", "placement_network", "attack_network", "score_network", "debug_sync_network")]
 script = ExtResource("57_8mjsp")
 match_flow_root = NodePath("../../Scripts/MatchFlowRoot")
 deck_system_root = NodePath("../../Core/Deck")
@@ -541,6 +543,7 @@ blessing_network = NodePath("MatchNetworkBlessing")
 placement_network = NodePath("MatchNetworkPlacement")
 attack_network = NodePath("MatchNetworkAttack")
 score_network = NodePath("MatchNetworkScore")
+debug_sync_network = NodePath("MatchNetworkDebugSync")
 print_debug = false
 
 [node name="MatchNetworkFlow" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=880320439]
@@ -573,6 +576,9 @@ script = ExtResource("74_c8bx1")
 
 [node name="MatchNetworkScore" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=1627466998]
 script = ExtResource("78_o7028")
+
+[node name="MatchNetworkDebugSync" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=1984824557]
+script = ExtResource("81_o7028")
 
 [node name="MatchLocalViewApplier" type="Node" parent="Multiplayer" unique_id=1811884870 node_paths=PackedStringArray("match_network_root", "player_one_hand", "player_two_hand")]
 script = ExtResource("57_2n6q5")
