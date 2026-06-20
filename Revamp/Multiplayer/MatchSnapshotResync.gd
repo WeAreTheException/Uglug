@@ -292,5 +292,23 @@ func _apply_card_mutations(
 			print("RESYNC MUTATION FAILED: ", clean_id)
 			continue
 
-		if card.mutations.can_add_buff_mutation(mutation):
+		if not _card_has_mutation_id(card, clean_id):
 			card.mutations.add_buff_mutation(mutation)
+
+func _card_has_mutation_id(card: CardRoot, mutation_id: String) -> bool:
+	if card == null:
+		return false
+
+	if card.mutations == null:
+		return false
+
+	if card.mutations.has_method("get_all_mutations"):
+		for mutation in card.mutations.get_all_mutations():
+			if mutation == null:
+				continue
+
+			if mutation.has_method("get_safe_mutation_id"):
+				if mutation.get_safe_mutation_id() == mutation_id:
+					return true
+
+	return false
