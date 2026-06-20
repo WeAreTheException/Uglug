@@ -123,7 +123,7 @@ func apply_resync(root: MatchNetworkRoot, host_snapshot: Dictionary) -> void:
 	_restore_hands(root, host_snapshot)
 	_restore_board(root, host_snapshot)
 
-	print("=== DEBUG RESYNC DONE: score + draw piles + hands ===")
+	print("=== DEBUG RESYNC DONE: score + draw piles + hands + board ===")
 
 
 func _restore_score(root: MatchNetworkRoot, snapshot: Dictionary) -> void:

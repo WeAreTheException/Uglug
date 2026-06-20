@@ -84,6 +84,7 @@ animation_runner = NodePath("AttackAnimationRunner")
 target_resolver = NodePath("AttackTargetResolver")
 attack_sequencer = NodePath("AttackSequencer")
 exchange_runner = NodePath("AttackExchangeRunner")
+enable_debug_key = false
 
 [node name="AttackAnimationRunner" type="Node" parent="Actions/Attack" unique_id=1122768788 node_paths=PackedStringArray("animated_target")]
 script = ExtResource("9_r5dqq")
@@ -116,6 +117,7 @@ script = ExtResource("12_r5dqq")
 animation_runner = NodePath("HurtAnimationRunner")
 feedback_handler = NodePath("HurtFeedbackHandler")
 damage_apply_delay = 0.13
+enable_debug_key = false
 
 [node name="HurtAnimationRunner" type="Node" parent="Actions/Hurt" unique_id=2097473369]
 script = ExtResource("13_opxhd")
@@ -151,6 +153,7 @@ texture = ExtResource("17_7vw44")
 script = ExtResource("14_fx0xs")
 animation_runner = NodePath("DieAnimationRunner")
 death_audio = NodePath("DieAudio")
+enable_debug_key = false
 
 [node name="DieAnimationRunner" type="Node" parent="Actions/Die" unique_id=695087032]
 script = ExtResource("15_jgw7k")

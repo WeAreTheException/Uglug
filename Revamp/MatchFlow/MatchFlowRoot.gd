@@ -67,10 +67,14 @@ func _input(event: InputEvent) -> void:
 		return
 
 	if key_event.keycode == advance_debug_key:
-		advance_debug_state()
+		if _can_use_match_flow_debug_keys():
+			advance_debug_state()
+		return
 
 	if key_event.keycode == swap_control_debug_key:
-		swap_controlled_owner()
+		if _can_use_swap_control_debug_key():
+			swap_controlled_owner()
+		return
 
 
 func start_match() -> void:
@@ -387,3 +391,16 @@ func apply_network_snapshot(payload: Dictionary) -> void:
 	if old_state != current_state:
 		_print_current_state()
 		match_state_changed.emit(current_state)
+
+func _can_use_match_flow_debug_keys() -> bool:
+	if not Engine.has_singleton("GDSync"):
+		return true
+
+	return GDSync.is_host()
+
+
+func _can_use_swap_control_debug_key() -> bool:
+	if not Engine.has_singleton("GDSync"):
+		return true
+
+	return false
