@@ -104,7 +104,7 @@ func _build_board(root: MatchNetworkRoot) -> Array:
 		if slot == null:
 			continue
 
-		var owner := root.slots_root.get_owner_of_slot(slot)
+		var owner := _get_canonical_slot_owner(root, slot)
 		var card_payload = null
 
 		if slot.current_card != null:
@@ -118,6 +118,19 @@ func _build_board(root: MatchNetworkRoot) -> Array:
 
 	return result
 
+func _get_canonical_slot_owner(
+	root: MatchNetworkRoot,
+	slot: Slot
+) -> SlotRow.SlotOwner:
+	var local_owner := root.slots_root.get_owner_of_slot(slot)
+
+	if root.is_host():
+		return local_owner
+
+	if local_owner == SlotRow.SlotOwner.PLAYER:
+		return SlotRow.SlotOwner.OPPONENT
+
+	return SlotRow.SlotOwner.PLAYER
 
 func _build_draw_piles(root: MatchNetworkRoot) -> Dictionary:
 	return {
