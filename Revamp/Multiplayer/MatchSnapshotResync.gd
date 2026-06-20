@@ -121,6 +121,7 @@ func apply_resync(root: MatchNetworkRoot, host_snapshot: Dictionary) -> void:
 	_restore_score(root, host_snapshot)
 	_restore_draw_piles(root, host_snapshot)
 	_restore_hands(root, host_snapshot)
+	_restore_board(root, host_snapshot)
 
 	print("=== DEBUG RESYNC DONE: score + draw piles + hands ===")
 
@@ -312,3 +313,178 @@ func _card_has_mutation_id(card: CardRoot, mutation_id: String) -> bool:
 					return true
 
 	return false
+
+func _restore_board(root: MatchNetworkRoot, snapshot: Dictionary) -> void:
+	if root.slots_root == null:
+		return
+
+	if root.deck_system_root == null:
+		return
+
+	_clear_board(root)
+
+	var board: Array = snapshot.get("board", [])
+
+	for slot_payload in board:
+		if not slot_payload is Dictionary:
+			continue
+
+		_restore_board_slot(root, slot_payload)
+
+	root.slots_root.refresh_board_mutations()
+
+	print("RESYNC BOARD: slots=", board.size())
+
+
+func _clear_board(root: MatchNetworkRoot) -> void:
+	for slot: Slot in root.slots_root.get_all_slots():
+		if slot == null:
+			continue
+
+		var card := slot.current_card
+
+		if card != null and is_instance_valid(card):
+			card.queue_free()
+
+		slot.clear_card()
+
+
+func _restore_board_slot(
+	root: MatchNetworkRoot,
+	slot_payload: Dictionary
+) -> void:
+	var card_payload = slot_payload.get("card", null)
+
+	if card_payload == null:
+		return
+
+	if not card_payload is Dictionary:
+		return
+
+	var owner: SlotRow.SlotOwner = int(
+		slot_payload.get("owner", SlotRow.SlotOwner.PLAYER)
+	) as SlotRow.SlotOwner
+
+	var slot_index := int(slot_payload.get("slot_index", -1))
+	var slot := _get_local_slot_from_canonical(root, owner, slot_index)
+
+	if slot == null:
+		print(
+			"RESYNC BOARD SLOT FAILED: missing slot owner=",
+			int(owner),
+			" index=",
+			slot_index
+		)
+		return
+
+	var card := _spawn_board_card_from_payload(root, card_payload)
+
+	if card == null:
+		return
+
+	_add_card_to_board_layer(root, card, slot)
+	card.setup_board_context(root.slots_root)
+
+	if card.board_presence != null:
+		card.board_presence.enter_slot(slot, card)
+	else:
+		slot.assign_card(card)
+
+	card.global_position = slot.get_card_anchor_global_position()
+	card.rotation_degrees = 0.0
+
+	_apply_card_snapshot_details(root, card, card_payload)
+
+
+func _get_local_slot_from_canonical(
+	root: MatchNetworkRoot,
+	canonical_owner: SlotRow.SlotOwner,
+	canonical_slot_index: int
+) -> Slot:
+	if root == null:
+		return null
+
+	if root.slots_root == null:
+		return null
+
+	var local_owner := canonical_owner
+	var local_slot_index := canonical_slot_index
+
+	if not root.is_host():
+		if canonical_owner == SlotRow.SlotOwner.PLAYER:
+			local_owner = SlotRow.SlotOwner.OPPONENT
+		else:
+			local_owner = SlotRow.SlotOwner.PLAYER
+
+		local_slot_index = _mirror_slot_index(
+			root,
+			local_owner,
+			canonical_slot_index
+		)
+
+	return root.slots_root.get_slot(local_owner, local_slot_index)
+
+
+func _mirror_slot_index(
+	root: MatchNetworkRoot,
+	local_owner: SlotRow.SlotOwner,
+	canonical_slot_index: int
+) -> int:
+	var slots := root.slots_root.get_slots_for_owner(local_owner)
+	var max_index := 0
+
+	for slot: Slot in slots:
+		if slot == null:
+			continue
+
+		max_index = max(max_index, slot.slot_index)
+
+	if max_index <= 0:
+		return canonical_slot_index
+
+	return max_index + 1 - canonical_slot_index
+
+
+func _spawn_board_card_from_payload(
+	root: MatchNetworkRoot,
+	card_payload: Dictionary
+) -> CardRoot:
+	if root.slots_root == null:
+		return null
+
+	if root.slots_root.card_scene == null:
+		print("RESYNC BOARD CARD FAILED: card_scene missing")
+		return null
+
+	var card_id := str(card_payload.get("card_id", ""))
+	var runtime_id := str(card_payload.get("runtime_id", ""))
+	var card_data := root.deck_system_root.get_card_data(card_id)
+
+	if card_data == null:
+		print("RESYNC BOARD CARD FAILED: missing card_data ", card_id)
+		return null
+
+	var card := root.slots_root.card_scene.instantiate() as CardRoot
+
+	if card == null:
+		print("RESYNC BOARD CARD FAILED: card_scene root is not CardRoot")
+		return null
+
+	card.setup(card_data)
+	card.set_runtime_id(runtime_id)
+	card.setup_deck_system_context(root.deck_system_root)
+
+	return card
+
+
+func _add_card_to_board_layer(
+	root: MatchNetworkRoot,
+	card: CardRoot,
+	slot: Slot
+) -> void:
+	var parent := root.slots_root.spawned_card_parent
+
+	if parent == null:
+		parent = slot
+
+	parent.add_child(card)
