@@ -11,7 +11,7 @@ signal slot_unhovered(slot: Slot)
 @export var board_slot_registry: BoardSlotRegistry
 @export var board_query: BoardQuery
 @export var board_mutation_refresher: BoardMutationRefresher
-@export var slot_preset_handler: SlotPresetHandler1
+@export var slot_preset_handler: SlotPresetHandler
 @export var attack_order_handler: AttackOrderHandler
 
 @export var card_scene: PackedScene

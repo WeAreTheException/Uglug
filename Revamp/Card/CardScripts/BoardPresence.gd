@@ -20,8 +20,7 @@ func enter_slot(slot: Slot, card: CardRoot) -> bool:
 
 	current_slot = slot
 
-	if card.slots_root != null:
-		card.slots_root.refresh_board_mutations()
+	_try_refresh_board_mutations(card)
 
 	return true
 
@@ -42,8 +41,31 @@ func leave_slot(card: CardRoot) -> void:
 
 	current_slot = null
 
-	if old_slots_root != null:
-		old_slots_root.refresh_board_mutations()
+	_try_refresh_board_mutations_from_root(old_slots_root)
+
+
+func _try_refresh_board_mutations(card: CardRoot) -> void:
+	if card == null:
+		return
+
+	_try_refresh_board_mutations_from_root(card.slots_root)
+
+
+func _try_refresh_board_mutations_from_root(slots_root: SlotsRoot) -> void:
+	if slots_root == null:
+		return
+
+	if _should_skip_local_network_aura_refresh():
+		return
+
+	slots_root.refresh_board_mutations()
+
+
+func _should_skip_local_network_aura_refresh() -> bool:
+	if not Engine.has_singleton("GDSync"):
+		return false
+
+	return not GDSync.is_host()
 
 
 func _notify_left_board(card: CardRoot) -> void:

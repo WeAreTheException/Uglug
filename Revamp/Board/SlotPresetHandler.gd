@@ -1,5 +1,5 @@
 extends Node
-class_name SlotPresetHandler1
+class_name SlotPresetHandler
 
 var slots_root: SlotsRoot = null
 
@@ -41,7 +41,7 @@ func _spawn_preset_for_slot(slot: Slot) -> void:
 	var card := slots_root.card_scene.instantiate() as CardRoot
 
 	if card == null:
-		push_error("SlotPresetHandler1 blocked: card_scene root is not CardRoot.")
+		push_error("SlotPresetHandler blocked: card_scene root is not CardRoot.")
 		return
 
 	_add_card_to_board(card, slot)
