@@ -11,7 +11,7 @@ func on_placed_context(
 	_slot: Slot,
 	_owner: SlotRow.SlotOwner
 ) -> void:
-	_draw_cards(card)
+	call_deferred("_draw_cards", card)
 
 
 func on_placed(
