@@ -11,7 +11,6 @@ func apply_blessing(card: CardRoot, blessing: Blessing) -> bool:
 
 	if _is_revenant_blessing(blessing):
 		card.mark_revenant()
-		print("BLESSING APPLY DEBUG after mark revenant: ", card.is_revenant())
 		return card.is_revenant()
 
 	var card_blessings := CardBlessingLookupHelper.new().get_card_blessings(card)
