@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://dtqlg1xqbov7i"]
+
+[ext_resource type="PackedScene" uid="uid://c8mfgi3h8sc6v" path="res://NewCardLayout.tscn" id="1_qeeaa"]
+
+[node name="CardsInContext" type="Node2D" unique_id=1665155833]
+
+[node name="Node2D" parent="." unique_id=96420926 instance=ExtResource("1_qeeaa")]
+position = Vector2(433, 228)
+
+[node name="Node2D2" parent="." unique_id=1637667852 instance=ExtResource("1_qeeaa")]
+position = Vector2(583, 228)
+
+[node name="Node2D3" parent="." unique_id=458385878 instance=ExtResource("1_qeeaa")]
+position = Vector2(733, 228)
+
+[node name="Node2D4" parent="." unique_id=1956715752 instance=ExtResource("1_qeeaa")]
+position = Vector2(881, 228)
+
+[node name="Node2D5" parent="." unique_id=1160862716 instance=ExtResource("1_qeeaa")]
+position = Vector2(433, 482)
+
+[node name="Node2D6" parent="." unique_id=227384111 instance=ExtResource("1_qeeaa")]
+position = Vector2(583, 482)
+
+[node name="Node2D7" parent="." unique_id=2116348381 instance=ExtResource("1_qeeaa")]
+position = Vector2(733, 482)
+
+[node name="Node2D8" parent="." unique_id=90234138 instance=ExtResource("1_qeeaa")]
+position = Vector2(881, 482)
