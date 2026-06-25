@@ -7,7 +7,6 @@
 [ext_resource type="Shader" uid="uid://n3l4egojry4s" path="res://Balatro.gdshader" id="4_uw526"]
 [ext_resource type="Shader" uid="uid://clsxlhuocr8hn" path="res://Cards/BackgroundSlide.gdshader" id="5_eyf70"]
 [ext_resource type="Texture2D" uid="uid://oq4abrloyp27" path="res://Art/Mutations/Sigils/Anthrax_Sigil.PNG" id="7_4muga"]
-[ext_resource type="FontFile" uid="uid://bnjmhin4fqi2u" path="res://addons/GD-Sync/UI/Fonts/Outfit-Regular.ttf" id="7_eyf70"]
 [ext_resource type="Texture2D" uid="uid://cml4r132i2s56" path="res://Art/Mutations/Sigils/BOB_Sigil.PNG" id="8_4muga"]
 [ext_resource type="Texture2D" uid="uid://d1ypj3toan6r1" path="res://Art/Blood.png" id="8_uw526"]
 [ext_resource type="Texture2D" uid="uid://cr0fse6fdstdv" path="res://Art/Mutations/Sigils/Duriant_Sigil(1).PNG" id="9_sygfx"]
@@ -266,28 +265,49 @@ metadata/_edit_lock_ = true
 
 [node name="Attack" type="RichTextLabel" parent="Node2D/Stats" unique_id=429625943]
 offset_left = -60.0
-offset_top = 101.0
+offset_top = 93.0
 offset_right = -21.0
-offset_bottom = 132.0
+offset_bottom = 129.0
+theme_override_colors/font_outline_color = Color(1.8049032e-08, 0.06382069, 0.08081173, 1)
+theme_override_constants/outline_size = 7
+theme_override_font_sizes/normal_font_size = 25
 text = "2"
 autowrap_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
 script = ExtResource("13_sygfx")
-metadata/_edit_lock_ = true
+shadow_color = Color(0, 0.0627451, 0.08235294, 0.8)
+shadow_offset = Vector2i(4, 4)
+vertical_float_height = 2.0
+vertical_float_time = 20.0
+horizontal_drift_amount = 0.5
+rotation_amount_degrees = 1.0
+rotation_time = 10.0
+breathing_scale_amount = 0.0
+breathing_scale_time = 3.0
 
-[node name="Attack2" type="Label" parent="Node2D/Stats" unique_id=1279282701]
-offset_left = 22.0
-offset_top = 101.0
-offset_right = 60.0
-offset_bottom = 132.0
-theme_override_fonts/font = ExtResource("7_eyf70")
-theme_override_font_sizes/font_size = 24
+[node name="Attack2" type="RichTextLabel" parent="Node2D/Stats" unique_id=258363822]
+offset_left = 20.0
+offset_top = 93.0
+offset_right = 59.0
+offset_bottom = 129.0
+theme_override_colors/font_outline_color = Color(1.8049032e-08, 0.06382069, 0.08081173, 1)
+theme_override_constants/outline_size = 7
+theme_override_font_sizes/normal_font_size = 25
 text = "2"
+autowrap_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_lock_ = true
+script = ExtResource("13_sygfx")
+shadow_color = Color(0, 0.0627451, 0.08235294, 0.8)
+shadow_offset = Vector2i(4, 4)
+vertical_float_height = 2.0
+vertical_float_time = 20.0
+horizontal_drift_amount = 0.5
+rotation_amount_degrees = 1.0
+rotation_time = 10.0
+breathing_scale_amount = 0.0
+breathing_scale_time = 3.0
 
 [node name="Cost" type="Node2D" parent="Node2D/Stats" unique_id=1557452011]
 metadata/_edit_lock_ = true
@@ -359,5 +379,6 @@ vertical_float_time = 20.0
 horizontal_drift_amount = 0.5
 rotation_amount_degrees = 1.0
 rotation_time = 10.0
+breathing_scale_amount = 0.0
 metadata/_edit_use_anchors_ = true
 metadata/_edit_lock_ = true
