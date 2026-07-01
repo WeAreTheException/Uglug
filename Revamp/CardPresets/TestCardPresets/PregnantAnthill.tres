@@ -1,9 +1,9 @@
 [gd_resource type="Resource" script_class="CardData" format=3 uid="uid://tlu3cy402fu4"]
 
-[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Mutations/MutationBehaviourHandlers/Mutation.gd" id="1_ipqba"]
-[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="2_eh5co"]
-[ext_resource type="Resource" uid="uid://cnn0fddifxool" path="res://Mutations/MutationPresets/InheritanceMutations/ColonyNest.tres" id="2_px4ge"]
-[ext_resource type="Resource" uid="uid://b4tpqnugaguvu" path="res://Mutations/MutationPresets/InheritanceMutations/BabyMaker.tres" id="2_ubfcv"]
+[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Old/Mutations/MutationBehaviourHandlers/Mutation.gd" id="1_ipqba"]
+[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Old/Data/CardData.gd" id="2_eh5co"]
+[ext_resource type="Resource" uid="uid://cnn0fddifxool" path="res://Old/Mutations/MutationPresets/InheritanceMutations/ColonyNest.tres" id="2_px4ge"]
+[ext_resource type="Resource" uid="uid://b4tpqnugaguvu" path="res://Old/Mutations/MutationPresets/InheritanceMutations/BabyMaker.tres" id="2_ubfcv"]
 
 [resource]
 script = ExtResource("2_eh5co")

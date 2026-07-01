@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="IDieYouDie" format=3 uid="uid://d6umheqx0qia"]
+
+[ext_resource type="Script" uid="uid://dxe3govrgh7uw" path="res://Old/Mutations/MutationBehaviourHandlers/IDieYouDie.gd" id="1_ditrh"]
+[ext_resource type="Texture2D" uid="uid://btcjfpehdqul6" path="res://Art/Mutations/Anthrax_Sigil.PNG" id="2_jbtcd"]
+
+[resource]
+script = ExtResource("1_ditrh")
+mutation_name = "I Die You Die"
+mutation_description = "Kills the opposing card on death"
+sigil_texture = ExtResource("2_jbtcd")

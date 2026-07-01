@@ -1,9 +1,9 @@
 [gd_resource type="Resource" script_class="CardData" format=3 uid="uid://b350kw1jayfdj"]
 
-[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Mutations/MutationBehaviourHandlers/Mutation.gd" id="1_scbkg"]
+[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Old/Mutations/MutationBehaviourHandlers/Mutation.gd" id="1_scbkg"]
 [ext_resource type="Texture2D" uid="uid://1gqrns4c547l" path="res://Art/Ants/Draculant.PNG" id="2_7u85t"]
-[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="2_cmrgt"]
-[ext_resource type="Resource" uid="uid://njutef00oac8" path="res://Mutations/MutationPresets/InvestmentMutations/LifeSteal.tres" id="2_vvsqe"]
+[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Old/Data/CardData.gd" id="2_cmrgt"]
+[ext_resource type="Resource" uid="uid://njutef00oac8" path="res://Old/Mutations/MutationPresets/InvestmentMutations/LifeSteal.tres" id="2_vvsqe"]
 
 [resource]
 script = ExtResource("2_cmrgt")

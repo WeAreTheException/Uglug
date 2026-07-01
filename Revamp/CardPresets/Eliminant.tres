@@ -1,9 +1,9 @@
 [gd_resource type="Resource" script_class="CardData" format=3 uid="uid://cbi6p6yl00o3p"]
 
-[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Mutations/MutationBehaviourHandlers/Mutation.gd" id="1_40dth"]
-[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="2_jqecl"]
+[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Old/Mutations/MutationBehaviourHandlers/Mutation.gd" id="1_40dth"]
+[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Old/Data/CardData.gd" id="2_jqecl"]
 [ext_resource type="Texture2D" uid="uid://bd3n84cq63rtf" path="res://Art/Ants/Eliminant.png" id="2_rwmwq"]
-[ext_resource type="Resource" uid="uid://b4sniy31fo50g" path="res://Mutations/MutationPresets/StraightChopsMutations/TouchOfDeath.tres" id="3_rwmwq"]
+[ext_resource type="Resource" uid="uid://b4sniy31fo50g" path="res://Old/Mutations/MutationPresets/StraightChopsMutations/TouchOfDeath.tres" id="3_rwmwq"]
 
 [resource]
 script = ExtResource("2_jqecl")

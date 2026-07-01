@@ -1,9 +1,9 @@
 [gd_resource type="Resource" script_class="CardData" format=3 uid="uid://dbgpqc3vdl8t"]
 
-[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Mutations/MutationBehaviourHandlers/Mutation.gd" id="1_436sr"]
-[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="2_2hy2u"]
+[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Old/Mutations/MutationBehaviourHandlers/Mutation.gd" id="1_436sr"]
+[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Old/Data/CardData.gd" id="2_2hy2u"]
 [ext_resource type="Texture2D" uid="uid://mdhe2loswtvl" path="res://Art/Ants/Duriant.png" id="2_2kx8q"]
-[ext_resource type="Resource" uid="uid://dko3ngpbogrv1" path="res://Mutations/MutationPresets/RetaliationMutations/Spiky.tres" id="3_2kx8q"]
+[ext_resource type="Resource" uid="uid://dko3ngpbogrv1" path="res://Old/Mutations/MutationPresets/RetaliationMutations/Spiky.tres" id="3_2kx8q"]
 
 [resource]
 script = ExtResource("2_2hy2u")

@@ -1,18 +1,14 @@
 shader_type canvas_item;
 
-uniform vec2 rect_size = vec2(144.0, 216.0);
+uniform vec2 rect_size = vec2(216.0, 140.0);
 
-// Camera FOV
-uniform float fov : hint_range(1, 179) = 90.0;
+uniform float fov : hint_range(1.0, 179.0) = 90.0;
+uniform bool cull_back = false;
 
-uniform bool cull_back = true;
+uniform float y_rot : hint_range(-45.0, 45.0) = 0.0;
+uniform float x_rot : hint_range(-45.0, 45.0) = 0.0;
 
-uniform float y_rot : hint_range(-360.0, 360.0) = 0.0;
-uniform float x_rot : hint_range(-360.0, 360.0) = 0.0;
-
-// At 0, image keeps original size.
-// At 1, shrinks to avoid clipping during rotation.
-uniform float inset : hint_range(0.0, 1.0) = 0.0;
+uniform float inset : hint_range(0.0, 1.0) = 0.15;
 
 varying flat vec2 offset;
 varying vec3 projection;
@@ -46,7 +42,6 @@ void vertex() {
 	float scale = (0.5 / tangent) + 0.5;
 
 	projection.xy *= scale * rotation[2].z;
-
 	offset = scale * rotation[2].xy;
 
 	VERTEX += (UV - 0.5) * rect_size * tangent * (1.0 - inset);
@@ -60,7 +55,9 @@ void fragment() {
 
 	vec2 uv = (projection.xy / projection.z).xy - offset;
 
-	COLOR = texture(TEXTURE, uv + 0.5);
+	if (max(abs(uv.x), abs(uv.y)) > 0.5) {
+		discard;
+	}
 
-	COLOR.a *= step(max(abs(uv.x), abs(uv.y)), 0.5);
+	COLOR = texture(TEXTURE, uv + 0.5);
 }

@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://5uho8ho3dlfo"
+path="res://.godot/imported/card_death.wav-bed1910a9f1dd21e28c23e5f13310fdc.sample"
+
+[deps]
+
+source_file="res://Old/Audio/Placeholder SFX/card_death.wav"
+dest_files=["res://.godot/imported/card_death.wav-bed1910a9f1dd21e28c23e5f13310fdc.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

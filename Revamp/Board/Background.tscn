@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://bywsxsbxaq45y" path="res://Art/Background/BG_Sky.jpg" id="1_efcvh"]
 [ext_resource type="Shader" uid="uid://n3l4egojry4s" path="res://Balatro.gdshader" id="2_b10xy"]
 [ext_resource type="Texture2D" uid="uid://baa2em8y1tn0b" path="res://Art/Background/BG_Mountain.png" id="3_06tnx"]
-[ext_resource type="Shader" uid="uid://ck3gs6whq2t57" path="res://Cards/AntSway.gdshader" id="4_06tnx"]
+[ext_resource type="Shader" uid="uid://ck3gs6whq2t57" path="res://Old/Cards/AntSway.gdshader" id="4_06tnx"]
 [ext_resource type="Texture2D" uid="uid://cshh70gh05gts" path="res://Art/Background/BG_Fog.png" id="4_k61qs"]
 [ext_resource type="Texture2D" uid="uid://cmxhq7qe848n1" path="res://Art/Background/BG_Ground.png" id="5_ou7fi"]
 [ext_resource type="Texture2D" uid="uid://bf24kb68hu0jr" path="res://Art/Background/BG_AtmosPersp.png" id="6_hcsqr"]

@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://bad0j4xjilakx"]
+
+[ext_resource type="PackedScene" uid="uid://bw8c7m7n5yuk8" path="res://Revamp/Board/Slots.tscn" id="1_6m8xi"]
+[ext_resource type="Resource" uid="uid://bn1jyervrnsg" path="res://Revamp/CardPresets/WorkerAnt.tres" id="2_sbsev"]
+[ext_resource type="Resource" uid="uid://c2bo8r00gukg4" path="res://Revamp/CardPresets/Empowerant.tres" id="2_vg36g"]
+[ext_resource type="Resource" uid="uid://ci7yvhc8pfst6" path="res://Revamp/CardPresets/QueenAnt.tres" id="3_0km5x"]
+[ext_resource type="Resource" uid="uid://bxfxi0h5itrdu" path="res://Revamp/CardPresets/Lieutenant.tres" id="4_0y7n2"]
+[ext_resource type="Resource" uid="uid://d34eaw1jxirr0" path="res://Revamp/CardPresets/Giant.tres" id="6_0y7n2"]
+[ext_resource type="Resource" uid="uid://bckromx6ufd8m" path="res://Revamp/CardPresets/Escucheant.tres" id="6_vg36g"]
+[ext_resource type="Resource" uid="uid://dbgpqc3vdl8t" path="res://Revamp/CardPresets/Duriant.tres" id="7_vg36g"]
+[ext_resource type="PackedScene" uid="uid://1wr1e57v7trd" path="res://Revamp/PlayerHand/Player_Hand.tscn" id="8_7k0vn"]
+[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Old/Data/CardData.gd" id="9_i0njb"]
+[ext_resource type="Resource" uid="uid://cu38anwcrq117" path="res://Revamp/CardPresets/SuperStimulant.tres" id="10_i0njb"]
+[ext_resource type="Script" uid="uid://b0pbhkjhs6hjt" path="res://Old/Cards/ScreenshakeBrain.gd" id="13_7w5y0"]
+
+[node name="CardCreatorGym" type="Node2D" unique_id=2045850218]
+
+[node name="Slots" parent="." unique_id=1318716624 instance=ExtResource("1_6m8xi")]
+position = Vector2(569, 296)
+player_slot_1_card = ExtResource("2_sbsev")
+player_slot_2_card = ExtResource("3_0km5x")
+player_slot_3_card = ExtResource("4_0y7n2")
+player_slot_4_card = ExtResource("6_0y7n2")
+opponent_slot_1_card = ExtResource("6_0y7n2")
+opponent_slot_4_card = ExtResource("7_vg36g")
+
+[node name="PlayerHandRoot" parent="." unique_id=371738706 groups=["Player Hand"] instance=ExtResource("8_7k0vn")]
+position = Vector2(917, 933)
+starting_cards = Array[ExtResource("9_i0njb")]([ExtResource("2_vg36g"), ExtResource("10_i0njb"), ExtResource("6_vg36g")])
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1682579835]
+position = Vector2(960, 540)
+script = ExtResource("13_7w5y0")

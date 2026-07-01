@@ -1,8 +1,8 @@
 [gd_resource type="Resource" script_class="CardData" format=3 uid="uid://b8tgum0dpv4iv"]
 
-[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Mutations/MutationBehaviourHandlers/Mutation.gd" id="1_j46im"]
-[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Data/CardData.gd" id="2_i4d0u"]
-[ext_resource type="Resource" uid="uid://qm2l2rlbwj77" path="res://Mutations/MutationPresets/SustainMutations/Heckler.tres" id="2_n0nc2"]
+[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Old/Mutations/MutationBehaviourHandlers/Mutation.gd" id="1_j46im"]
+[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Old/Data/CardData.gd" id="2_i4d0u"]
+[ext_resource type="Resource" uid="uid://qm2l2rlbwj77" path="res://Old/Mutations/MutationPresets/SustainMutations/Heckler.tres" id="2_n0nc2"]
 [ext_resource type="Texture2D" uid="uid://b3o6p87wad5eh" path="res://Art/Ants/Deterrant.PNG" id="2_qep1h"]
 
 [resource]

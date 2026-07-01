@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Heckler" format=3 uid="uid://qm2l2rlbwj77"]
+
+[ext_resource type="Script" uid="uid://br01femvlgf1w" path="res://Old/Mutations/MutationBehaviourHandlers/Heckler.gd" id="1_fa4qk"]
+[ext_resource type="Texture2D" uid="uid://da0potictvd5h" path="res://Art/Mutations/Sigils/Deterrant_Sigil.png" id="2_hjm2d"]
+
+[resource]
+script = ExtResource("1_fa4qk")
+mutation_name = "Heckler"
+mutation_description = "Debuff opposing slot -1DMG"
+sigil_texture = ExtResource("2_hjm2d")

@@ -2,15 +2,15 @@
 
 [ext_resource type="Script" uid="uid://bqg5nvmtqpdsr" path="res://Revamp/Buff/LarvaeRewardDisplay.gd" id="1_ops2o"]
 [ext_resource type="Texture2D" uid="uid://bt8o5l5yrmihl" path="res://Art/AntBack/CardBackground.png" id="3_ng268"]
-[ext_resource type="Shader" uid="uid://b12e0umk1s7xs" path="res://Cards/Panner.gdshader" id="4_t3qet"]
-[ext_resource type="Shader" path="res://Balatro.gdshader" id="5_ddgno"]
-[ext_resource type="Shader" uid="uid://clsxlhuocr8hn" path="res://Cards/BackgroundSlide.gdshader" id="6_3l63v"]
-[ext_resource type="Shader" uid="uid://ck3gs6whq2t57" path="res://Cards/AntSway.gdshader" id="7_aiqcw"]
+[ext_resource type="Shader" uid="uid://b12e0umk1s7xs" path="res://Old/Cards/Panner.gdshader" id="4_t3qet"]
+[ext_resource type="Shader" uid="uid://n3l4egojry4s" path="res://Balatro.gdshader" id="5_ddgno"]
+[ext_resource type="Shader" uid="uid://clsxlhuocr8hn" path="res://Old/Cards/BackgroundSlide.gdshader" id="6_3l63v"]
+[ext_resource type="Shader" uid="uid://ck3gs6whq2t57" path="res://Old/Cards/AntSway.gdshader" id="7_aiqcw"]
 [ext_resource type="Texture2D" uid="uid://b8a1gr84h2iie" path="res://Art/Ants/WorkerAnt_Standalone.png" id="8_jy6je"]
 [ext_resource type="Texture2D" uid="uid://c4v3je4ncss3j" path="res://Art/WorkerAnt_Test_Alpha.png" id="9_8ft0o"]
 [ext_resource type="Texture2D" uid="uid://dv7v478yhlcrv" path="res://Art/CardFog.png" id="10_lqbnp"]
 [ext_resource type="Texture2D" uid="uid://wak6qieqhlsb" path="res://Art/CardBorder.png" id="11_svio6"]
-[ext_resource type="Shader" uid="uid://dt77y6ccd1hxy" path="res://Cards/SigilOutline.gdshader" id="12_3by8b"]
+[ext_resource type="Shader" uid="uid://dt77y6ccd1hxy" path="res://Old/Cards/SigilOutline.gdshader" id="12_3by8b"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_cxxq5"]
 shader = ExtResource("4_t3qet")
