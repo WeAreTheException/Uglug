@@ -5,6 +5,8 @@
 [ext_resource type="Script" uid="uid://dw1k6pcwy2emf" path="res://Revamp/MatchUI/AttackOrderArrowDisplay.gd" id="4_b6caw"]
 [ext_resource type="PackedScene" uid="uid://bw8c7m7n5yuk8" path="res://Revamp/Board/Slots.tscn" id="4_n6ts1"]
 [ext_resource type="Texture2D" uid="uid://cjesmr4t5yoad" path="res://Revamp/References/aasedasd.jpg" id="5_n6ts1"]
+[ext_resource type="Script" uid="uid://blfvp1wwkpwtb" path="res://Revamp/Camera/CameraShakeValues.gd" id="6_bguvq"]
+[ext_resource type="Script" uid="uid://cl88hir003ywp" path="res://Revamp/Camera/CameraShakeFeedback.gd" id="7_tsgf7"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vtd1f"]
 bg_color = Color(0.86036915, 0.8603692, 0.8603691, 1)
@@ -15,8 +17,6 @@ corner_radius_bottom_left = 20
 bg_color = Color(0.85882354, 0.85882354, 0.85882354, 1)
 
 [node name="CardsInContext" type="Node2D" unique_id=1665155833]
-
-[node name="Camera2D" type="Camera2D" parent="." unique_id=536675469]
 
 [node name="Slots" type="Node2D" parent="." unique_id=389802464]
 visible = false
@@ -357,3 +357,15 @@ horizontal_alignment = 1
 [node name="Slots2" parent="." unique_id=1318716624 instance=ExtResource("4_n6ts1")]
 position = Vector2(-960, -540)
 metadata/_edit_lock_ = true
+
+[node name="CameraRig" type="Node2D" parent="." unique_id=1102878276]
+
+[node name="Camera2D" type="Camera2D" parent="CameraRig" unique_id=536675469]
+
+[node name="CameraShakevalues" type="Node" parent="CameraRig" unique_id=646852157]
+script = ExtResource("6_bguvq")
+
+[node name="CameraShakeFeedback" type="Node" parent="CameraRig" unique_id=2026134155 node_paths=PackedStringArray("camera_target", "values")]
+script = ExtResource("7_tsgf7")
+camera_target = NodePath("..")
+values = NodePath("../CameraShakevalues")
