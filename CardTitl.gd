@@ -7,7 +7,7 @@ extends Node2D
 @export var card_display: Sprite2D
 
 @export_group("Card Size")
-@export var card_size: Vector2 = Vector2(216.0, 140.0)
+@export var card_size: Vector2 = Vector2(144.0, 228.0)
 
 @export_group("Tilt")
 @export var max_x_rotation: float = 10.0

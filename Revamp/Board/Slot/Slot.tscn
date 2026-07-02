@@ -11,7 +11,7 @@
 [ext_resource type="Script" uid="uid://b8p1hjr1y54ms" path="res://Revamp/Board/Slot/SlotDamagedFeedback.gd" id="8_g8crw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0ebxi"]
-size = Vector2(144, 216)
+size = Vector2(192, 312)
 
 [node name="Slot" type="Node2D" unique_id=904478857 node_paths=PackedStringArray("slot_input", "slot_presence", "slot_feedback", "card_anchor")]
 script = ExtResource("1_iym07")
@@ -55,8 +55,8 @@ animated_target = NodePath("../../SlotVisual")
 expand_time = 0.09
 
 [node name="SlotVisual" type="Sprite2D" parent="." unique_id=857403716]
-position = Vector2(0, -3.8146973e-06)
-scale = Vector2(0.8, 0.81509435)
+position = Vector2(2.861023e-06, 5.722046e-06)
+scale = Vector2(1.0666666, 1.1773585)
 texture = ExtResource("2_rh202")
 
 [node name="CardAnchor" type="Node2D" parent="." unique_id=928768785]

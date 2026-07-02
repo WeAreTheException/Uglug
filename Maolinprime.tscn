@@ -1,21 +1,18 @@
-[gd_scene format=3 uid="uid://c8mfgi3h8sc6v"]
+[gd_scene format=3 uid="uid://d0nsbafbcpfqs"]
 
-[ext_resource type="Script" uid="uid://cj7pibqa4y3ug" path="res://CardTitl.gd" id="1_q1x5j"]
-[ext_resource type="Shader" uid="uid://dmiuuajh8r665" path="res://Revamp/CardVisuals/CardTilt.gdshader" id="1_sygfx"]
-[ext_resource type="Shader" uid="uid://b4ndwq1f6teud" path="res://AntSpriteShader.gdshader" id="2_uw526"]
-[ext_resource type="Texture2D" uid="uid://bt8o5l5yrmihl" path="res://Art/AntBack/CardBackground.png" id="3_5ijxp"]
-[ext_resource type="Texture2D" uid="uid://di66ndoe6cgnp" path="res://Art/Ants/Antler.png" id="3_n82b3"]
-[ext_resource type="FontFile" uid="uid://m0pv3sk8qbih" path="res://Art/AntBack/antrf___.ttf" id="4_6iak0"]
-[ext_resource type="Shader" uid="uid://n3l4egojry4s" path="res://Balatro.gdshader" id="4_uw526"]
-[ext_resource type="Shader" uid="uid://clsxlhuocr8hn" path="res://Old/Cards/BackgroundSlide.gdshader" id="5_eyf70"]
-[ext_resource type="Texture2D" uid="uid://oq4abrloyp27" path="res://Art/Mutations/Sigils/Anthrax_Sigil.PNG" id="7_4muga"]
-[ext_resource type="Texture2D" uid="uid://cml4r132i2s56" path="res://Art/Mutations/Sigils/BOB_Sigil.PNG" id="8_4muga"]
-[ext_resource type="Texture2D" uid="uid://d1ypj3toan6r1" path="res://Art/Blood.png" id="8_uw526"]
-[ext_resource type="Texture2D" uid="uid://cr0fse6fdstdv" path="res://Art/Mutations/Sigils/Duriant_Sigil(1).PNG" id="9_sygfx"]
-[ext_resource type="Script" uid="uid://brld7daswb5n8" path="res://SteppedLift.gd" id="10_4muga"]
-[ext_resource type="Script" uid="uid://dq0eto4h1cn2c" path="res://TextLevitate.gd" id="13_sygfx"]
-[ext_resource type="Texture2D" uid="uid://dh4y21ac2drn" path="res://Revamp/Icons/HurtNumberIcon-removebg-preview.png" id="15_xquhr"]
-[ext_resource type="Texture2D" uid="uid://ck6mq3fsy4ld4" path="res://Revamp/Icons/StatUpIcon-removebg-preview.png" id="16_u6lin"]
+[ext_resource type="Script" uid="uid://cafcxy3c8eco5" path="res://Revamp/CardVisuals/CardMainVisuals.gd" id="1_nt0by"]
+[ext_resource type="Shader" uid="uid://b4ndwq1f6teud" path="res://AntSpriteShader.gdshader" id="2_o0nfs"]
+[ext_resource type="Texture2D" uid="uid://di66ndoe6cgnp" path="res://Art/Ants/Antler.png" id="3_6lwd0"]
+[ext_resource type="Texture2D" uid="uid://bt8o5l5yrmihl" path="res://Art/AntBack/CardBackground.png" id="4_610wq"]
+[ext_resource type="Shader" uid="uid://clsxlhuocr8hn" path="res://Old/Cards/BackgroundSlide.gdshader" id="5_r0uhi"]
+[ext_resource type="Shader" uid="uid://n3l4egojry4s" path="res://Balatro.gdshader" id="6_kbupb"]
+[ext_resource type="Texture2D" uid="uid://oq4abrloyp27" path="res://Art/Mutations/Sigils/Anthrax_Sigil.PNG" id="7_2thxp"]
+[ext_resource type="Texture2D" uid="uid://cml4r132i2s56" path="res://Art/Mutations/Sigils/BOB_Sigil.PNG" id="8_toolc"]
+[ext_resource type="Texture2D" uid="uid://cr0fse6fdstdv" path="res://Art/Mutations/Sigils/Duriant_Sigil(1).PNG" id="9_wmdnk"]
+[ext_resource type="Script" uid="uid://dq0eto4h1cn2c" path="res://TextLevitate.gd" id="10_brm5h"]
+[ext_resource type="Script" uid="uid://brld7daswb5n8" path="res://SteppedLift.gd" id="11_80dle"]
+[ext_resource type="Texture2D" uid="uid://d1ypj3toan6r1" path="res://Art/Blood.png" id="12_b3rnd"]
+[ext_resource type="FontFile" uid="uid://m0pv3sk8qbih" path="res://Art/AntBack/antrf___.ttf" id="13_2ss1p"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_uw526"]
 
@@ -28,7 +25,7 @@ corner_radius_bottom_left = 2
 corner_detail = 7
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_eyf70"]
-shader = ExtResource("2_uw526")
+shader = ExtResource("2_o0nfs")
 shader_parameter/r_displacement = Vector2(-8, 0)
 shader_parameter/g_displacement = Vector2(0, 0)
 shader_parameter/b_displacement = Vector2(0, -10)
@@ -41,7 +38,7 @@ colors = PackedColorArray(0.36207703, 0.36207703, 0.362077, 1, 0.5996037, 0.5996
 gradient = SubResource("Gradient_4muga")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_sygfx"]
-shader = ExtResource("5_eyf70")
+shader = ExtResource("5_r0uhi")
 shader_parameter/gradient = SubResource("GradientTexture1D_bft4m")
 shader_parameter/circle_color = Color(0.10980392, 0.09411765, 0.06666667, 0.09803922)
 shader_parameter/circle_multiplier = 35.0
@@ -50,7 +47,7 @@ shader_parameter/direction = Vector2(10, 5)
 shader_parameter/rotation = Transform2D(1, -1, 1, 1, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_go2ya"]
-shader = ExtResource("4_uw526")
+shader = ExtResource("6_kbupb")
 shader_parameter/spin_rotation_speed = 0.0
 shader_parameter/move_speed = 2.0
 shader_parameter/offset = Vector2(0.5, 0)
@@ -132,27 +129,13 @@ corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 corner_detail = 1
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_q1x5j"]
-shader = ExtResource("1_sygfx")
-shader_parameter/rect_size = Vector2(216, 140)
-shader_parameter/fov = 90.0
-shader_parameter/cull_back = false
-shader_parameter/y_rot = 0.0
-shader_parameter/x_rot = 0.0
-shader_parameter/inset = 0.15
-
-[node name="TiltAffectNode" type="Node2D" unique_id=96420926]
-
-[node name="CanvasGroup" type="SubViewport" parent="." unique_id=2094313797]
-size = Vector2i(144, 231)
-
-[node name="All Visuals" type="Node2D" parent="CanvasGroup" unique_id=1170861415]
+[node name="CardSkeleton" type="Node2D" unique_id=1649680093]
 position = Vector2(73, 101)
-metadata/_edit_lock_ = true
+script = ExtResource("1_nt0by")
 
-[node name="CardStem" type="Node2D" parent="CanvasGroup/All Visuals" unique_id=155786301]
+[node name="CardStem" type="Node2D" parent="." unique_id=1456651319]
 
-[node name="CardBacking" type="Panel" parent="CanvasGroup/All Visuals/CardStem" unique_id=424712756]
+[node name="CardBacking" type="Panel" parent="CardStem" unique_id=1207364219]
 z_index = -11
 material = SubResource("ShaderMaterial_uw526")
 offset_left = -69.0
@@ -162,23 +145,23 @@ offset_bottom = 120.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_6238b")
 metadata/_edit_lock_ = true
 
-[node name="SpriteArea2" type="Node2D" parent="CanvasGroup/All Visuals" unique_id=616010347]
+[node name="SpriteArea2" type="Node2D" parent="." unique_id=844108341]
 
-[node name="Antler" type="Sprite2D" parent="CanvasGroup/All Visuals/SpriteArea2" unique_id=1407738395]
+[node name="AntSprite" type="Sprite2D" parent="SpriteArea2" unique_id=326095053]
 z_index = -7
 material = SubResource("ShaderMaterial_eyf70")
 position = Vector2(5.5000057, -10.5250025)
 scale = Vector2(0.08916667, 0.0736828)
-texture = ExtResource("3_n82b3")
+texture = ExtResource("3_6lwd0")
 
-[node name="CardImage" type="Sprite2D" parent="CanvasGroup/All Visuals/SpriteArea2" unique_id=324593116]
+[node name="CardImage" type="Sprite2D" parent="SpriteArea2" unique_id=728575596]
 z_index = -10
 position = Vector2(0, -7.5000086)
 scale = Vector2(0.09999995, 0.062903225)
-texture = ExtResource("3_5ijxp")
+texture = ExtResource("4_610wq")
 metadata/_edit_lock_ = true
 
-[node name="BackgroundDots" type="Panel" parent="CanvasGroup/All Visuals/SpriteArea2" unique_id=2146909831]
+[node name="BackgroundDots" type="Panel" parent="SpriteArea2" unique_id=1394061704]
 z_index = -8
 material = SubResource("ShaderMaterial_sygfx")
 offset_left = -60.0
@@ -187,7 +170,7 @@ offset_right = 60.0
 offset_bottom = 52.0
 metadata/_edit_lock_ = true
 
-[node name="Backgroundatro" type="TextureRect" parent="CanvasGroup/All Visuals/SpriteArea2" unique_id=1117638002]
+[node name="Backgroundatro" type="TextureRect" parent="SpriteArea2" unique_id=1800268491]
 z_index = -10
 material = SubResource("ShaderMaterial_go2ya")
 offset_left = -60.0
@@ -198,17 +181,17 @@ texture = SubResource("GradientTexture1D_bjfsj")
 expand_mode = 1
 metadata/_edit_lock_ = true
 
-[node name="SpriteBacking" type="Panel" parent="CanvasGroup/All Visuals/SpriteArea2/Backgroundatro" unique_id=842143543]
+[node name="SpriteBacking" type="Panel" parent="SpriteArea2/Backgroundatro" unique_id=300766738]
 z_index = -9
 layout_mode = 0
 offset_right = 120.0
 offset_bottom = 117.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_5ijxp")
 
-[node name="Mutations" type="Node2D" parent="CanvasGroup/All Visuals" unique_id=1936222293]
+[node name="Mutations" type="Node2D" parent="." unique_id=239779249]
 metadata/_edit_lock_ = true
 
-[node name="Slot1" type="Panel" parent="CanvasGroup/All Visuals/Mutations" unique_id=464119150]
+[node name="Slot1" type="Panel" parent="Mutations" unique_id=84204092]
 offset_left = -60.0
 offset_top = 58.0
 offset_right = -21.0
@@ -216,7 +199,7 @@ offset_bottom = 98.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_6iak0")
 metadata/_edit_lock_ = true
 
-[node name="Slot2" type="Panel" parent="CanvasGroup/All Visuals/Mutations" unique_id=1349494402]
+[node name="Slot2" type="Panel" parent="Mutations" unique_id=1672468636]
 offset_left = 22.0
 offset_top = 58.0
 offset_right = 61.0
@@ -224,7 +207,7 @@ offset_bottom = 98.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_6iak0")
 metadata/_edit_lock_ = true
 
-[node name="Slot3" type="Panel" parent="CanvasGroup/All Visuals/Mutations" unique_id=1963828991]
+[node name="Slot3" type="Panel" parent="Mutations" unique_id=1292675932]
 offset_left = -19.0
 offset_top = 58.0
 offset_right = 20.0
@@ -232,40 +215,40 @@ offset_bottom = 98.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_6iak0")
 metadata/_edit_lock_ = true
 
-[node name="TextureRect" type="TextureRect" parent="CanvasGroup/All Visuals/Mutations" unique_id=1421669111]
+[node name="TextureRect" type="TextureRect" parent="Mutations" unique_id=1117049647]
 material = SubResource("ShaderMaterial_bjfsj")
 offset_left = -60.0
 offset_top = 63.0
 offset_right = -21.0
 offset_bottom = 98.0
-texture = ExtResource("7_4muga")
+texture = ExtResource("7_2thxp")
 expand_mode = 1
 metadata/_edit_lock_ = true
 
-[node name="TextureRect2" type="TextureRect" parent="CanvasGroup/All Visuals/Mutations" unique_id=1084194424]
+[node name="TextureRect2" type="TextureRect" parent="Mutations" unique_id=61425575]
 material = SubResource("ShaderMaterial_bjfsj")
 offset_left = -19.0
 offset_top = 63.0
 offset_right = 20.0
 offset_bottom = 98.0
-texture = ExtResource("8_4muga")
+texture = ExtResource("8_toolc")
 expand_mode = 1
 metadata/_edit_lock_ = true
 
-[node name="TextureRect3" type="TextureRect" parent="CanvasGroup/All Visuals/Mutations" unique_id=457054012]
+[node name="TextureRect3" type="TextureRect" parent="Mutations" unique_id=805226109]
 material = SubResource("ShaderMaterial_bjfsj")
 offset_left = 22.0
 offset_top = 63.0
 offset_right = 61.0
 offset_bottom = 98.0
-texture = ExtResource("9_sygfx")
+texture = ExtResource("9_wmdnk")
 expand_mode = 1
 metadata/_edit_lock_ = true
 
-[node name="Stats" type="Node2D" parent="CanvasGroup/All Visuals" unique_id=490875202]
+[node name="Stats" type="Node2D" parent="." unique_id=742379258]
 metadata/_edit_lock_ = true
 
-[node name="StatsBacking" type="Panel" parent="CanvasGroup/All Visuals/Stats" unique_id=1819736473]
+[node name="StatsBacking" type="Panel" parent="Stats" unique_id=1057040085]
 offset_left = -60.0
 offset_top = 101.0
 offset_right = 60.0
@@ -273,7 +256,7 @@ offset_bottom = 129.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_4muga")
 metadata/_edit_lock_ = true
 
-[node name="Attack" type="RichTextLabel" parent="CanvasGroup/All Visuals/Stats" unique_id=429625943]
+[node name="Attack" type="RichTextLabel" parent="Stats" unique_id=1188469295]
 offset_left = -60.0
 offset_top = 93.0
 offset_right = -21.0
@@ -286,7 +269,7 @@ text = "2"
 autowrap_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
-script = ExtResource("13_sygfx")
+script = ExtResource("10_brm5h")
 shadow_color = Color(0, 0.0627451, 0.08235294, 0.8)
 shadow_offset = Vector2i(4, 4)
 vertical_float_height = 2.0
@@ -297,7 +280,7 @@ rotation_time = 10.0
 breathing_scale_amount = 0.0
 breathing_scale_time = 3.0
 
-[node name="Attack2" type="RichTextLabel" parent="CanvasGroup/All Visuals/Stats" unique_id=258363822]
+[node name="Attack2" type="RichTextLabel" parent="Stats" unique_id=853711135]
 offset_left = 20.0
 offset_top = 93.0
 offset_right = 59.0
@@ -310,7 +293,7 @@ text = "2"
 autowrap_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
-script = ExtResource("13_sygfx")
+script = ExtResource("10_brm5h")
 shadow_color = Color(0, 0.0627451, 0.08235294, 0.8)
 shadow_offset = Vector2i(4, 4)
 vertical_float_height = 2.0
@@ -321,8 +304,8 @@ rotation_time = 10.0
 breathing_scale_amount = 0.0
 breathing_scale_time = 3.0
 
-[node name="Cost" type="Node2D" parent="CanvasGroup/All Visuals/Stats" unique_id=1557452011]
-script = ExtResource("10_4muga")
+[node name="Cost" type="Node2D" parent="Stats" unique_id=1659169341]
+script = ExtResource("11_80dle")
 float_height = 2.0
 time_to_go_up = 0.75
 time_to_go_down = 0.75
@@ -330,38 +313,38 @@ pause_between_sprites = 0.2
 scale_amount = 0.01
 metadata/_edit_lock_ = true
 
-[node name="Blood1" type="Sprite2D" parent="CanvasGroup/All Visuals/Stats/Cost" unique_id=1545416039]
+[node name="Blood1" type="Sprite2D" parent="Stats/Cost" unique_id=937455974]
 z_index = 100
 position = Vector2(-65, -54)
 scale = Vector2(0.157, 0.144)
-texture = ExtResource("8_uw526")
+texture = ExtResource("12_b3rnd")
 metadata/_edit_lock_ = true
 
-[node name="Blood2" type="Sprite2D" parent="CanvasGroup/All Visuals/Stats/Cost" unique_id=1531503206]
+[node name="Blood2" type="Sprite2D" parent="Stats/Cost" unique_id=2108916014]
 z_index = 100
 position = Vector2(-65, -31)
 scale = Vector2(0.157, 0.144)
-texture = ExtResource("8_uw526")
+texture = ExtResource("12_b3rnd")
 metadata/_edit_lock_ = true
 
-[node name="Blood3" type="Sprite2D" parent="CanvasGroup/All Visuals/Stats/Cost" unique_id=661828797]
+[node name="Blood3" type="Sprite2D" parent="Stats/Cost" unique_id=744760935]
 z_index = 100
 position = Vector2(-65, -6)
 scale = Vector2(0.157, 0.144)
-texture = ExtResource("8_uw526")
+texture = ExtResource("12_b3rnd")
 metadata/_edit_lock_ = true
 
-[node name="Blood4" type="Sprite2D" parent="CanvasGroup/All Visuals/Stats/Cost" unique_id=919066113]
+[node name="Blood4" type="Sprite2D" parent="Stats/Cost" unique_id=80223446]
 z_index = 100
 position = Vector2(-65, 19.000015)
 scale = Vector2(0.157, 0.144)
-texture = ExtResource("8_uw526")
+texture = ExtResource("12_b3rnd")
 metadata/_edit_lock_ = true
 
-[node name="Name" type="Node2D" parent="CanvasGroup/All Visuals" unique_id=16172046]
+[node name="Name" type="Node2D" parent="." unique_id=298300693]
 metadata/_edit_lock_ = true
 
-[node name="NameArea" type="Panel" parent="CanvasGroup/All Visuals/Name" unique_id=1326890978]
+[node name="NameArea" type="Panel" parent="Name" unique_id=165697801]
 offset_left = -60.0
 offset_top = -100.0
 offset_right = 60.0
@@ -369,7 +352,7 @@ offset_bottom = -72.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_tlqpc")
 metadata/_edit_lock_ = true
 
-[node name="Name" type="RichTextLabel" parent="CanvasGroup/All Visuals/Name" unique_id=345976895]
+[node name="Name" type="RichTextLabel" parent="Name" unique_id=222048633]
 anchors_preset = -1
 offset_left = -78.0
 offset_top = -100.0
@@ -380,7 +363,7 @@ grow_vertical = 2
 theme_override_colors/default_color = Color(0.9137255, 0.8392157, 0.77254903, 1)
 theme_override_colors/font_outline_color = Color(0.003921569, 0.003921569, 0.007843138, 1)
 theme_override_constants/outline_size = 6
-theme_override_fonts/normal_font = ExtResource("4_6iak0")
+theme_override_fonts/normal_font = ExtResource("13_2ss1p")
 theme_override_font_sizes/normal_font_size = 18
 theme_override_font_sizes/bold_font_size = 18
 theme_override_font_sizes/bold_italics_font_size = 18
@@ -389,7 +372,7 @@ theme_override_font_sizes/mono_font_size = 18
 text = "Antler"
 horizontal_alignment = 1
 vertical_alignment = 1
-script = ExtResource("13_sygfx")
+script = ExtResource("10_brm5h")
 shadow_color = Color(0, 0.0627451, 0.08235294, 0.8)
 shadow_offset = Vector2i(4, 4)
 vertical_float_height = 2.0
@@ -399,33 +382,4 @@ rotation_amount_degrees = 1.0
 rotation_time = 10.0
 breathing_scale_amount = 0.0
 metadata/_edit_use_anchors_ = true
-metadata/_edit_lock_ = true
-
-[node name="RenderSprite" type="Sprite2D" parent="." unique_id=1857903420]
-material = SubResource("ShaderMaterial_q1x5j")
-metadata/_edit_lock_ = true
-
-[node name="Feedback" type="Node2D" parent="." unique_id=1404363328]
-
-[node name="TiltAffect" type="Node2D" parent="Feedback" unique_id=193714069 node_paths=PackedStringArray("card_viewport", "card_display")]
-script = ExtResource("1_q1x5j")
-card_viewport = NodePath("../../CanvasGroup")
-card_display = NodePath("../../RenderSprite")
-card_size = Vector2(144, 231)
-
-[node name="HurtIcon" type="Sprite2D" parent="Feedback" unique_id=1563941310]
-visible = false
-modulate = Color(0, 0.0627451, 0.08235294, 0.8)
-position = Vector2(112.00001, 212)
-scale = Vector2(0.45569623, 0.5384616)
-texture = ExtResource("15_xquhr")
-metadata/_edit_lock_ = true
-
-[node name="StatUpIconRemovebgPreview" type="Sprite2D" parent="Feedback" unique_id=2135406271]
-visible = false
-modulate = Color(1, 0.0627451, 0.08235294, 0.627451)
-self_modulate = Color(0.5254902, 0, 0.015686275, 1)
-position = Vector2(32, 209)
-scale = Vector2(0.16666663, 0.17222223)
-texture = ExtResource("16_u6lin")
 metadata/_edit_lock_ = true

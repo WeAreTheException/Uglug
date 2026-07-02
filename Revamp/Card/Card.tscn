@@ -37,6 +37,7 @@
 [ext_resource type="Script" uid="uid://maqiq3kcc45q" path="res://Revamp/Card/CardActions/Sacrifice/PendingSacrificeFeedback.gd" id="27_0h522"]
 [ext_resource type="Script" uid="uid://bwf2dy46x2l01" path="res://Revamp/Card/CardActions/Sacrifice/ComittedSacrificeFeedback.gd" id="28_msnpm"]
 [ext_resource type="Script" uid="uid://b727ujf6ycv3o" path="res://Revamp/Card/CardRuntimeState.gd" id="37_raks6"]
+[ext_resource type="PackedScene" uid="uid://c8mfgi3h8sc6v" path="res://NewCardLayout.tscn" id="38_fgsua"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g8l5j"]
 size = Vector2(144, 216)
@@ -224,3 +225,7 @@ expand_mode = 1
 
 [node name="CardRuntimeState" type="Node" parent="." unique_id=16229587]
 script = ExtResource("37_raks6")
+
+[node name="CardVisualsNew" parent="." unique_id=96420926 instance=ExtResource("38_fgsua")]
+visible = false
+position = Vector2(-72, -120)

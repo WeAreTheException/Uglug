@@ -2,8 +2,12 @@
 
 [ext_resource type="Script" uid="uid://dky0qijhuns34" path="res://Revamp/PlayerHand/HandScripts/PlayerHandRoot.gd" id="1_wk34g"]
 [ext_resource type="PackedScene" uid="uid://5qb61nfrd521" path="res://Revamp/Card/Card.tscn" id="2_0sjxa"]
+[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Old/Data/CardData.gd" id="3_0pi77"]
 [ext_resource type="Resource" uid="uid://bn1jyervrnsg" path="res://Revamp/CardPresets/WorkerAnt.tres" id="4_trvsu"]
-[ext_resource type="Script" path="res://Revamp/PlayerHand/Hand_BlessingLayout.gd" id="8_egog8"]
+[ext_resource type="Resource" uid="uid://ci7yvhc8pfst6" path="res://Revamp/CardPresets/QueenAnt.tres" id="4_vr0u0"]
+[ext_resource type="Resource" uid="uid://dwpj7bg5ognwt" path="res://Revamp/CardPresets/Samurant.tres" id="5_osyj2"]
+[ext_resource type="Resource" uid="uid://bxfxi0h5itrdu" path="res://Revamp/CardPresets/Lieutenant.tres" id="6_7io4m"]
+[ext_resource type="Script" uid="uid://bvq6ifc7m416p" path="res://Revamp/PlayerHand/Hand_BlessingLayout.gd" id="8_egog8"]
 [ext_resource type="Script" uid="uid://cx7ytvwjib41h" path="res://Revamp/PlayerHand/HandScripts/Hand_CardSpawner.gd" id="8_wk34g"]
 [ext_resource type="Script" uid="uid://rn83njv8p4kt" path="res://Revamp/PlayerHand/HandScripts/Hand_Layout.gd" id="9_m7nbq"]
 [ext_resource type="Script" uid="uid://dmvbt4sjx6ifh" path="res://Revamp/PlayerHand/HandScripts/Hand_IdleLayout.gd" id="10_4g7iw"]
@@ -29,6 +33,7 @@
 [node name="PlayerHandRoot" type="Node2D" unique_id=371738706 node_paths=PackedStringArray("hand_card_layer", "drag_layer", "card_spawner", "hand_layout", "sort_controller", "state_machine", "interaction_root", "sacrifice_selection")]
 script = ExtResource("1_wk34g")
 card_scene = ExtResource("2_0sjxa")
+starting_cards = Array[ExtResource("3_0pi77")]([ExtResource("4_vr0u0"), ExtResource("5_osyj2"), ExtResource("6_7io4m")])
 max_hand_size = 6
 hand_card_layer = NodePath("Hand_CardLayer")
 drag_layer = NodePath("Drag_Layer")
