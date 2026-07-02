@@ -5,6 +5,8 @@ class_name CardFeedbackRouter
 @export var sprite_feedback: CardSpriteFeedback
 @export var text_feedback: CardTextFeedback
 @export var vfx_feedback: CardVfxFeedback
+@export var sfx_feedback: CardSfxFeedback
+@export var motion_feedback: CardMotionFeedback
 
 @export var test_old_health: int = 1
 @export var test_new_health: int = 0
@@ -18,6 +20,12 @@ func play_hurt_feedback() -> void:
 	if hurt_profile == null:
 		_debug_print("Missing hurt_profile.")
 		return
+
+	if sfx_feedback != null:
+		sfx_feedback.play_hurt_sfx()
+
+	if motion_feedback != null:
+		motion_feedback.play_hurt_motion_feedback()
 
 	if sprite_feedback != null:
 		sprite_feedback.play_hurt_sprite_feedback(hurt_profile)
@@ -55,6 +63,9 @@ func play_mutation_activated_feedback() -> void:
 
 func reset_all_feedback() -> void:
 	_debug_print("reset card visuals")
+
+	if motion_feedback != null:
+		motion_feedback.reset_motion_feedback()
 
 	if sprite_feedback != null:
 		sprite_feedback.reset_sprite_feedback()
