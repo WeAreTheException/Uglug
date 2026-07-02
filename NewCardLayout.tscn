@@ -412,9 +412,11 @@ script = ExtResource("1_q1x5j")
 card_viewport = NodePath("../../CanvasGroup")
 card_display = NodePath("../../RenderSprite")
 card_size = Vector2(144, 231)
+max_x_rotation = 2.0
+max_y_rotation = 2.0
+tilt_speed = 5.0
 
 [node name="HurtIcon" type="Sprite2D" parent="Feedback" unique_id=1563941310]
-visible = false
 modulate = Color(0, 0.0627451, 0.08235294, 0.8)
 position = Vector2(112.00001, 212)
 scale = Vector2(0.45569623, 0.5384616)
