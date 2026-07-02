@@ -1,10 +1,6 @@
-extends RichTextLabel
+extends Node2D
 
 @export var enabled: bool = true
-
-@export_group("Shadow")
-@export var shadow_color: Color = Color(0, 0, 0, 0.55)
-@export var shadow_offset: Vector2i = Vector2i(2, 3)
 
 @export_group("Soft Float")
 @export var vertical_float_height: float = 6.0
@@ -22,8 +18,8 @@ extends RichTextLabel
 
 @export_group("Punch Test")
 @export var punch_key: Key = KEY_H
-@export var squash_scale: Vector2 = Vector2(1.18, 0.72)
-@export var stretch_scale: Vector2 = Vector2(0.88, 1.18)
+@export var squash_scale: Vector2 = Vector2(1.35, 0.55)
+@export var stretch_scale: Vector2 = Vector2(0.8, 1.3)
 @export var neutral_punch_scale: Vector2 = Vector2.ONE
 
 @export var squash_time: float = 0.06
@@ -44,10 +40,6 @@ func _ready() -> void:
 	start_rotation = rotation
 	start_scale = scale
 
-	pivot_offset = size * 0.5
-
-	_apply_shadow()
-
 
 func _process(delta: float) -> void:
 	if not enabled:
@@ -66,7 +58,6 @@ func _process(delta: float) -> void:
 	var y_offset := vertical_wave * vertical_float_height
 	var x_offset := horizontal_wave * horizontal_drift_amount
 	var rotation_offset := deg_to_rad(rotation_wave * rotation_amount_degrees)
-
 	var scale_multiplier := 1.0 + (breathing_wave * breathing_scale_amount)
 
 	position = start_position + Vector2(x_offset, y_offset)
@@ -79,17 +70,13 @@ func _input(event: InputEvent) -> void:
 		var key_event := event as InputEventKey
 
 		if key_event.pressed and not key_event.echo and key_event.keycode == punch_key:
-			print("PUNCH KEY PRESSED")
 			play_punch()
 
 
 func play_punch() -> void:
-	print("PLAYING PUNCH")
-
 	if punch_tween != null:
 		punch_tween.kill()
 
-	pivot_offset = size * 0.5
 	punch_scale = neutral_punch_scale
 
 	punch_tween = create_tween()
@@ -99,9 +86,3 @@ func play_punch() -> void:
 	punch_tween.tween_property(self, "punch_scale", squash_scale, squash_time)
 	punch_tween.tween_property(self, "punch_scale", stretch_scale, stretch_time)
 	punch_tween.tween_property(self, "punch_scale", neutral_punch_scale, return_time)
-
-
-func _apply_shadow() -> void:
-	add_theme_color_override("font_shadow_color", shadow_color)
-	add_theme_constant_override("shadow_offset_x", shadow_offset.x)
-	add_theme_constant_override("shadow_offset_y", shadow_offset.y)
