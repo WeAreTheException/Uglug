@@ -115,12 +115,10 @@ metadata/_edit_lock_ = true
 position = Vector2(173, 393)
 
 [node name="CardVisualsNew" parent="PlayerHand" unique_id=690121939 instance=ExtResource("1_qeeaa")]
-position = Vector2(-429.99997, -45.000008)
-scale = Vector2(0.8849558, 0.8849558)
+position = Vector2(-125, -374)
 
 [node name="CardVisualsNew2" parent="PlayerHand" unique_id=28499730 instance=ExtResource("1_qeeaa")]
-position = Vector2(-323, -355)
-scale = Vector2(0.8849558, 0.8849558)
+position = Vector2(-341, -374)
 
 [node name="ToolTip" type="Control" parent="." unique_id=2085845756 node_paths=PackedStringArray("name_label", "description_label")]
 layout_mode = 3
@@ -358,3 +356,4 @@ horizontal_alignment = 1
 
 [node name="Slots2" parent="." unique_id=1318716624 instance=ExtResource("4_n6ts1")]
 position = Vector2(-960, -540)
+metadata/_edit_lock_ = true
