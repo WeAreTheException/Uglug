@@ -4,17 +4,6 @@ class_name CardMotionFeedback
 @export_group("Target")
 @export var motion_target: Node2D
 
-@export_group("Hurt Hit Motion")
-@export var hit_offset: Vector2 = Vector2(-12.0, 7.0)
-@export var hit_rotation_degrees: float = -4.0
-@export var hit_time: float = 0.055
-
-@export var recoil_offset: Vector2 = Vector2(4.0, -2.0)
-@export var recoil_rotation_degrees: float = 1.5
-@export var recoil_time: float = 0.075
-
-@export var return_time: float = 0.12
-
 @export var print_debug: bool = true
 
 var original_position: Vector2 = Vector2.ZERO
@@ -33,9 +22,13 @@ func _ready() -> void:
 	original_scale = motion_target.scale
 
 
-func play_hurt_motion_feedback() -> void:
+func play_hurt_motion_feedback(profile: CardFeedbackProfile) -> void:
 	if motion_target == null:
 		_debug_print("Missing motion_target.")
+		return
+
+	if profile == null:
+		_debug_print("Missing profile.")
 		return
 
 	_kill_active_tween()
@@ -45,21 +38,20 @@ func play_hurt_motion_feedback() -> void:
 	motion_target.scale = original_scale
 
 	active_tween = create_tween()
-
 	active_tween.set_parallel(true)
 
 	active_tween.tween_property(
 		motion_target,
 		"position",
-		original_position + hit_offset,
-		hit_time
+		original_position + profile.hurt_hit_offset,
+		profile.hurt_hit_time
 	).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 
 	active_tween.tween_property(
 		motion_target,
 		"rotation",
-		original_rotation + deg_to_rad(hit_rotation_degrees),
-		hit_time
+		original_rotation + deg_to_rad(profile.hurt_hit_rotation_degrees),
+		profile.hurt_hit_time
 	).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 
 	await active_tween.finished
@@ -70,15 +62,15 @@ func play_hurt_motion_feedback() -> void:
 	active_tween.tween_property(
 		motion_target,
 		"position",
-		original_position + recoil_offset,
-		recoil_time
+		original_position + profile.hurt_recoil_offset,
+		profile.hurt_recoil_time
 	).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
 	active_tween.tween_property(
 		motion_target,
 		"rotation",
-		original_rotation + deg_to_rad(recoil_rotation_degrees),
-		recoil_time
+		original_rotation + deg_to_rad(profile.hurt_recoil_rotation_degrees),
+		profile.hurt_recoil_time
 	).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
 	await active_tween.finished
@@ -90,14 +82,14 @@ func play_hurt_motion_feedback() -> void:
 		motion_target,
 		"position",
 		original_position,
-		return_time
+		profile.hurt_motion_return_time
 	).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
 	active_tween.tween_property(
 		motion_target,
 		"rotation",
 		original_rotation,
-		return_time
+		profile.hurt_motion_return_time
 	).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
 	await active_tween.finished

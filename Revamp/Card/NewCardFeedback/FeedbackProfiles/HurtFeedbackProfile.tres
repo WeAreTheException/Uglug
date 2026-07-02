@@ -1,7 +1,16 @@
 [gd_resource type="Resource" script_class="CardFeedbackProfile" format=3 uid="uid://nnh1jqtk1arh"]
 
+[ext_resource type="AudioStream" uid="uid://dm1lem708ohqr" path="res://Old/Audio/Placeholder SFX/card_attack_damage.wav" id="1_4xdx4"]
 [ext_resource type="Script" uid="uid://ckpedyhdhgeg1" path="res://Revamp/Card/NewCardFeedback/CardFeedbackProfile.gd" id="1_5d5h5"]
 
 [resource]
 script = ExtResource("1_5d5h5")
+text_squash_time = 0.12
+text_stretch_time = 0.16
+hurt_icon_start_scale = Vector2(0.45, 0.54)
+hurt_icon_end_scale = Vector2(0.8, 0.8)
+hurt_icon_end_alpha = 0.2
+hurt_icon_pop_time = 0.4
+hurt_icon_fade_time = 0.4
+hurt_sound = ExtResource("1_4xdx4")
 metadata/_custom_type_script = "uid://ckpedyhdhgeg1"

@@ -3,16 +3,10 @@ class_name CardVfxFeedback
 
 @export var health_hurt_icon: Sprite2D
 
-@export_group("Hurt Icon")
-@export var test_key: Key = KEY_H
-@export var start_scale: Vector2 = Vector2(1.0, 1.0)
-@export var end_scale: Vector2 = Vector2(1.2, 1.2)
-@export var start_alpha: float = 1.0
-@export var end_alpha: float = 0.0
-@export var pop_time: float = 0.05
-@export var fade_time: float = 0.18
-
 @export var enable_test_key: bool = false
+@export var test_key: Key = KEY_H
+@export var test_profile: CardFeedbackProfile
+
 @export var print_debug: bool = true
 
 var start_position: Vector2 = Vector2.ZERO
@@ -47,24 +41,28 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 
 	if key_event.keycode == test_key:
-		play_hurt_icon_feedback()
+		play_hurt_icon_feedback(test_profile)
 
 
-func play_hurt_icon_feedback() -> void:
+func play_hurt_icon_feedback(profile: CardFeedbackProfile) -> void:
 	if health_hurt_icon == null:
 		_debug_print("Missing health_hurt_icon.")
+		return
+
+	if profile == null:
+		_debug_print("Missing profile.")
 		return
 
 	_kill_active_tween()
 
 	health_hurt_icon.visible = true
 	health_hurt_icon.position = start_position
-	health_hurt_icon.scale = start_scale
+	health_hurt_icon.scale = profile.hurt_icon_start_scale
 	health_hurt_icon.self_modulate = Color(
 		start_modulate.r,
 		start_modulate.g,
 		start_modulate.b,
-		start_alpha
+		profile.hurt_icon_start_alpha
 	)
 
 	active_tween = create_tween()
@@ -73,8 +71,8 @@ func play_hurt_icon_feedback() -> void:
 	active_tween.tween_property(
 		health_hurt_icon,
 		"scale",
-		end_scale,
-		pop_time
+		profile.hurt_icon_end_scale,
+		profile.hurt_icon_pop_time
 	).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
 	active_tween.tween_property(
@@ -84,9 +82,9 @@ func play_hurt_icon_feedback() -> void:
 			start_modulate.r,
 			start_modulate.g,
 			start_modulate.b,
-			end_alpha
+			profile.hurt_icon_end_alpha
 		),
-		fade_time
+		profile.hurt_icon_fade_time
 	)
 
 	await active_tween.finished
@@ -106,12 +104,11 @@ func _hide_hurt_icon() -> void:
 
 	health_hurt_icon.visible = false
 	health_hurt_icon.position = start_position
-	health_hurt_icon.scale = start_scale
 	health_hurt_icon.self_modulate = Color(
 		start_modulate.r,
 		start_modulate.g,
 		start_modulate.b,
-		end_alpha
+		0.0
 	)
 
 

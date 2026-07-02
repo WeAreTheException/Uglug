@@ -2,6 +2,7 @@ extends Node
 class_name CardFeedbackRouter
 
 @export var hurt_profile: CardFeedbackProfile
+
 @export var sprite_feedback: CardSpriteFeedback
 @export var text_feedback: CardTextFeedback
 @export var vfx_feedback: CardVfxFeedback
@@ -22,16 +23,16 @@ func play_hurt_feedback() -> void:
 		return
 
 	if sfx_feedback != null:
-		sfx_feedback.play_hurt_sfx()
+		sfx_feedback.play_hurt_sfx(hurt_profile)
 
 	if motion_feedback != null:
-		motion_feedback.play_hurt_motion_feedback()
+		motion_feedback.play_hurt_motion_feedback(hurt_profile)
 
 	if sprite_feedback != null:
 		sprite_feedback.play_hurt_sprite_feedback(hurt_profile)
 
 	if vfx_feedback != null:
-		vfx_feedback.play_hurt_icon_feedback()
+		vfx_feedback.play_hurt_icon_feedback(hurt_profile)
 
 	if text_feedback != null:
 		await text_feedback.play_hurt_health_feedback(

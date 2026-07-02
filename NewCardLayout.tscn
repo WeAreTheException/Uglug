@@ -8,16 +8,15 @@
 [ext_resource type="Shader" uid="uid://clsxlhuocr8hn" path="res://Old/Cards/BackgroundSlide.gdshader" id="5_eyf70"]
 [ext_resource type="Texture2D" uid="uid://d1ypj3toan6r1" path="res://Art/Blood.png" id="8_uw526"]
 [ext_resource type="Script" uid="uid://brld7daswb5n8" path="res://SteppedLift.gd" id="10_4muga"]
+[ext_resource type="Resource" uid="uid://nnh1jqtk1arh" path="res://Revamp/Card/NewCardFeedback/FeedbackProfiles/HurtFeedbackProfile.tres" id="12_f223l"]
 [ext_resource type="Script" uid="uid://kf812iqqh258" path="res://Revamp/Card/NewCardFeedback/CardSpriteFeedback.gd" id="13_q1x5j"]
 [ext_resource type="Script" uid="uid://boteiiiypllh1" path="res://Revamp/Card/NewCardFeedback/CardFeedbackRouter.gd" id="14_8h3oo"]
 [ext_resource type="Script" uid="uid://573olm1ptpvx" path="res://Revamp/Card/NewCardFeedback/CardTextFeedback.gd" id="14_u6lin"]
-[ext_resource type="Resource" uid="uid://nnh1jqtk1arh" path="res://Revamp/Card/NewCardFeedback/FeedbackProfiles/HurtFeedbackProfile.tres" id="14_xquhr"]
 [ext_resource type="Script" uid="uid://c0wxsa1yjawuy" path="res://Revamp/Card/NewCardFeedback/CardVFXFeedback.gd" id="15_f223l"]
 [ext_resource type="Script" uid="uid://dculvd6uvqgkx" path="res://Revamp/Card/NewCardFeedback/CardFeedbackDebugInput.gd" id="15_u6lin"]
 [ext_resource type="Texture2D" uid="uid://dh4y21ac2drn" path="res://Revamp/Icons/HurtNumberIcon-removebg-preview.png" id="15_xquhr"]
 [ext_resource type="Script" uid="uid://defktxbqfjh6o" path="res://Revamp/Card/NewCardFeedback/CardSfxFeedback.gd" id="16_f223l"]
 [ext_resource type="Texture2D" uid="uid://ck6mq3fsy4ld4" path="res://Revamp/Icons/StatUpIcon-removebg-preview.png" id="16_u6lin"]
-[ext_resource type="AudioStream" uid="uid://cwmwlsgbj6uf" path="res://Old/Audio/Placeholder SFX/card_attack_creature.wav" id="17_f223l"]
 [ext_resource type="Script" uid="uid://bri6km7k5xvsf" path="res://Revamp/Card/NewCardFeedback/CardMotionFeedback.gd" id="18_lu6qf"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_uw526"]
@@ -355,7 +354,7 @@ shape = SubResource("RectangleShape2D_sygfx")
 
 [node name="CardFeedbackRouter" type="Node" parent="Feedback" unique_id=751924610 node_paths=PackedStringArray("sprite_feedback", "text_feedback", "vfx_feedback", "sfx_feedback", "motion_feedback")]
 script = ExtResource("14_8h3oo")
-hurt_profile = ExtResource("14_xquhr")
+hurt_profile = ExtResource("12_f223l")
 sprite_feedback = NodePath("../CardSpriteFeedback")
 text_feedback = NodePath("../CardTextFeedback")
 vfx_feedback = NodePath("../CardVfxFeedback")
@@ -376,8 +375,6 @@ vertical_float_time = 20.0
 horizontal_drift_amount = 0.5
 rotation_amount_degrees = 1.0
 rotation_time = 10.0
-squash_time = 0.12
-stretch_time = 0.16
 
 [node name="CardStatVisualFeedback" type="Node" parent="Feedback" unique_id=450599865]
 
@@ -390,26 +387,15 @@ stretch_time = 0.16
 [node name="CardVfxFeedback" type="Node" parent="Feedback" unique_id=805926035 node_paths=PackedStringArray("health_hurt_icon")]
 script = ExtResource("15_f223l")
 health_hurt_icon = NodePath("../../All Visuals/StatsRoot/Health/HurtIcon")
-start_scale = Vector2(0.45, 0.54)
-end_scale = Vector2(0.8, 0.8)
-end_alpha = 0.2
-pop_time = 0.4
-fade_time = 0.4
 enable_test_key = true
 
 [node name="CardSfxFeedback" type="Node" parent="Feedback" unique_id=1795193772 node_paths=PackedStringArray("hurt_audio_player_2d")]
 script = ExtResource("16_f223l")
 hurt_audio_player_2d = NodePath("../../AudioStreamPlayer2D")
-hurt_sound = ExtResource("17_f223l")
 
 [node name="CardMotionFeedback" type="Node" parent="Feedback" unique_id=1440663442 node_paths=PackedStringArray("motion_target")]
 script = ExtResource("18_lu6qf")
 motion_target = NodePath("../../All Visuals")
-hit_offset = Vector2(0, 14)
-hit_rotation_degrees = 0.8
-hit_time = 0.045
-recoil_offset = Vector2(0, -4)
-recoil_rotation_degrees = -0.03
 
 [node name="CardFeedbackDebugInput" type="Node" parent="Feedback" unique_id=982081433 node_paths=PackedStringArray("feedback_router")]
 script = ExtResource("15_u6lin")

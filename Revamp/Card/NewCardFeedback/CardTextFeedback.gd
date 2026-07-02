@@ -20,15 +20,6 @@ class_name CardTextFeedback
 @export var breathing_scale_amount: float = 0.03
 @export var breathing_scale_time: float = 2.5
 
-@export_group("Punch")
-@export var squash_scale: Vector2 = Vector2(1.18, 0.72)
-@export var stretch_scale: Vector2 = Vector2(0.88, 1.18)
-@export var neutral_punch_scale: Vector2 = Vector2.ONE
-
-@export var squash_time: float = 0.06
-@export var stretch_time: float = 0.08
-@export var return_time: float = 0.10
-
 @export_group("Shadow")
 @export var shadow_color: Color = Color(0, 0, 0, 0.55)
 @export var shadow_offset: Vector2i = Vector2i(2, 3)
@@ -105,7 +96,7 @@ func play_hurt_health_feedback(
 
 	health_label.text = str(old_health)
 
-	play_health_punch()
+	play_health_punch(profile)
 	_play_health_flicker(profile)
 
 	await get_tree().create_timer(profile.delay_before_number_change).timeout
@@ -113,23 +104,43 @@ func play_hurt_health_feedback(
 	health_label.text = str(new_health)
 
 
-func play_health_punch() -> void:
+func play_health_punch(profile: CardFeedbackProfile) -> void:
 	if health_label == null:
+		return
+
+	if profile == null:
 		return
 
 	if punch_tween != null:
 		punch_tween.kill()
 
 	health_label.pivot_offset = health_label.size * 0.5
-	punch_scale = neutral_punch_scale
+	punch_scale = profile.text_neutral_punch_scale
 
 	punch_tween = create_tween()
 	punch_tween.set_trans(Tween.TRANS_BACK)
 	punch_tween.set_ease(Tween.EASE_OUT)
 
-	punch_tween.tween_property(self, "punch_scale", squash_scale, squash_time)
-	punch_tween.tween_property(self, "punch_scale", stretch_scale, stretch_time)
-	punch_tween.tween_property(self, "punch_scale", neutral_punch_scale, return_time)
+	punch_tween.tween_property(
+		self,
+		"punch_scale",
+		profile.text_squash_scale,
+		profile.text_squash_time
+	)
+
+	punch_tween.tween_property(
+		self,
+		"punch_scale",
+		profile.text_stretch_scale,
+		profile.text_stretch_time
+	)
+
+	punch_tween.tween_property(
+		self,
+		"punch_scale",
+		profile.text_neutral_punch_scale,
+		profile.text_return_time
+	)
 
 
 func reset_text_feedback() -> void:
