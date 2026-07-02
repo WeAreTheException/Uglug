@@ -4,6 +4,7 @@ class_name CardFeedbackRouter
 @export var hurt_profile: CardFeedbackProfile
 @export var sprite_feedback: CardSpriteFeedback
 @export var text_feedback: CardTextFeedback
+@export var vfx_feedback: CardVfxFeedback
 
 @export var test_old_health: int = 1
 @export var test_new_health: int = 0
@@ -20,6 +21,9 @@ func play_hurt_feedback() -> void:
 
 	if sprite_feedback != null:
 		sprite_feedback.play_hurt_sprite_feedback(hurt_profile)
+
+	if vfx_feedback != null:
+		vfx_feedback.play_hurt_icon_feedback()
 
 	if text_feedback != null:
 		await text_feedback.play_hurt_health_feedback(
@@ -57,6 +61,9 @@ func reset_all_feedback() -> void:
 
 	if text_feedback != null:
 		text_feedback.reset_text_feedback()
+
+	if vfx_feedback != null:
+		vfx_feedback.reset_vfx_feedback()
 
 
 func _debug_print(message: String) -> void:

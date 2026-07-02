@@ -12,6 +12,7 @@
 [ext_resource type="Script" uid="uid://boteiiiypllh1" path="res://Revamp/Card/NewCardFeedback/CardFeedbackRouter.gd" id="14_8h3oo"]
 [ext_resource type="Script" uid="uid://573olm1ptpvx" path="res://Revamp/Card/NewCardFeedback/CardTextFeedback.gd" id="14_u6lin"]
 [ext_resource type="Resource" uid="uid://nnh1jqtk1arh" path="res://Revamp/Card/NewCardFeedback/FeedbackProfiles/HurtFeedbackProfile.tres" id="14_xquhr"]
+[ext_resource type="Script" uid="uid://c0wxsa1yjawuy" path="res://Revamp/Card/NewCardFeedback/CardVFXFeedback.gd" id="15_f223l"]
 [ext_resource type="Script" uid="uid://dculvd6uvqgkx" path="res://Revamp/Card/NewCardFeedback/CardFeedbackDebugInput.gd" id="15_u6lin"]
 [ext_resource type="Texture2D" uid="uid://dh4y21ac2drn" path="res://Revamp/Icons/HurtNumberIcon-removebg-preview.png" id="15_xquhr"]
 [ext_resource type="Texture2D" uid="uid://ck6mq3fsy4ld4" path="res://Revamp/Icons/StatUpIcon-removebg-preview.png" id="16_u6lin"]
@@ -197,6 +198,14 @@ position = Vector2(7.535008, -14.419253)
 scale = Vector2(0.12215834, 0.100945435)
 texture = ExtResource("3_n82b3")
 
+[node name="AntRedFlash" type="Sprite2D" parent="All Visuals/AntArtRoot/AntImageRoot" unique_id=749800037]
+visible = false
+self_modulate = Color(1, 0, 0, 0.78431374)
+z_index = -7
+position = Vector2(7.535008, -14.419253)
+scale = Vector2(0.12215834, 0.100945435)
+texture = ExtResource("3_n82b3")
+
 [node name="MutationsUiRoot" type="Control" parent="All Visuals" unique_id=2096247542]
 layout_mode = 3
 anchors_preset = 0
@@ -339,21 +348,27 @@ shape = SubResource("RectangleShape2D_sygfx")
 
 [node name="Feedback" type="Node" parent="." unique_id=836987836]
 
-[node name="CardFeedbackRouter" type="Node" parent="Feedback" unique_id=751924610 node_paths=PackedStringArray("sprite_feedback", "text_feedback")]
+[node name="CardFeedbackRouter" type="Node" parent="Feedback" unique_id=751924610 node_paths=PackedStringArray("sprite_feedback", "text_feedback", "vfx_feedback")]
 script = ExtResource("14_8h3oo")
 hurt_profile = ExtResource("14_xquhr")
 sprite_feedback = NodePath("../CardSpriteFeedback")
 text_feedback = NodePath("../CardTextFeedback")
+vfx_feedback = NodePath("../CardVfxFeedback")
 
-[node name="CardSpriteFeedback" type="Node" parent="Feedback" unique_id=1344894730 node_paths=PackedStringArray("ant_image_root", "ant_image")]
+[node name="CardSpriteFeedback" type="Node" parent="Feedback" unique_id=1344894730 node_paths=PackedStringArray("ant_image_root", "ant_image", "ant_red_flash_overlay")]
 script = ExtResource("13_q1x5j")
 ant_image_root = NodePath("../../All Visuals/AntArtRoot/AntImageRoot")
 ant_image = NodePath("../../All Visuals/AntArtRoot/AntImageRoot/AntImage")
+ant_red_flash_overlay = NodePath("../../All Visuals/AntArtRoot/AntImageRoot/AntRedFlash")
 
-[node name="CardTextFeedback" type="Node" parent="Feedback" unique_id=1198356074 node_paths=PackedStringArray("health_root", "health_label")]
+[node name="CardTextFeedback" type="Node" parent="Feedback" unique_id=1198356074 node_paths=PackedStringArray("health_label")]
 script = ExtResource("14_u6lin")
-health_root = NodePath("../../All Visuals/StatsRoot/Health")
 health_label = NodePath("../../All Visuals/StatsRoot/Health/HltLabel")
+vertical_float_height = 2.0
+vertical_float_time = 20.0
+horizontal_drift_amount = 0.5
+rotation_amount_degrees = 1.0
+rotation_time = 10.0
 
 [node name="CardStatVisualFeedback" type="Node" parent="Feedback" unique_id=450599865]
 
@@ -363,7 +378,9 @@ health_label = NodePath("../../All Visuals/StatsRoot/Health/HltLabel")
 
 [node name="CardInteractionFeedback" type="Node" parent="Feedback" unique_id=1782757992]
 
-[node name="CardVfxFeedback" type="Node" parent="Feedback" unique_id=805926035]
+[node name="CardVfxFeedback" type="Node" parent="Feedback" unique_id=805926035 node_paths=PackedStringArray("health_hurt_icon")]
+script = ExtResource("15_f223l")
+health_hurt_icon = NodePath("../../All Visuals/StatsRoot/Health/HurtIcon")
 
 [node name="CardSfxFeedback" type="Node" parent="Feedback" unique_id=1795193772]
 
