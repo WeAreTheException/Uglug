@@ -302,7 +302,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="HurtIcon" type="Sprite2D" parent="All Visuals/StatsRoot/Health" unique_id=1563941310]
-modulate = Color(0, 0.0627451, 0.08235294, 1)
+self_modulate = Color(0, 0.0627451, 0.08235294, 1)
 position = Vector2(39.000008, 111)
 scale = Vector2(0.45569623, 0.5384616)
 texture = ExtResource("15_xquhr")
@@ -369,6 +369,7 @@ vertical_float_time = 20.0
 horizontal_drift_amount = 0.5
 rotation_amount_degrees = 1.0
 rotation_time = 10.0
+squash_time = 0.12
 
 [node name="CardStatVisualFeedback" type="Node" parent="Feedback" unique_id=450599865]
 
@@ -381,6 +382,12 @@ rotation_time = 10.0
 [node name="CardVfxFeedback" type="Node" parent="Feedback" unique_id=805926035 node_paths=PackedStringArray("health_hurt_icon")]
 script = ExtResource("15_f223l")
 health_hurt_icon = NodePath("../../All Visuals/StatsRoot/Health/HurtIcon")
+start_scale = Vector2(0.45, 0.54)
+end_scale = Vector2(0.8, 0.8)
+end_alpha = 0.2
+pop_time = 0.4
+fade_time = 0.4
+enable_test_key = true
 
 [node name="CardSfxFeedback" type="Node" parent="Feedback" unique_id=1795193772]
 
