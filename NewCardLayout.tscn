@@ -8,6 +8,7 @@
 [ext_resource type="Shader" uid="uid://clsxlhuocr8hn" path="res://Old/Cards/BackgroundSlide.gdshader" id="5_eyf70"]
 [ext_resource type="Texture2D" uid="uid://d1ypj3toan6r1" path="res://Art/Blood.png" id="8_uw526"]
 [ext_resource type="Script" uid="uid://brld7daswb5n8" path="res://SteppedLift.gd" id="10_4muga"]
+[ext_resource type="Shader" uid="uid://c2usyy1706sqm" path="res://Revamp/Card/NewCardFeedback/CardShaders/TextAnimatedStripes.gdshader" id="10_6u6me"]
 [ext_resource type="Resource" uid="uid://nnh1jqtk1arh" path="res://Revamp/Card/NewCardFeedback/FeedbackProfiles/HurtFeedbackProfile.tres" id="12_f223l"]
 [ext_resource type="Resource" uid="uid://x6vv4buskonn" path="res://Revamp/Card/NewCardFeedback/FeedbackProfiles/EmpoweredFeedback.tres" id="13_lu6qf"]
 [ext_resource type="Script" uid="uid://kf812iqqh258" path="res://Revamp/Card/NewCardFeedback/CardSpriteFeedback.gd" id="13_q1x5j"]
@@ -98,6 +99,16 @@ corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 corner_detail = 1
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wcpnj"]
+shader = ExtResource("10_6u6me")
+shader_parameter/color_gap = Color(0, 0, 0, 0)
+shader_parameter/color_stripe = Color(0.9137255, 0.8392157, 0.77254903, 1)
+shader_parameter/divisions = 8.0
+shader_parameter/speed = 0.05
+shader_parameter/angle = 1.0
+shader_parameter/stripe_width = 1.0
+shader_parameter/alpha_strength = 0.50000002375
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sygfx"]
 size = Vector2(192, 314)
@@ -328,7 +339,23 @@ autowrap_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="AtkLabelSprite" type="RichTextLabel" parent="All Visuals/StatsRoot/AttackRoot" unique_id=877409568]
+material = SubResource("ShaderMaterial_wcpnj")
+offset_left = -60.0
+offset_top = 93.0
+offset_right = -21.0
+offset_bottom = 129.0
+theme_override_colors/default_color = Color(0.9137255, 0.8392157, 0.77254903, 1)
+theme_override_colors/font_outline_color = Color(1.8049032e-08, 0.06382069, 0.08081173, 1)
+theme_override_constants/outline_size = 7
+theme_override_font_sizes/normal_font_size = 25
+text = "1"
+autowrap_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="AtkBuffIcon" type="Sprite2D" parent="All Visuals/StatsRoot/AttackRoot" unique_id=2135406271]
+visible = false
 modulate = Color(1, 0.0627451, 0.08235294, 0.627451)
 self_modulate = Color(0.5254902, 0, 0.015686275, 1)
 position = Vector2(-41, 108)
@@ -346,6 +373,7 @@ texture = ExtResource("16_u6lin")
 [node name="HoverShadow" type="Sprite2D" parent="All Visuals/InteractionRoot" unique_id=1962203115]
 
 [node name="InputRoot" type="Area2D" parent="." unique_id=1404115159]
+visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InputRoot" unique_id=186287351]
 position = Vector2(0, 20)
