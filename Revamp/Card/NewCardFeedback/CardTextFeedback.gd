@@ -4,6 +4,9 @@ class_name CardTextFeedback
 @export_group("Health Text Reference")
 @export var health_label: RichTextLabel
 
+@export_group("Attack Text Reference")
+@export var attack_label: RichTextLabel
+
 @export_group("Idle Levitate")
 @export var idle_enabled: bool = true
 
@@ -26,59 +29,41 @@ class_name CardTextFeedback
 
 @export var print_debug: bool = true
 
-var start_position: Vector2 = Vector2.ZERO
-var start_rotation: float = 0.0
-var start_scale: Vector2 = Vector2.ONE
-var start_modulate: Color = Color.WHITE
+var health_start_position: Vector2 = Vector2.ZERO
+var health_start_rotation: float = 0.0
+var health_start_scale: Vector2 = Vector2.ONE
+var health_start_modulate: Color = Color.WHITE
+
+var attack_start_position: Vector2 = Vector2.ZERO
+var attack_start_rotation: float = 0.0
+var attack_start_scale: Vector2 = Vector2.ONE
+var attack_start_modulate: Color = Color.WHITE
 
 var time_passed: float = 0.0
-var punch_scale: Vector2 = Vector2.ONE
 
-var punch_tween: Tween = null
-var flicker_tween: Tween = null
+var health_punch_scale: Vector2 = Vector2.ONE
+var attack_punch_scale: Vector2 = Vector2.ONE
+var attack_extra_offset: Vector2 = Vector2.ZERO
+
+var health_punch_tween: Tween = null
+var health_flicker_tween: Tween = null
+
+var attack_punch_tween: Tween = null
+var attack_flicker_tween: Tween = null
+var attack_motion_tween: Tween = null
 
 
 func _ready() -> void:
-	if health_label == null:
-		_debug_print("Missing health_label.")
-		return
-
-	start_position = health_label.position
-	start_rotation = health_label.rotation
-	start_scale = health_label.scale
-	start_modulate = health_label.modulate
-
-	health_label.pivot_offset = health_label.size * 0.5
-
+	_cache_health_label()
+	_cache_attack_label()
 	_apply_shadow()
 
 
 func _process(delta: float) -> void:
-	if health_label == null:
-		return
-
-	if not idle_enabled:
-		health_label.position = start_position
-		health_label.rotation = start_rotation
-		health_label.scale = start_scale * punch_scale
-		return
-
 	time_passed += delta
 
-	var vertical_wave := sin((time_passed / vertical_float_time) * TAU)
-	var horizontal_wave := sin((time_passed / horizontal_drift_time) * TAU)
-	var rotation_wave := sin((time_passed / rotation_time) * TAU)
-	var breathing_wave := sin((time_passed / breathing_scale_time) * TAU)
-
-	var y_offset := vertical_wave * vertical_float_height
-	var x_offset := horizontal_wave * horizontal_drift_amount
-	var rotation_offset := deg_to_rad(rotation_wave * rotation_amount_degrees)
-
-	var scale_multiplier := 1.0 + (breathing_wave * breathing_scale_amount)
-
-	health_label.position = start_position + Vector2(x_offset, y_offset)
-	health_label.rotation = start_rotation + rotation_offset
-	health_label.scale = start_scale * scale_multiplier * punch_scale
+	_update_health_idle()
+	_update_attack_idle()
 
 
 func play_hurt_health_feedback(
@@ -104,6 +89,31 @@ func play_hurt_health_feedback(
 	health_label.text = str(new_health)
 
 
+func play_buffed_attack_feedback(
+	old_attack: int,
+	new_attack: int,
+	profile: CardFeedbackProfile
+) -> void:
+	if attack_label == null:
+		_debug_print("Missing attack_label.")
+		return
+
+	if profile == null:
+		_debug_print("Missing buffed profile.")
+		return
+
+	_kill_attack_tweens()
+
+	attack_label.text = str(old_attack)
+	attack_extra_offset = Vector2.ZERO
+	attack_punch_scale = profile.buff_neutral_scale
+	attack_label.modulate = attack_start_modulate
+	attack_label.pivot_offset = attack_label.size * 0.5
+
+	_play_attack_buff_flicker(profile)
+	await _play_attack_buff_up_down_value_change(old_attack, new_attack, profile)
+
+
 func play_health_punch(profile: CardFeedbackProfile) -> void:
 	if health_label == null:
 		return
@@ -111,91 +121,306 @@ func play_health_punch(profile: CardFeedbackProfile) -> void:
 	if profile == null:
 		return
 
-	if punch_tween != null:
-		punch_tween.kill()
+	if health_punch_tween != null:
+		health_punch_tween.kill()
 
 	health_label.pivot_offset = health_label.size * 0.5
-	punch_scale = profile.text_neutral_punch_scale
+	health_punch_scale = profile.text_neutral_punch_scale
 
-	punch_tween = create_tween()
-	punch_tween.set_trans(Tween.TRANS_BACK)
-	punch_tween.set_ease(Tween.EASE_OUT)
+	health_punch_tween = create_tween()
+	health_punch_tween.set_trans(Tween.TRANS_BACK)
+	health_punch_tween.set_ease(Tween.EASE_OUT)
 
-	punch_tween.tween_property(
+	health_punch_tween.tween_property(
 		self,
-		"punch_scale",
+		"health_punch_scale",
 		profile.text_squash_scale,
 		profile.text_squash_time
 	)
 
-	punch_tween.tween_property(
+	health_punch_tween.tween_property(
 		self,
-		"punch_scale",
+		"health_punch_scale",
 		profile.text_stretch_scale,
 		profile.text_stretch_time
 	)
 
-	punch_tween.tween_property(
+	health_punch_tween.tween_property(
 		self,
-		"punch_scale",
+		"health_punch_scale",
 		profile.text_neutral_punch_scale,
 		profile.text_return_time
 	)
 
 
 func reset_text_feedback() -> void:
-	if punch_tween != null:
-		punch_tween.kill()
-		punch_tween = null
+	if health_punch_tween != null:
+		health_punch_tween.kill()
+		health_punch_tween = null
 
-	if flicker_tween != null:
-		flicker_tween.kill()
-		flicker_tween = null
+	if health_flicker_tween != null:
+		health_flicker_tween.kill()
+		health_flicker_tween = null
 
-	punch_scale = Vector2.ONE
+	if attack_punch_tween != null:
+		attack_punch_tween.kill()
+		attack_punch_tween = null
+
+	if attack_flicker_tween != null:
+		attack_flicker_tween.kill()
+		attack_flicker_tween = null
+
+	if attack_motion_tween != null:
+		attack_motion_tween.kill()
+		attack_motion_tween = null
+
+	health_punch_scale = Vector2.ONE
+	attack_punch_scale = Vector2.ONE
+	attack_extra_offset = Vector2.ZERO
 
 	if health_label != null:
-		health_label.position = start_position
-		health_label.rotation = start_rotation
-		health_label.scale = start_scale
-		health_label.modulate = start_modulate
+		health_label.position = health_start_position
+		health_label.rotation = health_start_rotation
+		health_label.scale = health_start_scale
+		health_label.modulate = health_start_modulate
+
+	if attack_label != null:
+		attack_label.position = attack_start_position
+		attack_label.rotation = attack_start_rotation
+		attack_label.scale = attack_start_scale
+		attack_label.modulate = attack_start_modulate
+
+
+func _cache_health_label() -> void:
+	if health_label == null:
+		_debug_print("Missing health_label.")
+		return
+
+	health_start_position = health_label.position
+	health_start_rotation = health_label.rotation
+	health_start_scale = health_label.scale
+	health_start_modulate = health_label.modulate
+	health_label.pivot_offset = health_label.size * 0.5
+
+
+func _cache_attack_label() -> void:
+	if attack_label == null:
+		_debug_print("Missing attack_label.")
+		return
+
+	attack_start_position = attack_label.position
+	attack_start_rotation = attack_label.rotation
+	attack_start_scale = attack_label.scale
+	attack_start_modulate = attack_label.modulate
+	attack_label.pivot_offset = attack_label.size * 0.5
+
+
+func _update_health_idle() -> void:
+	if health_label == null:
+		return
+
+	if not idle_enabled:
+		health_label.position = health_start_position
+		health_label.rotation = health_start_rotation
+		health_label.scale = health_start_scale * health_punch_scale
+		return
+
+	var vertical_wave := sin((time_passed / vertical_float_time) * TAU)
+	var horizontal_wave := sin((time_passed / horizontal_drift_time) * TAU)
+	var rotation_wave := sin((time_passed / rotation_time) * TAU)
+	var breathing_wave := sin((time_passed / breathing_scale_time) * TAU)
+
+	var y_offset := vertical_wave * vertical_float_height
+	var x_offset := horizontal_wave * horizontal_drift_amount
+	var rotation_offset := deg_to_rad(rotation_wave * rotation_amount_degrees)
+	var scale_multiplier := 1.0 + (breathing_wave * breathing_scale_amount)
+
+	health_label.position = health_start_position + Vector2(x_offset, y_offset)
+	health_label.rotation = health_start_rotation + rotation_offset
+	health_label.scale = health_start_scale * scale_multiplier * health_punch_scale
+
+
+func _update_attack_idle() -> void:
+	if attack_label == null:
+		return
+
+	if not idle_enabled:
+		attack_label.position = attack_start_position + attack_extra_offset
+		attack_label.rotation = attack_start_rotation
+		attack_label.scale = attack_start_scale * attack_punch_scale
+		return
+
+	var vertical_wave := sin((time_passed / vertical_float_time) * TAU)
+	var horizontal_wave := sin((time_passed / horizontal_drift_time) * TAU)
+	var rotation_wave := sin((time_passed / rotation_time) * TAU)
+	var breathing_wave := sin((time_passed / breathing_scale_time) * TAU)
+
+	var y_offset := vertical_wave * vertical_float_height
+	var x_offset := horizontal_wave * horizontal_drift_amount
+	var rotation_offset := deg_to_rad(rotation_wave * rotation_amount_degrees)
+	var scale_multiplier := 1.0 + (breathing_wave * breathing_scale_amount)
+
+	attack_label.position = attack_start_position + Vector2(x_offset, y_offset) + attack_extra_offset
+	attack_label.rotation = attack_start_rotation + rotation_offset
+	attack_label.scale = attack_start_scale * scale_multiplier * attack_punch_scale
+
+
+func _play_attack_buff_up_down_value_change(
+	old_attack: int,
+	new_attack: int,
+	profile: CardFeedbackProfile
+) -> void:
+	if attack_label == null:
+		return
+
+	attack_label.text = str(old_attack)
+	attack_punch_scale = profile.buff_neutral_scale
+	attack_extra_offset = Vector2.ZERO
+
+	attack_motion_tween = create_tween()
+	attack_motion_tween.set_parallel(true)
+
+	attack_motion_tween.tween_property(
+		self,
+		"attack_extra_offset",
+		Vector2(0.0, -profile.buff_jump_distance),
+		profile.buff_up_time
+	).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+
+	attack_motion_tween.tween_property(
+		self,
+		"attack_punch_scale",
+		profile.buff_up_scale,
+		profile.buff_up_time
+	).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+
+	await attack_motion_tween.finished
+
+	attack_motion_tween = create_tween()
+	attack_motion_tween.set_parallel(true)
+
+	attack_motion_tween.tween_property(
+		self,
+		"attack_extra_offset",
+		Vector2(0.0, -profile.buff_jump_distance),
+		profile.buff_top_pause_time
+	).set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
+
+	attack_motion_tween.tween_property(
+		self,
+		"attack_punch_scale",
+		profile.buff_top_pause_scale,
+		profile.buff_top_pause_time
+	).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+
+	await attack_motion_tween.finished
+
+	attack_label.text = str(new_attack)
+	attack_punch_scale = profile.buff_down_pop_scale
+
+	attack_motion_tween = create_tween()
+	attack_motion_tween.set_parallel(true)
+
+	attack_motion_tween.tween_property(
+		self,
+		"attack_extra_offset",
+		Vector2.ZERO,
+		profile.buff_down_time
+	).set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
+
+	attack_motion_tween.tween_property(
+		self,
+		"attack_punch_scale",
+		profile.buff_neutral_scale,
+		profile.buff_down_time
+	).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+
+	await attack_motion_tween.finished
+
+	attack_motion_tween = null
+
+
+func _play_attack_buff_flicker(profile: CardFeedbackProfile) -> void:
+	if attack_label == null:
+		return
+
+	if attack_flicker_tween != null:
+		attack_flicker_tween.kill()
+
+	attack_flicker_tween = create_tween()
+
+	var total_buff_time: float = profile.buff_up_time + profile.buff_top_pause_time + profile.buff_down_time
+	var safe_flicker_count: int = max(profile.buff_flicker_count, 1)
+	var flicker_step_duration: float = total_buff_time / float(safe_flicker_count * 2)
+
+	for i in safe_flicker_count:
+		attack_flicker_tween.tween_property(
+			attack_label,
+			"modulate",
+			profile.buff_flicker_color,
+			flicker_step_duration
+		)
+
+		attack_flicker_tween.tween_property(
+			attack_label,
+			"modulate",
+			attack_start_modulate,
+			flicker_step_duration
+		)
 
 
 func _play_health_flicker(profile: CardFeedbackProfile) -> void:
 	if health_label == null:
 		return
 
-	if flicker_tween != null:
-		flicker_tween.kill()
+	if health_flicker_tween != null:
+		health_flicker_tween.kill()
 
-	flicker_tween = create_tween()
+	health_flicker_tween = create_tween()
 
 	var safe_flicker_count: int = max(profile.flicker_count, 1)
 	var flicker_step_duration: float = profile.duration / float(safe_flicker_count * 2)
 
 	for i in safe_flicker_count:
-		flicker_tween.tween_property(
+		health_flicker_tween.tween_property(
 			health_label,
 			"modulate",
 			profile.flicker_color,
 			flicker_step_duration
 		)
 
-		flicker_tween.tween_property(
+		health_flicker_tween.tween_property(
 			health_label,
 			"modulate",
-			start_modulate,
+			health_start_modulate,
 			flicker_step_duration
 		)
 
 
-func _apply_shadow() -> void:
-	if health_label == null:
-		return
+func _kill_attack_tweens() -> void:
+	if attack_punch_tween != null:
+		attack_punch_tween.kill()
+		attack_punch_tween = null
 
-	health_label.add_theme_color_override("font_shadow_color", shadow_color)
-	health_label.add_theme_constant_override("shadow_offset_x", shadow_offset.x)
-	health_label.add_theme_constant_override("shadow_offset_y", shadow_offset.y)
+	if attack_flicker_tween != null:
+		attack_flicker_tween.kill()
+		attack_flicker_tween = null
+
+	if attack_motion_tween != null:
+		attack_motion_tween.kill()
+		attack_motion_tween = null
+
+
+func _apply_shadow() -> void:
+	if health_label != null:
+		health_label.add_theme_color_override("font_shadow_color", shadow_color)
+		health_label.add_theme_constant_override("shadow_offset_x", shadow_offset.x)
+		health_label.add_theme_constant_override("shadow_offset_y", shadow_offset.y)
+
+	if attack_label != null:
+		attack_label.add_theme_color_override("font_shadow_color", shadow_color)
+		attack_label.add_theme_constant_override("shadow_offset_x", shadow_offset.x)
+		attack_label.add_theme_constant_override("shadow_offset_y", shadow_offset.y)
 
 
 func _debug_print(message: String) -> void:

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="CardFeedbackProfile" format=3 uid="uid://x6vv4buskonn"]
+
+[ext_resource type="Script" uid="uid://ckpedyhdhgeg1" path="res://Revamp/Card/NewCardFeedback/CardFeedbackProfile.gd" id="1_cjkw0"]
+
+[resource]
+script = ExtResource("1_cjkw0")
+buff_jump_distance = 12.0
+buff_up_time = 0.08
+buff_top_pause_time = 0.09
+buff_down_time = 0.24
+buff_up_scale = Vector2(1.2, 1.2)
+buff_neutral_scale = Vector2(1.2, 1.2)
+metadata/_custom_type_script = "uid://ckpedyhdhgeg1"

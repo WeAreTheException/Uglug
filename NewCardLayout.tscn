@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://d1ypj3toan6r1" path="res://Art/Blood.png" id="8_uw526"]
 [ext_resource type="Script" uid="uid://brld7daswb5n8" path="res://SteppedLift.gd" id="10_4muga"]
 [ext_resource type="Resource" uid="uid://nnh1jqtk1arh" path="res://Revamp/Card/NewCardFeedback/FeedbackProfiles/HurtFeedbackProfile.tres" id="12_f223l"]
+[ext_resource type="Resource" uid="uid://x6vv4buskonn" path="res://Revamp/Card/NewCardFeedback/FeedbackProfiles/EmpoweredFeedback.tres" id="13_lu6qf"]
 [ext_resource type="Script" uid="uid://kf812iqqh258" path="res://Revamp/Card/NewCardFeedback/CardSpriteFeedback.gd" id="13_q1x5j"]
 [ext_resource type="Script" uid="uid://boteiiiypllh1" path="res://Revamp/Card/NewCardFeedback/CardFeedbackRouter.gd" id="14_8h3oo"]
 [ext_resource type="Script" uid="uid://573olm1ptpvx" path="res://Revamp/Card/NewCardFeedback/CardTextFeedback.gd" id="14_u6lin"]
@@ -322,7 +323,7 @@ theme_override_colors/default_color = Color(0.9137255, 0.8392157, 0.77254903, 1)
 theme_override_colors/font_outline_color = Color(1.8049032e-08, 0.06382069, 0.08081173, 1)
 theme_override_constants/outline_size = 7
 theme_override_font_sizes/normal_font_size = 25
-text = "2"
+text = "1"
 autowrap_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -355,6 +356,7 @@ shape = SubResource("RectangleShape2D_sygfx")
 [node name="CardFeedbackRouter" type="Node" parent="Feedback" unique_id=751924610 node_paths=PackedStringArray("sprite_feedback", "text_feedback", "vfx_feedback", "sfx_feedback", "motion_feedback")]
 script = ExtResource("14_8h3oo")
 hurt_profile = ExtResource("12_f223l")
+buffed_profile = ExtResource("13_lu6qf")
 sprite_feedback = NodePath("../CardSpriteFeedback")
 text_feedback = NodePath("../CardTextFeedback")
 vfx_feedback = NodePath("../CardVfxFeedback")
@@ -367,9 +369,10 @@ ant_image_root = NodePath("../../All Visuals/AntArtRoot/AntImageRoot")
 ant_image = NodePath("../../All Visuals/AntArtRoot/AntImageRoot/AntImage")
 ant_red_flash_overlay = NodePath("../../All Visuals/AntArtRoot/AntImageRoot/AntRedFlash")
 
-[node name="CardTextFeedback" type="Node" parent="Feedback" unique_id=1198356074 node_paths=PackedStringArray("health_label")]
+[node name="CardTextFeedback" type="Node" parent="Feedback" unique_id=1198356074 node_paths=PackedStringArray("health_label", "attack_label")]
 script = ExtResource("14_u6lin")
 health_label = NodePath("../../All Visuals/StatsRoot/Health/HltLabel")
+attack_label = NodePath("../../All Visuals/StatsRoot/AttackRoot/AtkLabel")
 vertical_float_height = 2.0
 vertical_float_time = 20.0
 horizontal_drift_amount = 0.5

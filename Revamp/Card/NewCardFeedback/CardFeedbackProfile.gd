@@ -49,3 +49,23 @@ class_name CardFeedbackProfile
 @export var hurt_recoil_time: float = 0.07
 
 @export var hurt_motion_return_time: float = 0.11
+
+@export_group("Buffed Stat Text")
+@export var buff_jump_distance: float = 24.0
+@export var buff_vibration_amount: Vector2 = Vector2(3.0, 1.0)
+
+@export var buff_up_time: float = 0.12
+@export var buff_top_pause_time: float = 0.06
+@export var buff_down_time: float = 0.16
+
+@export var buff_up_scale: Vector2 = Vector2(1.18, 1.18)
+@export var buff_top_pause_scale: Vector2 = Vector2(1.05, 1.05)
+@export var buff_down_pop_scale: Vector2 = Vector2(1.35, 1.15)
+@export var buff_neutral_scale: Vector2 = Vector2.ONE
+
+@export var buff_flicker_count: int = 3
+@export var buff_flicker_color: Color = Color(0.65, 1.0, 0.35, 1.0)
+
+@export_group("Buffed Persistent Visual")
+@export var persistent_buff_color: Color = Color(0.55, 1.0, 0.35, 1.0)
+@export var persistent_buff_glow_strength: float = 1.0

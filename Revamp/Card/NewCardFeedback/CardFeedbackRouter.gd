@@ -2,6 +2,7 @@ extends Node
 class_name CardFeedbackRouter
 
 @export var hurt_profile: CardFeedbackProfile
+@export var buffed_profile: CardFeedbackProfile
 
 @export var sprite_feedback: CardSpriteFeedback
 @export var text_feedback: CardTextFeedback
@@ -11,6 +12,8 @@ class_name CardFeedbackRouter
 
 @export var test_old_health: int = 1
 @export var test_new_health: int = 0
+
+@export var test_old_attack: int = 1
 
 @export var print_debug: bool = true
 
@@ -44,6 +47,17 @@ func play_hurt_feedback() -> void:
 
 func play_buffed_feedback() -> void:
 	_debug_print("buffed feedback")
+
+	if buffed_profile == null:
+		_debug_print("Missing buffed_profile.")
+		return
+
+	if text_feedback != null:
+		await text_feedback.play_buffed_attack_feedback(
+			test_old_attack,
+			2,
+			buffed_profile
+		)
 
 
 func play_debuffed_feedback() -> void:
