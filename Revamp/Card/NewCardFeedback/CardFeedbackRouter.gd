@@ -18,6 +18,8 @@ class_name CardFeedbackRouter
 @export var test_new_health: int = 0
 
 @export var test_old_attack: int = 1
+@export var test_buffed_new_attack: int = 2
+@export var test_debuffed_new_attack: int = 0
 
 @export var print_debug: bool = true
 
@@ -71,7 +73,7 @@ func play_buffed_feedback() -> void:
 	if text_feedback != null:
 		await text_feedback.play_buffed_attack_feedback(
 			test_old_attack,
-			2,
+			test_buffed_new_attack,
 			buffed_profile
 		)
 
@@ -102,6 +104,13 @@ func play_debuffed_feedback() -> void:
 
 	if vfx_feedback != null:
 		vfx_feedback.play_debuffed_attack_vfx(profile)
+
+	if text_feedback != null:
+		await text_feedback.play_debuffed_attack_feedback(
+			test_old_attack,
+			test_debuffed_new_attack,
+			profile
+		)
 
 	if stat_color != null:
 		stat_color.apply_attack_debuffed_color()

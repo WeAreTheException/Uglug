@@ -122,6 +122,35 @@ func play_buffed_attack_feedback(
 	_hide_attack_stripe_during_animation()
 
 
+func play_debuffed_attack_feedback(
+	old_attack: int,
+	new_attack: int,
+	profile: CardFeedbackProfile
+) -> void:
+	if attack_label == null:
+		_debug_print("Missing attack_label.")
+		return
+
+	if profile == null:
+		_debug_print("Missing debuffed profile.")
+		return
+
+	_kill_attack_tweens()
+	_hide_attack_stripe_during_animation()
+
+	_set_attack_text(str(old_attack))
+	attack_extra_offset = Vector2.ZERO
+	attack_punch_scale = Vector2.ONE
+	attack_label.pivot_offset = attack_label.size * 0.5
+
+	_sync_attack_stripe_to_attack()
+	_hide_attack_stripe_during_animation()
+
+	await _play_attack_debuff_squeeze_value_change(old_attack, new_attack, profile)
+
+	_hide_attack_stripe_during_animation()
+
+
 func play_health_punch(profile: CardFeedbackProfile) -> void:
 	if health_label == null:
 		return
@@ -400,6 +429,56 @@ func _play_attack_buff_up_down_value_change(
 	await attack_motion_tween.finished
 
 	attack_motion_tween = null
+	_sync_attack_stripe_to_attack()
+	_hide_attack_stripe_during_animation()
+
+
+func _play_attack_debuff_squeeze_value_change(
+	old_attack: int,
+	new_attack: int,
+	profile: CardFeedbackProfile
+) -> void:
+	if attack_label == null:
+		return
+
+	_set_attack_text(str(old_attack))
+	attack_punch_scale = Vector2.ONE
+	attack_extra_offset = Vector2.ZERO
+	_sync_attack_stripe_to_attack()
+	_hide_attack_stripe_during_animation()
+
+	attack_motion_tween = create_tween()
+
+	attack_motion_tween.tween_property(
+		self,
+		"attack_punch_scale",
+		profile.debuff_squeeze_scale,
+		profile.debuff_squeeze_time
+	).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
+
+	await attack_motion_tween.finished
+
+	_set_attack_text(str(new_attack))
+	attack_punch_scale = profile.debuff_squeeze_scale
+	_sync_attack_stripe_to_attack()
+	_hide_attack_stripe_during_animation()
+
+	if profile.debuff_number_hold_time > 0.0:
+		await get_tree().create_timer(profile.debuff_number_hold_time).timeout
+
+	attack_motion_tween = create_tween()
+
+	attack_motion_tween.tween_property(
+		self,
+		"attack_punch_scale",
+		profile.debuff_return_scale,
+		profile.debuff_return_time
+	).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+
+	await attack_motion_tween.finished
+
+	attack_motion_tween = null
+	attack_punch_scale = profile.debuff_return_scale
 	_sync_attack_stripe_to_attack()
 	_hide_attack_stripe_during_animation()
 

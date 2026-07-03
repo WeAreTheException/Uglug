@@ -483,9 +483,11 @@ script = ExtResource("22_5oy3j")
 attack_label = NodePath("../../All Visuals/StatsRoot/AttackRoot/AtkLabel")
 attack_idle_color = Color(0.83137256, 0.70980394, 0.59607846, 1)
 attack_buffed_color = Color(0.83137256, 0.70980394, 0.59607846, 1)
+attack_debuffed_color = Color(0.83137256, 0.70980394, 0.59607846, 1)
 health_label = NodePath("../../All Visuals/StatsRoot/Health/HltLabel")
 health_idle_color = Color(0.83137256, 0.70980394, 0.59607846, 1)
 health_buffed_color = Color(0.83137256, 0.70980394, 0.59607846, 1)
+health_debuffed_color = Color(0.83137256, 0.70980394, 0.59607846, 1)
 
 [node name="CardBuffedSpriteMotionFeedback" type="Node" parent="Feedback" unique_id=2042364458 node_paths=PackedStringArray("target_sprite")]
 script = ExtResource("23_ifa3w")
