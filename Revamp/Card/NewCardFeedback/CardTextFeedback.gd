@@ -324,6 +324,25 @@ func _play_attack_buff_up_down_value_change(
 	attack_motion_tween.tween_property(
 		self,
 		"attack_extra_offset",
+		Vector2(0.0, -profile.buff_jump_distance),
+		profile.buff_pop_settle_time
+	).set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
+
+	attack_motion_tween.tween_property(
+		self,
+		"attack_punch_scale",
+		profile.buff_top_pause_scale,
+		profile.buff_pop_settle_time
+	).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+
+	await attack_motion_tween.finished
+
+	attack_motion_tween = create_tween()
+	attack_motion_tween.set_parallel(true)
+
+	attack_motion_tween.tween_property(
+		self,
+		"attack_extra_offset",
 		Vector2.ZERO,
 		profile.buff_down_time
 	).set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
@@ -349,7 +368,13 @@ func _play_attack_buff_flicker(profile: CardFeedbackProfile) -> void:
 
 	attack_flicker_tween = create_tween()
 
-	var total_buff_time: float = profile.buff_up_time + profile.buff_top_pause_time + profile.buff_down_time
+	var total_buff_time: float = (
+		profile.buff_up_time
+		+ profile.buff_top_pause_time
+		+ profile.buff_pop_settle_time
+		+ profile.buff_down_time
+	)
+
 	var safe_flicker_count: int = max(profile.buff_flicker_count, 1)
 	var flicker_step_duration: float = total_buff_time / float(safe_flicker_count * 2)
 

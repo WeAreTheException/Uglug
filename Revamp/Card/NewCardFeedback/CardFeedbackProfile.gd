@@ -55,7 +55,8 @@ class_name CardFeedbackProfile
 @export var buff_vibration_amount: Vector2 = Vector2(3.0, 1.0)
 
 @export var buff_up_time: float = 0.12
-@export var buff_top_pause_time: float = 0.06
+@export var buff_top_pause_time: float = 0.10
+@export var buff_pop_settle_time: float = 0.14
 @export var buff_down_time: float = 0.16
 
 @export var buff_up_scale: Vector2 = Vector2(1.18, 1.18)
