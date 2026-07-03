@@ -69,3 +69,10 @@ class_name CardFeedbackProfile
 @export var buff_attack_vfx_duration: float = 0.35
 @export var buff_attack_vfx_start_alpha: float = 1.0
 @export var buff_attack_vfx_end_alpha: float = 0.0
+
+@export_group("Debuffed Attack VFX")
+@export var debuff_attack_vfx_fall_distance: float = 28.0
+@export var debuff_attack_vfx_duration: float = 0.35
+@export var debuff_attack_vfx_start_alpha: float = 1.0
+@export var debuff_attack_vfx_end_alpha: float = 0.0
+@export var debuff_attack_vfx_rotation_degrees: float = 180.0

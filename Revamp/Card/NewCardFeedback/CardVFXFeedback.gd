@@ -2,30 +2,43 @@ extends Node
 class_name CardVfxFeedback
 
 @export_group("Hurt Icon")
-@export var hurt_icon: CanvasItem
+@export var hurt_icon: Node2D
 
 @export_group("Buffed Attack VFX")
-@export var buff_attack_vfx_sprite: CanvasItem
+@export var buff_attack_vfx_sprite: Node2D
+
+@export_group("Debuffed Attack VFX")
+@export var debuff_attack_vfx_sprite: Node2D
 
 @export var print_debug: bool = true
 
 var hurt_icon_start_position: Vector2 = Vector2.ZERO
 var hurt_icon_start_scale: Vector2 = Vector2.ONE
+var hurt_icon_start_rotation: float = 0.0
 var hurt_icon_start_modulate: Color = Color.WHITE
 var hurt_icon_start_visible: bool = false
 
 var buff_attack_vfx_start_position: Vector2 = Vector2.ZERO
 var buff_attack_vfx_start_scale: Vector2 = Vector2.ONE
+var buff_attack_vfx_start_rotation: float = 0.0
 var buff_attack_vfx_start_modulate: Color = Color.WHITE
 var buff_attack_vfx_start_visible: bool = false
 
+var debuff_attack_vfx_start_position: Vector2 = Vector2.ZERO
+var debuff_attack_vfx_start_scale: Vector2 = Vector2.ONE
+var debuff_attack_vfx_start_rotation: float = 0.0
+var debuff_attack_vfx_start_modulate: Color = Color.WHITE
+var debuff_attack_vfx_start_visible: bool = false
+
 var hurt_icon_tween: Tween = null
 var buff_attack_vfx_tween: Tween = null
+var debuff_attack_vfx_tween: Tween = null
 
 
 func _ready() -> void:
 	_cache_hurt_icon()
 	_cache_buff_attack_vfx()
+	_cache_debuff_attack_vfx()
 	reset_vfx_feedback()
 
 
@@ -42,6 +55,7 @@ func play_hurt_icon_feedback(profile: CardFeedbackProfile) -> void:
 
 	hurt_icon.visible = true
 	hurt_icon.position = hurt_icon_start_position
+	hurt_icon.rotation = hurt_icon_start_rotation
 	hurt_icon.scale = profile.hurt_icon_start_scale
 
 	var start_color := hurt_icon_start_modulate
@@ -90,6 +104,7 @@ func play_buffed_attack_vfx(profile: CardFeedbackProfile) -> void:
 	buff_attack_vfx_sprite.visible = true
 	buff_attack_vfx_sprite.position = buff_attack_vfx_start_position
 	buff_attack_vfx_sprite.scale = buff_attack_vfx_start_scale
+	buff_attack_vfx_sprite.rotation = buff_attack_vfx_start_rotation
 
 	var start_color := buff_attack_vfx_start_modulate
 	start_color.a = profile.buff_attack_vfx_start_alpha
@@ -125,8 +140,66 @@ func play_buffed_attack_vfx(profile: CardFeedbackProfile) -> void:
 	buff_attack_vfx_sprite.visible = false
 	buff_attack_vfx_sprite.position = buff_attack_vfx_start_position
 	buff_attack_vfx_sprite.scale = buff_attack_vfx_start_scale
+	buff_attack_vfx_sprite.rotation = buff_attack_vfx_start_rotation
 	buff_attack_vfx_sprite.modulate = buff_attack_vfx_start_modulate
 	buff_attack_vfx_tween = null
+
+
+func play_debuffed_attack_vfx(profile: CardFeedbackProfile) -> void:
+	if debuff_attack_vfx_sprite == null:
+		_debug_print("Missing debuff_attack_vfx_sprite.")
+		return
+
+	if profile == null:
+		_debug_print("Missing profile.")
+		return
+
+	if debuff_attack_vfx_tween != null:
+		debuff_attack_vfx_tween.kill()
+		debuff_attack_vfx_tween = null
+
+	debuff_attack_vfx_sprite.visible = true
+	debuff_attack_vfx_sprite.position = debuff_attack_vfx_start_position
+	debuff_attack_vfx_sprite.scale = debuff_attack_vfx_start_scale
+	debuff_attack_vfx_sprite.rotation = deg_to_rad(profile.debuff_attack_vfx_rotation_degrees)
+
+	var start_color := debuff_attack_vfx_start_modulate
+	start_color.a = profile.debuff_attack_vfx_start_alpha
+	debuff_attack_vfx_sprite.modulate = start_color
+
+	var end_position := debuff_attack_vfx_start_position + Vector2(
+		0.0,
+		profile.debuff_attack_vfx_fall_distance
+	)
+
+	var end_color := debuff_attack_vfx_start_modulate
+	end_color.a = profile.debuff_attack_vfx_end_alpha
+
+	debuff_attack_vfx_tween = create_tween()
+	debuff_attack_vfx_tween.set_parallel(true)
+
+	debuff_attack_vfx_tween.tween_property(
+		debuff_attack_vfx_sprite,
+		"position",
+		end_position,
+		profile.debuff_attack_vfx_duration
+	).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+
+	debuff_attack_vfx_tween.tween_property(
+		debuff_attack_vfx_sprite,
+		"modulate",
+		end_color,
+		profile.debuff_attack_vfx_duration
+	).set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
+
+	await debuff_attack_vfx_tween.finished
+
+	debuff_attack_vfx_sprite.visible = false
+	debuff_attack_vfx_sprite.position = debuff_attack_vfx_start_position
+	debuff_attack_vfx_sprite.scale = debuff_attack_vfx_start_scale
+	debuff_attack_vfx_sprite.rotation = debuff_attack_vfx_start_rotation
+	debuff_attack_vfx_sprite.modulate = debuff_attack_vfx_start_modulate
+	debuff_attack_vfx_tween = null
 
 
 func reset_vfx_feedback() -> void:
@@ -138,17 +211,30 @@ func reset_vfx_feedback() -> void:
 		buff_attack_vfx_tween.kill()
 		buff_attack_vfx_tween = null
 
+	if debuff_attack_vfx_tween != null:
+		debuff_attack_vfx_tween.kill()
+		debuff_attack_vfx_tween = null
+
 	if hurt_icon != null:
 		hurt_icon.position = hurt_icon_start_position
 		hurt_icon.scale = hurt_icon_start_scale
+		hurt_icon.rotation = hurt_icon_start_rotation
 		hurt_icon.modulate = hurt_icon_start_modulate
 		hurt_icon.visible = hurt_icon_start_visible
 
 	if buff_attack_vfx_sprite != null:
 		buff_attack_vfx_sprite.position = buff_attack_vfx_start_position
 		buff_attack_vfx_sprite.scale = buff_attack_vfx_start_scale
+		buff_attack_vfx_sprite.rotation = buff_attack_vfx_start_rotation
 		buff_attack_vfx_sprite.modulate = buff_attack_vfx_start_modulate
 		buff_attack_vfx_sprite.visible = false
+
+	if debuff_attack_vfx_sprite != null:
+		debuff_attack_vfx_sprite.position = debuff_attack_vfx_start_position
+		debuff_attack_vfx_sprite.scale = debuff_attack_vfx_start_scale
+		debuff_attack_vfx_sprite.rotation = debuff_attack_vfx_start_rotation
+		debuff_attack_vfx_sprite.modulate = debuff_attack_vfx_start_modulate
+		debuff_attack_vfx_sprite.visible = false
 
 
 func _cache_hurt_icon() -> void:
@@ -157,6 +243,7 @@ func _cache_hurt_icon() -> void:
 
 	hurt_icon_start_position = hurt_icon.position
 	hurt_icon_start_scale = hurt_icon.scale
+	hurt_icon_start_rotation = hurt_icon.rotation
 	hurt_icon_start_modulate = hurt_icon.modulate
 	hurt_icon_start_visible = hurt_icon.visible
 
@@ -167,8 +254,20 @@ func _cache_buff_attack_vfx() -> void:
 
 	buff_attack_vfx_start_position = buff_attack_vfx_sprite.position
 	buff_attack_vfx_start_scale = buff_attack_vfx_sprite.scale
+	buff_attack_vfx_start_rotation = buff_attack_vfx_sprite.rotation
 	buff_attack_vfx_start_modulate = buff_attack_vfx_sprite.modulate
 	buff_attack_vfx_start_visible = buff_attack_vfx_sprite.visible
+
+
+func _cache_debuff_attack_vfx() -> void:
+	if debuff_attack_vfx_sprite == null:
+		return
+
+	debuff_attack_vfx_start_position = debuff_attack_vfx_sprite.position
+	debuff_attack_vfx_start_scale = debuff_attack_vfx_sprite.scale
+	debuff_attack_vfx_start_rotation = debuff_attack_vfx_sprite.rotation
+	debuff_attack_vfx_start_modulate = debuff_attack_vfx_sprite.modulate
+	debuff_attack_vfx_start_visible = debuff_attack_vfx_sprite.visible
 
 
 func _debug_print(message: String) -> void:

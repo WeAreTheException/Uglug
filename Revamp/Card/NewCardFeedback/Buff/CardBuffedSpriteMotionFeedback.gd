@@ -3,9 +3,9 @@ class_name CardBuffedSpriteMotionFeedback
 
 @export var target_sprite: Node2D
 
-@export_group("Buffed Motion")
-@export var rise_distance: float = 10.0
-@export var rise_time: float = 0.12
+@export_group("Motion")
+@export var movement_distance: float = 10.0
+@export var move_time: float = 0.12
 @export var hold_time: float = 0.06
 @export var return_time: float = 0.18
 
@@ -46,6 +46,27 @@ func _process(delta: float) -> void:
 
 
 func play_buffed_sprite_motion() -> void:
+	_play_sprite_motion(-movement_distance)
+
+
+func play_debuffed_sprite_motion() -> void:
+	_play_sprite_motion(movement_distance)
+
+
+func reset_buffed_sprite_motion() -> void:
+	if motion_tween != null:
+		motion_tween.kill()
+		motion_tween = null
+
+	is_vibrating = false
+	vibration_time = 0.0
+	current_offset = Vector2.ZERO
+
+	if target_sprite != null:
+		target_sprite.position = start_position
+
+
+func _play_sprite_motion(vertical_distance: float) -> void:
 	if target_sprite == null:
 		_debug_print("Missing target_sprite.")
 		return
@@ -60,8 +81,8 @@ func play_buffed_sprite_motion() -> void:
 	motion_tween.tween_property(
 		self,
 		"current_offset",
-		Vector2(0.0, -rise_distance),
-		rise_time
+		Vector2(0.0, vertical_distance),
+		move_time
 	).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
 	motion_tween.tween_interval(hold_time)
@@ -79,19 +100,6 @@ func play_buffed_sprite_motion() -> void:
 	current_offset = Vector2.ZERO
 	target_sprite.position = start_position
 	motion_tween = null
-
-
-func reset_buffed_sprite_motion() -> void:
-	if motion_tween != null:
-		motion_tween.kill()
-		motion_tween = null
-
-	is_vibrating = false
-	vibration_time = 0.0
-	current_offset = Vector2.ZERO
-
-	if target_sprite != null:
-		target_sprite.position = start_position
 
 
 func _debug_print(message: String) -> void:

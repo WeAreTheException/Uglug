@@ -460,10 +460,11 @@ attack_buffed_shader_delay = 0.0
 
 [node name="CardInteractionFeedback" type="Node" parent="Feedback" unique_id=1782757992]
 
-[node name="CardVfxFeedback" type="Node" parent="Feedback" unique_id=805926035 node_paths=PackedStringArray("hurt_icon", "buff_attack_vfx_sprite")]
+[node name="CardVfxFeedback" type="Node" parent="Feedback" unique_id=805926035 node_paths=PackedStringArray("hurt_icon", "buff_attack_vfx_sprite", "debuff_attack_vfx_sprite")]
 script = ExtResource("15_f223l")
 hurt_icon = NodePath("../../All Visuals/StatsRoot/Health/HurtIcon")
 buff_attack_vfx_sprite = NodePath("../../All Visuals/StatsRoot/AttackRoot/AtkBuffIcon")
+debuff_attack_vfx_sprite = NodePath("../../All Visuals/StatsRoot/AttackRoot/AtkBuffIcon")
 
 [node name="CardSfxFeedback" type="Node" parent="Feedback" unique_id=1795193772 node_paths=PackedStringArray("hurt_audio_player_2d")]
 script = ExtResource("16_f223l")

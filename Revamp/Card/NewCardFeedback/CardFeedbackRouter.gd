@@ -3,6 +3,7 @@ class_name CardFeedbackRouter
 
 @export var hurt_profile: CardFeedbackProfile
 @export var buffed_profile: CardFeedbackProfile
+@export var debuffed_profile: CardFeedbackProfile
 
 @export var sprite_feedback: CardSpriteFeedback
 @export var text_feedback: CardTextFeedback
@@ -81,8 +82,26 @@ func play_buffed_feedback() -> void:
 func play_debuffed_feedback() -> void:
 	_debug_print("debuffed feedback")
 
+	var profile := debuffed_profile
+
+	if profile == null:
+		profile = buffed_profile
+
+	if profile == null:
+		_debug_print("Missing debuffed_profile and buffed_profile fallback.")
+		return
+
 	if stat_visual_feedback != null:
 		stat_visual_feedback.clear_attack_buffed_visual()
+
+	if stat_color != null:
+		stat_color.apply_attack_idle_color()
+
+	if buffed_sprite_motion_feedback != null:
+		buffed_sprite_motion_feedback.play_debuffed_sprite_motion()
+
+	if vfx_feedback != null:
+		vfx_feedback.play_debuffed_attack_vfx(profile)
 
 	if stat_color != null:
 		stat_color.apply_attack_debuffed_color()
