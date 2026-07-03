@@ -4,5 +4,6 @@
 
 [resource]
 script = ExtResource("1_cjkw0")
+flicker_count = 0
 buff_down_pop_scale = Vector2(1.25, 1.25)
 metadata/_custom_type_script = "uid://ckpedyhdhgeg1"

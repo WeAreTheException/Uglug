@@ -1,121 +1,174 @@
 extends Node
 class_name CardVfxFeedback
 
-@export var health_hurt_icon: Sprite2D
+@export_group("Hurt Icon")
+@export var hurt_icon: CanvasItem
 
-@export var enable_test_key: bool = false
-@export var test_key: Key = KEY_H
-@export var test_profile: CardFeedbackProfile
+@export_group("Buffed Attack VFX")
+@export var buff_attack_vfx_sprite: CanvasItem
 
 @export var print_debug: bool = true
 
-var start_position: Vector2 = Vector2.ZERO
-var start_modulate: Color = Color.WHITE
+var hurt_icon_start_position: Vector2 = Vector2.ZERO
+var hurt_icon_start_scale: Vector2 = Vector2.ONE
+var hurt_icon_start_modulate: Color = Color.WHITE
+var hurt_icon_start_visible: bool = false
 
-var active_tween: Tween = null
+var buff_attack_vfx_start_position: Vector2 = Vector2.ZERO
+var buff_attack_vfx_start_scale: Vector2 = Vector2.ONE
+var buff_attack_vfx_start_modulate: Color = Color.WHITE
+var buff_attack_vfx_start_visible: bool = false
+
+var hurt_icon_tween: Tween = null
+var buff_attack_vfx_tween: Tween = null
 
 
 func _ready() -> void:
-	if health_hurt_icon == null:
-		return
-
-	start_position = health_hurt_icon.position
-	start_modulate = health_hurt_icon.self_modulate
-
-	_hide_hurt_icon()
-
-
-func _unhandled_input(event: InputEvent) -> void:
-	if not enable_test_key:
-		return
-
-	if not event is InputEventKey:
-		return
-
-	var key_event := event as InputEventKey
-
-	if not key_event.pressed:
-		return
-
-	if key_event.echo:
-		return
-
-	if key_event.keycode == test_key:
-		play_hurt_icon_feedback(test_profile)
+	_cache_hurt_icon()
+	_cache_buff_attack_vfx()
+	reset_vfx_feedback()
 
 
 func play_hurt_icon_feedback(profile: CardFeedbackProfile) -> void:
-	if health_hurt_icon == null:
-		_debug_print("Missing health_hurt_icon.")
+	if hurt_icon == null:
+		return
+
+	if profile == null:
+		return
+
+	if hurt_icon_tween != null:
+		hurt_icon_tween.kill()
+		hurt_icon_tween = null
+
+	hurt_icon.visible = true
+	hurt_icon.position = hurt_icon_start_position
+	hurt_icon.scale = profile.hurt_icon_start_scale
+
+	var start_color := hurt_icon_start_modulate
+	start_color.a = profile.hurt_icon_start_alpha
+	hurt_icon.modulate = start_color
+
+	hurt_icon_tween = create_tween()
+	hurt_icon_tween.set_parallel(true)
+
+	hurt_icon_tween.tween_property(
+		hurt_icon,
+		"scale",
+		profile.hurt_icon_end_scale,
+		profile.hurt_icon_pop_time + profile.hurt_icon_fade_time
+	).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+
+	var end_color := hurt_icon_start_modulate
+	end_color.a = profile.hurt_icon_end_alpha
+
+	hurt_icon_tween.tween_property(
+		hurt_icon,
+		"modulate",
+		end_color,
+		profile.hurt_icon_fade_time
+	).set_delay(profile.hurt_icon_pop_time)
+
+	await hurt_icon_tween.finished
+
+	hurt_icon.visible = false
+	hurt_icon_tween = null
+
+
+func play_buffed_attack_vfx(profile: CardFeedbackProfile) -> void:
+	if buff_attack_vfx_sprite == null:
+		_debug_print("Missing buff_attack_vfx_sprite.")
 		return
 
 	if profile == null:
 		_debug_print("Missing profile.")
 		return
 
-	_kill_active_tween()
+	if buff_attack_vfx_tween != null:
+		buff_attack_vfx_tween.kill()
+		buff_attack_vfx_tween = null
 
-	health_hurt_icon.visible = true
-	health_hurt_icon.position = start_position
-	health_hurt_icon.scale = profile.hurt_icon_start_scale
-	health_hurt_icon.self_modulate = Color(
-		start_modulate.r,
-		start_modulate.g,
-		start_modulate.b,
-		profile.hurt_icon_start_alpha
+	buff_attack_vfx_sprite.visible = true
+	buff_attack_vfx_sprite.position = buff_attack_vfx_start_position
+	buff_attack_vfx_sprite.scale = buff_attack_vfx_start_scale
+
+	var start_color := buff_attack_vfx_start_modulate
+	start_color.a = profile.buff_attack_vfx_start_alpha
+	buff_attack_vfx_sprite.modulate = start_color
+
+	var end_position := buff_attack_vfx_start_position + Vector2(
+		0.0,
+		-profile.buff_attack_vfx_rise_distance
 	)
 
-	active_tween = create_tween()
-	active_tween.set_parallel(true)
+	var end_color := buff_attack_vfx_start_modulate
+	end_color.a = profile.buff_attack_vfx_end_alpha
 
-	active_tween.tween_property(
-		health_hurt_icon,
-		"scale",
-		profile.hurt_icon_end_scale,
-		profile.hurt_icon_pop_time
-	).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	buff_attack_vfx_tween = create_tween()
+	buff_attack_vfx_tween.set_parallel(true)
 
-	active_tween.tween_property(
-		health_hurt_icon,
-		"self_modulate",
-		Color(
-			start_modulate.r,
-			start_modulate.g,
-			start_modulate.b,
-			profile.hurt_icon_end_alpha
-		),
-		profile.hurt_icon_fade_time
-	)
+	buff_attack_vfx_tween.tween_property(
+		buff_attack_vfx_sprite,
+		"position",
+		end_position,
+		profile.buff_attack_vfx_duration
+	).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 
-	await active_tween.finished
+	buff_attack_vfx_tween.tween_property(
+		buff_attack_vfx_sprite,
+		"modulate",
+		end_color,
+		profile.buff_attack_vfx_duration
+	).set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
 
-	_hide_hurt_icon()
-	active_tween = null
+	await buff_attack_vfx_tween.finished
+
+	buff_attack_vfx_sprite.visible = false
+	buff_attack_vfx_sprite.position = buff_attack_vfx_start_position
+	buff_attack_vfx_sprite.scale = buff_attack_vfx_start_scale
+	buff_attack_vfx_sprite.modulate = buff_attack_vfx_start_modulate
+	buff_attack_vfx_tween = null
 
 
 func reset_vfx_feedback() -> void:
-	_kill_active_tween()
-	_hide_hurt_icon()
+	if hurt_icon_tween != null:
+		hurt_icon_tween.kill()
+		hurt_icon_tween = null
+
+	if buff_attack_vfx_tween != null:
+		buff_attack_vfx_tween.kill()
+		buff_attack_vfx_tween = null
+
+	if hurt_icon != null:
+		hurt_icon.position = hurt_icon_start_position
+		hurt_icon.scale = hurt_icon_start_scale
+		hurt_icon.modulate = hurt_icon_start_modulate
+		hurt_icon.visible = hurt_icon_start_visible
+
+	if buff_attack_vfx_sprite != null:
+		buff_attack_vfx_sprite.position = buff_attack_vfx_start_position
+		buff_attack_vfx_sprite.scale = buff_attack_vfx_start_scale
+		buff_attack_vfx_sprite.modulate = buff_attack_vfx_start_modulate
+		buff_attack_vfx_sprite.visible = false
 
 
-func _hide_hurt_icon() -> void:
-	if health_hurt_icon == null:
+func _cache_hurt_icon() -> void:
+	if hurt_icon == null:
 		return
 
-	health_hurt_icon.visible = false
-	health_hurt_icon.position = start_position
-	health_hurt_icon.self_modulate = Color(
-		start_modulate.r,
-		start_modulate.g,
-		start_modulate.b,
-		0.0
-	)
+	hurt_icon_start_position = hurt_icon.position
+	hurt_icon_start_scale = hurt_icon.scale
+	hurt_icon_start_modulate = hurt_icon.modulate
+	hurt_icon_start_visible = hurt_icon.visible
 
 
-func _kill_active_tween() -> void:
-	if active_tween != null:
-		active_tween.kill()
-		active_tween = null
+func _cache_buff_attack_vfx() -> void:
+	if buff_attack_vfx_sprite == null:
+		return
+
+	buff_attack_vfx_start_position = buff_attack_vfx_sprite.position
+	buff_attack_vfx_start_scale = buff_attack_vfx_sprite.scale
+	buff_attack_vfx_start_modulate = buff_attack_vfx_sprite.modulate
+	buff_attack_vfx_start_visible = buff_attack_vfx_sprite.visible
 
 
 func _debug_print(message: String) -> void:

@@ -63,3 +63,9 @@ class_name CardFeedbackProfile
 @export var buff_top_pause_scale: Vector2 = Vector2(1.05, 1.05)
 @export var buff_down_pop_scale: Vector2 = Vector2(1.25, 1.12)
 @export var buff_neutral_scale: Vector2 = Vector2(1.2, 1.2)
+
+@export_group("Buffed Attack VFX")
+@export var buff_attack_vfx_rise_distance: float = 28.0
+@export var buff_attack_vfx_duration: float = 0.35
+@export var buff_attack_vfx_start_alpha: float = 1.0
+@export var buff_attack_vfx_end_alpha: float = 0.0

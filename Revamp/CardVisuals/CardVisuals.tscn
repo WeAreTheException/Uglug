@@ -76,7 +76,7 @@ shader_parameter/rotation = Transform2D(1, -1, 1, 1, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_587ti"]
 shader = ExtResource("7_v8bk3")
-shader_parameter/waveAmplitude = 0.0330000015675
+shader_parameter/waveAmplitude = 0.0550000026125
 shader_parameter/correctVertex = true
 shader_parameter/waveFrequency = 0.0
 shader_parameter/verticalWave = true
@@ -86,8 +86,8 @@ shader_parameter/waveSpeed = 1.0
 shader_parameter/progress = 0.0
 shader_parameter/firstHalf = 0.5
 shader_parameter/secondHalf = 0.5
-shader_parameter/freezeFirstHalf = false
-shader_parameter/freezeSecondHalf = false
+shader_parameter/freezeFirstHalf = true
+shader_parameter/freezeSecondHalf = true
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3q3n8"]
 shader = ExtResource("6_g780n")
