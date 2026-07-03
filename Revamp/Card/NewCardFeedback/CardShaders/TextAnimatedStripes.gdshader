@@ -1,36 +1,33 @@
 shader_type canvas_item;
 
 uniform vec4 color_gap : source_color = vec4(0.0, 0.0, 0.0, 0.0);
-uniform vec4 color_stripe : source_color = vec4(1.0, 0.85, 0.1, 1.0);
+uniform vec4 color_stripe : source_color = vec4(1.0, 0.82, 0.35, 0.45);
 
-uniform float divisions = 8.0;
-uniform float speed = 0.05;
-uniform float angle = 1.0;
-
-uniform float stripe_width : hint_range(0.01, 1.0) = 1.0;
-uniform float alpha_strength : hint_range(0.0, 1.0) = 1.0;
+uniform float shine_progress : hint_range(0.0, 1.0) = 0.0;
+uniform float stripe_width : hint_range(0.01, 0.5) = 0.16;
+uniform float softness : hint_range(0.001, 0.3) = 0.08;
+uniform float alpha_strength : hint_range(0.0, 1.0) = 0.45;
 
 void fragment() {
 	vec4 text_sample = texture(TEXTURE, UV);
 	float text_alpha = text_sample.a;
 
-	float w = cos(angle) * UV.x + sin(angle) * UV.y;
-	w -= TIME * speed;
+	// 0.0 = top of text, 1.0 = bottom of text.
+	float line_position = UV.y;
 
-	float pattern = fract(w * divisions);
+	// Starts above the text and travels downward.
+	float stripe_center = mix(-stripe_width, 1.0 + stripe_width, shine_progress);
 
-	float inside_stripe = step(pattern, stripe_width);
-	float stripe_uv = clamp(pattern / stripe_width, 0.0, 1.0);
+	float distance_from_stripe = abs(line_position - stripe_center);
 
-	float soft_edge = smoothstep(1.0, 0.0, stripe_uv);
-	float stripe_mask = inside_stripe * soft_edge;
-
-	vec4 stripe_color = mix(
-		color_gap,
-		color_stripe,
-		stripe_mask
+	float stripe_mask = 1.0 - smoothstep(
+		stripe_width,
+		stripe_width + softness,
+		distance_from_stripe
 	);
 
-	COLOR.rgb = stripe_color.rgb;
-	COLOR.a = text_alpha * stripe_color.a * alpha_strength;
+	vec4 final_color = mix(color_gap, color_stripe, stripe_mask);
+
+	COLOR.rgb = final_color.rgb;
+	COLOR.a = text_alpha * final_color.a * alpha_strength;
 }

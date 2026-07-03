@@ -19,9 +19,9 @@
 [ext_resource type="Texture2D" uid="uid://dh4y21ac2drn" path="res://Revamp/Icons/HurtNumberIcon-removebg-preview.png" id="15_xquhr"]
 [ext_resource type="Script" uid="uid://defktxbqfjh6o" path="res://Revamp/Card/NewCardFeedback/CardSfxFeedback.gd" id="16_f223l"]
 [ext_resource type="Texture2D" uid="uid://ck6mq3fsy4ld4" path="res://Revamp/Icons/StatUpIcon-removebg-preview.png" id="16_u6lin"]
-[ext_resource type="Script" uid="uid://csugd7tcydcc5" path="res://Revamp/Card/NewCardFeedback/CardStatVisualFeedback.gd" id="17_wcpnj"]
+[ext_resource type="Script" path="res://Revamp/Card/NewCardFeedback/CardStatVisualFeedback.gd" id="17_wcpnj"]
 [ext_resource type="Script" uid="uid://bri6km7k5xvsf" path="res://Revamp/Card/NewCardFeedback/CardMotionFeedback.gd" id="18_lu6qf"]
-[ext_resource type="Script" uid="uid://bqkxr66j4fgvx" path="res://Revamp/Card/NewCardFeedback/CardStatColor.gd" id="22_5oy3j"]
+[ext_resource type="Script" path="res://Revamp/Card/NewCardFeedback/CardStatColor.gd" id="22_5oy3j"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_uw526"]
 
@@ -105,12 +105,20 @@ corner_detail = 1
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_6u6me"]
 shader = ExtResource("10_6u6me")
 shader_parameter/color_gap = Color(0.83137256, 0.70980394, 0.59607846, 0.02745098)
-shader_parameter/color_stripe = Color(1, 0.85, 0.1, 1)
-shader_parameter/divisions = 8.0
-shader_parameter/speed = 0.05
-shader_parameter/angle = 1.0
+shader_parameter/color_stripe = Color(0.83137256, 0.70980394, 0.59607846, 1)
+shader_parameter/shine_progress = 0.0
 shader_parameter/stripe_width = 0.33000001497648
+shader_parameter/softness = 0.08
 shader_parameter/alpha_strength = 0.50000002375
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5oy3j"]
+shader = ExtResource("10_6u6me")
+shader_parameter/color_gap = Color(0, 0, 0, 0)
+shader_parameter/color_stripe = Color(0.83137256, 0.70980394, 0.59607846, 1)
+shader_parameter/shine_progress = 0.0
+shader_parameter/stripe_width = 1.0
+shader_parameter/softness = 0.08
+shader_parameter/alpha_strength = 1.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sygfx"]
 size = Vector2(192, 314)
@@ -307,16 +315,28 @@ metadata/_edit_lock_ = true
 
 [node name="Health" type="Node2D" parent="All Visuals/StatsRoot" unique_id=1874810312]
 
-[node name="HltLabelSprite" type="RichTextLabel" parent="All Visuals/StatsRoot/Health" unique_id=1078005688]
-visible = false
-material = SubResource("ShaderMaterial_6u6me")
-offset_left = 20.0
-offset_top = 93.0
+[node name="HltLabel" type="RichTextLabel" parent="All Visuals/StatsRoot/Health" unique_id=543378412]
+offset_left = 20.000002
+offset_top = 93.00001
 offset_right = 59.0
 offset_bottom = 129.0
 theme_override_colors/default_color = Color(0.9137255, 0.8392157, 0.77254903, 1)
 theme_override_colors/font_outline_color = Color(1.8049032e-08, 0.06382069, 0.08081173, 1)
 theme_override_constants/outline_size = 7
+theme_override_font_sizes/normal_font_size = 25
+text = "0
+"
+autowrap_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HltLabelSprite" type="RichTextLabel" parent="All Visuals/StatsRoot/Health" unique_id=1078005688]
+material = SubResource("ShaderMaterial_6u6me")
+offset_left = 19.708029
+offset_top = 92.70073
+offset_right = 58.70803
+offset_bottom = 128.70073
+theme_override_colors/default_color = Color(0.9137255, 0.8392157, 0.77254903, 1)
 theme_override_font_sizes/normal_font_size = 25
 text = "0
 "
@@ -333,15 +353,27 @@ texture = ExtResource("15_xquhr")
 
 [node name="AttackRoot" type="Node2D" parent="All Visuals/StatsRoot" unique_id=295113057]
 
+[node name="AtkLabel" type="RichTextLabel" parent="All Visuals/StatsRoot/AttackRoot" unique_id=1936605290]
+offset_left = -60.000004
+offset_top = 93.00001
+offset_right = -21.000004
+offset_bottom = 129.0
+theme_override_colors/default_color = Color(0.9137255, 0.8392157, 0.77254903, 1)
+theme_override_colors/font_outline_color = Color(1.8049032e-08, 0.06382069, 0.08081173, 1)
+theme_override_constants/outline_size = 7
+theme_override_font_sizes/normal_font_size = 25
+text = "1"
+autowrap_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="AtkLabelSprite" type="RichTextLabel" parent="All Visuals/StatsRoot/AttackRoot" unique_id=877409568]
-visible = false
+material = SubResource("ShaderMaterial_5oy3j")
 offset_left = -60.0
 offset_top = 93.0
 offset_right = -21.0
 offset_bottom = 129.0
 theme_override_colors/default_color = Color(0.9137255, 0.8392157, 0.77254903, 1)
-theme_override_colors/font_outline_color = Color(1.8049032e-08, 0.06382069, 0.08081173, 1)
-theme_override_constants/outline_size = 7
 theme_override_font_sizes/normal_font_size = 25
 text = "1"
 autowrap_mode = 2
@@ -395,9 +427,9 @@ ant_red_flash_overlay = NodePath("../../All Visuals/AntArtRoot/AntImageRoot/AntR
 
 [node name="CardTextFeedback" type="Node" parent="Feedback" unique_id=1198356074 node_paths=PackedStringArray("health_label", "health_stripe_label", "attack_label", "attack_stripe_label")]
 script = ExtResource("14_u6lin")
-health_label = NodePath("")
+health_label = NodePath("../../All Visuals/StatsRoot/Health/HltLabel")
 health_stripe_label = NodePath("../../All Visuals/StatsRoot/Health/HltLabelSprite")
-attack_label = NodePath("")
+attack_label = NodePath("../../All Visuals/StatsRoot/AttackRoot/AtkLabel")
 attack_stripe_label = NodePath("../../All Visuals/StatsRoot/AttackRoot/AtkLabelSprite")
 vertical_float_height = 2.0
 vertical_float_time = 20.0
@@ -408,6 +440,7 @@ rotation_time = 10.0
 [node name="CardStatVisualFeedback" type="Node" parent="Feedback" unique_id=450599865 node_paths=PackedStringArray("attack_stripe_label")]
 script = ExtResource("17_wcpnj")
 attack_stripe_label = NodePath("../../All Visuals/StatsRoot/AttackRoot/AtkLabelSprite")
+attack_buffed_shader_delay = 0.0
 
 [node name="CardMutationFeedback" type="Node" parent="Feedback" unique_id=1877211443]
 
@@ -434,8 +467,12 @@ feedback_router = NodePath("../CardFeedbackRouter")
 
 [node name="CardTextColor" type="Node" parent="Feedback" unique_id=2023290218 node_paths=PackedStringArray("attack_label", "health_label")]
 script = ExtResource("22_5oy3j")
-attack_label = NodePath("")
-health_label = NodePath("")
+attack_label = NodePath("../../All Visuals/StatsRoot/AttackRoot/AtkLabel")
+attack_idle_color = Color(0.83137256, 0.70980394, 0.59607846, 1)
+attack_buffed_color = Color(0.83137256, 0.70980394, 0.59607846, 1)
+health_label = NodePath("../../All Visuals/StatsRoot/Health/HltLabel")
+health_idle_color = Color(0.83137256, 0.70980394, 0.59607846, 1)
+health_buffed_color = Color(0.83137256, 0.70980394, 0.59607846, 1)
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=437622670]
 stream = SubResource("AudioStream_f223l")
