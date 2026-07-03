@@ -21,7 +21,6 @@
 [ext_resource type="Texture2D" uid="uid://ck6mq3fsy4ld4" path="res://Revamp/Icons/StatUpIcon-removebg-preview.png" id="16_u6lin"]
 [ext_resource type="Script" uid="uid://csugd7tcydcc5" path="res://Revamp/Card/NewCardFeedback/CardStatVisualFeedback.gd" id="17_wcpnj"]
 [ext_resource type="Script" uid="uid://bri6km7k5xvsf" path="res://Revamp/Card/NewCardFeedback/CardMotionFeedback.gd" id="18_lu6qf"]
-[ext_resource type="Script" uid="uid://bqkxr66j4fgvx" path="res://Revamp/Card/NewCardFeedback/CardStatColor.gd" id="22_5oy3j"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_uw526"]
 
@@ -105,11 +104,21 @@ corner_detail = 1
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_6u6me"]
 shader = ExtResource("10_6u6me")
 shader_parameter/color_gap = Color(0.83137256, 0.70980394, 0.59607846, 0.02745098)
-shader_parameter/color_stripe = Color(1, 0.85, 0.1, 1)
+shader_parameter/color_stripe = Color(0.83137256, 0.70980394, 0.59607846, 1)
 shader_parameter/divisions = 8.0
 shader_parameter/speed = 0.05
 shader_parameter/angle = 1.0
 shader_parameter/stripe_width = 0.33000001497648
+shader_parameter/alpha_strength = 0.50000002375
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wcpnj"]
+shader = ExtResource("10_6u6me")
+shader_parameter/color_gap = Color(0, 0, 0, 0)
+shader_parameter/color_stripe = Color(0.9137255, 0.8392157, 0.77254903, 1)
+shader_parameter/divisions = 8.0
+shader_parameter/speed = 0.05
+shader_parameter/angle = 1.0
+shader_parameter/stripe_width = 1.0
 shader_parameter/alpha_strength = 0.50000002375
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sygfx"]
@@ -203,10 +212,8 @@ metadata/_edit_lock_ = true
 [node name="AntArtBacking" type="Panel" parent="All Visuals/AntArtRoot/AntAreaBackingRoot/Sprial" unique_id=842143543]
 z_index = -9
 layout_mode = 0
-offset_left = 0.14598319
-offset_top = -9.182484
-offset_right = 120.14598
-offset_bottom = 107.81752
+offset_right = 120.0
+offset_bottom = 117.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_5ijxp")
 
 [node name="AntImageRoot" type="Node2D" parent="All Visuals/AntArtRoot" unique_id=718789048]
@@ -307,6 +314,21 @@ metadata/_edit_lock_ = true
 
 [node name="Health" type="Node2D" parent="All Visuals/StatsRoot" unique_id=1874810312]
 
+[node name="HltLabel" type="RichTextLabel" parent="All Visuals/StatsRoot/Health" unique_id=258363822]
+offset_left = 20.0
+offset_top = 93.0
+offset_right = 59.0
+offset_bottom = 129.0
+theme_override_colors/default_color = Color(0.9137255, 0.8392157, 0.77254903, 1)
+theme_override_colors/font_outline_color = Color(1.8049032e-08, 0.06382069, 0.08081173, 1)
+theme_override_constants/outline_size = 7
+theme_override_font_sizes/normal_font_size = 25
+text = "0
+"
+autowrap_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="HltLabelSprite" type="RichTextLabel" parent="All Visuals/StatsRoot/Health" unique_id=1078005688]
 visible = false
 material = SubResource("ShaderMaterial_6u6me")
@@ -333,8 +355,23 @@ texture = ExtResource("15_xquhr")
 
 [node name="AttackRoot" type="Node2D" parent="All Visuals/StatsRoot" unique_id=295113057]
 
+[node name="AtkLabel" type="RichTextLabel" parent="All Visuals/StatsRoot/AttackRoot" unique_id=429625943]
+offset_left = -60.0
+offset_top = 93.0
+offset_right = -21.0
+offset_bottom = 129.0
+theme_override_colors/default_color = Color(0.9137255, 0.8392157, 0.77254903, 1)
+theme_override_colors/font_outline_color = Color(1.8049032e-08, 0.06382069, 0.08081173, 1)
+theme_override_constants/outline_size = 7
+theme_override_font_sizes/normal_font_size = 25
+text = "1"
+autowrap_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="AtkLabelSprite" type="RichTextLabel" parent="All Visuals/StatsRoot/AttackRoot" unique_id=877409568]
 visible = false
+material = SubResource("ShaderMaterial_wcpnj")
 offset_left = -60.0
 offset_top = 93.0
 offset_right = -21.0
@@ -375,7 +412,7 @@ shape = SubResource("RectangleShape2D_sygfx")
 
 [node name="Feedback" type="Node" parent="." unique_id=836987836]
 
-[node name="CardFeedbackRouter" type="Node" parent="Feedback" unique_id=751924610 node_paths=PackedStringArray("sprite_feedback", "text_feedback", "vfx_feedback", "sfx_feedback", "motion_feedback", "stat_visual_feedback", "stat_color")]
+[node name="CardFeedbackRouter" type="Node" parent="Feedback" unique_id=751924610 node_paths=PackedStringArray("sprite_feedback", "text_feedback", "vfx_feedback", "sfx_feedback", "motion_feedback", "stat_visual_feedback")]
 script = ExtResource("14_8h3oo")
 hurt_profile = ExtResource("12_f223l")
 buffed_profile = ExtResource("13_lu6qf")
@@ -385,7 +422,10 @@ vfx_feedback = NodePath("../CardVfxFeedback")
 sfx_feedback = NodePath("../CardSfxFeedback")
 motion_feedback = NodePath("../CardMotionFeedback")
 stat_visual_feedback = NodePath("../CardStatVisualFeedback")
-stat_color = NodePath("../CardTextColor")
+test_old_health = null
+test_new_health = null
+test_old_attack = null
+print_debug = null
 
 [node name="CardSpriteFeedback" type="Node" parent="Feedback" unique_id=1344894730 node_paths=PackedStringArray("ant_image_root", "ant_image", "ant_red_flash_overlay")]
 script = ExtResource("13_q1x5j")
@@ -395,19 +435,28 @@ ant_red_flash_overlay = NodePath("../../All Visuals/AntArtRoot/AntImageRoot/AntR
 
 [node name="CardTextFeedback" type="Node" parent="Feedback" unique_id=1198356074 node_paths=PackedStringArray("health_label", "health_stripe_label", "attack_label", "attack_stripe_label")]
 script = ExtResource("14_u6lin")
-health_label = NodePath("")
+health_label = NodePath("../../All Visuals/StatsRoot/Health/HltLabel")
 health_stripe_label = NodePath("../../All Visuals/StatsRoot/Health/HltLabelSprite")
-attack_label = NodePath("")
+attack_label = NodePath("../../All Visuals/StatsRoot/AttackRoot/AtkLabel")
 attack_stripe_label = NodePath("../../All Visuals/StatsRoot/AttackRoot/AtkLabelSprite")
+idle_enabled = null
 vertical_float_height = 2.0
 vertical_float_time = 20.0
 horizontal_drift_amount = 0.5
+horizontal_drift_time = null
 rotation_amount_degrees = 1.0
 rotation_time = 10.0
+breathing_scale_amount = null
+breathing_scale_time = null
+shadow_color = null
+shadow_offset = null
+print_debug = null
 
-[node name="CardStatVisualFeedback" type="Node" parent="Feedback" unique_id=450599865 node_paths=PackedStringArray("attack_stripe_label")]
+[node name="CardStatVisualFeedback" type="Node" parent="Feedback" unique_id=450599865 node_paths=PackedStringArray("attack_label", "attack_stripe_label")]
 script = ExtResource("17_wcpnj")
+attack_label = NodePath("../../All Visuals/StatsRoot/AttackRoot/AtkLabel")
 attack_stripe_label = NodePath("../../All Visuals/StatsRoot/AttackRoot/AtkLabelSprite")
+apply_persistent_color_to_base_label = true
 
 [node name="CardMutationFeedback" type="Node" parent="Feedback" unique_id=1877211443]
 
@@ -431,11 +480,6 @@ motion_target = NodePath("../../All Visuals")
 [node name="CardFeedbackDebugInput" type="Node" parent="Feedback" unique_id=982081433 node_paths=PackedStringArray("feedback_router")]
 script = ExtResource("15_u6lin")
 feedback_router = NodePath("../CardFeedbackRouter")
-
-[node name="CardTextColor" type="Node" parent="Feedback" unique_id=2023290218 node_paths=PackedStringArray("attack_label", "health_label")]
-script = ExtResource("22_5oy3j")
-attack_label = NodePath("")
-health_label = NodePath("")
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=437622670]
 stream = SubResource("AudioStream_f223l")

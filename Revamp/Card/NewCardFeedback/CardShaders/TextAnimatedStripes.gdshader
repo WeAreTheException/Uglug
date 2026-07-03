@@ -4,10 +4,10 @@ uniform vec4 color_gap : source_color = vec4(0.0, 0.0, 0.0, 0.0);
 uniform vec4 color_stripe : source_color = vec4(1.0, 0.85, 0.1, 1.0);
 
 uniform float divisions = 8.0;
-uniform float speed = 0.45;
-uniform float angle = 0.7854;
+uniform float speed = 0.05;
+uniform float angle = 1.0;
 
-uniform float stripe_width : hint_range(0.01, 1.0) = 0.45;
+uniform float stripe_width : hint_range(0.01, 1.0) = 1.0;
 uniform float alpha_strength : hint_range(0.0, 1.0) = 1.0;
 
 void fragment() {

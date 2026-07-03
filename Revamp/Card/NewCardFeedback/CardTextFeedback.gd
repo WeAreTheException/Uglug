@@ -3,9 +3,11 @@ class_name CardTextFeedback
 
 @export_group("Health Text Reference")
 @export var health_label: RichTextLabel
+@export var health_stripe_label: RichTextLabel
 
 @export_group("Attack Text Reference")
 @export var attack_label: RichTextLabel
+@export var attack_stripe_label: RichTextLabel
 
 @export_group("Idle Levitate")
 @export var idle_enabled: bool = true
@@ -49,13 +51,14 @@ var health_punch_tween: Tween = null
 var health_flicker_tween: Tween = null
 
 var attack_punch_tween: Tween = null
-var attack_flicker_tween: Tween = null
 var attack_motion_tween: Tween = null
 
 
 func _ready() -> void:
 	_cache_health_label()
+	_cache_health_stripe_label()
 	_cache_attack_label()
+	_cache_attack_stripe_label()
 	_apply_shadow()
 
 
@@ -79,14 +82,15 @@ func play_hurt_health_feedback(
 		_debug_print("Missing profile.")
 		return
 
-	health_label.text = str(old_health)
+	_set_health_text(str(old_health))
 
 	play_health_punch(profile)
 	_play_health_flicker(profile)
 
 	await get_tree().create_timer(profile.delay_before_number_change).timeout
 
-	health_label.text = str(new_health)
+	_set_health_text(str(new_health))
+	_sync_health_stripe_to_health()
 
 
 func play_buffed_attack_feedback(
@@ -103,15 +107,19 @@ func play_buffed_attack_feedback(
 		return
 
 	_kill_attack_tweens()
+	_hide_attack_stripe_during_animation()
 
-	attack_label.text = str(old_attack)
+	_set_attack_text(str(old_attack))
 	attack_extra_offset = Vector2.ZERO
 	attack_punch_scale = profile.buff_neutral_scale
-	attack_label.modulate = attack_start_modulate
 	attack_label.pivot_offset = attack_label.size * 0.5
 
-	_play_attack_buff_flicker(profile)
+	_sync_attack_stripe_to_attack()
+	_hide_attack_stripe_during_animation()
+
 	await _play_attack_buff_up_down_value_change(old_attack, new_attack, profile)
+
+	_hide_attack_stripe_during_animation()
 
 
 func play_health_punch(profile: CardFeedbackProfile) -> void:
@@ -166,10 +174,6 @@ func reset_text_feedback() -> void:
 		attack_punch_tween.kill()
 		attack_punch_tween = null
 
-	if attack_flicker_tween != null:
-		attack_flicker_tween.kill()
-		attack_flicker_tween = null
-
 	if attack_motion_tween != null:
 		attack_motion_tween.kill()
 		attack_motion_tween = null
@@ -190,6 +194,10 @@ func reset_text_feedback() -> void:
 		attack_label.scale = attack_start_scale
 		attack_label.modulate = attack_start_modulate
 
+	_sync_health_stripe_to_health()
+	_sync_attack_stripe_to_attack()
+	_hide_attack_stripe_during_animation()
+
 
 func _cache_health_label() -> void:
 	if health_label == null:
@@ -201,6 +209,17 @@ func _cache_health_label() -> void:
 	health_start_scale = health_label.scale
 	health_start_modulate = health_label.modulate
 	health_label.pivot_offset = health_label.size * 0.5
+
+
+func _cache_health_stripe_label() -> void:
+	if health_stripe_label == null:
+		return
+
+	if health_label == null:
+		return
+
+	health_stripe_label.pivot_offset = health_label.pivot_offset
+	_sync_health_stripe_to_health()
 
 
 func _cache_attack_label() -> void:
@@ -215,6 +234,18 @@ func _cache_attack_label() -> void:
 	attack_label.pivot_offset = attack_label.size * 0.5
 
 
+func _cache_attack_stripe_label() -> void:
+	if attack_stripe_label == null:
+		return
+
+	if attack_label == null:
+		return
+
+	attack_stripe_label.pivot_offset = attack_label.pivot_offset
+	_sync_attack_stripe_to_attack()
+	_hide_attack_stripe_during_animation()
+
+
 func _update_health_idle() -> void:
 	if health_label == null:
 		return
@@ -223,6 +254,8 @@ func _update_health_idle() -> void:
 		health_label.position = health_start_position
 		health_label.rotation = health_start_rotation
 		health_label.scale = health_start_scale * health_punch_scale
+
+		_sync_health_stripe_to_health()
 		return
 
 	var vertical_wave := sin((time_passed / vertical_float_time) * TAU)
@@ -239,6 +272,8 @@ func _update_health_idle() -> void:
 	health_label.rotation = health_start_rotation + rotation_offset
 	health_label.scale = health_start_scale * scale_multiplier * health_punch_scale
 
+	_sync_health_stripe_to_health()
+
 
 func _update_attack_idle() -> void:
 	if attack_label == null:
@@ -248,6 +283,8 @@ func _update_attack_idle() -> void:
 		attack_label.position = attack_start_position + attack_extra_offset
 		attack_label.rotation = attack_start_rotation
 		attack_label.scale = attack_start_scale * attack_punch_scale
+
+		_sync_attack_stripe_to_attack()
 		return
 
 	var vertical_wave := sin((time_passed / vertical_float_time) * TAU)
@@ -264,6 +301,8 @@ func _update_attack_idle() -> void:
 	attack_label.rotation = attack_start_rotation + rotation_offset
 	attack_label.scale = attack_start_scale * scale_multiplier * attack_punch_scale
 
+	_sync_attack_stripe_to_attack()
+
 
 func _play_attack_buff_up_down_value_change(
 	old_attack: int,
@@ -273,9 +312,11 @@ func _play_attack_buff_up_down_value_change(
 	if attack_label == null:
 		return
 
-	attack_label.text = str(old_attack)
+	_set_attack_text(str(old_attack))
 	attack_punch_scale = profile.buff_neutral_scale
 	attack_extra_offset = Vector2.ZERO
+	_sync_attack_stripe_to_attack()
+	_hide_attack_stripe_during_animation()
 
 	attack_motion_tween = create_tween()
 	attack_motion_tween.set_parallel(true)
@@ -315,8 +356,10 @@ func _play_attack_buff_up_down_value_change(
 
 	await attack_motion_tween.finished
 
-	attack_label.text = str(new_attack)
+	_set_attack_text(str(new_attack))
 	attack_punch_scale = profile.buff_down_pop_scale
+	_sync_attack_stripe_to_attack()
+	_hide_attack_stripe_during_animation()
 
 	attack_motion_tween = create_tween()
 	attack_motion_tween.set_parallel(true)
@@ -357,41 +400,8 @@ func _play_attack_buff_up_down_value_change(
 	await attack_motion_tween.finished
 
 	attack_motion_tween = null
-
-
-func _play_attack_buff_flicker(profile: CardFeedbackProfile) -> void:
-	if attack_label == null:
-		return
-
-	if attack_flicker_tween != null:
-		attack_flicker_tween.kill()
-
-	attack_flicker_tween = create_tween()
-
-	var total_buff_time: float = (
-		profile.buff_up_time
-		+ profile.buff_top_pause_time
-		+ profile.buff_pop_settle_time
-		+ profile.buff_down_time
-	)
-
-	var safe_flicker_count: int = max(profile.buff_flicker_count, 1)
-	var flicker_step_duration: float = total_buff_time / float(safe_flicker_count * 2)
-
-	for i in safe_flicker_count:
-		attack_flicker_tween.tween_property(
-			attack_label,
-			"modulate",
-			profile.buff_flicker_color,
-			flicker_step_duration
-		)
-
-		attack_flicker_tween.tween_property(
-			attack_label,
-			"modulate",
-			attack_start_modulate,
-			flicker_step_duration
-		)
+	_sync_attack_stripe_to_attack()
+	_hide_attack_stripe_during_animation()
 
 
 func _play_health_flicker(profile: CardFeedbackProfile) -> void:
@@ -422,14 +432,65 @@ func _play_health_flicker(profile: CardFeedbackProfile) -> void:
 		)
 
 
+func _set_health_text(new_text: String) -> void:
+	if health_label != null:
+		health_label.text = new_text
+
+	if health_stripe_label != null:
+		health_stripe_label.text = new_text
+
+
+func _set_attack_text(new_text: String) -> void:
+	if attack_label != null:
+		attack_label.text = new_text
+
+	if attack_stripe_label != null:
+		attack_stripe_label.text = new_text
+
+
+func _sync_health_stripe_to_health() -> void:
+	if health_label == null:
+		return
+
+	if health_stripe_label == null:
+		return
+
+	health_stripe_label.text = health_label.text
+	health_stripe_label.position = health_label.position
+	health_stripe_label.rotation = health_label.rotation
+	health_stripe_label.scale = health_label.scale
+	health_stripe_label.size = health_label.size
+	health_stripe_label.pivot_offset = health_label.pivot_offset
+	health_stripe_label.modulate = Color.WHITE
+
+
+func _sync_attack_stripe_to_attack() -> void:
+	if attack_label == null:
+		return
+
+	if attack_stripe_label == null:
+		return
+
+	attack_stripe_label.text = attack_label.text
+	attack_stripe_label.position = attack_label.position
+	attack_stripe_label.rotation = attack_label.rotation
+	attack_stripe_label.scale = attack_label.scale
+	attack_stripe_label.size = attack_label.size
+	attack_stripe_label.pivot_offset = attack_label.pivot_offset
+	attack_stripe_label.modulate = Color.WHITE
+
+
+func _hide_attack_stripe_during_animation() -> void:
+	if attack_stripe_label == null:
+		return
+
+	attack_stripe_label.visible = false
+
+
 func _kill_attack_tweens() -> void:
 	if attack_punch_tween != null:
 		attack_punch_tween.kill()
 		attack_punch_tween = null
-
-	if attack_flicker_tween != null:
-		attack_flicker_tween.kill()
-		attack_flicker_tween = null
 
 	if attack_motion_tween != null:
 		attack_motion_tween.kill()
@@ -442,10 +503,20 @@ func _apply_shadow() -> void:
 		health_label.add_theme_constant_override("shadow_offset_x", shadow_offset.x)
 		health_label.add_theme_constant_override("shadow_offset_y", shadow_offset.y)
 
+	if health_stripe_label != null:
+		health_stripe_label.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0))
+		health_stripe_label.add_theme_constant_override("shadow_offset_x", 0)
+		health_stripe_label.add_theme_constant_override("shadow_offset_y", 0)
+
 	if attack_label != null:
 		attack_label.add_theme_color_override("font_shadow_color", shadow_color)
 		attack_label.add_theme_constant_override("shadow_offset_x", shadow_offset.x)
 		attack_label.add_theme_constant_override("shadow_offset_y", shadow_offset.y)
+
+	if attack_stripe_label != null:
+		attack_stripe_label.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0))
+		attack_stripe_label.add_theme_constant_override("shadow_offset_x", 0)
+		attack_stripe_label.add_theme_constant_override("shadow_offset_y", 0)
 
 
 func _debug_print(message: String) -> void:

@@ -12,4 +12,7 @@ buff_down_time = 0.24
 buff_up_scale = Vector2(1.2, 1.2)
 buff_down_pop_scale = Vector2(1.25, 1.25)
 buff_neutral_scale = Vector2(1.2, 1.2)
+buff_flicker_count = 0
+buff_flicker_color = Color(0.83137256, 0.70980394, 0.59607846, 1)
+persistent_buff_glow_strength = 0.0
 metadata/_custom_type_script = "uid://ckpedyhdhgeg1"

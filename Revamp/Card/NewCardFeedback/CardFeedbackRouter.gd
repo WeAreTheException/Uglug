@@ -9,6 +9,8 @@ class_name CardFeedbackRouter
 @export var vfx_feedback: CardVfxFeedback
 @export var sfx_feedback: CardSfxFeedback
 @export var motion_feedback: CardMotionFeedback
+@export var stat_visual_feedback: CardStatVisualFeedback
+@export var stat_color: CardStatColor
 
 @export var test_old_health: int = 1
 @export var test_new_health: int = 0
@@ -52,6 +54,12 @@ func play_buffed_feedback() -> void:
 		_debug_print("Missing buffed_profile.")
 		return
 
+	if stat_visual_feedback != null:
+		stat_visual_feedback.play_attack_buffed_visual_with_delay()
+
+	if stat_color != null:
+		stat_color.apply_attack_idle_color()
+
 	if text_feedback != null:
 		await text_feedback.play_buffed_attack_feedback(
 			test_old_attack,
@@ -59,9 +67,18 @@ func play_buffed_feedback() -> void:
 			buffed_profile
 		)
 
+	if stat_color != null:
+		stat_color.apply_attack_buffed_color()
+
 
 func play_debuffed_feedback() -> void:
 	_debug_print("debuffed feedback")
+
+	if stat_visual_feedback != null:
+		stat_visual_feedback.clear_attack_buffed_visual()
+
+	if stat_color != null:
+		stat_color.apply_attack_debuffed_color()
 
 
 func play_attack_feedback() -> void:
@@ -78,6 +95,12 @@ func play_mutation_activated_feedback() -> void:
 
 func reset_all_feedback() -> void:
 	_debug_print("reset card visuals")
+
+	if stat_visual_feedback != null:
+		stat_visual_feedback.reset_stat_visuals()
+
+	if stat_color != null:
+		stat_color.reset_all_stat_colors()
 
 	if motion_feedback != null:
 		motion_feedback.reset_motion_feedback()
