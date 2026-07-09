@@ -5,27 +5,31 @@
 [ext_resource type="Script" uid="uid://cafcxy3c8eco5" path="res://Revamp/CardVisuals/CardMainVisuals.gd" id="2_a8btx"]
 [ext_resource type="Shader" uid="uid://dlpmxqotruebp" path="res://Cards/BackInHandInvert.gdshader" id="2_v8bk3"]
 [ext_resource type="Texture2D" uid="uid://bt8o5l5yrmihl" path="res://Art/AntBack/CardBackground.png" id="3_4t10r"]
-[ext_resource type="Shader" path="res://Balatro.gdshader" id="5_0pq8k"]
+[ext_resource type="Shader" uid="uid://n3l4egojry4s" path="res://Balatro.gdshader" id="5_0pq8k"]
+[ext_resource type="Texture2D" uid="uid://bw582tov024yq" path="res://Art/NewCardLayout/CardBack.png" id="6_b5mm6"]
 [ext_resource type="Shader" uid="uid://clsxlhuocr8hn" path="res://Cards/BackgroundSlide.gdshader" id="6_g780n"]
 [ext_resource type="Shader" uid="uid://ck3gs6whq2t57" path="res://Cards/AntSway.gdshader" id="7_v8bk3"]
 [ext_resource type="Texture2D" uid="uid://b8a1gr84h2iie" path="res://Art/Ants/WorkerAnt_Standalone.png" id="8_wvfxw"]
 [ext_resource type="Texture2D" uid="uid://c4v3je4ncss3j" path="res://Art/WorkerAnt_Test_Alpha.png" id="9_d8086"]
 [ext_resource type="Texture2D" uid="uid://dv7v478yhlcrv" path="res://Art/CardFog.png" id="10_b5mm6"]
-[ext_resource type="Texture2D" uid="uid://wak6qieqhlsb" path="res://Art/CardBorder.png" id="11_0lj05"]
 [ext_resource type="Script" uid="uid://ca4kswglka2cm" path="res://Revamp/CardVisuals/CardMutationVisuals.gd" id="12_tt364"]
+[ext_resource type="Texture2D" uid="uid://buujc1obk1mmn" path="res://Art/NewCardLayout/CardBorder.png" id="13_0lj05"]
 [ext_resource type="Shader" uid="uid://dt77y6ccd1hxy" path="res://Cards/SigilOutline.gdshader" id="13_8ia1o"]
 [ext_resource type="Script" uid="uid://bq48m50dnrwib" path="res://Revamp/Card/CardScripts/StatsVisual.gd" id="15_5t0dk"]
 [ext_resource type="Script" uid="uid://dvwq7j2ojg3d6" path="res://Revamp/MutationTooltTip/SigilSlot.gd" id="15_d8086"]
 [ext_resource type="Texture2D" uid="uid://bdi7eyt5cmur0" path="res://Art/Numbers/1.png" id="16_4yngs"]
+[ext_resource type="Texture2D" uid="uid://dywkon27hwxxd" path="res://Art/NewCardLayout/KeyCap.png" id="17_0lj05"]
 [ext_resource type="Texture2D" uid="uid://clk0ori80b5gg" path="res://Art/Numbers/2.png" id="17_8nq5a"]
 [ext_resource type="Texture2D" uid="uid://bnj2kyvgakfq3" path="res://Art/Numbers/3.png" id="18_8aa6v"]
 [ext_resource type="Script" uid="uid://bblsossrbyhpa" path="res://Revamp/MutationTooltTip/SigilInput.gd" id="18_b5mm6"]
 [ext_resource type="Texture2D" uid="uid://4f3gn63utyru" path="res://Art/Numbers/4.png" id="19_kawbk"]
 [ext_resource type="Texture2D" uid="uid://c1fev2dw4ehne" path="res://Art/Numbers/5.png" id="20_6t487"]
 [ext_resource type="Texture2D" uid="uid://bq8esv4xpuv68" path="res://Art/Numbers/6.png" id="21_457k1"]
-[ext_resource type="Texture2D" uid="uid://d1ypj3toan6r1" path="res://Art/Blood.png" id="22_fl5ur"]
 [ext_resource type="FontFile" uid="uid://m0pv3sk8qbih" path="res://Art/AntBack/antrf___.ttf" id="22_g780n"]
 [ext_resource type="Script" uid="uid://dkvlofq6d7n7m" path="res://Revamp/CardVisuals/ViewPortDisplayController.gd" id="24_4t10r"]
+[ext_resource type="Texture2D" uid="uid://c5oq3r1nv4cur" path="res://Art/NewCardLayout/StatPlate.png" id="24_tt364"]
+[ext_resource type="Texture2D" uid="uid://bidvj4xmoof1p" path="res://Art/NewCardLayout/NamePlate.png" id="25_8ia1o"]
+[ext_resource type="Texture2D" uid="uid://c3x052yyviqkg" path="res://Art/NewCardLayout/SacrificeCost.png" id="27_3pvvv"]
 [ext_resource type="PackedScene" uid="uid://bocxu8xu5hh8b" path="res://Mutations/ToolTip/MutationToolTip.tscn" id="28_v8bk3"]
 [ext_resource type="Texture2D" uid="uid://cgs5k6p3mggyf" path="res://Art/Ants/AntSprite.png" id="29_wvfxw"]
 
@@ -166,54 +170,58 @@ offset = Vector2(0, 25)
 
 [node name="CardImage" type="Sprite2D" parent="SubViewport/Visuals/MainVisuals" unique_id=1611913013]
 z_index = 1
-scale = Vector2(0.14520305, 0.14520305)
-texture = ExtResource("3_4t10r")
+position = Vector2(0.87183005, 2.500009)
+scale = Vector2(0.14520305, 0.14784947)
+texture = ExtResource("6_b5mm6")
 
 [node name="Backgroundatro" type="TextureRect" parent="SubViewport/Visuals/MainVisuals" unique_id=620924349]
 z_index = 2
 material = SubResource("ShaderMaterial_483al")
-offset_left = -85.99999
-offset_top = -134.99998
-offset_right = 87.00001
-offset_bottom = 135.00002
+offset_left = -80.00001
+offset_top = -118.75001
+offset_right = 81.25001
+offset_bottom = 120.00002
 texture = SubResource("GradientTexture1D_3q3n8")
 expand_mode = 1
+metadata/_edit_lock_ = true
 
 [node name="BackgroundDots" type="Panel" parent="SubViewport/Visuals/MainVisuals" unique_id=1188586363]
 z_index = 3
 material = SubResource("ShaderMaterial_3380x")
-offset_left = -85.99999
-offset_top = -134.99998
-offset_right = 87.00001
-offset_bottom = 135.00002
+offset_left = -80.00001
+offset_top = -118.75
+offset_right = 81.25001
+offset_bottom = 120.000015
+metadata/_edit_lock_ = true
 
 [node name="Ant" type="Sprite2D" parent="SubViewport/Visuals/MainVisuals" unique_id=1609290713]
 z_index = 4
 material = SubResource("ShaderMaterial_587ti")
-position = Vector2(0, 2.3841856e-06)
-scale = Vector2(0.14500003, 0.14516129)
+position = Vector2(-2.861023e-06, -3.7499993)
+scale = Vector2(0.12663615, 0.12096775)
 texture = ExtResource("8_wvfxw")
 metadata/_edit_lock_ = true
 
 [node name="Antdows" type="Sprite2D" parent="SubViewport/Visuals/MainVisuals" unique_id=33299499]
 z_index = 5
 material = SubResource("ShaderMaterial_3q3n8")
-position = Vector2(0, 2.3841856e-06)
-scale = Vector2(0.14500001, 0.14516129)
+position = Vector2(-5.6771965, -1.9422016)
+scale = Vector2(0.13477083, 0.12836023)
 texture = ExtResource("8_wvfxw")
 offset = Vector2(45, 20)
 
 [node name="CardFog" type="Sprite2D" parent="SubViewport/Visuals/MainVisuals" unique_id=908625951]
 z_index = 6
-position = Vector2(9.226796e-07, 0.49998945)
-scale = Vector2(0.145, 0.14462364)
+position = Vector2(0.62500095, 1.8750024)
+scale = Vector2(0.134375, 0.1297043)
 texture = ExtResource("10_b5mm6")
+metadata/_edit_lock_ = true
 
 [node name="CardBorder" type="Sprite2D" parent="SubViewport/Visuals/MainVisuals" unique_id=182582064]
 z_index = 7
-position = Vector2(2.6702883e-05, -3.051758e-05)
-scale = Vector2(0.14500007, 0.14516133)
-texture = ExtResource("11_0lj05")
+position = Vector2(0.8718567, 2.5000188)
+scale = Vector2(0.14500007, 0.14784949)
+texture = ExtResource("13_0lj05")
 
 [node name="MutationVisuals" type="Node2D" parent="SubViewport/Visuals" unique_id=319373443 node_paths=PackedStringArray("base_sigil_container", "additional_sigil_container")]
 z_index = 8
@@ -245,9 +253,10 @@ scale = Vector2(4.4620237, 4.4620233)
 metadata/_edit_lock_ = true
 
 [node name="AdditonalMutation" type="Node2D" parent="SubViewport/Visuals/MutationVisuals/Mutations" unique_id=100591237]
+position = Vector2(0, 120.00002)
 
 [node name="SigilSlot" type="Node2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation" unique_id=264549928 node_paths=PackedStringArray("sprite", "input")]
-position = Vector2(-64.25001, -76.00001)
+position = Vector2(-46.250008, 78.75001)
 scale = Vector2(0.12699999, 0.12399998)
 script = ExtResource("15_d8086")
 sprite = NodePath("Additional1")
@@ -256,6 +265,11 @@ hover_outline_color = Color(0.77254903, 0.47058824, 0.6666667, 1)
 pressed_outline_color = Color(0.105882354, 0.09019608, 0.08627451, 1)
 metadata/_edit_lock_ = true
 
+[node name="KeyCap1" type="Sprite2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation/SigilSlot" unique_id=108464995]
+position = Vector2(9.842512, -937.50024)
+scale = Vector2(1.14, 1.139)
+texture = ExtResource("17_0lj05")
+
 [node name="Additional1" type="Sprite2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation/SigilSlot" unique_id=185873266]
 material = SubResource("ShaderMaterial_0l3ys")
 position = Vector2(0, 6.1035156e-05)
@@ -263,7 +277,7 @@ scale = Vector2(0.9999999, 0.9999998)
 metadata/_edit_lock_ = true
 
 [node name="SigilSlot2" type="Node2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation" unique_id=1744429033 node_paths=PackedStringArray("sprite", "input")]
-position = Vector2(66, 0)
+position = Vector2(0, 78.750015)
 scale = Vector2(0.128, 0.128)
 script = ExtResource("15_d8086")
 sprite = NodePath("Additional2")
@@ -272,13 +286,18 @@ hover_outline_color = Color(0.77254903, 0.47058824, 0.6666667, 1)
 pressed_outline_color = Color(0.105882354, 0.09019608, 0.08627451, 1)
 metadata/_edit_lock_ = true
 
+[node name="KeyCap2" type="Sprite2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation/SigilSlot2" unique_id=715435997]
+position = Vector2(9.765631, -908.20325)
+scale = Vector2(1.14, 1.143)
+texture = ExtResource("17_0lj05")
+
 [node name="Additional2" type="Sprite2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation/SigilSlot2" unique_id=1787102359]
 material = SubResource("ShaderMaterial_l5g41")
 scale = Vector2(1, 0.99999994)
 metadata/_edit_lock_ = true
 
 [node name="SigilSlot3" type="Node2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation" unique_id=828449294 node_paths=PackedStringArray("sprite", "input")]
-position = Vector2(-63.750015, 41.25)
+position = Vector2(45.000008, 78.75)
 scale = Vector2(0.128, 0.12799999)
 script = ExtResource("15_d8086")
 sprite = NodePath("Additional3")
@@ -286,6 +305,11 @@ input = NodePath("../../../../../../AddSigil3")
 hover_outline_color = Color(0.77254903, 0.47058824, 0.6666667, 1)
 pressed_outline_color = Color(0.105882354, 0.09019608, 0.08627451, 1)
 metadata/_edit_lock_ = true
+
+[node name="KeyCap3" type="Sprite2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation/SigilSlot3" unique_id=305860130]
+position = Vector2(9.765625, -908.2033)
+scale = Vector2(1.14, 1.114)
+texture = ExtResource("17_0lj05")
 
 [node name="Additional3" type="Sprite2D" parent="SubViewport/Visuals/MutationVisuals/Mutations/AdditonalMutation/SigilSlot3" unique_id=259294942]
 material = SubResource("ShaderMaterial_hdaxf")
@@ -303,23 +327,35 @@ name_label = NodePath("Name")
 attack_textures = Array[Texture2D]([ExtResource("16_4yngs"), ExtResource("17_8nq5a"), ExtResource("18_8aa6v"), ExtResource("19_kawbk"), ExtResource("20_6t487"), ExtResource("21_457k1")])
 health_textures = Array[Texture2D]([ExtResource("16_4yngs"), ExtResource("17_8nq5a"), ExtResource("18_8aa6v"), ExtResource("19_kawbk"), ExtResource("20_6t487"), ExtResource("21_457k1")])
 
+[node name="StatPlate" type="Sprite2D" parent="SubViewport/Visuals/StatsVisual" unique_id=2089520159]
+position = Vector2(-9.536743e-07, 3.749998)
+scale = Vector2(0.15000002, 0.14717741)
+texture = ExtResource("24_tt364")
+metadata/_edit_lock_ = true
+
+[node name="NamePlate" type="Sprite2D" parent="SubViewport/Visuals/StatsVisual" unique_id=734399055]
+position = Vector2(2.4999998, 1.2499957)
+scale = Vector2(0.14687498, 0.14516129)
+texture = ExtResource("25_8ia1o")
+metadata/_edit_lock_ = true
+
 [node name="Attack" type="Sprite2D" parent="SubViewport/Visuals/StatsVisual" unique_id=1626750204]
-position = Vector2(-69.4375, 89)
+position = Vector2(-43.749996, 122.499985)
 scale = Vector2(0.14727725, 0.14345993)
 
 [node name="Health" type="Sprite2D" parent="SubViewport/Visuals/StatsVisual" unique_id=582152933]
-position = Vector2(66, 111.00001)
+position = Vector2(42.499996, 122.499985)
 scale = Vector2(0.14727725, 0.14345993)
 
 [node name="Name" type="RichTextLabel" parent="SubViewport/Visuals/StatsVisual" unique_id=37488759]
 anchors_preset = -1
 offset_left = -80.0
-offset_top = -126.25
+offset_top = -131.25
 offset_right = 76.0
-offset_bottom = -101.25
+offset_bottom = -106.25
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_colors/default_color = Color(0.16206557, 0.1620656, 0.16206557, 1)
+theme_override_colors/default_color = Color(0.96, 0.89471996, 0.79679996, 1)
 theme_override_fonts/normal_font = ExtResource("22_g780n")
 theme_override_font_sizes/normal_font_size = 18
 theme_override_font_sizes/bold_font_size = 18
@@ -334,27 +370,27 @@ metadata/_edit_use_anchors_ = true
 
 [node name="Blood" type="Sprite2D" parent="SubViewport/Visuals/StatsVisual/Cost" unique_id=1132072044]
 z_index = 100
-position = Vector2(71, -83)
-scale = Vector2(0.157, 0.144)
-texture = ExtResource("22_fl5ur")
+position = Vector2(-76.249985, -93.75)
+scale = Vector2(0.1, 0.092)
+texture = ExtResource("27_3pvvv")
 
 [node name="Blood2" type="Sprite2D" parent="SubViewport/Visuals/StatsVisual/Cost" unique_id=1694147808]
 z_index = 100
-position = Vector2(55, -83)
-scale = Vector2(0.157, 0.144)
-texture = ExtResource("22_fl5ur")
+position = Vector2(-76.24999, -70)
+scale = Vector2(0.1, 0.092)
+texture = ExtResource("27_3pvvv")
 
 [node name="Blood3" type="Sprite2D" parent="SubViewport/Visuals/StatsVisual/Cost" unique_id=1533755818]
 z_index = 100
-position = Vector2(63, -64)
-scale = Vector2(0.157, 0.144)
-texture = ExtResource("22_fl5ur")
+position = Vector2(-76.25, -46.25)
+scale = Vector2(0.1, 0.092)
+texture = ExtResource("27_3pvvv")
 
 [node name="Blood4" type="Sprite2D" parent="SubViewport/Visuals/StatsVisual/Cost" unique_id=1261569810]
 z_index = 100
-position = Vector2(47, -64)
-scale = Vector2(0.157, 0.144)
-texture = ExtResource("22_fl5ur")
+position = Vector2(-76.24999, -23.75)
+scale = Vector2(0.1, 0.092)
+texture = ExtResource("27_3pvvv")
 
 [node name="ViewportDisplayController" type="Node2D" parent="." unique_id=1630220938 node_paths=PackedStringArray("sub_viewport", "viewport_sprite")]
 script = ExtResource("24_4t10r")
@@ -379,36 +415,38 @@ shape = SubResource("RectangleShape2D_4t10r")
 metadata/_edit_lock_ = true
 
 [node name="AddSigil1" type="Area2D" parent="." unique_id=178151423]
-position = Vector2(-50, -59)
+position = Vector2(36, 174.00002)
 scale = Vector2(0.02276993, 0.02223206)
 script = ExtResource("18_b5mm6")
 metadata/_edit_lock_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AddSigil1" unique_id=31178376]
 position = Vector2(7.6293945e-06, 6.580353e-05)
+scale = Vector2(0.9, 0.9)
 shape = SubResource("RectangleShape2D_4t10r")
 metadata/_edit_lock_ = true
 
 [node name="AddSigil2" type="Area2D" parent="." unique_id=2022022863]
-position = Vector2(50, 7.6293945e-06)
+position = Vector2(73, 174)
 scale = Vector2(0.022949226, 0.022949222)
 script = ExtResource("18_b5mm6")
 metadata/_edit_lock_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AddSigil2" unique_id=889317424]
-position = Vector2(0, 52.29004)
+position = Vector2(0, 0.00015640259)
+scale = Vector2(0.9, 0.9)
 shape = SubResource("RectangleShape2D_4t10r")
 metadata/_edit_lock_ = true
 
 [node name="AddSigil3" type="Area2D" parent="." unique_id=1029004044]
-position = Vector2(-50.000004, 33)
+position = Vector2(109.00001, 174)
 scale = Vector2(0.02294923, 0.022949226)
 script = ExtResource("18_b5mm6")
 metadata/_edit_lock_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AddSigil3" unique_id=1350806003]
 position = Vector2(0.00018310547, 0)
-scale = Vector2(1, 1.0000001)
+scale = Vector2(0.9, 0.9)
 shape = SubResource("RectangleShape2D_4t10r")
 metadata/_edit_lock_ = true
 
