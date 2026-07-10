@@ -18,6 +18,7 @@
 [ext_resource type="Script" uid="uid://dvwq7j2ojg3d6" path="res://Revamp/MutationTooltTip/SigilSlot.gd" id="15_d8086"]
 [ext_resource type="Texture2D" uid="uid://bdi7eyt5cmur0" path="res://Art/Numbers/1.png" id="16_4yngs"]
 [ext_resource type="Texture2D" uid="uid://clk0ori80b5gg" path="res://Art/Numbers/2.png" id="17_8nq5a"]
+[ext_resource type="Texture2D" uid="uid://cxfrhckwspi6a" path="res://Art/Mutations/Antlers_Sigil.PNG" id="17_b5mm6"]
 [ext_resource type="Texture2D" uid="uid://bnj2kyvgakfq3" path="res://Art/Numbers/3.png" id="18_8aa6v"]
 [ext_resource type="Script" uid="uid://bblsossrbyhpa" path="res://Revamp/MutationTooltTip/SigilInput.gd" id="18_b5mm6"]
 [ext_resource type="Texture2D" uid="uid://4f3gn63utyru" path="res://Art/Numbers/4.png" id="19_kawbk"]
@@ -104,26 +105,16 @@ shader = ExtResource("13_8ia1o")
 shader_parameter/line_color = Color(0.105882354, 0.09019608, 0.08627451, 1)
 shader_parameter/line_thickness = 10.0
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4t10r"]
+size = Vector2(1568.6804, 1568.6799)
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0l3ys"]
 shader = ExtResource("13_8ia1o")
 shader_parameter/line_color = Color(0.105882354, 0.09019608, 0.08627451, 1)
 shader_parameter/line_thickness = 10.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_l5g41"]
-shader = ExtResource("13_8ia1o")
-shader_parameter/line_color = Color(0.105882354, 0.09019608, 0.08627451, 1)
-shader_parameter/line_thickness = 10.0
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_hdaxf"]
-shader = ExtResource("13_8ia1o")
-shader_parameter/line_color = Color(0.105882354, 0.09019608, 0.08627451, 1)
-shader_parameter/line_thickness = 10.0
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_4t10r"]
-size = Vector2(1568.6804, 1568.6799)
-
 [node name="CardVisualsRoot" type="Node2D" unique_id=1593445486 node_paths=PackedStringArray("main_visuals", "mutation_visuals", "stats_visual", "mutation_tooltip", "viewport_sprite", "revenant_overlay", "draw_hide_cover")]
-scale = Vector2(1.2, 1.2)
+scale = Vector2(1.3, 1.3)
 script = ExtResource("1_gy5gi")
 main_visuals = NodePath("Visuals/MainVisuals")
 mutation_visuals = NodePath("Visuals/MutationVisuals")
@@ -137,6 +128,7 @@ draw_hide_cover = NodePath("DrawHideCover")
 metadata/_edit_lock_ = true
 
 [node name="DrawHideCover" type="Sprite2D" parent="." unique_id=1285778559]
+visible = false
 z_index = 100
 position = Vector2(72.00001, 108.5)
 scale = Vector2(0.11666667, 0.11559141)
@@ -231,71 +223,83 @@ scale = Vector2(0.99999994, 0.99999994)
 
 [node name="BaseMutation" type="Node2D" parent="Visuals/MutationVisuals/Mutations" unique_id=1979689219]
 z_index = 1
-position = Vector2(0, 96)
+position = Vector2(-52.500004, 96.25001)
 scale = Vector2(0.028686536, 0.028686536)
-metadata/_edit_lock_ = true
 
 [node name="SigilSlot" type="Node2D" parent="Visuals/MutationVisuals/Mutations/BaseMutation" unique_id=1275122917 node_paths=PackedStringArray("sprite", "input")]
+position = Vector2(-0.00012207031, 0)
 script = ExtResource("15_d8086")
 sprite = NodePath("BaseSprite")
-input = NodePath("../../../../../BaseSigilInput")
+input = NodePath("../BaseSigilInput")
 hover_outline_color = Color(0.77245206, 0.47042382, 0.6667624, 1)
 pressed_outline_color = Color(0.105882354, 0.09019608, 0.08627451, 1)
-metadata/_edit_lock_ = true
 
 [node name="BaseSprite" type="Sprite2D" parent="Visuals/MutationVisuals/Mutations/BaseMutation/SigilSlot" unique_id=935391738]
 material = SubResource("ShaderMaterial_6nr3l")
 scale = Vector2(4.4620237, 4.4620233)
+texture = ExtResource("17_b5mm6")
+
+[node name="BaseSigilInput" type="Area2D" parent="Visuals/MutationVisuals/Mutations/BaseMutation" unique_id=123293917]
+position = Vector2(-0.00024414063, -0.00024604797)
+scale = Vector2(0.99999994, 0.99999994)
+script = ExtResource("18_b5mm6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Visuals/MutationVisuals/Mutations/BaseMutation/BaseSigilInput" unique_id=1714394200]
+position = Vector2(0, 8.715584)
+shape = SubResource("RectangleShape2D_4t10r")
 metadata/_edit_lock_ = true
 
 [node name="AdditonalMutation" type="Node2D" parent="Visuals/MutationVisuals/Mutations" unique_id=100591237]
 
-[node name="SigilSlot" type="Node2D" parent="Visuals/MutationVisuals/Mutations/AdditonalMutation" unique_id=264549928 node_paths=PackedStringArray("sprite", "input")]
-position = Vector2(-64.25001, -76.00001)
+[node name="Mutation2" type="Node2D" parent="Visuals/MutationVisuals/Mutations/AdditonalMutation" unique_id=264549928 node_paths=PackedStringArray("sprite", "input")]
+position = Vector2(-0.41667938, 96.24999)
 scale = Vector2(0.12699999, 0.12399998)
 script = ExtResource("15_d8086")
-sprite = NodePath("Additional1")
-input = NodePath("../../../../../AddSigil1")
+sprite = NodePath("Mutation2Sprite")
+input = NodePath("")
 hover_outline_color = Color(0.77254903, 0.47058824, 0.6666667, 1)
 pressed_outline_color = Color(0.105882354, 0.09019608, 0.08627451, 1)
-metadata/_edit_lock_ = true
 
-[node name="Additional1" type="Sprite2D" parent="Visuals/MutationVisuals/Mutations/AdditonalMutation/SigilSlot" unique_id=185873266]
+[node name="Mutation2Sprite" type="Sprite2D" parent="Visuals/MutationVisuals/Mutations/AdditonalMutation/Mutation2" unique_id=185873266]
 material = SubResource("ShaderMaterial_0l3ys")
 position = Vector2(0, 6.1035156e-05)
 scale = Vector2(0.9999999, 0.9999998)
+texture = ExtResource("17_b5mm6")
 metadata/_edit_lock_ = true
 
-[node name="SigilSlot2" type="Node2D" parent="Visuals/MutationVisuals/Mutations/AdditonalMutation" unique_id=1744429033 node_paths=PackedStringArray("sprite", "input")]
-position = Vector2(66, 0)
-scale = Vector2(0.128, 0.128)
+[node name="Mutation2Input" type="Area2D" parent="Visuals/MutationVisuals/Mutations/AdditonalMutation/Mutation2" unique_id=2022022863]
+position = Vector2(0.00012207031, -0.00012207031)
+scale = Vector2(0.22587825, 0.23134303)
+script = ExtResource("18_b5mm6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Visuals/MutationVisuals/Mutations/AdditonalMutation/Mutation2/Mutation2Input" unique_id=889317424]
+position = Vector2(-0.0002770389, 0.00059890747)
+shape = SubResource("RectangleShape2D_4t10r")
+
+[node name="Mutation3" type="Node2D" parent="Visuals/MutationVisuals/Mutations/AdditonalMutation" unique_id=625390756 node_paths=PackedStringArray("sprite", "input")]
+position = Vector2(52.708332, 96.24999)
+scale = Vector2(0.12699999, 0.12399998)
 script = ExtResource("15_d8086")
-sprite = NodePath("Additional2")
-input = NodePath("../../../../../AddSigil2")
+sprite = NodePath("Mutation3Sprite")
+input = NodePath("Mutation3Input")
 hover_outline_color = Color(0.77254903, 0.47058824, 0.6666667, 1)
 pressed_outline_color = Color(0.105882354, 0.09019608, 0.08627451, 1)
+
+[node name="Mutation3Sprite" type="Sprite2D" parent="Visuals/MutationVisuals/Mutations/AdditonalMutation/Mutation3" unique_id=1469740183]
+material = SubResource("ShaderMaterial_0l3ys")
+position = Vector2(0, 6.1035156e-05)
+scale = Vector2(0.9999999, 0.9999998)
+texture = ExtResource("17_b5mm6")
 metadata/_edit_lock_ = true
 
-[node name="Additional2" type="Sprite2D" parent="Visuals/MutationVisuals/Mutations/AdditonalMutation/SigilSlot2" unique_id=1787102359]
-material = SubResource("ShaderMaterial_l5g41")
-scale = Vector2(1, 0.99999994)
-metadata/_edit_lock_ = true
+[node name="Mutation3Input" type="Area2D" parent="Visuals/MutationVisuals/Mutations/AdditonalMutation/Mutation3" unique_id=1498521648]
+position = Vector2(0.00012207031, -0.00012207031)
+scale = Vector2(0.22587825, 0.23134303)
+script = ExtResource("18_b5mm6")
 
-[node name="SigilSlot3" type="Node2D" parent="Visuals/MutationVisuals/Mutations/AdditonalMutation" unique_id=828449294 node_paths=PackedStringArray("sprite", "input")]
-position = Vector2(-63.750015, 41.25)
-scale = Vector2(0.128, 0.12799999)
-script = ExtResource("15_d8086")
-sprite = NodePath("Additional3")
-input = NodePath("../../../../../AddSigil3")
-hover_outline_color = Color(0.77254903, 0.47058824, 0.6666667, 1)
-pressed_outline_color = Color(0.105882354, 0.09019608, 0.08627451, 1)
-metadata/_edit_lock_ = true
-
-[node name="Additional3" type="Sprite2D" parent="Visuals/MutationVisuals/Mutations/AdditonalMutation/SigilSlot3" unique_id=259294942]
-material = SubResource("ShaderMaterial_hdaxf")
-position = Vector2(4.7683716e-05, -1.5258789e-05)
-scale = Vector2(1, 0.99999994)
-metadata/_edit_lock_ = true
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Visuals/MutationVisuals/Mutations/AdditonalMutation/Mutation3/Mutation3Input" unique_id=552775977]
+position = Vector2(-0.0002770389, 0.00059890747)
+shape = SubResource("RectangleShape2D_4t10r")
 
 [node name="StatsVisual" type="Node2D" parent="Visuals" unique_id=769110726 node_paths=PackedStringArray("attack", "health", "cost", "name_label")]
 z_index = 7
@@ -376,53 +380,8 @@ visible = false
 scale = Vector2(0.121008396, 0.117200226)
 texture = ExtResource("29_wvfxw")
 
-[node name="BaseSigilInput" type="Area2D" parent="." unique_id=123293917]
-position = Vector2(0, 75)
-scale = Vector2(0.022949226, 0.022949226)
-script = ExtResource("18_b5mm6")
-metadata/_edit_lock_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BaseSigilInput" unique_id=1714394200]
-position = Vector2(0, 8.715584)
-shape = SubResource("RectangleShape2D_4t10r")
-metadata/_edit_lock_ = true
-
-[node name="AddSigil1" type="Area2D" parent="." unique_id=178151423]
-position = Vector2(-50, -59)
-scale = Vector2(0.02276993, 0.02223206)
-script = ExtResource("18_b5mm6")
-metadata/_edit_lock_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="AddSigil1" unique_id=31178376]
-position = Vector2(7.6293945e-06, 6.580353e-05)
-shape = SubResource("RectangleShape2D_4t10r")
-metadata/_edit_lock_ = true
-
-[node name="AddSigil2" type="Area2D" parent="." unique_id=2022022863]
-position = Vector2(50, 7.6293945e-06)
-scale = Vector2(0.022949226, 0.022949222)
-script = ExtResource("18_b5mm6")
-metadata/_edit_lock_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="AddSigil2" unique_id=889317424]
-position = Vector2(0, 52.29004)
-shape = SubResource("RectangleShape2D_4t10r")
-metadata/_edit_lock_ = true
-
-[node name="AddSigil3" type="Area2D" parent="." unique_id=1029004044]
-position = Vector2(-50.000004, 33)
-scale = Vector2(0.02294923, 0.022949226)
-script = ExtResource("18_b5mm6")
-metadata/_edit_lock_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="AddSigil3" unique_id=1350806003]
-position = Vector2(0.00018310547, 0)
-scale = Vector2(1, 1.0000001)
-shape = SubResource("RectangleShape2D_4t10r")
-metadata/_edit_lock_ = true
-
 [node name="MutationToolTip" parent="." unique_id=783565587 instance=ExtResource("28_v8bk3")]
-offset_left = -72.0
-offset_top = -174.0
-offset_right = 102.0
-offset_bottom = -54.0
+offset_left = -71.666664
+offset_top = -174.16666
+offset_right = 102.333336
+offset_bottom = -54.166656
