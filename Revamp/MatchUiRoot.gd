@@ -2,6 +2,8 @@ extends Control
 class_name MatchUiRoot
 
 signal end_turn_pressed
+signal worker_draw_pressed
+signal warrior_draw_pressed
 
 enum Phase {
 	NONE,
@@ -41,11 +43,13 @@ enum Phase {
 
 @export_group("Helper Styling")
 @export var draw_number_color: Color = Color.YELLOW
+@export var revealed_card_name_color: Color = Color(0.0, 1.0, 1.0, 1.0)
 @export var completed_line_alpha: float = 0.35
 
 var current_phase: Phase = Phase.NONE
 var round_number: int = 1
 var draw_selected_count: int = 0
+var draw_log_entries: Array[Dictionary] = []
 
 var buff_start_global_position: Vector2
 var is_dragging_buff: bool = false
@@ -127,9 +131,10 @@ func _set_phase(new_phase: Phase) -> void:
 
 func _enter_draw_phase() -> void:
 	draw_selected_count = 0
+	draw_log_entries.clear()
 
 	_set_phase_text("Draw")
-	_set_helper_text(_draw_helper_text(2))
+	_refresh_draw_helper_text()
 
 	_set_button_state(worker_button, worker_text, true, active_button_color)
 	_set_button_state(warrior_button, warrior_text, true, active_button_color)
@@ -185,30 +190,112 @@ func _on_worker_pressed() -> void:
 	if current_phase != Phase.DRAW:
 		return
 
-	_add_draw_selection()
+	if draw_selected_count >= 2:
+		return
+
+	add_draw_log_entry("worker")
+	worker_draw_pressed.emit()
 
 
 func _on_warrior_pressed() -> void:
 	if current_phase != Phase.DRAW:
 		return
 
-	_add_draw_selection()
+	if draw_selected_count >= 2:
+		return
+
+	add_draw_log_entry("warrior")
+	warrior_draw_pressed.emit()
 
 
-func _add_draw_selection() -> void:
+func add_draw_log_entry(card_type: String) -> void:
+	if current_phase != Phase.DRAW:
+		return
+
 	if draw_selected_count >= 2:
 		return
 
 	draw_selected_count += 1
 
-	var cards_left := 2 - draw_selected_count
+	draw_log_entries.append({
+		"type": card_type,
+		"revealed_name": ""
+	})
 
-	if cards_left > 0:
-		_set_helper_text(_draw_helper_text(cards_left))
-	else:
-		_set_helper_text("2 cards have been selected\nCards revealed next phase")
-		_set_button_enabled(worker_button, false)
-		_set_button_enabled(warrior_button, false)
+	_refresh_draw_helper_text()
+
+	if draw_selected_count >= 2:
+		_set_draw_buttons_enabled(false)
+
+
+func set_draw_log_entry_revealed(index: int, card_name: String) -> void:
+	if index < 0:
+		return
+
+	if index >= draw_log_entries.size():
+		return
+
+	var entry := draw_log_entries[index]
+
+	if entry.get("type", "") != "warrior":
+		return
+
+	entry["revealed_name"] = card_name
+	draw_log_entries[index] = entry
+
+	_refresh_draw_helper_text()
+
+
+func clear_draw_log() -> void:
+	draw_selected_count = 0
+	draw_log_entries.clear()
+	_refresh_draw_helper_text()
+	_set_draw_buttons_enabled(true)
+
+
+func set_draw_buttons_enabled(enabled: bool) -> void:
+	_set_draw_buttons_enabled(enabled)
+
+
+func _set_draw_buttons_enabled(enabled: bool) -> void:
+	_set_button_enabled(worker_button, enabled)
+	_set_button_enabled(warrior_button, enabled)
+
+
+func _refresh_draw_helper_text() -> void:
+	var cards_left: int = maxi(2 - draw_selected_count, 0)
+	var lines: Array[String] = []
+
+	lines.append(_draw_header_text(cards_left))
+
+	for entry in draw_log_entries:
+		lines.append(_draw_entry_text(entry))
+
+	_set_helper_text("\n".join(lines))
+
+
+func _draw_header_text(cards_left: int) -> String:
+	if cards_left <= 0:
+		return "Cards will reveal soon"
+
+	return "Draw [color=%s]%s[/color] card%s" % [
+		draw_number_color.to_html(false),
+		cards_left,
+		"" if cards_left == 1 else "s"
+	]
+
+
+func _draw_entry_text(entry: Dictionary) -> String:
+	var card_type: String = entry.get("type", "")
+	var revealed_name: String = entry.get("revealed_name", "")
+
+	if card_type == "warrior" and revealed_name != "":
+		return "Drew [color=%s]%s[/color]" % [
+			revealed_card_name_color.to_html(false),
+			revealed_name
+		]
+
+	return "Drew %s" % card_type
 
 
 func _on_buff_button_down() -> void:
@@ -236,14 +323,6 @@ func _on_timer_end_turn_pressed() -> void:
 		return
 
 	end_turn_pressed.emit()
-
-
-func _draw_helper_text(cards_left: int) -> String:
-	return "Draw [color=%s]%s[/color] card%s\nCards revealed next phase" % [
-		draw_number_color.to_html(false),
-		cards_left,
-		"" if cards_left == 1 else "s"
-	]
 
 
 func _buff_helper_text(is_selecting_buff_done: bool) -> String:
