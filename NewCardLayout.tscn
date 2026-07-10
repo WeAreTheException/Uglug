@@ -287,7 +287,6 @@ offset_top = 101.0
 offset_right = 60.0
 offset_bottom = 129.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_4muga")
-metadata/_edit_lock_ = true
 
 [node name="CostRoot" type="Node2D" parent="All Visuals/StatsRoot" unique_id=1557452011]
 script = ExtResource("10_4muga")

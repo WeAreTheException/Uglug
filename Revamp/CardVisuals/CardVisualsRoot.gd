@@ -12,6 +12,8 @@ class_name CardVisualsRoot
 @export var revenant_overlay: Sprite2D
 @export var revenant_shader: Shader
 
+@export var draw_hide_cover: CanvasItem
+
 var card: CardRoot = null
 var revenant_material: ShaderMaterial = null
 
@@ -23,6 +25,7 @@ func setup_from_card(source_card: CardRoot) -> void:
 	card = source_card
 
 	setup_revenant_overlay()
+	set_hidden_for_draw(false)
 	_connect_mutation_visuals()
 
 	if card.card_data != null:
@@ -60,6 +63,13 @@ func refresh_all() -> void:
 
 	_update_mutation_visuals()
 	refresh_revenant_visual()
+
+
+func set_hidden_for_draw(value: bool) -> void:
+	if draw_hide_cover == null:
+		return
+
+	draw_hide_cover.visible = value
 
 
 func setup_revenant_overlay() -> void:

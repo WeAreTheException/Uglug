@@ -8,6 +8,13 @@
 [ext_resource type="Script" uid="uid://b36x28452aktg" path="res://Revamp/MatchUiRoot.gd" id="5_tsgf7"]
 [ext_resource type="Script" uid="uid://blfvp1wwkpwtb" path="res://Revamp/Camera/CameraShakeValues.gd" id="6_bguvq"]
 [ext_resource type="Script" uid="uid://cl88hir003ywp" path="res://Revamp/Camera/CameraShakeFeedback.gd" id="7_tsgf7"]
+[ext_resource type="Script" uid="uid://c406tme7fpq2j" path="res://Revamp/DrawPhaseTestRoot.gd" id="9_proag"]
+[ext_resource type="PackedScene" uid="uid://1wr1e57v7trd" path="res://Revamp/PlayerHand/Player_Hand.tscn" id="10_mtbf2"]
+[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Old/Data/CardData.gd" id="10_nux5c"]
+[ext_resource type="Resource" uid="uid://bn1jyervrnsg" path="res://Revamp/CardPresets/WorkerAnt.tres" id="10_x1cq6"]
+[ext_resource type="Resource" uid="uid://bxfxi0h5itrdu" path="res://Revamp/CardPresets/Lieutenant.tres" id="11_x1cq6"]
+[ext_resource type="Resource" uid="uid://dwpj7bg5ognwt" path="res://Revamp/CardPresets/Samurant.tres" id="12_2qwdf"]
+[ext_resource type="Resource" uid="uid://cu38anwcrq117" path="res://Revamp/CardPresets/SuperStimulant.tres" id="13_hlv0h"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vtd1f"]
 bg_color = Color(0.86036915, 0.8603692, 0.8603691, 1)
@@ -409,3 +416,24 @@ script = ExtResource("6_bguvq")
 script = ExtResource("7_tsgf7")
 camera_target = NodePath("..")
 values = NodePath("../CameraShakevalues")
+
+[node name="DrawPhaseTestRoot" type="Node" parent="." unique_id=1322558509 node_paths=PackedStringArray("match_ui", "player_hand", "active_draw_timer", "auto_draw_timer", "reveal_timer")]
+script = ExtResource("9_proag")
+match_ui = NodePath("../UICard")
+player_hand = NodePath("../PlayerHandRoot")
+worker_card = ExtResource("10_x1cq6")
+warrior_cards = Array[ExtResource("10_nux5c")]([ExtResource("11_x1cq6"), ExtResource("12_2qwdf"), ExtResource("13_hlv0h")])
+active_draw_timer = NodePath("../ActiveDrawTime")
+auto_draw_timer = NodePath("../ActiveDrawTime")
+reveal_timer = NodePath("../ActiveDrawTime")
+
+[node name="PlayerHandRoot" parent="." unique_id=371738706 instance=ExtResource("10_mtbf2")]
+position = Vector2(-256, 416)
+
+[node name="ActiveDrawTime" type="Timer" parent="." unique_id=39440691]
+wait_time = 10.0
+
+[node name="AutoDrawTime" type="Timer" parent="." unique_id=891552830]
+
+[node name="RevealTime" type="Timer" parent="." unique_id=1735453026]
+wait_time = 3.0

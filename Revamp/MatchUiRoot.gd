@@ -50,6 +50,7 @@ var current_phase: Phase = Phase.NONE
 var round_number: int = 1
 var draw_selected_count: int = 0
 var draw_log_entries: Array[Dictionary] = []
+var is_draw_reveal_time: bool = false
 
 var buff_start_global_position: Vector2
 var is_dragging_buff: bool = false
@@ -61,6 +62,7 @@ func _ready() -> void:
 
 	_connect_buttons()
 	_update_round_label()
+	clear_timer()
 	_set_phase(Phase.DRAW)
 
 
@@ -132,6 +134,7 @@ func _set_phase(new_phase: Phase) -> void:
 func _enter_draw_phase() -> void:
 	draw_selected_count = 0
 	draw_log_entries.clear()
+	is_draw_reveal_time = false
 
 	_set_phase_text("Draw")
 	_refresh_draw_helper_text()
@@ -235,7 +238,7 @@ func set_draw_log_entry_revealed(index: int, card_name: String) -> void:
 	if index >= draw_log_entries.size():
 		return
 
-	var entry := draw_log_entries[index]
+	var entry: Dictionary = draw_log_entries[index] as Dictionary
 
 	if entry.get("type", "") != "warrior":
 		return
@@ -246,15 +249,36 @@ func set_draw_log_entry_revealed(index: int, card_name: String) -> void:
 	_refresh_draw_helper_text()
 
 
+func start_draw_reveal_time() -> void:
+	is_draw_reveal_time = true
+	_refresh_draw_helper_text()
+
+
 func clear_draw_log() -> void:
 	draw_selected_count = 0
 	draw_log_entries.clear()
+	is_draw_reveal_time = false
 	_refresh_draw_helper_text()
 	_set_draw_buttons_enabled(true)
 
 
 func set_draw_buttons_enabled(enabled: bool) -> void:
 	_set_draw_buttons_enabled(enabled)
+
+
+func set_timer_seconds(seconds: float) -> void:
+	if timer_label == null:
+		return
+
+	var shown_seconds: int = maxi(int(ceil(seconds)), 0)
+	timer_label.text = str(shown_seconds)
+
+
+func clear_timer() -> void:
+	if timer_label == null:
+		return
+
+	timer_label.text = "0"
 
 
 func _set_draw_buttons_enabled(enabled: bool) -> void:
@@ -266,9 +290,14 @@ func _refresh_draw_helper_text() -> void:
 	var cards_left: int = maxi(2 - draw_selected_count, 0)
 	var lines: Array[String] = []
 
-	lines.append(_draw_header_text(cards_left))
+	if not is_draw_reveal_time:
+		var header_text: String = _draw_header_text(cards_left)
 
-	for entry in draw_log_entries:
+		if header_text != "":
+			lines.append(header_text)
+
+	for raw_entry in draw_log_entries:
+		var entry: Dictionary = raw_entry as Dictionary
 		lines.append(_draw_entry_text(entry))
 
 	_set_helper_text("\n".join(lines))
@@ -276,7 +305,7 @@ func _refresh_draw_helper_text() -> void:
 
 func _draw_header_text(cards_left: int) -> String:
 	if cards_left <= 0:
-		return "Cards will reveal soon"
+		return ""
 
 	return "Draw [color=%s]%s[/color] card%s" % [
 		draw_number_color.to_html(false),

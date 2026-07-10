@@ -251,3 +251,7 @@ func _on_input_hovered() -> void:
 
 func _on_input_unhovered() -> void:
 	unhovered.emit(self)
+
+func set_hidden_for_draw(value: bool) -> void:
+	if card_visuals_root != null:
+		card_visuals_root.set_hidden_for_draw(value)
