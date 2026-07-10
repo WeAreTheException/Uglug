@@ -33,6 +33,12 @@ signal sacrifice_selection_changed(cards: Array[CardRoot])
 
 @export var spawn_starting_cards_on_ready: bool = true
 
+@export var enable_debug_state_keys: bool = true
+@export var debug_idle_key: Key = KEY_1
+@export var debug_play_key: Key = KEY_2
+@export var debug_blessing_key: Key = KEY_3
+@export var debug_buff_key: Key = KEY_4
+
 var setup_helper := HandRootSetupHelper.new()
 var callbacks := HandRootCallbacksHelper.new()
 var placement_release := HandPlacementReleaseHelper.new()
@@ -49,6 +55,31 @@ func _ready() -> void:
 
 	enter_idle_state()
 	emit_prime_state()
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not enable_debug_state_keys:
+		return
+
+	if event is not InputEventKey:
+		return
+
+	if not event.pressed or event.echo:
+		return
+
+	match event.keycode:
+		debug_idle_key:
+			enter_idle_state()
+			print("DEBUG HAND STATE: IDLE")
+		debug_play_key:
+			enter_play_state()
+			print("DEBUG HAND STATE: PLAY")
+		debug_blessing_key:
+			enter_blessing_state()
+			print("DEBUG HAND STATE: BLESSING")
+		debug_buff_key:
+			enter_buff_state()
+			print("DEBUG HAND STATE: BUFF")
 
 
 func setup_deck_system_context(new_deck_system_root: DeckSystemRoot) -> void:
@@ -413,6 +444,7 @@ func clear_cards(free_cards: bool = true) -> void:
 	card_spawner.clear_cards(free_cards)
 	arrange_cards()
 	emit_prime_state()
+
 
 func get_cards() -> Array[CardRoot]:
 	if card_spawner == null:

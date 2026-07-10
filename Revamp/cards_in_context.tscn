@@ -419,6 +419,7 @@ values = NodePath("../CameraShakevalues")
 
 [node name="DrawPhaseTestRoot" type="Node" parent="." unique_id=1322558509 node_paths=PackedStringArray("match_ui", "player_hand", "active_draw_timer", "auto_draw_timer", "reveal_timer")]
 script = ExtResource("9_proag")
+test_enabled = false
 match_ui = NodePath("../UICard")
 player_hand = NodePath("../PlayerHandRoot")
 worker_card = ExtResource("10_x1cq6")

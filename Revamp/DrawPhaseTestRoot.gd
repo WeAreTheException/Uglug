@@ -3,6 +3,8 @@ class_name DrawPhaseTestRoot
 
 signal draw_phase_finished
 
+@export var test_enabled: bool = true
+
 @export var match_ui: MatchUiRoot
 @export var player_hand: PlayerHandRoot
 
@@ -23,12 +25,18 @@ var is_draw_finished: bool = false
 
 
 func _ready() -> void:
+	if not test_enabled:
+		return
+
 	_connect_ui()
 	_connect_timers()
 	start_draw_test()
 
 
 func _process(_delta: float) -> void:
+	if not test_enabled:
+		return
+
 	if active_draw_timer == null:
 		return
 
@@ -40,6 +48,9 @@ func _process(_delta: float) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if not test_enabled:
+		return
+
 	if event is not InputEventKey:
 		return
 
@@ -51,6 +62,9 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func start_draw_test() -> void:
+	if not test_enabled:
+		return
+
 	_stop_timers()
 
 	drawn_cards.clear()
@@ -110,14 +124,23 @@ func _stop_timers() -> void:
 
 
 func _on_worker_draw_pressed() -> void:
+	if not test_enabled:
+		return
+
 	_spawn_worker()
 
 
 func _on_warrior_draw_pressed() -> void:
+	if not test_enabled:
+		return
+
 	_spawn_warrior()
 
 
 func _on_active_draw_timeout() -> void:
+	if not test_enabled:
+		return
+
 	if match_ui != null:
 		match_ui.set_timer_seconds(0.0)
 		match_ui.set_draw_buttons_enabled(false)
@@ -131,6 +154,9 @@ func _on_active_draw_timeout() -> void:
 
 
 func _on_auto_draw_timeout() -> void:
+	if not test_enabled:
+		return
+
 	if drawn_cards.size() == 0:
 		_auto_spawn_warrior()
 		_auto_spawn_worker()
@@ -160,6 +186,9 @@ func _has_drawn_warrior() -> bool:
 
 
 func _on_reveal_timeout() -> void:
+	if not test_enabled:
+		return
+
 	if match_ui != null:
 		match_ui.start_draw_reveal_time()
 
