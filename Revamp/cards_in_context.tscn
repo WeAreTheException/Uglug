@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://dw1k6pcwy2emf" path="res://Revamp/MatchUI/AttackOrderArrowDisplay.gd" id="4_b6caw"]
 [ext_resource type="PackedScene" uid="uid://bw8c7m7n5yuk8" path="res://Revamp/Board/Slots.tscn" id="4_n6ts1"]
 [ext_resource type="Texture2D" uid="uid://cjesmr4t5yoad" path="res://Revamp/References/aasedasd.jpg" id="5_n6ts1"]
+[ext_resource type="Script" uid="uid://b36x28452aktg" path="res://Revamp/MatchUiRoot.gd" id="5_tsgf7"]
 [ext_resource type="Script" uid="uid://blfvp1wwkpwtb" path="res://Revamp/Camera/CameraShakeValues.gd" id="6_bguvq"]
 [ext_resource type="Script" uid="uid://cl88hir003ywp" path="res://Revamp/Camera/CameraShakeFeedback.gd" id="7_tsgf7"]
 
@@ -130,15 +131,18 @@ offset_bottom = 512.0
 script = ExtResource("4_3wjp5")
 name_label = NodePath("TextBox/TBNamePanel/TBNameLabel")
 description_label = NodePath("TextBox/TBDescripPanel/TBDescripLabel")
+metadata/_edit_lock_ = true
 
 [node name="TextBox" type="Panel" parent="ToolTip" unique_id=654408165]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
+offset_left = 1219.0
 offset_top = -241.0
-offset_right = 474.0
+offset_right = 1693.0
 grow_vertical = 0
+metadata/_edit_lock_ = true
 
 [node name="TBNamePanel" type="Panel" parent="ToolTip/TextBox" unique_id=1841770773]
 layout_mode = 0
@@ -178,20 +182,31 @@ horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_lock_ = true
 
-[node name="UICard" type="Control" parent="." unique_id=811118957]
+[node name="UICard" type="Control" parent="." unique_id=811118957 node_paths=PackedStringArray("round_label", "going_first_label", "phase_label", "helper_label", "timer_label", "worker_button", "warrior_button", "buff_button", "timer_end_turn_button", "undo_button")]
 layout_mode = 3
 anchors_preset = 9
 anchor_bottom = 1.0
-grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("5_tsgf7")
+round_label = NodePath("CardPanel/RoundPanel/RoundLabel")
+going_first_label = NodePath("CardPanel/SpritePanel/Who\'sGoingfirstLabel/Who")
+phase_label = NodePath("CardPanel/SpritePanel/PhasePanel/PhaseLabel")
+helper_label = NodePath("CardPanel/SpritePanel/HelpPanel/Desription")
+timer_label = NodePath("CardPanel/EndButton/TimeLabel")
+worker_button = NodePath("CardPanel/WorkerPanel")
+warrior_button = NodePath("CardPanel/WarriorPanel")
+buff_button = NodePath("CardPanel/BuffPile")
+timer_end_turn_button = NodePath("CardPanel/EndButton")
+undo_button = NodePath("CardPanel/Undo")
+active_button_color = Color(1.4439226e-07, 0.4351746, 0.43522498, 1)
+inactive_button_color = Color(0, 0.68333876, 0.6841458, 0.2509804)
 
 [node name="CardPanel" type="Panel" parent="UICard" unique_id=677196]
 layout_mode = 0
-offset_left = 387.0
+offset_left = 448.0
 offset_top = -447.0
-offset_right = 807.0
+offset_right = 868.0
 offset_bottom = 178.0
-metadata/_edit_lock_ = true
 
 [node name="SpritePanel" type="Panel" parent="UICard/CardPanel" unique_id=366551045]
 layout_mode = 0
@@ -206,19 +221,38 @@ layout_mode = 0
 offset_left = 16.0
 offset_top = 10.0
 offset_right = 345.0
-offset_bottom = 130.0
+offset_bottom = 66.0
 metadata/_edit_lock_ = true
 
 [node name="PhaseLabel" type="Label" parent="UICard/CardPanel/SpritePanel/PhasePanel" unique_id=1037432936]
 layout_mode = 0
 offset_right = 329.0
-offset_bottom = 120.0
-theme_override_font_sizes/font_size = 64
+offset_bottom = 56.0
+theme_override_font_sizes/font_size = 42
 text = "Draw"
 horizontal_alignment = 1
 vertical_alignment = 1
+metadata/_edit_lock_ = true
 
-[node name="InitiatorPanel" type="Panel" parent="UICard/CardPanel/SpritePanel" unique_id=1050939439]
+[node name="Who\'sGoingfirstLabel" type="Panel" parent="UICard/CardPanel/SpritePanel" unique_id=412253358]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 74.0
+offset_right = 345.0
+offset_bottom = 130.0
+metadata/_edit_lock_ = true
+
+[node name="Who" type="Label" parent="UICard/CardPanel/SpritePanel/Who\'sGoingfirstLabel" unique_id=1654401568]
+layout_mode = 0
+offset_right = 329.0
+offset_bottom = 56.0
+theme_override_font_sizes/font_size = 24
+text = "You're Going First"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="HelpPanel" type="Panel" parent="UICard/CardPanel/SpritePanel" unique_id=1050939439]
 layout_mode = 0
 offset_left = 16.0
 offset_top = 136.0
@@ -226,34 +260,17 @@ offset_right = 345.0
 offset_bottom = 341.0
 metadata/_edit_lock_ = true
 
-[node name="Who\'sGoingFirstLabel" type="Label" parent="UICard/CardPanel/SpritePanel/InitiatorPanel" unique_id=416277420]
+[node name="Desription" type="RichTextLabel" parent="UICard/CardPanel/SpritePanel/HelpPanel" unique_id=1603092584]
 layout_mode = 0
 offset_right = 329.0
 offset_bottom = 209.0
-theme_override_font_sizes/font_size = 48
 text = "You're
 Going First"
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="TimerPanel" type="Panel" parent="UICard/CardPanel" unique_id=1718750228]
-layout_mode = 0
-offset_left = 30.0
-offset_top = 438.0
-offset_right = 146.0
-offset_bottom = 560.0
 metadata/_edit_lock_ = true
 
-[node name="TimeLabel" type="Label" parent="UICard/CardPanel/TimerPanel" unique_id=577766357]
-layout_mode = 0
-offset_right = 116.0
-offset_bottom = 122.0
-theme_override_font_sizes/font_size = 48
-text = "1:00"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="WarriorPanel" type="Button" parent="UICard/CardPanel" unique_id=1597725175]
+[node name="WarriorPanel" type="Button" parent="UICard/CardPanel" unique_id=1604807938]
 layout_mode = 0
 offset_left = 154.0
 offset_top = 438.0
@@ -261,7 +278,15 @@ offset_right = 270.0
 offset_bottom = 560.0
 metadata/_edit_lock_ = true
 
-[node name="WorkerPanel" type="Button" parent="UICard/CardPanel" unique_id=2052268595]
+[node name="BuffPile" type="Button" parent="UICard/CardPanel" unique_id=639663561]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 443.0
+offset_right = 146.0
+offset_bottom = 565.0
+metadata/_edit_lock_ = true
+
+[node name="WorkerPanel" type="Button" parent="UICard/CardPanel" unique_id=22663007]
 layout_mode = 0
 offset_left = 278.0
 offset_top = 437.0
@@ -286,13 +311,28 @@ text = "Round 3"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="EndButton" type="Button" parent="UICard/CardPanel" unique_id=887717405]
+[node name="EndButton" type="Button" parent="UICard/CardPanel" unique_id=1102753937]
 layout_mode = 0
 offset_left = 30.0
 offset_top = 567.0
 offset_right = 392.0
 offset_bottom = 654.0
 metadata/_edit_lock_ = true
+
+[node name="TimeLabel" type="Label" parent="UICard/CardPanel/EndButton" unique_id=577766357]
+layout_mode = 0
+offset_right = 362.0
+offset_bottom = 87.0
+theme_override_font_sizes/font_size = 48
+text = "1:00"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Undo" type="Button" parent="UICard/CardPanel" unique_id=612303484]
+layout_mode = 0
+offset_left = -88.0
+offset_top = 255.0
+offset_bottom = 326.0
 
 [node name="TuggaControl" type="Control" parent="." unique_id=1122243279]
 layout_mode = 3
