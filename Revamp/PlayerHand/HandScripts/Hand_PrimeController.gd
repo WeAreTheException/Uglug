@@ -84,10 +84,6 @@ func prime_selected_card() -> void:
 	prime_selection.clear_selection()
 	state.set_primed_card(selected_card)
 
-	if _should_move_to_prime_location(selected_card):
-		if prime_mover != null:
-			prime_mover.move_card_to_anchor(selected_card)
-
 	card_primed.emit(selected_card)
 	_emit_prime_state()
 
@@ -108,8 +104,7 @@ func consume_primed_card(card: CardRoot) -> void:
 
 
 func return_primed_card_to_prime_location() -> void:
-	if state.primed_card != null and prime_mover != null:
-		prime_mover.move_card_to_anchor(state.primed_card)
+	pass
 
 
 func clear_selection() -> void:
@@ -148,16 +143,6 @@ func can_unprime() -> bool:
 
 func get_primed_card() -> CardRoot:
 	return state.primed_card
-
-
-func _should_move_to_prime_location(card: CardRoot) -> bool:
-	if card == null:
-		return false
-
-	if zero_cost_skips_prime_location and card.get_sacrifice_cost() <= 0:
-		return false
-
-	return true
 
 
 func _can_select_card(card: CardRoot) -> bool:
