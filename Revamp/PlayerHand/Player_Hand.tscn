@@ -31,6 +31,7 @@
 [ext_resource type="Script" uid="uid://cfnysv2ydiwhc" path="res://Revamp/PlayerHand/HandScripts/Hand_PrimeMover.gd" id="25_mp2k0"]
 
 [node name="PlayerHandRoot" type="Node2D" unique_id=371738706 node_paths=PackedStringArray("hand_card_layer", "drag_layer", "card_spawner", "hand_layout", "sort_controller", "state_machine", "interaction_root", "sacrifice_selection")]
+position = Vector2(276, 120)
 script = ExtResource("1_wk34g")
 card_scene = ExtResource("2_0sjxa")
 starting_cards = Array[ExtResource("3_0pi77")]([ExtResource("4_vr0u0"), ExtResource("5_osyj2"), ExtResource("6_7io4m")])

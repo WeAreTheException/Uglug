@@ -59,6 +59,7 @@ sacrifice = NodePath("Actions/Sacrifice")
 runtime_state = NodePath("CardRuntimeState")
 
 [node name="CardInput" type="Area2D" parent="." unique_id=502264031]
+z_index = 100
 position = Vector2(300, 48)
 script = ExtResource("2_nau7p")
 
@@ -202,6 +203,7 @@ target = NodePath("../../Visuals/CardVisuals")
 [node name="Select" type="Node" parent="CardFeedback" unique_id=1062761578 node_paths=PackedStringArray("target")]
 script = ExtResource("20_v34li")
 target = NodePath("../../Visuals/CardVisuals")
+selected_offset = Vector2(0, -20)
 
 [node name="Shadow" type="Node" parent="CardFeedback" unique_id=248472187 node_paths=PackedStringArray("shadow_texture")]
 script = ExtResource("11_c3ju1")

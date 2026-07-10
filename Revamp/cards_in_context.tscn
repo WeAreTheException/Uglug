@@ -26,36 +26,6 @@ bg_color = Color(0.85882354, 0.85882354, 0.85882354, 1)
 
 [node name="CardsInContext" type="Node2D" unique_id=1665155833]
 
-[node name="Slots" type="Node2D" parent="." unique_id=389802464]
-visible = false
-position = Vector2(-730, -447.00003)
-scale = Vector2(1.2, 1.2)
-
-[node name="Node2D" parent="Slots" unique_id=96420926 instance=ExtResource("1_qeeaa")]
-
-[node name="Node2D2" parent="Slots" unique_id=1637667852 instance=ExtResource("1_qeeaa")]
-position = Vector2(150, 0)
-
-[node name="Node2D3" parent="Slots" unique_id=458385878 instance=ExtResource("1_qeeaa")]
-position = Vector2(300, 0)
-
-[node name="Node2D4" parent="Slots" unique_id=1956715752 instance=ExtResource("1_qeeaa")]
-position = Vector2(448, 0)
-
-[node name="Node2D5" parent="Slots" unique_id=1160862716 instance=ExtResource("1_qeeaa")]
-position = Vector2(0, 254)
-metadata/_edit_lock_ = true
-
-[node name="Node2D6" parent="Slots" unique_id=227384111 instance=ExtResource("1_qeeaa")]
-position = Vector2(150, 254)
-metadata/_edit_lock_ = true
-
-[node name="Node2D7" parent="Slots" unique_id=2116348381 instance=ExtResource("1_qeeaa")]
-position = Vector2(300, 254)
-
-[node name="Node2D8" parent="Slots" unique_id=90234138 instance=ExtResource("1_qeeaa")]
-position = Vector2(448, 254)
-
 [node name="MatchUI" type="Node2D" parent="." unique_id=196750808]
 visible = false
 position = Vector2(207, -206)
@@ -131,23 +101,21 @@ position = Vector2(-341, -374)
 [node name="ToolTip" type="Control" parent="." unique_id=2085845756 node_paths=PackedStringArray("name_label", "description_label")]
 layout_mode = 3
 anchors_preset = 0
-offset_left = -832.0
-offset_top = 271.0
-offset_right = -358.0
-offset_bottom = 512.0
+offset_left = 448.0
+offset_top = 256.0
+offset_right = 922.0
+offset_bottom = 497.0
 script = ExtResource("4_3wjp5")
 name_label = NodePath("TextBox/TBNamePanel/TBNameLabel")
 description_label = NodePath("TextBox/TBDescripPanel/TBDescripLabel")
-metadata/_edit_lock_ = true
 
 [node name="TextBox" type="Panel" parent="ToolTip" unique_id=654408165]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = 1219.0
 offset_top = -241.0
-offset_right = 1693.0
+offset_right = 474.0
 grow_vertical = 0
 metadata/_edit_lock_ = true
 
@@ -342,6 +310,7 @@ offset_top = 255.0
 offset_bottom = 326.0
 
 [node name="TuggaControl" type="Control" parent="." unique_id=1122243279]
+z_index = -10
 layout_mode = 3
 anchors_preset = 0
 offset_left = -866.0
@@ -429,7 +398,7 @@ auto_draw_timer = NodePath("../ActiveDrawTime")
 reveal_timer = NodePath("../ActiveDrawTime")
 
 [node name="PlayerHandRoot" parent="." unique_id=371738706 instance=ExtResource("10_mtbf2")]
-position = Vector2(-256, 320)
+position = Vector2(-256, 384)
 
 [node name="ActiveDrawTime" type="Timer" parent="." unique_id=39440691]
 wait_time = 10.0

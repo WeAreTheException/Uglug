@@ -21,7 +21,6 @@ func tween_card(
 		kill_card_tween(card)
 		return
 
-	card.z_index = z_value
 	kill_card_tween(card)
 
 	var tween := create_tween()
