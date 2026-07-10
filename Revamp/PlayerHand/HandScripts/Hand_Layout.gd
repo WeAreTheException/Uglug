@@ -14,6 +14,7 @@ enum LayoutMode {
 @export var buffing_layout: Hand_BuffingLayout
 @export var layout_tweener: Hand_LayoutTweener
 
+@export var hand_card_scale: Vector2 = Vector2(0.8, 0.8)
 @export var move_time: float = 0.15
 @export var hand_width_reference: float = 550.0
 @export var normal_z_start: int = 0
@@ -164,10 +165,8 @@ func _get_active_layout() -> Node:
 	match current_mode:
 		LayoutMode.PLAY:
 			return play_layout
-
 		LayoutMode.BLESSING:
 			return blessing_layout
-
 		LayoutMode.BUFF:
 			return buffing_layout
 
@@ -194,8 +193,7 @@ func _get_max_rotation_degrees() -> float:
 
 
 func _get_target_scale() -> Vector2:
-	var layout := _get_active_layout()
-	return layout.target_scale if layout != null else Vector2.ONE
+	return hand_card_scale
 
 
 func _get_y_offset() -> float:
