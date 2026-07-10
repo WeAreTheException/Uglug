@@ -129,7 +129,7 @@ draw_hide_cover = NodePath("DrawHideCover")
 [node name="DrawHideCover" type="Sprite2D" parent="." unique_id=1285778559]
 visible = false
 z_index = 100
-position = Vector2(72.00001, 108.5)
+position = Vector2(-7.6293945e-06, 0)
 scale = Vector2(0.11666667, 0.11559141)
 texture = ExtResource("29_d8086")
 

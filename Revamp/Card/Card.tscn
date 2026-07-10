@@ -36,8 +36,10 @@
 [ext_resource type="AudioStream" uid="uid://5uho8ho3dlfo" path="res://Old/Audio/Placeholder SFX/card_death.wav" id="21_k3ell"]
 [ext_resource type="Script" uid="uid://maqiq3kcc45q" path="res://Revamp/Card/CardActions/Sacrifice/PendingSacrificeFeedback.gd" id="27_0h522"]
 [ext_resource type="Script" uid="uid://bwf2dy46x2l01" path="res://Revamp/Card/CardActions/Sacrifice/ComittedSacrificeFeedback.gd" id="28_msnpm"]
+[ext_resource type="Script" uid="uid://btcyknr4w10ab" path="res://Revamp/Card/CardOutlineFeedback.gd" id="35_b2plg"]
 [ext_resource type="Script" uid="uid://b727ujf6ycv3o" path="res://Revamp/Card/CardRuntimeState.gd" id="37_raks6"]
 [ext_resource type="PackedScene" uid="uid://c8mfgi3h8sc6v" path="res://NewCardLayout.tscn" id="38_fgsua"]
+[ext_resource type="Texture2D" uid="uid://j75yocnxblk4" path="res://Art/RedBackground.png" id="39_b2plg"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g8l5j"]
 size = Vector2(192, 288)
@@ -186,24 +188,28 @@ target = NodePath("../../..")
 script = ExtResource("28_msnpm")
 target = NodePath("../../..")
 
-[node name="CardFeedback" type="Node" parent="." unique_id=824411320 node_paths=PackedStringArray("card", "hover_feedback", "select_feedback")]
+[node name="CardFeedback" type="Node" parent="." unique_id=824411320 node_paths=PackedStringArray("card", "hover_feedback", "select_feedback", "outline_feedback")]
 script = ExtResource("8_nau7p")
 card = NodePath("..")
 hover_feedback = NodePath("Hover")
 select_feedback = NodePath("Select")
+outline_feedback = NodePath("Outline")
 
 [node name="Hover" type="Node" parent="CardFeedback" unique_id=659627164 node_paths=PackedStringArray("target")]
 script = ExtResource("19_v34li")
 target = NodePath("../../Visuals/CardVisuals")
 
-[node name="Select" type="Node" parent="CardFeedback" unique_id=1062761578 node_paths=PackedStringArray("target", "shadow")]
+[node name="Select" type="Node" parent="CardFeedback" unique_id=1062761578 node_paths=PackedStringArray("target")]
 script = ExtResource("20_v34li")
 target = NodePath("../../Visuals/CardVisuals")
-shadow = NodePath("../../Visuals/Shadow")
 
 [node name="Shadow" type="Node" parent="CardFeedback" unique_id=248472187 node_paths=PackedStringArray("shadow_texture")]
 script = ExtResource("11_c3ju1")
 shadow_texture = NodePath("../../Visuals/Shadow")
+
+[node name="Outline" type="Node" parent="CardFeedback" unique_id=1388964221 node_paths=PackedStringArray("outline_target")]
+script = ExtResource("35_b2plg")
+outline_target = NodePath("../../CardOutline")
 
 [node name="Visuals" type="Node2D" parent="." unique_id=2044401141]
 position = Vector2(-72, -108)
@@ -233,3 +239,9 @@ script = ExtResource("37_raks6")
 [node name="CardVisualsNew" parent="." unique_id=96420926 instance=ExtResource("38_fgsua")]
 visible = false
 position = Vector2(-72, -120)
+
+[node name="CardOutline" type="Sprite2D" parent="." unique_id=1774136059]
+z_index = -1
+position = Vector2(-4.529953e-06, 0.4999944)
+scale = Vector2(0.16833335, 0.1596774)
+texture = ExtResource("39_b2plg")
