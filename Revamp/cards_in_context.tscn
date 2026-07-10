@@ -428,7 +428,7 @@ auto_draw_timer = NodePath("../ActiveDrawTime")
 reveal_timer = NodePath("../ActiveDrawTime")
 
 [node name="PlayerHandRoot" parent="." unique_id=371738706 instance=ExtResource("10_mtbf2")]
-position = Vector2(-256, 416)
+position = Vector2(-256, 320)
 
 [node name="ActiveDrawTime" type="Timer" parent="." unique_id=39440691]
 wait_time = 10.0

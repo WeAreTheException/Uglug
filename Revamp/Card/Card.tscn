@@ -40,7 +40,7 @@
 [ext_resource type="PackedScene" uid="uid://c8mfgi3h8sc6v" path="res://NewCardLayout.tscn" id="38_fgsua"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g8l5j"]
-size = Vector2(144, 216)
+size = Vector2(192, 288)
 
 [node name="Card" type="Node2D" unique_id=1649731477 node_paths=PackedStringArray("input", "board_presence", "stats", "mutations", "card_visuals_root", "card_feedback", "attack", "hurt", "die", "sacrifice", "runtime_state")]
 script = ExtResource("1_hdbik")
@@ -57,11 +57,12 @@ sacrifice = NodePath("Actions/Sacrifice")
 runtime_state = NodePath("CardRuntimeState")
 
 [node name="CardInput" type="Area2D" parent="." unique_id=502264031]
+position = Vector2(300, 48)
 script = ExtResource("2_nau7p")
 
 [node name="CardCollider" type="CollisionShape2D" parent="CardInput" unique_id=1550845996]
+position = Vector2(-300, -48)
 shape = SubResource("RectangleShape2D_g8l5j")
-metadata/_edit_lock_ = true
 
 [node name="Core" type="Node" parent="." unique_id=1306606518]
 
@@ -210,6 +211,7 @@ position = Vector2(-72, -108)
 [node name="RevenAnttVisualHandler" type="Node" parent="Visuals" unique_id=434054176]
 
 [node name="CardVisuals" parent="Visuals" unique_id=1593445486 instance=ExtResource("1_2duqk")]
+position = Vector2(72.00001, 108.00001)
 
 [node name="FeedbackSpriteAnchor" type="Node2D" parent="Visuals/CardVisuals" unique_id=626068744]
 

@@ -16,7 +16,6 @@ enum LayoutMode {
 
 @export var hand_card_scale: Vector2 = Vector2(0.8, 0.8)
 @export var move_time: float = 0.15
-@export var hand_width_reference: float = 550.0
 @export var normal_z_start: int = 0
 
 @export var enable_debug_layout_keys: bool = false
@@ -114,28 +113,8 @@ func _arrange_card(card: CardRoot, index: int, count: int) -> void:
 	var start_x: float = -total_width / 2.0
 	var x_pos: float = start_x + card_spacing * index
 
-	var normalization_width: float = hand_width_reference
-
-	if _uses_upward_phase_layout():
-		normalization_width = max(total_width / 2.0, 1.0)
-
-	var normalized_x: float = clampf(
-		x_pos / normalization_width,
-		-1.0,
-		1.0
-	)
-
-	var y_pos: float = 0.0
-
-	if _uses_upward_phase_layout():
-		y_pos = (1.0 - normalized_x * normalized_x) * _get_curve_height()
-	else:
-		y_pos = -(1.0 - normalized_x * normalized_x) * _get_curve_height()
-
-	y_pos += _get_y_offset()
-
-	var target_position: Vector2 = global_position + Vector2(x_pos, y_pos)
-	var target_rotation: float = normalized_x * _get_max_rotation_degrees()
+	var target_position: Vector2 = global_position + Vector2(x_pos, _get_y_offset())
+	var target_rotation: float = 0.0
 
 	if layout_tweener != null:
 		layout_tweener.tween_card(
@@ -165,31 +144,19 @@ func _get_active_layout() -> Node:
 	match current_mode:
 		LayoutMode.PLAY:
 			return play_layout
+
 		LayoutMode.BLESSING:
 			return blessing_layout
+
 		LayoutMode.BUFF:
 			return buffing_layout
 
 	return idle_layout
 
 
-func _uses_upward_phase_layout() -> bool:
-	return current_mode == LayoutMode.BLESSING or current_mode == LayoutMode.BUFF
-
-
 func _get_card_spacing() -> float:
 	var layout := _get_active_layout()
 	return layout.card_spacing if layout != null else 110.0
-
-
-func _get_curve_height() -> float:
-	var layout := _get_active_layout()
-	return layout.curve_height if layout != null else 0.0
-
-
-func _get_max_rotation_degrees() -> float:
-	var layout := _get_active_layout()
-	return layout.max_rotation_degrees if layout != null else 0.0
 
 
 func _get_target_scale() -> Vector2:
