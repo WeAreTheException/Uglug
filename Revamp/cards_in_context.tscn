@@ -132,10 +132,10 @@ position = Vector2(-341, -374)
 [node name="ToolTip" type="Control" parent="." unique_id=2085845756 node_paths=PackedStringArray("name_label", "description_label")]
 layout_mode = 3
 anchors_preset = 0
-offset_left = -832.0
-offset_top = 271.0
-offset_right = -358.0
-offset_bottom = 512.0
+offset_left = 448.0
+offset_top = 256.0
+offset_right = 922.0
+offset_bottom = 497.0
 script = ExtResource("4_3wjp5")
 name_label = NodePath("TextBox/TBNamePanel/TBNameLabel")
 description_label = NodePath("TextBox/TBDescripPanel/TBDescripLabel")
@@ -146,9 +146,8 @@ layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = 1219.0
 offset_top = -241.0
-offset_right = 1693.0
+offset_right = 474.0
 grow_vertical = 0
 metadata/_edit_lock_ = true
 
@@ -180,6 +179,66 @@ offset_bottom = 220.0
 metadata/_edit_lock_ = true
 
 [node name="TBDescripLabel" type="Label" parent="ToolTip/TextBox/TBDescripPanel" unique_id=289638080]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 145.0
+grow_horizontal = 2
+text = "All Active Workers get +1 Atk, +1 Hlt"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="ToolTip2" type="Control" parent="." unique_id=1023470131 node_paths=PackedStringArray("name_label", "description_label")]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 448.0
+offset_top = 256.0
+offset_right = 922.0
+offset_bottom = 497.0
+script = ExtResource("4_3wjp5")
+name_label = NodePath("TextBox/TBNamePanel/TBNameLabel")
+description_label = NodePath("TextBox/TBDescripPanel/TBDescripLabel")
+metadata/_edit_lock_ = true
+
+[node name="TextBox" type="Panel" parent="ToolTip2" unique_id=1910421391]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -241.0
+offset_right = 474.0
+grow_vertical = 0
+metadata/_edit_lock_ = true
+
+[node name="TBNamePanel" type="Panel" parent="ToolTip2/TextBox" unique_id=896815120]
+layout_mode = 0
+offset_left = 17.0
+offset_top = 11.0
+offset_right = 458.0
+offset_bottom = 61.0
+metadata/_edit_lock_ = true
+
+[node name="TBNameLabel" type="Label" parent="ToolTip2/TextBox/TBNamePanel" unique_id=1434900496]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 50.0
+grow_horizontal = 2
+text = "Royale Pheromones"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="TBDescripPanel" type="Panel" parent="ToolTip2/TextBox" unique_id=1468369087]
+layout_mode = 0
+offset_left = 17.0
+offset_top = 75.0
+offset_right = 458.0
+offset_bottom = 220.0
+metadata/_edit_lock_ = true
+
+[node name="TBDescripLabel" type="Label" parent="ToolTip2/TextBox/TBDescripPanel" unique_id=252417983]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
@@ -348,6 +407,7 @@ match_ui = NodePath("..")
 player_hand = NodePath("../../PlayerHandRoot")
 
 [node name="TuggaControl" type="Control" parent="." unique_id=1122243279]
+visible = false
 z_index = -1
 layout_mode = 3
 anchors_preset = 0
@@ -410,7 +470,6 @@ horizontal_alignment = 1
 
 [node name="Slots2" parent="." unique_id=1318716624 instance=ExtResource("4_n6ts1")]
 position = Vector2(-960, -540)
-metadata/_edit_lock_ = true
 
 [node name="CameraRig" type="Node2D" parent="." unique_id=1102878276]
 
