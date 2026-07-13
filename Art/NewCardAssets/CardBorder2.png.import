@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dywkon27hwxxd"
-path="res://.godot/imported/KeyCap.png-1466335e9a8b8fd8cbb1d1cea4547ca1.ctex"
+uid="uid://bo1bflo0j8ibu"
+path="res://.godot/imported/CardBorder2.png-dfd436b7502dc38355dc31d8b8a100be.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Art/NewCardLayout/KeyCap.png"
-dest_files=["res://.godot/imported/KeyCap.png-1466335e9a8b8fd8cbb1d1cea4547ca1.ctex"]
+source_file="res://Art/NewCardAssets/CardBorder2.png"
+dest_files=["res://.godot/imported/CardBorder2.png-dfd436b7502dc38355dc31d8b8a100be.ctex"]
 
 [params]
 

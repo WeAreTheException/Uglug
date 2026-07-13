@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c3x052yyviqkg"
-path="res://.godot/imported/SacrificeCost.png-efc95f9b499f663002b8c21efd84c65b.ctex"
+uid="uid://dqjpqtirjqgjr"
+path="res://.godot/imported/CardStats.png-8710c5107f79aff0cfa4f810e676e427.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Art/NewCardLayout/SacrificeCost.png"
-dest_files=["res://.godot/imported/SacrificeCost.png-efc95f9b499f663002b8c21efd84c65b.ctex"]
+source_file="res://Art/NewCardAssets/CardStats.png"
+dest_files=["res://.godot/imported/CardStats.png-8710c5107f79aff0cfa4f810e676e427.ctex"]
 
 [params]
 
