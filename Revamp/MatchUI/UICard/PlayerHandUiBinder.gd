@@ -3,6 +3,7 @@ class_name PlayHandUiBinder
 
 @export var match_ui: MatchUiRoot
 @export var player_hand: PlayerHandRoot
+@export var sacrifice_controller: SacrificeController
 
 @export var active_color: Color = Color.WHITE
 @export var completed_color: Color = Color(1.0, 1.0, 1.0, 0.35)
@@ -17,9 +18,12 @@ class_name PlayHandUiBinder
 @export var choose_martyrs_text: String = "Choose %s martyr%s"
 @export var place_text: String = "Place"
 
+@export var print_debug: bool = false
+
 
 func _ready() -> void:
 	_connect_hand()
+	_connect_sacrifice_controller()
 	refresh()
 
 
@@ -41,12 +45,20 @@ func refresh() -> void:
 		return
 
 	var required_worth: int = primed_card.get_sacrifice_cost()
-	var selected_worth: int = _get_selected_martyr_worth()
+	var selected_worth: int = _get_current_martyr_worth()
 	var remaining: int = maxi(required_worth - selected_worth, 0)
 	var martyr_plural: String = "" if remaining == 1 else "s"
 
 	var selected_line: String = "Selected %s" % primed_card.card_name
 	var martyr_line: String = _martyr_line(remaining, martyr_plural, remaining > 0)
+
+	_print("UI REFRESH | card=%s required=%s selected=%s remaining=%s pending=%s" % [
+		primed_card.card_name,
+		required_worth,
+		selected_worth,
+		remaining,
+		str(_has_pending_sacrifices())
+	])
 
 	if remaining > 0:
 		_set_helper_text(
@@ -73,8 +85,25 @@ func _connect_hand() -> void:
 	if not player_hand.card_unprimed.is_connected(_on_card_unprimed):
 		player_hand.card_unprimed.connect(_on_card_unprimed)
 
-	if not player_hand.sacrifice_selection_changed.is_connected(_on_sacrifice_selection_changed):
-		player_hand.sacrifice_selection_changed.connect(_on_sacrifice_selection_changed)
+	if not player_hand.sacrifice_selection_changed.is_connected(_on_hand_sacrifice_selection_changed):
+		player_hand.sacrifice_selection_changed.connect(_on_hand_sacrifice_selection_changed)
+
+
+func _connect_sacrifice_controller() -> void:
+	if sacrifice_controller == null:
+		return
+
+	if not sacrifice_controller.sacrifice_requirement_changed.is_connected(_on_sacrifice_requirement_changed):
+		sacrifice_controller.sacrifice_requirement_changed.connect(_on_sacrifice_requirement_changed)
+
+	if not sacrifice_controller.pending_sacrifice_started.is_connected(_on_pending_sacrifice_started):
+		sacrifice_controller.pending_sacrifice_started.connect(_on_pending_sacrifice_started)
+
+	if not sacrifice_controller.pending_sacrifice_undone.is_connected(_on_pending_sacrifice_undone):
+		sacrifice_controller.pending_sacrifice_undone.connect(_on_pending_sacrifice_undone)
+
+	if not sacrifice_controller.sacrifice_committed.is_connected(_on_sacrifice_committed):
+		sacrifice_controller.sacrifice_committed.connect(_on_sacrifice_committed)
 
 
 func _on_card_primed(_card: CardRoot) -> void:
@@ -85,7 +114,29 @@ func _on_card_unprimed(_card: CardRoot) -> void:
 	refresh()
 
 
-func _on_sacrifice_selection_changed(_cards: Array[CardRoot]) -> void:
+func _on_hand_sacrifice_selection_changed(_cards: Array[CardRoot]) -> void:
+	refresh()
+
+
+func _on_sacrifice_requirement_changed(_current_worth: int, _required_worth: int) -> void:
+	refresh()
+
+
+func _on_pending_sacrifice_started(
+	_primed_card: CardRoot,
+	_cards: Array[CardRoot]
+) -> void:
+	refresh()
+
+
+func _on_pending_sacrifice_undone(
+	_primed_card: CardRoot,
+	_cards: Array[CardRoot]
+) -> void:
+	refresh()
+
+
+func _on_sacrifice_committed(_cards: Array[CardRoot]) -> void:
 	refresh()
 
 
@@ -96,14 +147,37 @@ func _get_primed_card() -> CardRoot:
 	return player_hand.get_primed_card()
 
 
-func _get_selected_martyr_worth() -> int:
+func _get_current_martyr_worth() -> int:
+	var pending_cards := _get_pending_sacrifice_cards()
+
+	if not pending_cards.is_empty():
+		return _get_cards_worth(pending_cards)
+
 	if player_hand == null:
 		return 0
 
+	return _get_cards_worth(player_hand.get_selected_sacrifice_cards())
+
+
+func _get_pending_sacrifice_cards() -> Array[CardRoot]:
+	if sacrifice_controller == null:
+		return []
+
+	return sacrifice_controller.get_pending_sacrifice_cards()
+
+
+func _has_pending_sacrifices() -> bool:
+	return not _get_pending_sacrifice_cards().is_empty()
+
+
+func _get_cards_worth(cards: Array[CardRoot]) -> int:
 	var total: int = 0
 
-	for card: CardRoot in player_hand.get_selected_sacrifice_cards():
+	for card: CardRoot in cards:
 		if card == null:
+			continue
+
+		if not is_instance_valid(card):
 			continue
 
 		total += card.get_sacrifice_worth()
@@ -154,3 +228,8 @@ func _future_line(text: String) -> String:
 		future_color.to_html(),
 		text
 	]
+
+
+func _print(message: String) -> void:
+	if print_debug:
+		print(message)

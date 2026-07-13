@@ -1,6 +1,5 @@
 [gd_scene format=3 uid="uid://dtqlg1xqbov7i"]
 
-[ext_resource type="PackedScene" uid="uid://c8mfgi3h8sc6v" path="res://NewCardLayout.tscn" id="1_qeeaa"]
 [ext_resource type="Script" uid="uid://cmbtqx5ng27nb" path="res://Revamp/MutationTooltTip/MutationToolTip.gd" id="4_3wjp5"]
 [ext_resource type="Script" uid="uid://dw1k6pcwy2emf" path="res://Revamp/MatchUI/AttackOrderArrowDisplay.gd" id="4_b6caw"]
 [ext_resource type="PackedScene" uid="uid://bw8c7m7n5yuk8" path="res://Revamp/Board/Slots.tscn" id="4_n6ts1"]
@@ -16,6 +15,20 @@
 [ext_resource type="Resource" uid="uid://bxfxi0h5itrdu" path="res://Revamp/CardPresets/Lieutenant.tres" id="11_x1cq6"]
 [ext_resource type="Resource" uid="uid://dwpj7bg5ognwt" path="res://Revamp/CardPresets/Samurant.tres" id="12_2qwdf"]
 [ext_resource type="Resource" uid="uid://cu38anwcrq117" path="res://Revamp/CardPresets/SuperStimulant.tres" id="13_hlv0h"]
+[ext_resource type="Resource" uid="uid://b10yu2ml8hwx2" path="res://Revamp/CardPresets/Stimulant.tres" id="16_kthx6"]
+[ext_resource type="Script" uid="uid://61l5g8wkdar3" path="res://SacrificeController.gd" id="49_30g8j"]
+[ext_resource type="Script" uid="uid://ciopi88keoi3k" path="res://SacrificeRequirement.gd" id="50_f1nl2"]
+[ext_resource type="Script" uid="uid://b4qvc7353obir" path="res://PendingSacrificeBoat.gd" id="51_pr7vu"]
+[ext_resource type="Script" uid="uid://vmy04gllke53" path="res://SacrificeCommitter.gd" id="52_l3o37"]
+[ext_resource type="Script" uid="uid://db4xai716j06p" path="res://Revamp/Card/CardActions/Sacrifice/SacrificeSelectionRoot.gd" id="53_304k6"]
+[ext_resource type="Script" uid="uid://b3pcelfs57qav" path="res://Revamp/Card/CardActions/Sacrifice/SacrificeBoardSelectionBinder.gd" id="54_64wec"]
+[ext_resource type="Script" uid="uid://dnikkosq1o0kr" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementController.gd" id="55_lq0qx"]
+[ext_resource type="Script" uid="uid://cvkghlt7xdj22" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementState.gd" id="56_emagp"]
+[ext_resource type="Script" uid="uid://dsut7kstdcc6u" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementInputRouter.gd" id="57_7jrky"]
+[ext_resource type="Script" uid="uid://6ycktn6tay80" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementPreview.gd" id="58_8i37d"]
+[ext_resource type="Script" uid="uid://yc6i5trydgut" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementExecutor.gd" id="59_cc2nt"]
+[ext_resource type="Script" uid="uid://c18hwqs033t7x" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementEventEmitter.gd" id="60_vmvxe"]
+[ext_resource type="Script" uid="uid://cmcxm3mp7ljvv" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementCancel.gd" id="61_s0fcy"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vtd1f"]
 bg_color = Color(0.86036915, 0.8603692, 0.8603691, 1)
@@ -26,36 +39,6 @@ corner_radius_bottom_left = 20
 bg_color = Color(0.85882354, 0.85882354, 0.85882354, 1)
 
 [node name="CardsInContext" type="Node2D" unique_id=1665155833]
-
-[node name="Slots" type="Node2D" parent="." unique_id=389802464]
-visible = false
-position = Vector2(-730, -447.00003)
-scale = Vector2(1.2, 1.2)
-
-[node name="Node2D" parent="Slots" unique_id=96420926 instance=ExtResource("1_qeeaa")]
-
-[node name="Node2D2" parent="Slots" unique_id=1637667852 instance=ExtResource("1_qeeaa")]
-position = Vector2(150, 0)
-
-[node name="Node2D3" parent="Slots" unique_id=458385878 instance=ExtResource("1_qeeaa")]
-position = Vector2(300, 0)
-
-[node name="Node2D4" parent="Slots" unique_id=1956715752 instance=ExtResource("1_qeeaa")]
-position = Vector2(448, 0)
-
-[node name="Node2D5" parent="Slots" unique_id=1160862716 instance=ExtResource("1_qeeaa")]
-position = Vector2(0, 254)
-metadata/_edit_lock_ = true
-
-[node name="Node2D6" parent="Slots" unique_id=227384111 instance=ExtResource("1_qeeaa")]
-position = Vector2(150, 254)
-metadata/_edit_lock_ = true
-
-[node name="Node2D7" parent="Slots" unique_id=2116348381 instance=ExtResource("1_qeeaa")]
-position = Vector2(300, 254)
-
-[node name="Node2D8" parent="Slots" unique_id=90234138 instance=ExtResource("1_qeeaa")]
-position = Vector2(448, 254)
 
 [node name="MatchUI" type="Node2D" parent="." unique_id=196750808]
 visible = false
@@ -119,15 +102,6 @@ position = Vector2(0.74993896, -8.106232e-06)
 scale = Vector2(0.99921995, 0.99907494)
 texture = ExtResource("5_n6ts1")
 metadata/_edit_lock_ = true
-
-[node name="PlayerHand" type="Node2D" parent="." unique_id=1890703646]
-position = Vector2(173, 393)
-
-[node name="CardVisualsNew" parent="PlayerHand" unique_id=690121939 instance=ExtResource("1_qeeaa")]
-position = Vector2(-125, -374)
-
-[node name="CardVisualsNew2" parent="PlayerHand" unique_id=28499730 instance=ExtResource("1_qeeaa")]
-position = Vector2(-341, -374)
 
 [node name="ToolTip" type="Control" parent="." unique_id=2085845756 node_paths=PackedStringArray("name_label", "description_label")]
 layout_mode = 3
@@ -401,10 +375,11 @@ offset_left = -88.0
 offset_top = 255.0
 offset_bottom = 326.0
 
-[node name="PlayerHandUiBinder" type="Node" parent="UICard" unique_id=1897709100 node_paths=PackedStringArray("match_ui", "player_hand")]
+[node name="PlayerHandUiBinder" type="Node" parent="UICard" unique_id=1897709100 node_paths=PackedStringArray("match_ui", "player_hand", "sacrifice_controller")]
 script = ExtResource("6_2qwdf")
 match_ui = NodePath("..")
 player_hand = NodePath("../../PlayerHandRoot")
+sacrifice_controller = NodePath("../../SacrificeController")
 
 [node name="TuggaControl" type="Control" parent="." unique_id=1122243279]
 visible = false
@@ -485,6 +460,7 @@ values = NodePath("../CameraShakevalues")
 
 [node name="DrawPhaseTestRoot" type="Node" parent="." unique_id=1322558509 node_paths=PackedStringArray("match_ui", "player_hand", "active_draw_timer", "auto_draw_timer", "reveal_timer")]
 script = ExtResource("9_proag")
+test_enabled = false
 match_ui = NodePath("../UICard")
 player_hand = NodePath("../PlayerHandRoot")
 worker_card = ExtResource("10_x1cq6")
@@ -495,6 +471,7 @@ reveal_timer = NodePath("../ActiveDrawTime")
 
 [node name="PlayerHandRoot" parent="." unique_id=371738706 instance=ExtResource("10_mtbf2")]
 position = Vector2(-64, 384)
+starting_cards = Array[ExtResource("10_nux5c")]([ExtResource("16_kthx6"), ExtResource("16_kthx6"), ExtResource("16_kthx6"), ExtResource("10_x1cq6")])
 
 [node name="ActiveDrawTime" type="Timer" parent="." unique_id=39440691]
 wait_time = 10.0
@@ -503,3 +480,65 @@ wait_time = 10.0
 
 [node name="RevealTime" type="Timer" parent="." unique_id=1735453026]
 wait_time = 3.0
+
+[node name="SacrificeController" type="Node" parent="." unique_id=390329579 node_paths=PackedStringArray("player_hand", "sacrifice_selection_root", "requirement", "pending_boat", "committer")]
+script = ExtResource("49_30g8j")
+player_hand = NodePath("../PlayerHandRoot")
+sacrifice_selection_root = NodePath("SacrificeSelectionRoot")
+requirement = NodePath("SacrificeRequirement")
+pending_boat = NodePath("PendingSacrificeBoat")
+committer = NodePath("SacrificeComitter")
+auto_sacrifice_when_cost_met = true
+
+[node name="SacrificeRequirement" type="Node" parent="SacrificeController" unique_id=847914293]
+script = ExtResource("50_f1nl2")
+
+[node name="PendingSacrificeBoat" type="Node" parent="SacrificeController" unique_id=1588919694 node_paths=PackedStringArray("pending_layer")]
+script = ExtResource("51_pr7vu")
+pending_layer = NodePath("../PendingSacrificeLayer")
+
+[node name="SacrificeComitter" type="Node" parent="SacrificeController" unique_id=391626516]
+script = ExtResource("52_l3o37")
+
+[node name="PendingSacrificeLayer" type="Node2D" parent="SacrificeController" unique_id=1685918177]
+position = Vector2(132, 504)
+
+[node name="SacrificeSelectionRoot" type="Node" parent="SacrificeController" unique_id=215575646]
+script = ExtResource("53_304k6")
+metadata/_custom_type_script = "uid://db4xai716j06p"
+
+[node name="SacrificeBoardSelectionBinder" type="Node" parent="SacrificeController" unique_id=1736267388 node_paths=PackedStringArray("selection_root")]
+script = ExtResource("54_64wec")
+selection_root = NodePath("../SacrificeSelectionRoot")
+print_debug = false
+
+[node name="PlacementController" type="Node" parent="." unique_id=1657909094 node_paths=PackedStringArray("slots_root", "player_hand", "sacrifice_controller", "placement_state", "input_router", "placement_preview", "placement_executor", "event_emitter", "placement_cancel")]
+script = ExtResource("55_lq0qx")
+slots_root = NodePath("../Slots2")
+player_hand = NodePath("../PlayerHandRoot")
+sacrifice_controller = NodePath("../SacrificeController")
+placement_state = NodePath("PlacementState")
+input_router = NodePath("PlacementInputRouter")
+placement_preview = NodePath("PlacementPreview")
+placement_executor = NodePath("PlacementExecutor")
+event_emitter = NodePath("PlacementEventEmitter")
+placement_cancel = NodePath("PlacementCancel")
+enable_payload_debug = true
+
+[node name="PlacementState" type="Node" parent="PlacementController" unique_id=1745320232]
+script = ExtResource("56_emagp")
+
+[node name="PlacementInputRouter" type="Node" parent="PlacementController" unique_id=876741190]
+script = ExtResource("57_7jrky")
+
+[node name="PlacementPreview" type="Node" parent="PlacementController" unique_id=209142198]
+script = ExtResource("58_8i37d")
+
+[node name="PlacementExecutor" type="Node" parent="PlacementController" unique_id=180465745]
+script = ExtResource("59_cc2nt")
+
+[node name="PlacementEventEmitter" type="Node" parent="PlacementController" unique_id=1963809595]
+script = ExtResource("60_vmvxe")
+
+[node name="PlacementCancel" type="Node" parent="PlacementController" unique_id=1659463507]
+script = ExtResource("61_s0fcy")

@@ -231,6 +231,37 @@ func arrange_cards() -> void:
 
 	hand_layout.arrange_cards(card_spawner.get_cards())
 
+const PLACEMENT_LAYOUT_LOCK_META := "hand_placement_layout_locked"
+
+
+func lock_card_from_hand_layout_for_placement(card: CardRoot) -> void:
+	if card == null:
+		return
+
+	if not is_instance_valid(card):
+		return
+
+	card.set_meta(PLACEMENT_LAYOUT_LOCK_META, true)
+
+	if hand_layout != null:
+		if hand_layout.layout_tweener != null:
+			hand_layout.layout_tweener.kill_card_tween(card)
+
+	arrange_cards()
+
+
+func clear_card_from_hand_layout_for_placement(card: CardRoot) -> void:
+	if card == null:
+		return
+
+	if not is_instance_valid(card):
+		return
+
+	if card.has_meta(PLACEMENT_LAYOUT_LOCK_META):
+		card.remove_meta(PLACEMENT_LAYOUT_LOCK_META)
+
+	arrange_cards()
+
 
 func request_prime_toggle() -> void:
 	if interaction_root != null:

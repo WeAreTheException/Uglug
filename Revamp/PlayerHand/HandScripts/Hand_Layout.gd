@@ -90,6 +90,10 @@ func _get_layout_cards(cards: Array[CardRoot]) -> Array[CardRoot]:
 		if not is_instance_valid(card):
 			continue
 
+		if card.has_meta("hand_placement_layout_locked"):
+			if bool(card.get_meta("hand_placement_layout_locked")):
+				continue
+
 		result.append(card)
 
 	return result

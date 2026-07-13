@@ -307,11 +307,11 @@ attack_textures = Array[Texture2D]([ExtResource("16_4yngs"), ExtResource("17_8nq
 health_textures = Array[Texture2D]([ExtResource("16_4yngs"), ExtResource("17_8nq5a"), ExtResource("18_8aa6v"), ExtResource("19_kawbk"), ExtResource("20_6t487"), ExtResource("21_457k1")])
 
 [node name="Attack" type="Sprite2D" parent="Visuals/StatsVisual" unique_id=1626750204]
-position = Vector2(-63.75, 138.74998)
+position = Vector2(-66.666664, 55.55555)
 scale = Vector2(0.14727725, 0.14345993)
 
 [node name="Health" type="Sprite2D" parent="Visuals/StatsVisual" unique_id=582152933]
-position = Vector2(71.6875, 160.75)
+position = Vector2(66.66667, 55.555573)
 scale = Vector2(0.14727725, 0.14345993)
 
 [node name="Name" type="RichTextLabel" parent="Visuals/StatsVisual" unique_id=37488759]
