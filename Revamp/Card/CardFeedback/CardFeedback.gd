@@ -11,6 +11,7 @@ class_name CardFeedback
 var is_hover_focused: bool = false
 var is_dragging: bool = false
 var is_prime_selected: bool = false
+var is_martyr_selected: bool = false
 
 
 func _ready() -> void:
@@ -37,10 +38,16 @@ func set_prime_select_feedback(value: bool) -> void:
 	_refresh()
 
 
+func set_martyr_selected(value: bool) -> void:
+	is_martyr_selected = value
+	_refresh()
+
+
 func clear_all() -> void:
 	is_hover_focused = false
 	is_dragging = false
 	is_prime_selected = false
+	is_martyr_selected = false
 	_refresh()
 
 
@@ -48,14 +55,14 @@ func _refresh() -> void:
 	if not _can_use_hand_feedback():
 		_apply_hover(false)
 		_apply_selected(false)
-		_apply_outline(false, false)
+		_apply_outline(false, false, false)
 		return
 
 	var should_select := is_dragging or is_prime_selected
 
 	_apply_selected(should_select)
-	_apply_hover(is_hover_focused and not should_select)
-	_apply_outline(is_hover_focused, should_select)
+	_apply_hover(is_hover_focused and not should_select and not is_martyr_selected)
+	_apply_outline(is_hover_focused, should_select, is_martyr_selected)
 
 
 func _apply_hover(value: bool) -> void:
@@ -75,12 +82,13 @@ func _apply_selected(value: bool) -> void:
 		select_feedback.set_selected(value)
 
 
-func _apply_outline(hovered: bool, selected: bool) -> void:
+func _apply_outline(hovered: bool, selected: bool, martyr: bool) -> void:
 	if outline_feedback == null:
 		return
 
 	outline_feedback.set_hovered(hovered)
 	outline_feedback.set_selected(selected)
+	outline_feedback.set_martyr(martyr)
 
 
 func _can_use_hand_feedback() -> bool:

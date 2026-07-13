@@ -143,6 +143,9 @@ func stop_sacrifice_anticipation() -> void:
 
 
 func set_sacrifice_selected(value: bool) -> void:
+	if card_feedback != null:
+		card_feedback.set_martyr_selected(value)
+
 	if sacrifice != null:
 		sacrifice.set_marked_for_sacrifice(value)
 

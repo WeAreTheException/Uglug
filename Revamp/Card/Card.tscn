@@ -40,9 +40,14 @@
 [ext_resource type="Script" uid="uid://b727ujf6ycv3o" path="res://Revamp/Card/CardRuntimeState.gd" id="37_raks6"]
 [ext_resource type="PackedScene" uid="uid://c8mfgi3h8sc6v" path="res://NewCardLayout.tscn" id="38_fgsua"]
 [ext_resource type="Texture2D" uid="uid://j75yocnxblk4" path="res://Art/RedBackground.png" id="39_b2plg"]
+[ext_resource type="Shader" uid="uid://q5qsewd5kabi" path="res://Revamp/Card/OutlineForceColor.gdshader" id="40_hginc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g8l5j"]
 size = Vector2(192, 288)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ieatu"]
+shader = ExtResource("40_hginc")
+shader_parameter/outline_color = Color(1, 1, 1, 1)
 
 [node name="Card" type="Node2D" unique_id=1649731477 node_paths=PackedStringArray("input", "board_presence", "stats", "mutations", "card_visuals_root", "card_feedback", "attack", "hurt", "die", "sacrifice", "runtime_state")]
 script = ExtResource("1_hdbik")
@@ -244,6 +249,7 @@ position = Vector2(-72, -120)
 
 [node name="CardOutline" type="Sprite2D" parent="." unique_id=1774136059]
 z_index = -1
+material = SubResource("ShaderMaterial_ieatu")
 position = Vector2(-4.529953e-06, 0.4999944)
 scale = Vector2(0.16833335, 0.1596774)
 texture = ExtResource("39_b2plg")
