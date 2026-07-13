@@ -62,6 +62,9 @@ func on_card_left_released(card: CardRoot) -> void:
 
 
 func on_card_right_pressed(card: CardRoot) -> void:
+	if root.prime_controller != null:
+		root.prime_controller.handle_card_right_pressed(card)
+
 	root.card_right_pressed.emit(card)
 
 

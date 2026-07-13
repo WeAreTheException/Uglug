@@ -68,6 +68,16 @@ func handle_card_pressed(card: CardRoot) -> void:
 	_emit_prime_state()
 
 
+func handle_card_right_pressed(card: CardRoot) -> void:
+	if card == null:
+		return
+
+	if card != state.primed_card:
+		return
+
+	unprime_card()
+
+
 func toggle_prime() -> void:
 	if not prime_action_enabled:
 		return
