@@ -56,6 +56,9 @@ func handle_card_pressed(card: CardRoot) -> void:
 	if not _can_select_card(card):
 		return
 
+	if state.has_primed_card():
+		unprime_card()
+
 	if prime_on_card_press:
 		prime_selection.set_selected_card(card)
 		prime_selected_card()
@@ -84,6 +87,8 @@ func prime_selected_card() -> void:
 	prime_selection.clear_selection()
 	state.set_primed_card(selected_card)
 
+	selected_card.set_prime_select_feedback(true)
+
 	card_primed.emit(selected_card)
 	_emit_prime_state()
 
@@ -94,12 +99,18 @@ func unprime_card() -> void:
 
 	var old_card := state.clear_primed_card()
 
+	if old_card != null:
+		old_card.set_prime_select_feedback(false)
+
 	card_unprimed.emit(old_card)
 	_emit_prime_state()
 
 
 func consume_primed_card(card: CardRoot) -> void:
 	if state.consume_card(card):
+		if card != null:
+			card.set_prime_select_feedback(false)
+
 		_emit_prime_state()
 
 
@@ -120,6 +131,9 @@ func forget_card(card: CardRoot) -> void:
 
 	if state.primed_card == card:
 		state.clear_primed_card()
+
+	if card != null:
+		card.set_prime_select_feedback(false)
 
 	_emit_prime_state()
 

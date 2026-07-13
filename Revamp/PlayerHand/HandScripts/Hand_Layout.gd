@@ -42,12 +42,12 @@ func clear_ignored_card() -> void:
 	exclusion.clear_ignored_card()
 
 
-func set_primed_card(card: CardRoot) -> void:
-	exclusion.set_primed_card(card)
+func set_primed_card(_card: CardRoot) -> void:
+	pass
 
 
 func clear_primed_card() -> void:
-	exclusion.clear_primed_card()
+	pass
 
 
 func get_insert_index_from_global_x(global_x: float, cards: Array[CardRoot]) -> int:
@@ -90,8 +90,7 @@ func _get_layout_cards(cards: Array[CardRoot]) -> Array[CardRoot]:
 		if not is_instance_valid(card):
 			continue
 
-		if exclusion.should_include(card):
-			result.append(card)
+		result.append(card)
 
 	return result
 
