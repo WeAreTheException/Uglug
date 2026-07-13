@@ -170,7 +170,7 @@ func _begin_pending_sacrifice(
 		player_hand.clear_sacrifice_selection()
 
 	var pending_cards := pending_boat.begin_pending(primed_card, entries)
-	
+
 	_release_pending_board_cards_from_slots(entries)
 
 	if has_pending_revenant:
@@ -181,6 +181,16 @@ func _begin_pending_sacrifice(
 	is_processing = false
 
 	await get_tree().process_frame
+
+	if pending_boat == null:
+		return
+
+	if not pending_boat.has_pending():
+		return
+
+	if pending_boat.get_pending_primed_card() != primed_card:
+		return
+
 	pending_sacrifice_started.emit(primed_card, pending_cards)
 	_update_requirement_state()
 

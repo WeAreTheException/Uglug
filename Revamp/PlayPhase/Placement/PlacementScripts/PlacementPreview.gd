@@ -27,6 +27,10 @@ func show_preview(card: CardRoot, slot: Slot, move_time: float) -> void:
 
 
 func clear_preview() -> void:
+	if preview_tween != null:
+		preview_tween.kill()
+		preview_tween = null
+
 	if current_slot != null:
 		current_slot.show_placement_preview(false)
 
@@ -39,6 +43,9 @@ func clear_preview() -> void:
 
 
 func _show_attack_preview(card: CardRoot, origin_slot: Slot) -> void:
+	if controller == null:
+		return
+
 	var board := controller.get_slots_root()
 
 	preview_slots = attack_resolver.get_preview_slots(board, card, origin_slot)
