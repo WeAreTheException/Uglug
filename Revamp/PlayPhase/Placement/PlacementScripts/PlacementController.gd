@@ -46,9 +46,6 @@ func _input(event: InputEvent) -> void:
 			if enable_payload_debug and event.keycode == payload_debug_key:
 				_print("PLACEMENT PAYLOAD DEBUG: " + str(build_current_placement_payload_debug()))
 
-	if not enable_right_click_cancel:
-		return
-
 	if not is_placing():
 		return
 
@@ -56,8 +53,27 @@ func _input(event: InputEvent) -> void:
 		return
 
 	if event is InputEventMouseButton:
-		if event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
+		if not event.pressed:
+			return
+
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			if placement_state == null:
+				return
+
+			if placement_state.preview_slot == null:
+				return
+
+			if not is_valid_placement_slot(placement_state.preview_slot):
+				return
+
+			confirm_placement()
+			get_viewport().set_input_as_handled()
+			return
+
+		if enable_right_click_cancel and event.button_index == MOUSE_BUTTON_RIGHT:
 			cancel_placement(true)
+			get_viewport().set_input_as_handled()
+			return
 
 
 func start_placement(card: CardRoot, owner: SlotRow.SlotOwner) -> void:
@@ -67,11 +83,11 @@ func start_placement(card: CardRoot, owner: SlotRow.SlotOwner) -> void:
 		+ " owner="
 		+ str(owner)
 	)
+
 	start_flow.start(self, card, owner)
 
 
 func request_preview_slot(slot: Slot) -> void:
-
 	if not is_placing() or not is_valid_placement_slot(slot):
 		return
 
@@ -107,11 +123,16 @@ func apply_confirmed_placement(payload: Dictionary) -> void:
 		block("Confirmed placement payload empty.")
 		return
 
+	if placement_state != null:
+		placement_state.is_confirming = true
+
 	if slots_root == null:
+		_end_confirming()
 		block("Confirmed placement blocked: slots_root missing.")
 		return
 
 	if placement_executor == null:
+		_end_confirming()
 		block("Confirmed placement blocked: placement_executor missing.")
 		return
 
@@ -121,6 +142,7 @@ func apply_confirmed_placement(payload: Dictionary) -> void:
 	var owner: SlotRow.SlotOwner = payload.get("owner", SlotRow.SlotOwner.PLAYER)
 
 	var card := _find_card_for_confirmed_placement(card_id)
+
 	print(
 		"CONFIRMED PLACEMENT CARD DEBUG | runtime_id=",
 		card_id,
@@ -135,24 +157,28 @@ func apply_confirmed_placement(payload: Dictionary) -> void:
 		" in_p2_hand=",
 		match_network_root.deck_system_root.player_two_hand.has_card(card) if card != null and match_network_root != null and match_network_root.deck_system_root != null and match_network_root.deck_system_root.player_two_hand != null else false
 	)
+
 	var slot := _get_confirmed_target_slot(owner, slot_owner, slot_index)
 
 	if card == null:
+		_end_confirming()
 		block("Confirmed placement blocked: card missing.")
 		return
 
 	if slot == null:
+		_end_confirming()
 		block("Confirmed placement blocked: slot missing.")
 		return
 
 	if not _can_place_on_confirmed_slot(slot, payload):
+		_end_confirming()
 		block("Confirmed placement blocked: slot occupied.")
 		return
-		
+
 	_commit_confirmed_sacrifices(payload)
-		
+
 	var source_hand := _get_source_hand_for_owner(owner)
-	
+
 	var event := placement_executor.confirm_network_placement(
 		card,
 		slot,
@@ -161,10 +187,12 @@ func apply_confirmed_placement(payload: Dictionary) -> void:
 	)
 
 	if event.is_empty():
+		_end_confirming()
 		block("Confirmed placement failed.")
 		return
 
 	_finish_confirmed_placement(event)
+
 
 func _commit_confirmed_sacrifices(payload: Dictionary) -> void:
 	var sacrificed_ids: Array = payload.get("sacrificed_card_runtime_ids", [])
@@ -179,6 +207,7 @@ func _commit_confirmed_sacrifices(payload: Dictionary) -> void:
 			continue
 
 		_remove_confirmed_sacrifice_card(card)
+
 
 func _remove_confirmed_sacrifice_card(card: CardRoot) -> void:
 	if card == null:
@@ -195,6 +224,7 @@ func _remove_confirmed_sacrifice_card(card: CardRoot) -> void:
 		player_hand.remove_card_from_hand(card)
 
 	card.queue_free()
+
 
 func _can_place_on_confirmed_slot(
 	slot: Slot,
@@ -214,6 +244,7 @@ func _can_place_on_confirmed_slot(
 	var sacrificed_ids: Array = payload.get("sacrificed_card_runtime_ids", [])
 
 	return sacrificed_ids.has(occupying_card.get_runtime_id())
+
 
 func cancel_placement(undo_pending_sacrifice: bool = true) -> void:
 	if placement_state == null or not placement_state.has_active_card():
@@ -420,6 +451,11 @@ func block(reason: String) -> void:
 	placement_blocked.emit(reason)
 
 
+func _end_confirming() -> void:
+	if placement_state != null:
+		placement_state.is_confirming = false
+
+
 func _get_card_name_debug(card: CardRoot) -> String:
 	if card == null:
 		return "null"
@@ -458,11 +494,13 @@ func _print(message: String) -> void:
 	if print_debug:
 		print(message)
 
+
 func _get_current_local_placement_owner() -> SlotRow.SlotOwner:
 	if match_network_root != null:
 		return match_network_root.get_local_owner()
 
 	return get_placing_owner()
+
 
 func _get_network_slot_index(
 	_network_owner: SlotRow.SlotOwner,
@@ -475,6 +513,7 @@ func _get_network_slot_index(
 		return _mirror_slot_index(target_slot.slot_index)
 
 	return target_slot.slot_index
+
 
 func _is_client_visual_board_flipped() -> bool:
 	if match_network_root == null:

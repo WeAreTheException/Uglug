@@ -28,7 +28,9 @@ func confirm(controller: PlacementController) -> void:
 		if controller.print_debug:
 			print("PLACEMENT REQUEST SENT: ", payload)
 
-		controller.placement_state.is_confirming = false
+		# IMPORTANT:
+		# Do not set is_confirming false here.
+		# Network placement is still waiting for apply_confirmed_placement().
 		return
 
 	var event := controller.placement_executor.confirm_placement(

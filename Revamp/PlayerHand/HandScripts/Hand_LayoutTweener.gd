@@ -17,15 +17,19 @@ func tween_card(
 	if card == null:
 		return
 
+	if not is_instance_valid(card):
+		return
+
+	var card_id: int = card.get_instance_id()
+
 	if _is_drag_locked(card):
 		kill_card_tween(card)
 		return
 
-	card.z_index = z_value
 	kill_card_tween(card)
 
 	var tween := create_tween()
-	active_tweens[card] = tween
+	active_tweens[card_id] = tween
 
 	tween.set_trans(Tween.TRANS_CUBIC)
 	tween.set_ease(Tween.EASE_OUT)
@@ -34,25 +38,52 @@ func tween_card(
 	tween.parallel().tween_property(card, "rotation_degrees", target_rotation_degrees, move_time)
 	tween.parallel().tween_property(card, "scale", target_scale, move_time)
 
-	tween.finished.connect(func() -> void:
-		if active_tweens.get(card) == tween:
-			active_tweens.erase(card)
-	)
+	tween.finished.connect(_on_tween_finished.bind(card_id, tween))
 
 
 func kill_card_tween(card: CardRoot) -> void:
-	if not active_tweens.has(card):
+	if card == null:
 		return
 
-	var tween := active_tweens[card] as Tween
+	if not is_instance_valid(card):
+		return
+
+	var card_id: int = card.get_instance_id()
+
+	if not active_tweens.has(card_id):
+		return
+
+	var tween := active_tweens[card_id] as Tween
 
 	if tween != null:
 		tween.kill()
 
-	active_tweens.erase(card)
+	active_tweens.erase(card_id)
+
+
+func clear_all_tweens() -> void:
+	for tween in active_tweens.values():
+		if tween == null:
+			continue
+
+		if tween is Tween:
+			tween.kill()
+
+	active_tweens.clear()
+
+
+func _on_tween_finished(card_id: int, tween: Tween) -> void:
+	if active_tweens.get(card_id) == tween:
+		active_tweens.erase(card_id)
 
 
 func _is_drag_locked(card: CardRoot) -> bool:
+	if card == null:
+		return false
+
+	if not is_instance_valid(card):
+		return false
+
 	if not card.has_meta(DRAG_LOCK_META):
 		return false
 

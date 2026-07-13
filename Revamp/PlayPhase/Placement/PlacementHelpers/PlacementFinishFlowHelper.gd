@@ -27,6 +27,7 @@ func finish_placement(
 	controller.placement_finished.emit(emitted_event)
 
 	if controller.placement_state != null:
+		controller.placement_state.is_confirming = false
 		controller.placement_state.reset()
 
 	controller.set_hand_input_enabled(true)

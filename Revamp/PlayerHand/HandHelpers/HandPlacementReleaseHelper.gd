@@ -19,6 +19,10 @@ func release_primed_card_for_placement(
 	if not card_spawner.is_card_in_hand(card):
 		return
 
+	_kill_hand_layout_tween(card, hand_layout)
+
+	card.clear_hand_feedback()
+
 	card_spawner.remove_card(card)
 
 	if interaction_root != null:
@@ -32,3 +36,19 @@ func release_primed_card_for_placement(
 
 	if interaction_root != null:
 		interaction_root.refresh_hover_focus()
+
+
+func _kill_hand_layout_tween(
+	card: CardRoot,
+	hand_layout: Hand_Layout
+) -> void:
+	if hand_layout == null:
+		return
+
+	hand_layout.clear_ignored_card()
+	hand_layout.clear_primed_card()
+
+	if hand_layout.layout_tweener == null:
+		return
+
+	hand_layout.layout_tweener.kill_card_tween(card)
