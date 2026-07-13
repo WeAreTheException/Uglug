@@ -370,6 +370,18 @@ func return_primed_card_to_prime_location() -> void:
 	if interaction_root != null:
 		interaction_root.return_primed_card_to_prime_location()
 
+func clear_play_selection_after_placement_cancel() -> void:
+	clear_sacrifice_selection()
+
+	if hand_layout != null:
+		hand_layout.clear_primed_card()
+
+	if interaction_root != null and interaction_root.can_unprime():
+		interaction_root.toggle_prime()
+
+	arrange_cards()
+	emit_prime_state()
+
 
 func get_primed_card() -> CardRoot:
 	if interaction_root == null:
