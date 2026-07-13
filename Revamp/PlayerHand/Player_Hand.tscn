@@ -60,7 +60,6 @@ play_layout = NodePath("Hand_PlayLayout")
 blessing_layout = NodePath("Hand_BlessingLayout")
 buffing_layout = NodePath("Hand_BuffingLayout")
 layout_tweener = NodePath("Hand_LayoutTweener")
-enable_debug_layout_keys = true
 
 [node name="Hand_IdleLayout" type="Node2D" parent="Hand_Layout" unique_id=1708688104]
 script = ExtResource("10_4g7iw")

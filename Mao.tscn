@@ -344,7 +344,6 @@ match_network_root = NodePath("../../../../Multiplayer/MatchNetworkRoot")
 print_debug = false
 
 [node name="WizantAnim" parent="Scripts/Core/Blessing" unique_id=1060986998 instance=ExtResource("46_bvwb1")]
-visible = false
 play_intro_on_ready = false
 print_debug = false
 

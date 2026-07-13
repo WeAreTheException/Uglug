@@ -342,7 +342,6 @@ offset_top = 255.0
 offset_bottom = 326.0
 
 [node name="TuggaControl" type="Control" parent="." unique_id=1122243279]
-z_index = -1
 layout_mode = 3
 anchors_preset = 0
 offset_left = -866.0
@@ -430,7 +429,7 @@ auto_draw_timer = NodePath("../ActiveDrawTime")
 reveal_timer = NodePath("../ActiveDrawTime")
 
 [node name="PlayerHandRoot" parent="." unique_id=371738706 instance=ExtResource("10_mtbf2")]
-position = Vector2(-64, 384)
+position = Vector2(-256, 320)
 
 [node name="ActiveDrawTime" type="Timer" parent="." unique_id=39440691]
 wait_time = 10.0

@@ -16,55 +16,11 @@ enum LayoutMode {
 
 @export var hand_card_scale: Vector2 = Vector2(0.8, 0.8)
 @export var move_time: float = 0.15
-@export var normal_z_start: int = 0
-
-@export var enable_debug_layout_keys: bool = false
-@export var debug_idle_key: Key = KEY_1
-@export var debug_play_key: Key = KEY_2
-@export var debug_blessing_key: Key = KEY_3
-@export var debug_buff_key: Key = KEY_4
+@export var normal_card_z: int = 0
 
 var current_mode: LayoutMode = LayoutMode.IDLE
 var exclusion := HandLayoutExclusionHelper.new()
 var index_resolver := HandInsertIndexResolverHelper.new()
-
-
-func _unhandled_input(event: InputEvent) -> void:
-	if not enable_debug_layout_keys:
-		return
-
-	if not event is InputEventKey:
-		return
-
-	if not event.pressed:
-		return
-
-	if event.echo:
-		return
-
-	if event.keycode == debug_idle_key:
-		set_layout_mode(LayoutMode.IDLE)
-		_request_arrange_from_parent()
-		print("DEBUG HAND LAYOUT: IDLE")
-		return
-
-	if event.keycode == debug_play_key:
-		set_layout_mode(LayoutMode.PLAY)
-		_request_arrange_from_parent()
-		print("DEBUG HAND LAYOUT: PLAY")
-		return
-
-	if event.keycode == debug_blessing_key:
-		set_layout_mode(LayoutMode.BLESSING)
-		_request_arrange_from_parent()
-		print("DEBUG HAND LAYOUT: BLESSING")
-		return
-
-	if event.keycode == debug_buff_key:
-		set_layout_mode(LayoutMode.BUFF)
-		_request_arrange_from_parent()
-		print("DEBUG HAND LAYOUT: BUFF")
-		return
 
 
 func set_layout_mode(mode: LayoutMode) -> void:
@@ -121,8 +77,8 @@ func _arrange_card(card: CardRoot, index: int, count: int) -> void:
 			card,
 			target_position,
 			target_rotation,
-			_get_target_scale(),
-			normal_z_start + index,
+			hand_card_scale,
+			normal_card_z,
 			move_time
 		)
 
@@ -144,23 +100,17 @@ func _get_active_layout() -> Node:
 	match current_mode:
 		LayoutMode.PLAY:
 			return play_layout
-
 		LayoutMode.BLESSING:
-			return blessing_layout
-
+			return blessing_layout if blessing_layout != null else idle_layout
 		LayoutMode.BUFF:
-			return buffing_layout
+			return buffing_layout if buffing_layout != null else idle_layout
 
 	return idle_layout
 
 
 func _get_card_spacing() -> float:
 	var layout := _get_active_layout()
-	return layout.card_spacing if layout != null else 110.0
-
-
-func _get_target_scale() -> Vector2:
-	return hand_card_scale
+	return layout.card_spacing if layout != null else 150.0
 
 
 func _get_y_offset() -> float:
@@ -173,13 +123,3 @@ func _get_y_offset() -> float:
 		return layout.y_offset
 
 	return 0.0
-
-
-func _request_arrange_from_parent() -> void:
-	var parent := get_parent()
-
-	if parent == null:
-		return
-
-	if parent.has_method("arrange_cards"):
-		parent.arrange_cards()
