@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bw8c7m7n5yuk8" path="res://Revamp/Board/Slots.tscn" id="4_n6ts1"]
 [ext_resource type="Texture2D" uid="uid://cjesmr4t5yoad" path="res://Revamp/References/aasedasd.jpg" id="5_n6ts1"]
 [ext_resource type="Script" uid="uid://b36x28452aktg" path="res://Revamp/MatchUiRoot.gd" id="5_tsgf7"]
+[ext_resource type="Script" uid="uid://dg2jxnlex8u2p" path="res://Revamp/MatchUI/UICard/PlayerHandUiBinder.gd" id="6_2qwdf"]
 [ext_resource type="Script" uid="uid://blfvp1wwkpwtb" path="res://Revamp/Camera/CameraShakeValues.gd" id="6_bguvq"]
 [ext_resource type="Script" uid="uid://cl88hir003ywp" path="res://Revamp/Camera/CameraShakeFeedback.gd" id="7_tsgf7"]
 [ext_resource type="Script" uid="uid://c406tme7fpq2j" path="res://Revamp/DrawPhaseTestRoot.gd" id="9_proag"]
@@ -341,6 +342,11 @@ offset_left = -88.0
 offset_top = 255.0
 offset_bottom = 326.0
 
+[node name="PlayerHandUiBinder" type="Node" parent="UICard" unique_id=1897709100 node_paths=PackedStringArray("match_ui", "player_hand")]
+script = ExtResource("6_2qwdf")
+match_ui = NodePath("..")
+player_hand = NodePath("../../PlayerHandRoot")
+
 [node name="TuggaControl" type="Control" parent="." unique_id=1122243279]
 z_index = -1
 layout_mode = 3
@@ -420,7 +426,6 @@ values = NodePath("../CameraShakevalues")
 
 [node name="DrawPhaseTestRoot" type="Node" parent="." unique_id=1322558509 node_paths=PackedStringArray("match_ui", "player_hand", "active_draw_timer", "auto_draw_timer", "reveal_timer")]
 script = ExtResource("9_proag")
-test_enabled = false
 match_ui = NodePath("../UICard")
 player_hand = NodePath("../PlayerHandRoot")
 worker_card = ExtResource("10_x1cq6")
