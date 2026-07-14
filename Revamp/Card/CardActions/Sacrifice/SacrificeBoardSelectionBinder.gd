@@ -134,3 +134,48 @@ func _toggle_board_card(card: CardRoot) -> void:
 		print("BOARD MARTYR SELECTED | card=", card.card_name)
 	else:
 		print("BOARD MARTYR FAILED | card=", card.card_name)
+
+func set_player_hand(new_player_hand: PlayerHandRoot) -> void:
+	if player_hand == new_player_hand:
+		return
+
+	_disconnect_player_hand()
+
+	player_hand = new_player_hand
+
+	_connect_player_hand()
+	_refresh_sacrifice_active()
+
+
+func set_slots_root(new_slots_root: SlotsRoot) -> void:
+	if slots_root == new_slots_root:
+		return
+
+	_disconnect_slots_root()
+
+	slots_root = new_slots_root
+
+	_connect_slots_root()
+
+
+func set_selection_root(new_selection_root: SacrificeSelectionRoot) -> void:
+	selection_root = new_selection_root
+
+
+func _disconnect_player_hand() -> void:
+	if player_hand == null:
+		return
+
+	if player_hand.card_primed.is_connected(_on_card_primed):
+		player_hand.card_primed.disconnect(_on_card_primed)
+
+	if player_hand.card_unprimed.is_connected(_on_card_unprimed):
+		player_hand.card_unprimed.disconnect(_on_card_unprimed)
+
+
+func _disconnect_slots_root() -> void:
+	if slots_root == null:
+		return
+
+	if slots_root.slot_clicked.is_connected(_on_slot_clicked):
+		slots_root.slot_clicked.disconnect(_on_slot_clicked)
