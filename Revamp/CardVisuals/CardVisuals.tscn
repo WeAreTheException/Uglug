@@ -339,9 +339,8 @@ position = Vector2(60.52592, -69.9726)
 scale = Vector2(0.09, 0.083)
 texture = ExtResource("27_0lj05")
 
-[node name="ViewportDisplayController" type="Node2D" parent="." unique_id=1630220938 node_paths=PackedStringArray("sub_viewport")]
+[node name="ViewportDisplayController" type="Node2D" parent="." unique_id=1630220938]
 script = ExtResource("24_4t10r")
-sub_viewport = NodePath("")
 
 [node name="AntSprite" type="Sprite2D" parent="." unique_id=425635481]
 visible = false

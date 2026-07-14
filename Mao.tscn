@@ -246,11 +246,12 @@ turn_order_state = NodePath("../MatchTurnOrderState")
 player_one_hand = NodePath("../../../Core/PlayerHAnd")
 player_two_hand = NodePath("../../../Core/OpponenetHAnd")
 
-[node name="MatchFlowBoardApplier" type="Node" parent="Scripts/MatchFlowRoot" unique_id=340338363 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "slots_root")]
+[node name="MatchFlowBoardApplier" type="Node" parent="Scripts/MatchFlowRoot" unique_id=340338363 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "slots_root", "match_network_root")]
 script = ExtResource("20_vcbui")
 match_flow_root = NodePath("..")
 turn_order_state = NodePath("../MatchTurnOrderState")
 slots_root = NodePath("../../../Core/Board")
+match_network_root = NodePath("../../../Multiplayer/MatchNetworkRoot")
 
 [node name="Core" type="Node" parent="Scripts" unique_id=343949318]
 

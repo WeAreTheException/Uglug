@@ -60,7 +60,7 @@ damaged_feedback = NodePath("SlotDamagedFeedback")
 
 [node name="SlotPlayPhaseFeedback" type="Node" parent="SlotFeedback" unique_id=700538427 node_paths=PackedStringArray("target")]
 script = ExtResource("5_iike6")
-target = NodePath("../../SlotVisual")
+target = NodePath("../../SlotVisualShadered")
 
 [node name="SlotPlacementPreviewFeedback" type="Node" parent="SlotFeedback" unique_id=782340900 node_paths=PackedStringArray("target")]
 script = ExtResource("6_dshdd")
@@ -77,6 +77,12 @@ animated_target = NodePath("../../SlotVisual")
 expand_time = 0.09
 
 [node name="SlotVisual" type="Sprite2D" parent="." unique_id=857403716]
+position = Vector2(2.861023e-06, 5.722046e-06)
+scale = Vector2(1.0666666, 1.1773585)
+texture = ExtResource("2_rh202")
+
+[node name="SlotVisualShadered" type="Sprite2D" parent="." unique_id=1546213069]
+visible = false
 material = SubResource("ShaderMaterial_7gp6q")
 position = Vector2(2.861023e-06, 5.722046e-06)
 scale = Vector2(1.0666666, 1.1773585)
