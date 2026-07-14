@@ -6,8 +6,6 @@ class_name CardFeedback
 @export var select_feedback: CardSelectFeedback
 @export var outline_feedback: CardOutlineFeedback
 
-@export var print_hover_debug: bool = true
-
 var is_hover_focused: bool = false
 var is_dragging: bool = false
 var is_prime_selected: bool = false
@@ -21,10 +19,6 @@ func _ready() -> void:
 
 func set_hover_focused(value: bool) -> void:
 	is_hover_focused = value
-
-	if print_hover_debug:
-		print("CARD HOVER FOCUSED: ", card.card_name if card != null else name, " = ", value)
-
 	_refresh()
 
 

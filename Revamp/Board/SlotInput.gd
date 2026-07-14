@@ -41,15 +41,8 @@ func _update_manual_hover() -> void:
 	is_hovered = hovering
 
 	if is_hovered:
-		print(
-			"SLOT INPUT HOVER | slot=",
-			slot.name if slot != null else "null",
-			" occupied=",
-			slot.current_card != null if slot != null else false
-		)
 		hovered.emit()
 	else:
-		print("SLOT INPUT UNHOVER | slot=", slot.name if slot != null else "null")
 		unhovered.emit()
 
 
@@ -57,15 +50,6 @@ func _update_manual_click() -> void:
 	var left_down := Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
 
 	if is_hovered and left_down and not was_left_down:
-		print(
-			"SLOT INPUT CLICK | slot=",
-			slot.name if slot != null else "null",
-			" occupied=",
-			slot.current_card != null if slot != null else false,
-			" card=",
-			slot.current_card.card_name if slot != null and slot.current_card != null else "null"
-		)
-
 		clicked.emit()
 
 	was_left_down = left_down
