@@ -20,6 +20,8 @@ func enter_slot(slot: Slot, card: CardRoot) -> bool:
 
 	current_slot = slot
 
+	print("BOARD ENTER | card=", card.card_name, " slot=", slot.name)
+
 	_try_refresh_board_mutations(card)
 
 	return true
@@ -28,6 +30,8 @@ func enter_slot(slot: Slot, card: CardRoot) -> bool:
 func leave_slot(card: CardRoot) -> void:
 	if current_slot == null:
 		return
+
+	print("BOARD LEAVE | card=", card.card_name if card != null else "null", " slot=", current_slot.name)
 
 	_notify_left_board(card)
 
@@ -38,6 +42,10 @@ func leave_slot(card: CardRoot) -> void:
 
 	if current_slot.current_card == card:
 		current_slot.clear_card()
+
+	current_slot = null
+
+	_try_refresh_board_mutations_from_root(old_slots_root)
 
 	current_slot = null
 

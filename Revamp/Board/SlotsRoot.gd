@@ -289,3 +289,17 @@ func debug_print_slots() -> void:
 				" global_x=",
 				slot.global_position.x
 			)
+
+func get_cards_for_owner(owner: SlotRow.SlotOwner) -> Array[CardRoot]:
+	var result: Array[CardRoot] = []
+
+	for slot: Slot in get_slots_for_owner(owner):
+		if slot == null:
+			continue
+
+		if slot.current_card == null:
+			continue
+
+		result.append(slot.current_card)
+
+	return result

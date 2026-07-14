@@ -10,7 +10,7 @@
 [ext_resource type="Script" uid="uid://bkk2cojo6thgb" path="res://Revamp/Board/AttackOrderHandler.gd" id="9_1gkk1"]
 [ext_resource type="Script" uid="uid://w3b8lt2epqs0" path="res://Revamp/Board/Slot/BoardQuery.gd" id="9_8cmln"]
 
-[node name="Slots" type="Node2D" unique_id=1318716624 node_paths=PackedStringArray("player_row", "opponent_row", "board_slot_registry", "board_query", "board_mutation_refresher", "slot_preset_handler", "attack_order_handler", "attack_animation_layer")]
+[node name="Slots" type="Node2D" unique_id=1318716624 node_paths=PackedStringArray("player_row", "opponent_row", "board_slot_registry", "board_query", "board_mutation_refresher", "slot_preset_handler", "attack_order_handler", "spawned_card_parent", "attack_animation_layer")]
 script = ExtResource("1_vhubw")
 player_row = NodePath("BoardCardsLayer/PlayerRow")
 opponent_row = NodePath("BoardCardsLayer/OpponentRow")
@@ -20,6 +20,7 @@ board_mutation_refresher = NodePath("BoardMutationRefresher")
 slot_preset_handler = NodePath("SlotPresetHandler")
 attack_order_handler = NodePath("AttackOrderHandler")
 card_scene = ExtResource("5_1gkk1")
+spawned_card_parent = NodePath("BoardCardsLayer")
 attack_animation_layer = NodePath("AttackAnimationLayer")
 
 [node name="BoardCardsLayer" type="Node2D" parent="." unique_id=1962797662]
