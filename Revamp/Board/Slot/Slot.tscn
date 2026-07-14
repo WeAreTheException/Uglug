@@ -58,9 +58,10 @@ placement_preview_feedback = NodePath("SlotPlacementPreviewFeedback")
 attack_preview_feedback = NodePath("SlotAttackPreviewFeedback")
 damaged_feedback = NodePath("SlotDamagedFeedback")
 
-[node name="SlotPlayPhaseFeedback" type="Node" parent="SlotFeedback" unique_id=700538427 node_paths=PackedStringArray("target")]
+[node name="SlotPlayPhaseFeedback" type="Node" parent="SlotFeedback" unique_id=700538427 node_paths=PackedStringArray("normal_sprite", "playable_shader_sprite")]
 script = ExtResource("5_iike6")
-target = NodePath("../../SlotVisualShadered")
+normal_sprite = NodePath("../../SlotVisual")
+playable_shader_sprite = NodePath("../../SlotVisualShadered")
 
 [node name="SlotPlacementPreviewFeedback" type="Node" parent="SlotFeedback" unique_id=782340900 node_paths=PackedStringArray("target")]
 script = ExtResource("6_dshdd")
