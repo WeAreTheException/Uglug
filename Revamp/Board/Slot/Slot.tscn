@@ -86,6 +86,7 @@ texture = ExtResource("2_rh202")
 [node name="Node" type="Node" parent="." unique_id=574764237]
 
 [node name="TargetWave" type="ColorRect" parent="." unique_id=1398488935]
+visible = false
 z_index = 100
 material = SubResource("ShaderMaterial_5ggg6")
 offset_left = 96.0

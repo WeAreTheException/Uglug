@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://bw8c7m7n5yuk8" path="res://Revamp/Board/Slots.tscn" id="1_yq750"]
 [ext_resource type="PackedScene" uid="uid://1wr1e57v7trd" path="res://Revamp/PlayerHand/Player_Hand.tscn" id="2_mi1n2"]
 [ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Old/Mutations/MutationBehaviourHandlers/Mutation.gd" id="3_3vc3c"]
+[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Old/Data/CardData.gd" id="4_qct7y"]
 [ext_resource type="Script" uid="uid://8nr6ngjl24kj" path="res://Revamp/MatchFlow/MatchAutoAdvanceHandler.gd" id="6_lc0u2"]
 [ext_resource type="Script" uid="uid://61l5g8wkdar3" path="res://SacrificeController.gd" id="10_1j514"]
 [ext_resource type="Script" uid="uid://db4xai716j06p" path="res://Revamp/Card/CardActions/Sacrifice/SacrificeSelectionRoot.gd" id="11_5f7hr"]
@@ -100,12 +101,14 @@ direct_damage_router = NodePath("../../Scripts/Core/DirectDamageRouter")
 
 [node name="PlayerHAnd" parent="Core" unique_id=371738706 node_paths=PackedStringArray("prime_location", "cost_sort", "mutation_sort") instance=ExtResource("2_mi1n2")]
 position = Vector2(935.99994, 911.99994)
+starting_cards = Array[ExtResource("4_qct7y")]([])
 prime_location = NodePath("../PrimeCardLocation")
 cost_sort = NodePath("../../Control/CostSortButton")
 mutation_sort = NodePath("../../Control/MutationSortButton")
 
 [node name="OpponenetHAnd" parent="Core" unique_id=1415383407 node_paths=PackedStringArray("prime_location") instance=ExtResource("2_mi1n2")]
 position = Vector2(936, 912)
+starting_cards = Array[ExtResource("4_qct7y")]([])
 prime_location = NodePath("../PrimeCardLocation")
 
 [node name="PrimeCardLocation" type="Node2D" parent="Core" unique_id=2143511336]
@@ -543,8 +546,7 @@ placement_network = NodePath("MatchNetworkPlacement")
 attack_network = NodePath("MatchNetworkAttack")
 score_network = NodePath("MatchNetworkScore")
 debug_sync_network = NodePath("MatchNetworkDebugSync")
-enable_match_advance_debug = false
-print_debug = false
+enable_ping_debug = true
 
 [node name="MatchNetworkFlow" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=880320439]
 script = ExtResource("68_8hx3r")
@@ -567,6 +569,7 @@ selection_state = NodePath("../../../Scripts/Core/Buff/BuffSelectionState")
 
 [node name="MatchNetworkPlacement" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=207070248]
 script = ExtResource("65_fd62j")
+print_debug = true
 
 [node name="MatchNetworkAttack" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=979088000]
 script = ExtResource("73_nc85t")
