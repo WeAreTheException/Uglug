@@ -1,48 +1,52 @@
 extends Node
 class_name SlotPlacementPreviewFeedback
 
-@export var target: CanvasItem
+@export var normal_sprite: CanvasItem
+@export var playable_shader_sprite: CanvasItem
 
-@export var preview_alpha: float = 1.0
-@export var idle_alpha: float = 0.75
-@export var preview_color: Color = Color(0.4, 1.0, 1.0, 1.0)
-@export var idle_color: Color = Color(1.0, 1.0, 1.0, 0.75)
+@export var preview_color: Color = Color(1.0, 0.85, 0.25, 1.0)
+@export var idle_color: Color = Color.WHITE
 
-@export var tween_time: float = 0.08
+@export var force_color_parameter: String = "force_color"
+@export var force_amount_parameter: String = "force_amount"
 
 var slot_feedback: SlotFeedback = null
-var tween: Tween = null
 var is_previewed: bool = false
+var playable_material: ShaderMaterial = null
 
 
 func setup(source_feedback: SlotFeedback) -> void:
 	slot_feedback = source_feedback
+	_make_unique_material()
 	set_previewed(false)
 
 
 func set_previewed(value: bool) -> void:
-	if is_previewed == value:
-		return
-
 	is_previewed = value
 
 	if is_previewed:
-		_apply_color(preview_color, preview_alpha)
+		_apply_color(preview_color, 1.0)
 	else:
-		_apply_color(idle_color, idle_alpha)
+		_apply_color(idle_color, 0.0)
 
 
-func _apply_color(color: Color, alpha: float) -> void:
-	if target == null:
+func _make_unique_material() -> void:
+	if playable_shader_sprite == null:
 		return
 
-	if tween != null:
-		tween.kill()
+	var shader_material := playable_shader_sprite.material as ShaderMaterial
 
-	var final_color := color
-	final_color.a = alpha
+	if shader_material == null:
+		return
 
-	tween = create_tween()
-	tween.set_trans(Tween.TRANS_CUBIC)
-	tween.set_ease(Tween.EASE_OUT)
-	tween.tween_property(target, "modulate", final_color, tween_time)
+	playable_material = shader_material.duplicate() as ShaderMaterial
+	playable_shader_sprite.material = playable_material
+
+
+func _apply_color(color: Color, amount: float) -> void:
+	if normal_sprite != null:
+		normal_sprite.modulate = color if amount > 0.0 else idle_color
+
+	if playable_material != null:
+		playable_material.set_shader_parameter(force_color_parameter, color)
+		playable_material.set_shader_parameter(force_amount_parameter, amount)

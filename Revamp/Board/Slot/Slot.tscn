@@ -18,6 +18,8 @@ size = Vector2(192, 312)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7gp6q"]
 shader = ExtResource("9_aufiu")
+shader_parameter/force_color = Color(1, 1, 1, 1)
+shader_parameter/force_amount = 1.0
 shader_parameter/strength = 0.0150000007125
 shader_parameter/speed = 5.0000002375
 shader_parameter/amount = 28.0
@@ -63,9 +65,10 @@ script = ExtResource("5_iike6")
 normal_sprite = NodePath("../../SlotVisual")
 playable_shader_sprite = NodePath("../../SlotVisualShadered")
 
-[node name="SlotPlacementPreviewFeedback" type="Node" parent="SlotFeedback" unique_id=782340900 node_paths=PackedStringArray("target")]
+[node name="SlotPlacementPreviewFeedback" type="Node" parent="SlotFeedback" unique_id=782340900 node_paths=PackedStringArray("normal_sprite", "playable_shader_sprite")]
 script = ExtResource("6_dshdd")
-target = NodePath("../../SlotVisual")
+normal_sprite = NodePath("../../SlotVisual")
+playable_shader_sprite = NodePath("../../SlotVisualShadered")
 
 [node name="SlotAttackPreviewFeedback" type="Node" parent="SlotFeedback" unique_id=734268325 node_paths=PackedStringArray("shader_rect", "icon_sprite")]
 script = ExtResource("7_jvbdb")
@@ -78,12 +81,12 @@ animated_target = NodePath("../../SlotVisual")
 expand_time = 0.09
 
 [node name="SlotVisual" type="Sprite2D" parent="." unique_id=857403716]
+visible = false
 position = Vector2(2.861023e-06, 5.722046e-06)
 scale = Vector2(1.0666666, 1.1773585)
 texture = ExtResource("2_rh202")
 
 [node name="SlotVisualShadered" type="Sprite2D" parent="." unique_id=1546213069]
-visible = false
 material = SubResource("ShaderMaterial_7gp6q")
 position = Vector2(2.861023e-06, 5.722046e-06)
 scale = Vector2(1.0666666, 1.1773585)
