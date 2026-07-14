@@ -258,3 +258,21 @@ func _on_input_unhovered() -> void:
 func set_hidden_for_draw(value: bool) -> void:
 	if card_visuals_root != null:
 		card_visuals_root.set_hidden_for_draw(value)
+		
+func set_card_input_enabled(value: bool) -> void:
+	print("CARD INPUT SET | card=", card_name, " enabled=", value)
+
+	if input != null:
+		input.set_input_enabled(value)
+
+	_set_area_input_enabled_recursive(self, value)
+
+
+func _set_area_input_enabled_recursive(node: Node, value: bool) -> void:
+	if node is Area2D:
+		var area := node as Area2D
+		area.input_pickable = value
+		print("CARD COLLIDER INPUT SET | card=", card_name, " area=", area.name, " enabled=", value)
+
+	for child in node.get_children():
+		_set_area_input_enabled_recursive(child, value)

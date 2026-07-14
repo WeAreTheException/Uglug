@@ -16,6 +16,7 @@
 [ext_resource type="Resource" uid="uid://dwpj7bg5ognwt" path="res://Revamp/CardPresets/Samurant.tres" id="12_2qwdf"]
 [ext_resource type="Resource" uid="uid://cu38anwcrq117" path="res://Revamp/CardPresets/SuperStimulant.tres" id="13_hlv0h"]
 [ext_resource type="Resource" uid="uid://b10yu2ml8hwx2" path="res://Revamp/CardPresets/Stimulant.tres" id="16_kthx6"]
+[ext_resource type="Script" uid="uid://1iod5fy4w5vy" path="res://Revamp/Board/BoardSacrificeDebugProbe.gd" id="30_eykcr"]
 [ext_resource type="Script" uid="uid://61l5g8wkdar3" path="res://SacrificeController.gd" id="49_30g8j"]
 [ext_resource type="Script" uid="uid://ciopi88keoi3k" path="res://SacrificeRequirement.gd" id="50_f1nl2"]
 [ext_resource type="Script" uid="uid://b4qvc7353obir" path="res://PendingSacrificeBoat.gd" id="51_pr7vu"]
@@ -444,6 +445,7 @@ text = "/5"
 horizontal_alignment = 1
 
 [node name="Slots2" parent="." unique_id=1318716624 instance=ExtResource("4_n6ts1")]
+z_index = 100
 position = Vector2(-960, -540)
 
 [node name="CameraRig" type="Node2D" parent="." unique_id=1102878276]
@@ -542,3 +544,7 @@ script = ExtResource("60_vmvxe")
 
 [node name="PlacementCancel" type="Node" parent="PlacementController" unique_id=1659463507]
 script = ExtResource("61_s0fcy")
+
+[node name="Node" type="Node" parent="." unique_id=1853560920 node_paths=PackedStringArray("slots_root")]
+script = ExtResource("30_eykcr")
+slots_root = NodePath("../Slots2")
