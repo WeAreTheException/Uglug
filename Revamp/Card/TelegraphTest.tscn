@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://cdgr8tmgar8eh"]
+
+[ext_resource type="PackedScene" uid="uid://bw8c7m7n5yuk8" path="res://Revamp/Board/Slots.tscn" id="1_8k07s"]
+[ext_resource type="Resource" uid="uid://dwpj7bg5ognwt" path="res://Revamp/CardPresets/Samurant.tres" id="2_a7dw2"]
+[ext_resource type="Resource" uid="uid://bxfxi0h5itrdu" path="res://Revamp/CardPresets/Lieutenant.tres" id="3_462xa"]
+[ext_resource type="Resource" uid="uid://b1dt5378u5ga8" path="res://Revamp/CardPresets/Guardiant.tres" id="4_uqlht"]
+[ext_resource type="Resource" uid="uid://0c6lqenucx25" path="res://Revamp/CardPresets/Aviant.tres" id="5_a6cb3"]
+
+[node name="Node2D" type="Node2D" unique_id=689282737]
+
+[node name="Slots" parent="." unique_id=1318716624 instance=ExtResource("1_8k07s")]
+player_slot_1_card = ExtResource("2_a7dw2")
+player_slot_3_card = ExtResource("3_462xa")
+opponent_slot_2_card = ExtResource("4_uqlht")
+opponent_slot_4_card = ExtResource("5_a6cb3")

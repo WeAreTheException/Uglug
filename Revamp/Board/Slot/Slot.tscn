@@ -9,9 +9,29 @@
 [ext_resource type="Script" uid="uid://ib588s15omow" path="res://Revamp/Board/SlotPlacementPreviewFeedback.gd" id="6_dshdd"]
 [ext_resource type="Script" uid="uid://vydoy4hkyhm0" path="res://Revamp/Board/SlotAttackPreviewFeedback.gd" id="7_jvbdb"]
 [ext_resource type="Script" uid="uid://b8p1hjr1y54ms" path="res://Revamp/Board/Slot/SlotDamagedFeedback.gd" id="8_g8crw"]
+[ext_resource type="Shader" uid="uid://wj81o6v8d22h" path="res://Squiggle.gdshader" id="9_aufiu"]
+[ext_resource type="Shader" uid="uid://bfd3cbihwlaba" path="res://Revamp/Board/Slot/SlotTelegraph.gdshader" id="10_17qp8"]
+[ext_resource type="Texture2D" uid="uid://cssbudxkdxpuf" path="res://Art/AttackReticle.png" id="11_5ggg6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0ebxi"]
 size = Vector2(192, 312)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7gp6q"]
+shader = ExtResource("9_aufiu")
+shader_parameter/strength = 0.0150000007125
+shader_parameter/speed = 5.0000002375
+shader_parameter/amount = 28.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5ggg6"]
+shader = ExtResource("10_17qp8")
+shader_parameter/cone_angle = 180.0
+shader_parameter/max_distance = 1.0
+shader_parameter/edge_softness = 0.20000000298023
+shader_parameter/wave_density = 1.0
+shader_parameter/wave_speed = 0.45000001811512
+shader_parameter/wave_strength = 0.450000021375
+shader_parameter/intensity = 0.50000002375
+shader_parameter/color = Color(1, 0, 0.1333332, 0.78431374)
 
 [node name="Slot" type="Node2D" unique_id=904478857 node_paths=PackedStringArray("slot_input", "slot_presence", "slot_feedback", "card_anchor")]
 script = ExtResource("1_iym07")
@@ -55,6 +75,7 @@ animated_target = NodePath("../../SlotVisual")
 expand_time = 0.09
 
 [node name="SlotVisual" type="Sprite2D" parent="." unique_id=857403716]
+material = SubResource("ShaderMaterial_7gp6q")
 position = Vector2(2.861023e-06, 5.722046e-06)
 scale = Vector2(1.0666666, 1.1773585)
 texture = ExtResource("2_rh202")
@@ -62,3 +83,18 @@ texture = ExtResource("2_rh202")
 [node name="CardAnchor" type="Node2D" parent="." unique_id=928768785]
 
 [node name="Node" type="Node" parent="." unique_id=574764237]
+
+[node name="TargetWave" type="ColorRect" parent="." unique_id=1398488935]
+z_index = 100
+material = SubResource("ShaderMaterial_5ggg6")
+offset_left = 96.0
+offset_top = 156.0
+offset_right = 288.0
+offset_bottom = 468.0
+rotation = 3.1415927
+
+[node name="AttackIcon" type="Sprite2D" parent="." unique_id=505632173]
+modulate = Color(1, 1, 1, 0.3529412)
+z_index = 100
+scale = Vector2(0.14, 0.14)
+texture = ExtResource("11_5ggg6")
