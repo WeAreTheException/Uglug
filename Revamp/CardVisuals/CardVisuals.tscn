@@ -104,7 +104,7 @@ shader = ExtResource("13_8ia1o")
 shader_parameter/line_color = Color(0.105882354, 0.09019608, 0.08627451, 1)
 shader_parameter/line_thickness = 10.0
 
-[node name="CardVisualsRoot" type="Node2D" unique_id=1593445486 node_paths=PackedStringArray("main_visuals", "mutation_visuals", "stats_visual", "mutation_tooltip", "viewport_sprite", "revenant_overlay", "draw_hide_cover")]
+[node name="CardVisualsRoot" type="Node2D" unique_id=1593445486 node_paths=PackedStringArray("main_visuals", "mutation_visuals", "stats_visual", "mutation_tooltip", "draw_hide_cover")]
 scale = Vector2(1.35, 1.35)
 script = ExtResource("1_gy5gi")
 main_visuals = NodePath("Visuals/MainVisuals")
@@ -112,8 +112,6 @@ mutation_visuals = NodePath("Visuals/MutationVisuals")
 stats_visual = NodePath("Visuals/StatsVisual")
 mutation_tooltip = NodePath("MutationToolTip")
 auto_show_mutation_tooltip_on_hover = true
-viewport_sprite = NodePath("")
-revenant_overlay = NodePath("")
 revenant_shader = ExtResource("2_v8bk3")
 draw_hide_cover = NodePath("DrawHideCover")
 
@@ -341,15 +339,9 @@ position = Vector2(60.52592, -69.9726)
 scale = Vector2(0.09, 0.083)
 texture = ExtResource("27_0lj05")
 
-[node name="SubViewport" type="SubViewport" parent="." unique_id=1110952986]
-transparent_bg = true
-size = Vector2i(144, 216)
-render_target_update_mode = 4
-
-[node name="ViewportDisplayController" type="Node2D" parent="." unique_id=1630220938 node_paths=PackedStringArray("sub_viewport", "viewport_sprite")]
+[node name="ViewportDisplayController" type="Node2D" parent="." unique_id=1630220938 node_paths=PackedStringArray("sub_viewport")]
 script = ExtResource("24_4t10r")
-sub_viewport = NodePath("../SubViewport")
-viewport_sprite = NodePath("")
+sub_viewport = NodePath("")
 
 [node name="AntSprite" type="Sprite2D" parent="." unique_id=425635481]
 visible = false
