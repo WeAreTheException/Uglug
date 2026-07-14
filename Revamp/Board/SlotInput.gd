@@ -6,6 +6,7 @@ signal hovered
 signal unhovered
 
 @export var click_area: Area2D
+@export var collision_shape: CollisionShape2D
 
 var slot: Slot = null
 var is_hovered: bool = false
@@ -14,72 +15,85 @@ var was_left_down: bool = false
 
 func setup(source_slot: Slot) -> void:
 	slot = source_slot
-	_connect_click_area()
+	_find_collision_shape()
 
 
 func _ready() -> void:
-	_connect_click_area()
+	_find_collision_shape()
 
 
 func _process(_delta: float) -> void:
+	_update_manual_hover()
+	_update_manual_click()
+
+
+func _find_collision_shape() -> void:
+	if collision_shape == null and click_area != null:
+		collision_shape = click_area.get_node_or_null("CollisionShape2D") as CollisionShape2D
+
+
+func _update_manual_hover() -> void:
+	var hovering := _is_mouse_inside_shape()
+
+	if hovering == is_hovered:
+		return
+
+	is_hovered = hovering
+
+	if is_hovered:
+		print(
+			"SLOT INPUT HOVER | slot=",
+			slot.name if slot != null else "null",
+			" occupied=",
+			slot.current_card != null if slot != null else false
+		)
+		hovered.emit()
+	else:
+		print("SLOT INPUT UNHOVER | slot=", slot.name if slot != null else "null")
+		unhovered.emit()
+
+
+func _update_manual_click() -> void:
 	var left_down := Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
 
 	if is_hovered and left_down and not was_left_down:
-		_print_click("POLL")
+		print(
+			"SLOT INPUT CLICK | slot=",
+			slot.name if slot != null else "null",
+			" occupied=",
+			slot.current_card != null if slot != null else false,
+			" card=",
+			slot.current_card.card_name if slot != null and slot.current_card != null else "null"
+		)
+
 		clicked.emit()
 
 	was_left_down = left_down
 
 
-func _connect_click_area() -> void:
-	if click_area == null:
-		print("SLOT INPUT BLOCKED: click_area null")
-		return
+func _is_mouse_inside_shape() -> bool:
+	if collision_shape == null:
+		return false
 
-	click_area.input_pickable = true
+	if collision_shape.disabled:
+		return false
 
-	if not click_area.input_event.is_connected(_on_click_area_input_event):
-		click_area.input_event.connect(_on_click_area_input_event)
+	var shape := collision_shape.shape
 
-	if not click_area.mouse_entered.is_connected(_on_mouse_entered):
-		click_area.mouse_entered.connect(_on_mouse_entered)
+	if shape == null:
+		return false
 
-	if not click_area.mouse_exited.is_connected(_on_mouse_exited):
-		click_area.mouse_exited.connect(_on_mouse_exited)
+	var mouse_pos := collision_shape.get_global_mouse_position()
+	var local_pos := collision_shape.global_transform.affine_inverse() * mouse_pos
 
+	if shape is RectangleShape2D:
+		var rect := shape as RectangleShape2D
+		var half_size := rect.size * 0.5
 
-func _on_click_area_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
-	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-			_print_click("RAW")
-			clicked.emit()
+		return abs(local_pos.x) <= half_size.x and abs(local_pos.y) <= half_size.y
 
+	if shape is CircleShape2D:
+		var circle := shape as CircleShape2D
+		return local_pos.length() <= circle.radius
 
-func _on_mouse_entered() -> void:
-	is_hovered = true
-	print(
-		"SLOT INPUT HOVER | slot=",
-		slot.name if slot != null else "null",
-		" occupied=",
-		slot.current_card != null if slot != null else false
-	)
-	hovered.emit()
-
-
-func _on_mouse_exited() -> void:
-	is_hovered = false
-	print("SLOT INPUT UNHOVER | slot=", slot.name if slot != null else "null")
-	unhovered.emit()
-
-
-func _print_click(source: String) -> void:
-	print(
-		"SLOT INPUT ",
-		source,
-		" CLICK | slot=",
-		slot.name if slot != null else "null",
-		" occupied=",
-		slot.current_card != null if slot != null else false,
-		" card=",
-		slot.current_card.card_name if slot != null and slot.current_card != null else "null"
-	)
+	return false

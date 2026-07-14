@@ -88,7 +88,21 @@ func start_placement(card: CardRoot, owner: SlotRow.SlotOwner) -> void:
 
 
 func request_preview_slot(slot: Slot) -> void:
-	if not is_placing() or not is_valid_placement_slot(slot):
+	print(
+		"PREVIEW REQUEST | slot=",
+		slot.name if slot != null else "null",
+		" placing=",
+		is_placing(),
+		" valid=",
+		is_valid_placement_slot(slot) if slot != null else false,
+		" current_preview=",
+		placement_state.preview_slot.name if placement_state != null and placement_state.preview_slot != null else "null"
+	)
+
+	if not is_placing():
+		return
+
+	if not is_valid_placement_slot(slot):
 		return
 
 	placement_state.set_preview_slot(slot)
@@ -226,10 +240,7 @@ func _remove_confirmed_sacrifice_card(card: CardRoot) -> void:
 	card.queue_free()
 
 
-func _can_place_on_confirmed_slot(
-	slot: Slot,
-	payload: Dictionary
-) -> bool:
+func _can_place_on_confirmed_slot(slot: Slot, payload: Dictionary) -> bool:
 	if slot == null:
 		return false
 
@@ -389,10 +400,7 @@ func _get_local_visual_slot_owner(slot_owner: SlotRow.SlotOwner) -> SlotRow.Slot
 	return SlotRow.SlotOwner.PLAYER
 
 
-func _get_local_visual_slot_index(
-	_owner: SlotRow.SlotOwner,
-	logical_slot_index: int
-) -> int:
+func _get_local_visual_slot_index(_owner: SlotRow.SlotOwner, logical_slot_index: int) -> int:
 	if _is_client_visual_board_flipped():
 		return _mirror_slot_index(logical_slot_index)
 
@@ -427,17 +435,11 @@ func _get_source_hand_for_owner(owner: SlotRow.SlotOwner) -> PlayerHandRoot:
 	return match_network_root.deck_system_root.get_hand_for_owner(owner)
 
 
-func _on_pending_sacrifice_started(
-	primed_card: CardRoot,
-	_cards: Array[CardRoot]
-) -> void:
+func _on_pending_sacrifice_started(primed_card: CardRoot, _cards: Array[CardRoot]) -> void:
 	start_placement(primed_card, get_placing_owner())
 
 
-func _on_pending_sacrifice_undone(
-	_primed_card: CardRoot,
-	_cards: Array[CardRoot]
-) -> void:
+func _on_pending_sacrifice_undone(_primed_card: CardRoot, _cards: Array[CardRoot]) -> void:
 	cancel_placement(false)
 
 
@@ -502,10 +504,7 @@ func _get_current_local_placement_owner() -> SlotRow.SlotOwner:
 	return get_placing_owner()
 
 
-func _get_network_slot_index(
-	_network_owner: SlotRow.SlotOwner,
-	target_slot: Slot
-) -> int:
+func _get_network_slot_index(_network_owner: SlotRow.SlotOwner, target_slot: Slot) -> int:
 	if target_slot == null:
 		return -1
 

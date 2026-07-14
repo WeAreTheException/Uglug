@@ -63,9 +63,10 @@ die = NodePath("Actions/Die")
 sacrifice = NodePath("Actions/Sacrifice")
 runtime_state = NodePath("CardRuntimeState")
 
-[node name="CardInput" type="Area2D" parent="." unique_id=502264031]
+[node name="CardInput" type="Area2D" parent="." unique_id=502264031 node_paths=PackedStringArray("collision_shape")]
 position = Vector2(300, 48)
 script = ExtResource("2_nau7p")
+collision_shape = NodePath("CardCollider")
 
 [node name="CardCollider" type="CollisionShape2D" parent="CardInput" unique_id=1550845996]
 position = Vector2(-300, -48)

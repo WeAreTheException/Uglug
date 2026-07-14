@@ -10,7 +10,7 @@
 [ext_resource type="Script" uid="uid://vydoy4hkyhm0" path="res://Revamp/Board/SlotAttackPreviewFeedback.gd" id="7_jvbdb"]
 [ext_resource type="Script" uid="uid://b8p1hjr1y54ms" path="res://Revamp/Board/Slot/SlotDamagedFeedback.gd" id="8_g8crw"]
 [ext_resource type="Shader" uid="uid://wj81o6v8d22h" path="res://Squiggle.gdshader" id="9_aufiu"]
-[ext_resource type="Shader" uid="uid://bfd3cbihwlaba" path="res://Revamp/Board/Slot/SlotTelegraph.gdshader" id="10_17qp8"]
+[ext_resource type="Shader" path="res://Revamp/Board/Slot/SlotTelegraph.gdshader" id="10_17qp8"]
 [ext_resource type="Texture2D" uid="uid://cssbudxkdxpuf" path="res://Art/AttackReticle.png" id="11_5ggg6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0ebxi"]
@@ -40,9 +40,10 @@ slot_presence = NodePath("SlotPresence")
 slot_feedback = NodePath("SlotFeedback")
 card_anchor = NodePath("CardAnchor")
 
-[node name="SlotInput" type="Area2D" parent="." unique_id=1165660853 node_paths=PackedStringArray("click_area")]
+[node name="SlotInput" type="Area2D" parent="." unique_id=1165660853 node_paths=PackedStringArray("click_area", "collision_shape")]
 script = ExtResource("2_0ebxi")
 click_area = NodePath(".")
+collision_shape = NodePath("ClickArea")
 
 [node name="ClickArea" type="CollisionShape2D" parent="SlotInput" unique_id=2082643422]
 shape = SubResource("RectangleShape2D_0ebxi")

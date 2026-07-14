@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://b8f0lryqwcw7j"]
 
 [ext_resource type="Script" uid="uid://cdu3ykilblant" path="res://Revamp/CardVisuals/CardVisualsRoot.gd" id="1_gy5gi"]
-[ext_resource type="Shader" uid="uid://dmiuuajh8r665" path="res://Revamp/CardVisuals/CardTilt.gdshader" id="2_4t10r"]
 [ext_resource type="Script" uid="uid://cafcxy3c8eco5" path="res://Revamp/CardVisuals/CardMainVisuals.gd" id="2_a8btx"]
 [ext_resource type="Shader" uid="uid://dlpmxqotruebp" path="res://Old/Cards/BackInHandInvert.gdshader" id="2_v8bk3"]
 [ext_resource type="Texture2D" uid="uid://bt8o5l5yrmihl" path="res://Art/AntBack/CardBackground.png" id="3_4t10r"]
@@ -31,15 +30,6 @@
 [ext_resource type="PackedScene" uid="uid://bocxu8xu5hh8b" path="res://Old/Mutations/ToolTip/MutationToolTip.tscn" id="28_v8bk3"]
 [ext_resource type="Texture2D" uid="uid://j75yocnxblk4" path="res://Art/RedBackground.png" id="29_d8086"]
 [ext_resource type="Texture2D" uid="uid://cgs5k6p3mggyf" path="res://Art/Ants/AntSprite.png" id="29_wvfxw"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_460t8"]
-shader = ExtResource("2_4t10r")
-shader_parameter/rect_size = Vector2(144, 216)
-shader_parameter/fov = 90.0
-shader_parameter/cull_back = true
-shader_parameter/y_rot = 0.0
-shader_parameter/x_rot = 0.0
-shader_parameter/inset = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_483al"]
 shader = ExtResource("5_0pq8k")
@@ -122,22 +112,16 @@ mutation_visuals = NodePath("Visuals/MutationVisuals")
 stats_visual = NodePath("Visuals/StatsVisual")
 mutation_tooltip = NodePath("MutationToolTip")
 auto_show_mutation_tooltip_on_hover = true
-viewport_sprite = NodePath("ViewportSprite")
-revenant_overlay = NodePath("RevenantOverlay")
+viewport_sprite = NodePath("")
+revenant_overlay = NodePath("")
 revenant_shader = ExtResource("2_v8bk3")
 draw_hide_cover = NodePath("DrawHideCover")
 
 [node name="DrawHideCover" type="Sprite2D" parent="." unique_id=1285778559]
 visible = false
-z_index = 100
 position = Vector2(-7.6293945e-06, 0)
 scale = Vector2(0.11666667, 0.11559141)
 texture = ExtResource("29_d8086")
-
-[node name="ViewportSprite" type="Sprite2D" parent="." unique_id=1830606489]
-material = SubResource("ShaderMaterial_460t8")
-
-[node name="RevenantOverlay" type="Sprite2D" parent="." unique_id=1237233230]
 
 [node name="Visuals" type="Node2D" parent="." unique_id=103610836]
 scale = Vector2(0.8, 0.8)
@@ -365,7 +349,7 @@ render_target_update_mode = 4
 [node name="ViewportDisplayController" type="Node2D" parent="." unique_id=1630220938 node_paths=PackedStringArray("sub_viewport", "viewport_sprite")]
 script = ExtResource("24_4t10r")
 sub_viewport = NodePath("../SubViewport")
-viewport_sprite = NodePath("../ViewportSprite")
+viewport_sprite = NodePath("")
 
 [node name="AntSprite" type="Sprite2D" parent="." unique_id=425635481]
 visible = false
