@@ -29,7 +29,7 @@ signal slot_unhovered(slot: Slot)
 @export var opponent_slot_4_card: CardData
 
 @export var direct_damage_router: DirectDamageRouter
-@export var print_debug: bool = false
+@export var debug_enabled: bool = false
 
 var player_slots: Array[Slot] = []
 var opponent_slots: Array[Slot] = []
@@ -42,7 +42,7 @@ func _ready() -> void:
 	_setup_attack_order_handler()
 	_setup_preset_handler()
 
-	if print_debug:
+	if debug_enabled:
 		debug_print_slots()
 
 
@@ -88,14 +88,14 @@ func _setup_preset_handler() -> void:
 	slot_preset_handler.spawn_all_presets()
 
 
-func show_playable_slots(owner: SlotRow.SlotOwner) -> void:
-	for slot in get_slots_for_owner(owner):
+func show_playable_slots(slot_owner: SlotRow.SlotOwner) -> void:
+	for slot in get_slots_for_owner(slot_owner):
 		if slot != null:
 			slot.show_playable_feedback()
 
-	var enemy_owner := get_enemy_owner(owner)
+	var enemy_slot_owner := get_enemy_owner(slot_owner)
 
-	for slot in get_slots_for_owner(enemy_owner):
+	for slot in get_slots_for_owner(enemy_slot_owner):
 		if slot != null:
 			slot.show_idle_feedback()
 
@@ -106,8 +106,8 @@ func show_neutral_slots() -> void:
 			slot.show_idle_feedback()
 
 
-func show_inactive_slots(owner: SlotRow.SlotOwner) -> void:
-	for slot in get_slots_for_owner(owner):
+func show_inactive_slots(slot_owner: SlotRow.SlotOwner) -> void:
+	for slot in get_slots_for_owner(slot_owner):
 		if slot != null:
 			slot.show_inactive_feedback()
 
@@ -118,11 +118,11 @@ func clear_all_slot_feedback() -> void:
 			slot.clear_all_feedback()
 
 
-func get_slots_for_owner(owner: SlotRow.SlotOwner) -> Array[Slot]:
+func get_slots_for_owner(slot_owner: SlotRow.SlotOwner) -> Array[Slot]:
 	if board_query == null:
 		return []
 
-	return board_query.get_slots_for_owner(owner)
+	return board_query.get_slots_for_owner(slot_owner)
 
 
 func get_all_slots() -> Array[Slot]:
@@ -132,18 +132,18 @@ func get_all_slots() -> Array[Slot]:
 	return board_query.get_all_slots()
 
 
-func get_empty_slots_for_owner(owner: SlotRow.SlotOwner) -> Array[Slot]:
+func get_empty_slots_for_owner(slot_owner: SlotRow.SlotOwner) -> Array[Slot]:
 	if board_query == null:
 		return []
 
-	return board_query.get_empty_slots_for_owner(owner)
+	return board_query.get_empty_slots_for_owner(slot_owner)
 
 
-func get_slot(owner: SlotRow.SlotOwner, slot_index: int) -> Slot:
+func get_slot(slot_owner: SlotRow.SlotOwner, slot_index: int) -> Slot:
 	if board_query == null:
 		return null
 
-	return board_query.get_slot(owner, slot_index)
+	return board_query.get_slot(slot_owner, slot_index)
 
 
 func get_owner_of_slot(slot: Slot) -> SlotRow.SlotOwner:
@@ -153,11 +153,11 @@ func get_owner_of_slot(slot: Slot) -> SlotRow.SlotOwner:
 	return board_query.get_owner_of_slot(slot)
 
 
-func get_enemy_owner(owner: SlotRow.SlotOwner) -> SlotRow.SlotOwner:
+func get_enemy_owner(slot_owner: SlotRow.SlotOwner) -> SlotRow.SlotOwner:
 	if board_query == null:
 		return SlotRow.SlotOwner.OPPONENT
 
-	return board_query.get_enemy_owner(owner)
+	return board_query.get_enemy_owner(slot_owner)
 
 
 func get_opposing_slot(slot: Slot) -> Slot:
@@ -175,13 +175,14 @@ func get_adjacent_enemy_slots(slot: Slot) -> Array[Slot]:
 
 
 func get_first_empty_slot_in_order(
-	owner: SlotRow.SlotOwner,
+	slot_owner: SlotRow.SlotOwner,
 	left_to_right: bool
 ) -> Slot:
 	if board_query == null:
 		return null
 
-	return board_query.get_first_empty_slot_in_order(owner, left_to_right)
+	return board_query.get_first_empty_slot_in_order(slot_owner, left_to_right)
+
 
 func find_card_by_runtime_id(runtime_id: String) -> CardRoot:
 	var clean_id := runtime_id.strip_edges()
@@ -205,8 +206,8 @@ func find_card_by_runtime_id(runtime_id: String) -> CardRoot:
 			return card
 
 	return null
-	
-	
+
+
 func refresh_board_mutations() -> void:
 	if board_mutation_refresher != null:
 		board_mutation_refresher.refresh_board_mutations()
@@ -216,9 +217,9 @@ func get_preset_for_slot(slot: Slot) -> CardData:
 	if slot == null:
 		return null
 
-	var owner := get_owner_of_slot(slot)
+	var slot_owner := get_owner_of_slot(slot)
 
-	if owner == SlotRow.SlotOwner.PLAYER:
+	if slot_owner == SlotRow.SlotOwner.PLAYER:
 		return _get_player_preset(slot.slot_index)
 
 	return _get_opponent_preset(slot.slot_index)
@@ -253,6 +254,15 @@ func _get_opponent_preset(slot_index: int) -> CardData:
 
 
 func _on_slot_clicked(slot: Slot) -> void:
+	print(
+		"SLOTS ROOT CLICK EMIT | slot=",
+		slot.name if slot != null else "null",
+		" occupied=",
+		slot.current_card != null if slot != null else false,
+		" card=",
+		slot.current_card.card_name if slot != null and slot.current_card != null else "null"
+	)
+
 	slot_clicked.emit(slot)
 
 
@@ -263,17 +273,19 @@ func _on_slot_hovered(slot: Slot) -> void:
 func _on_slot_unhovered(slot: Slot) -> void:
 	slot_unhovered.emit(slot)
 
+
 func show_direct_damage_feedback(slot: Slot) -> void:
 	if slot == null:
 		return
 
 	await slot.show_damaged_feedback()
 
+
 func debug_print_slots() -> void:
 	print("=== SLOT DEBUG | HOST: ", GDSync.is_host(), " ===")
 
-	for owner in [SlotRow.SlotOwner.PLAYER, SlotRow.SlotOwner.OPPONENT]:
-		var slots := get_slots_for_owner(owner)
+	for slot_owner in [SlotRow.SlotOwner.PLAYER, SlotRow.SlotOwner.OPPONENT]:
+		var slots := get_slots_for_owner(slot_owner)
 
 		for slot in slots:
 			if slot == null:
@@ -281,7 +293,7 @@ func debug_print_slots() -> void:
 
 			print(
 				"owner=",
-				owner,
+				slot_owner,
 				" node=",
 				slot.name,
 				" slot_index=",
@@ -290,10 +302,11 @@ func debug_print_slots() -> void:
 				slot.global_position.x
 			)
 
-func get_cards_for_owner(owner: SlotRow.SlotOwner) -> Array[CardRoot]:
+
+func get_cards_for_owner(slot_owner: SlotRow.SlotOwner) -> Array[CardRoot]:
 	var result: Array[CardRoot] = []
 
-	for slot: Slot in get_slots_for_owner(owner):
+	for slot: Slot in get_slots_for_owner(slot_owner):
 		if slot == null:
 			continue
 

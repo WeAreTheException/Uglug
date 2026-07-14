@@ -5,7 +5,7 @@ class_name SacrificeBoardSelectionBinder
 @export var selection_root: SacrificeSelectionRoot
 @export var player_hand: PlayerHandRoot
 @export var allowed_owner: SlotRow.SlotOwner = SlotRow.SlotOwner.PLAYER
-@export var print_debug: bool = true
+@export var debug_enabled: bool = true
 
 var is_sacrifice_active: bool = false
 
@@ -13,6 +13,7 @@ var is_sacrifice_active: bool = false
 func _ready() -> void:
 	_connect_slots_root()
 	_connect_player_hand()
+	_refresh_sacrifice_active()
 
 	print("SAC BOARD BINDER READY")
 
@@ -33,19 +34,42 @@ func _connect_player_hand() -> void:
 		print("SAC BOARD BINDER BLOCKED: player_hand null")
 		return
 
-	if not player_hand.state_changed.is_connected(_on_hand_state_changed):
-		player_hand.state_changed.connect(_on_hand_state_changed)
+	if not player_hand.card_primed.is_connected(_on_card_primed):
+		player_hand.card_primed.connect(_on_card_primed)
+
+	if not player_hand.card_unprimed.is_connected(_on_card_unprimed):
+		player_hand.card_unprimed.connect(_on_card_unprimed)
 
 	print("SAC BOARD BINDER CONNECTED player_hand")
 
 
-func _on_hand_state_changed(state_name: String) -> void:
-	is_sacrifice_active = state_name.to_lower().contains("sacrifice")
+func _on_card_primed(card: CardRoot) -> void:
+	is_sacrifice_active = card != null
 
-	print("SAC BOARD ACTIVE = ", is_sacrifice_active, " state=", state_name)
+	print(
+		"SAC BOARD ACTIVE = ",
+		is_sacrifice_active,
+		" primed=",
+		card.card_name if card != null else "null"
+	)
 
-	if not is_sacrifice_active and selection_root != null:
+
+func _on_card_unprimed(_card: CardRoot) -> void:
+	is_sacrifice_active = false
+
+	if selection_root != null:
 		selection_root.clear_board_cards()
+
+	print("SAC BOARD ACTIVE = false")
+
+
+func _refresh_sacrifice_active() -> void:
+	if player_hand == null:
+		is_sacrifice_active = false
+		return
+
+	var primed_card := player_hand.get_primed_card()
+	is_sacrifice_active = primed_card != null
 
 
 func _on_slot_clicked(slot: Slot) -> void:
@@ -57,6 +81,8 @@ func _on_slot_clicked(slot: Slot) -> void:
 		" card=",
 		slot.current_card.card_name if slot != null and slot.current_card != null else "null"
 	)
+
+	_refresh_sacrifice_active()
 
 	if selection_root == null:
 		print("BOARD SACRIFICE BLOCKED: selection_root null")
@@ -78,6 +104,10 @@ func _on_slot_clicked(slot: Slot) -> void:
 
 	if card == null:
 		print("BOARD SACRIFICE BLOCKED: empty slot")
+		return
+
+	if player_hand != null and card == player_hand.get_primed_card():
+		print("BOARD SACRIFICE BLOCKED: cannot sacrifice primed card")
 		return
 
 	_toggle_board_card(card)

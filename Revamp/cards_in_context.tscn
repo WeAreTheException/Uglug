@@ -16,6 +16,7 @@
 [ext_resource type="Resource" uid="uid://dwpj7bg5ognwt" path="res://Revamp/CardPresets/Samurant.tres" id="12_2qwdf"]
 [ext_resource type="Resource" uid="uid://cu38anwcrq117" path="res://Revamp/CardPresets/SuperStimulant.tres" id="13_hlv0h"]
 [ext_resource type="Resource" uid="uid://b10yu2ml8hwx2" path="res://Revamp/CardPresets/Stimulant.tres" id="16_kthx6"]
+[ext_resource type="Resource" uid="uid://b1dt5378u5ga8" path="res://Revamp/CardPresets/Guardiant.tres" id="16_lcdw0"]
 [ext_resource type="Script" uid="uid://1iod5fy4w5vy" path="res://Revamp/Board/BoardSacrificeDebugProbe.gd" id="30_eykcr"]
 [ext_resource type="Script" uid="uid://61l5g8wkdar3" path="res://SacrificeController.gd" id="49_30g8j"]
 [ext_resource type="Script" uid="uid://ciopi88keoi3k" path="res://SacrificeRequirement.gd" id="50_f1nl2"]
@@ -473,7 +474,7 @@ reveal_timer = NodePath("../ActiveDrawTime")
 
 [node name="PlayerHandRoot" parent="." unique_id=371738706 instance=ExtResource("10_mtbf2")]
 position = Vector2(-64, 384)
-starting_cards = Array[ExtResource("10_nux5c")]([ExtResource("16_kthx6"), ExtResource("16_kthx6"), ExtResource("16_kthx6"), ExtResource("10_x1cq6")])
+starting_cards = Array[ExtResource("10_nux5c")]([ExtResource("16_lcdw0"), ExtResource("16_kthx6"), ExtResource("16_kthx6"), ExtResource("10_x1cq6")])
 
 [node name="ActiveDrawTime" type="Timer" parent="." unique_id=39440691]
 wait_time = 10.0
@@ -498,6 +499,7 @@ script = ExtResource("50_f1nl2")
 [node name="PendingSacrificeBoat" type="Node" parent="SacrificeController" unique_id=1588919694 node_paths=PackedStringArray("pending_layer")]
 script = ExtResource("51_pr7vu")
 pending_layer = NodePath("../PendingSacrificeLayer")
+hide_cards_while_pending = true
 
 [node name="SacrificeComitter" type="Node" parent="SacrificeController" unique_id=391626516]
 script = ExtResource("52_l3o37")
@@ -509,10 +511,11 @@ position = Vector2(132, 504)
 script = ExtResource("53_304k6")
 metadata/_custom_type_script = "uid://db4xai716j06p"
 
-[node name="SacrificeBoardSelectionBinder" type="Node" parent="SacrificeController" unique_id=1736267388 node_paths=PackedStringArray("selection_root")]
+[node name="SacrificeBoardSelectionBinder" type="Node" parent="SacrificeController" unique_id=1736267388 node_paths=PackedStringArray("slots_root", "selection_root", "player_hand")]
 script = ExtResource("54_64wec")
+slots_root = NodePath("../../Slots2")
 selection_root = NodePath("../SacrificeSelectionRoot")
-print_debug = false
+player_hand = NodePath("../../PlayerHandRoot")
 
 [node name="PlacementController" type="Node" parent="." unique_id=1657909094 node_paths=PackedStringArray("slots_root", "player_hand", "sacrifice_controller", "placement_state", "input_router", "placement_preview", "placement_executor", "event_emitter", "placement_cancel")]
 script = ExtResource("55_lq0qx")
