@@ -17,7 +17,6 @@
 [ext_resource type="Script" uid="uid://cf4ka1vcw1057" path="res://Revamp/Card/CardFeedback/ShadowFeedback.gd" id="11_c3ju1"]
 [ext_resource type="Script" uid="uid://dtplnofbjxace" path="res://Revamp/Card/CardActions/Attack/AttackSequenceBuilder.gd" id="11_iynnv"]
 [ext_resource type="Script" uid="uid://bffk1pwgwmawi" path="res://Revamp/Card/CardActions/Hurt/HurtFeedbackHandler.gd" id="12_mvgl2"]
-[ext_resource type="Script" uid="uid://r5c1gxcq78os" path="res://Revamp/Card/CardActions/Hurt/HurtAudio.gd" id="12_q2sni"]
 [ext_resource type="Script" uid="uid://behvtd6jpqaj" path="res://Revamp/Card/CardActions/Hurt/Hurt.gd" id="12_r5dqq"]
 [ext_resource type="Script" uid="uid://bisn1wu1v2n8e" path="res://Revamp/Card/CardActions/Attack/AttackScreenshakeHandler.gd" id="12_xyowr"]
 [ext_resource type="Script" uid="uid://qquetc5t8lud" path="res://Revamp/Card/CardActions/Attack/AttackExchangeRunner.gd" id="13_0dedl"]
@@ -25,7 +24,6 @@
 [ext_resource type="Script" uid="uid://5ajbnfxgx2dx" path="res://Revamp/Card/CardActions/Hurt/HurtAnimationRunner.gd" id="13_opxhd"]
 [ext_resource type="Script" uid="uid://c73fc68wlpcah" path="res://Revamp/Card/CardActions/Hurt/HurtSprite.gd" id="14_1m3h3"]
 [ext_resource type="Script" uid="uid://i1xyctx2i65u" path="res://Revamp/Card/CardActions/Die/Die.gd" id="14_fx0xs"]
-[ext_resource type="AudioStream" uid="uid://dm1lem708ohqr" path="res://Old/Audio/Placeholder SFX/card_attack_damage.wav" id="14_vnay7"]
 [ext_resource type="Script" uid="uid://crfcylmn2r5gf" path="res://Revamp/Card/CardActions/Die/DieAnimationRunner.gd" id="15_jgw7k"]
 [ext_resource type="Script" uid="uid://bsuj1ix6qd1ns" path="res://Revamp/Card/CardActions/Sacrifice/Sacrifice.gd" id="15_v34li"]
 [ext_resource type="Script" uid="uid://jv8gks4tscbj" path="res://SacrificeAnimationRunner.gd" id="16_v34li"]
@@ -34,6 +32,7 @@
 [ext_resource type="Script" uid="uid://cjg3wldaxqx21" path="res://Revamp/Card/CardActions/Die/DieAudio.gd" id="20_7vw44"]
 [ext_resource type="Script" uid="uid://7pm1mj2m7jwg" path="res://Revamp/Card/CardFeedback/CardSelectFeedback.gd" id="20_v34li"]
 [ext_resource type="AudioStream" uid="uid://5uho8ho3dlfo" path="res://Old/Audio/Placeholder SFX/card_death.wav" id="21_k3ell"]
+[ext_resource type="AudioStream" uid="uid://b1mdeia7sw5l5" path="res://Revamp/SFX/HurtSound2.mp3" id="23_56um7"]
 [ext_resource type="Script" uid="uid://maqiq3kcc45q" path="res://Revamp/Card/CardActions/Sacrifice/PendingSacrificeFeedback.gd" id="27_0h522"]
 [ext_resource type="Script" uid="uid://bwf2dy46x2l01" path="res://Revamp/Card/CardActions/Sacrifice/ComittedSacrificeFeedback.gd" id="28_msnpm"]
 [ext_resource type="Script" uid="uid://btcyknr4w10ab" path="res://Revamp/Card/CardOutlineFeedback.gd" id="35_b2plg"]
@@ -135,13 +134,9 @@ script = ExtResource("13_opxhd")
 
 [node name="HurtFeedbackHandler" type="Node" parent="Actions/Hurt" unique_id=263819034 node_paths=PackedStringArray("hurt_audio", "hurt_flash", "hurt_sprite")]
 script = ExtResource("12_mvgl2")
-hurt_audio = NodePath("HurtAudio")
+hurt_audio = NodePath("../AudioStreamPlayer2D")
 hurt_flash = NodePath("HurtFlash")
 hurt_sprite = NodePath("HurtSprite")
-
-[node name="HurtAudio" type="Node" parent="Actions/Hurt/HurtFeedbackHandler" unique_id=742317531]
-script = ExtResource("12_q2sni")
-hurt_sfx = ExtResource("14_vnay7")
 
 [node name="HurtFlash" type="Node" parent="Actions/Hurt/HurtFeedbackHandler" unique_id=389930432 node_paths=PackedStringArray("visuals_root")]
 script = ExtResource("13_mvgl2")
@@ -159,6 +154,9 @@ fade_time = 0.5
 position = Vector2(9.536743e-07, 0)
 scale = Vector2(0.12312501, 0.12312499)
 texture = ExtResource("17_7vw44")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Actions/Hurt" unique_id=1255865697]
+stream = ExtResource("23_56um7")
 
 [node name="Die" type="Node" parent="Actions" unique_id=1463626010 node_paths=PackedStringArray("animation_runner", "death_audio")]
 script = ExtResource("14_fx0xs")

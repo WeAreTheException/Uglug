@@ -8,7 +8,7 @@ class_name CardFeedbackRouter
 @export var sprite_feedback: CardSpriteFeedback
 @export var text_feedback: CardTextFeedback
 @export var vfx_feedback: CardVfxFeedback
-@export var sfx_feedback: CardSfxFeedback
+@export var hurt_audio: AudioStreamPlayer2D
 @export var motion_feedback: CardMotionFeedback
 @export var stat_visual_feedback: CardStatVisualFeedback
 @export var stat_color: CardStatColor
@@ -31,8 +31,9 @@ func play_hurt_feedback() -> void:
 		_debug_print("Missing hurt_profile.")
 		return
 
-	if sfx_feedback != null:
-		sfx_feedback.play_hurt_sfx(hurt_profile)
+	if hurt_audio != null:
+		hurt_audio.stop()
+		hurt_audio.play()
 
 	if motion_feedback != null:
 		motion_feedback.play_hurt_motion_feedback(hurt_profile)

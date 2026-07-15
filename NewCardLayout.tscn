@@ -23,6 +23,7 @@
 [ext_resource type="Script" uid="uid://bri6km7k5xvsf" path="res://Revamp/Card/NewCardFeedback/CardMotionFeedback.gd" id="18_lu6qf"]
 [ext_resource type="Script" uid="uid://bqkxr66j4fgvx" path="res://Revamp/Card/NewCardFeedback/CardStatColor.gd" id="22_5oy3j"]
 [ext_resource type="Script" uid="uid://b3lnsekg01eq0" path="res://Revamp/Card/NewCardFeedback/Buff/CardBuffedSpriteMotionFeedback.gd" id="23_ifa3w"]
+[ext_resource type="AudioStream" uid="uid://b1mdeia7sw5l5" path="res://Revamp/SFX/HurtSound2.mp3" id="24_1ksl4"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_uw526"]
 
@@ -135,8 +136,6 @@ shader_parameter/alpha_strength = 1.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sygfx"]
 size = Vector2(192, 314)
-
-[sub_resource type="AudioStream" id="AudioStream_f223l"]
 
 [node name="NewCardVisuals" type="Node2D" unique_id=96420926]
 
@@ -417,14 +416,14 @@ shape = SubResource("RectangleShape2D_sygfx")
 
 [node name="Feedback" type="Node" parent="." unique_id=836987836]
 
-[node name="CardFeedbackRouter" type="Node" parent="Feedback" unique_id=751924610 node_paths=PackedStringArray("sprite_feedback", "text_feedback", "vfx_feedback", "sfx_feedback", "motion_feedback", "stat_visual_feedback", "stat_color", "buffed_sprite_motion_feedback")]
+[node name="CardFeedbackRouter" type="Node" parent="Feedback" unique_id=751924610 node_paths=PackedStringArray("sprite_feedback", "text_feedback", "vfx_feedback", "hurt_audio", "motion_feedback", "stat_visual_feedback", "stat_color", "buffed_sprite_motion_feedback")]
 script = ExtResource("14_8h3oo")
 hurt_profile = ExtResource("12_f223l")
 buffed_profile = ExtResource("13_lu6qf")
 sprite_feedback = NodePath("../CardSpriteFeedback")
 text_feedback = NodePath("../CardTextFeedback")
 vfx_feedback = NodePath("../CardVfxFeedback")
-sfx_feedback = NodePath("../CardSfxFeedback")
+hurt_audio = NodePath("../../AudioStreamPlayer2D")
 motion_feedback = NodePath("../CardMotionFeedback")
 stat_visual_feedback = NodePath("../CardStatVisualFeedback")
 stat_color = NodePath("../CardTextColor")
@@ -493,4 +492,5 @@ script = ExtResource("23_ifa3w")
 target_sprite = NodePath("../../All Visuals/AntArtRoot/AntImageRoot/AntImage")
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=437622670]
-stream = SubResource("AudioStream_f223l")
+stream = ExtResource("24_1ksl4")
+volume_db = -11.0
