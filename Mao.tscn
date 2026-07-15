@@ -61,7 +61,7 @@
 [ext_resource type="Script" uid="uid://b0a7u0d6w3wt5" path="res://Revamp/Buff/BuffCardSelectionHandler.gd" id="51_3j6fp"]
 [ext_resource type="Resource" uid="uid://d24tehq1c6xdf" path="res://Revamp/Blessings/RevenantBlessing.tres" id="51_ufjv4"]
 [ext_resource type="Script" uid="uid://btx34g1cs7nhy" path="res://Revamp/Buff/BuffMutationApplyHandler.gd" id="52_72iem"]
-[ext_resource type="Script" uid="uid://ysva1maqqb8w" path="res://HandCountDisplay.gd" id="52_nmm8s"]
+[ext_resource type="Script" path="res://HandCountDisplay.gd" id="52_nmm8s"]
 [ext_resource type="Script" uid="uid://cstbr8ehhhhio" path="res://Revamp/Blessings/BlessingCardSelectionHandler.gd" id="52_qqxe6"]
 [ext_resource type="Script" uid="uid://dxkdv76ah1to1" path="res://Revamp/Blessings/BlessingApplyHandler.gd" id="53_8mjsp"]
 [ext_resource type="Script" uid="uid://dbw5dxwuc5h4h" path="res://Revamp/Buff/BuffCardStagingHandler.gd" id="53_nmm8s"]
