@@ -14,6 +14,8 @@ class_name CardSelectFeedback
 var base_position: Vector2 = Vector2.ZERO
 var extra_sprite_base_position: Vector2 = Vector2.ZERO
 var extra_area_base_position: Vector2 = Vector2.ZERO
+
+var is_selected: bool = false
 var tween: Tween = null
 
 
@@ -36,6 +38,11 @@ func set_selected(value: bool) -> void:
 	if target == null:
 		return
 
+	if value == is_selected:
+		return
+
+	is_selected = value
+
 	if tween != null:
 		tween.kill()
 
@@ -44,7 +51,7 @@ func set_selected(value: bool) -> void:
 	var final_area_position := extra_area_base_position
 	var final_shadow_alpha := 0.0
 
-	if value:
+	if is_selected:
 		final_position = base_position + selected_offset
 		final_sprite_position = extra_sprite_base_position + selected_offset
 		final_area_position = extra_area_base_position + selected_offset
@@ -58,7 +65,12 @@ func set_selected(value: bool) -> void:
 	tween.set_trans(Tween.TRANS_CUBIC)
 	tween.set_ease(Tween.EASE_OUT)
 
-	tween.tween_property(target, "position", final_position, tween_time)
+	tween.tween_property(
+		target,
+		"position",
+		final_position,
+		tween_time
+	)
 
 	if extra_sprite != null:
 		tween.parallel().tween_property(
