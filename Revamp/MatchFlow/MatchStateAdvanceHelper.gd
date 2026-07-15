@@ -15,9 +15,6 @@ func get_next_state(
 			return MatchFlowRoot.MatchState.ROUND_INTRO
 
 		MatchFlowRoot.MatchState.ROUND_INTRO:
-			if round_number == 1:
-				return MatchFlowRoot.MatchState.BLESSING
-
 			return MatchFlowRoot.MatchState.AUTO_DRAW
 
 		MatchFlowRoot.MatchState.AUTO_DRAW:

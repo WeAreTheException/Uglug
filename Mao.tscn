@@ -21,9 +21,7 @@
 [ext_resource type="Script" uid="uid://cmcxm3mp7ljvv" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementCancel.gd" id="19_n5v11"]
 [ext_resource type="Script" uid="uid://bfhpukgxqjd0m" path="res://Revamp/MatchFlowBoardApplier.gd" id="20_vcbui"]
 [ext_resource type="Script" uid="uid://dhe454wat35an" path="res://Revamp/MatchFlow/MatchCombatFlowHandler.gd" id="24_n5v11"]
-[ext_resource type="Script" uid="uid://c0jbty6yowib5" path="res://Revamp/MatchFlow/Blessing/BlessingSelectionState.gd" id="25_n5v11"]
 [ext_resource type="Script" uid="uid://difytxi1dyr27" path="res://Revamp/MatchFlow/MatchFlowRoot.gd" id="25_oekep"]
-[ext_resource type="Script" uid="uid://q2nybrneyr7f" path="res://Revamp/MatchFlow/Blessing/BlessingFlowHandler.gd" id="26_7gy8c"]
 [ext_resource type="Script" uid="uid://c6ap2csjp7k81" path="res://Revamp/MatchFlow/MatchTurnOrderState.gd" id="26_n5v11"]
 [ext_resource type="Resource" uid="uid://b4tpqnugaguvu" path="res://Old/Mutations/MutationPresets/InheritanceMutations/BabyMaker.tres" id="26_yjq0i"]
 [ext_resource type="Script" uid="uid://e0tr3sanyo1r" path="res://Revamp/MatchFlow/MatchAnnouncementDisplay.gd" id="27_7gy8c"]
@@ -57,13 +55,9 @@
 [ext_resource type="Resource" uid="uid://cyutbyh2av6iv" path="res://Old/Mutations/MutationPresets/RallyMutations/SteroidDealer.tres" id="42_lyfvt"]
 [ext_resource type="Resource" uid="uid://cnn0fddifxool" path="res://Old/Mutations/MutationPresets/InheritanceMutations/ColonyNest.tres" id="44_3jt7k"]
 [ext_resource type="Resource" uid="uid://b4sniy31fo50g" path="res://Old/Mutations/MutationPresets/StraightChopsMutations/TouchOfDeath.tres" id="44_cyp03"]
-[ext_resource type="PackedScene" uid="uid://21w8glb26358" path="res://Art/WizantAnim/WizantAnim.tscn" id="46_bvwb1"]
 [ext_resource type="Script" uid="uid://b0a7u0d6w3wt5" path="res://Revamp/Buff/BuffCardSelectionHandler.gd" id="51_3j6fp"]
-[ext_resource type="Resource" uid="uid://d24tehq1c6xdf" path="res://Revamp/Blessings/RevenantBlessing.tres" id="51_ufjv4"]
 [ext_resource type="Script" uid="uid://btx34g1cs7nhy" path="res://Revamp/Buff/BuffMutationApplyHandler.gd" id="52_72iem"]
-[ext_resource type="Script" uid="uid://ysva1maqqb8w" path="res://HandCountDisplay.gd" id="52_nmm8s"]
-[ext_resource type="Script" uid="uid://cstbr8ehhhhio" path="res://Revamp/Blessings/BlessingCardSelectionHandler.gd" id="52_qqxe6"]
-[ext_resource type="Script" uid="uid://dxkdv76ah1to1" path="res://Revamp/Blessings/BlessingApplyHandler.gd" id="53_8mjsp"]
+[ext_resource type="Script" path="res://HandCountDisplay.gd" id="52_nmm8s"]
 [ext_resource type="Script" uid="uid://dbw5dxwuc5h4h" path="res://Revamp/Buff/BuffCardStagingHandler.gd" id="53_nmm8s"]
 [ext_resource type="Script" uid="uid://qkm73v3qftgr" path="res://Revamp/MatchFlow/MatchLocalViewApplier.gd" id="57_2n6q5"]
 [ext_resource type="Script" uid="uid://ddq57bg6lcsk1" path="res://Revamp/Multiplayer/MatchNetworkRoot.gd" id="57_8mjsp"]
@@ -73,7 +67,6 @@
 [ext_resource type="Script" uid="uid://c2c2hqgcay1nf" path="res://Revamp/Multiplayer/MatchNetworkPlacement.gd" id="65_fd62j"]
 [ext_resource type="Script" uid="uid://cy3sful3ggumm" path="res://Revamp/Multiplayer/LocalGameplayReferenceBinder.gd" id="66_5j00x"]
 [ext_resource type="PackedScene" uid="uid://cvdlgiknngjmw" path="res://Revamp/Board/Background.tscn" id="66_af7hx"]
-[ext_resource type="Script" uid="uid://63l7crrnpitr" path="res://Revamp/Multiplayer/MatchNetworkBlessing.gd" id="66_q844d"]
 [ext_resource type="Script" uid="uid://con1w5rh38kav" path="res://Revamp/Multiplayer/MatchNetworkBuff.gd" id="67_gfrq6"]
 [ext_resource type="Script" uid="uid://4awjofgv2dfc" path="res://Revamp/Multiplayer/MatchNetworkFlow.gd" id="68_8hx3r"]
 [ext_resource type="Script" uid="uid://coo0pgldjiw6w" path="res://Revamp/Multiplayer/MatchPhaseTimer.gd" id="73_fk48e"]
@@ -183,7 +176,7 @@ script = ExtResource("6_lc0u2")
 match_flow_root = NodePath("..")
 match_network_root = NodePath("../../../Multiplayer/MatchNetworkRoot")
 auto_draw_handler = NodePath("../MatchAutoDrawHandler")
-blessing_flow_handler = NodePath("../../Core/Blessing/BlessingFlowHandler")
+blessing_flow_handler = NodePath("")
 buff_flow_handler = NodePath("../../Core/Buff/BuffFlowHandler")
 round_intro_delay = 2.0
 round_end_delay = 2.0
@@ -312,40 +305,6 @@ player_one_hand = NodePath("../../../../Core/PlayerHAnd")
 player_two_hand = NodePath("../../../../Core/OpponenetHAnd")
 consume_rotation_degrees = -20.0
 power_scale = Vector2(2, 2)
-print_debug = false
-
-[node name="Blessing" type="Node" parent="Scripts/Core" unique_id=1712440962]
-
-[node name="BlessingSelectionState" type="Node" parent="Scripts/Core/Blessing" unique_id=1029067523]
-script = ExtResource("25_n5v11")
-
-[node name="BlessingFlowHandler" type="Node" parent="Scripts/Core/Blessing" unique_id=1659729775 node_paths=PackedStringArray("match_flow_root", "blessing_animation_handler")]
-script = ExtResource("26_7gy8c")
-match_flow_root = NodePath("../../../MatchFlowRoot")
-blessing_to_apply = ExtResource("51_ufjv4")
-blessing_animation_handler = NodePath("../WizantAnim")
-print_debug = false
-
-[node name="BlessingCardSelectionHandler" type="Node" parent="Scripts/Core/Blessing" unique_id=964488475 node_paths=PackedStringArray("blessing_flow_handler", "selection_state", "turn_order_state", "phase_timer", "player_one_hand", "player_two_hand")]
-script = ExtResource("52_qqxe6")
-blessing_flow_handler = NodePath("../BlessingFlowHandler")
-selection_state = NodePath("../BlessingSelectionState")
-turn_order_state = NodePath("../../../MatchFlowRoot/MatchTurnOrderState")
-phase_timer = NodePath("../../../../Multiplayer/MatchPhaseTimer")
-player_one_hand = NodePath("../../../../Core/PlayerHAnd")
-player_two_hand = NodePath("../../../../Core/OpponenetHAnd")
-print_debug = false
-
-[node name="BlessingApplyHandler" type="Node" parent="Scripts/Core/Blessing" unique_id=365667343 node_paths=PackedStringArray("blessing_flow_handler", "selection_state", "turn_order_state", "match_network_root")]
-script = ExtResource("53_8mjsp")
-blessing_flow_handler = NodePath("../BlessingFlowHandler")
-selection_state = NodePath("../BlessingSelectionState")
-turn_order_state = NodePath("../../../MatchFlowRoot/MatchTurnOrderState")
-match_network_root = NodePath("../../../../Multiplayer/MatchNetworkRoot")
-print_debug = false
-
-[node name="WizantAnim" parent="Scripts/Core/Blessing" unique_id=1060986998 instance=ExtResource("46_bvwb1")]
-play_intro_on_ready = false
 print_debug = false
 
 [node name="SacrificeController" type="Node" parent="Scripts/Core" unique_id=1432478239 node_paths=PackedStringArray("player_hand", "sacrifice_selection_root", "requirement", "pending_boat", "committer")]
@@ -498,28 +457,6 @@ buff_flow_handler = NodePath("../../Scripts/Core/Buff/BuffFlowHandler")
 buff_apply_handler = NodePath("../../Scripts/Core/Buff/BuffMutationApplyHandler")
 use_for_buff = true
 
-[node name="BlessingConfirmButton" type="Button" parent="Control" unique_id=839450790 node_paths=PackedStringArray("blessing_flow_handler", "blessing_apply_handler")]
-z_index = 10
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = 833.0
-offset_top = 876.0
-offset_right = 1037.0
-offset_bottom = 948.0
-grow_horizontal = 2
-grow_vertical = 0
-pivot_offset = Vector2(102, 36)
-theme_override_font_sizes/font_size = 36
-text = "Confirm"
-script = ExtResource("63_uv74c")
-blessing_flow_handler = NodePath("../../Scripts/Core/Blessing/BlessingFlowHandler")
-blessing_apply_handler = NodePath("../../Scripts/Core/Blessing/BlessingApplyHandler")
-use_for_blessing = true
-
 [node name="Multiplayer" type="Node" parent="." unique_id=297260751]
 
 [node name="MatchNetworkRoot" type="Node" parent="Multiplayer" unique_id=1636531151 node_paths=PackedStringArray("match_flow_root", "deck_system_root", "turn_order_state", "match_score_state", "slots_root", "phase_timer", "timer_network", "buff_flow_handler", "buff_database", "blessing_flow_handler", "placement_controller", "flow_network", "lookup_network", "draw_network", "buff_network", "blessing_network", "placement_network", "attack_network", "score_network", "debug_sync_network")]
@@ -533,13 +470,13 @@ phase_timer = NodePath("../MatchPhaseTimer")
 timer_network = NodePath("MatchNetworkTimer")
 buff_flow_handler = NodePath("../../Scripts/Core/Buff/BuffFlowHandler")
 buff_database = NodePath("../../Scripts/Core/Buff/BuffDatabase")
-blessing_flow_handler = NodePath("../../Scripts/Core/Blessing/BlessingFlowHandler")
+blessing_flow_handler = NodePath("")
 placement_controller = NodePath("../../Scripts/Core/PlacementController")
 flow_network = NodePath("MatchNetworkFlow")
 lookup_network = NodePath("MatchNetworkLookup")
 draw_network = NodePath("MatchNetworkDraw")
 buff_network = NodePath("MatchNetworkBuff")
-blessing_network = NodePath("MatchNetworkBlessing")
+blessing_network = NodePath("")
 placement_network = NodePath("MatchNetworkPlacement")
 attack_network = NodePath("MatchNetworkAttack")
 score_network = NodePath("MatchNetworkScore")
@@ -554,11 +491,6 @@ script = ExtResource("63_5j00x")
 
 [node name="MatchNetworkDraw" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=1641787042]
 script = ExtResource("64_af7hx")
-
-[node name="MatchNetworkBlessing" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=632633305 node_paths=PackedStringArray("phase_timer", "selection_state")]
-script = ExtResource("66_q844d")
-phase_timer = NodePath("../../MatchPhaseTimer")
-selection_state = NodePath("../../../Scripts/Core/Blessing/BlessingSelectionState")
 
 [node name="MatchNetworkBuff" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=769336365 node_paths=PackedStringArray("phase_timer", "selection_state")]
 script = ExtResource("67_gfrq6")
