@@ -406,10 +406,12 @@ metadata/_edit_lock_ = true
 [node name="Attack" type="Sprite2D" parent="Visuals/StatsVisual" unique_id=1626750204]
 position = Vector2(-62.03703, 55.555553)
 scale = Vector2(0.14727725, 0.14345993)
+texture = ExtResource("16_4yngs")
 
 [node name="Health" type="Sprite2D" parent="Visuals/StatsVisual" unique_id=582152933]
 position = Vector2(64.81481, 55.555553)
 scale = Vector2(0.14727725, 0.14345993)
+texture = ExtResource("17_8nq5a")
 
 [node name="Name" type="RichTextLabel" parent="Visuals/StatsVisual" unique_id=37488759]
 anchors_preset = -1
@@ -455,6 +457,34 @@ z_index = 100
 position = Vector2(75.51851, -63.045925)
 scale = Vector2(0.1, 0.092)
 texture = ExtResource("27_0lj05")
+
+[node name="AtkLbl" type="RichTextLabel" parent="Visuals/StatsVisual" unique_id=2099598071]
+offset_left = -80.55555
+offset_top = 7.4074073
+offset_right = -36.111115
+offset_bottom = 76.85185
+theme_override_colors/default_color = Color(0.9137255, 0.8392157, 0.77254903, 1)
+theme_override_colors/font_outline_color = Color(1.8049032e-08, 0.06382069, 0.08081173, 1)
+theme_override_constants/outline_size = 7
+theme_override_font_sizes/normal_font_size = 42
+text = "6"
+autowrap_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AtkLbl2" type="RichTextLabel" parent="Visuals/StatsVisual" unique_id=1020860487]
+offset_left = 38.888885
+offset_top = 7.4074073
+offset_right = 83.33332
+offset_bottom = 76.85185
+theme_override_colors/default_color = Color(0.9137255, 0.8392157, 0.77254903, 1)
+theme_override_colors/font_outline_color = Color(1.8049032e-08, 0.06382069, 0.08081173, 1)
+theme_override_constants/outline_size = 7
+theme_override_font_sizes/normal_font_size = 42
+text = "5"
+autowrap_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="ViewportDisplayController" type="Node2D" parent="." unique_id=1630220938]
 script = ExtResource("24_4t10r")
