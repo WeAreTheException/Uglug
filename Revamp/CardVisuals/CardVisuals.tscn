@@ -30,6 +30,7 @@
 [ext_resource type="Texture2D" uid="uid://bkltnd7edkgin" path="res://Art/NewCardAssets/SacrificeCost.png" id="27_0lj05"]
 [ext_resource type="Texture2D" uid="uid://j75yocnxblk4" path="res://Art/RedBackground.png" id="29_d8086"]
 [ext_resource type="Texture2D" uid="uid://cgs5k6p3mggyf" path="res://Art/Ants/AntSprite.png" id="29_wvfxw"]
+[ext_resource type="Script" uid="uid://bfb500ov31a53" path="res://Revamp/PlayPhase/Placement/PlaceAnimRunner.gd" id="31_b5mm6"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_483al"]
 shader = ExtResource("5_0pq8k")
@@ -192,7 +193,7 @@ shader = ExtResource("13_8ia1o")
 shader_parameter/line_color = Color(0.105882354, 0.09019608, 0.08627451, 1)
 shader_parameter/line_thickness = 10.0
 
-[node name="CardVisualsRoot" type="Node2D" unique_id=1593445486 node_paths=PackedStringArray("main_visuals", "mutation_visuals", "stats_visual", "draw_hide_cover")]
+[node name="CardVisualsRoot" type="Node2D" unique_id=1593445486 node_paths=PackedStringArray("main_visuals", "mutation_visuals", "stats_visual", "draw_hide_cover", "placement_animation_runner")]
 scale = Vector2(1.35, 1.35)
 script = ExtResource("1_gy5gi")
 main_visuals = NodePath("Visuals/Container/MainVisuals")
@@ -201,6 +202,7 @@ stats_visual = NodePath("Visuals/StatsVisual")
 auto_show_mutation_tooltip_on_hover = true
 revenant_shader = ExtResource("2_v8bk3")
 draw_hide_cover = NodePath("DrawHideCover")
+placement_animation_runner = NodePath("PlaceAniRunner")
 
 [node name="DrawHideCover" type="Sprite2D" parent="." unique_id=1285778559]
 visible = false
@@ -297,7 +299,7 @@ scale = Vector2(0.14000002, 0.14000002)
 texture = ExtResource("14_b5mm6")
 metadata/_edit_lock_ = true
 
-[node name="PlaceAnim" type="AnimationPlayer" parent="Visuals/Container/MainVisuals" unique_id=1507303113]
+[node name="PlaceAnimMockup" type="AnimationPlayer" parent="Visuals/Container/MainVisuals" unique_id=1507303113]
 libraries/ = SubResource("AnimationLibrary_b5mm6")
 
 [node name="MutationVisuals" type="Node2D" parent="Visuals" unique_id=319373443 node_paths=PackedStringArray("base_sigil_container", "additional_sigil_container")]
@@ -462,3 +464,8 @@ metadata/_edit_lock_ = true
 visible = false
 scale = Vector2(0.121008396, 0.117200226)
 texture = ExtResource("29_wvfxw")
+
+[node name="PlaceAniRunner" type="Node" parent="." unique_id=2002441634 node_paths=PackedStringArray("animation_player")]
+script = ExtResource("31_b5mm6")
+animation_player = NodePath("../Visuals/Container/MainVisuals/PlaceAnimMockup")
+animation_name = "PlaceAnimMockup"

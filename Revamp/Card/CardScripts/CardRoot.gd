@@ -274,3 +274,7 @@ func _on_input_hovered() -> void:
 
 func _on_input_unhovered() -> void:
 	unhovered.emit(self)
+
+func play_placement_animation() -> void:
+	if card_visuals_root != null:
+		card_visuals_root.play_placement_animation()

@@ -13,6 +13,7 @@ class_name CardVisualsRoot
 @export var revenant_shader: Shader
 
 @export var draw_hide_cover: CanvasItem
+@export var placement_animation_runner: Node
 
 var card: CardRoot = null
 var revenant_material: ShaderMaterial = null
@@ -192,3 +193,11 @@ func _update_mutation_visuals() -> void:
 		return
 
 	mutation_visuals.display_runtimes(card.mutations.get_all_runtimes())
+
+
+func play_placement_animation() -> void:
+	if placement_animation_runner == null:
+		return
+
+	if placement_animation_runner.has_method("play_placement_animation"):
+		placement_animation_runner.play_placement_animation()

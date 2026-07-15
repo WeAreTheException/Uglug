@@ -80,6 +80,8 @@ func confirm_network_placement(
 
 	board_mover.snap_card_to_slot(card, slot, placed_scale)
 
+	card.play_placement_animation()
+
 	_print("AFTER SNAP | pos=%s scale=%s" % [
 		str(card.global_position),
 		str(card.scale)
