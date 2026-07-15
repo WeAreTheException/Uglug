@@ -5,6 +5,7 @@ class_name CardSelectFeedback
 @export var extra_sprite: Sprite2D
 @export var extra_area: Area2D
 @export var shadow: CanvasItem
+@export var select_audio: AudioStreamPlayer2D
 
 @export var selected_offset: Vector2 = Vector2(0, -28)
 @export var shadow_alpha: float = 0.45
@@ -48,6 +49,10 @@ func set_selected(value: bool) -> void:
 		final_sprite_position = extra_sprite_base_position + selected_offset
 		final_area_position = extra_area_base_position + selected_offset
 		final_shadow_alpha = shadow_alpha
+
+		if select_audio != null:
+			select_audio.stop()
+			select_audio.play()
 
 	tween = create_tween()
 	tween.set_trans(Tween.TRANS_CUBIC)

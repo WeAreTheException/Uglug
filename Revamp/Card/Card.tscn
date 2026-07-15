@@ -37,6 +37,7 @@
 [ext_resource type="Script" uid="uid://maqiq3kcc45q" path="res://Revamp/Card/CardActions/Sacrifice/PendingSacrificeFeedback.gd" id="27_0h522"]
 [ext_resource type="Script" uid="uid://bwf2dy46x2l01" path="res://Revamp/Card/CardActions/Sacrifice/ComittedSacrificeFeedback.gd" id="28_msnpm"]
 [ext_resource type="Script" uid="uid://btcyknr4w10ab" path="res://Revamp/Card/CardOutlineFeedback.gd" id="35_b2plg"]
+[ext_resource type="AudioStream" uid="uid://dy7hoabaq1xoh" path="res://Revamp/SFX/PullTracker1.mp3" id="36_ieatu"]
 [ext_resource type="Script" uid="uid://b727ujf6ycv3o" path="res://Revamp/Card/CardRuntimeState.gd" id="37_raks6"]
 [ext_resource type="PackedScene" uid="uid://c8mfgi3h8sc6v" path="res://NewCardLayout.tscn" id="38_fgsua"]
 [ext_resource type="Texture2D" uid="uid://j75yocnxblk4" path="res://Art/RedBackground.png" id="39_b2plg"]
@@ -204,11 +205,12 @@ outline_feedback = NodePath("Outline")
 script = ExtResource("19_v34li")
 target = NodePath("../../Visuals/CardVisuals")
 
-[node name="Select" type="Node" parent="CardFeedback" unique_id=1062761578 node_paths=PackedStringArray("target", "extra_sprite", "extra_area")]
+[node name="Select" type="Node" parent="CardFeedback" unique_id=1062761578 node_paths=PackedStringArray("target", "extra_sprite", "extra_area", "select_audio")]
 script = ExtResource("20_v34li")
 target = NodePath("../../Visuals/CardVisuals")
 extra_sprite = NodePath("../../CardOutline")
 extra_area = NodePath("../../CardInput")
+select_audio = NodePath("../SelectSound")
 
 [node name="Shadow" type="Node" parent="CardFeedback" unique_id=248472187 node_paths=PackedStringArray("shadow_texture")]
 script = ExtResource("11_c3ju1")
@@ -217,6 +219,13 @@ shadow_texture = NodePath("../../Visuals/Shadow")
 [node name="Outline" type="Node" parent="CardFeedback" unique_id=1388964221 node_paths=PackedStringArray("outline_target")]
 script = ExtResource("35_b2plg")
 outline_target = NodePath("../../CardOutline")
+
+[node name="SelectSound" type="AudioStreamPlayer2D" parent="CardFeedback" unique_id=1783817506]
+stream = ExtResource("36_ieatu")
+volume_db = 6.286
+pitch_scale = 2.03
+attenuation = 1.3660368
+max_polyphony = 2
 
 [node name="Visuals" type="Node2D" parent="." unique_id=2044401141]
 
