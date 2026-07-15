@@ -4,6 +4,52 @@ class_name Heckler
 @export var attack_debuff: int = -1
 
 
+func has_placement_debuff_feedback() -> bool:
+	return true
+
+
+func get_placement_debuffed_feedback_targets(runtime: MutationRuntime) -> Array[CardRoot]:
+	var result: Array[CardRoot] = []
+
+	if runtime == null:
+		return result
+
+	var card: CardRoot = runtime.owner_card
+
+	if card == null:
+		return result
+
+	if not is_instance_valid(card):
+		return result
+
+	if not card.is_on_board():
+		return result
+
+	if card.slots_root == null:
+		return result
+
+	var current_slot: Slot = card.get_current_slot()
+
+	if current_slot == null:
+		return result
+
+	var opposing_slot: Slot = card.slots_root.get_opposing_slot(current_slot)
+
+	if opposing_slot == null:
+		return result
+
+	var opposing_card: CardRoot = opposing_slot.current_card
+
+	if opposing_card == null:
+		return result
+
+	if not is_instance_valid(opposing_card):
+		return result
+
+	result.append(opposing_card)
+	return result
+
+
 func refresh_board_effect(runtime: MutationRuntime) -> void:
 	if runtime == null:
 		return
