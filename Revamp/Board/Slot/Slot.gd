@@ -126,15 +126,6 @@ func clear_all_feedback() -> void:
 
 
 func _on_input_clicked() -> void:
-	print(
-		"SLOT CLICK EMIT | slot=",
-		name,
-		" occupied=",
-		current_card != null,
-		" card=",
-		current_card.card_name if current_card != null else "null"
-	)
-
 	clicked.emit(self)
 
 

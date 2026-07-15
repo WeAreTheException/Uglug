@@ -16,7 +16,7 @@
 [ext_resource type="Resource" uid="uid://dwpj7bg5ognwt" path="res://Revamp/CardPresets/Samurant.tres" id="12_2qwdf"]
 [ext_resource type="Resource" uid="uid://cu38anwcrq117" path="res://Revamp/CardPresets/SuperStimulant.tres" id="13_hlv0h"]
 [ext_resource type="Resource" uid="uid://b10yu2ml8hwx2" path="res://Revamp/CardPresets/Stimulant.tres" id="16_kthx6"]
-[ext_resource type="Resource" uid="uid://b1dt5378u5ga8" path="res://Revamp/CardPresets/Guardiant.tres" id="16_lcdw0"]
+[ext_resource type="Resource" uid="uid://ci7yvhc8pfst6" path="res://Revamp/CardPresets/QueenAnt.tres" id="17_eykcr"]
 [ext_resource type="Script" uid="uid://61l5g8wkdar3" path="res://SacrificeController.gd" id="49_30g8j"]
 [ext_resource type="Script" uid="uid://ciopi88keoi3k" path="res://SacrificeRequirement.gd" id="50_f1nl2"]
 [ext_resource type="Script" uid="uid://b4qvc7353obir" path="res://PendingSacrificeBoat.gd" id="51_pr7vu"]
@@ -473,7 +473,7 @@ reveal_timer = NodePath("../ActiveDrawTime")
 
 [node name="PlayerHandRoot" parent="." unique_id=371738706 instance=ExtResource("10_mtbf2")]
 position = Vector2(-64, 384)
-starting_cards = Array[ExtResource("10_nux5c")]([ExtResource("16_lcdw0"), ExtResource("16_kthx6"), ExtResource("16_kthx6"), ExtResource("10_x1cq6")])
+starting_cards = Array[ExtResource("10_nux5c")]([ExtResource("16_kthx6"), ExtResource("10_x1cq6"), ExtResource("17_eykcr"), ExtResource("10_x1cq6"), ExtResource("10_x1cq6")])
 
 [node name="ActiveDrawTime" type="Timer" parent="." unique_id=39440691]
 wait_time = 10.0
@@ -515,6 +515,7 @@ script = ExtResource("54_64wec")
 slots_root = NodePath("../../Slots2")
 selection_root = NodePath("../SacrificeSelectionRoot")
 player_hand = NodePath("../../PlayerHandRoot")
+debug_enabled = false
 
 [node name="PlacementController" type="Node" parent="." unique_id=1657909094 node_paths=PackedStringArray("slots_root", "player_hand", "sacrifice_controller", "placement_state", "input_router", "placement_preview", "placement_executor", "event_emitter", "placement_cancel")]
 script = ExtResource("55_lq0qx")
@@ -527,7 +528,6 @@ placement_preview = NodePath("PlacementPreview")
 placement_executor = NodePath("PlacementExecutor")
 event_emitter = NodePath("PlacementEventEmitter")
 placement_cancel = NodePath("PlacementCancel")
-enable_payload_debug = true
 
 [node name="PlacementState" type="Node" parent="PlacementController" unique_id=1745320232]
 script = ExtResource("56_emagp")
@@ -540,6 +540,7 @@ script = ExtResource("58_8i37d")
 
 [node name="PlacementExecutor" type="Node" parent="PlacementController" unique_id=180465745]
 script = ExtResource("59_cc2nt")
+print_debug = false
 
 [node name="PlacementEventEmitter" type="Node" parent="PlacementController" unique_id=1963809595]
 script = ExtResource("60_vmvxe")

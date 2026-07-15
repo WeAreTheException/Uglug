@@ -254,15 +254,6 @@ func _get_opponent_preset(slot_index: int) -> CardData:
 
 
 func _on_slot_clicked(slot: Slot) -> void:
-	print(
-		"SLOTS ROOT CLICK EMIT | slot=",
-		slot.name if slot != null else "null",
-		" occupied=",
-		slot.current_card != null if slot != null else false,
-		" card=",
-		slot.current_card.card_name if slot != null and slot.current_card != null else "null"
-	)
-
 	slot_clicked.emit(slot)
 
 

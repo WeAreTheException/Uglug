@@ -24,7 +24,7 @@ signal card_placed(event: Dictionary)
 @export var enable_right_click_cancel: bool = true
 @export var enable_payload_debug: bool = false
 @export var payload_debug_key: Key = KEY_P
-@export var print_debug: bool = true
+@export var print_debug: bool = false
 
 var slot_resolver := PlacementSlotResolverHelper.new()
 var slot_validator := PlacementSlotValidatorHelper.new()
@@ -77,28 +77,10 @@ func _input(event: InputEvent) -> void:
 
 
 func start_placement(card: CardRoot, owner: SlotRow.SlotOwner) -> void:
-	_print(
-		"PLACEMENT START REQUEST | card="
-		+ _get_card_name_debug(card)
-		+ " owner="
-		+ str(owner)
-	)
-
 	start_flow.start(self, card, owner)
 
 
 func request_preview_slot(slot: Slot) -> void:
-	print(
-		"PREVIEW REQUEST | slot=",
-		slot.name if slot != null else "null",
-		" placing=",
-		is_placing(),
-		" valid=",
-		is_valid_placement_slot(slot) if slot != null else false,
-		" current_preview=",
-		placement_state.preview_slot.name if placement_state != null and placement_state.preview_slot != null else "null"
-	)
-
 	if not is_placing():
 		return
 
@@ -118,17 +100,6 @@ func request_preview_slot(slot: Slot) -> void:
 
 
 func confirm_placement() -> void:
-	_print(
-		"PLACEMENT CONFIRM REQUEST | placing="
-		+ str(is_placing())
-		+ " confirming="
-		+ str(is_confirming())
-		+ " active_owner="
-		+ str(_get_active_owner_debug())
-		+ " preview_slot="
-		+ str(_get_preview_slot_debug())
-	)
-
 	confirm_flow.confirm(self)
 
 
@@ -156,22 +127,6 @@ func apply_confirmed_placement(payload: Dictionary) -> void:
 	var owner: SlotRow.SlotOwner = payload.get("owner", SlotRow.SlotOwner.PLAYER)
 
 	var card := _find_card_for_confirmed_placement(card_id)
-
-	print(
-		"CONFIRMED PLACEMENT CARD DEBUG | runtime_id=",
-		card_id,
-		" found=",
-		card != null,
-		" card_name=",
-		card.card_name if card != null else "null",
-		" parent=",
-		card.get_parent().name if card != null and card.get_parent() != null else "null",
-		" in_p1_hand=",
-		match_network_root.deck_system_root.player_one_hand.has_card(card) if card != null and match_network_root != null and match_network_root.deck_system_root != null and match_network_root.deck_system_root.player_one_hand != null else false,
-		" in_p2_hand=",
-		match_network_root.deck_system_root.player_two_hand.has_card(card) if card != null and match_network_root != null and match_network_root.deck_system_root != null and match_network_root.deck_system_root.player_two_hand != null else false
-	)
-
 	var slot := _get_confirmed_target_slot(owner, slot_owner, slot_index)
 
 	if card == null:
@@ -449,7 +404,6 @@ func _on_card_unprimed(_card: CardRoot) -> void:
 
 
 func block(reason: String) -> void:
-	_print("PLACEMENT BLOCKED: " + reason)
 	placement_blocked.emit(reason)
 
 
@@ -492,9 +446,8 @@ func _get_slot_owner_debug(slot: Slot) -> int:
 	return int(slots_root.get_owner_of_slot(slot))
 
 
-func _print(message: String) -> void:
-	if print_debug:
-		print(message)
+func _print(_message: String) -> void:
+	pass
 
 
 func _get_current_local_placement_owner() -> SlotRow.SlotOwner:

@@ -7,6 +7,7 @@ class_name PlacementExecutor
 var controller: PlacementController = null
 var board_mover := PlacementCardBoardMoverHelper.new()
 var event_builder := PlacementEventBuilderHelper.new()
+var placement_mutation_check := PlacementMutationCheckHelper.new()
 
 
 func setup(source_controller: PlacementController) -> void:
@@ -95,6 +96,8 @@ func confirm_network_placement(
 	])
 
 	_notify_card_placed(card, slot, owner)
+
+	placement_mutation_check.run(card)
 
 	return event
 

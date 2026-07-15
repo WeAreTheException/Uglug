@@ -7,6 +7,10 @@ class_name RoyalPheromones
 @export var minimum_health_after_buff_removed: int = 1
 
 
+func has_placement_buff_feedback() -> bool:
+	return true
+
+
 func refresh_board_effect(runtime: MutationRuntime) -> void:
 	if runtime == null:
 		return

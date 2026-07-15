@@ -1,10 +1,17 @@
 extends Resource
 class_name Mutation
 
+enum PlacementFeedbackType {
+	NONE,
+	BUFF,
+	DEBUFF,
+	BOTH
+}
+
 @export var mutation_name: String = ""
 @export_multiline var mutation_description: String = ""
 @export var sigil_texture: Texture2D
-
+@export var placement_feedback_type: PlacementFeedbackType = PlacementFeedbackType.NONE
 
 
 func get_safe_mutation_id() -> String:
@@ -12,8 +19,16 @@ func get_safe_mutation_id() -> String:
 		return ""
 
 	return mutation_name.to_snake_case()
-	
-	
+
+
+func has_placement_buff_feedback() -> bool:
+	return placement_feedback_type == PlacementFeedbackType.BUFF or placement_feedback_type == PlacementFeedbackType.BOTH
+
+
+func has_placement_debuff_feedback() -> bool:
+	return placement_feedback_type == PlacementFeedbackType.DEBUFF or placement_feedback_type == PlacementFeedbackType.BOTH
+
+
 func get_attack_priority(_runtime: MutationRuntime) -> int:
 	return 0
 
