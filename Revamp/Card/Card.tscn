@@ -35,6 +35,7 @@
 [ext_resource type="AudioStream" uid="uid://b1mdeia7sw5l5" path="res://Revamp/SFX/HurtSound2.mp3" id="23_56um7"]
 [ext_resource type="Script" uid="uid://maqiq3kcc45q" path="res://Revamp/Card/CardActions/Sacrifice/PendingSacrificeFeedback.gd" id="27_0h522"]
 [ext_resource type="Script" uid="uid://bwf2dy46x2l01" path="res://Revamp/Card/CardActions/Sacrifice/ComittedSacrificeFeedback.gd" id="28_msnpm"]
+[ext_resource type="AudioStream" uid="uid://bt62fj3mh54pa" path="res://Revamp/SFX/HoverSound1.wav" id="32_ieatu"]
 [ext_resource type="Script" uid="uid://btcyknr4w10ab" path="res://Revamp/Card/CardOutlineFeedback.gd" id="35_b2plg"]
 [ext_resource type="AudioStream" uid="uid://dy7hoabaq1xoh" path="res://Revamp/SFX/PullTracker1.mp3" id="36_ieatu"]
 [ext_resource type="Script" uid="uid://b727ujf6ycv3o" path="res://Revamp/Card/CardRuntimeState.gd" id="37_raks6"]
@@ -199,9 +200,14 @@ hover_feedback = NodePath("Hover")
 select_feedback = NodePath("Select")
 outline_feedback = NodePath("Outline")
 
-[node name="Hover" type="Node" parent="CardFeedback" unique_id=659627164 node_paths=PackedStringArray("target")]
+[node name="Hover" type="Node" parent="CardFeedback" unique_id=659627164 node_paths=PackedStringArray("target", "hover_audio")]
 script = ExtResource("19_v34li")
 target = NodePath("../../Visuals/CardVisuals")
+hover_audio = NodePath("AudioStreamPlayer2D")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer" parent="CardFeedback/Hover" unique_id=883542678]
+stream = ExtResource("32_ieatu")
+volume_db = -20.208
 
 [node name="Select" type="Node" parent="CardFeedback" unique_id=1062761578 node_paths=PackedStringArray("target", "extra_sprite", "extra_area", "select_audio")]
 script = ExtResource("20_v34li")

@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://bt8o5l5yrmihl" path="res://Art/AntBack/CardBackground.png" id="3_4t10r"]
 [ext_resource type="Shader" uid="uid://n3l4egojry4s" path="res://Balatro.gdshader" id="5_0pq8k"]
 [ext_resource type="Shader" uid="uid://clsxlhuocr8hn" path="res://Old/Cards/BackgroundSlide.gdshader" id="6_g780n"]
-[ext_resource type="Shader" uid="uid://ck3gs6whq2t57" path="res://Old/Cards/AntSway.gdshader" id="7_v8bk3"]
+[ext_resource type="Shader" uid="uid://b4ndwq1f6teud" path="res://AntSpriteShader.gdshader" id="8_d8086"]
 [ext_resource type="Texture2D" uid="uid://b8a1gr84h2iie" path="res://Art/Ants/WorkerAnt_Standalone.png" id="8_wvfxw"]
 [ext_resource type="Texture2D" uid="uid://c4v3je4ncss3j" path="res://Art/WorkerAnt_Test_Alpha.png" id="9_d8086"]
 [ext_resource type="Texture2D" uid="uid://daql40b2mc8tc" path="res://Art/NewCardAssets/CardFog.png" id="12_d8086"]
@@ -27,7 +27,6 @@
 [ext_resource type="FontFile" uid="uid://m0pv3sk8qbih" path="res://Art/AntBack/antrf___.ttf" id="22_g780n"]
 [ext_resource type="Script" uid="uid://dkvlofq6d7n7m" path="res://Revamp/CardVisuals/ViewPortDisplayController.gd" id="24_4t10r"]
 [ext_resource type="Texture2D" uid="uid://bkltnd7edkgin" path="res://Art/NewCardAssets/SacrificeCost.png" id="27_0lj05"]
-[ext_resource type="PackedScene" uid="uid://bocxu8xu5hh8b" path="res://Old/Mutations/ToolTip/MutationToolTip.tscn" id="28_v8bk3"]
 [ext_resource type="Texture2D" uid="uid://j75yocnxblk4" path="res://Art/RedBackground.png" id="29_d8086"]
 [ext_resource type="Texture2D" uid="uid://cgs5k6p3mggyf" path="res://Art/Ants/AntSprite.png" id="29_wvfxw"]
 
@@ -68,10 +67,10 @@ shader_parameter/direction = Vector2(10, 5)
 shader_parameter/rotation = Transform2D(1, -1, 1, 1, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_587ti"]
-shader = ExtResource("7_v8bk3")
+shader = ExtResource("8_d8086")
 shader_parameter/waveAmplitude = 0.0550000026125
 shader_parameter/correctVertex = true
-shader_parameter/waveFrequency = 0.0
+shader_parameter/waveFrequency = 5.0000002375
 shader_parameter/verticalWave = true
 shader_parameter/keepTransparency = true
 shader_parameter/useTime = true
@@ -81,6 +80,10 @@ shader_parameter/firstHalf = 0.5
 shader_parameter/secondHalf = 0.5
 shader_parameter/freezeFirstHalf = true
 shader_parameter/freezeSecondHalf = true
+shader_parameter/r_displacement = Vector2(3, 0)
+shader_parameter/g_displacement = Vector2(0, 0)
+shader_parameter/b_displacement = Vector2(-3, 0)
+shader_parameter/alpha_multiplier = 1.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3q3n8"]
 shader = ExtResource("6_g780n")
@@ -110,7 +113,7 @@ script = ExtResource("1_gy5gi")
 main_visuals = NodePath("Visuals/MainVisuals")
 mutation_visuals = NodePath("Visuals/MutationVisuals")
 stats_visual = NodePath("Visuals/StatsVisual")
-mutation_tooltip = NodePath("MutationToolTip")
+mutation_tooltip = NodePath("")
 auto_show_mutation_tooltip_on_hover = true
 revenant_shader = ExtResource("2_v8bk3")
 draw_hide_cover = NodePath("DrawHideCover")
@@ -346,9 +349,3 @@ script = ExtResource("24_4t10r")
 visible = false
 scale = Vector2(0.121008396, 0.117200226)
 texture = ExtResource("29_wvfxw")
-
-[node name="MutationToolTip" parent="." unique_id=783565587 instance=ExtResource("28_v8bk3")]
-offset_left = -71.666664
-offset_top = -174.16666
-offset_right = 102.333336
-offset_bottom = -54.166656
