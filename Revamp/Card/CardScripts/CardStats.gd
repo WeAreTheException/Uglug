@@ -11,6 +11,10 @@ signal worth_changed(value: int)
 signal stat_buffed(stat_name: String, amount: int)
 signal stat_debuffed(stat_name: String, amount: int)
 
+@export var print_feedback_debug: bool = true
+
+var owner_card: CardRoot = null
+
 var base_attack: int = 0
 var base_health: int = 0
 var base_cost: int = 0
@@ -64,9 +68,11 @@ func add_modifier(modifier: StatModifier) -> void:
 
 	if modifier.amount > 0:
 		stat_buffed.emit(modifier.stat_name, modifier.amount)
+		_print_feedback_debug("buffed", modifier.stat_name, modifier.amount)
 
 	elif modifier.amount < 0:
 		stat_debuffed.emit(modifier.stat_name, abs(modifier.amount))
+		_print_feedback_debug("debuffed", modifier.stat_name, abs(modifier.amount))
 
 	_emit_all_changed()
 
@@ -120,6 +126,28 @@ func is_dead() -> bool:
 	return get_health() <= 0
 
 
+func reset_damage_taken() -> void:
+	damage_taken = 0
+	_emit_all_changed()
+
+
+func apply_network_values(
+	attack: int,
+	health: int,
+	cost: int,
+	worth: int,
+	max_health: int
+) -> void:
+	base_attack = attack
+	base_health = max_health
+	base_cost = cost
+	base_worth = worth
+	damage_taken = max(max_health - health, 0)
+	modifiers.clear()
+
+	_emit_all_changed()
+
+
 func _clamp_damage_taken() -> void:
 	damage_taken = min(damage_taken, get_max_health())
 	damage_taken = max(damage_taken, 0)
@@ -151,22 +179,27 @@ func _emit_all_changed() -> void:
 
 	stats_changed.emit()
 
-func reset_damage_taken() -> void:
-	damage_taken = 0
-	_emit_all_changed()
 
-func apply_network_values(
-	attack: int,
-	health: int,
-	cost: int,
-	worth: int,
-	max_health: int
+func _print_feedback_debug(
+	feedback_type: String,
+	stat_name: String,
+	amount: int
 ) -> void:
-	base_attack = attack
-	base_health = max_health
-	base_cost = cost
-	base_worth = worth
-	damage_taken = max(max_health - health, 0)
-	modifiers.clear()
+	if not print_feedback_debug:
+		return
 
-	_emit_all_changed()
+	var debug_card_name := "unknown"
+
+	if owner_card != null:
+		debug_card_name = owner_card.card_name
+
+	print(
+		"STAT TARGET: ",
+		feedback_type,
+		" feedback | card=",
+		debug_card_name,
+		" stat=",
+		stat_name,
+		" amount=",
+		amount
+	)

@@ -7,7 +7,6 @@
 [ext_resource type="Script" uid="uid://b36x28452aktg" path="res://Revamp/MatchUiRoot.gd" id="5_tsgf7"]
 [ext_resource type="Script" uid="uid://dg2jxnlex8u2p" path="res://Revamp/MatchUI/UICard/PlayerHandUiBinder.gd" id="6_2qwdf"]
 [ext_resource type="Script" uid="uid://blfvp1wwkpwtb" path="res://Revamp/Camera/CameraShakeValues.gd" id="6_bguvq"]
-[ext_resource type="Resource" uid="uid://d34eaw1jxirr0" path="res://Revamp/CardPresets/Giant.tres" id="7_lcdw0"]
 [ext_resource type="Script" uid="uid://cl88hir003ywp" path="res://Revamp/Camera/CameraShakeFeedback.gd" id="7_tsgf7"]
 [ext_resource type="Script" uid="uid://c406tme7fpq2j" path="res://Revamp/DrawPhaseTestRoot.gd" id="9_proag"]
 [ext_resource type="PackedScene" uid="uid://1wr1e57v7trd" path="res://Revamp/PlayerHand/Player_Hand.tscn" id="10_mtbf2"]
@@ -16,8 +15,6 @@
 [ext_resource type="Resource" uid="uid://bxfxi0h5itrdu" path="res://Revamp/CardPresets/Lieutenant.tres" id="11_x1cq6"]
 [ext_resource type="Resource" uid="uid://dwpj7bg5ognwt" path="res://Revamp/CardPresets/Samurant.tres" id="12_2qwdf"]
 [ext_resource type="Resource" uid="uid://cu38anwcrq117" path="res://Revamp/CardPresets/SuperStimulant.tres" id="13_hlv0h"]
-[ext_resource type="Resource" uid="uid://b10yu2ml8hwx2" path="res://Revamp/CardPresets/Stimulant.tres" id="16_kthx6"]
-[ext_resource type="Resource" uid="uid://ci7yvhc8pfst6" path="res://Revamp/CardPresets/QueenAnt.tres" id="17_eykcr"]
 [ext_resource type="Resource" uid="uid://b8tgum0dpv4iv" path="res://Revamp/CardPresets/Deterrant.tres" id="19_bs6ji"]
 [ext_resource type="Script" uid="uid://61l5g8wkdar3" path="res://SacrificeController.gd" id="49_30g8j"]
 [ext_resource type="Script" uid="uid://ciopi88keoi3k" path="res://SacrificeRequirement.gd" id="50_f1nl2"]
@@ -449,7 +446,7 @@ horizontal_alignment = 1
 [node name="Slots2" parent="." unique_id=1318716624 instance=ExtResource("4_n6ts1")]
 z_index = 100
 position = Vector2(-960, -540)
-opponent_slot_1_card = ExtResource("7_lcdw0")
+opponent_slot_1_card = ExtResource("19_bs6ji")
 
 [node name="CameraRig" type="Node2D" parent="." unique_id=1102878276]
 
@@ -465,7 +462,6 @@ values = NodePath("../CameraShakevalues")
 
 [node name="DrawPhaseTestRoot" type="Node" parent="." unique_id=1322558509 node_paths=PackedStringArray("match_ui", "player_hand", "active_draw_timer", "auto_draw_timer", "reveal_timer")]
 script = ExtResource("9_proag")
-test_enabled = false
 match_ui = NodePath("../UICard")
 player_hand = NodePath("../PlayerHandRoot")
 worker_card = ExtResource("10_x1cq6")
@@ -476,7 +472,7 @@ reveal_timer = NodePath("../ActiveDrawTime")
 
 [node name="PlayerHandRoot" parent="." unique_id=371738706 instance=ExtResource("10_mtbf2")]
 position = Vector2(-64, 384)
-starting_cards = Array[ExtResource("10_nux5c")]([ExtResource("16_kthx6"), ExtResource("10_x1cq6"), ExtResource("17_eykcr"), ExtResource("10_x1cq6"), ExtResource("10_x1cq6"), ExtResource("19_bs6ji")])
+starting_cards = Array[ExtResource("10_nux5c")]([ExtResource("10_x1cq6")])
 
 [node name="ActiveDrawTime" type="Timer" parent="." unique_id=39440691]
 wait_time = 10.0

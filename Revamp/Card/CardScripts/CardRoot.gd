@@ -48,6 +48,7 @@ func setup(data: CardData) -> void:
 		mark_revenant()
 
 	if stats != null:
+		stats.owner_card = self
 		stats.setup_from_data(data)
 
 	if mutations != null:
@@ -274,6 +275,7 @@ func _on_input_hovered() -> void:
 
 func _on_input_unhovered() -> void:
 	unhovered.emit(self)
+
 
 func play_placement_animation() -> void:
 	if card_visuals_root != null:
