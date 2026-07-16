@@ -17,6 +17,7 @@ signal unhovered(card: CardRoot)
 @export var hurt: Hurt
 @export var die: Die
 @export var sacrifice: Sacrifice
+@export var buffed: Buffed
 
 @export var runtime_state: CardRuntimeState
 @export var starts_as_revenant_for_debug: bool = false
@@ -109,6 +110,9 @@ func setup_actions() -> void:
 
 	if sacrifice != null:
 		sacrifice.setup(self)
+
+	if buffed != null:
+		buffed.setup(self)
 
 
 func set_hover_focused(value: bool) -> void:

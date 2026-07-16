@@ -198,17 +198,22 @@ target = NodePath("../../..")
 script = ExtResource("28_msnpm")
 target = NodePath("../../..")
 
-[node name="Buffed" type="Node" parent="Actions" unique_id=1429261362 node_paths=PackedStringArray("feedback_handler")]
+[node name="Buffed" type="Node" parent="Actions" unique_id=1429261362]
 script = ExtResource("30_56um7")
-feedback_handler = NodePath("BuffedFeedbackHandler")
 
-[node name="BuffedFeedbackHandler" type="Node" parent="Actions/Buffed" unique_id=151618507 node_paths=PackedStringArray("buffed_vfx")]
+[node name="BuffedFeedbackHandler" type="Node" parent="Actions/Buffed" unique_id=151618507]
 script = ExtResource("32_pup7v")
-buffed_vfx = NodePath("BuffedVFX")
 
-[node name="BuffedVFX" type="Node" parent="Actions/Buffed/BuffedFeedbackHandler" unique_id=1998909798 node_paths=PackedStringArray("sprite")]
+[node name="BuffedVFX" type="Node2D" parent="Actions/Buffed/BuffedFeedbackHandler" unique_id=1874328917 node_paths=PackedStringArray("sprite")]
 script = ExtResource("31_0wbd4")
-sprite = NodePath("../../../../AtkBuffIcon")
+sprite = NodePath("../../../Hurt/HurtFeedbackHandler/HurtSprite/HurtSprite")
+
+[node name="AtkBuffIcon" type="Sprite2D" parent="Actions/Buffed/BuffedFeedbackHandler/BuffedVFX" unique_id=1447180298]
+modulate = Color(1, 0.0627451, 0.08235294, 0.627451)
+self_modulate = Color(0.5254902, 0, 0.015686275, 1)
+position = Vector2(-41, 108)
+scale = Vector2(0.04953455, 0.07476011)
+texture = ExtResource("33_qnnbi")
 
 [node name="Debuffed" type="Node" parent="Actions" unique_id=1806532214]
 
@@ -276,7 +281,6 @@ expand_mode = 1
 
 [node name="CardVisuals" parent="Visuals" unique_id=1593445486 instance=ExtResource("1_2duqk")]
 position = Vector2(7.6293945e-06, 7.6293945e-06)
-metadata/_edit_lock_ = true
 
 [node name="FeedbackSpriteAnchor" type="Node2D" parent="Visuals/CardVisuals" unique_id=626068744]
 
@@ -296,18 +300,3 @@ texture = ExtResource("39_b2plg")
 metadata/_edit_lock_ = true
 
 [node name="BuffedVfx" type="Node" parent="." unique_id=1282665065]
-
-[node name="AtkBuffIcon" type="Sprite2D" parent="." unique_id=1447180298]
-modulate = Color(1, 0.0627451, 0.08235294, 0.627451)
-self_modulate = Color(0.5254902, 0, 0.015686275, 1)
-z_index = 7
-position = Vector2(-75, 48)
-scale = Vector2(0.08310061, 0.10682451)
-texture = ExtResource("33_qnnbi")
-
-[node name="AtkBuffIcon2" type="Sprite2D" parent="AtkBuffIcon" unique_id=230135153]
-modulate = Color(1, 0.0627451, 0.08235294, 0.627451)
-self_modulate = Color(0.5254902, 0, 0.015686275, 1)
-z_index = 7
-position = Vector2(276.7729, 215.30643)
-texture = ExtResource("33_qnnbi")
