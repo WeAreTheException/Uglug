@@ -254,6 +254,31 @@ func set_card_input_enabled(value: bool) -> void:
 	_set_area_input_enabled_recursive(self, value)
 
 
+func play_buffed_feedback() -> void:
+	if buffed != null:
+		buffed.play_buffed()
+
+
+func play_debuffed_feedback() -> void:
+	if debuffed != null:
+		debuffed.play_debuffed()
+
+
+func play_buffer_feedback() -> void:
+	if buffer != null:
+		buffer.play_buffer()
+
+
+func play_debuffer_feedback() -> void:
+	if debuffer != null:
+		debuffer.play_debuffer()
+
+
+func play_placement_animation() -> void:
+	if card_visuals_root != null:
+		card_visuals_root.play_placement_animation()
+
+
 func _set_area_input_enabled_recursive(node: Node, value: bool) -> void:
 	if node is Area2D:
 		var area := node as Area2D
@@ -292,8 +317,3 @@ func _on_input_hovered() -> void:
 
 func _on_input_unhovered() -> void:
 	unhovered.emit(self)
-
-
-func play_placement_animation() -> void:
-	if card_visuals_root != null:
-		card_visuals_root.play_placement_animation()

@@ -39,12 +39,14 @@
 [ext_resource type="Script" uid="uid://c27lluagvxqeo" path="res://Revamp/Card/CardActions/StatChange/BuffedVfx.gd" id="31_0wbd4"]
 [ext_resource type="AudioStream" uid="uid://bt62fj3mh54pa" path="res://Revamp/SFX/HoverSound1.wav" id="32_ieatu"]
 [ext_resource type="Script" uid="uid://c2tbbdnxs2e6h" path="res://Revamp/Card/CardActions/StatChange/BuffFeedbackHandler.gd" id="32_pup7v"]
+[ext_resource type="Script" uid="uid://dwu41eduowcsm" path="res://Revamp/Card/CardActions/StatChange/Buffer/Buffer.gd" id="33_m8x75"]
 [ext_resource type="Script" uid="uid://8fjx7s83pn01" path="res://Revamp/Card/CardActions/StatChange/Debuffed/Debuffed.gd" id="33_oexco"]
 [ext_resource type="Texture2D" uid="uid://ck6mq3fsy4ld4" path="res://Revamp/Icons/StatUpIcon-removebg-preview.png" id="33_qnnbi"]
 [ext_resource type="Script" uid="uid://nayh1exxnlu" path="res://Revamp/Card/CardActions/StatChange/Debuffed/DebuffedVfx.gd" id="34_numsi"]
 [ext_resource type="Script" uid="uid://btcyknr4w10ab" path="res://Revamp/Card/CardOutlineFeedback.gd" id="35_b2plg"]
 [ext_resource type="Script" uid="uid://laog5x83awpq" path="res://Revamp/Card/CardActions/StatChange/Debuffed/DebuffedFeedbackHandler.gd" id="35_lwwnd"]
 [ext_resource type="AudioStream" uid="uid://dy7hoabaq1xoh" path="res://Revamp/SFX/PullTracker1.mp3" id="36_ieatu"]
+[ext_resource type="Script" uid="uid://dr0m2dia4fhhc" path="res://Revamp/Card/CardActions/StatChange/Debuffer/Debuffer.gd" id="37_6fx5p"]
 [ext_resource type="Script" uid="uid://b727ujf6ycv3o" path="res://Revamp/Card/CardRuntimeState.gd" id="37_raks6"]
 [ext_resource type="PackedScene" uid="uid://c8mfgi3h8sc6v" path="res://NewCardLayout.tscn" id="38_fgsua"]
 [ext_resource type="Texture2D" uid="uid://j75yocnxblk4" path="res://Art/RedBackground.png" id="39_b2plg"]
@@ -57,7 +59,7 @@ size = Vector2(192, 288)
 shader = ExtResource("40_hginc")
 shader_parameter/outline_color = Color(1, 1, 1, 1)
 
-[node name="Card" type="Node2D" unique_id=1649731477 node_paths=PackedStringArray("input", "board_presence", "stats", "mutations", "card_visuals_root", "card_feedback", "attack", "hurt", "die", "sacrifice", "buffed", "debuffed", "runtime_state")]
+[node name="Card" type="Node2D" unique_id=1649731477 node_paths=PackedStringArray("input", "board_presence", "stats", "mutations", "card_visuals_root", "card_feedback", "attack", "hurt", "die", "sacrifice", "buffed", "debuffed", "buffer", "debuffer", "runtime_state")]
 script = ExtResource("1_hdbik")
 input = NodePath("CardInput")
 board_presence = NodePath("Core/BoardPresence")
@@ -69,10 +71,11 @@ attack = NodePath("Actions/Attack")
 hurt = NodePath("Actions/Hurt")
 die = NodePath("Actions/Die")
 sacrifice = NodePath("Actions/Sacrifice")
-buffed = NodePath("Actions/Buffed")
-debuffed = NodePath("Actions/Debuffed")
+buffed = NodePath("Actions/StatEffect/Buffed")
+debuffed = NodePath("Actions/StatEffect/Debuffed")
+buffer = NodePath("Actions/StatEffect/Buffer")
+debuffer = NodePath("Actions/StatEffect/Debuffer")
 runtime_state = NodePath("CardRuntimeState")
-starts_as_revenant_for_debug = null
 
 [node name="CardInput" type="Area2D" parent="." unique_id=502264031 node_paths=PackedStringArray("collision_shape")]
 position = Vector2(300, 48)
@@ -203,37 +206,41 @@ target = NodePath("../../..")
 script = ExtResource("28_msnpm")
 target = NodePath("../../..")
 
-[node name="Buffed" type="Node" parent="Actions" unique_id=1429261362 node_paths=PackedStringArray("feedback_handler")]
+[node name="StatEffect" type="Node" parent="Actions" unique_id=2096472671]
+
+[node name="Buffed" type="Node" parent="Actions/StatEffect" unique_id=1429261362 node_paths=PackedStringArray("feedback_handler")]
 script = ExtResource("30_56um7")
 feedback_handler = NodePath("BuffedFeedbackHandler")
 
-[node name="BuffedFeedbackHandler" type="Node" parent="Actions/Buffed" unique_id=151618507 node_paths=PackedStringArray("buffed_vfx")]
+[node name="BuffedFeedbackHandler" type="Node" parent="Actions/StatEffect/Buffed" unique_id=151618507 node_paths=PackedStringArray("buffed_vfx")]
 script = ExtResource("32_pup7v")
 buffed_vfx = NodePath("BuffedVFX")
 
-[node name="BuffedVFX" type="Node" parent="Actions/Buffed/BuffedFeedbackHandler" unique_id=1998909798 node_paths=PackedStringArray("sprite")]
+[node name="BuffedVFX" type="Node" parent="Actions/StatEffect/Buffed/BuffedFeedbackHandler" unique_id=1998909798 node_paths=PackedStringArray("sprite")]
 script = ExtResource("31_0wbd4")
-sprite = NodePath("../../../../AtkBuffIcon")
+sprite = NodePath("../../../../../AtkBuffIcon")
 
-[node name="Debuffed" type="Node" parent="Actions" unique_id=1806532214 node_paths=PackedStringArray("feedback_handler")]
+[node name="Buffer" type="Node" parent="Actions/StatEffect" unique_id=575487024]
+script = ExtResource("33_m8x75")
+
+[node name="BufferVFX" type="Node" parent="Actions/StatEffect/Buffer" unique_id=1765348752]
+
+[node name="Debuffed" type="Node" parent="Actions/StatEffect" unique_id=1806532214 node_paths=PackedStringArray("feedback_handler")]
 script = ExtResource("33_oexco")
 feedback_handler = NodePath("DebuffedFeedbackHandler")
 
-[node name="DebuffedFeedbackHandler" type="Node" parent="Actions/Debuffed" unique_id=1349334860 node_paths=PackedStringArray("debuffed_vfx")]
+[node name="DebuffedFeedbackHandler" type="Node" parent="Actions/StatEffect/Debuffed" unique_id=1349334860 node_paths=PackedStringArray("debuffed_vfx")]
 script = ExtResource("35_lwwnd")
 debuffed_vfx = NodePath("DebuffedVfx")
 
-[node name="DebuffedVfx" type="Node" parent="Actions/Debuffed/DebuffedFeedbackHandler" unique_id=297104588 node_paths=PackedStringArray("sprite")]
+[node name="DebuffedVfx" type="Node" parent="Actions/StatEffect/Debuffed/DebuffedFeedbackHandler" unique_id=297104588 node_paths=PackedStringArray("sprite")]
 script = ExtResource("34_numsi")
-sprite = NodePath("../../../../AtkDebuffIcon")
+sprite = NodePath("../../../../../AtkDebuffIcon")
 
-[node name="Buffer" type="Node" parent="Actions" unique_id=575487024]
+[node name="Debuffer" type="Node" parent="Actions/StatEffect" unique_id=1979049619]
+script = ExtResource("37_6fx5p")
 
-[node name="BuffedVFX" type="Node" parent="Actions/Buffer" unique_id=1765348752]
-
-[node name="Debuffer" type="Node" parent="Actions" unique_id=1979049619]
-
-[node name="BuffedVFX" type="Node" parent="Actions/Debuffer" unique_id=1957211898]
+[node name="BuffedVFX" type="Node" parent="Actions/StatEffect/Debuffer" unique_id=1957211898]
 
 [node name="CardFeedback" type="Node" parent="." unique_id=824411320 node_paths=PackedStringArray("card", "hover_feedback", "select_feedback", "outline_feedback")]
 script = ExtResource("8_nau7p")
