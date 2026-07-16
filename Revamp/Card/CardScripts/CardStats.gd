@@ -24,9 +24,6 @@ var damage_taken: int = 0
 
 var modifiers: Array[StatModifier] = []
 
-var target_buffed_feedback_pending: bool = false
-var target_debuffed_feedback_pending: bool = false
-
 
 func setup_from_data(data: CardData) -> void:
 	if data == null:
@@ -39,9 +36,6 @@ func setup_from_data(data: CardData) -> void:
 
 	damage_taken = 0
 	modifiers.clear()
-
-	target_buffed_feedback_pending = false
-	target_debuffed_feedback_pending = false
 
 	_emit_all_changed()
 
@@ -74,13 +68,11 @@ func add_modifier(modifier: StatModifier) -> void:
 
 	if modifier.amount > 0:
 		stat_buffed.emit(modifier.stat_name, modifier.amount)
-		_schedule_source_feedback(modifier, "buffer")
-		_schedule_target_feedback("buffed")
+		_print_feedback_debug("buffed", modifier.stat_name, modifier.amount)
 
 	elif modifier.amount < 0:
 		stat_debuffed.emit(modifier.stat_name, abs(modifier.amount))
-		_schedule_source_feedback(modifier, "debuffer")
-		_schedule_target_feedback("debuffed")
+		_print_feedback_debug("debuffed", modifier.stat_name, abs(modifier.amount))
 
 	_emit_all_changed()
 
@@ -153,110 +145,7 @@ func apply_network_values(
 	damage_taken = max(max_health - health, 0)
 	modifiers.clear()
 
-	target_buffed_feedback_pending = false
-	target_debuffed_feedback_pending = false
-
 	_emit_all_changed()
-
-
-func _schedule_source_feedback(modifier: StatModifier, feedback_type: String) -> void:
-	if modifier == null:
-		return
-
-	var source_card := _get_source_card_from_modifier(modifier)
-
-	if source_card == null:
-		return
-
-	var key := "_pending_" + feedback_type + "_feedback"
-
-	if bool(source_card.get_meta(key, false)):
-		return
-
-	source_card.set_meta(key, true)
-	call_deferred("_flush_source_feedback", source_card, feedback_type, key)
-
-
-func _schedule_target_feedback(feedback_type: String) -> void:
-	if feedback_type == "buffed":
-		if target_buffed_feedback_pending:
-			return
-
-		target_buffed_feedback_pending = true
-		call_deferred("_flush_target_feedback", feedback_type)
-		return
-
-	if feedback_type == "debuffed":
-		if target_debuffed_feedback_pending:
-			return
-
-		target_debuffed_feedback_pending = true
-		call_deferred("_flush_target_feedback", feedback_type)
-
-
-func _flush_source_feedback(
-	source_card: CardRoot,
-	feedback_type: String,
-	key: String
-) -> void:
-	if source_card == null:
-		return
-
-	if not is_instance_valid(source_card):
-		return
-
-	source_card.set_meta(key, false)
-
-	if not print_feedback_debug:
-		return
-
-	print(
-		"STAT SOURCE: ",
-		feedback_type,
-		" feedback | card=",
-		source_card.card_name
-	)
-
-
-func _flush_target_feedback(feedback_type: String) -> void:
-	if feedback_type == "buffed":
-		target_buffed_feedback_pending = false
-
-	if feedback_type == "debuffed":
-		target_debuffed_feedback_pending = false
-
-	if not print_feedback_debug:
-		return
-
-	var debug_card_name := "unknown"
-
-	if owner_card != null:
-		debug_card_name = owner_card.card_name
-
-	print(
-		"STAT TARGET: ",
-		feedback_type,
-		" feedback | card=",
-		debug_card_name
-	)
-
-
-func _get_source_card_from_modifier(modifier: StatModifier) -> CardRoot:
-	if modifier == null:
-		return null
-
-	var runtime := modifier.source as MutationRuntime
-
-	if runtime == null:
-		return null
-
-	if runtime.owner_card == null:
-		return null
-
-	if not is_instance_valid(runtime.owner_card):
-		return null
-
-	return runtime.owner_card
 
 
 func _clamp_damage_taken() -> void:
@@ -289,3 +178,28 @@ func _emit_all_changed() -> void:
 	worth_changed.emit(get_worth())
 
 	stats_changed.emit()
+
+
+func _print_feedback_debug(
+	feedback_type: String,
+	stat_name: String,
+	amount: int
+) -> void:
+	if not print_feedback_debug:
+		return
+
+	var debug_card_name := "unknown"
+
+	if owner_card != null:
+		debug_card_name = owner_card.card_name
+
+	print(
+		"STAT TARGET: ",
+		feedback_type,
+		" feedback | card=",
+		debug_card_name,
+		" stat=",
+		stat_name,
+		" amount=",
+		amount
+	)
