@@ -10,10 +10,17 @@ class_name StatsVisuals
 @export var health_label: RichTextLabel
 @export var cost_label: RichTextLabel
 
+@export var attack_text_feedback: StatTextFeedback
+@export var health_text_feedback: StatTextFeedback
+
 @export var attack_textures: Array[Texture2D]
 @export var health_textures: Array[Texture2D]
 
 var stats: CardStats = null
+var last_attack_value: int = 0
+var last_health_value: int = 0
+var has_attack_value: bool = false
+var has_health_value: bool = false
 
 
 func setup_from_stats(source_stats: CardStats, card_name: String) -> void:
@@ -33,8 +40,8 @@ func setup_from_stats(source_stats: CardStats, card_name: String) -> void:
 	if not stats.cost_changed.is_connected(update_cost):
 		stats.cost_changed.connect(update_cost)
 
-	update_attack(stats.get_attack())
-	update_health(stats.get_health())
+	_set_attack_instant(stats.get_attack())
+	_set_health_instant(stats.get_health())
 	update_cost(stats.get_cost())
 
 
@@ -46,6 +53,17 @@ func update_name(value: String) -> void:
 
 
 func update_attack(value: int) -> void:
+	if not has_attack_value:
+		_set_attack_instant(value)
+		return
+
+	var old_value := last_attack_value
+	last_attack_value = value
+
+	if attack_text_feedback != null:
+		attack_text_feedback.play_value_change(old_value, value)
+		return
+
 	if attack_label != null:
 		attack_label.text = str(value)
 
@@ -54,6 +72,17 @@ func update_attack(value: int) -> void:
 
 
 func update_health(value: int) -> void:
+	if not has_health_value:
+		_set_health_instant(value)
+		return
+
+	var old_value := last_health_value
+	last_health_value = value
+
+	if health_text_feedback != null:
+		health_text_feedback.play_value_change(old_value, value)
+		return
+
 	if health_label != null:
 		health_label.text = str(value)
 
@@ -70,3 +99,29 @@ func update_cost(value: int) -> void:
 			continue
 
 		cost[i].visible = false
+
+
+func _set_attack_instant(value: int) -> void:
+	last_attack_value = value
+	has_attack_value = true
+
+	if attack_text_feedback != null:
+		attack_text_feedback.set_value_instant(value)
+	elif attack_label != null:
+		attack_label.text = str(value)
+
+	if attack != null:
+		attack.visible = false
+
+
+func _set_health_instant(value: int) -> void:
+	last_health_value = value
+	has_health_value = true
+
+	if health_text_feedback != null:
+		health_text_feedback.set_value_instant(value)
+	elif health_label != null:
+		health_label.text = str(value)
+
+	if health != null:
+		health.visible = false

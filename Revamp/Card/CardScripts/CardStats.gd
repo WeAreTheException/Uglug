@@ -12,6 +12,7 @@ signal stat_buffed(stat_name: String, amount: int)
 signal stat_debuffed(stat_name: String, amount: int)
 
 @export var print_feedback_debug: bool = true
+@export var feedback_step_delay: float = 0.5
 
 var owner_card: CardRoot = null
 
@@ -76,11 +77,13 @@ func add_modifier(modifier: StatModifier) -> void:
 		stat_buffed.emit(modifier.stat_name, modifier.amount)
 		_schedule_source_feedback(modifier, "buffer")
 		_schedule_target_feedback("buffed")
+		return
 
-	elif modifier.amount < 0:
+	if modifier.amount < 0:
 		stat_debuffed.emit(modifier.stat_name, abs(modifier.amount))
 		_schedule_source_feedback(modifier, "debuffer")
 		_schedule_target_feedback("debuffed")
+		return
 
 	_emit_all_changed()
 
@@ -174,7 +177,13 @@ func _schedule_source_feedback(modifier: StatModifier, feedback_type: String) ->
 		return
 
 	source_card.set_meta(key, true)
-	call_deferred("_flush_source_feedback", source_card, feedback_type, key)
+
+	StatFeedbackQueueHelper.enqueue(
+		self,
+		feedback_step_delay,
+		func() -> void:
+			_flush_source_feedback(source_card, feedback_type, key)
+	)
 
 
 func _schedule_target_feedback(feedback_type: String) -> void:
@@ -183,7 +192,14 @@ func _schedule_target_feedback(feedback_type: String) -> void:
 			return
 
 		target_buffed_feedback_pending = true
-		call_deferred("_flush_target_feedback", feedback_type)
+
+		StatFeedbackQueueHelper.enqueue(
+			self,
+			feedback_step_delay,
+			func() -> void:
+				_flush_target_feedback(feedback_type)
+		)
+
 		return
 
 	if feedback_type == "debuffed":
@@ -191,7 +207,13 @@ func _schedule_target_feedback(feedback_type: String) -> void:
 			return
 
 		target_debuffed_feedback_pending = true
-		call_deferred("_flush_target_feedback", feedback_type)
+
+		StatFeedbackQueueHelper.enqueue(
+			self,
+			feedback_step_delay,
+			func() -> void:
+				_flush_target_feedback(feedback_type)
+		)
 
 
 func _flush_source_feedback(
@@ -231,6 +253,8 @@ func _flush_target_feedback(feedback_type: String) -> void:
 
 	if feedback_type == "debuffed":
 		target_debuffed_feedback_pending = false
+
+	_emit_all_changed()
 
 	if owner_card != null:
 		match feedback_type:

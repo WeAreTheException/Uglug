@@ -28,6 +28,7 @@
 [ext_resource type="FontFile" uid="uid://m0pv3sk8qbih" path="res://Art/AntBack/antrf___.ttf" id="22_g780n"]
 [ext_resource type="Script" uid="uid://dkvlofq6d7n7m" path="res://Revamp/CardVisuals/ViewPortDisplayController.gd" id="24_4t10r"]
 [ext_resource type="Texture2D" uid="uid://bkltnd7edkgin" path="res://Art/NewCardAssets/SacrificeCost.png" id="27_0lj05"]
+[ext_resource type="Script" uid="uid://db56slyy24nq7" path="res://Revamp/Card/CardFeedback/StatTextFeedback.gd" id="29_0lj05"]
 [ext_resource type="Texture2D" uid="uid://j75yocnxblk4" path="res://Art/RedBackground.png" id="29_d8086"]
 [ext_resource type="Texture2D" uid="uid://cgs5k6p3mggyf" path="res://Art/Ants/AntSprite.png" id="29_wvfxw"]
 [ext_resource type="Script" uid="uid://bfb500ov31a53" path="res://Revamp/PlayPhase/Placement/PlaceAnimRunner.gd" id="31_b5mm6"]
@@ -392,7 +393,7 @@ script = ExtResource("18_b5mm6")
 position = Vector2(-0.0002770389, 0.00059890747)
 shape = SubResource("RectangleShape2D_4t10r")
 
-[node name="StatsVisual" type="Node2D" parent="Visuals" unique_id=769110726 node_paths=PackedStringArray("attack", "health", "cost", "name_label", "attack_label", "health_label")]
+[node name="StatsVisual" type="Node2D" parent="Visuals" unique_id=769110726 node_paths=PackedStringArray("attack", "health", "cost", "name_label", "attack_label", "health_label", "attack_text_feedback")]
 z_index = 7
 script = ExtResource("15_5t0dk")
 attack = NodePath("Attack")
@@ -401,6 +402,7 @@ cost = [NodePath("Cost/Blood"), NodePath("Cost/Blood2"), NodePath("Cost/Blood3")
 name_label = NodePath("Name")
 attack_label = NodePath("AtkLbl")
 health_label = NodePath("HlthLbl")
+attack_text_feedback = NodePath("StatTextFeedback")
 attack_textures = Array[Texture2D]([ExtResource("16_4yngs"), ExtResource("17_8nq5a"), ExtResource("18_8aa6v"), ExtResource("19_kawbk"), ExtResource("20_6t487"), ExtResource("21_457k1")])
 health_textures = Array[Texture2D]([ExtResource("16_4yngs"), ExtResource("17_8nq5a"), ExtResource("18_8aa6v"), ExtResource("19_kawbk"), ExtResource("20_6t487"), ExtResource("21_457k1")])
 metadata/_edit_lock_ = true
@@ -487,6 +489,14 @@ text = "5"
 autowrap_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="StatTextFeedback" type="Node" parent="Visuals/StatsVisual" unique_id=2047671984 node_paths=PackedStringArray("label")]
+script = ExtResource("29_0lj05")
+label = NodePath("../AtkLbl")
+vertical_float_height = 2.0
+vertical_float_time = 20.0
+horizontal_drift_amount = 0.5
+metadata/_custom_type_script = "uid://db56slyy24nq7"
 
 [node name="ViewportDisplayController" type="Node2D" parent="." unique_id=1630220938]
 script = ExtResource("24_4t10r")

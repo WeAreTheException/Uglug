@@ -48,7 +48,6 @@
 [ext_resource type="AudioStream" uid="uid://dy7hoabaq1xoh" path="res://Revamp/SFX/PullTracker1.mp3" id="36_ieatu"]
 [ext_resource type="Script" uid="uid://dr0m2dia4fhhc" path="res://Revamp/Card/CardActions/StatChange/Debuffer/Debuffer.gd" id="37_6fx5p"]
 [ext_resource type="Script" uid="uid://b727ujf6ycv3o" path="res://Revamp/Card/CardRuntimeState.gd" id="37_raks6"]
-[ext_resource type="PackedScene" uid="uid://c8mfgi3h8sc6v" path="res://NewCardLayout.tscn" id="38_fgsua"]
 [ext_resource type="Texture2D" uid="uid://j75yocnxblk4" path="res://Art/RedBackground.png" id="39_b2plg"]
 [ext_resource type="Shader" uid="uid://q5qsewd5kabi" path="res://Revamp/Card/OutlineForceColor.gdshader" id="40_hginc"]
 
@@ -75,7 +74,7 @@ buffed = NodePath("Actions/StatEffect/Buffed")
 debuffed = NodePath("Actions/StatEffect/Debuffed")
 buffer = NodePath("Actions/StatEffect/Buffer")
 debuffer = NodePath("Actions/StatEffect/Debuffer")
-runtime_state = NodePath("CardRuntimeState")
+runtime_state = NodePath("Core/CardRuntimeState")
 
 [node name="CardInput" type="Area2D" parent="." unique_id=502264031 node_paths=PackedStringArray("collision_shape")]
 position = Vector2(300, 48)
@@ -100,6 +99,9 @@ script = ExtResource("5_olfje")
 [node name="CardBlessings" type="Node" parent="Core" unique_id=871610046 node_paths=PackedStringArray("card")]
 script = ExtResource("6_2su1i")
 card = NodePath("../..")
+
+[node name="CardRuntimeState" type="Node" parent="Core" unique_id=16229587]
+script = ExtResource("37_raks6")
 
 [node name="Actions" type="Node" parent="." unique_id=857836663]
 
@@ -218,7 +220,7 @@ buffed_vfx = NodePath("BuffedVFX")
 
 [node name="BuffedVFX" type="Node" parent="Actions/StatEffect/Buffed/BuffedFeedbackHandler" unique_id=1998909798 node_paths=PackedStringArray("sprite")]
 script = ExtResource("31_0wbd4")
-sprite = NodePath("../../../../../AtkBuffIcon")
+sprite = NodePath("../../../../../Visuals/AtkBuffIcon")
 
 [node name="Buffer" type="Node" parent="Actions/StatEffect" unique_id=575487024]
 script = ExtResource("33_m8x75")
@@ -235,7 +237,7 @@ debuffed_vfx = NodePath("DebuffedVfx")
 
 [node name="DebuffedVfx" type="Node" parent="Actions/StatEffect/Debuffed/DebuffedFeedbackHandler" unique_id=297104588 node_paths=PackedStringArray("sprite")]
 script = ExtResource("34_numsi")
-sprite = NodePath("../../../../../AtkDebuffIcon")
+sprite = NodePath("../../../../../Visuals/AtkDebuffIcon")
 
 [node name="Debuffer" type="Node" parent="Actions/StatEffect" unique_id=1979049619]
 script = ExtResource("37_6fx5p")
@@ -261,7 +263,7 @@ volume_db = -20.208
 [node name="Select" type="Node" parent="CardFeedback" unique_id=1062761578 node_paths=PackedStringArray("target", "extra_sprite", "extra_area", "select_audio")]
 script = ExtResource("20_v34li")
 target = NodePath("../../Visuals/CardVisuals")
-extra_sprite = NodePath("../../CardOutline")
+extra_sprite = NodePath("../../Visuals/CardOutline")
 extra_area = NodePath("../../CardInput")
 select_audio = NodePath("../SelectSound")
 
@@ -271,7 +273,7 @@ shadow_texture = NodePath("../../Visuals/Shadow")
 
 [node name="Outline" type="Node" parent="CardFeedback" unique_id=1388964221 node_paths=PackedStringArray("outline_target")]
 script = ExtResource("35_b2plg")
-outline_target = NodePath("../../CardOutline")
+outline_target = NodePath("../../Visuals/CardOutline")
 
 [node name="SelectSound" type="AudioStreamPlayer2D" parent="CardFeedback" unique_id=1783817506]
 stream = ExtResource("36_ieatu")
@@ -300,14 +302,7 @@ metadata/_edit_lock_ = true
 
 [node name="FeedbackSpriteAnchor" type="Node2D" parent="Visuals/CardVisuals" unique_id=626068744]
 
-[node name="CardRuntimeState" type="Node" parent="." unique_id=16229587]
-script = ExtResource("37_raks6")
-
-[node name="CardVisualsNew" parent="." unique_id=96420926 instance=ExtResource("38_fgsua")]
-visible = false
-position = Vector2(-72, -120)
-
-[node name="CardOutline" type="Sprite2D" parent="." unique_id=1774136059]
+[node name="CardOutline" type="Sprite2D" parent="Visuals" unique_id=1774136059]
 z_index = -1
 material = SubResource("ShaderMaterial_ieatu")
 position = Vector2(-4.529953e-06, 0.4999944)
@@ -315,9 +310,8 @@ scale = Vector2(0.16833335, 0.1596774)
 texture = ExtResource("39_b2plg")
 metadata/_edit_lock_ = true
 
-[node name="BuffedVfx" type="Node" parent="." unique_id=1282665065]
-
-[node name="AtkBuffIcon" type="Sprite2D" parent="." unique_id=1447180298]
+[node name="AtkBuffIcon" type="Sprite2D" parent="Visuals" unique_id=1447180298]
+visible = false
 modulate = Color(1, 0.0627451, 0.08235294, 0.627451)
 self_modulate = Color(0.5254902, 0, 0.015686275, 1)
 z_index = 7
@@ -325,23 +319,24 @@ position = Vector2(-75, 48)
 scale = Vector2(0.08310061, 0.10682451)
 texture = ExtResource("33_qnnbi")
 
-[node name="AtkBuffIcon2" type="Sprite2D" parent="AtkBuffIcon" unique_id=230135153]
+[node name="AtkBuffIcon2" type="Sprite2D" parent="Visuals/AtkBuffIcon" unique_id=230135153]
 modulate = Color(1, 0.0627451, 0.08235294, 0.627451)
 self_modulate = Color(0.5254902, 0, 0.015686275, 1)
 z_index = 7
 position = Vector2(276.7729, 215.30643)
 texture = ExtResource("33_qnnbi")
 
-[node name="AtkDebuffIcon" type="Sprite2D" parent="." unique_id=2020314872]
+[node name="AtkDebuffIcon" type="Sprite2D" parent="Visuals" unique_id=2020314872]
+visible = false
 modulate = Color(1, 0.0627451, 0.08235294, 0.627451)
 self_modulate = Color(0.5254902, 0, 0.015686275, 1)
 z_index = 7
 position = Vector2(-52.000008, 56)
-rotation = 3.1415927
+rotation = -3.1415925
 scale = Vector2(0.08310061, 0.10682451)
 texture = ExtResource("33_qnnbi")
 
-[node name="AtkBuffIcon2" type="Sprite2D" parent="AtkDebuffIcon" unique_id=1424238578]
+[node name="AtkBuffIcon2" type="Sprite2D" parent="Visuals/AtkDebuffIcon" unique_id=1424238578]
 modulate = Color(1, 0.0627451, 0.08235294, 0.627451)
 self_modulate = Color(0.5254902, 0, 0.015686275, 1)
 z_index = 7
