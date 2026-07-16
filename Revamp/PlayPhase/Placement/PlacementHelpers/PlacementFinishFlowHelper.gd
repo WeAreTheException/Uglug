@@ -31,6 +31,3 @@ func finish_placement(
 		controller.placement_state.reset()
 
 	controller.set_hand_input_enabled(true)
-
-	if controller.slots_root != null:
-		controller.slots_root.refresh_board_mutations()

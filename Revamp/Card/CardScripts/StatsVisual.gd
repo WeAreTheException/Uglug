@@ -6,6 +6,10 @@ class_name StatsVisuals
 @export var cost: Array[Sprite2D]
 @export var name_label: RichTextLabel
 
+@export var attack_label: RichTextLabel
+@export var health_label: RichTextLabel
+@export var cost_label: RichTextLabel
+
 @export var attack_textures: Array[Texture2D]
 @export var health_textures: Array[Texture2D]
 
@@ -42,40 +46,27 @@ func update_name(value: String) -> void:
 
 
 func update_attack(value: int) -> void:
-	if attack == null:
-		return
+	if attack_label != null:
+		attack_label.text = str(value)
 
-	if value <= 0:
-		attack.texture = null
-		return
-
-	var index := value - 1
-
-	if index >= 0 and index < attack_textures.size():
-		attack.texture = attack_textures[index]
-	else:
-		attack.texture = null
+	if attack != null:
+		attack.visible = false
 
 
 func update_health(value: int) -> void:
-	if health == null:
-		return
+	if health_label != null:
+		health_label.text = str(value)
 
-	if value <= 0:
-		health.texture = null
-		return
-
-	var index := value - 1
-
-	if index >= 0 and index < health_textures.size():
-		health.texture = health_textures[index]
-	else:
-		health.texture = null
+	if health != null:
+		health.visible = false
 
 
 func update_cost(value: int) -> void:
+	if cost_label != null:
+		cost_label.text = str(value)
+
 	for i in range(cost.size()):
 		if cost[i] == null:
 			continue
 
-		cost[i].visible = i < value
+		cost[i].visible = false

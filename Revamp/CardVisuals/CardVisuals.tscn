@@ -392,13 +392,15 @@ script = ExtResource("18_b5mm6")
 position = Vector2(-0.0002770389, 0.00059890747)
 shape = SubResource("RectangleShape2D_4t10r")
 
-[node name="StatsVisual" type="Node2D" parent="Visuals" unique_id=769110726 node_paths=PackedStringArray("attack", "health", "cost", "name_label")]
+[node name="StatsVisual" type="Node2D" parent="Visuals" unique_id=769110726 node_paths=PackedStringArray("attack", "health", "cost", "name_label", "attack_label", "health_label")]
 z_index = 7
 script = ExtResource("15_5t0dk")
 attack = NodePath("Attack")
 health = NodePath("Health")
 cost = [NodePath("Cost/Blood"), NodePath("Cost/Blood2"), NodePath("Cost/Blood3"), NodePath("Cost/Blood4")]
 name_label = NodePath("Name")
+attack_label = NodePath("AtkLbl")
+health_label = NodePath("HlthLbl")
 attack_textures = Array[Texture2D]([ExtResource("16_4yngs"), ExtResource("17_8nq5a"), ExtResource("18_8aa6v"), ExtResource("19_kawbk"), ExtResource("20_6t487"), ExtResource("21_457k1")])
 health_textures = Array[Texture2D]([ExtResource("16_4yngs"), ExtResource("17_8nq5a"), ExtResource("18_8aa6v"), ExtResource("19_kawbk"), ExtResource("20_6t487"), ExtResource("21_457k1")])
 metadata/_edit_lock_ = true
@@ -472,7 +474,7 @@ autowrap_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="AtkLbl2" type="RichTextLabel" parent="Visuals/StatsVisual" unique_id=1020860487]
+[node name="HlthLbl" type="RichTextLabel" parent="Visuals/StatsVisual" unique_id=1020860487]
 offset_left = 38.888885
 offset_top = 7.4074073
 offset_right = 83.33332
