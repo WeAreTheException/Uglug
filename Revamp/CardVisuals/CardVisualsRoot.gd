@@ -195,9 +195,8 @@ func _update_mutation_visuals() -> void:
 	mutation_visuals.display_runtimes(card.mutations.get_all_runtimes())
 
 
-func play_placement_animation() -> void:
+func play_placement_animation() -> float:
 	if placement_animation_runner == null:
-		return
+		return 0.0
 
-	if placement_animation_runner.has_method("play_placement_animation"):
-		placement_animation_runner.play_placement_animation()
+	return placement_animation_runner.play_placement_animation()

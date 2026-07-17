@@ -274,9 +274,11 @@ func play_debuffer_feedback() -> void:
 		debuffer.play_debuffer()
 
 
-func play_placement_animation() -> void:
-	if card_visuals_root != null:
-		card_visuals_root.play_placement_animation()
+func play_placement_animation() -> float:
+	if card_visuals_root == null:
+		return 0.0
+
+	return card_visuals_root.play_placement_animation()
 
 
 func _set_area_input_enabled_recursive(node: Node, value: bool) -> void:
