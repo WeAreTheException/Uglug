@@ -379,10 +379,10 @@ vertical_alignment = 1
 
 [node name="AtkLabelSprite" type="RichTextLabel" parent="All Visuals/StatsRoot/AttackRoot" unique_id=877409568]
 material = SubResource("ShaderMaterial_5oy3j")
-offset_left = -60.0
-offset_top = 93.0
-offset_right = -21.0
-offset_bottom = 129.0
+offset_left = -82.48175
+offset_top = 105.83941
+offset_right = -43.48175
+offset_bottom = 141.83942
 theme_override_colors/default_color = Color(0.9137255, 0.8392157, 0.77254903, 1)
 theme_override_font_sizes/normal_font_size = 25
 text = "1"
@@ -393,7 +393,7 @@ vertical_alignment = 1
 [node name="AtkBuffIcon" type="Sprite2D" parent="All Visuals/StatsRoot/AttackRoot" unique_id=2135406271]
 modulate = Color(1, 0.0627451, 0.08235294, 0.627451)
 self_modulate = Color(0.5254902, 0, 0.015686275, 1)
-position = Vector2(-41, 108)
+position = Vector2(-94.16058, 116.788315)
 scale = Vector2(0.04953455, 0.07476011)
 texture = ExtResource("16_u6lin")
 

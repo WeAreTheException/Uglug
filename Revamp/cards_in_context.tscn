@@ -49,7 +49,7 @@ opponent_slot_1_card = ExtResource("19_bs6ji")
 
 [node name="PlayerHandRoot" parent="." unique_id=371738706 instance=ExtResource("10_mtbf2")]
 position = Vector2(-64, 384)
-starting_cards = Array[ExtResource("10_nux5c")]([ExtResource("10_x1cq6"), ExtResource("10_x1cq6"), ExtResource("10_x1cq6"), ExtResource("16_kthx6"), ExtResource("10_x1cq6"), ExtResource("19_bs6ji")])
+starting_cards = Array[ExtResource("10_nux5c")]([ExtResource("10_x1cq6"), ExtResource("10_x1cq6"), ExtResource("10_x1cq6"), ExtResource("16_kthx6"), ExtResource("10_x1cq6"), ExtResource("19_bs6ji"), ExtResource("19_bs6ji")])
 
 [node name="MatchUI" type="Node2D" parent="." unique_id=196750808]
 visible = false

@@ -205,6 +205,7 @@ func _on_reveal_timeout() -> void:
 			continue
 
 		card.set_hidden_for_draw(false)
+		card.play_placement_animation()
 
 		if match_ui != null:
 			match_ui.set_draw_log_entry_revealed(i, card.card_name)
@@ -256,6 +257,8 @@ func _spawn_worker() -> void:
 
 	if card == null:
 		return
+
+	card.play_placement_animation()
 
 	drawn_cards.append(card)
 	drawn_types.append("worker")
