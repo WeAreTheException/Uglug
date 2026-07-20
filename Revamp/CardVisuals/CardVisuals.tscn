@@ -17,6 +17,7 @@
 [ext_resource type="Texture2D" uid="uid://dqjpqtirjqgjr" path="res://Art/NewCardAssets/CardStats.png" id="14_b5mm6"]
 [ext_resource type="Script" uid="uid://bq48m50dnrwib" path="res://Revamp/Card/CardScripts/StatsVisual.gd" id="15_5t0dk"]
 [ext_resource type="Script" uid="uid://dvwq7j2ojg3d6" path="res://Revamp/MutationTooltTip/SigilSlot.gd" id="15_d8086"]
+[ext_resource type="Shader" uid="uid://c5xrs0vmimxhu" path="res://Revamp/CardVisuals/GlowyOutline.gdshader" id="15_tt364"]
 [ext_resource type="Texture2D" uid="uid://bdi7eyt5cmur0" path="res://Art/Numbers/1.png" id="16_4yngs"]
 [ext_resource type="Texture2D" uid="uid://clk0ori80b5gg" path="res://Art/Numbers/2.png" id="17_8nq5a"]
 [ext_resource type="Texture2D" uid="uid://cxfrhckwspi6a" path="res://Art/Mutations/Antlers_Sigil.PNG" id="17_b5mm6"]
@@ -32,6 +33,15 @@
 [ext_resource type="Texture2D" uid="uid://j75yocnxblk4" path="res://Art/RedBackground.png" id="29_d8086"]
 [ext_resource type="Texture2D" uid="uid://cgs5k6p3mggyf" path="res://Art/Ants/AntSprite.png" id="29_wvfxw"]
 [ext_resource type="Script" uid="uid://bfb500ov31a53" path="res://Revamp/PlayPhase/Placement/PlaceAnimRunner.gd" id="31_b5mm6"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8ia1o"]
+shader = ExtResource("15_tt364")
+shader_parameter/maxLineWidth = 60.00000285
+shader_parameter/minLineWidth = 12.00000057
+shader_parameter/speed = 6.000000285
+shader_parameter/blockSize = 18.000000855
+shader_parameter/color = Color(0.29686952, 0.98512924, 1.2800981, 1)
+shader_parameter/tolerance = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_483al"]
 shader = ExtResource("5_0pq8k")
@@ -213,6 +223,13 @@ texture = ExtResource("29_d8086")
 
 [node name="Visuals" type="Node2D" parent="." unique_id=103610836]
 scale = Vector2(0.8, 0.8)
+
+[node name="CardImage2" type="Sprite2D" parent="Visuals" unique_id=191789878]
+material = SubResource("ShaderMaterial_8ia1o")
+position = Vector2(1.4128508e-05, 0)
+scale = Vector2(0.14520304, 0.14520304)
+texture = ExtResource("3_4t10r")
+metadata/_edit_lock_ = true
 
 [node name="Container" type="Container" parent="Visuals" unique_id=1633813957]
 clip_contents = true
