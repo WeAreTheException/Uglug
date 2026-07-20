@@ -33,6 +33,11 @@ class_name StatTextFeedback
 @export var debuff_number_hold_time: float = 0.08
 @export var debuff_return_time: float = 0.18
 
+@export_group("Stripe Shader Color")
+@export var buffed_stripe_color: Color = Color(0.4, 0.9, 1.0, 0.45)
+@export var debuffed_stripe_color: Color = Color(1.0, 0.25, 0.25, 0.45)
+@export var shader_color_parameter: String = "color_stripe"
+
 @export_group("Shadow")
 @export var shadow_color: Color = Color(0, 0, 0, 0.55)
 @export var shadow_offset: Vector2i = Vector2i(2, 3)
@@ -58,6 +63,7 @@ func _ready() -> void:
 	_cache_label()
 	_cache_stripe_label()
 	_apply_shadow()
+	_setup_stripe_material()
 
 
 func _process(delta: float) -> void:
@@ -69,6 +75,7 @@ func set_value_instant(value: int) -> void:
 	displayed_value = value
 	has_value = true
 	_set_text(str(value))
+	_sync_stripe_to_label()
 
 
 func play_value_change(old_value: int, new_value: int) -> void:
@@ -87,6 +94,8 @@ func play_buffed_value_change(old_value: int, new_value: int) -> void:
 	if label == null:
 		return
 
+	_show_stripe_label()
+	_set_stripe_color(buffed_stripe_color)
 	_kill_motion_tween()
 
 	displayed_value = old_value
@@ -189,6 +198,8 @@ func play_debuffed_value_change(old_value: int, new_value: int) -> void:
 	if label == null:
 		return
 
+	_show_stripe_label()
+	_set_stripe_color(debuffed_stripe_color)
 	_kill_motion_tween()
 
 	displayed_value = old_value
@@ -292,6 +303,36 @@ func _set_text(new_text: String) -> void:
 
 	if stripe_label != null:
 		stripe_label.text = new_text
+
+
+func _show_stripe_label() -> void:
+	if stripe_label != null:
+		stripe_label.visible = true
+
+
+func _set_stripe_color(color: Color) -> void:
+	if stripe_label == null:
+		return
+
+	var material := stripe_label.material as ShaderMaterial
+
+	if material == null:
+		return
+
+	material.set_shader_parameter(shader_color_parameter, color)
+
+
+func _setup_stripe_material() -> void:
+	if stripe_label == null:
+		return
+
+	var material := stripe_label.material as ShaderMaterial
+
+	if material == null:
+		return
+
+	var unique_material := material.duplicate() as ShaderMaterial
+	stripe_label.material = unique_material
 
 
 func _sync_stripe_to_label() -> void:

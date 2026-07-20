@@ -410,28 +410,16 @@ shape = SubResource("RectangleShape2D_4t10r")
 [node name="StatsVisual" type="Node2D" parent="Visuals" unique_id=769110726 node_paths=PackedStringArray("attack", "health", "cost", "name_label", "attack_label", "health_label", "attack_text_feedback")]
 z_index = 7
 script = ExtResource("15_5t0dk")
-attack = NodePath("Attack")
-health = NodePath("Health")
+attack = NodePath("Attack/AttackSprite")
+health = NodePath("Health2/HealthSprite")
 cost = [NodePath("Cost/Blood"), NodePath("Cost/Blood2"), NodePath("Cost/Blood3"), NodePath("Cost/Blood4")]
 name_label = NodePath("Name")
-attack_label = NodePath("AtkLbl")
-health_label = NodePath("HlthLbl")
-attack_text_feedback = NodePath("StatTextFeedback")
+attack_label = NodePath("Attack/AtkLbl")
+health_label = NodePath("Health2/HlthLbl")
+attack_text_feedback = NodePath("Attack/AtkTextHandler")
 attack_textures = Array[Texture2D]([ExtResource("16_4yngs"), ExtResource("17_8nq5a"), ExtResource("18_8aa6v"), ExtResource("19_kawbk"), ExtResource("20_6t487"), ExtResource("21_457k1")])
 health_textures = Array[Texture2D]([ExtResource("16_4yngs"), ExtResource("17_8nq5a"), ExtResource("18_8aa6v"), ExtResource("19_kawbk"), ExtResource("20_6t487"), ExtResource("21_457k1")])
 metadata/_edit_lock_ = true
-
-[node name="Attack" type="Sprite2D" parent="Visuals/StatsVisual" unique_id=1626750204]
-visible = false
-position = Vector2(-62.03703, 55.555553)
-scale = Vector2(0.14727725, 0.14345993)
-texture = ExtResource("16_4yngs")
-
-[node name="Health" type="Sprite2D" parent="Visuals/StatsVisual" unique_id=582152933]
-visible = false
-position = Vector2(64.81481, 55.555553)
-scale = Vector2(0.14727725, 0.14345993)
-texture = ExtResource("17_8nq5a")
 
 [node name="Name" type="RichTextLabel" parent="Visuals/StatsVisual" unique_id=37488759]
 anchors_preset = -1
@@ -478,10 +466,18 @@ position = Vector2(75.51851, -63.045925)
 scale = Vector2(0.1, 0.092)
 texture = ExtResource("27_0lj05")
 
-[node name="AtkLbl" type="RichTextLabel" parent="Visuals/StatsVisual" unique_id=2099598071]
-offset_left = -80.55555
+[node name="Attack" type="Node2D" parent="Visuals/StatsVisual" unique_id=651649053]
+
+[node name="AttackSprite" type="Sprite2D" parent="Visuals/StatsVisual/Attack" unique_id=1626750204]
+visible = false
+position = Vector2(-62.03703, 55.555553)
+scale = Vector2(0.14727725, 0.14345993)
+texture = ExtResource("16_4yngs")
+
+[node name="AtkLbl" type="RichTextLabel" parent="Visuals/StatsVisual/Attack" unique_id=2099598071]
+offset_left = -80.55556
 offset_top = 7.4074073
-offset_right = -36.111115
+offset_right = -36.111122
 offset_bottom = 76.85185
 theme_override_colors/default_color = Color(0.9137255, 0.8392157, 0.77254903, 1)
 theme_override_colors/font_outline_color = Color(1.8049032e-08, 0.06382069, 0.08081173, 1)
@@ -492,11 +488,12 @@ autowrap_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="AtkLblShine" type="RichTextLabel" parent="Visuals/StatsVisual" unique_id=2107421984]
+[node name="AtkLblShine" type="RichTextLabel" parent="Visuals/StatsVisual/Attack" unique_id=2107421984]
+visible = false
 material = SubResource("ShaderMaterial_3pvvv")
-offset_left = -80.55556
+offset_left = -80.555565
 offset_top = 7.4074073
-offset_right = -36.111122
+offset_right = -36.11113
 offset_bottom = 76.85185
 theme_override_colors/default_color = Color(0.9137255, 0.8392157, 0.77254903, 1)
 theme_override_colors/font_outline_color = Color(1.8049032e-08, 0.06382069, 0.08081173, 1)
@@ -507,7 +504,26 @@ autowrap_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HlthLbl" type="RichTextLabel" parent="Visuals/StatsVisual" unique_id=1020860487]
+[node name="AtkTextHandler" type="Node" parent="Visuals/StatsVisual/Attack" unique_id=2047671984 node_paths=PackedStringArray("label", "stripe_label")]
+script = ExtResource("29_0lj05")
+label = NodePath("../AtkLbl")
+stripe_label = NodePath("../AtkLblShine")
+vertical_float_height = 2.0
+vertical_float_time = 20.0
+horizontal_drift_amount = 0.5
+buffed_stripe_color = Color(0.24313726, 0.41568628, 0.6431373, 1)
+debuffed_stripe_color = Color(0.8862745, 0.11372549, 0.28627452, 1)
+metadata/_custom_type_script = "uid://db56slyy24nq7"
+
+[node name="Health2" type="Node2D" parent="Visuals/StatsVisual" unique_id=904593481]
+
+[node name="HealthSprite" type="Sprite2D" parent="Visuals/StatsVisual/Health2" unique_id=582152933]
+visible = false
+position = Vector2(64.81481, 55.555553)
+scale = Vector2(0.14727725, 0.14345993)
+texture = ExtResource("17_8nq5a")
+
+[node name="HlthLbl" type="RichTextLabel" parent="Visuals/StatsVisual/Health2" unique_id=1020860487]
 offset_left = 38.888885
 offset_top = 7.4074073
 offset_right = 83.33332
@@ -521,12 +537,32 @@ autowrap_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="StatTextFeedback" type="Node" parent="Visuals/StatsVisual" unique_id=2047671984 node_paths=PackedStringArray("label")]
+[node name="HlthLblShine" type="RichTextLabel" parent="Visuals/StatsVisual/Health2" unique_id=26658258]
+visible = false
+material = SubResource("ShaderMaterial_3pvvv")
+offset_left = 38.888885
+offset_top = 7.4074073
+offset_right = 83.33332
+offset_bottom = 76.85185
+theme_override_colors/default_color = Color(0.9137255, 0.8392157, 0.77254903, 1)
+theme_override_colors/font_outline_color = Color(1.8049032e-08, 0.06382069, 0.08081173, 1)
+theme_override_font_sizes/normal_font_size = 42
+text = "5"
+autowrap_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HltTexthandler" type="Node" parent="Visuals/StatsVisual/Health2" unique_id=1028939478 node_paths=PackedStringArray("label", "stripe_label")]
 script = ExtResource("29_0lj05")
-label = NodePath("../AtkLbl")
+label = NodePath("../HlthLbl")
+stripe_label = NodePath("../HlthLblShine")
 vertical_float_height = 2.0
 vertical_float_time = 20.0
 horizontal_drift_amount = 0.5
+buffed_stripe_color = Color(0.24313726, 0.41568628, 0.6431373, 1)
+debuffed_stripe_color = Color(0.8862745, 0.11372549, 0.28627452, 1)
+shadow_color = Color(0, 0.003921569, 0.047058824, 0.94509804)
+shadow_offset = Vector2i(3, 4)
 metadata/_custom_type_script = "uid://db56slyy24nq7"
 
 [node name="ViewportDisplayController" type="Node2D" parent="." unique_id=1630220938]
