@@ -3,7 +3,12 @@ shader_type canvas_item;
 uniform vec4 color_gap : source_color = vec4(0.0, 0.0, 0.0, 0.0);
 uniform vec4 color_stripe : source_color = vec4(1.0, 0.82, 0.35, 0.45);
 
+// Turn this off when controlling the shine through code.
+uniform bool animate_automatically = true;
+
 uniform float shine_progress : hint_range(0.0, 1.0) = 0.0;
+uniform float shine_speed : hint_range(0.01, 2.0) = 0.35;
+
 uniform float stripe_width : hint_range(0.01, 0.5) = 0.16;
 uniform float softness : hint_range(0.001, 0.3) = 0.08;
 uniform float alpha_strength : hint_range(0.0, 1.0) = 0.45;
@@ -12,11 +17,22 @@ void fragment() {
 	vec4 text_sample = texture(TEXTURE, UV);
 	float text_alpha = text_sample.a;
 
+	// Automatically loops in both the editor and during gameplay.
+	float active_progress = shine_progress;
+
+	if (animate_automatically) {
+		active_progress = fract(TIME * shine_speed);
+	}
+
 	// 0.0 = top of text, 1.0 = bottom of text.
 	float line_position = UV.y;
 
 	// Starts above the text and travels downward.
-	float stripe_center = mix(-stripe_width, 1.0 + stripe_width, shine_progress);
+	float stripe_center = mix(
+		-stripe_width,
+		1.0 + stripe_width,
+		active_progress
+	);
 
 	float distance_from_stripe = abs(line_position - stripe_center);
 
@@ -26,7 +42,11 @@ void fragment() {
 		distance_from_stripe
 	);
 
-	vec4 final_color = mix(color_gap, color_stripe, stripe_mask);
+	vec4 final_color = mix(
+		color_gap,
+		color_stripe,
+		stripe_mask
+	);
 
 	COLOR.rgb = final_color.rgb;
 	COLOR.a = text_alpha * final_color.a * alpha_strength;
