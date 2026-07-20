@@ -126,6 +126,8 @@ shader_parameter/shine_speed = 0.35
 shader_parameter/stripe_width = 0.33000001497648
 shader_parameter/softness = 0.08
 shader_parameter/alpha_strength = 0.50000002375
+shader_parameter/travel_top = 0.15
+shader_parameter/travel_bottom = 0.85
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5oy3j"]
 shader = ExtResource("10_6u6me")
@@ -137,6 +139,8 @@ shader_parameter/shine_speed = 0.35
 shader_parameter/stripe_width = 1.0
 shader_parameter/softness = 0.08
 shader_parameter/alpha_strength = 1.0
+shader_parameter/travel_top = 0.15
+shader_parameter/travel_bottom = 0.85
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sygfx"]
 size = Vector2(192, 314)

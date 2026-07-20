@@ -43,13 +43,18 @@
 [ext_resource type="Script" uid="uid://8fjx7s83pn01" path="res://Revamp/Card/CardActions/StatChange/Debuffed/Debuffed.gd" id="33_oexco"]
 [ext_resource type="Texture2D" uid="uid://ck6mq3fsy4ld4" path="res://Revamp/Icons/StatUpIcon-removebg-preview.png" id="33_qnnbi"]
 [ext_resource type="Script" uid="uid://nayh1exxnlu" path="res://Revamp/Card/CardActions/StatChange/Debuffed/DebuffedVfx.gd" id="34_numsi"]
+[ext_resource type="Script" uid="uid://ddu0yea706me7" path="res://Revamp/Card/CardActions/StatChange/Buffer/BufferFeedbackHandler.gd" id="35_6fx5p"]
 [ext_resource type="Script" uid="uid://btcyknr4w10ab" path="res://Revamp/Card/CardOutlineFeedback.gd" id="35_b2plg"]
 [ext_resource type="Script" uid="uid://laog5x83awpq" path="res://Revamp/Card/CardActions/StatChange/Debuffed/DebuffedFeedbackHandler.gd" id="35_lwwnd"]
+[ext_resource type="Script" uid="uid://crlyy68ht5in7" path="res://Revamp/Card/CardActions/StatChange/Buffer/BufferVFX.gd" id="36_8dmq4"]
 [ext_resource type="AudioStream" uid="uid://dy7hoabaq1xoh" path="res://Revamp/SFX/PullTracker1.mp3" id="36_ieatu"]
 [ext_resource type="Script" uid="uid://dr0m2dia4fhhc" path="res://Revamp/Card/CardActions/StatChange/Debuffer/Debuffer.gd" id="37_6fx5p"]
 [ext_resource type="Script" uid="uid://b727ujf6ycv3o" path="res://Revamp/Card/CardRuntimeState.gd" id="37_raks6"]
 [ext_resource type="Texture2D" uid="uid://j75yocnxblk4" path="res://Art/RedBackground.png" id="39_b2plg"]
 [ext_resource type="Shader" uid="uid://q5qsewd5kabi" path="res://Revamp/Card/OutlineForceColor.gdshader" id="40_hginc"]
+[ext_resource type="Script" uid="uid://dnonrwbr6yrbq" path="res://Revamp/Card/CardActions/StatChange/Debuffer/DebufferFeedbackHandler.gd" id="41_g71cv"]
+[ext_resource type="Script" uid="uid://bnaqssvcuoaqq" path="res://Revamp/Card/CardActions/StatChange/Debuffer/DebufferVfx.gd" id="42_hapoa"]
+[ext_resource type="Shader" uid="uid://c5xrs0vmimxhu" path="res://Revamp/CardVisuals/GlowyOutline.gdshader" id="53_p4xss"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g8l5j"]
 size = Vector2(192, 288)
@@ -57,6 +62,15 @@ size = Vector2(192, 288)
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ieatu"]
 shader = ExtResource("40_hginc")
 shader_parameter/outline_color = Color(1, 1, 1, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hapoa"]
+shader = ExtResource("53_p4xss")
+shader_parameter/maxLineWidth = 10.0
+shader_parameter/minLineWidth = 86.13200409127
+shader_parameter/speed = 1.0
+shader_parameter/blockSize = 20.0
+shader_parameter/color = Color(0, 0, 0, 1)
+shader_parameter/tolerance = 0.0
 
 [node name="Card" type="Node2D" unique_id=1649731477 node_paths=PackedStringArray("input", "board_presence", "stats", "mutations", "card_visuals_root", "card_feedback", "attack", "hurt", "die", "sacrifice", "buffed", "debuffed", "buffer", "debuffer", "runtime_state")]
 script = ExtResource("1_hdbik")
@@ -222,10 +236,17 @@ buffed_vfx = NodePath("BuffedVFX")
 script = ExtResource("31_0wbd4")
 sprite = NodePath("../../../../../Visuals/AtkBuffIcon")
 
-[node name="Buffer" type="Node" parent="Actions/StatEffect" unique_id=575487024]
+[node name="Buffer" type="Node" parent="Actions/StatEffect" unique_id=575487024 node_paths=PackedStringArray("feedback_handler")]
 script = ExtResource("33_m8x75")
+feedback_handler = NodePath("BuffferFeedbackHandler")
 
-[node name="BufferVFX" type="Node" parent="Actions/StatEffect/Buffer" unique_id=1765348752]
+[node name="BuffferFeedbackHandler" type="Node" parent="Actions/StatEffect/Buffer" unique_id=1994508491 node_paths=PackedStringArray("buffer_vfx")]
+script = ExtResource("35_6fx5p")
+buffer_vfx = NodePath("../BufferVFX")
+
+[node name="BufferVFX" type="Node" parent="Actions/StatEffect/Buffer" unique_id=1765348752 node_paths=PackedStringArray("aura_sprite")]
+script = ExtResource("36_8dmq4")
+aura_sprite = NodePath("../../../../Visuals/Aura")
 
 [node name="Debuffed" type="Node" parent="Actions/StatEffect" unique_id=1806532214 node_paths=PackedStringArray("feedback_handler")]
 script = ExtResource("33_oexco")
@@ -239,10 +260,19 @@ debuffed_vfx = NodePath("DebuffedVfx")
 script = ExtResource("34_numsi")
 sprite = NodePath("../../../../../Visuals/AtkDebuffIcon")
 
-[node name="Debuffer" type="Node" parent="Actions/StatEffect" unique_id=1979049619]
+[node name="Debuffer" type="Node" parent="Actions/StatEffect" unique_id=1979049619 node_paths=PackedStringArray("feedback_handler")]
 script = ExtResource("37_6fx5p")
+feedback_handler = NodePath("DebufferHeedbackHandler")
+debug_key = null
+print_debug = null
 
-[node name="BuffedVFX" type="Node" parent="Actions/StatEffect/Debuffer" unique_id=1957211898]
+[node name="DebufferHeedbackHandler" type="Node" parent="Actions/StatEffect/Debuffer" unique_id=2120134853 node_paths=PackedStringArray("debuffer_vfx")]
+script = ExtResource("41_g71cv")
+debuffer_vfx = NodePath("../DebufferVfx")
+
+[node name="DebufferVfx" type="Node" parent="Actions/StatEffect/Debuffer" unique_id=1957211898 node_paths=PackedStringArray("aura_sprite")]
+script = ExtResource("42_hapoa")
+aura_sprite = NodePath("../../../../Visuals/Aura")
 
 [node name="CardFeedback" type="Node" parent="." unique_id=824411320 node_paths=PackedStringArray("card", "hover_feedback", "select_feedback", "outline_feedback")]
 script = ExtResource("8_nau7p")
@@ -303,8 +333,18 @@ metadata/_edit_lock_ = true
 [node name="FeedbackSpriteAnchor" type="Node2D" parent="Visuals/CardVisuals" unique_id=626068744]
 
 [node name="CardOutline" type="Sprite2D" parent="Visuals" unique_id=1774136059]
+visible = false
 z_index = -1
 material = SubResource("ShaderMaterial_ieatu")
+position = Vector2(-4.529953e-06, 0.4999944)
+scale = Vector2(0.16833335, 0.1596774)
+texture = ExtResource("39_b2plg")
+metadata/_edit_lock_ = true
+
+[node name="Aura" type="Sprite2D" parent="Visuals" unique_id=1359381593]
+visible = false
+z_index = -1
+material = SubResource("ShaderMaterial_hapoa")
 position = Vector2(-4.529953e-06, 0.4999944)
 scale = Vector2(0.16833335, 0.1596774)
 texture = ExtResource("39_b2plg")

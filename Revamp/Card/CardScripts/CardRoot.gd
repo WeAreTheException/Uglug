@@ -254,6 +254,16 @@ func set_card_input_enabled(value: bool) -> void:
 	_set_area_input_enabled_recursive(self, value)
 
 
+func set_buffer_aura_active(value: bool) -> void:
+	if buffer != null:
+		buffer.set_aura_active(value)
+
+
+func set_debuffer_aura_active(value: bool) -> void:
+	if debuffer != null:
+		debuffer.set_aura_active(value)
+
+
 func play_buffed_feedback() -> void:
 	if buffed != null:
 		buffed.play_buffed()

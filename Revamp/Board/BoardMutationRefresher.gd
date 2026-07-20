@@ -2,6 +2,7 @@ extends Node
 class_name BoardMutationRefresher
 
 var board_query: BoardQuery = null
+var aura_refresh_helper := BoardStatAuraRefreshHelper.new()
 
 
 func setup(source_board_query: BoardQuery) -> void:
@@ -24,6 +25,7 @@ func refresh_board_mutations() -> void:
 	_end_stat_batches(cards)
 
 	CardStats.flush_global_stat_feedback_collection()
+	aura_refresh_helper.refresh_auras(cards)
 
 
 func _get_board_cards() -> Array[CardRoot]:

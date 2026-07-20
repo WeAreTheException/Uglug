@@ -57,7 +57,7 @@
 [ext_resource type="Resource" uid="uid://b4sniy31fo50g" path="res://Old/Mutations/MutationPresets/StraightChopsMutations/TouchOfDeath.tres" id="44_cyp03"]
 [ext_resource type="Script" uid="uid://b0a7u0d6w3wt5" path="res://Revamp/Buff/BuffCardSelectionHandler.gd" id="51_3j6fp"]
 [ext_resource type="Script" uid="uid://btx34g1cs7nhy" path="res://Revamp/Buff/BuffMutationApplyHandler.gd" id="52_72iem"]
-[ext_resource type="Script" path="res://HandCountDisplay.gd" id="52_nmm8s"]
+[ext_resource type="Script" uid="uid://ysva1maqqb8w" path="res://HandCountDisplay.gd" id="52_nmm8s"]
 [ext_resource type="Script" uid="uid://dbw5dxwuc5h4h" path="res://Revamp/Buff/BuffCardStagingHandler.gd" id="53_nmm8s"]
 [ext_resource type="Script" uid="uid://qkm73v3qftgr" path="res://Revamp/MatchFlow/MatchLocalViewApplier.gd" id="57_2n6q5"]
 [ext_resource type="Script" uid="uid://ddq57bg6lcsk1" path="res://Revamp/Multiplayer/MatchNetworkRoot.gd" id="57_8mjsp"]
@@ -171,12 +171,11 @@ match_flow_root = NodePath("..")
 match_network_root = NodePath("../../../Multiplayer/MatchNetworkRoot")
 print_debug = false
 
-[node name="MatchAutoAdvanceHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=1953933337 node_paths=PackedStringArray("match_flow_root", "match_network_root", "auto_draw_handler", "blessing_flow_handler", "buff_flow_handler")]
+[node name="MatchAutoAdvanceHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=1953933337 node_paths=PackedStringArray("match_flow_root", "match_network_root", "auto_draw_handler", "buff_flow_handler")]
 script = ExtResource("6_lc0u2")
 match_flow_root = NodePath("..")
 match_network_root = NodePath("../../../Multiplayer/MatchNetworkRoot")
 auto_draw_handler = NodePath("../MatchAutoDrawHandler")
-blessing_flow_handler = NodePath("")
 buff_flow_handler = NodePath("../../Core/Buff/BuffFlowHandler")
 round_intro_delay = 2.0
 round_end_delay = 2.0
@@ -459,7 +458,7 @@ use_for_buff = true
 
 [node name="Multiplayer" type="Node" parent="." unique_id=297260751]
 
-[node name="MatchNetworkRoot" type="Node" parent="Multiplayer" unique_id=1636531151 node_paths=PackedStringArray("match_flow_root", "deck_system_root", "turn_order_state", "match_score_state", "slots_root", "phase_timer", "timer_network", "buff_flow_handler", "buff_database", "blessing_flow_handler", "placement_controller", "flow_network", "lookup_network", "draw_network", "buff_network", "blessing_network", "placement_network", "attack_network", "score_network", "debug_sync_network")]
+[node name="MatchNetworkRoot" type="Node" parent="Multiplayer" unique_id=1636531151 node_paths=PackedStringArray("match_flow_root", "deck_system_root", "turn_order_state", "match_score_state", "slots_root", "phase_timer", "timer_network", "buff_flow_handler", "buff_database", "placement_controller", "flow_network", "lookup_network", "draw_network", "buff_network", "placement_network", "attack_network", "score_network", "debug_sync_network")]
 script = ExtResource("57_8mjsp")
 match_flow_root = NodePath("../../Scripts/MatchFlowRoot")
 deck_system_root = NodePath("../../Core/Deck")
@@ -470,13 +469,11 @@ phase_timer = NodePath("../MatchPhaseTimer")
 timer_network = NodePath("MatchNetworkTimer")
 buff_flow_handler = NodePath("../../Scripts/Core/Buff/BuffFlowHandler")
 buff_database = NodePath("../../Scripts/Core/Buff/BuffDatabase")
-blessing_flow_handler = NodePath("")
 placement_controller = NodePath("../../Scripts/Core/PlacementController")
 flow_network = NodePath("MatchNetworkFlow")
 lookup_network = NodePath("MatchNetworkLookup")
 draw_network = NodePath("MatchNetworkDraw")
 buff_network = NodePath("MatchNetworkBuff")
-blessing_network = NodePath("")
 placement_network = NodePath("MatchNetworkPlacement")
 attack_network = NodePath("MatchNetworkAttack")
 score_network = NodePath("MatchNetworkScore")

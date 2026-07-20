@@ -4,6 +4,8 @@ class_name Buffer
 signal buffer_started(card: CardRoot)
 signal buffer_finished(card: CardRoot)
 
+@export var feedback_handler: BufferFeedbackHandler
+
 @export var enable_debug_key: bool = true
 @export var debug_key: Key = KEY_KP_4
 @export var print_debug: bool = false
@@ -11,6 +13,7 @@ signal buffer_finished(card: CardRoot)
 var card: CardRoot = null
 var is_hovered: bool = false
 var is_playing: bool = false
+var is_aura_active: bool = false
 
 
 func setup(source_card: CardRoot) -> void:
@@ -48,11 +51,31 @@ func play_buffer() -> void:
 	is_playing = true
 	buffer_started.emit(card)
 
+	set_aura_active(true)
+
 	if print_debug:
 		print("BUFFER PLAY | card=", card.card_name)
 
 	is_playing = false
 	buffer_finished.emit(card)
+
+
+func set_aura_active(value: bool) -> void:
+	if is_aura_active == value:
+		return
+
+	is_aura_active = value
+
+	if feedback_handler != null:
+		feedback_handler.set_active(value, card)
+
+	if print_debug:
+		var card_name := "unknown"
+
+		if card != null:
+			card_name = card.card_name
+
+		print("BUFFER AURA | card=", card_name, " active=", value)
 
 
 func _on_card_hovered(_card: CardRoot) -> void:

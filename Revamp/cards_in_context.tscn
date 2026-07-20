@@ -45,10 +45,7 @@ bg_color = Color(0.85882354, 0.85882354, 0.85882354, 1)
 [node name="Slots2" parent="." unique_id=1318716624 instance=ExtResource("4_n6ts1")]
 z_index = 100
 position = Vector2(-960, -540)
-player_slot_1_card = ExtResource("16_kthx6")
-player_slot_2_card = ExtResource("10_x1cq6")
-player_slot_3_card = ExtResource("10_x1cq6")
-player_slot_4_card = ExtResource("10_x1cq6")
+opponent_slot_1_card = ExtResource("19_bs6ji")
 
 [node name="PlayerHandRoot" parent="." unique_id=371738706 instance=ExtResource("10_mtbf2")]
 position = Vector2(-64, 384)
