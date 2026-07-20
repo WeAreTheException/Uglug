@@ -32,6 +32,7 @@
 [ext_resource type="Script" uid="uid://db56slyy24nq7" path="res://Revamp/Card/CardFeedback/StatTextFeedback.gd" id="29_0lj05"]
 [ext_resource type="Texture2D" uid="uid://j75yocnxblk4" path="res://Art/RedBackground.png" id="29_d8086"]
 [ext_resource type="Texture2D" uid="uid://cgs5k6p3mggyf" path="res://Art/Ants/AntSprite.png" id="29_wvfxw"]
+[ext_resource type="Shader" uid="uid://c2usyy1706sqm" path="res://Revamp/Card/NewCardFeedback/CardShaders/TextAnimatedStripes.gdshader" id="30_8ia1o"]
 [ext_resource type="Script" uid="uid://bfb500ov31a53" path="res://Revamp/PlayPhase/Placement/PlaceAnimRunner.gd" id="31_b5mm6"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8ia1o"]
@@ -203,6 +204,19 @@ size = Vector2(1568.6804, 1568.6799)
 shader = ExtResource("13_8ia1o")
 shader_parameter/line_color = Color(0.105882354, 0.09019608, 0.08627451, 1)
 shader_parameter/line_thickness = 10.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3pvvv"]
+shader = ExtResource("30_8ia1o")
+shader_parameter/color_gap = Color(0, 0, 0, 0)
+shader_parameter/color_stripe = Color(0.24313726, 0.41568628, 0.6431373, 1)
+shader_parameter/animate_automatically = true
+shader_parameter/shine_progress = 0.0
+shader_parameter/shine_speed = -0.39999978150000004
+shader_parameter/stripe_width = 0.00999999977648
+shader_parameter/softness = 0.15300000726750002
+shader_parameter/alpha_strength = 0.70000003325
+shader_parameter/travel_top = 0.0
+shader_parameter/travel_bottom = 0.800000038
 
 [node name="CardVisualsRoot" type="Node2D" unique_id=1593445486 node_paths=PackedStringArray("main_visuals", "mutation_visuals", "stats_visual", "draw_hide_cover", "placement_animation_runner")]
 scale = Vector2(1.35, 1.35)
@@ -425,11 +439,13 @@ health_textures = Array[Texture2D]([ExtResource("16_4yngs"), ExtResource("17_8nq
 metadata/_edit_lock_ = true
 
 [node name="Attack" type="Sprite2D" parent="Visuals/StatsVisual" unique_id=1626750204]
+visible = false
 position = Vector2(-62.03703, 55.555553)
 scale = Vector2(0.14727725, 0.14345993)
 texture = ExtResource("16_4yngs")
 
 [node name="Health" type="Sprite2D" parent="Visuals/StatsVisual" unique_id=582152933]
+visible = false
 position = Vector2(64.81481, 55.555553)
 scale = Vector2(0.14727725, 0.14345993)
 texture = ExtResource("17_8nq5a")
@@ -489,6 +505,20 @@ theme_override_colors/font_outline_color = Color(1.8049032e-08, 0.06382069, 0.08
 theme_override_constants/outline_size = 7
 theme_override_font_sizes/normal_font_size = 42
 text = "6"
+autowrap_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AtkLbl2" type="RichTextLabel" parent="Visuals/StatsVisual" unique_id=2107421984]
+material = SubResource("ShaderMaterial_3pvvv")
+offset_left = -80.55556
+offset_top = 7.4074073
+offset_right = -36.111122
+offset_bottom = 76.85185
+theme_override_colors/default_color = Color(0.9137255, 0.8392157, 0.77254903, 1)
+theme_override_colors/font_outline_color = Color(1.8049032e-08, 0.06382069, 0.08081173, 1)
+theme_override_font_sizes/normal_font_size = 42
+text = "1"
 autowrap_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1

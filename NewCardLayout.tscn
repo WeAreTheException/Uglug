@@ -130,7 +130,7 @@ shader_parameter/alpha_strength = 0.50000002375
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5oy3j"]
 shader = ExtResource("10_6u6me")
 shader_parameter/color_gap = Color(0, 0, 0, 0)
-shader_parameter/color_stripe = Color(0.83137256, 0.70980394, 0.59607846, 1)
+shader_parameter/color_stripe = Color(0, 0.8121452, 0.9986418, 1)
 shader_parameter/animate_automatically = true
 shader_parameter/shine_progress = 0.2550000121125
 shader_parameter/shine_speed = 0.35

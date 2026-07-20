@@ -311,7 +311,6 @@ texture = ExtResource("39_b2plg")
 metadata/_edit_lock_ = true
 
 [node name="AtkBuffIcon" type="Sprite2D" parent="Visuals" unique_id=1447180298]
-visible = false
 modulate = Color(1, 0.0627451, 0.08235294, 0.627451)
 self_modulate = Color(0.5254902, 0, 0.015686275, 1)
 z_index = 7
@@ -324,6 +323,70 @@ modulate = Color(1, 0.0627451, 0.08235294, 0.627451)
 self_modulate = Color(0.5254902, 0, 0.015686275, 1)
 z_index = 7
 position = Vector2(276.7729, 215.30643)
+texture = ExtResource("33_qnnbi")
+
+[node name="AtkBuffIcon3" type="Sprite2D" parent="Visuals/AtkBuffIcon" unique_id=1721959134]
+modulate = Color(1, 0.0627451, 0.08235294, 0.627451)
+self_modulate = Color(0.5254902, 0, 0.015686275, 1)
+z_index = 7
+position = Vector2(-361.00824, 711.44714)
+scale = Vector2(2.3718946, 2.3718946)
+texture = ExtResource("33_qnnbi")
+
+[node name="AtkBuffIcon4" type="Sprite2D" parent="Visuals/AtkBuffIcon" unique_id=1433805252]
+modulate = Color(1, 0.0627451, 0.08235294, 0.627451)
+self_modulate = Color(0.5254902, 0, 0.015686275, 1)
+z_index = 7
+position = Vector2(-481.3443, 365.08475)
+scale = Vector2(2.3718946, 2.3718946)
+texture = ExtResource("33_qnnbi")
+
+[node name="AtkBuffIcon5" type="Sprite2D" parent="Visuals/AtkBuffIcon" unique_id=1648316333]
+modulate = Color(1, 0.0627451, 0.08235294, 0.627451)
+self_modulate = Color(0.5254902, 0, 0.015686275, 1)
+z_index = 7
+position = Vector2(2099.6123, 666.65894)
+scale = Vector2(2.3718946, 2.3718946)
+texture = ExtResource("33_qnnbi")
+
+[node name="AtkBuffIcon6" type="Sprite2D" parent="Visuals/AtkBuffIcon" unique_id=997503983]
+modulate = Color(1, 0.0627451, 0.08235294, 0.627451)
+self_modulate = Color(0.5254902, 0, 0.015686275, 1)
+z_index = 7
+position = Vector2(2214.1833, 243.38974)
+scale = Vector2(2.3718946, 2.3718946)
+texture = ExtResource("33_qnnbi")
+
+[node name="AtkBuffIcon7" type="Sprite2D" parent="Visuals/AtkBuffIcon" unique_id=712629613]
+modulate = Color(1, 0.0627451, 0.08235294, 0.627451)
+self_modulate = Color(0.5254902, 0, 0.015686275, 1)
+z_index = 7
+position = Vector2(-228.63857, -177.8618)
+scale = Vector2(2.3718946, 2.3718946)
+texture = ExtResource("33_qnnbi")
+
+[node name="AtkBuffIcon8" type="Sprite2D" parent="Visuals/AtkBuffIcon" unique_id=177723556]
+modulate = Color(1, 0.0627451, 0.08235294, 0.627451)
+self_modulate = Color(0.5254902, 0, 0.015686275, 1)
+z_index = 7
+position = Vector2(12.0336, -1039.0874)
+scale = Vector2(2.3718946, 2.3718946)
+texture = ExtResource("33_qnnbi")
+
+[node name="AtkBuffIcon9" type="Sprite2D" parent="Visuals/AtkBuffIcon" unique_id=1740889078]
+modulate = Color(1, 0.0627451, 0.08235294, 0.627451)
+self_modulate = Color(0.5254902, 0, 0.015686275, 1)
+z_index = 7
+position = Vector2(2069.7803, -327.64017)
+scale = Vector2(2.3718946, 2.3718946)
+texture = ExtResource("33_qnnbi")
+
+[node name="AtkBuffIcon10" type="Sprite2D" parent="Visuals/AtkBuffIcon" unique_id=1351600206]
+modulate = Color(1, 0.0627451, 0.08235294, 0.627451)
+self_modulate = Color(0.5254902, 0, 0.015686275, 1)
+z_index = 7
+position = Vector2(1793.0073, -683.3639)
+scale = Vector2(2.3718946, 2.3718946)
 texture = ExtResource("33_qnnbi")
 
 [node name="AtkDebuffIcon" type="Sprite2D" parent="Visuals" unique_id=2020314872]
