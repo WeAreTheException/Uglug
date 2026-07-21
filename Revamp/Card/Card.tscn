@@ -55,6 +55,7 @@
 [ext_resource type="Script" uid="uid://dnonrwbr6yrbq" path="res://Revamp/Card/CardActions/StatChange/Debuffer/DebufferFeedbackHandler.gd" id="41_g71cv"]
 [ext_resource type="Script" uid="uid://bnaqssvcuoaqq" path="res://Revamp/Card/CardActions/StatChange/Debuffer/DebufferVfx.gd" id="42_hapoa"]
 [ext_resource type="Shader" uid="uid://c5xrs0vmimxhu" path="res://Revamp/CardVisuals/GlowyOutline.gdshader" id="53_p4xss"]
+[ext_resource type="Texture2D" uid="uid://6sc1vr2d4fqo" path="res://Art/AntBack/BlueBackground.png" id="55_hcpqy"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g8l5j"]
 size = Vector2(192, 288)
@@ -65,12 +66,12 @@ shader_parameter/outline_color = Color(1, 1, 1, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hapoa"]
 shader = ExtResource("53_p4xss")
-shader_parameter/maxLineWidth = 10.0
-shader_parameter/minLineWidth = 86.13200409127
-shader_parameter/speed = 1.0
-shader_parameter/blockSize = 20.0
+shader_parameter/maxLineWidth = 20.346000966435
+shader_parameter/minLineWidth = 85.4400040584
+shader_parameter/speed = 6.3010002992975
+shader_parameter/blockSize = 26.8150012737125
 shader_parameter/color = Color(0, 0, 0, 1)
-shader_parameter/tolerance = 0.0
+shader_parameter/tolerance = 0.3130000148675
 
 [node name="Card" type="Node2D" unique_id=1649731477 node_paths=PackedStringArray("input", "board_presence", "stats", "mutations", "card_visuals_root", "card_feedback", "attack", "hurt", "die", "sacrifice", "buffed", "debuffed", "buffer", "debuffer", "runtime_state")]
 script = ExtResource("1_hdbik")
@@ -246,7 +247,7 @@ buffer_vfx = NodePath("../BufferVFX")
 
 [node name="BufferVFX" type="Node" parent="Actions/StatEffect/Buffer" unique_id=1765348752 node_paths=PackedStringArray("aura_sprite")]
 script = ExtResource("36_8dmq4")
-aura_sprite = NodePath("../../../../Visuals/Aura")
+aura_sprite = NodePath("../../../../Visuals/Aura2")
 
 [node name="Debuffed" type="Node" parent="Actions/StatEffect" unique_id=1806532214 node_paths=PackedStringArray("feedback_handler")]
 script = ExtResource("33_oexco")
@@ -342,12 +343,20 @@ texture = ExtResource("39_b2plg")
 metadata/_edit_lock_ = true
 
 [node name="Aura" type="Sprite2D" parent="Visuals" unique_id=1359381593]
-visible = false
 z_index = -1
 material = SubResource("ShaderMaterial_hapoa")
 position = Vector2(-4.529953e-06, 0.4999944)
 scale = Vector2(0.16833335, 0.1596774)
 texture = ExtResource("39_b2plg")
+metadata/_edit_lock_ = true
+
+[node name="Aura2" type="Sprite2D" parent="Visuals" unique_id=575017328]
+visible = false
+z_index = -1
+material = SubResource("ShaderMaterial_hapoa")
+position = Vector2(-4.529953e-06, 0.4999944)
+scale = Vector2(0.16833335, 0.1596774)
+texture = ExtResource("55_hcpqy")
 metadata/_edit_lock_ = true
 
 [node name="AtkBuffIcon" type="Sprite2D" parent="Visuals" unique_id=1447180298]

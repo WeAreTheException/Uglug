@@ -407,7 +407,7 @@ script = ExtResource("18_b5mm6")
 position = Vector2(-0.0002770389, 0.00059890747)
 shape = SubResource("RectangleShape2D_4t10r")
 
-[node name="StatsVisual" type="Node2D" parent="Visuals" unique_id=769110726 node_paths=PackedStringArray("attack", "health", "cost", "name_label", "attack_label", "health_label", "attack_text_feedback")]
+[node name="StatsVisual" type="Node2D" parent="Visuals" unique_id=769110726 node_paths=PackedStringArray("attack", "health", "cost", "name_label", "attack_label", "health_label", "attack_text_feedback", "health_text_feedback")]
 z_index = 7
 script = ExtResource("15_5t0dk")
 attack = NodePath("Attack/AttackSprite")
@@ -417,6 +417,7 @@ name_label = NodePath("Name")
 attack_label = NodePath("Attack/AtkLbl")
 health_label = NodePath("Health2/HlthLbl")
 attack_text_feedback = NodePath("Attack/AtkTextHandler")
+health_text_feedback = NodePath("Health2/HltTexthandler")
 attack_textures = Array[Texture2D]([ExtResource("16_4yngs"), ExtResource("17_8nq5a"), ExtResource("18_8aa6v"), ExtResource("19_kawbk"), ExtResource("20_6t487"), ExtResource("21_457k1")])
 health_textures = Array[Texture2D]([ExtResource("16_4yngs"), ExtResource("17_8nq5a"), ExtResource("18_8aa6v"), ExtResource("19_kawbk"), ExtResource("20_6t487"), ExtResource("21_457k1")])
 metadata/_edit_lock_ = true
