@@ -214,7 +214,6 @@ script = ExtResource("1_gy5gi")
 main_visuals = NodePath("Visuals/Container/MainVisuals")
 mutation_visuals = NodePath("Visuals/MutationVisuals")
 stats_visual = NodePath("Visuals/StatsVisual")
-auto_show_mutation_tooltip_on_hover = true
 revenant_shader = ExtResource("2_v8bk3")
 draw_hide_cover = NodePath("DrawHideCover")
 placement_animation_runner = NodePath("PlaceAniRunner")

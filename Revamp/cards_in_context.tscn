@@ -9,6 +9,7 @@
 [ext_resource type="Script" uid="uid://blfvp1wwkpwtb" path="res://Revamp/Camera/CameraShakeValues.gd" id="6_bguvq"]
 [ext_resource type="Script" uid="uid://cl88hir003ywp" path="res://Revamp/Camera/CameraShakeFeedback.gd" id="7_tsgf7"]
 [ext_resource type="Script" uid="uid://c406tme7fpq2j" path="res://Revamp/DrawPhaseTestRoot.gd" id="9_proag"]
+[ext_resource type="Script" uid="uid://t4xkfdp8n8kn" path="res://Revamp/MatchUI/UICard/CardMutationTooltipBinder.gd" id="10_8tkpi"]
 [ext_resource type="PackedScene" uid="uid://1wr1e57v7trd" path="res://Revamp/PlayerHand/Player_Hand.tscn" id="10_mtbf2"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Old/Data/CardData.gd" id="10_nux5c"]
 [ext_resource type="Resource" uid="uid://bn1jyervrnsg" path="res://Revamp/CardPresets/WorkerAnt.tres" id="10_x1cq6"]
@@ -192,6 +193,11 @@ text = "All Active Workers get +1 Atk, +1 Hlt"
 horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_lock_ = true
+
+[node name="CArdMutationTooltipbinde" type="Node" parent="ToolTip" unique_id=1405275550 node_paths=PackedStringArray("mutation_tooltip", "player_hands")]
+script = ExtResource("10_8tkpi")
+mutation_tooltip = NodePath("..")
+player_hands = [NodePath("../../PlayerHandRoot")]
 
 [node name="UICard" type="Control" parent="." unique_id=811118957 node_paths=PackedStringArray("round_label", "going_first_label", "phase_label", "helper_label", "timer_label", "worker_button", "warrior_button", "buff_button", "timer_end_turn_button", "undo_button", "mutation_database", "player_hand")]
 layout_mode = 3

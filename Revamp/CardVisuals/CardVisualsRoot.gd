@@ -4,9 +4,6 @@ class_name CardVisualsRoot
 @export var main_visuals: CardMainVisuals
 @export var mutation_visuals: CardMutationVisuals
 @export var stats_visual: StatsVisuals
-@export var mutation_tooltip: MutationToolTip
-
-@export var auto_show_mutation_tooltip_on_hover: bool = false
 
 @export var viewport_sprite: Sprite2D
 @export var revenant_overlay: Sprite2D
@@ -27,17 +24,23 @@ func setup_from_card(source_card: CardRoot) -> void:
 
 	setup_revenant_overlay()
 	set_hidden_for_draw(false)
-	_connect_mutation_visuals()
 
 	if card.card_data != null:
 		setup_from_card_data(card.card_data)
 
 	if card.stats != null and stats_visual != null:
-		stats_visual.setup_from_stats(card.stats, card.card_name)
+		stats_visual.setup_from_stats(
+			card.stats,
+			card.card_name
+		)
 
 	if card.mutations != null:
-		if not card.mutations.mutations_changed.is_connected(_on_mutations_changed):
-			card.mutations.mutations_changed.connect(_on_mutations_changed)
+		if not card.mutations.mutations_changed.is_connected(
+			_on_mutations_changed
+		):
+			card.mutations.mutations_changed.connect(
+				_on_mutations_changed
+			)
 
 	_update_mutation_visuals()
 	refresh_revenant_visual()
@@ -48,8 +51,13 @@ func setup_from_card_data(data: CardData) -> void:
 		return
 
 	if main_visuals != null:
-		main_visuals.set_ant_texture(data.ant_texture)
-		main_visuals.set_background_texture(data.background_texture)
+		main_visuals.set_ant_texture(
+			data.ant_texture
+		)
+
+		main_visuals.set_background_texture(
+			data.background_texture
+		)
 
 
 func refresh_all() -> void:
@@ -60,7 +68,10 @@ func refresh_all() -> void:
 		setup_from_card_data(card.card_data)
 
 	if card.stats != null and stats_visual != null:
-		stats_visual.setup_from_stats(card.stats, card.card_name)
+		stats_visual.setup_from_stats(
+			card.stats,
+			card.card_name
+		)
 
 	_update_mutation_visuals()
 	refresh_revenant_visual()
@@ -80,7 +91,9 @@ func setup_revenant_overlay() -> void:
 	revenant_overlay.visible = false
 
 	if viewport_sprite != null:
-		revenant_overlay.texture = viewport_sprite.texture
+		revenant_overlay.texture = (
+			viewport_sprite.texture
+		)
 
 	if revenant_material != null:
 		return
@@ -95,11 +108,15 @@ func setup_revenant_overlay() -> void:
 
 func apply_revenant_visual() -> void:
 	if revenant_overlay == null:
-		print("REVENANT VISUAL BLOCKED: overlay missing")
+		print(
+			"REVENANT VISUAL BLOCKED: overlay missing"
+		)
 		return
 
 	if viewport_sprite != null:
-		revenant_overlay.texture = viewport_sprite.texture
+		revenant_overlay.texture = (
+			viewport_sprite.texture
+		)
 
 	revenant_overlay.visible = true
 
@@ -122,60 +139,6 @@ func refresh_revenant_visual() -> void:
 		remove_revenant_visual()
 
 
-func _connect_mutation_visuals() -> void:
-	if mutation_visuals == null:
-		return
-
-	if not mutation_visuals.sigil_hovered.is_connected(_on_sigil_hovered):
-		mutation_visuals.sigil_hovered.connect(_on_sigil_hovered)
-
-	if not mutation_visuals.sigil_unhovered.is_connected(_on_sigil_unhovered):
-		mutation_visuals.sigil_unhovered.connect(_on_sigil_unhovered)
-
-	if not mutation_visuals.sigil_right_clicked.is_connected(_on_sigil_right_clicked):
-		mutation_visuals.sigil_right_clicked.connect(_on_sigil_right_clicked)
-
-	if not mutation_visuals.sigil_left_clicked.is_connected(_on_sigil_left_clicked):
-		mutation_visuals.sigil_left_clicked.connect(_on_sigil_left_clicked)
-
-
-func _on_sigil_hovered(slot: SigilSlot) -> void:
-	if not auto_show_mutation_tooltip_on_hover:
-		return
-
-	if mutation_tooltip == null:
-		return
-
-	if slot == null:
-		return
-
-	mutation_tooltip.show_mutation(slot.get_mutation())
-
-
-func _on_sigil_unhovered(_slot: SigilSlot) -> void:
-	if mutation_tooltip == null:
-		return
-
-	mutation_tooltip.hide_tooltip()
-
-
-func _on_sigil_right_clicked(slot: SigilSlot) -> void:
-	if auto_show_mutation_tooltip_on_hover:
-		return
-
-	if mutation_tooltip == null:
-		return
-
-	if slot == null:
-		return
-
-	mutation_tooltip.show_mutation(slot.get_mutation())
-
-
-func _on_sigil_left_clicked(_slot: SigilSlot) -> void:
-	pass
-
-
 func _on_mutations_changed() -> void:
 	_update_mutation_visuals()
 
@@ -192,11 +155,16 @@ func _update_mutation_visuals() -> void:
 	if card.mutations == null:
 		return
 
-	mutation_visuals.display_runtimes(card.mutations.get_all_runtimes())
+	mutation_visuals.display_runtimes(
+		card.mutations.get_all_runtimes()
+	)
 
 
 func play_placement_animation() -> float:
 	if placement_animation_runner == null:
 		return 0.0
 
-	return placement_animation_runner.play_placement_animation()
+	return (
+		placement_animation_runner
+		.play_placement_animation()
+	)

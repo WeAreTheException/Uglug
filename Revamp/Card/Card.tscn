@@ -235,7 +235,7 @@ buffed_vfx = NodePath("BuffedVFX")
 
 [node name="BuffedVFX" type="Node" parent="Actions/StatEffect/Buffed/BuffedFeedbackHandler" unique_id=1998909798 node_paths=PackedStringArray("sprite")]
 script = ExtResource("31_0wbd4")
-sprite = NodePath("../../../../../Visuals/CardVisuals/BuffVFX")
+sprite = NodePath("../../../../../Visuals/BuffVFX")
 
 [node name="Buffer" type="Node" parent="Actions/StatEffect" unique_id=575487024 node_paths=PackedStringArray("feedback_handler")]
 script = ExtResource("33_m8x75")
@@ -247,7 +247,7 @@ buffer_vfx = NodePath("../BufferVFX")
 
 [node name="BufferVFX" type="Node" parent="Actions/StatEffect/Buffer" unique_id=1765348752 node_paths=PackedStringArray("aura_sprite")]
 script = ExtResource("36_8dmq4")
-aura_sprite = NodePath("../../../../Visuals/CardVisuals/Aura2")
+aura_sprite = NodePath("../../../../Visuals/Aura2")
 
 [node name="Debuffed" type="Node" parent="Actions/StatEffect" unique_id=1806532214 node_paths=PackedStringArray("feedback_handler")]
 script = ExtResource("33_oexco")
@@ -259,7 +259,7 @@ debuffed_vfx = NodePath("DebuffedVfx")
 
 [node name="DebuffedVfx" type="Node" parent="Actions/StatEffect/Debuffed/DebuffedFeedbackHandler" unique_id=297104588 node_paths=PackedStringArray("sprite")]
 script = ExtResource("34_numsi")
-sprite = NodePath("../../../../../Visuals/CardVisuals/DeBuffVFX2")
+sprite = NodePath("../../../../../Visuals/DeBuffVFX2")
 
 [node name="Debuffer" type="Node" parent="Actions/StatEffect" unique_id=1979049619 node_paths=PackedStringArray("feedback_handler")]
 script = ExtResource("37_6fx5p")
@@ -273,7 +273,7 @@ debuffer_vfx = NodePath("../DebufferVfx")
 
 [node name="DebufferVfx" type="Node" parent="Actions/StatEffect/Debuffer" unique_id=1957211898 node_paths=PackedStringArray("aura_sprite")]
 script = ExtResource("42_hapoa")
-aura_sprite = NodePath("../../../../Visuals/CardVisuals/Aura")
+aura_sprite = NodePath("../../../../Visuals/Aura")
 
 [node name="CardFeedback" type="Node" parent="." unique_id=824411320 node_paths=PackedStringArray("card", "hover_feedback", "select_feedback", "outline_feedback")]
 script = ExtResource("8_nau7p")
@@ -294,7 +294,7 @@ volume_db = -20.208
 [node name="Select" type="Node" parent="CardFeedback" unique_id=1062761578 node_paths=PackedStringArray("target", "extra_sprite", "extra_area", "select_audio")]
 script = ExtResource("20_v34li")
 target = NodePath("../../Visuals/CardVisuals")
-extra_sprite = NodePath("../../Visuals/CardVisuals/CardOutline")
+extra_sprite = NodePath("../../Visuals/CardOutline")
 extra_area = NodePath("../../CardInput")
 select_audio = NodePath("../SelectSound")
 
@@ -304,7 +304,7 @@ shadow_texture = NodePath("../../Visuals/Shadow")
 
 [node name="Outline" type="Node" parent="CardFeedback" unique_id=1388964221 node_paths=PackedStringArray("outline_target")]
 script = ExtResource("35_b2plg")
-outline_target = NodePath("../../Visuals/CardVisuals/CardOutline")
+outline_target = NodePath("../../Visuals/CardOutline")
 
 [node name="SelectSound" type="AudioStreamPlayer2D" parent="CardFeedback" unique_id=1783817506]
 stream = ExtResource("36_ieatu")
@@ -333,42 +333,42 @@ metadata/_edit_lock_ = true
 
 [node name="FeedbackSpriteAnchor" type="Node2D" parent="Visuals/CardVisuals" unique_id=626068744]
 
-[node name="CardOutline" type="Sprite2D" parent="Visuals/CardVisuals" unique_id=1774136059]
+[node name="CardOutline" type="Sprite2D" parent="Visuals" unique_id=1774136059]
 visible = false
 z_index = -1
 material = SubResource("ShaderMaterial_ieatu")
-position = Vector2(-9.006924e-06, 0.37036055)
-scale = Vector2(0.12469137, 0.118279554)
+position = Vector2(-4.529953e-06, 0.4999944)
+scale = Vector2(0.16833335, 0.1596774)
 texture = ExtResource("39_b2plg")
 metadata/_edit_lock_ = true
 
-[node name="Aura" type="Sprite2D" parent="Visuals/CardVisuals" unique_id=1359381593]
+[node name="Aura" type="Sprite2D" parent="Visuals" unique_id=1359381593]
 z_index = -1
 material = SubResource("ShaderMaterial_hapoa")
-position = Vector2(-9.006924e-06, 0.37036055)
-scale = Vector2(0.12469137, 0.118279554)
+position = Vector2(-4.529953e-06, 0.4999944)
+scale = Vector2(0.16833335, 0.1596774)
 texture = ExtResource("39_b2plg")
 metadata/_edit_lock_ = true
 
-[node name="Aura2" type="Sprite2D" parent="Visuals/CardVisuals" unique_id=575017328]
+[node name="Aura2" type="Sprite2D" parent="Visuals" unique_id=575017328]
 visible = false
 z_index = -1
 material = SubResource("ShaderMaterial_hapoa")
-position = Vector2(-9.006924e-06, 0.37036055)
-scale = Vector2(0.12469137, 0.118279554)
+position = Vector2(-4.529953e-06, 0.4999944)
+scale = Vector2(0.16833335, 0.1596774)
 texture = ExtResource("55_hcpqy")
 metadata/_edit_lock_ = true
 
-[node name="BuffVFX" type="Sprite2D" parent="Visuals/CardVisuals" unique_id=1447180298]
+[node name="BuffVFX" type="Sprite2D" parent="Visuals" unique_id=1447180298]
 visible = false
 modulate = Color(1, 0.0627451, 0.08235294, 0.627451)
 self_modulate = Color(0.5254902, 0, 0.015686275, 1)
 z_index = 7
-position = Vector2(-55.555557, 35.55555)
-scale = Vector2(0.061556004, 0.079129264)
+position = Vector2(-75, 48)
+scale = Vector2(0.08310061, 0.10682451)
 texture = ExtResource("33_qnnbi")
 
-[node name="AtkBuffIcon3" type="Sprite2D" parent="Visuals/CardVisuals/BuffVFX" unique_id=1721959134]
+[node name="AtkBuffIcon3" type="Sprite2D" parent="Visuals/BuffVFX" unique_id=1721959134]
 modulate = Color(1, 0.0627451, 0.08235294, 0.627451)
 self_modulate = Color(0.5254902, 0, 0.015686275, 1)
 z_index = 7
@@ -376,7 +376,7 @@ position = Vector2(-361.00824, 711.44714)
 scale = Vector2(2.3718946, 2.3718946)
 texture = ExtResource("33_qnnbi")
 
-[node name="AtkBuffIcon4" type="Sprite2D" parent="Visuals/CardVisuals/BuffVFX" unique_id=1433805252]
+[node name="AtkBuffIcon4" type="Sprite2D" parent="Visuals/BuffVFX" unique_id=1433805252]
 modulate = Color(1, 0.0627451, 0.08235294, 0.627451)
 self_modulate = Color(0.5254902, 0, 0.015686275, 1)
 z_index = 7
@@ -384,7 +384,7 @@ position = Vector2(-782.18445, -1207.5881)
 scale = Vector2(2.3718946, 2.3718946)
 texture = ExtResource("33_qnnbi")
 
-[node name="AtkBuffIcon5" type="Sprite2D" parent="Visuals/CardVisuals/BuffVFX" unique_id=1648316333]
+[node name="AtkBuffIcon5" type="Sprite2D" parent="Visuals/BuffVFX" unique_id=1648316333]
 modulate = Color(1, 0.0627451, 0.08235294, 0.627451)
 self_modulate = Color(0.5254902, 0, 0.015686275, 1)
 z_index = 7
@@ -392,7 +392,7 @@ position = Vector2(2099.6123, 666.65894)
 scale = Vector2(2.3718946, 2.3718946)
 texture = ExtResource("33_qnnbi")
 
-[node name="AtkBuffIcon6" type="Sprite2D" parent="Visuals/CardVisuals/BuffVFX" unique_id=997503983]
+[node name="AtkBuffIcon6" type="Sprite2D" parent="Visuals/BuffVFX" unique_id=997503983]
 modulate = Color(1, 0.0627451, 0.08235294, 0.627451)
 self_modulate = Color(0.5254902, 0, 0.015686275, 1)
 z_index = 7
@@ -400,7 +400,7 @@ position = Vector2(2202.15, -252.75104)
 scale = Vector2(2.3718946, 2.3718946)
 texture = ExtResource("33_qnnbi")
 
-[node name="AtkBuffIcon7" type="Sprite2D" parent="Visuals/CardVisuals/BuffVFX" unique_id=712629613]
+[node name="AtkBuffIcon7" type="Sprite2D" parent="Visuals/BuffVFX" unique_id=712629613]
 modulate = Color(1, 0.0627451, 0.08235294, 0.627451)
 self_modulate = Color(0.5254902, 0, 0.015686275, 1)
 z_index = 7
@@ -408,7 +408,7 @@ position = Vector2(2214.1833, -1525.867)
 scale = Vector2(2.3718946, 2.3718946)
 texture = ExtResource("33_qnnbi")
 
-[node name="AtkBuffIcon8" type="Sprite2D" parent="Visuals/CardVisuals/BuffVFX" unique_id=177723556]
+[node name="AtkBuffIcon8" type="Sprite2D" parent="Visuals/BuffVFX" unique_id=177723556]
 modulate = Color(1, 0.0627451, 0.08235294, 0.627451)
 self_modulate = Color(0.5254902, 0, 0.015686275, 1)
 z_index = 7
@@ -416,7 +416,7 @@ position = Vector2(481.34427, -1769.257)
 scale = Vector2(2.3718946, 2.3718946)
 texture = ExtResource("33_qnnbi")
 
-[node name="AtkBuffIcon9" type="Sprite2D" parent="Visuals/CardVisuals/BuffVFX" unique_id=1740889078]
+[node name="AtkBuffIcon9" type="Sprite2D" parent="Visuals/BuffVFX" unique_id=1740889078]
 modulate = Color(1, 0.0627451, 0.08235294, 0.627451)
 self_modulate = Color(0.5254902, 0, 0.015686275, 1)
 z_index = 7
@@ -424,7 +424,7 @@ position = Vector2(-409.14258, -608.4746)
 scale = Vector2(2.3718946, 2.3718946)
 texture = ExtResource("33_qnnbi")
 
-[node name="AtkBuffIcon10" type="Sprite2D" parent="Visuals/CardVisuals/BuffVFX" unique_id=1351600206]
+[node name="AtkBuffIcon10" type="Sprite2D" parent="Visuals/BuffVFX" unique_id=1351600206]
 modulate = Color(1, 0.0627451, 0.08235294, 0.627451)
 self_modulate = Color(0.5254902, 0, 0.015686275, 1)
 z_index = 7
@@ -432,16 +432,16 @@ position = Vector2(1793.0073, -683.3639)
 scale = Vector2(2.3718946, 2.3718946)
 texture = ExtResource("33_qnnbi")
 
-[node name="DeBuffVFX2" type="Sprite2D" parent="Visuals/CardVisuals" unique_id=187698578]
+[node name="DeBuffVFX2" type="Sprite2D" parent="Visuals" unique_id=187698578]
 modulate = Color(1, 0.0627451, 0.08235294, 0.627451)
 self_modulate = Color(0.5254902, 0, 0.015686275, 1)
 z_index = 7
-position = Vector2(47.407402, -40.000004)
-rotation = -3.1415925
-scale = Vector2(0.061556004, 0.079129264)
+position = Vector2(64, -54.000004)
+rotation = 3.1415927
+scale = Vector2(0.08310061, 0.10682451)
 texture = ExtResource("33_qnnbi")
 
-[node name="AtkBuffIcon3" type="Sprite2D" parent="Visuals/CardVisuals/DeBuffVFX2" unique_id=2124029696]
+[node name="AtkBuffIcon3" type="Sprite2D" parent="Visuals/DeBuffVFX2" unique_id=2124029696]
 modulate = Color(1, 0.0627451, 0.08235294, 0.627451)
 self_modulate = Color(0.5254902, 0, 0.015686275, 1)
 z_index = 7
@@ -449,7 +449,7 @@ position = Vector2(-541.5124, -702.0861)
 scale = Vector2(2.3718946, 2.3718946)
 texture = ExtResource("33_qnnbi")
 
-[node name="AtkBuffIcon4" type="Sprite2D" parent="Visuals/CardVisuals/DeBuffVFX2" unique_id=1936369567]
+[node name="AtkBuffIcon4" type="Sprite2D" parent="Visuals/DeBuffVFX2" unique_id=1936369567]
 modulate = Color(1, 0.0627451, 0.08235294, 0.627451)
 self_modulate = Color(0.5254902, 0, 0.015686275, 1)
 z_index = 7
@@ -457,7 +457,7 @@ position = Vector2(493.3778, -177.8619)
 scale = Vector2(2.3718946, 2.3718946)
 texture = ExtResource("33_qnnbi")
 
-[node name="AtkBuffIcon5" type="Sprite2D" parent="Visuals/CardVisuals/DeBuffVFX2" unique_id=1085229777]
+[node name="AtkBuffIcon5" type="Sprite2D" parent="Visuals/DeBuffVFX2" unique_id=1085229777]
 modulate = Color(1, 0.0627451, 0.08235294, 0.627451)
 self_modulate = Color(0.5254902, 0, 0.015686275, 1)
 z_index = 7
@@ -465,7 +465,7 @@ position = Vector2(2099.6123, 666.65894)
 scale = Vector2(2.3718946, 2.3718946)
 texture = ExtResource("33_qnnbi")
 
-[node name="AtkBuffIcon6" type="Sprite2D" parent="Visuals/CardVisuals/DeBuffVFX2" unique_id=275079447]
+[node name="AtkBuffIcon6" type="Sprite2D" parent="Visuals/DeBuffVFX2" unique_id=275079447]
 modulate = Color(1, 0.0627451, 0.08235294, 0.627451)
 self_modulate = Color(0.5254902, 0, 0.015686275, 1)
 z_index = 7
@@ -473,7 +473,7 @@ position = Vector2(1672.6711, -580.3913)
 scale = Vector2(2.3718946, 2.3718946)
 texture = ExtResource("33_qnnbi")
 
-[node name="AtkBuffIcon7" type="Sprite2D" parent="Visuals/CardVisuals/DeBuffVFX2" unique_id=145715227]
+[node name="AtkBuffIcon7" type="Sprite2D" parent="Visuals/DeBuffVFX2" unique_id=145715227]
 modulate = Color(1, 0.0627451, 0.08235294, 0.627451)
 self_modulate = Color(0.5254902, 0, 0.015686275, 1)
 z_index = 7
@@ -481,7 +481,7 @@ position = Vector2(2214.1833, -1525.867)
 scale = Vector2(2.3718946, 2.3718946)
 texture = ExtResource("33_qnnbi")
 
-[node name="AtkBuffIcon8" type="Sprite2D" parent="Visuals/CardVisuals/DeBuffVFX2" unique_id=221586987]
+[node name="AtkBuffIcon8" type="Sprite2D" parent="Visuals/DeBuffVFX2" unique_id=221586987]
 modulate = Color(1, 0.0627451, 0.08235294, 0.627451)
 self_modulate = Color(0.5254902, 0, 0.015686275, 1)
 z_index = 7
@@ -489,7 +489,7 @@ position = Vector2(481.34427, -1769.257)
 scale = Vector2(2.3718946, 2.3718946)
 texture = ExtResource("33_qnnbi")
 
-[node name="AtkBuffIcon10" type="Sprite2D" parent="Visuals/CardVisuals/DeBuffVFX2" unique_id=945322437]
+[node name="AtkBuffIcon10" type="Sprite2D" parent="Visuals/DeBuffVFX2" unique_id=945322437]
 modulate = Color(1, 0.0627451, 0.08235294, 0.627451)
 self_modulate = Color(0.5254902, 0, 0.015686275, 1)
 z_index = 7
