@@ -129,7 +129,7 @@ exchange_runner = NodePath("AttackExchangeRunner")
 
 [node name="AttackAnimationRunner" type="Node" parent="Actions/Attack" unique_id=1122768788 node_paths=PackedStringArray("animated_target")]
 script = ExtResource("9_r5dqq")
-animated_target = NodePath("../../../Visuals/CardVisuals")
+animated_target = NodePath("../../../Visuals")
 
 [node name="AttackSequencer" type="Node" parent="Actions/Attack" unique_id=2068513187]
 script = ExtResource("11_iynnv")
