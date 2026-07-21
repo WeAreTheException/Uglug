@@ -18,8 +18,27 @@
 [ext_resource type="Resource" uid="uid://ci7yvhc8pfst6" path="res://Revamp/CardPresets/QueenAnt.tres" id="16_kthx6"]
 [ext_resource type="Resource" uid="uid://b8tgum0dpv4iv" path="res://Revamp/CardPresets/Deterrant.tres" id="19_bs6ji"]
 [ext_resource type="PackedScene" uid="uid://c8mfgi3h8sc6v" path="res://NewCardLayout.tscn" id="31_lcdw0"]
+[ext_resource type="Script" uid="uid://djtnl5koe1f0x" path="res://Revamp/Buff/BuffDatabase.gd" id="32_bs6ji"]
+[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Old/Mutations/MutationBehaviourHandlers/Mutation.gd" id="33_85uwd"]
+[ext_resource type="Resource" uid="uid://b4tpqnugaguvu" path="res://Old/Mutations/MutationPresets/InheritanceMutations/BabyMaker.tres" id="34_m57fn"]
+[ext_resource type="Resource" uid="uid://cnn0fddifxool" path="res://Old/Mutations/MutationPresets/InheritanceMutations/ColonyNest.tres" id="34_pe1o0"]
+[ext_resource type="Resource" uid="uid://5sahtthq2tjm" path="res://Old/Mutations/MutationPresets/InheritanceMutations/Christmas.tres" id="35_8tkpi"]
+[ext_resource type="Resource" uid="uid://b6afw5yomddli" path="res://Old/Mutations/MutationPresets/SustainMutations/Shield.tres" id="35_pe1o0"]
+[ext_resource type="Resource" uid="uid://dp3xgqtqwogy3" path="res://Old/Mutations/MutationPresets/StraightChopsMutations/Lance.tres" id="36_cnd2n"]
+[ext_resource type="Resource" uid="uid://qpp1tjh0bk7v" path="res://Old/Mutations/MutationPresets/SustainMutations/RedRiot.tres" id="37_angpp"]
+[ext_resource type="Resource" uid="uid://njutef00oac8" path="res://Old/Mutations/MutationPresets/InvestmentMutations/LifeSteal.tres" id="37_b1x47"]
+[ext_resource type="Resource" uid="uid://c0ojr71i4k50b" path="res://Old/Mutations/MutationPresets/RallyMutations/RoyalPheromones.tres" id="38_uj5b2"]
+[ext_resource type="Resource" uid="uid://cyutbyh2av6iv" path="res://Old/Mutations/MutationPresets/RallyMutations/SteroidDealer.tres" id="39_pfxf1"]
+[ext_resource type="Resource" uid="uid://c0cebfc5tmmng" path="res://Old/Mutations/MutationPresets/RallyMutations/SteroidMaxxing.tres" id="40_t283x"]
+[ext_resource type="Resource" uid="uid://d6umheqx0qia" path="res://Old/Mutations/MutationPresets/RetaliationMutations/IDieYouDie.tres" id="41_0nssm"]
+[ext_resource type="Resource" uid="uid://dko3ngpbogrv1" path="res://Old/Mutations/MutationPresets/RetaliationMutations/Spiky.tres" id="42_k4s15"]
+[ext_resource type="Resource" uid="uid://bs6mfmdmm2uj6" path="res://Old/Mutations/MutationPresets/StraightChopsMutations/DirectAttack.tres" id="43_1jjxb"]
+[ext_resource type="Resource" uid="uid://bk7bftdp5178x" path="res://Old/Mutations/MutationPresets/StraightChopsMutations/MeFirst.tres" id="45_yc70n"]
+[ext_resource type="Resource" uid="uid://b4sniy31fo50g" path="res://Old/Mutations/MutationPresets/StraightChopsMutations/TouchOfDeath.tres" id="46_s2dsq"]
+[ext_resource type="Resource" uid="uid://qm2l2rlbwj77" path="res://Old/Mutations/MutationPresets/SustainMutations/Heckler.tres" id="47_h76ad"]
 [ext_resource type="Script" uid="uid://61l5g8wkdar3" path="res://SacrificeController.gd" id="49_30g8j"]
 [ext_resource type="Script" uid="uid://ciopi88keoi3k" path="res://SacrificeRequirement.gd" id="50_f1nl2"]
+[ext_resource type="Resource" uid="uid://ceeskmu01vy5g" path="res://Old/Mutations/MutationPresets/TargetMutations/YAttack.tres" id="50_sw8u3"]
 [ext_resource type="Script" uid="uid://b4qvc7353obir" path="res://PendingSacrificeBoat.gd" id="51_pr7vu"]
 [ext_resource type="Script" uid="uid://vmy04gllke53" path="res://SacrificeCommitter.gd" id="52_l3o37"]
 [ext_resource type="Script" uid="uid://db4xai716j06p" path="res://Revamp/Card/CardActions/Sacrifice/SacrificeSelectionRoot.gd" id="53_304k6"]
@@ -174,67 +193,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_lock_ = true
 
-[node name="ToolTip2" type="Control" parent="." unique_id=1023470131 node_paths=PackedStringArray("name_label", "description_label")]
-layout_mode = 3
-anchors_preset = 0
-offset_left = 448.0
-offset_top = 256.0
-offset_right = 922.0
-offset_bottom = 497.0
-script = ExtResource("4_3wjp5")
-name_label = NodePath("TextBox/TBNamePanel/TBNameLabel")
-description_label = NodePath("TextBox/TBDescripPanel/TBDescripLabel")
-metadata/_edit_lock_ = true
-
-[node name="TextBox" type="Panel" parent="ToolTip2" unique_id=1910421391]
-layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_top = -241.0
-offset_right = 474.0
-grow_vertical = 0
-metadata/_edit_lock_ = true
-
-[node name="TBNamePanel" type="Panel" parent="ToolTip2/TextBox" unique_id=896815120]
-layout_mode = 0
-offset_left = 17.0
-offset_top = 11.0
-offset_right = 458.0
-offset_bottom = 61.0
-metadata/_edit_lock_ = true
-
-[node name="TBNameLabel" type="Label" parent="ToolTip2/TextBox/TBNamePanel" unique_id=1434900496]
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_bottom = 50.0
-grow_horizontal = 2
-text = "Royale Pheromones"
-horizontal_alignment = 1
-vertical_alignment = 1
-metadata/_edit_lock_ = true
-
-[node name="TBDescripPanel" type="Panel" parent="ToolTip2/TextBox" unique_id=1468369087]
-layout_mode = 0
-offset_left = 17.0
-offset_top = 75.0
-offset_right = 458.0
-offset_bottom = 220.0
-metadata/_edit_lock_ = true
-
-[node name="TBDescripLabel" type="Label" parent="ToolTip2/TextBox/TBDescripPanel" unique_id=252417983]
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_bottom = 145.0
-grow_horizontal = 2
-text = "All Active Workers get +1 Atk, +1 Hlt"
-horizontal_alignment = 1
-vertical_alignment = 1
-metadata/_edit_lock_ = true
-
-[node name="UICard" type="Control" parent="." unique_id=811118957 node_paths=PackedStringArray("round_label", "going_first_label", "phase_label", "helper_label", "timer_label", "worker_button", "warrior_button", "buff_button", "timer_end_turn_button", "undo_button")]
+[node name="UICard" type="Control" parent="." unique_id=811118957 node_paths=PackedStringArray("round_label", "going_first_label", "phase_label", "helper_label", "timer_label", "worker_button", "warrior_button", "buff_button", "timer_end_turn_button", "undo_button", "mutation_database", "player_hand")]
 layout_mode = 3
 anchors_preset = 9
 anchor_bottom = 1.0
@@ -250,6 +209,8 @@ warrior_button = NodePath("CardPanel/WarriorPanel")
 buff_button = NodePath("CardPanel/BuffPile")
 timer_end_turn_button = NodePath("CardPanel/EndButton")
 undo_button = NodePath("CardPanel/Undo")
+mutation_database = NodePath("../BuffDatabase")
+player_hand = NodePath("../PlayerHandRoot")
 active_button_color = Color(1.4439226e-07, 0.4351746, 0.43522498, 1)
 inactive_button_color = Color(0, 0.68333876, 0.6841458, 0.2509804)
 
@@ -553,3 +514,9 @@ script = ExtResource("61_s0fcy")
 [node name="NewCardVisuals" parent="." unique_id=96420926 instance=ExtResource("31_lcdw0")]
 visible = false
 position = Vector2(-640, -192)
+
+[node name="BuffDatabase" type="Node" parent="." unique_id=1189748202]
+script = ExtResource("32_bs6ji")
+buff_pool = Array[ExtResource("33_85uwd")]([ExtResource("34_m57fn"), ExtResource("35_8tkpi"), ExtResource("34_pe1o0"), ExtResource("37_b1x47"), ExtResource("38_uj5b2"), ExtResource("39_pfxf1"), ExtResource("40_t283x"), ExtResource("41_0nssm"), ExtResource("42_k4s15"), ExtResource("43_1jjxb"), ExtResource("36_cnd2n"), ExtResource("45_yc70n"), ExtResource("46_s2dsq"), ExtResource("47_h76ad"), ExtResource("37_angpp"), ExtResource("35_pe1o0"), ExtResource("50_sw8u3")])
+print_debug = false
+run_smoke_test_on_ready = false

@@ -94,11 +94,7 @@ func update_cost(value: int) -> void:
 	if cost_label != null:
 		cost_label.text = str(value)
 
-	for i in range(cost.size()):
-		if cost[i] == null:
-			continue
-
-		cost[i].visible = false
+	_update_cost_sprites(value)
 
 
 func _set_attack_instant(value: int) -> void:
@@ -125,3 +121,13 @@ func _set_health_instant(value: int) -> void:
 
 	if health != null:
 		health.visible = false
+
+
+func _update_cost_sprites(value: int) -> void:
+	var visible_count := clampi(value, 0, cost.size())
+
+	for i in range(cost.size()):
+		if cost[i] == null:
+			continue
+
+		cost[i].visible = i < visible_count

@@ -28,6 +28,10 @@ enum Phase {
 @export var timer_end_turn_button: Button
 @export var undo_button: Button
 
+@export_group("Mutation")
+@export var mutation_database: BuffDatabase
+@export var player_hand: PlayerHandRoot
+
 @export_group("Button Text")
 @export var worker_text: String = "Worker"
 @export var warrior_text: String = "Warrior"
@@ -54,6 +58,7 @@ var is_draw_reveal_time: bool = false
 
 var buff_start_global_position: Vector2
 var is_dragging_buff: bool = false
+var active_mutation: Mutation = null
 
 
 func _ready() -> void:
@@ -82,14 +87,20 @@ func _unhandled_input(event: InputEvent) -> void:
 		KEY_R:
 			round_number += 1
 			_update_round_label()
+
 		KEY_D:
 			_set_phase(Phase.DRAW)
+
 		KEY_B:
 			_set_phase(Phase.BUFF)
+			_cycle_mutation()
+
 		KEY_P:
 			_set_phase(Phase.PLAY)
+
 		KEY_W:
 			_set_phase(Phase.WAIT)
+
 		KEY_A:
 			_set_phase(Phase.ATTACK)
 
@@ -119,14 +130,19 @@ func _set_phase(new_phase: Phase) -> void:
 	match current_phase:
 		Phase.DRAW:
 			_enter_draw_phase()
+
 		Phase.BUFF:
 			_enter_buff_phase()
+
 		Phase.PLAY:
 			_enter_play_phase()
+
 		Phase.WAIT:
 			_enter_wait_phase()
+
 		Phase.ATTACK:
 			_enter_attack_phase()
+
 		_:
 			pass
 
@@ -135,9 +151,12 @@ func _enter_draw_phase() -> void:
 	draw_selected_count = 0
 	draw_log_entries.clear()
 	is_draw_reveal_time = false
+	active_mutation = null
 
 	_set_phase_text("Draw")
 	_refresh_draw_helper_text()
+
+	_set_mutation_button_texture(null)
 
 	_set_button_state(worker_button, worker_text, true, active_button_color)
 	_set_button_state(warrior_button, warrior_text, true, active_button_color)
@@ -148,12 +167,12 @@ func _enter_draw_phase() -> void:
 
 
 func _enter_buff_phase() -> void:
-	_set_phase_text("Buff")
+	_set_phase_text("Mutate")
 	_set_helper_text(_buff_helper_text(false))
 
 	_set_button_state(worker_button, arrow_text, false, inactive_button_color)
 	_set_button_state(warrior_button, warrior_arrow_text, false, inactive_button_color)
-	_set_button_state(buff_button, buff_text, true, active_button_color)
+	_set_button_state(buff_button, "", true, active_button_color)
 
 	_set_end_turn_enabled(false)
 	_set_undo_visible(false)
@@ -327,8 +346,45 @@ func _draw_entry_text(entry: Dictionary) -> String:
 	return "Drew %s" % card_type
 
 
+func _cycle_mutation() -> void:
+	if mutation_database == null:
+		active_mutation = null
+		_set_mutation_button_texture(null)
+		return
+
+	var mutations: Array[Mutation] = mutation_database.get_available_mutations()
+
+	if mutations.size() > 1 and active_mutation != null:
+		mutations.erase(active_mutation)
+
+	if mutations.is_empty():
+		active_mutation = null
+		_set_mutation_button_texture(null)
+		return
+
+	active_mutation = mutations.pick_random() as Mutation
+	_set_mutation_button_texture(active_mutation.sigil_texture)
+
+
+func _set_mutation_button_texture(texture: Texture2D) -> void:
+	if buff_button == null:
+		return
+
+	buff_button.text = ""
+	buff_button.icon = texture
+	buff_button.expand_icon = true
+	buff_button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+
+
+func get_active_mutation() -> Mutation:
+	return active_mutation
+
+
 func _on_buff_button_down() -> void:
 	if current_phase != Phase.BUFF:
+		return
+
+	if active_mutation == null:
 		return
 
 	is_dragging_buff = true
@@ -341,10 +397,56 @@ func _on_buff_button_up() -> void:
 
 	is_dragging_buff = false
 
+	var target_card := _get_mutation_drop_target()
+	var mutation_applied := _try_apply_active_mutation(target_card)
+
 	if buff_button != null:
 		buff_button.global_position = buff_start_global_position
 
+	if mutation_applied:
+		active_mutation = null
+		_set_mutation_button_texture(null)
+		_set_button_state(
+			buff_button,
+			"",
+			false,
+			inactive_button_color
+		)
+		_set_helper_text("Mutation applied.")
+		return
+
 	_set_helper_text(_buff_helper_text(false))
+
+
+func _get_mutation_drop_target() -> CardRoot:
+	if player_hand == null:
+		return null
+
+	if player_hand.interaction_root == null:
+		return null
+
+	player_hand.interaction_root.refresh_hover_focus()
+
+	return player_hand.interaction_root.get_top_hovered_card()
+
+
+func _try_apply_active_mutation(card: CardRoot) -> bool:
+	if card == null:
+		return false
+
+	if active_mutation == null:
+		return false
+
+	if player_hand == null:
+		return false
+
+	if not player_hand.has_card(card):
+		return false
+
+	if not card.can_receive_buff_mutation(active_mutation):
+		return false
+
+	return card.add_buff_mutation(active_mutation)
 
 
 func _on_timer_end_turn_pressed() -> void:
@@ -354,11 +456,11 @@ func _on_timer_end_turn_pressed() -> void:
 	end_turn_pressed.emit()
 
 
-func _buff_helper_text(is_selecting_buff_done: bool) -> String:
-	if is_selecting_buff_done:
-		return "[color=#ffffff59]Select buff.[/color]\nSelect card to buff."
+func _buff_helper_text(is_selecting_mutation_done: bool) -> String:
+	if is_selecting_mutation_done:
+		return "[color=#ffffff59]Select mutation.[/color]\nDrag onto an ant."
 
-	return "Select buff.\nSelect card to buff."
+	return "Select mutation.\nDrag onto an ant."
 
 
 func _set_phase_text(text: String) -> void:
@@ -383,7 +485,12 @@ func _update_round_label() -> void:
 	round_label.text = "Round %s" % round_number
 
 
-func _set_button_state(button: Button, text: String, enabled: bool, color: Color) -> void:
+func _set_button_state(
+	button: Button,
+	text: String,
+	enabled: bool,
+	color: Color
+) -> void:
 	if button == null:
 		return
 
@@ -402,6 +509,9 @@ func _set_button_enabled(button: Button, enabled: bool) -> void:
 
 
 func _clear_pile_buttons() -> void:
+	active_mutation = null
+	_set_mutation_button_texture(null)
+
 	_set_button_state(worker_button, "", false, hidden_button_color)
 	_set_button_state(warrior_button, "", false, hidden_button_color)
 	_set_button_state(buff_button, "", false, hidden_button_color)

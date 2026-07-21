@@ -7,9 +7,9 @@
 [ext_resource type="Shader" uid="uid://n3l4egojry4s" path="res://Balatro.gdshader" id="5_0pq8k"]
 [ext_resource type="Shader" uid="uid://clsxlhuocr8hn" path="res://Old/Cards/BackgroundSlide.gdshader" id="6_g780n"]
 [ext_resource type="Shader" uid="uid://b4ndwq1f6teud" path="res://AntSpriteShader.gdshader" id="8_d8086"]
-[ext_resource type="Texture2D" uid="uid://b8a1gr84h2iie" path="res://Art/Ants/WorkerAnt_Standalone.png" id="8_wvfxw"]
 [ext_resource type="Texture2D" uid="uid://crorkhppccg5v" path="res://Art/Ants/WorkerAnt.PNG" id="9_b5mm6"]
 [ext_resource type="Texture2D" uid="uid://c4v3je4ncss3j" path="res://Art/WorkerAnt_Test_Alpha.png" id="9_d8086"]
+[ext_resource type="Texture2D" uid="uid://b55jkuhdyk7wl" path="res://Art/Ants/QueenAnt.png" id="11_tt364"]
 [ext_resource type="Texture2D" uid="uid://daql40b2mc8tc" path="res://Art/NewCardAssets/CardFog.png" id="12_d8086"]
 [ext_resource type="Script" uid="uid://ca4kswglka2cm" path="res://Revamp/CardVisuals/CardMutationVisuals.gd" id="12_tt364"]
 [ext_resource type="Shader" uid="uid://dt77y6ccd1hxy" path="res://Old/Cards/SigilOutline.gdshader" id="13_8ia1o"]
@@ -294,7 +294,7 @@ texture = ExtResource("9_b5mm6")
 material = SubResource("ShaderMaterial_3q3n8")
 position = Vector2(0, 2.3841858e-06)
 scale = Vector2(0.14500001, 0.14516129)
-texture = ExtResource("8_wvfxw")
+texture = ExtResource("11_tt364")
 offset = Vector2(45, 20)
 metadata/_edit_lock_ = true
 
@@ -358,11 +358,12 @@ metadata/_edit_lock_ = true
 
 [node name="AdditonalMutation" type="Node2D" parent="Visuals/MutationVisuals/Mutations" unique_id=100591237]
 
-[node name="Mutation2" type="Node2D" parent="Visuals/MutationVisuals/Mutations/AdditonalMutation" unique_id=264549928 node_paths=PackedStringArray("sprite")]
+[node name="Mutation2" type="Node2D" parent="Visuals/MutationVisuals/Mutations/AdditonalMutation" unique_id=264549928 node_paths=PackedStringArray("sprite", "input")]
 position = Vector2(-0.41667938, 96.24999)
 scale = Vector2(0.12699999, 0.12399998)
 script = ExtResource("15_d8086")
 sprite = NodePath("Mutation2Sprite")
+input = NodePath("Mutation2Input")
 hover_outline_color = Color(0.77254903, 0.47058824, 0.6666667, 1)
 pressed_outline_color = Color(0.105882354, 0.09019608, 0.08627451, 1)
 
@@ -436,31 +437,32 @@ text = "Empowerant"
 autowrap_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="Cost" type="Node2D" parent="Visuals/StatsVisual" unique_id=954479722]
 
 [node name="Blood" type="Sprite2D" parent="Visuals/StatsVisual/Cost" unique_id=1132072044]
 z_index = 100
 position = Vector2(45.48148, -84.34222)
-scale = Vector2(0.1, 0.092)
+scale = Vector2(0.12, 0.1)
 texture = ExtResource("27_0lj05")
 
 [node name="Blood2" type="Sprite2D" parent="Visuals/StatsVisual/Cost" unique_id=1694147808]
 z_index = 100
-position = Vector2(63.977776, -84.08444)
-scale = Vector2(0.1, 0.092)
+position = Vector2(65.74074, -84.259254)
+scale = Vector2(0.12, 0.1)
 texture = ExtResource("27_0lj05")
 
 [node name="Blood3" type="Sprite2D" parent="Visuals/StatsVisual/Cost" unique_id=1533755818]
 z_index = 100
-position = Vector2(56.59259, -62.044453)
-scale = Vector2(0.1, 0.092)
+position = Vector2(54.629627, -60.185184)
+scale = Vector2(0.12, 0.1)
 texture = ExtResource("27_0lj05")
 
 [node name="Blood4" type="Sprite2D" parent="Visuals/StatsVisual/Cost" unique_id=1261569810]
 z_index = 100
-position = Vector2(75.51851, -63.045925)
-scale = Vector2(0.1, 0.092)
+position = Vector2(74.074066, -60.185184)
+scale = Vector2(0.12, 0.1)
 texture = ExtResource("27_0lj05")
 
 [node name="Attack" type="Node2D" parent="Visuals/StatsVisual" unique_id=651649053]

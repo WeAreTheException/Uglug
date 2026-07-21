@@ -66,7 +66,6 @@
 [ext_resource type="Script" uid="uid://2mkkfsgkiexj" path="res://Revamp/Multiplayer/MatchNetworkDraw.gd" id="64_af7hx"]
 [ext_resource type="Script" uid="uid://c2c2hqgcay1nf" path="res://Revamp/Multiplayer/MatchNetworkPlacement.gd" id="65_fd62j"]
 [ext_resource type="Script" uid="uid://cy3sful3ggumm" path="res://Revamp/Multiplayer/LocalGameplayReferenceBinder.gd" id="66_5j00x"]
-[ext_resource type="PackedScene" uid="uid://cvdlgiknngjmw" path="res://Revamp/Board/Background.tscn" id="66_af7hx"]
 [ext_resource type="Script" uid="uid://con1w5rh38kav" path="res://Revamp/Multiplayer/MatchNetworkBuff.gd" id="67_gfrq6"]
 [ext_resource type="Script" uid="uid://4awjofgv2dfc" path="res://Revamp/Multiplayer/MatchNetworkFlow.gd" id="68_8hx3r"]
 [ext_resource type="Script" uid="uid://coo0pgldjiw6w" path="res://Revamp/Multiplayer/MatchPhaseTimer.gd" id="73_fk48e"]
@@ -88,7 +87,6 @@ player_one_hand = NodePath("../PlayerHAnd")
 player_two_hand = NodePath("../OpponenetHAnd")
 
 [node name="Board" parent="Core" unique_id=1318716624 node_paths=PackedStringArray("direct_damage_router") instance=ExtResource("1_yq750")]
-position = Vector2(24, 0)
 direct_damage_router = NodePath("../../Scripts/Core/DirectDamageRouter")
 
 [node name="PlayerHAnd" parent="Core" unique_id=371738706 node_paths=PackedStringArray("prime_location", "cost_sort", "mutation_sort") instance=ExtResource("2_mi1n2")]
@@ -391,10 +389,10 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = 732.0
-offset_top = 996.0
-offset_right = 876.0
-offset_bottom = 1038.0
+offset_left = 64.0
+offset_top = 1024.0
+offset_right = 208.0
+offset_bottom = 1066.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_font_sizes/font_size = 24
@@ -408,10 +406,10 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = 996.0
-offset_top = 996.0
-offset_right = 1140.0
-offset_bottom = 1038.0
+offset_left = 64.0
+offset_top = 960.0
+offset_right = 208.0
+offset_bottom = 1002.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_font_sizes/font_size = 24
@@ -428,6 +426,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="MatchUI" parent="Control" unique_id=495517401 node_paths=PackedStringArray("match_flow_root", "slots_root", "score_state", "phase_timer", "placement_completion_handler") instance=ExtResource("1_2n6q5")]
+visible = false
 layout_mode = 0
 match_flow_root = NodePath("../../Scripts/MatchFlowRoot")
 slots_root = NodePath("../../Core/Board")
@@ -529,7 +528,3 @@ sacrifice_board_binder = NodePath("../../Scripts/Core/SacrificeController/Sacrif
 script = ExtResource("73_fk48e")
 match_flow_root = NodePath("../../Scripts/MatchFlowRoot")
 print_debug = false
-
-[node name="Background" parent="." unique_id=40767625 instance=ExtResource("66_af7hx")]
-position = Vector2(396, 360)
-metadata/_edit_lock_ = true
