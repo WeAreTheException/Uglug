@@ -41,13 +41,33 @@ enum Phase {
 @export var empty_text: String = "X"
 
 @export_group("Button Colors")
-@export var active_button_color: Color = Color(1.0, 1.0, 1.0, 1.0)
-@export var inactive_button_color: Color = Color(1.0, 1.0, 1.0, 0.25)
-@export var hidden_button_color: Color = Color(1.0, 1.0, 1.0, 0.0)
+@export var active_button_color: Color = Color(
+	1.0,
+	1.0,
+	1.0,
+	1.0
+)
+@export var inactive_button_color: Color = Color(
+	1.0,
+	1.0,
+	1.0,
+	0.25
+)
+@export var hidden_button_color: Color = Color(
+	1.0,
+	1.0,
+	1.0,
+	0.0
+)
 
 @export_group("Helper Styling")
 @export var draw_number_color: Color = Color.YELLOW
-@export var revealed_card_name_color: Color = Color(0.0, 1.0, 1.0, 1.0)
+@export var revealed_card_name_color: Color = Color(
+	0.0,
+	1.0,
+	1.0,
+	1.0
+)
 @export var completed_line_alpha: float = 0.35
 
 var current_phase: Phase = Phase.NONE
@@ -63,7 +83,9 @@ var active_mutation: Mutation = null
 
 func _ready() -> void:
 	if buff_button != null:
-		buff_start_global_position = buff_button.global_position
+		buff_start_global_position = (
+			buff_button.global_position
+		)
 
 	_connect_buttons()
 	_update_round_label()
@@ -72,8 +94,13 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-	if is_dragging_buff and buff_button != null:
-		buff_button.global_position = get_global_mouse_position()
+	if (
+		is_dragging_buff
+		and buff_button != null
+	):
+		buff_button.global_position = (
+			get_global_mouse_position()
+		)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -107,17 +134,27 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _connect_buttons() -> void:
 	if worker_button != null:
-		worker_button.pressed.connect(_on_worker_pressed)
+		worker_button.pressed.connect(
+			_on_worker_pressed
+		)
 
 	if warrior_button != null:
-		warrior_button.pressed.connect(_on_warrior_pressed)
+		warrior_button.pressed.connect(
+			_on_warrior_pressed
+		)
 
 	if buff_button != null:
-		buff_button.button_down.connect(_on_buff_button_down)
-		buff_button.button_up.connect(_on_buff_button_up)
+		buff_button.button_down.connect(
+			_on_buff_button_down
+		)
+		buff_button.button_up.connect(
+			_on_buff_button_up
+		)
 
 	if timer_end_turn_button != null:
-		timer_end_turn_button.pressed.connect(_on_timer_end_turn_pressed)
+		timer_end_turn_button.pressed.connect(
+			_on_timer_end_turn_pressed
+		)
 
 
 func _set_phase(new_phase: Phase) -> void:
@@ -125,7 +162,9 @@ func _set_phase(new_phase: Phase) -> void:
 	is_dragging_buff = false
 
 	if buff_button != null:
-		buff_button.global_position = buff_start_global_position
+		buff_button.global_position = (
+			buff_start_global_position
+		)
 
 	match current_phase:
 		Phase.DRAW:
@@ -155,24 +194,55 @@ func _enter_draw_phase() -> void:
 
 	_set_phase_text("Draw")
 	_refresh_draw_helper_text()
-
 	_set_mutation_button_texture(null)
 
-	_set_button_state(worker_button, worker_text, true, active_button_color)
-	_set_button_state(warrior_button, warrior_text, true, active_button_color)
-	_set_button_state(buff_button, empty_text, false, inactive_button_color)
+	_set_button_state(
+		worker_button,
+		worker_text,
+		true,
+		active_button_color
+	)
+	_set_button_state(
+		warrior_button,
+		warrior_text,
+		true,
+		active_button_color
+	)
+	_set_button_state(
+		buff_button,
+		empty_text,
+		false,
+		inactive_button_color
+	)
 
 	_set_end_turn_enabled(false)
 	_set_undo_visible(false)
 
 
 func _enter_buff_phase() -> void:
-	_set_phase_text("Mutate")
-	_set_helper_text(_buff_helper_text(false))
+	_set_phase_text("Evolution")
+	_set_helper_text(
+		_evolution_helper_text(false)
+	)
 
-	_set_button_state(worker_button, arrow_text, false, inactive_button_color)
-	_set_button_state(warrior_button, warrior_arrow_text, false, inactive_button_color)
-	_set_button_state(buff_button, "", true, active_button_color)
+	_set_button_state(
+		worker_button,
+		arrow_text,
+		false,
+		inactive_button_color
+	)
+	_set_button_state(
+		warrior_button,
+		warrior_arrow_text,
+		false,
+		inactive_button_color
+	)
+	_set_button_state(
+		buff_button,
+		"",
+		true,
+		active_button_color
+	)
 
 	_set_end_turn_enabled(false)
 	_set_undo_visible(false)
@@ -180,20 +250,22 @@ func _enter_buff_phase() -> void:
 
 func _enter_play_phase() -> void:
 	_set_phase_text("Play")
-	_set_helper_text("Select Card\nChoose x martyrs\nPlace")
+	_set_helper_text(
+		"Select Card\nChoose x martyrs\nPlace"
+	)
 
 	_clear_pile_buttons()
-
 	_set_end_turn_enabled(true)
 	_set_undo_visible(false)
 
 
 func _enter_wait_phase() -> void:
 	_set_phase_text("Wait")
-	_set_helper_text("Enemy is placing cards right now.")
+	_set_helper_text(
+		"Enemy is placing cards right now."
+	)
 
 	_clear_pile_buttons()
-
 	_set_end_turn_enabled(false)
 	_set_undo_visible(false)
 
@@ -203,7 +275,6 @@ func _enter_attack_phase() -> void:
 	_set_helper_text("")
 
 	_clear_pile_buttons()
-
 	_set_end_turn_enabled(false)
 	_set_undo_visible(false)
 
@@ -230,7 +301,9 @@ func _on_warrior_pressed() -> void:
 	warrior_draw_pressed.emit()
 
 
-func add_draw_log_entry(card_type: String) -> void:
+func add_draw_log_entry(
+	card_type: String
+) -> void:
 	if current_phase != Phase.DRAW:
 		return
 
@@ -250,14 +323,19 @@ func add_draw_log_entry(card_type: String) -> void:
 		_set_draw_buttons_enabled(false)
 
 
-func set_draw_log_entry_revealed(index: int, card_name: String) -> void:
+func set_draw_log_entry_revealed(
+	index: int,
+	card_name: String
+) -> void:
 	if index < 0:
 		return
 
 	if index >= draw_log_entries.size():
 		return
 
-	var entry: Dictionary = draw_log_entries[index] as Dictionary
+	var entry: Dictionary = (
+		draw_log_entries[index] as Dictionary
+	)
 
 	if entry.get("type", "") != "warrior":
 		return
@@ -281,15 +359,23 @@ func clear_draw_log() -> void:
 	_set_draw_buttons_enabled(true)
 
 
-func set_draw_buttons_enabled(enabled: bool) -> void:
+func set_draw_buttons_enabled(
+	enabled: bool
+) -> void:
 	_set_draw_buttons_enabled(enabled)
 
 
-func set_timer_seconds(seconds: float) -> void:
+func set_timer_seconds(
+	seconds: float
+) -> void:
 	if timer_label == null:
 		return
 
-	var shown_seconds: int = maxi(int(ceil(seconds)), 0)
+	var shown_seconds: int = maxi(
+		int(ceil(seconds)),
+		0
+	)
+
 	timer_label.text = str(shown_seconds)
 
 
@@ -300,29 +386,49 @@ func clear_timer() -> void:
 	timer_label.text = "0"
 
 
-func _set_draw_buttons_enabled(enabled: bool) -> void:
-	_set_button_enabled(worker_button, enabled)
-	_set_button_enabled(warrior_button, enabled)
+func _set_draw_buttons_enabled(
+	enabled: bool
+) -> void:
+	_set_button_enabled(
+		worker_button,
+		enabled
+	)
+	_set_button_enabled(
+		warrior_button,
+		enabled
+	)
 
 
 func _refresh_draw_helper_text() -> void:
-	var cards_left: int = maxi(2 - draw_selected_count, 0)
+	var cards_left: int = maxi(
+		2 - draw_selected_count,
+		0
+	)
 	var lines: Array[String] = []
 
 	if not is_draw_reveal_time:
-		var header_text: String = _draw_header_text(cards_left)
+		var header_text: String = (
+			_draw_header_text(cards_left)
+		)
 
 		if header_text != "":
 			lines.append(header_text)
 
 	for raw_entry in draw_log_entries:
-		var entry: Dictionary = raw_entry as Dictionary
-		lines.append(_draw_entry_text(entry))
+		var entry: Dictionary = (
+			raw_entry as Dictionary
+		)
+
+		lines.append(
+			_draw_entry_text(entry)
+		)
 
 	_set_helper_text("\n".join(lines))
 
 
-func _draw_header_text(cards_left: int) -> String:
+func _draw_header_text(
+	cards_left: int
+) -> String:
 	if cards_left <= 0:
 		return ""
 
@@ -333,13 +439,26 @@ func _draw_header_text(cards_left: int) -> String:
 	]
 
 
-func _draw_entry_text(entry: Dictionary) -> String:
-	var card_type: String = entry.get("type", "")
-	var revealed_name: String = entry.get("revealed_name", "")
+func _draw_entry_text(
+	entry: Dictionary
+) -> String:
+	var card_type: String = entry.get(
+		"type",
+		""
+	)
+	var revealed_name: String = entry.get(
+		"revealed_name",
+		""
+	)
 
-	if card_type == "warrior" and revealed_name != "":
+	if (
+		card_type == "warrior"
+		and revealed_name != ""
+	):
 		return "Drew [color=%s]%s[/color]" % [
-			revealed_card_name_color.to_html(false),
+			revealed_card_name_color.to_html(
+				false
+			),
 			revealed_name
 		]
 
@@ -352,9 +471,15 @@ func _cycle_mutation() -> void:
 		_set_mutation_button_texture(null)
 		return
 
-	var mutations: Array[Mutation] = mutation_database.get_available_mutations()
+	var mutations: Array[Mutation] = (
+		mutation_database
+		.get_available_mutations()
+	)
 
-	if mutations.size() > 1 and active_mutation != null:
+	if (
+		mutations.size() > 1
+		and active_mutation != null
+	):
 		mutations.erase(active_mutation)
 
 	if mutations.is_empty():
@@ -362,18 +487,27 @@ func _cycle_mutation() -> void:
 		_set_mutation_button_texture(null)
 		return
 
-	active_mutation = mutations.pick_random() as Mutation
-	_set_mutation_button_texture(active_mutation.sigil_texture)
+	active_mutation = (
+		mutations.pick_random() as Mutation
+	)
+
+	_set_mutation_button_texture(
+		active_mutation.sigil_texture
+	)
 
 
-func _set_mutation_button_texture(texture: Texture2D) -> void:
+func _set_mutation_button_texture(
+	texture: Texture2D
+) -> void:
 	if buff_button == null:
 		return
 
 	buff_button.text = ""
 	buff_button.icon = texture
 	buff_button.expand_icon = true
-	buff_button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	buff_button.icon_alignment = (
+		HORIZONTAL_ALIGNMENT_CENTER
+	)
 
 
 func get_active_mutation() -> Mutation:
@@ -388,7 +522,10 @@ func _on_buff_button_down() -> void:
 		return
 
 	is_dragging_buff = true
-	_set_helper_text(_buff_helper_text(true))
+
+	_set_helper_text(
+		_evolution_helper_text(true)
+	)
 
 
 func _on_buff_button_up() -> void:
@@ -397,25 +534,44 @@ func _on_buff_button_up() -> void:
 
 	is_dragging_buff = false
 
-	var target_card := _get_mutation_drop_target()
-	var mutation_applied := _try_apply_active_mutation(target_card)
+	var target_card := (
+		_get_mutation_drop_target()
+	)
+	var mutation_applied := (
+		_try_apply_active_mutation(
+			target_card
+		)
+	)
 
 	if buff_button != null:
-		buff_button.global_position = buff_start_global_position
+		buff_button.global_position = (
+			buff_start_global_position
+		)
 
 	if mutation_applied:
+		if player_hand != null:
+			player_hand.play_evolution_feedback(
+				target_card
+			)
+
 		active_mutation = null
 		_set_mutation_button_texture(null)
+
 		_set_button_state(
 			buff_button,
 			"",
 			false,
 			inactive_button_color
 		)
-		_set_helper_text("Mutation applied.")
+
+		_set_helper_text(
+			"Evolution complete."
+		)
 		return
 
-	_set_helper_text(_buff_helper_text(false))
+	_set_helper_text(
+		_evolution_helper_text(false)
+	)
 
 
 func _get_mutation_drop_target() -> CardRoot:
@@ -427,10 +583,16 @@ func _get_mutation_drop_target() -> CardRoot:
 
 	player_hand.interaction_root.refresh_hover_focus()
 
-	return player_hand.interaction_root.get_top_hovered_card()
+	return (
+		player_hand
+		.interaction_root
+		.get_top_hovered_card()
+	)
 
 
-func _try_apply_active_mutation(card: CardRoot) -> bool:
+func _try_apply_active_mutation(
+	card: CardRoot
+) -> bool:
 	if card == null:
 		return false
 
@@ -443,10 +605,14 @@ func _try_apply_active_mutation(card: CardRoot) -> bool:
 	if not player_hand.has_card(card):
 		return false
 
-	if not card.can_receive_buff_mutation(active_mutation):
+	if not card.can_receive_buff_mutation(
+		active_mutation
+	):
 		return false
 
-	return card.add_buff_mutation(active_mutation)
+	return card.add_buff_mutation(
+		active_mutation
+	)
 
 
 func _on_timer_end_turn_pressed() -> void:
@@ -456,9 +622,16 @@ func _on_timer_end_turn_pressed() -> void:
 	end_turn_pressed.emit()
 
 
-func _buff_helper_text(is_selecting_mutation_done: bool) -> String:
+func _evolution_helper_text(
+	is_selecting_mutation_done: bool
+) -> String:
 	if is_selecting_mutation_done:
-		return "[color=#ffffff59]Select mutation.[/color]\nDrag onto an ant."
+		return (
+			"[color=#ffffff59]"
+			+ "Select mutation."
+			+ "[/color]\n"
+			+ "Drag onto an ant."
+		)
 
 	return "Select mutation.\nDrag onto an ant."
 
@@ -482,7 +655,9 @@ func _update_round_label() -> void:
 	if round_label == null:
 		return
 
-	round_label.text = "Round %s" % round_number
+	round_label.text = (
+		"Round %s" % round_number
+	)
 
 
 func _set_button_state(
@@ -500,24 +675,48 @@ func _set_button_state(
 	button.modulate = color
 
 
-func _set_button_enabled(button: Button, enabled: bool) -> void:
+func _set_button_enabled(
+	button: Button,
+	enabled: bool
+) -> void:
 	if button == null:
 		return
 
 	button.disabled = not enabled
-	button.modulate = active_button_color if enabled else inactive_button_color
+	button.modulate = (
+		active_button_color
+		if enabled
+		else inactive_button_color
+	)
 
 
 func _clear_pile_buttons() -> void:
 	active_mutation = null
 	_set_mutation_button_texture(null)
 
-	_set_button_state(worker_button, "", false, hidden_button_color)
-	_set_button_state(warrior_button, "", false, hidden_button_color)
-	_set_button_state(buff_button, "", false, hidden_button_color)
+	_set_button_state(
+		worker_button,
+		"",
+		false,
+		hidden_button_color
+	)
+	_set_button_state(
+		warrior_button,
+		"",
+		false,
+		hidden_button_color
+	)
+	_set_button_state(
+		buff_button,
+		"",
+		false,
+		hidden_button_color
+	)
 
 
-func _set_end_turn_enabled(enabled: bool) -> void:
+func _set_end_turn_enabled(
+	enabled: bool
+) -> void:
 	if timer_end_turn_button == null:
 		return
 
@@ -525,13 +724,19 @@ func _set_end_turn_enabled(enabled: bool) -> void:
 
 	if enabled:
 		timer_end_turn_button.text = "End Turn"
-		timer_end_turn_button.modulate = active_button_color
+		timer_end_turn_button.modulate = (
+			active_button_color
+		)
 	else:
 		timer_end_turn_button.text = ""
-		timer_end_turn_button.modulate = inactive_button_color
+		timer_end_turn_button.modulate = (
+			inactive_button_color
+		)
 
 
-func _set_undo_visible(is_visible: bool) -> void:
+func _set_undo_visible(
+	is_visible: bool
+) -> void:
 	if undo_button == null:
 		return
 

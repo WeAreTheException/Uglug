@@ -80,6 +80,10 @@ y_offset = -350.0
 [node name="Hand_BuffingLayout" type="Node2D" parent="Hand_Layout" unique_id=164285583]
 script = ExtResource("10_wk34g")
 
+[node name="HandEvolution" type="Node2D" parent="Hand_Layout" unique_id=1721728418]
+
+[node name="EvolutionAnimationRunner" type="Node" parent="Hand_Layout/HandEvolution" unique_id=1750884902]
+
 [node name="Hand_StateMachine" type="Node" parent="." unique_id=101836643 node_paths=PackedStringArray("idle_state", "play_state", "sacrifice_state", "blessing_state", "buff_state")]
 script = ExtResource("14_osyj2")
 idle_state = NodePath("Hand_IdleState")

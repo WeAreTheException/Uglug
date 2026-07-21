@@ -505,3 +505,21 @@ func get_cards() -> Array[CardRoot]:
 		result.append(card)
 
 	return result
+
+func play_evolution_feedback(card: CardRoot) -> void:
+	if card == null:
+		return
+
+	if not is_instance_valid(card):
+		return
+
+	if not has_card(card):
+		return
+
+	if hand_layout == null:
+		return
+
+	hand_layout.play_evolution_feedback(
+		get_cards(),
+		card
+	)

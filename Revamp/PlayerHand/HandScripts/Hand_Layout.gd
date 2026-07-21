@@ -18,6 +18,9 @@ enum LayoutMode {
 @export var move_time: float = 0.15
 @export var normal_card_z: int = 0
 
+@export_group("Evolution Feedback")
+@export var evolution_spacing_bonus: float = 55.0
+
 var current_mode: LayoutMode = LayoutMode.IDLE
 var exclusion := HandLayoutExclusionHelper.new()
 var index_resolver := HandInsertIndexResolverHelper.new()
@@ -31,7 +34,61 @@ func arrange_cards(cards: Array[CardRoot]) -> void:
 	var layout_cards := _get_layout_cards(cards)
 
 	for i in range(layout_cards.size()):
-		_arrange_card(layout_cards[i], i, layout_cards.size())
+		_arrange_card(
+			layout_cards[i],
+			i,
+			layout_cards.size()
+		)
+
+
+func play_evolution_feedback(
+	cards: Array[CardRoot],
+	evolved_card: CardRoot
+) -> void:
+	if evolved_card == null:
+		return
+
+	if layout_tweener == null:
+		return
+
+	var layout_cards := _get_layout_cards(cards)
+	var evolved_index: int = layout_cards.find(
+		evolved_card
+	)
+
+	if evolved_index < 0:
+		return
+
+	var count: int = layout_cards.size()
+	var spacing: float = _get_card_spacing()
+
+	var rest_positions: Array[Vector2] = []
+	var spread_positions: Array[Vector2] = []
+
+	for i in range(count):
+		var rest_position := _get_card_target_position(
+			i,
+			count,
+			spacing
+		)
+		var spread_position := rest_position
+
+		if i < evolved_index:
+			spread_position.x -= evolution_spacing_bonus
+		elif i > evolved_index:
+			spread_position.x += evolution_spacing_bonus
+
+		rest_positions.append(rest_position)
+		spread_positions.append(spread_position)
+
+	layout_tweener.play_evolution_feedback(
+		layout_cards,
+		evolved_card,
+		rest_positions,
+		spread_positions,
+		hand_card_scale,
+		normal_card_z
+	)
 
 
 func set_ignored_card(card: CardRoot) -> void:
@@ -50,7 +107,10 @@ func clear_primed_card() -> void:
 	pass
 
 
-func get_insert_index_from_global_x(global_x: float, cards: Array[CardRoot]) -> int:
+func get_insert_index_from_global_x(
+	global_x: float,
+	cards: Array[CardRoot]
+) -> int:
 	return index_resolver.get_insert_index_from_global_x(
 		global_x,
 		cards,
@@ -60,16 +120,19 @@ func get_insert_index_from_global_x(global_x: float, cards: Array[CardRoot]) -> 
 	)
 
 
-func _arrange_card(card: CardRoot, index: int, count: int) -> void:
+func _arrange_card(
+	card: CardRoot,
+	index: int,
+	count: int
+) -> void:
 	if not is_instance_valid(card):
 		return
 
-	var card_spacing: float = _get_card_spacing()
-	var total_width: float = card_spacing * float(count - 1)
-	var start_x: float = -total_width / 2.0
-	var x_pos: float = start_x + card_spacing * index
-
-	var target_position: Vector2 = global_position + Vector2(x_pos, _get_y_offset())
+	var target_position := _get_card_target_position(
+		index,
+		count,
+		_get_card_spacing()
+	)
 	var target_rotation: float = 0.0
 
 	if layout_tweener != null:
@@ -83,15 +146,38 @@ func _arrange_card(card: CardRoot, index: int, count: int) -> void:
 		)
 
 
-func _get_layout_cards(cards: Array[CardRoot]) -> Array[CardRoot]:
+func _get_card_target_position(
+	index: int,
+	count: int,
+	spacing: float
+) -> Vector2:
+	var total_width: float = spacing * float(count - 1)
+	var start_x: float = -total_width / 2.0
+	var x_pos: float = start_x + spacing * index
+
+	return (
+		global_position
+		+ Vector2(x_pos, _get_y_offset())
+	)
+
+
+func _get_layout_cards(
+	cards: Array[CardRoot]
+) -> Array[CardRoot]:
 	var result: Array[CardRoot] = []
 
 	for card in cards:
 		if not is_instance_valid(card):
 			continue
 
-		if card.has_meta("hand_placement_layout_locked"):
-			if bool(card.get_meta("hand_placement_layout_locked")):
+		if card.has_meta(
+			"hand_placement_layout_locked"
+		):
+			if bool(
+				card.get_meta(
+					"hand_placement_layout_locked"
+				)
+			):
 				continue
 
 		result.append(card)
@@ -103,17 +189,32 @@ func _get_active_layout() -> Node:
 	match current_mode:
 		LayoutMode.PLAY:
 			return play_layout
+
 		LayoutMode.BLESSING:
-			return blessing_layout if blessing_layout != null else idle_layout
+			return (
+				blessing_layout
+				if blessing_layout != null
+				else idle_layout
+			)
+
 		LayoutMode.BUFF:
-			return buffing_layout if buffing_layout != null else idle_layout
+			return (
+				buffing_layout
+				if buffing_layout != null
+				else idle_layout
+			)
 
 	return idle_layout
 
 
 func _get_card_spacing() -> float:
 	var layout := _get_active_layout()
-	return layout.card_spacing if layout != null else 150.0
+
+	return (
+		layout.card_spacing
+		if layout != null
+		else 150.0
+	)
 
 
 func _get_y_offset() -> float:

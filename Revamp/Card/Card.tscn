@@ -54,8 +54,6 @@
 [ext_resource type="Shader" uid="uid://q5qsewd5kabi" path="res://Revamp/Card/OutlineForceColor.gdshader" id="40_hginc"]
 [ext_resource type="Script" uid="uid://dnonrwbr6yrbq" path="res://Revamp/Card/CardActions/StatChange/Debuffer/DebufferFeedbackHandler.gd" id="41_g71cv"]
 [ext_resource type="Script" uid="uid://bnaqssvcuoaqq" path="res://Revamp/Card/CardActions/StatChange/Debuffer/DebufferVfx.gd" id="42_hapoa"]
-[ext_resource type="Script" uid="uid://cakbkkym5kxwf" path="res://Revamp/Card/CardActions/Evolution/Evolution.gd" id="43_v78fr"]
-[ext_resource type="Script" uid="uid://dlow7vu76qkf3" path="res://Revamp/Card/CardActions/Evolution/EvolutionAnimationRunner.gd" id="44_bvn21"]
 [ext_resource type="Shader" uid="uid://c5xrs0vmimxhu" path="res://Revamp/CardVisuals/GlowyOutline.gdshader" id="53_p4xss"]
 [ext_resource type="Texture2D" uid="uid://6sc1vr2d4fqo" path="res://Art/AntBack/BlueBackground.png" id="55_hcpqy"]
 
@@ -75,7 +73,7 @@ shader_parameter/blockSize = 26.8150012737125
 shader_parameter/color = Color(0, 0, 0, 1)
 shader_parameter/tolerance = 0.3130000148675
 
-[node name="Card" type="Node2D" unique_id=1649731477 node_paths=PackedStringArray("input", "board_presence", "stats", "mutations", "card_visuals_root", "card_feedback", "attack", "hurt", "die", "sacrifice", "evolution", "buffed", "debuffed", "buffer", "debuffer", "runtime_state")]
+[node name="Card" type="Node2D" unique_id=1649731477 node_paths=PackedStringArray("input", "board_presence", "stats", "mutations", "card_visuals_root", "card_feedback", "attack", "hurt", "die", "sacrifice", "buffed", "debuffed", "buffer", "debuffer", "runtime_state")]
 script = ExtResource("1_hdbik")
 input = NodePath("CardInput")
 board_presence = NodePath("Core/BoardPresence")
@@ -87,7 +85,6 @@ attack = NodePath("Actions/Attack")
 hurt = NodePath("Actions/Hurt")
 die = NodePath("Actions/Die")
 sacrifice = NodePath("Actions/Sacrifice")
-evolution = NodePath("Actions/Evolution")
 buffed = NodePath("Actions/StatEffect/Buffed")
 debuffed = NodePath("Actions/StatEffect/Debuffed")
 buffer = NodePath("Actions/StatEffect/Buffer")
@@ -277,15 +274,6 @@ debuffer_vfx = NodePath("../DebufferVfx")
 [node name="DebufferVfx" type="Node" parent="Actions/StatEffect/Debuffer" unique_id=1957211898 node_paths=PackedStringArray("aura_sprite")]
 script = ExtResource("42_hapoa")
 aura_sprite = NodePath("../../../../Visuals/CardVisuals/Aura")
-
-[node name="Evolution" type="Node" parent="Actions" unique_id=1312728422 node_paths=PackedStringArray("animation_runner")]
-script = ExtResource("43_v78fr")
-animation_runner = NodePath("EvolutionAnimationRunner")
-
-[node name="EvolutionAnimationRunner" type="Node" parent="Actions/Evolution" unique_id=2090528520]
-script = ExtResource("44_bvn21")
-jump_height = 100.0
-peak_scale_multiplier = 111.0
 
 [node name="CardFeedback" type="Node" parent="." unique_id=824411320 node_paths=PackedStringArray("card", "hover_feedback", "select_feedback", "outline_feedback")]
 script = ExtResource("8_nau7p")
