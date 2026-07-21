@@ -25,9 +25,9 @@
 [ext_resource type="Texture2D" uid="uid://4f3gn63utyru" path="res://Art/Numbers/4.png" id="19_kawbk"]
 [ext_resource type="Texture2D" uid="uid://c1fev2dw4ehne" path="res://Art/Numbers/5.png" id="20_6t487"]
 [ext_resource type="Texture2D" uid="uid://bq8esv4xpuv68" path="res://Art/Numbers/6.png" id="21_457k1"]
-[ext_resource type="FontFile" uid="uid://m0pv3sk8qbih" path="res://Art/AntBack/antrf___.ttf" id="22_g780n"]
 [ext_resource type="Script" uid="uid://dkvlofq6d7n7m" path="res://Revamp/CardVisuals/ViewPortDisplayController.gd" id="24_4t10r"]
 [ext_resource type="Texture2D" uid="uid://bkltnd7edkgin" path="res://Art/NewCardAssets/SacrificeCost.png" id="27_0lj05"]
+[ext_resource type="FontFile" uid="uid://3m1qkjceiwrb" path="res://Art/AntBack/Transcity DEMO.otf" id="27_tt364"]
 [ext_resource type="Script" uid="uid://db56slyy24nq7" path="res://Revamp/Card/CardFeedback/StatTextFeedback.gd" id="29_0lj05"]
 [ext_resource type="Texture2D" uid="uid://j75yocnxblk4" path="res://Art/RedBackground.png" id="29_d8086"]
 [ext_resource type="Texture2D" uid="uid://cgs5k6p3mggyf" path="res://Art/Ants/AntSprite.png" id="29_wvfxw"]
@@ -413,7 +413,7 @@ script = ExtResource("15_5t0dk")
 attack = NodePath("Attack/AttackSprite")
 health = NodePath("Health2/HealthSprite")
 cost = [NodePath("Cost/Blood"), NodePath("Cost/Blood2"), NodePath("Cost/Blood3"), NodePath("Cost/Blood4")]
-name_label = NodePath("Name")
+name_label = NodePath("Name2")
 attack_label = NodePath("Attack/AtkLbl")
 health_label = NodePath("Health2/HlthLbl")
 attack_text_feedback = NodePath("Attack/AtkTextHandler")
@@ -422,24 +422,20 @@ attack_textures = Array[Texture2D]([ExtResource("16_4yngs"), ExtResource("17_8nq
 health_textures = Array[Texture2D]([ExtResource("16_4yngs"), ExtResource("17_8nq5a"), ExtResource("18_8aa6v"), ExtResource("19_kawbk"), ExtResource("20_6t487"), ExtResource("21_457k1")])
 metadata/_edit_lock_ = true
 
-[node name="Name" type="RichTextLabel" parent="Visuals/StatsVisual" unique_id=37488759]
-anchors_preset = -1
-offset_left = -80.0
-offset_top = -126.25
-offset_right = 76.0
-offset_bottom = -101.25
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/default_color = Color(0.13, 0.11806166, 0.092300005, 1)
-theme_override_fonts/normal_font = ExtResource("22_g780n")
-theme_override_font_sizes/normal_font_size = 22
-theme_override_font_sizes/bold_font_size = 22
-theme_override_font_sizes/bold_italics_font_size = 22
-theme_override_font_sizes/italics_font_size = 22
-theme_override_font_sizes/mono_font_size = 22
+[node name="Name2" type="RichTextLabel" parent="Visuals/StatsVisual" unique_id=176073084]
+offset_left = -100.0
+offset_top = -135.18517
+offset_right = 100.0
+offset_bottom = -88.88887
+theme_override_colors/default_color = Color(0.10845817, 0.07290546, 0.039381325, 0.9882353)
+theme_override_colors/font_outline_color = Color(0.9567712, 0.9184781, 0.8845127, 0.9882353)
+theme_override_constants/outline_size = 7
+theme_override_fonts/normal_font = ExtResource("27_tt364")
+theme_override_font_sizes/normal_font_size = 32
+text = "Empowerant"
+autowrap_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
-metadata/_edit_use_anchors_ = true
 
 [node name="Cost" type="Node2D" parent="Visuals/StatsVisual" unique_id=954479722]
 

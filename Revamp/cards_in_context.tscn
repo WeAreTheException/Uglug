@@ -551,4 +551,5 @@ script = ExtResource("60_vmvxe")
 script = ExtResource("61_s0fcy")
 
 [node name="NewCardVisuals" parent="." unique_id=96420926 instance=ExtResource("31_lcdw0")]
+visible = false
 position = Vector2(-640, -192)
