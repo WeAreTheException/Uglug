@@ -6,19 +6,22 @@ signal sigil_unhovered(slot: SigilSlot)
 signal sigil_right_clicked(slot: SigilSlot)
 signal sigil_left_clicked(slot: SigilSlot)
 
-@export var base_sigil_container: Node2D
-@export var additional_sigil_container: Node2D
+@export var mutation_slot_1: SigilSlot
+@export var mutation_slot_2: SigilSlot
+@export var mutation_slot_3: SigilSlot
+
 @export var greyed_out_alpha: float = 0.35
 
 
 func display_runtimes(runtimes: Array[MutationRuntime]) -> void:
 	clear_all()
 
-	if runtimes.is_empty():
-		return
+	var slots := _get_mutation_slots()
+	var display_count := mini(runtimes.size(), slots.size())
 
-	for i in range(runtimes.size()):
+	for i in range(display_count):
 		var runtime := runtimes[i]
+		var slot := slots[i]
 
 		if runtime == null:
 			continue
@@ -26,59 +29,27 @@ func display_runtimes(runtimes: Array[MutationRuntime]) -> void:
 		if runtime.mutation == null:
 			continue
 
-		if i == 0:
-			_set_sigil_in_container(
-				base_sigil_container,
-				0,
-				runtime
-			)
-		else:
-			_set_sigil_in_container(
-				additional_sigil_container,
-				i - 1,
-				runtime
-			)
+		if slot == null:
+			continue
+
+		_connect_slot(slot)
+		slot.setup_runtime(runtime, greyed_out_alpha)
 
 
 func clear_all() -> void:
-	_clear_container(base_sigil_container)
-	_clear_container(additional_sigil_container)
-
-
-func _set_sigil_in_container(
-	container: Node2D,
-	index: int,
-	runtime: MutationRuntime
-) -> void:
-	if container == null:
-		return
-
-	if index < 0:
-		return
-
-	if index >= container.get_child_count():
-		return
-
-	var slot := container.get_child(index) as SigilSlot
-
-	if slot == null:
-		return
-
-	_connect_slot(slot)
-	slot.setup_runtime(runtime, greyed_out_alpha)
-
-
-func _clear_container(container: Node2D) -> void:
-	if container == null:
-		return
-
-	for child in container.get_children():
-		var slot := child as SigilSlot
-
+	for slot in _get_mutation_slots():
 		if slot == null:
 			continue
 
 		slot.clear()
+
+
+func _get_mutation_slots() -> Array[SigilSlot]:
+	return [
+		mutation_slot_1,
+		mutation_slot_2,
+		mutation_slot_3
+	]
 
 
 func _connect_slot(slot: SigilSlot) -> void:
