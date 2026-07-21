@@ -41,6 +41,7 @@
 [ext_resource type="Script" uid="uid://ciopi88keoi3k" path="res://SacrificeRequirement.gd" id="50_f1nl2"]
 [ext_resource type="Resource" uid="uid://ceeskmu01vy5g" path="res://Old/Mutations/MutationPresets/TargetMutations/YAttack.tres" id="50_sw8u3"]
 [ext_resource type="Script" uid="uid://b4qvc7353obir" path="res://PendingSacrificeBoat.gd" id="51_pr7vu"]
+[ext_resource type="Script" uid="uid://cm16kgidxxu4h" path="res://Revamp/MutationTooltTip/MutationButtonHoverBinder.gd" id="52_b1x47"]
 [ext_resource type="Script" uid="uid://vmy04gllke53" path="res://SacrificeCommitter.gd" id="52_l3o37"]
 [ext_resource type="Script" uid="uid://db4xai716j06p" path="res://Revamp/Card/CardActions/Sacrifice/SacrificeSelectionRoot.gd" id="53_304k6"]
 [ext_resource type="Script" uid="uid://b3pcelfs57qav" path="res://Revamp/Card/CardActions/Sacrifice/SacrificeBoardSelectionBinder.gd" id="54_64wec"]
@@ -359,6 +360,12 @@ match_ui = NodePath("..")
 player_hand = NodePath("../../PlayerHandRoot")
 sacrifice_controller = NodePath("../../SacrificeController")
 
+[node name="MutationButtonHoverBinder" type="Node" parent="UICard" unique_id=1997287768 node_paths=PackedStringArray("match_ui", "mutation_button", "mutation_tooltip")]
+script = ExtResource("52_b1x47")
+match_ui = NodePath("..")
+mutation_button = NodePath("../CardPanel/BuffPile")
+mutation_tooltip = NodePath("../../ToolTip")
+
 [node name="TuggaControl" type="Control" parent="." unique_id=1122243279]
 visible = false
 z_index = -1
@@ -526,3 +533,5 @@ script = ExtResource("32_bs6ji")
 buff_pool = Array[ExtResource("33_85uwd")]([ExtResource("34_m57fn"), ExtResource("35_8tkpi"), ExtResource("34_pe1o0"), ExtResource("37_b1x47"), ExtResource("38_uj5b2"), ExtResource("39_pfxf1"), ExtResource("40_t283x"), ExtResource("41_0nssm"), ExtResource("42_k4s15"), ExtResource("43_1jjxb"), ExtResource("36_cnd2n"), ExtResource("45_yc70n"), ExtResource("46_s2dsq"), ExtResource("47_h76ad"), ExtResource("37_angpp"), ExtResource("35_pe1o0"), ExtResource("50_sw8u3")])
 print_debug = false
 run_smoke_test_on_ready = false
+
+[node name="Node" type="Node" parent="." unique_id=951332260]
