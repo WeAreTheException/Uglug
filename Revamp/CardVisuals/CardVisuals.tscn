@@ -411,7 +411,7 @@ z_index = 7
 script = ExtResource("15_5t0dk")
 attack = NodePath("Attack/AttackSprite")
 health = NodePath("Health2/HealthSprite")
-cost = [NodePath("Cost/Blood"), NodePath("Cost/Blood2"), NodePath("Cost/Blood3"), NodePath("Cost/Blood4")]
+cost = [NodePath("Cost/Blood2"), NodePath("Cost/Blood"), NodePath("Cost/Blood3"), NodePath("Cost/Blood4")]
 name_label = NodePath("Name2")
 attack_label = NodePath("Attack/AtkLbl")
 health_label = NodePath("Health2/HlthLbl")
@@ -439,15 +439,15 @@ metadata/_edit_use_anchors_ = true
 
 [node name="Cost" type="Node2D" parent="Visuals/StatsVisual" unique_id=954479722]
 
-[node name="Blood" type="Sprite2D" parent="Visuals/StatsVisual/Cost" unique_id=1132072044]
-z_index = 100
-position = Vector2(45.48148, -84.34222)
-scale = Vector2(0.12, 0.1)
-texture = ExtResource("27_0lj05")
-
 [node name="Blood2" type="Sprite2D" parent="Visuals/StatsVisual/Cost" unique_id=1694147808]
 z_index = 100
 position = Vector2(65.74074, -84.259254)
+scale = Vector2(0.120000005, 0.1)
+texture = ExtResource("27_0lj05")
+
+[node name="Blood" type="Sprite2D" parent="Visuals/StatsVisual/Cost" unique_id=1132072044]
+z_index = 100
+position = Vector2(45.48148, -84.34222)
 scale = Vector2(0.12, 0.1)
 texture = ExtResource("27_0lj05")
 

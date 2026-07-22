@@ -178,13 +178,13 @@ player_two_hand = NodePath("../OpponenetHAnd")
 direct_damage_router = NodePath("../../Scripts/Core/DirectDamageRouter")
 
 [node name="PlayerHAnd" parent="Core" unique_id=371738706 node_paths=PackedStringArray("prime_location", "cost_sort", "mutation_sort") instance=ExtResource("2_mi1n2")]
-position = Vector2(935.99994, 911.99994)
+position = Vector2(768, 896)
 prime_location = NodePath("../PrimeCardLocation")
 cost_sort = NodePath("../../Control/CostSortButton")
 mutation_sort = NodePath("../../Control/MutationSortButton")
 
 [node name="OpponenetHAnd" parent="Core" unique_id=1415383407 node_paths=PackedStringArray("prime_location") instance=ExtResource("2_mi1n2")]
-position = Vector2(936, 912)
+position = Vector2(768.00006, 896.00006)
 prime_location = NodePath("../PrimeCardLocation")
 
 [node name="PrimeCardLocation" type="Node2D" parent="Core" unique_id=2143511336]
