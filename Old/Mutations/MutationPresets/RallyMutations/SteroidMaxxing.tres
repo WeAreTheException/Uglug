@@ -1,10 +1,10 @@
 [gd_resource type="Resource" script_class="SteroidMaxxing" format=3 uid="uid://c0cebfc5tmmng"]
 
 [ext_resource type="Script" uid="uid://drdrq0r4lpax2" path="res://Old/Mutations/MutationBehaviourHandlers/SteroidMaxxing.gd" id="1_gsedg"]
-[ext_resource type="Texture2D" uid="uid://dfjjb8nilpdfw" path="res://Art/Mutations/Sigils/Super_Stimulant_Sigil.png" id="2_6is1v"]
+[ext_resource type="Texture2D" uid="uid://ck5nood0tif4o" path="res://Art/Mutations/Sigils/Final_Sigils/Super_Stimulant_Sigil.png" id="2_evbn8"]
 
 [resource]
 script = ExtResource("1_gsedg")
 mutation_name = "SteroidMaxxing"
 mutation_description = "Buff all other slots +1DMG"
-sigil_texture = ExtResource("2_6is1v")
+sigil_texture = ExtResource("2_evbn8")

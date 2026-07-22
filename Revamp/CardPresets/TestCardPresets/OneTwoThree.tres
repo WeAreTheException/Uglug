@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="CardData" format=3 uid="uid://bs3fo2ipl8vxe"]
+
+[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Old/Mutations/MutationBehaviourHandlers/Mutation.gd" id="1_67yap"]
+[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Old/Data/CardData.gd" id="2_p4prl"]
+[ext_resource type="Texture2D" uid="uid://djrcvg2bohbu8" path="res://Art/Ants/InstAnt.PNG" id="2_pjj14"]
+[ext_resource type="Resource" uid="uid://b6afw5yomddli" path="res://Old/Mutations/MutationPresets/SustainMutations/Shield.tres" id="3_tot70"]
+[ext_resource type="Resource" uid="uid://ceeskmu01vy5g" path="res://Old/Mutations/MutationPresets/TargetMutations/YAttack.tres" id="4_1dj28"]
+[ext_resource type="Resource" uid="uid://qm2l2rlbwj77" path="res://Old/Mutations/MutationPresets/SustainMutations/Heckler.tres" id="5_2xqlp"]
+
+[resource]
+script = ExtResource("2_p4prl")
+name = "Lol"
+ant_texture = ExtResource("2_pjj14")
+base_mutations = Array[ExtResource("1_67yap")]([ExtResource("3_tot70"), ExtResource("4_1dj28"), ExtResource("5_2xqlp")])
+metadata/_custom_type_script = "uid://duslcpxrhurv8"

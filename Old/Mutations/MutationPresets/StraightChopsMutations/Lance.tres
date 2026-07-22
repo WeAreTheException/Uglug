@@ -1,11 +1,11 @@
 [gd_resource type="Resource" script_class="Lance" format=3 uid="uid://dp3xgqtqwogy3"]
 
 [ext_resource type="Script" uid="uid://btsv3api5eug3" path="res://Old/Mutations/MutationBehaviourHandlers/Lance.gd" id="1_sm1fb"]
-[ext_resource type="Texture2D" uid="uid://cn1jeoy3643il" path="res://Art/Mutations/Sigils/Penetrant_Sigil.png" id="2_sm1fb"]
+[ext_resource type="Texture2D" uid="uid://ckxpq0p60c1t8" path="res://Art/Mutations/Sigils/Final_Sigils/Penetrant_Sigil.png" id="2_4sojs"]
 
 [resource]
 script = ExtResource("1_sm1fb")
 mutation_name = "Lance"
 mutation_description = "Extra Damage carries over to opponent"
-sigil_texture = ExtResource("2_sm1fb")
+sigil_texture = ExtResource("2_4sojs")
 metadata/_custom_type_script = "uid://be8yk3djwb5oc"

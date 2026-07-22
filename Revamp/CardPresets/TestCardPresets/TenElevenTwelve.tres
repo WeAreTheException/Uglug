@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="CardData" format=3 uid="uid://m7mh32mpv5ae"]
+
+[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Old/Mutations/MutationBehaviourHandlers/Mutation.gd" id="1_7hy8v"]
+[ext_resource type="Texture2D" uid="uid://d27b31dfdt7nm" path="res://Art/Ants/AntHill.PNG" id="2_1h56c"]
+[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Old/Data/CardData.gd" id="2_ord7y"]
+[ext_resource type="Resource" uid="uid://c0cebfc5tmmng" path="res://Old/Mutations/MutationPresets/RallyMutations/SteroidMaxxing.tres" id="3_3ej80"]
+[ext_resource type="Resource" uid="uid://b4tpqnugaguvu" path="res://Old/Mutations/MutationPresets/InheritanceMutations/BabyMaker.tres" id="4_27okj"]
+[ext_resource type="Resource" uid="uid://5sahtthq2tjm" path="res://Old/Mutations/MutationPresets/InheritanceMutations/Christmas.tres" id="5_k48es"]
+
+[resource]
+script = ExtResource("2_ord7y")
+name = "Lol4"
+ant_texture = ExtResource("2_1h56c")
+base_mutations = Array[ExtResource("1_7hy8v")]([ExtResource("3_3ej80"), ExtResource("4_27okj"), ExtResource("5_k48es")])
+metadata/_custom_type_script = "uid://duslcpxrhurv8"

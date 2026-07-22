@@ -284,9 +284,7 @@ metadata/_edit_use_anchors_ = true
 
 [node name="Ant" type="Sprite2D" parent="Visuals/Container/MainVisuals" unique_id=1609290713]
 material = SubResource("ShaderMaterial_587ti")
-position = Vector2(89.81483, 135.1852)
-rotation = 1.0471976
-scale = Vector2(0.14500003, 0.14516129)
+scale = Vector2(0.147, 0.147)
 texture = ExtResource("9_b5mm6")
 
 [node name="Antdows" type="Sprite2D" parent="Visuals/Container/MainVisuals" unique_id=33299499]
@@ -314,6 +312,8 @@ texture = ExtResource("14_b5mm6")
 metadata/_edit_lock_ = true
 
 [node name="PlaceAnimMockup" type="AnimationPlayer" parent="Visuals/Container/MainVisuals" unique_id=1507303113]
+active = false
+reset_on_save = false
 libraries/ = SubResource("AnimationLibrary_b5mm6")
 
 [node name="MutationVisuals" type="Node2D" parent="Visuals" unique_id=319373443 node_paths=PackedStringArray("mutation_slot_1", "mutation_slot_2", "mutation_slot_3")]
@@ -343,7 +343,7 @@ pressed_outline_color = Color(0.105882354, 0.09019608, 0.08627451, 1)
 
 [node name="BaseSprite" type="Sprite2D" parent="Visuals/MutationVisuals/Mutations/Mutation1/SigilSlot" unique_id=935391738]
 material = SubResource("ShaderMaterial_6nr3l")
-scale = Vector2(4.4620237, 4.4620233)
+scale = Vector2(3.5, 3.5)
 texture = ExtResource("17_b5mm6")
 
 [node name="BaseSigilInput" type="Area2D" parent="Visuals/MutationVisuals/Mutations/Mutation1" unique_id=123293917]
@@ -368,7 +368,7 @@ pressed_outline_color = Color(0.105882354, 0.09019608, 0.08627451, 1)
 [node name="Mutation2Sprite" type="Sprite2D" parent="Visuals/MutationVisuals/Mutations/Mutation2" unique_id=185873266]
 material = SubResource("ShaderMaterial_0l3ys")
 position = Vector2(0, 6.1035156e-05)
-scale = Vector2(0.9999999, 0.9999998)
+scale = Vector2(0.75, 0.75)
 texture = ExtResource("17_b5mm6")
 metadata/_edit_lock_ = true
 
@@ -393,7 +393,7 @@ pressed_outline_color = Color(0.105882354, 0.09019608, 0.08627451, 1)
 [node name="Mutation3Sprite" type="Sprite2D" parent="Visuals/MutationVisuals/Mutations/Mutation3" unique_id=1469740183]
 material = SubResource("ShaderMaterial_0l3ys")
 position = Vector2(0, 6.1035156e-05)
-scale = Vector2(0.9999999, 0.9999998)
+scale = Vector2(0.75, 0.75)
 texture = ExtResource("17_b5mm6")
 metadata/_edit_lock_ = true
 

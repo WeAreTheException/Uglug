@@ -1,10 +1,10 @@
 [gd_resource type="Resource" script_class="BabyMaker" format=3 uid="uid://b4tpqnugaguvu"]
 
 [ext_resource type="Script" uid="uid://b64q3q37yv55s" path="res://Old/Mutations/MutationBehaviourHandlers/BabyMaker.gd" id="1_d2ivu"]
-[ext_resource type="Texture2D" uid="uid://dlcpnx25sjojv" path="res://Art/Mutations/Pregnant_Sigil.PNG" id="2_o5px0"]
+[ext_resource type="Texture2D" uid="uid://c7742yi2mxrhf" path="res://Art/Mutations/Sigils/Final_Sigils/Pregnant_Sigil.png" id="2_fhnxj"]
 
 [resource]
 script = ExtResource("1_d2ivu")
 mutation_name = "Baby Maker"
 mutation_description = "On death, give player 2 workers"
-sigil_texture = ExtResource("2_o5px0")
+sigil_texture = ExtResource("2_fhnxj")

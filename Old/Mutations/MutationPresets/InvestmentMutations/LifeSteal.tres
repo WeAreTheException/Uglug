@@ -1,10 +1,10 @@
 [gd_resource type="Resource" script_class="Lifesteal" format=3 uid="uid://njutef00oac8"]
 
 [ext_resource type="Script" uid="uid://ceh5iwcgmycl6" path="res://Old/Mutations/MutationBehaviourHandlers/LifeSteal.gd" id="1_e6mnu"]
-[ext_resource type="Texture2D" uid="uid://dqu01mm48lfh" path="res://Art/Mutations/Sigils/Draculant_Sigil.png" id="2_3n70x"]
+[ext_resource type="Texture2D" uid="uid://cgkoni68euqo3" path="res://Art/Mutations/Sigils/Final_Sigils/Draculant_Sigil.png" id="2_0d28r"]
 
 [resource]
 script = ExtResource("1_e6mnu")
 mutation_name = "Lifesteal"
 mutation_description = "On attack, gain 1HP"
-sigil_texture = ExtResource("2_3n70x")
+sigil_texture = ExtResource("2_0d28r")

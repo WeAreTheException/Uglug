@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="CardData" format=3 uid="uid://bgpuyk3e1al8w"]
+
+[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Old/Mutations/MutationBehaviourHandlers/Mutation.gd" id="1_2sa2i"]
+[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Old/Data/CardData.gd" id="2_0inos"]
+[ext_resource type="Texture2D" uid="uid://dqujgv5hyxntx" path="res://Art/Ants/Guardiant.PNG" id="2_mqokt"]
+[ext_resource type="Resource" uid="uid://cyutbyh2av6iv" path="res://Old/Mutations/MutationPresets/RallyMutations/SteroidDealer.tres" id="3_bhis8"]
+[ext_resource type="Resource" uid="uid://dp3xgqtqwogy3" path="res://Old/Mutations/MutationPresets/StraightChopsMutations/Lance.tres" id="4_6e4cv"]
+[ext_resource type="Resource" uid="uid://njutef00oac8" path="res://Old/Mutations/MutationPresets/InvestmentMutations/LifeSteal.tres" id="5_1yk65"]
+
+[resource]
+script = ExtResource("2_0inos")
+name = "Lol3"
+ant_texture = ExtResource("2_mqokt")
+base_mutations = Array[ExtResource("1_2sa2i")]([ExtResource("3_bhis8"), ExtResource("4_6e4cv"), ExtResource("5_1yk65")])
+metadata/_custom_type_script = "uid://duslcpxrhurv8"

@@ -1,10 +1,10 @@
 [gd_resource type="Resource" script_class="RedRiot" format=3 uid="uid://qpp1tjh0bk7v"]
 
 [ext_resource type="Script" uid="uid://cqbai1u4ojnrw" path="res://Old/Mutations/MutationBehaviourHandlers/RedRiot.gd" id="1_31jfg"]
-[ext_resource type="Texture2D" uid="uid://52i5rsrcuyfc" path="res://Art/Mutations/Guardiant_Sigil.PNG" id="2_dg4vj"]
+[ext_resource type="Texture2D" uid="uid://cqp27pue5dbwq" path="res://Art/Mutations/Sigils/Final_Sigils/Guardiant_Sigil.png" id="2_taevm"]
 
 [resource]
 script = ExtResource("1_31jfg")
 mutation_description = "Takes damage that would be done to player"
-sigil_texture = ExtResource("2_dg4vj")
+sigil_texture = ExtResource("2_taevm")
 metadata/_custom_type_script = "uid://be8yk3djwb5oc"

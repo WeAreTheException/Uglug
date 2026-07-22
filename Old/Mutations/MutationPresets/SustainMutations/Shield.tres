@@ -1,11 +1,11 @@
 [gd_resource type="Resource" script_class="Shield" format=3 uid="uid://b6afw5yomddli"]
 
 [ext_resource type="Script" uid="uid://cb1b0pkk73net" path="res://Old/Mutations/MutationBehaviourHandlers/Shield.gd" id="1_yatt5"]
-[ext_resource type="Texture2D" uid="uid://dsl17qr7g1ntw" path="res://Art/Mutations/Escutcheant_Sigil.PNG" id="2_888g0"]
+[ext_resource type="Texture2D" uid="uid://bjbe3tci8tprg" path="res://Art/Mutations/Sigils/Final_Sigils/Escutcheant_Sigil.png" id="2_pxwdf"]
 
 [resource]
 script = ExtResource("1_yatt5")
 mutation_name = "Shield"
 mutation_description = "Takes no DMG on first hit"
-sigil_texture = ExtResource("2_888g0")
+sigil_texture = ExtResource("2_pxwdf")
 metadata/_custom_type_script = "uid://be8yk3djwb5oc"

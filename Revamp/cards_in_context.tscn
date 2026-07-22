@@ -4,19 +4,25 @@
 [ext_resource type="Script" uid="uid://dw1k6pcwy2emf" path="res://Revamp/MatchUI/AttackOrderArrowDisplay.gd" id="4_b6caw"]
 [ext_resource type="PackedScene" uid="uid://bw8c7m7n5yuk8" path="res://Revamp/Board/Slots.tscn" id="4_n6ts1"]
 [ext_resource type="Texture2D" uid="uid://cjesmr4t5yoad" path="res://Revamp/References/aasedasd.jpg" id="5_n6ts1"]
+[ext_resource type="Resource" uid="uid://bs3fo2ipl8vxe" path="res://Revamp/CardPresets/TestCardPresets/OneTwoThree.tres" id="5_s2dsq"]
 [ext_resource type="Script" uid="uid://b36x28452aktg" path="res://Revamp/MatchUiRoot.gd" id="5_tsgf7"]
 [ext_resource type="Script" uid="uid://dg2jxnlex8u2p" path="res://Revamp/MatchUI/UICard/PlayerHandUiBinder.gd" id="6_2qwdf"]
 [ext_resource type="Script" uid="uid://blfvp1wwkpwtb" path="res://Revamp/Camera/CameraShakeValues.gd" id="6_bguvq"]
+[ext_resource type="Resource" uid="uid://c23eoyjw4afmw" path="res://Revamp/CardPresets/TestCardPresets/FourFiveSix.tres" id="6_h76ad"]
+[ext_resource type="Resource" uid="uid://bgpuyk3e1al8w" path="res://Revamp/CardPresets/TestCardPresets/SevenEightNine.tres" id="7_sw8u3"]
 [ext_resource type="Script" uid="uid://cl88hir003ywp" path="res://Revamp/Camera/CameraShakeFeedback.gd" id="7_tsgf7"]
+[ext_resource type="Resource" uid="uid://m7mh32mpv5ae" path="res://Revamp/CardPresets/TestCardPresets/TenElevenTwelve.tres" id="8_rww4k"]
+[ext_resource type="Resource" uid="uid://2h2vn6gnpisp" path="res://Revamp/CardPresets/TestCardPresets/ThirteenFourteenFifteen.tres" id="9_e8ugv"]
 [ext_resource type="Script" uid="uid://c406tme7fpq2j" path="res://Revamp/DrawPhaseTestRoot.gd" id="9_proag"]
+[ext_resource type="Resource" uid="uid://ddutm1u6hi5je" path="res://Revamp/CardPresets/TestCardPresets/SixteenSeventeenEighteen.tres" id="10_6p3ob"]
 [ext_resource type="Script" uid="uid://t4xkfdp8n8kn" path="res://Revamp/MatchUI/UICard/CardMutationTooltipBinder.gd" id="10_8tkpi"]
 [ext_resource type="PackedScene" uid="uid://1wr1e57v7trd" path="res://Revamp/PlayerHand/Player_Hand.tscn" id="10_mtbf2"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Old/Data/CardData.gd" id="10_nux5c"]
 [ext_resource type="Resource" uid="uid://bn1jyervrnsg" path="res://Revamp/CardPresets/WorkerAnt.tres" id="10_x1cq6"]
+[ext_resource type="Resource" uid="uid://cb2lpikf6mimn" path="res://Revamp/CardPresets/TestCardPresets/NineteenTwentyTwentyOne.tres" id="11_6kxbn"]
 [ext_resource type="Resource" uid="uid://bxfxi0h5itrdu" path="res://Revamp/CardPresets/Lieutenant.tres" id="11_x1cq6"]
 [ext_resource type="Resource" uid="uid://dwpj7bg5ognwt" path="res://Revamp/CardPresets/Samurant.tres" id="12_2qwdf"]
 [ext_resource type="Resource" uid="uid://cu38anwcrq117" path="res://Revamp/CardPresets/SuperStimulant.tres" id="13_hlv0h"]
-[ext_resource type="Resource" uid="uid://ci7yvhc8pfst6" path="res://Revamp/CardPresets/QueenAnt.tres" id="16_kthx6"]
 [ext_resource type="Resource" uid="uid://b8tgum0dpv4iv" path="res://Revamp/CardPresets/Deterrant.tres" id="19_bs6ji"]
 [ext_resource type="PackedScene" uid="uid://c8mfgi3h8sc6v" path="res://NewCardLayout.tscn" id="31_lcdw0"]
 [ext_resource type="FontFile" uid="uid://do0dv62a8jo77" path="res://Revamp/Fonts/bilderberg.regular.otf" id="31_uj5b2"]
@@ -80,8 +86,9 @@ position = Vector2(-960, -540)
 opponent_slot_1_card = ExtResource("19_bs6ji")
 
 [node name="PlayerHandRoot" parent="." unique_id=371738706 instance=ExtResource("10_mtbf2")]
-position = Vector2(-64, 384)
-starting_cards = Array[ExtResource("10_nux5c")]([ExtResource("10_x1cq6"), ExtResource("10_x1cq6"), ExtResource("10_x1cq6"), ExtResource("16_kthx6"), ExtResource("10_x1cq6"), ExtResource("19_bs6ji"), ExtResource("19_bs6ji"), ExtResource("10_x1cq6"), ExtResource("10_x1cq6")])
+position = Vector2(-168, 384)
+starting_cards = Array[ExtResource("10_nux5c")]([ExtResource("5_s2dsq"), ExtResource("6_h76ad"), ExtResource("7_sw8u3"), ExtResource("8_rww4k"), ExtResource("9_e8ugv"), ExtResource("10_6p3ob"), ExtResource("11_6kxbn")])
+max_hand_size = 7
 
 [node name="MatchUI" type="Node2D" parent="." unique_id=196750808]
 visible = false

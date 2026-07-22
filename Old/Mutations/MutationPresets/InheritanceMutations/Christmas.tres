@@ -1,11 +1,11 @@
 [gd_resource type="Resource" script_class="Christmas" format=3 uid="uid://5sahtthq2tjm"]
 
 [ext_resource type="Script" uid="uid://l6decvrb2m7b" path="res://Old/Mutations/MutationBehaviourHandlers/Christmas.gd" id="1_ds36k"]
-[ext_resource type="Texture2D" uid="uid://c8ymxpi2ol5u" path="res://Art/Mutations/Observant_Sigil.PNG" id="2_uggyc"]
+[ext_resource type="Texture2D" uid="uid://b20corblroviu" path="res://Art/Mutations/Sigils/Final_Sigils/Observant_Sigil.png" id="2_07ynb"]
 
 [resource]
 script = ExtResource("1_ds36k")
 mutation_name = "Christmas"
 mutation_description = "On placement grants random warrior"
-sigil_texture = ExtResource("2_uggyc")
+sigil_texture = ExtResource("2_07ynb")
 metadata/_custom_type_script = "uid://be8yk3djwb5oc"
