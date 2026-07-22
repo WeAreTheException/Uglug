@@ -3,12 +3,12 @@
 importer="font_data_dynamic"
 type="FontFile"
 uid="uid://bc8c48q2trqw5"
-path="res://.godot/imported/Akira Expanded Demo.otf-cdf96c17b4b6c9244848f7271aee96f6.fontdata"
+path="res://.godot/imported/Akira Expanded Demo.otf-dfdb5d36692ee3053762b485552dafeb.fontdata"
 
 [deps]
 
-source_file="res://Art/AntBack/Akira Expanded Demo.otf"
-dest_files=["res://.godot/imported/Akira Expanded Demo.otf-cdf96c17b4b6c9244848f7271aee96f6.fontdata"]
+source_file="res://Revamp/Fonts/Akira Expanded Demo.otf"
+dest_files=["res://.godot/imported/Akira Expanded Demo.otf-dfdb5d36692ee3053762b485552dafeb.fontdata"]
 
 [params]
 

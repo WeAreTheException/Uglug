@@ -79,6 +79,10 @@ y_offset = -350.0
 
 [node name="Hand_BuffingLayout" type="Node2D" parent="Hand_Layout" unique_id=164285583]
 script = ExtResource("10_wk34g")
+card_spacing = 170.0
+curve_height = 100.0
+max_rotation_degrees = 10.0
+y_offset = 0.0
 
 [node name="HandEvolution" type="Node2D" parent="Hand_Layout" unique_id=1721728418]
 

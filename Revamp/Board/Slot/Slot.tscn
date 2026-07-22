@@ -69,6 +69,7 @@ playable_shader_sprite = NodePath("../../SlotVisualShadered")
 script = ExtResource("6_dshdd")
 normal_sprite = NodePath("../../SlotVisual")
 playable_shader_sprite = NodePath("../../SlotVisualShadered")
+preview_color = Color(0, 0.57254905, 0.5176471, 1)
 
 [node name="SlotAttackPreviewFeedback" type="Node" parent="SlotFeedback" unique_id=734268325 node_paths=PackedStringArray("shader_rect", "icon_sprite")]
 script = ExtResource("7_jvbdb")

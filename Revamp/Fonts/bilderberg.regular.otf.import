@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://cxstlediocg1n"
-path="res://.godot/imported/Gondens DEMO.otf-b508992061f9ec038001d5502ecf8344.fontdata"
+uid="uid://do0dv62a8jo77"
+path="res://.godot/imported/bilderberg.regular.otf-ce245b5a3da2a1267437829db7c83fbf.fontdata"
 
 [deps]
 
-source_file="res://Art/AntBack/Gondens DEMO.otf"
-dest_files=["res://.godot/imported/Gondens DEMO.otf-b508992061f9ec038001d5502ecf8344.fontdata"]
+source_file="res://Revamp/Fonts/bilderberg.regular.otf"
+dest_files=["res://.godot/imported/bilderberg.regular.otf-ce245b5a3da2a1267437829db7c83fbf.fontdata"]
 
 [params]
 

@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://3m1qkjceiwrb"
-path="res://.godot/imported/Transcity DEMO.otf-741d60c0893daedd82d71789b3cb4923.fontdata"
+uid="uid://cxstlediocg1n"
+path="res://.godot/imported/Gondens DEMO.otf-a6b2ee63007019632f90653f7c1aea21.fontdata"
 
 [deps]
 
-source_file="res://Art/AntBack/Transcity DEMO.otf"
-dest_files=["res://.godot/imported/Transcity DEMO.otf-741d60c0893daedd82d71789b3cb4923.fontdata"]
+source_file="res://Revamp/Fonts/Gondens DEMO.otf"
+dest_files=["res://.godot/imported/Gondens DEMO.otf-a6b2ee63007019632f90653f7c1aea21.fontdata"]
 
 [params]
 

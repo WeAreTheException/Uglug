@@ -72,8 +72,96 @@
 [ext_resource type="Script" uid="uid://00f6bgoq0mgc" path="res://Revamp/Multiplayer/MatchNetworkAttack.gd" id="73_nc85t"]
 [ext_resource type="Script" uid="uid://c62i7pwt3r30f" path="res://Revamp/Multiplayer/MatchNetworkTimer.gd" id="74_c8bx1"]
 [ext_resource type="Script" uid="uid://dx8ow48eguxe7" path="res://Revamp/MatchFlow/MatchPlacementCompletionHandler.gd" id="74_yjh5v"]
+[ext_resource type="Script" uid="uid://b36x28452aktg" path="res://Revamp/MatchUiRoot.gd" id="75_nc85t"]
+[ext_resource type="Script" uid="uid://dg2jxnlex8u2p" path="res://Revamp/MatchUI/UICard/PlayerHandUiBinder.gd" id="76_c8bx1"]
+[ext_resource type="Script" uid="uid://cm16kgidxxu4h" path="res://Revamp/MutationTooltTip/MutationButtonHoverBinder.gd" id="77_7f3b3"]
+[ext_resource type="Script" uid="uid://cmbtqx5ng27nb" path="res://Revamp/MutationTooltTip/MutationToolTip.gd" id="78_7f3b3"]
 [ext_resource type="Script" uid="uid://ji2tm3gnhj4o" path="res://Revamp/Multiplayer/MatchNetworkScore.gd" id="78_o7028"]
+[ext_resource type="Script" uid="uid://t4xkfdp8n8kn" path="res://Revamp/MatchUI/UICard/CardMutationTooltipBinder.gd" id="79_63uau"]
+[ext_resource type="FontFile" uid="uid://3m1qkjceiwrb" path="res://Revamp/Fonts/Transcity DEMO.otf" id="79_cxut3"]
+[ext_resource type="FontFile" uid="uid://do0dv62a8jo77" path="res://Revamp/Fonts/bilderberg.regular.otf" id="80_cxut3"]
 [ext_resource type="Script" uid="uid://bnbuh7nx3k3f2" path="res://Revamp/Multiplayer/MatchNetworkDebugSync.gd" id="81_o7028"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_lcv7c"]
+line_spacing = 0.0
+font_size = 64
+font_color = Color(0.93333334, 0.8784314, 0.81960785, 1)
+outline_size = 10
+outline_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
+shadow_size = 10
+shadow_color = Color(0, 0.57254905, 0.92941177, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_8jo3k"]
+line_spacing = 0.0
+font_size = 48
+font_color = Color(0.93333334, 0.8784314, 0.81960785, 1)
+outline_size = 10
+outline_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
+shadow_size = 10
+shadow_color = Color(0, 0.57254905, 0.92941177, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_sxqap"]
+line_spacing = 0.0
+font_size = 60
+font_color = Color(0.93333334, 0.8784314, 0.81960785, 1)
+outline_size = 10
+outline_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
+shadow_size = 10
+shadow_color = Color(0.83137256, 0.70980394, 0.59607846, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_mm0q7"]
+line_spacing = 0.0
+font_size = 100
+font_color = Color(0.93333334, 0.8784314, 0.81960785, 1)
+outline_size = 10
+outline_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
+shadow_size = 10
+shadow_color = Color(0.69803923, 0.56078434, 0.43137255, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_omgbn"]
+line_spacing = 0.0
+font_size = 52
+font_color = Color(0.93333334, 0.8784314, 0.81960785, 1)
+outline_size = 10
+outline_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
+shadow_size = 10
+shadow_color = Color(0.83137256, 0.70980394, 0.59607846, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_cxut3"]
+line_spacing = 0.0
+font_size = 48
+font_color = Color(0.93333334, 0.8784314, 0.81960785, 1)
+outline_size = 10
+outline_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
+shadow_size = 10
+shadow_color = Color(0.83137256, 0.70980394, 0.59607846, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_o7028"]
+line_spacing = 0.0
+font_size = 24
+font_color = Color(0.83137256, 0.70980394, 0.59607846, 1)
+outline_size = 10
+outline_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
+shadow_size = 10
+shadow_color = Color(0.9647059, 0.48235294, 0.5176471, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_qct7y"]
+line_spacing = 0.0
+font_size = 24
+font_color = Color(0.83137256, 0.70980394, 0.59607846, 1)
+outline_size = 10
+outline_color = Color(0.16206557, 0.1620656, 0.16206557, 1)
+shadow_size = 10
+shadow_color = Color(1, 0.5882353, 0.92941177, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_bv6q5"]
+line_spacing = 0.0
+font_size = 24
+font_color = Color(0.83137256, 0.70980394, 0.59607846, 1)
+outline_size = 10
+outline_color = Color(0.16206557, 0.1620656, 0.16206557, 1)
+shadow_size = 10
+shadow_color = Color(0, 0.57254905, 0.92941177, 1)
 
 [node name="Mao" type="Node2D" unique_id=550121538]
 
@@ -425,14 +513,17 @@ offset_bottom = 1044.0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MatchUI" parent="Control" unique_id=495517401 node_paths=PackedStringArray("match_flow_root", "slots_root", "score_state", "phase_timer", "placement_completion_handler") instance=ExtResource("1_2n6q5")]
+[node name="MatchUI" parent="Control" unique_id=495517401 node_paths=PackedStringArray("match_flow_root", "match_network_root", "slots_root", "score_state", "phase_timer", "placement_completion_handler", "buff_flow_handler", "ui_card") instance=ExtResource("1_2n6q5")]
 visible = false
 layout_mode = 0
 match_flow_root = NodePath("../../Scripts/MatchFlowRoot")
+match_network_root = NodePath("../../Multiplayer/MatchNetworkRoot")
 slots_root = NodePath("../../Core/Board")
 score_state = NodePath("../../Scripts/MatchFlowRoot/MatchScoreState")
 phase_timer = NodePath("../../Multiplayer/MatchPhaseTimer")
 placement_completion_handler = NodePath("../../Scripts/MatchFlowRoot/MatchPlacementCompletionHandler")
+buff_flow_handler = NodePath("../../Scripts/Core/Buff/BuffFlowHandler")
+ui_card = NodePath("../../UICard")
 
 [node name="BuffConfirmButton" type="Button" parent="Control" unique_id=685589739 node_paths=PackedStringArray("buff_flow_handler", "buff_apply_handler")]
 z_index = 10
@@ -528,3 +619,316 @@ sacrifice_board_binder = NodePath("../../Scripts/Core/SacrificeController/Sacrif
 script = ExtResource("73_fk48e")
 match_flow_root = NodePath("../../Scripts/MatchFlowRoot")
 print_debug = false
+
+[node name="UICard" type="Control" parent="." unique_id=1479972870 node_paths=PackedStringArray("helper_label", "timer_label", "worker_button", "warrior_button", "buff_button", "timer_end_turn_button", "undo_button", "mutation_database", "player_hand")]
+layout_mode = 3
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 960.0
+offset_top = 512.0
+offset_right = 960.0
+offset_bottom = 512.0
+grow_vertical = 2
+script = ExtResource("75_nc85t")
+helper_label = NodePath("CardPanel/SpritePanel/HelpPanel/Desription")
+timer_label = NodePath("CardPanel/EndButton/TimeLabel")
+worker_button = NodePath("CardPanel/WorkerPanel")
+warrior_button = NodePath("CardPanel/WarriorPanel")
+buff_button = NodePath("CardPanel/BuffPile")
+timer_end_turn_button = NodePath("CardPanel/EndButton")
+undo_button = NodePath("CardPanel/Undo")
+mutation_database = NodePath("../Scripts/Core/Buff/BuffDatabase")
+player_hand = NodePath("../Core/PlayerHAnd")
+active_button_color = Color(1.4439226e-07, 0.4351746, 0.43522498, 1)
+inactive_button_color = Color(0, 0.68333876, 0.6841458, 0.2509804)
+
+[node name="CardPanel" type="Panel" parent="UICard" unique_id=1032502277]
+layout_mode = 0
+offset_left = 448.0
+offset_top = -447.0
+offset_right = 868.0
+offset_bottom = 178.0
+metadata/_edit_lock_ = true
+
+[node name="SpritePanel" type="Panel" parent="UICard/CardPanel" unique_id=2073263536]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 61.0
+offset_right = 392.0
+offset_bottom = 414.0
+metadata/_edit_lock_ = true
+
+[node name="PhasePanel" type="Panel" parent="UICard/CardPanel/SpritePanel" unique_id=1426904972]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 10.0
+offset_right = 345.0
+offset_bottom = 66.0
+metadata/_edit_lock_ = true
+
+[node name="Phase" type="Label" parent="UICard/CardPanel/SpritePanel/PhasePanel" unique_id=1923702342]
+layout_mode = 0
+offset_left = -16.0
+offset_top = -7.0
+offset_right = 346.0
+offset_bottom = 61.0
+theme_override_fonts/font = ExtResource("79_cxut3")
+theme_override_font_sizes/font_size = 100
+text = "Draw"
+label_settings = SubResource("LabelSettings_lcv7c")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Who\'sGoingfirstLabel" type="Panel" parent="UICard/CardPanel/SpritePanel" unique_id=1360391893]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 74.0
+offset_right = 345.0
+offset_bottom = 130.0
+metadata/_edit_lock_ = true
+
+[node name="WhosFirst" type="Label" parent="UICard/CardPanel/SpritePanel/Who\'sGoingfirstLabel" unique_id=1574643725]
+layout_mode = 0
+offset_left = -16.0
+offset_right = 346.0
+offset_bottom = 56.0
+theme_override_fonts/font = ExtResource("79_cxut3")
+theme_override_font_sizes/font_size = 100
+text = "Enemy is First"
+label_settings = SubResource("LabelSettings_8jo3k")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HelpPanel" type="Panel" parent="UICard/CardPanel/SpritePanel" unique_id=528906871]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 136.0
+offset_right = 345.0
+offset_bottom = 341.0
+metadata/_edit_lock_ = true
+
+[node name="Desription" type="RichTextLabel" parent="UICard/CardPanel/SpritePanel/HelpPanel" unique_id=1590300290]
+layout_mode = 0
+offset_right = 329.0
+offset_bottom = 209.0
+theme_override_colors/default_color = Color(0.93333334, 0.8784314, 0.81960785, 1)
+theme_override_colors/font_outline_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
+theme_override_colors/font_shadow_color = Color(0.83137256, 0.70980394, 0.59607846, 1)
+theme_override_constants/shadow_outline_size = 10
+theme_override_constants/outline_size = 10
+theme_override_fonts/normal_font = ExtResource("80_cxut3")
+theme_override_font_sizes/normal_font_size = 24
+text = "You're
+Going First"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="WarriorPanel" type="Button" parent="UICard/CardPanel" unique_id=226802285]
+layout_mode = 0
+offset_left = 154.0
+offset_top = 438.0
+offset_right = 270.0
+offset_bottom = 560.0
+metadata/_edit_lock_ = true
+
+[node name="BuffPile" type="Button" parent="UICard/CardPanel" unique_id=1190899923]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 443.0
+offset_right = 146.0
+offset_bottom = 565.0
+metadata/_edit_lock_ = true
+
+[node name="WorkerPanel" type="Button" parent="UICard/CardPanel" unique_id=1520006977]
+layout_mode = 0
+offset_left = 278.0
+offset_top = 437.0
+offset_right = 394.0
+offset_bottom = 559.0
+metadata/_edit_lock_ = true
+
+[node name="RoundPanel" type="Panel" parent="UICard/CardPanel" unique_id=175637096]
+layout_mode = 0
+offset_left = 30.0
+offset_top = -41.0
+offset_right = 392.0
+offset_bottom = 46.0
+metadata/_edit_lock_ = true
+
+[node name="Round" type="Label" parent="UICard/CardPanel/RoundPanel" unique_id=1288128672]
+layout_mode = 0
+offset_left = 217.0
+offset_top = -37.0
+offset_right = 373.0
+offset_bottom = 118.0
+theme_override_fonts/font = ExtResource("80_cxut3")
+theme_override_font_sizes/font_size = 60
+text = "8
+"
+label_settings = SubResource("LabelSettings_sxqap")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="RNumber" type="Label" parent="UICard/CardPanel/RoundPanel" unique_id=672276333]
+layout_mode = 0
+offset_right = 362.0
+offset_bottom = 87.0
+theme_override_fonts/font = ExtResource("79_cxut3")
+theme_override_font_sizes/font_size = 100
+text = "Round  "
+label_settings = SubResource("LabelSettings_mm0q7")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="EndButton" type="Button" parent="UICard/CardPanel" unique_id=1228539969]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 567.0
+offset_right = 392.0
+offset_bottom = 654.0
+metadata/_edit_lock_ = true
+
+[node name="TimeLabel" type="Label" parent="UICard/CardPanel/EndButton" unique_id=615588424]
+layout_mode = 0
+offset_top = -21.0
+offset_right = 362.0
+offset_bottom = 113.0
+theme_override_fonts/font = ExtResource("80_cxut3")
+theme_override_font_sizes/font_size = 48
+text = "1:00"
+label_settings = SubResource("LabelSettings_omgbn")
+horizontal_alignment = 1
+
+[node name="Undo" type="Button" parent="UICard/CardPanel" unique_id=642412843]
+layout_mode = 0
+offset_left = -88.0
+offset_top = 255.0
+offset_bottom = 326.0
+
+[node name="PlayerHandUiBinder" type="Node" parent="UICard" unique_id=1141576823 node_paths=PackedStringArray("match_ui")]
+script = ExtResource("76_c8bx1")
+match_ui = NodePath("..")
+
+[node name="MutationButtonHoverBinder" type="Node" parent="UICard" unique_id=1903292537 node_paths=PackedStringArray("match_ui", "mutation_button")]
+script = ExtResource("77_7f3b3")
+match_ui = NodePath("..")
+mutation_button = NodePath("../CardPanel/BuffPile")
+
+[node name="ToolTip" type="Control" parent="." unique_id=1539072932 node_paths=PackedStringArray("name_label", "description_label")]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 1408.0
+offset_top = 781.0
+offset_right = 1882.0
+offset_bottom = 1022.0
+script = ExtResource("78_7f3b3")
+name_label = NodePath("TextBox/TBNamePanel/TBNameLabel")
+description_label = NodePath("TextBox/TBDescripPanel/TBDescripLabel")
+default_description_text = "
+"
+
+[node name="TextBox" type="Panel" parent="ToolTip" unique_id=1840213442]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -241.0
+offset_right = 474.0
+grow_vertical = 0
+metadata/_edit_lock_ = true
+
+[node name="TBNamePanel" type="Panel" parent="ToolTip/TextBox" unique_id=689576668]
+layout_mode = 0
+offset_left = 17.0
+offset_top = 11.0
+offset_right = 458.0
+offset_bottom = 61.0
+metadata/_edit_lock_ = true
+
+[node name="TBNameLabel" type="Label" parent="ToolTip/TextBox/TBNamePanel" unique_id=1859164772]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 50.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("79_cxut3")
+theme_override_font_sizes/font_size = 48
+text = "Royale Pheromones"
+label_settings = SubResource("LabelSettings_cxut3")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="TBDescripPanel" type="Panel" parent="ToolTip/TextBox" unique_id=2112799246]
+layout_mode = 0
+offset_left = 17.0
+offset_top = 75.0
+offset_right = 458.0
+offset_bottom = 220.0
+metadata/_edit_lock_ = true
+
+[node name="TBDescripLabel" type="Label" parent="ToolTip/TextBox/TBDescripPanel" unique_id=1376106244]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 145.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("80_cxut3")
+theme_override_font_sizes/font_size = 24
+text = "Heckler: Opposing card has - 1 ATK
+"
+label_settings = SubResource("LabelSettings_o7028")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TBDescripLabel4" type="Label" parent="ToolTip/TextBox/TBDescripPanel" unique_id=1864434718]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 145.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("80_cxut3")
+theme_override_font_sizes/font_size = 24
+text = "Heckler: Opposing card has - 1 ATK
+"
+label_settings = SubResource("LabelSettings_o7028")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TBDescripLabel2" type="Label" parent="ToolTip/TextBox/TBDescripPanel" unique_id=1296569525]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 40.0
+offset_bottom = 185.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("80_cxut3")
+theme_override_font_sizes/font_size = 24
+text = "Heckler: Opposing card has - 1 ATK
+"
+label_settings = SubResource("LabelSettings_qct7y")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TBDescripLabel3" type="Label" parent="ToolTip/TextBox/TBDescripPanel" unique_id=215760815]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 80.0
+offset_bottom = 225.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("80_cxut3")
+theme_override_font_sizes/font_size = 24
+text = "Heckler: Opposing card has - 1 ATK
+"
+label_settings = SubResource("LabelSettings_bv6q5")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CArdMutationTooltipbinde" type="Node" parent="ToolTip" unique_id=2111843857 node_paths=PackedStringArray("mutation_tooltip", "player_hands")]
+script = ExtResource("79_63uau")
+mutation_tooltip = NodePath("..")
+player_hands = [NodePath("../../Core/PlayerHAnd")]

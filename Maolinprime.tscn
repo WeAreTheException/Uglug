@@ -12,7 +12,7 @@
 [ext_resource type="Script" uid="uid://dq0eto4h1cn2c" path="res://TextLevitate.gd" id="10_brm5h"]
 [ext_resource type="Script" uid="uid://brld7daswb5n8" path="res://SteppedLift.gd" id="11_80dle"]
 [ext_resource type="Texture2D" uid="uid://d1ypj3toan6r1" path="res://Art/Blood.png" id="12_b3rnd"]
-[ext_resource type="FontFile" uid="uid://m0pv3sk8qbih" path="res://Art/AntBack/antrf___.ttf" id="13_2ss1p"]
+[ext_resource type="FontFile" uid="uid://m0pv3sk8qbih" path="res://Revamp/Fonts/antrf___.ttf" id="13_2ss1p"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_uw526"]
 

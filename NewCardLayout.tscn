@@ -3,7 +3,7 @@
 [ext_resource type="Shader" uid="uid://b4ndwq1f6teud" path="res://AntSpriteShader.gdshader" id="2_uw526"]
 [ext_resource type="Texture2D" uid="uid://bt8o5l5yrmihl" path="res://Art/AntBack/CardBackground.png" id="3_5ijxp"]
 [ext_resource type="Texture2D" uid="uid://di66ndoe6cgnp" path="res://Art/Ants/Antler.png" id="3_n82b3"]
-[ext_resource type="FontFile" uid="uid://m0pv3sk8qbih" path="res://Art/AntBack/antrf___.ttf" id="4_6iak0"]
+[ext_resource type="FontFile" uid="uid://m0pv3sk8qbih" path="res://Revamp/Fonts/antrf___.ttf" id="4_6iak0"]
 [ext_resource type="Shader" uid="uid://n3l4egojry4s" path="res://Balatro.gdshader" id="4_uw526"]
 [ext_resource type="Shader" uid="uid://clsxlhuocr8hn" path="res://Old/Cards/BackgroundSlide.gdshader" id="5_eyf70"]
 [ext_resource type="Texture2D" uid="uid://d1ypj3toan6r1" path="res://Art/Blood.png" id="8_uw526"]

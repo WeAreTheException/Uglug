@@ -3,12 +3,12 @@
 importer="font_data_dynamic"
 type="FontFile"
 uid="uid://m0pv3sk8qbih"
-path="res://.godot/imported/antrf___.ttf-daabab0b6c8e7cfb10a283135efcb770.fontdata"
+path="res://.godot/imported/antrf___.ttf-bb30b864b00ec9f5a7c001d3dabe851b.fontdata"
 
 [deps]
 
-source_file="res://Art/AntBack/antrf___.ttf"
-dest_files=["res://.godot/imported/antrf___.ttf-daabab0b6c8e7cfb10a283135efcb770.fontdata"]
+source_file="res://Revamp/Fonts/antrf___.ttf"
+dest_files=["res://.godot/imported/antrf___.ttf-bb30b864b00ec9f5a7c001d3dabe851b.fontdata"]
 
 [params]
 

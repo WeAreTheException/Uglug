@@ -22,7 +22,7 @@
 [ext_resource type="Script" uid="uid://diedfguwyfmqt" path="res://Revamp/MainMenu/Scripts/MainMenuMapFlow.gd" id="21_iph7y"]
 [ext_resource type="Script" uid="uid://ngrnetyjwstc" path="res://Revamp/MainMenu/Scripts/MainMenuHostFlow.gd" id="22_bhtdf"]
 [ext_resource type="Script" uid="uid://gxga134umft0" path="res://Revamp/MainMenu/Scripts/MainMenuJoinFlow.gd" id="23_2klqk"]
-[ext_resource type="FontFile" uid="uid://m0pv3sk8qbih" path="res://Art/AntBack/antrf___.ttf" id="23_fsqeg"]
+[ext_resource type="FontFile" uid="uid://m0pv3sk8qbih" path="res://Revamp/Fonts/antrf___.ttf" id="23_fsqeg"]
 [ext_resource type="Script" uid="uid://b6lm7l0gmvual" path="res://Revamp/MainMenu/Scripts/MainMenuMatchFlow.gd" id="24_fsqeg"]
 
 [node name="MainMenu" type="Control" unique_id=930422600 node_paths=PackedStringArray("map_visual", "create_lobby_popup", "join_private_popup", "connection_handler", "lobby_browser", "state_manager", "button_state", "host_flow", "join_flow", "match_flow", "map_flow", "map_spawn_locations", "status_label")]
