@@ -411,7 +411,7 @@ z_index = 7
 script = ExtResource("15_5t0dk")
 attack = NodePath("Attack/AttackSprite")
 health = NodePath("Health2/HealthSprite")
-cost = [NodePath("Cost/Blood2"), NodePath("Cost/Blood"), NodePath("Cost/Blood3"), NodePath("Cost/Blood4")]
+cost = [NodePath("Cost/Blood2"), NodePath("Cost/Blood3"), NodePath("Cost/Blood4"), NodePath("Cost/Blood5")]
 name_label = NodePath("Name2")
 attack_label = NodePath("Attack/AtkLbl")
 health_label = NodePath("Health2/HlthLbl")
@@ -441,26 +441,26 @@ metadata/_edit_use_anchors_ = true
 
 [node name="Blood2" type="Sprite2D" parent="Visuals/StatsVisual/Cost" unique_id=1694147808]
 z_index = 100
-position = Vector2(65.74074, -84.259254)
-scale = Vector2(0.120000005, 0.1)
+position = Vector2(65.93889, -82.17592)
+scale = Vector2(0.13085979, 0.09093913)
 texture = ExtResource("27_0lj05")
 
-[node name="Blood" type="Sprite2D" parent="Visuals/StatsVisual/Cost" unique_id=1132072044]
+[node name="Blood3" type="Sprite2D" parent="Visuals/StatsVisual/Cost" unique_id=487971692]
 z_index = 100
-position = Vector2(45.48148, -84.34222)
-scale = Vector2(0.12, 0.1)
+position = Vector2(46.296295, -82.40741)
+scale = Vector2(0.13085979, 0.09093913)
 texture = ExtResource("27_0lj05")
 
-[node name="Blood3" type="Sprite2D" parent="Visuals/StatsVisual/Cost" unique_id=1533755818]
+[node name="Blood4" type="Sprite2D" parent="Visuals/StatsVisual/Cost" unique_id=237885903]
 z_index = 100
-position = Vector2(54.629627, -60.185184)
-scale = Vector2(0.12, 0.1)
+position = Vector2(56.481483, -61.1111)
+scale = Vector2(0.13085979, 0.09093913)
 texture = ExtResource("27_0lj05")
 
-[node name="Blood4" type="Sprite2D" parent="Visuals/StatsVisual/Cost" unique_id=1261569810]
+[node name="Blood5" type="Sprite2D" parent="Visuals/StatsVisual/Cost" unique_id=679220395]
 z_index = 100
-position = Vector2(74.074066, -60.185184)
-scale = Vector2(0.12, 0.1)
+position = Vector2(75.92592, -62.037025)
+scale = Vector2(0.13085979, 0.09093913)
 texture = ExtResource("27_0lj05")
 
 [node name="Attack" type="Node2D" parent="Visuals/StatsVisual" unique_id=651649053]
