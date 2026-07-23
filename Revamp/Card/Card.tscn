@@ -32,9 +32,7 @@
 [ext_resource type="Script" uid="uid://cjg3wldaxqx21" path="res://Revamp/Card/CardActions/Die/DieAudio.gd" id="20_7vw44"]
 [ext_resource type="Script" uid="uid://7pm1mj2m7jwg" path="res://Revamp/Card/CardFeedback/CardSelectFeedback.gd" id="20_v34li"]
 [ext_resource type="AudioStream" uid="uid://5uho8ho3dlfo" path="res://Old/Audio/Placeholder SFX/card_death.wav" id="21_k3ell"]
-[ext_resource type="Shader" uid="uid://b4ndwq1f6teud" path="res://AntSpriteShader.gdshader" id="22_dgt1a"]
 [ext_resource type="AudioStream" uid="uid://b1mdeia7sw5l5" path="res://Revamp/SFX/HurtSound2.mp3" id="23_56um7"]
-[ext_resource type="Texture2D" uid="uid://crorkhppccg5v" path="res://Art/Ants/WorkerAnt.PNG" id="23_b42bd"]
 [ext_resource type="Script" uid="uid://maqiq3kcc45q" path="res://Revamp/Card/CardActions/Sacrifice/PendingSacrificeFeedback.gd" id="27_0h522"]
 [ext_resource type="Script" uid="uid://bwf2dy46x2l01" path="res://Revamp/Card/CardActions/Sacrifice/ComittedSacrificeFeedback.gd" id="28_msnpm"]
 [ext_resource type="Script" uid="uid://b0rleb5qjfrvp" path="res://Revamp/Card/CardActions/StatChange/Buffed.gd" id="30_56um7"]
@@ -62,25 +60,6 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g8l5j"]
 size = Vector2(192, 288)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_3lodb"]
-shader = ExtResource("22_dgt1a")
-shader_parameter/waveAmplitude = 0.0550000026125
-shader_parameter/correctVertex = true
-shader_parameter/waveFrequency = 5.0000002375
-shader_parameter/verticalWave = true
-shader_parameter/keepTransparency = true
-shader_parameter/useTime = true
-shader_parameter/waveSpeed = 1.0
-shader_parameter/progress = 0.0
-shader_parameter/firstHalf = 0.5
-shader_parameter/secondHalf = 0.5
-shader_parameter/freezeFirstHalf = true
-shader_parameter/freezeSecondHalf = true
-shader_parameter/r_displacement = Vector2(3, 0)
-shader_parameter/g_displacement = Vector2(0, 0)
-shader_parameter/b_displacement = Vector2(-3, 0)
-shader_parameter/alpha_multiplier = 1.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ieatu"]
 shader = ExtResource("40_hginc")
@@ -202,12 +181,6 @@ hurt_texture = ExtResource("17_7vw44")
 anchor = NodePath("../../../../Visuals/CardVisuals/FeedbackSpriteAnchor")
 sprite_size = Vector2(150, 232.5)
 fade_time = 0.5
-
-[node name="AntHurtOverlay" type="Sprite2D" parent="Actions/Hurt/HurtFeedbackHandler/HurtSprite" unique_id=460993809]
-material = SubResource("ShaderMaterial_3lodb")
-position = Vector2(4.7111516e-06, 0.49999517)
-scale = Vector2(0.15666665, 0.15645161)
-texture = ExtResource("23_b42bd")
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Actions/Hurt" unique_id=1255865697]
 stream = ExtResource("23_56um7")
