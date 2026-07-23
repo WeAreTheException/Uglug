@@ -17,6 +17,7 @@
 [ext_resource type="PackedScene" uid="uid://1wr1e57v7trd" path="res://Revamp/PlayerHand/Player_Hand.tscn" id="10_mtbf2"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Old/Data/CardData.gd" id="10_nux5c"]
 [ext_resource type="Resource" uid="uid://bn1jyervrnsg" path="res://Revamp/CardPresets/WorkerAnt.tres" id="10_x1cq6"]
+[ext_resource type="Resource" uid="uid://ddutm1u6hi5je" path="res://Revamp/CardPresets/TestCardPresets/SixteenSeventeenEighteen.tres" id="10_yc70n"]
 [ext_resource type="Resource" uid="uid://bxfxi0h5itrdu" path="res://Revamp/CardPresets/Lieutenant.tres" id="11_x1cq6"]
 [ext_resource type="Resource" uid="uid://dwpj7bg5ognwt" path="res://Revamp/CardPresets/Samurant.tres" id="12_2qwdf"]
 [ext_resource type="Resource" uid="uid://cu38anwcrq117" path="res://Revamp/CardPresets/SuperStimulant.tres" id="13_hlv0h"]
@@ -85,7 +86,7 @@ opponent_slot_1_card = ExtResource("19_bs6ji")
 
 [node name="PlayerHandRoot" parent="." unique_id=371738706 instance=ExtResource("10_mtbf2")]
 position = Vector2(-168, 384)
-starting_cards = Array[ExtResource("10_nux5c")]([ExtResource("5_s2dsq"), ExtResource("6_h76ad"), ExtResource("7_sw8u3"), ExtResource("8_rww4k"), ExtResource("9_e8ugv")])
+starting_cards = Array[ExtResource("10_nux5c")]([ExtResource("5_s2dsq"), ExtResource("6_h76ad"), ExtResource("7_sw8u3"), ExtResource("8_rww4k"), ExtResource("9_e8ugv"), ExtResource("10_yc70n")])
 max_hand_size = 7
 
 [node name="MatchUI" type="Node2D" parent="." unique_id=196750808]
