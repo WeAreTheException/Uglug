@@ -4,10 +4,18 @@
 [ext_resource type="PackedScene" uid="uid://bw8c7m7n5yuk8" path="res://Revamp/Board/Slots.tscn" id="1_yq750"]
 [ext_resource type="PackedScene" uid="uid://1wr1e57v7trd" path="res://Revamp/PlayerHand/Player_Hand.tscn" id="2_mi1n2"]
 [ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Old/Mutations/MutationBehaviourHandlers/Mutation.gd" id="3_3vc3c"]
+[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Old/Data/CardData.gd" id="4_bv6q5"]
+[ext_resource type="Resource" uid="uid://c23eoyjw4afmw" path="res://Revamp/CardPresets/TestCardPresets/FourFiveSix.tres" id="5_sxqap"]
 [ext_resource type="Script" uid="uid://8nr6ngjl24kj" path="res://Revamp/MatchFlow/MatchAutoAdvanceHandler.gd" id="6_lc0u2"]
+[ext_resource type="Resource" uid="uid://cb2lpikf6mimn" path="res://Revamp/CardPresets/TestCardPresets/NineteenTwentyTwentyOne.tres" id="6_mm0q7"]
+[ext_resource type="Resource" uid="uid://bs3fo2ipl8vxe" path="res://Revamp/CardPresets/TestCardPresets/OneTwoThree.tres" id="7_lcv7c"]
+[ext_resource type="Resource" uid="uid://bgpuyk3e1al8w" path="res://Revamp/CardPresets/TestCardPresets/SevenEightNine.tres" id="8_8jo3k"]
+[ext_resource type="Resource" uid="uid://ddutm1u6hi5je" path="res://Revamp/CardPresets/TestCardPresets/SixteenSeventeenEighteen.tres" id="9_omgbn"]
 [ext_resource type="Script" uid="uid://61l5g8wkdar3" path="res://SacrificeController.gd" id="10_1j514"]
+[ext_resource type="Resource" uid="uid://m7mh32mpv5ae" path="res://Revamp/CardPresets/TestCardPresets/TenElevenTwelve.tres" id="10_1tvpp"]
 [ext_resource type="Script" uid="uid://db4xai716j06p" path="res://Revamp/Card/CardActions/Sacrifice/SacrificeSelectionRoot.gd" id="11_5f7hr"]
 [ext_resource type="Script" uid="uid://ciopi88keoi3k" path="res://SacrificeRequirement.gd" id="11_at0h8"]
+[ext_resource type="Resource" uid="uid://2h2vn6gnpisp" path="res://Revamp/CardPresets/TestCardPresets/ThirteenFourteenFifteen.tres" id="11_fabca"]
 [ext_resource type="Script" uid="uid://b3pcelfs57qav" path="res://Revamp/Card/CardActions/Sacrifice/SacrificeBoardSelectionBinder.gd" id="12_3j6fp"]
 [ext_resource type="Script" uid="uid://b4qvc7353obir" path="res://PendingSacrificeBoat.gd" id="12_30x73"]
 [ext_resource type="Script" uid="uid://vmy04gllke53" path="res://SacrificeCommitter.gd" id="13_6ula3"]
@@ -76,6 +84,7 @@
 [ext_resource type="FontFile" uid="uid://3m1qkjceiwrb" path="res://Revamp/Fonts/Transcity DEMO.otf" id="79_cxut3"]
 [ext_resource type="FontFile" uid="uid://do0dv62a8jo77" path="res://Revamp/Fonts/bilderberg.regular.otf" id="80_cxut3"]
 [ext_resource type="Script" uid="uid://bnbuh7nx3k3f2" path="res://Revamp/Multiplayer/MatchNetworkDebugSync.gd" id="81_o7028"]
+[ext_resource type="Script" uid="uid://cm3y3rl7340r8" path="res://Revamp/MutationTooltTip/MutationTooltipCoordinator.gd" id="85_sxqap"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_lc0u2"]
 line_spacing = 0.0
@@ -176,6 +185,7 @@ direct_damage_router = NodePath("../../Scripts/Core/DirectDamageRouter")
 
 [node name="PlayerHAnd" parent="Core" unique_id=371738706 node_paths=PackedStringArray("cost_sort", "mutation_sort") instance=ExtResource("2_mi1n2")]
 position = Vector2(768, 896)
+starting_cards = Array[ExtResource("4_bv6q5")]([ExtResource("5_sxqap"), ExtResource("6_mm0q7"), ExtResource("7_lcv7c"), ExtResource("8_8jo3k"), ExtResource("9_omgbn"), ExtResource("10_1tvpp"), ExtResource("11_fabca")])
 cost_sort = NodePath("")
 mutation_sort = NodePath("")
 
@@ -336,13 +346,14 @@ buff_pool = Array[ExtResource("3_3vc3c")]([ExtResource("26_yjq0i"), ExtResource(
 print_debug = false
 run_smoke_test_on_ready = false
 
-[node name="EvolutionButtonHandler" type="Node" parent="Scripts/Core/Evolution" unique_id=1564994449 node_paths=PackedStringArray("mutation_button", "buff_flow_handler", "match_network_root", "match_network_buff", "deck_system_root")]
+[node name="EvolutionButtonHandler" type="Node" parent="Scripts/Core/Evolution" unique_id=1564994449 node_paths=PackedStringArray("mutation_button", "buff_flow_handler", "match_network_root", "match_network_buff", "deck_system_root", "tooltip_coordinator")]
 script = ExtResource("43_7f3b3")
 mutation_button = NodePath("../../../../UICard/CardPanel/BuffPile")
 buff_flow_handler = NodePath("../BuffFlowHandler")
 match_network_root = NodePath("../../../../Multiplayer/MatchNetworkRoot")
 match_network_buff = NodePath("../../../../Multiplayer/MatchNetworkRoot/MatchNetworkBuff")
 deck_system_root = NodePath("../../../../Core/Deck")
+tooltip_coordinator = NodePath("../../../../ToolTip/Cordiantor")
 
 [node name="SacrificeController" type="Node" parent="Scripts/Core" unique_id=1432478239 node_paths=PackedStringArray("player_hand", "sacrifice_selection_root", "requirement", "pending_boat", "committer")]
 script = ExtResource("10_1j514")
@@ -526,7 +537,7 @@ phase_label = NodePath("CardPanel/SpritePanel/PhasePanel/Phase")
 going_first_label = NodePath("CardPanel/SpritePanel/Who\'sGoingfirstLabel/WhosFirst")
 description_label = NodePath("CardPanel/SpritePanel/HelpPanel/Desription")
 timer_label = NodePath("CardPanel/EndButton/TimeLabel")
-round_number_label = NodePath("CardPanel/RoundPanel/RNumber")
+round_number_label = NodePath("CardPanel/RoundPanel/RoundNumber")
 end_button = NodePath("CardPanel/EndButton")
 mutation_button = NodePath("CardPanel/BuffPile")
 worker_button = NodePath("Worker")
@@ -545,11 +556,6 @@ player_hand = NodePath("../../Core/PlayerHAnd")
 player_one_hand = NodePath("../../Core/PlayerHAnd")
 player_two_hand = NodePath("../../Core/OpponenetHAnd")
 sacrifice_controller = NodePath("../../Scripts/Core/SacrificeController")
-
-[node name="MutationButtonHoverBinder" type="Node" parent="UICard" unique_id=1903292537 node_paths=PackedStringArray("mutation_button", "mutation_tooltip")]
-script = ExtResource("77_7f3b3")
-mutation_button = NodePath("../CardPanel/BuffPile")
-mutation_tooltip = NodePath("../../ToolTip")
 
 [node name="CardPanel" type="Panel" parent="UICard" unique_id=1032502277]
 layout_mode = 0
@@ -647,7 +653,7 @@ offset_top = -41.0
 offset_right = 392.0
 offset_bottom = 46.0
 
-[node name="Round" type="Label" parent="UICard/CardPanel/RoundPanel" unique_id=1288128672]
+[node name="RoundNumber" type="Label" parent="UICard/CardPanel/RoundPanel" unique_id=1288128672]
 layout_mode = 0
 offset_left = 217.0
 offset_top = -37.0
@@ -662,7 +668,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_lock_ = true
 
-[node name="RNumber" type="Label" parent="UICard/CardPanel/RoundPanel" unique_id=672276333]
+[node name="RoundWord" type="Label" parent="UICard/CardPanel/RoundPanel" unique_id=672276333]
 layout_mode = 0
 offset_right = 362.0
 offset_bottom = 87.0
@@ -732,7 +738,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_lock_ = true
 
-[node name="ToolTip" type="Control" parent="." unique_id=1539072932 node_paths=PackedStringArray("name_label", "description_label", "mutation_labels", "mutation_sprites")]
+[node name="ToolTip" type="Control" parent="." unique_id=1539072932 node_paths=PackedStringArray("name_label", "description_label", "mutation_description_label_1", "mutation_description_label_2", "mutation_description_label_3", "mutation_sprite_1", "mutation_sprite_2", "mutation_sprite_3")]
 layout_mode = 3
 anchors_preset = 0
 offset_left = 1408.0
@@ -741,11 +747,13 @@ offset_right = 1882.0
 offset_bottom = 1022.0
 script = ExtResource("78_7f3b3")
 name_label = NodePath("TextBox/TBNamePanel/TBNameLabel")
-description_label = NodePath("TextBox/TBDescripPanel/TBDescripLabel")
-mutation_labels = [NodePath("TextBox/TBDescripPanel/MutationLine1"), NodePath("TextBox/TBDescripPanel/MutationLine2"), NodePath("TextBox/TBDescripPanel/MutationLine3")]
-mutation_sprites = [NodePath("TextBox/TBDescripPanel/MutatinLineSprite3"), NodePath("TextBox/TBDescripPanel/MutatinLineSprite2"), NodePath("TextBox/TBDescripPanel/MutatinLineSprite4")]
-default_description_text = "
-"
+description_label = NodePath("TextBox/TBDescripPanel/MutationLine1")
+mutation_description_label_1 = NodePath("TextBox/TBDescripPanel/MutationLine1")
+mutation_description_label_2 = NodePath("TextBox/TBDescripPanel/MutationLine2")
+mutation_description_label_3 = NodePath("TextBox/TBDescripPanel/MutationLine3")
+mutation_sprite_1 = NodePath("TextBox/TBDescripPanel/MutatinLineSprite3")
+mutation_sprite_2 = NodePath("TextBox/TBDescripPanel/MutatinLineSprite2")
+mutation_sprite_3 = NodePath("TextBox/TBDescripPanel/MutatinLineSprite4")
 metadata/_edit_lock_ = true
 
 [node name="TextBox" type="Panel" parent="ToolTip" unique_id=1840213442]
@@ -873,4 +881,17 @@ texture = ExtResource("75_c8bx1")
 [node name="CArdMutationTooltipbinde" type="Node" parent="ToolTip" unique_id=2111843857 node_paths=PackedStringArray("mutation_tooltip", "player_hands")]
 script = ExtResource("79_63uau")
 mutation_tooltip = NodePath("..")
-player_hands = [NodePath("../../Core/PlayerHAnd")]
+player_hands = [NodePath("../../Core/PlayerHAnd"), NodePath("../../Core/OpponenetHAnd")]
+
+[node name="Cordiantor" type="Node" parent="ToolTip" unique_id=956842424 node_paths=PackedStringArray("mutation_tooltip")]
+script = ExtResource("85_sxqap")
+mutation_tooltip = NodePath("..")
+
+[node name="MutationButtonHoverBinder" type="Node" parent="ToolTip" unique_id=1903292537 node_paths=PackedStringArray("mutation_button", "evolution_button_handler", "tooltip_coordinator")]
+script = ExtResource("77_7f3b3")
+mutation_button = NodePath("../../UICard/CardPanel/BuffPile")
+evolution_button_handler = NodePath("../../Scripts/Core/Evolution/EvolutionButtonHandler")
+tooltip_coordinator = NodePath("../Cordiantor")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1743720967]
+position = Vector2(960, 544)

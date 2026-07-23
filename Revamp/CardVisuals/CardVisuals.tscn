@@ -219,6 +219,7 @@ draw_hide_cover = NodePath("DrawHideCover")
 placement_animation_runner = NodePath("PlaceAniRunner")
 
 [node name="DrawHideCover" type="Sprite2D" parent="." unique_id=1285778559]
+visible = false
 z_index = 1
 position = Vector2(-7.6293945e-06, 0)
 scale = Vector2(0.11666667, 0.11559141)
@@ -284,7 +285,8 @@ metadata/_edit_use_anchors_ = true
 
 [node name="Ant" type="Sprite2D" parent="Visuals/Container/MainVisuals" unique_id=1609290713]
 material = SubResource("ShaderMaterial_587ti")
-scale = Vector2(0.147, 0.147)
+position = Vector2(-1.6987324e-05, 2.15129)
+scale = Vector2(0.14506175, 0.14468679)
 texture = ExtResource("9_b5mm6")
 
 [node name="Antdows" type="Sprite2D" parent="Visuals/Container/MainVisuals" unique_id=33299499]
@@ -310,6 +312,13 @@ metadata/_edit_lock_ = true
 scale = Vector2(0.14000002, 0.14000002)
 texture = ExtResource("14_b5mm6")
 metadata/_edit_lock_ = true
+
+[node name="AntRedFlash" type="Sprite2D" parent="Visuals/Container/MainVisuals" unique_id=564094861]
+visible = false
+self_modulate = Color(1, 0, 0, 0.78431374)
+position = Vector2(-0.46297538, 1.2671353)
+scale = Vector2(0.14583334, 0.14572734)
+texture = ExtResource("9_b5mm6")
 
 [node name="PlaceAnimMockup" type="AnimationPlayer" parent="Visuals/Container/MainVisuals" unique_id=1507303113]
 active = false
@@ -433,6 +442,7 @@ autowrap_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
+metadata/_edit_lock_ = true
 
 [node name="Cost" type="Node2D" parent="Visuals/StatsVisual" unique_id=954479722]
 
@@ -440,21 +450,25 @@ metadata/_edit_use_anchors_ = true
 position = Vector2(65.93889, -82.17592)
 scale = Vector2(0.1, 0.09)
 texture = ExtResource("27_0lj05")
+metadata/_edit_lock_ = true
 
 [node name="Blood2" type="Sprite2D" parent="Visuals/StatsVisual/Cost" unique_id=1031819764]
 position = Vector2(50.925922, -82.40741)
 scale = Vector2(0.1, 0.09)
 texture = ExtResource("27_0lj05")
+metadata/_edit_lock_ = true
 
 [node name="Blood3" type="Sprite2D" parent="Visuals/StatsVisual/Cost" unique_id=443046727]
 position = Vector2(59.370373, -61.47407)
 scale = Vector2(0.1, 0.09)
 texture = ExtResource("27_0lj05")
+metadata/_edit_lock_ = true
 
 [node name="Blood4" type="Sprite2D" parent="Visuals/StatsVisual/Cost" unique_id=2084893240]
 position = Vector2(74.38333, -61.242577)
 scale = Vector2(0.1, 0.09)
 texture = ExtResource("27_0lj05")
+metadata/_edit_lock_ = true
 
 [node name="Attack" type="Node2D" parent="Visuals/StatsVisual" unique_id=651649053]
 
@@ -477,6 +491,7 @@ text = "6"
 autowrap_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
+metadata/_edit_lock_ = true
 
 [node name="AtkLblShine" type="RichTextLabel" parent="Visuals/StatsVisual/Attack" unique_id=2107421984]
 visible = false
@@ -493,6 +508,7 @@ text = "6
 autowrap_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
+metadata/_edit_lock_ = true
 
 [node name="AtkTextHandler" type="Node" parent="Visuals/StatsVisual/Attack" unique_id=2047671984 node_paths=PackedStringArray("label", "stripe_label")]
 script = ExtResource("29_0lj05")
@@ -512,6 +528,7 @@ visible = false
 position = Vector2(64.81481, 55.555553)
 scale = Vector2(0.14727725, 0.14345993)
 texture = ExtResource("17_8nq5a")
+metadata/_edit_lock_ = true
 
 [node name="HlthLbl" type="RichTextLabel" parent="Visuals/StatsVisual/Health2" unique_id=1020860487]
 offset_left = 38.888885
@@ -526,6 +543,7 @@ text = "5"
 autowrap_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
+metadata/_edit_lock_ = true
 
 [node name="HlthLblShine" type="RichTextLabel" parent="Visuals/StatsVisual/Health2" unique_id=26658258]
 visible = false
@@ -541,6 +559,7 @@ text = "5"
 autowrap_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 1
+metadata/_edit_lock_ = true
 
 [node name="HltTexthandler" type="Node" parent="Visuals/StatsVisual/Health2" unique_id=1028939478 node_paths=PackedStringArray("label", "stripe_label")]
 script = ExtResource("29_0lj05")

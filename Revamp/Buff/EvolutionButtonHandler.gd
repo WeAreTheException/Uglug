@@ -1,6 +1,7 @@
 extends Node
 class_name EvolutionButtonHandler
 
+
 @export var mutation_button: Button
 
 @export var buff_flow_handler: BuffFlowHandler
@@ -8,11 +9,16 @@ class_name EvolutionButtonHandler
 @export var match_network_buff: MatchNetworkBuff
 @export var deck_system_root: DeckSystemRoot
 
+@export_group("Tooltip")
+@export var tooltip_coordinator: MutationTooltipCoordinator
+
 @export_group("Cursor")
 @export_range(16, 256, 1)
 var cursor_max_size: int = 96
 
+@export_group("Debug")
 @export var print_debug: bool = true
+
 
 var active_mutation: Mutation = null
 var is_active: bool = false
@@ -32,9 +38,15 @@ func _ready() -> void:
 	_set_button_visible(false)
 	_restore_normal_cursor()
 
+	if tooltip_coordinator != null:
+		tooltip_coordinator.clear_mutation_previews()
+
 
 func _exit_tree() -> void:
 	_restore_normal_cursor()
+
+	if tooltip_coordinator != null:
+		tooltip_coordinator.clear_mutation_previews()
 
 
 func _input(event: InputEvent) -> void:
@@ -50,6 +62,7 @@ func _input(event: InputEvent) -> void:
 			and key_event.keycode == KEY_ESCAPE
 		):
 			_cancel_targeting()
+			return
 
 	if event is InputEventMouseButton:
 		var mouse_event := event as InputEventMouseButton
@@ -60,6 +73,10 @@ func _input(event: InputEvent) -> void:
 			== MOUSE_BUTTON_RIGHT
 		):
 			_cancel_targeting()
+
+
+func get_active_mutation() -> Mutation:
+	return active_mutation
 
 
 func _connect_button() -> void:
@@ -164,6 +181,9 @@ func _on_buff_started(
 	_restore_normal_cursor()
 	_set_button_visible(false)
 
+	if tooltip_coordinator != null:
+		tooltip_coordinator.clear_mutation_previews()
+
 	if print_debug:
 		print("EVOLUTION STARTED")
 
@@ -183,6 +203,9 @@ func _on_reward_generated(
 	_update_button_visual()
 	_set_button_visible(true)
 
+	if tooltip_coordinator != null:
+		tooltip_coordinator.clear_cursor_mutation()
+
 	if print_debug:
 		print(
 			"EVOLUTION MUTATION READY: ",
@@ -201,6 +224,9 @@ func _on_buff_finished(
 
 	_restore_normal_cursor()
 	_set_button_visible(false)
+
+	if tooltip_coordinator != null:
+		tooltip_coordinator.clear_mutation_previews()
 
 	if print_debug:
 		print("EVOLUTION FINISHED")
@@ -246,7 +272,7 @@ func _begin_targeting() -> void:
 
 	is_targeting = true
 
-	var hotspot := (
+	var hotspot: Vector2 = (
 		cursor_texture.get_size() * 0.5
 	)
 
@@ -258,6 +284,11 @@ func _begin_targeting() -> void:
 
 	if mutation_button != null:
 		mutation_button.disabled = true
+
+	if tooltip_coordinator != null:
+		tooltip_coordinator.set_cursor_mutation(
+			active_mutation
+		)
 
 	if print_debug:
 		print(
@@ -272,7 +303,7 @@ func _build_cursor_texture(
 	if source_texture == null:
 		return null
 
-	var image := source_texture.get_image()
+	var image: Image = source_texture.get_image()
 
 	if image == null:
 		return null
@@ -280,13 +311,13 @@ func _build_cursor_texture(
 	if image.is_empty():
 		return null
 
-	var width := image.get_width()
-	var height := image.get_height()
+	var width: int = image.get_width()
+	var height: int = image.get_height()
 
 	if width <= 0 or height <= 0:
 		return null
 
-	var maximum_size := clampi(
+	var maximum_size: int = clampi(
 		cursor_max_size,
 		16,
 		256
@@ -301,12 +332,12 @@ func _build_cursor_texture(
 			float(maximum_size) / float(height)
 		)
 
-		var resized_width := maxi(
+		var resized_width: int = maxi(
 			int(round(width * scale_factor)),
 			1
 		)
 
-		var resized_height := maxi(
+		var resized_height: int = maxi(
 			int(round(height * scale_factor)),
 			1
 		)
@@ -325,6 +356,10 @@ func _cancel_targeting() -> void:
 	cursor_texture = null
 
 	_restore_normal_cursor()
+
+	if tooltip_coordinator != null:
+		tooltip_coordinator.clear_cursor_mutation()
+		tooltip_coordinator.clear_button_hover_mutation()
 
 	if mutation_button != null:
 		mutation_button.disabled = (
@@ -393,18 +428,22 @@ func _request_evolution(
 		)
 		return
 
-	var requested_mutation := active_mutation
-	var mutation_id := (
+	var requested_mutation: Mutation = active_mutation
+
+	var mutation_id: String = (
 		requested_mutation.get_safe_mutation_id()
 	)
 
-	var mutation_name := (
+	var mutation_name: String = (
 		requested_mutation.mutation_name
 	)
 
-	var card_name := card.card_name
-	var card_runtime_id := card.get_runtime_id()
-	var owner := match_network_root.get_local_owner()
+	var card_name: String = card.card_name
+	var card_runtime_id: String = card.get_runtime_id()
+
+	var owner: SlotRow.SlotOwner = (
+		match_network_root.get_local_owner()
+	)
 
 	request_pending = true
 	is_targeting = false
@@ -413,14 +452,16 @@ func _request_evolution(
 	_restore_normal_cursor()
 	_set_button_visible(false)
 
+	if tooltip_coordinator != null:
+		tooltip_coordinator.clear_cursor_mutation()
+		tooltip_coordinator.clear_button_hover_mutation()
+
 	match_network_root.request_buff_confirm(
 		owner,
 		card_runtime_id,
 		mutation_id
 	)
 
-	# The network request can immediately finish Evolution
-	# and clear active_mutation, so only use saved values here.
 	if print_debug:
 		print(
 			"EVOLUTION REQUEST SENT: ",
@@ -453,6 +494,10 @@ func _on_confirmed_buff_applied(
 	_restore_normal_cursor()
 	_set_button_visible(false)
 
+	if tooltip_coordinator != null:
+		tooltip_coordinator.clear_cursor_mutation()
+		tooltip_coordinator.clear_button_hover_mutation()
+
 	if print_debug:
 		print(
 			"EVOLUTION CONFIRMED: ",
@@ -468,12 +513,14 @@ func _card_belongs_to_local_hand(
 	if deck_system_root == null:
 		return false
 
-	var owner := SlotRow.SlotOwner.PLAYER
+	var owner: SlotRow.SlotOwner = (
+		SlotRow.SlotOwner.PLAYER
+	)
 
 	if match_network_root != null:
 		owner = match_network_root.get_local_owner()
 
-	var hand := (
+	var hand: PlayerHandRoot = (
 		deck_system_root.get_hand_for_owner(
 			owner
 		)
