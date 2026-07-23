@@ -32,7 +32,9 @@
 [ext_resource type="Script" uid="uid://cjg3wldaxqx21" path="res://Revamp/Card/CardActions/Die/DieAudio.gd" id="20_7vw44"]
 [ext_resource type="Script" uid="uid://7pm1mj2m7jwg" path="res://Revamp/Card/CardFeedback/CardSelectFeedback.gd" id="20_v34li"]
 [ext_resource type="AudioStream" uid="uid://5uho8ho3dlfo" path="res://Old/Audio/Placeholder SFX/card_death.wav" id="21_k3ell"]
+[ext_resource type="Shader" uid="uid://b4ndwq1f6teud" path="res://AntSpriteShader.gdshader" id="22_dgt1a"]
 [ext_resource type="AudioStream" uid="uid://b1mdeia7sw5l5" path="res://Revamp/SFX/HurtSound2.mp3" id="23_56um7"]
+[ext_resource type="Texture2D" uid="uid://crorkhppccg5v" path="res://Art/Ants/WorkerAnt.PNG" id="23_b42bd"]
 [ext_resource type="Script" uid="uid://maqiq3kcc45q" path="res://Revamp/Card/CardActions/Sacrifice/PendingSacrificeFeedback.gd" id="27_0h522"]
 [ext_resource type="Script" uid="uid://bwf2dy46x2l01" path="res://Revamp/Card/CardActions/Sacrifice/ComittedSacrificeFeedback.gd" id="28_msnpm"]
 [ext_resource type="Script" uid="uid://b0rleb5qjfrvp" path="res://Revamp/Card/CardActions/StatChange/Buffed.gd" id="30_56um7"]
@@ -54,11 +56,31 @@
 [ext_resource type="Shader" uid="uid://q5qsewd5kabi" path="res://Revamp/Card/OutlineForceColor.gdshader" id="40_hginc"]
 [ext_resource type="Script" uid="uid://dnonrwbr6yrbq" path="res://Revamp/Card/CardActions/StatChange/Debuffer/DebufferFeedbackHandler.gd" id="41_g71cv"]
 [ext_resource type="Script" uid="uid://bnaqssvcuoaqq" path="res://Revamp/Card/CardActions/StatChange/Debuffer/DebufferVfx.gd" id="42_hapoa"]
+[ext_resource type="Texture2D" uid="uid://dh4y21ac2drn" path="res://Revamp/Icons/HurtNumberIcon-removebg-preview.png" id="52_v78fr"]
 [ext_resource type="Shader" uid="uid://c5xrs0vmimxhu" path="res://Revamp/CardVisuals/GlowyOutline.gdshader" id="53_p4xss"]
 [ext_resource type="Texture2D" uid="uid://6sc1vr2d4fqo" path="res://Art/AntBack/BlueBackground.png" id="55_hcpqy"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g8l5j"]
 size = Vector2(192, 288)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3lodb"]
+shader = ExtResource("22_dgt1a")
+shader_parameter/waveAmplitude = 0.0550000026125
+shader_parameter/correctVertex = true
+shader_parameter/waveFrequency = 5.0000002375
+shader_parameter/verticalWave = true
+shader_parameter/keepTransparency = true
+shader_parameter/useTime = true
+shader_parameter/waveSpeed = 1.0
+shader_parameter/progress = 0.0
+shader_parameter/firstHalf = 0.5
+shader_parameter/secondHalf = 0.5
+shader_parameter/freezeFirstHalf = true
+shader_parameter/freezeSecondHalf = true
+shader_parameter/r_displacement = Vector2(3, 0)
+shader_parameter/g_displacement = Vector2(0, 0)
+shader_parameter/b_displacement = Vector2(-3, 0)
+shader_parameter/alpha_multiplier = 1.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ieatu"]
 shader = ExtResource("40_hginc")
@@ -175,16 +197,17 @@ visuals_root = NodePath("../../../../Visuals/CardVisuals")
 
 [node name="HurtSprite" type="Node" parent="Actions/Hurt/HurtFeedbackHandler" unique_id=1287537828 node_paths=PackedStringArray("sprite", "anchor")]
 script = ExtResource("14_1m3h3")
-sprite = NodePath("HurtSprite")
+sprite = NodePath("../../../Sacrifice/HurtSprite")
 hurt_texture = ExtResource("17_7vw44")
 anchor = NodePath("../../../../Visuals/CardVisuals/FeedbackSpriteAnchor")
 sprite_size = Vector2(150, 232.5)
 fade_time = 0.5
 
-[node name="HurtSprite" type="Sprite2D" parent="Actions/Hurt/HurtFeedbackHandler/HurtSprite" unique_id=2136417742]
-position = Vector2(9.536743e-07, 0)
-scale = Vector2(0.12312501, 0.12312499)
-texture = ExtResource("17_7vw44")
+[node name="AntHurtOverlay" type="Sprite2D" parent="Actions/Hurt/HurtFeedbackHandler/HurtSprite" unique_id=460993809]
+material = SubResource("ShaderMaterial_3lodb")
+position = Vector2(4.7111516e-06, 0.49999517)
+scale = Vector2(0.15666665, 0.15645161)
+texture = ExtResource("23_b42bd")
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Actions/Hurt" unique_id=1255865697]
 stream = ExtResource("23_56um7")
@@ -222,6 +245,11 @@ target = NodePath("../../..")
 [node name="CommittedSacrificeFeedback" type="Node" parent="Actions/Sacrifice" unique_id=483430806 node_paths=PackedStringArray("target")]
 script = ExtResource("28_msnpm")
 target = NodePath("../../..")
+
+[node name="HurtSprite" type="Sprite2D" parent="Actions/Sacrifice" unique_id=2136417742]
+position = Vector2(9.536743e-07, 0)
+scale = Vector2(0.12312501, 0.12312499)
+texture = ExtResource("17_7vw44")
 
 [node name="StatEffect" type="Node" parent="Actions" unique_id=2096472671]
 
@@ -332,6 +360,12 @@ position = Vector2(7.6293945e-06, 7.6293945e-06)
 metadata/_edit_lock_ = true
 
 [node name="FeedbackSpriteAnchor" type="Node2D" parent="Visuals/CardVisuals" unique_id=626068744]
+
+[node name="HurtIcon" type="Sprite2D" parent="Visuals/CardVisuals" unique_id=89438314]
+self_modulate = Color(0, 0.0627451, 0.08235294, 1)
+position = Vector2(47.407402, 35.55555)
+scale = Vector2(0.45569623, 0.5384616)
+texture = ExtResource("52_v78fr")
 
 [node name="CardOutline" type="Sprite2D" parent="Visuals" unique_id=1774136059]
 visible = false

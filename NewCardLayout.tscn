@@ -247,7 +247,6 @@ scale = Vector2(0.12215834, 0.100945435)
 texture = ExtResource("3_n82b3")
 
 [node name="AntRedFlash" type="Sprite2D" parent="All Visuals/AntArtRoot/AntImageRoot" unique_id=749800037]
-visible = false
 self_modulate = Color(1, 0, 0, 0.78431374)
 z_index = -7
 position = Vector2(7.535008, -14.419253)
