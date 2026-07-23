@@ -238,10 +238,11 @@ deck_system_root = NodePath("../../Core/Deck")
 score_state = NodePath("MatchScoreState")
 enable_debug_keys = false
 
-[node name="MatchAutoDrawHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=833003799 node_paths=PackedStringArray("match_flow_root", "match_network_root")]
+[node name="MatchAutoDrawHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=833003799 node_paths=PackedStringArray("match_flow_root", "match_network_root", "match_phase_timer")]
 script = ExtResource("28_mf2my")
 match_flow_root = NodePath("..")
 match_network_root = NodePath("../../../Multiplayer/MatchNetworkRoot")
+match_phase_timer = NodePath("../../../Multiplayer/MatchPhaseTimer")
 
 [node name="MatchAutoAdvanceHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=1953933337 node_paths=PackedStringArray("match_flow_root", "match_network_root", "auto_draw_handler", "buff_flow_handler")]
 script = ExtResource("6_lc0u2")
