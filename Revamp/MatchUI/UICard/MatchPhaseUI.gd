@@ -58,6 +58,13 @@ var mutation_selected_opacity: float = 0.45
 	1.0
 )
 
+@export var play_wait_shadow_color: Color = Color(
+	0.25,
+	0.9,
+	0.35,
+	1.0
+)
+
 @export var attack_shadow_color: Color = Color(
 	1.0,
 	0.85,
@@ -100,7 +107,6 @@ var default_going_first_shadow_color: Color = Color.WHITE
 func _ready() -> void:
 	_prepare_label_settings(phase_label)
 	_prepare_label_settings(going_first_label)
-
 	_store_inspector_defaults()
 
 	if end_button != null:
@@ -116,17 +122,15 @@ func _ready() -> void:
 
 
 func set_phase(new_phase: Phase) -> void:
-	var did_change: bool = current_phase != new_phase
+	if current_phase == new_phase:
+		return
 
 	current_phase = new_phase
 
-	if did_change:
-		_on_phase_entered(new_phase)
-
+	_on_phase_entered(new_phase)
 	_apply_all_ui()
 
-	if did_change:
-		phase_changed.emit(current_phase)
+	phase_changed.emit(current_phase)
 
 
 func set_round_number(new_round_number: int) -> void:
@@ -251,6 +255,7 @@ func set_evolution_mutation_selected(
 
 	if mutation_is_selected:
 		evolution_result_text = ""
+
 		_set_mutation_opacity(
 			mutation_selected_opacity
 		)
@@ -264,17 +269,13 @@ func set_evolution_mutation_selected(
 
 
 func show_evolved_card(card_name: String) -> void:
-	var safe_card_name: String = (
-		card_name.strip_edges()
-	)
+	var safe_card_name: String = card_name.strip_edges()
 
 	if safe_card_name.is_empty():
 		safe_card_name = "Card"
 
 	mutation_is_selected = false
-	evolution_result_text = "\"%s\" evolved" % (
-		safe_card_name
-	)
+	evolution_result_text = "\"%s\" evolved" % safe_card_name
 
 	_set_mutation_opacity(
 		mutation_normal_opacity
@@ -296,18 +297,14 @@ func set_game_result(
 		_update_description()
 
 
-func set_game_result_text(
-	new_text: String
-) -> void:
+func set_game_result_text(new_text: String) -> void:
 	game_result_text = new_text
 
 	if current_phase == Phase.GAME_END:
 		_update_description()
 
 
-func _on_phase_entered(
-	new_phase: Phase
-) -> void:
+func _on_phase_entered(new_phase: Phase) -> void:
 	match new_phase:
 		Phase.DRAW:
 			draw_entries.clear()
@@ -358,19 +355,13 @@ func _update_going_first_label() -> void:
 		return
 
 	if not has_going_first_value:
-		going_first_label.text = (
-			default_going_first_text
-		)
+		going_first_label.text = default_going_first_text
 		return
 
 	if local_player_is_going_first:
-		going_first_label.text = (
-			"You're Going First"
-		)
+		going_first_label.text = "You're Going First"
 	else:
-		going_first_label.text = (
-			"Enemy is Going First"
-		)
+		going_first_label.text = "Enemy is Going First"
 
 
 func _update_phase_shadow_colors() -> void:
@@ -387,9 +378,7 @@ func _update_phase_shadow_colors() -> void:
 
 		return
 
-	var shadow_color: Color = (
-		_get_phase_shadow_color()
-	)
+	var shadow_color: Color = _get_phase_shadow_color()
 
 	_set_label_shadow_color(
 		phase_label,
@@ -403,10 +392,12 @@ func _update_phase_shadow_colors() -> void:
 
 
 func _update_round_number_label() -> void:
-	if round_number_label != null:
-		round_number_label.text = str(
-			round_number
-		)
+	if round_number_label == null:
+		return
+
+	round_number_label.text = str(
+		maxi(round_number, 1)
+	)
 
 
 func _update_description() -> void:
@@ -421,8 +412,7 @@ func _update_description() -> void:
 
 		Phase.ROUND_INTRO:
 			description_label.text = (
-				"Round %d begins"
-				% round_number
+				"Round %d begins" % round_number
 			)
 
 		Phase.DRAW, Phase.AUTO_DRAW:
@@ -456,9 +446,7 @@ func _update_description() -> void:
 			)
 
 		Phase.GAME_END:
-			description_label.text = (
-				game_result_text
-			)
+			description_label.text = game_result_text
 
 
 func _build_draw_description() -> String:
@@ -560,9 +548,7 @@ func _set_mutation_opacity(opacity: float) -> void:
 	if mutation_button == null:
 		return
 
-	var new_modulate: Color = (
-		mutation_button.modulate
-	)
+	var new_modulate: Color = mutation_button.modulate
 
 	new_modulate.a = clampf(
 		opacity,
@@ -611,6 +597,9 @@ func _get_phase_shadow_color() -> Color:
 		Phase.EVOLUTION:
 			return evolution_shadow_color
 
+		Phase.PLAY, Phase.WAIT:
+			return play_wait_shadow_color
+
 		Phase.ATTACK:
 			return attack_shadow_color
 
@@ -624,9 +613,7 @@ func _store_inspector_defaults() -> void:
 
 		if phase_label.label_settings != null:
 			default_phase_shadow_color = (
-				phase_label
-				.label_settings
-				.shadow_color
+				phase_label.label_settings.shadow_color
 			)
 
 	if going_first_label != null:
@@ -637,8 +624,8 @@ func _store_inspector_defaults() -> void:
 		if going_first_label.label_settings != null:
 			default_going_first_shadow_color = (
 				going_first_label
-					.label_settings
-					.shadow_color
+				.label_settings
+				.shadow_color
 			)
 
 	if description_label != null:
@@ -647,9 +634,7 @@ func _store_inspector_defaults() -> void:
 		)
 
 
-func _prepare_label_settings(
-	label: Label
-) -> void:
+func _prepare_label_settings(label: Label) -> void:
 	if label == null:
 		return
 
@@ -659,9 +644,7 @@ func _prepare_label_settings(
 		settings = LabelSettings.new()
 	else:
 		settings = (
-			label
-			.label_settings
-			.duplicate(true)
+			label.label_settings.duplicate(true)
 			as LabelSettings
 		)
 
@@ -678,9 +661,7 @@ func _set_label_shadow_color(
 	if label.label_settings == null:
 		_prepare_label_settings(label)
 
-	label.label_settings.shadow_color = (
-		shadow_color
-	)
+	label.label_settings.shadow_color = shadow_color
 
 
 func _on_end_button_pressed() -> void:

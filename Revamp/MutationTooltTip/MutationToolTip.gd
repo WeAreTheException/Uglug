@@ -205,7 +205,6 @@ func _hide_all_mutation_rows() -> void:
 		if mutation_label == null:
 			continue
 
-		mutation_label.text = ""
 		mutation_label.visible = false
 
 	for mutation_sprite: Sprite2D in mutation_sprites:
@@ -224,24 +223,14 @@ func _set_no_mutations_text() -> void:
 func _build_mutation_line_text(
 	mutation: Mutation
 ) -> String:
-	var mutation_name: String = (
-		mutation.mutation_name.strip_edges()
+	if mutation == null:
+		return ""
+
+	return (
+		mutation
+			.mutation_description
+			.strip_edges()
 	)
-
-	var mutation_description: String = (
-		mutation.mutation_description.strip_edges()
-	)
-
-	if mutation_name == "":
-		return mutation_description
-
-	if mutation_description == "":
-		return mutation_name
-
-	return "%s: %s" % [
-		mutation_name,
-		mutation_description
-	]
 
 
 func _get_card_display_name(card: CardRoot) -> String:
