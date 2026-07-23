@@ -32,7 +32,6 @@
 [ext_resource type="Script" uid="uid://gc48h0ccwqjp" path="res://Revamp/Buff/BuffSelectionState.gd" id="28_8y4qw"]
 [ext_resource type="PackedScene" uid="uid://coux8hd7esj7g" path="res://Deck_System_Root.tscn" id="28_a1qt2"]
 [ext_resource type="Script" uid="uid://b50mccoppp1lb" path="res://Revamp/MatchFlow/MatchAutoDrawHandler.gd" id="28_mf2my"]
-[ext_resource type="PackedScene" uid="uid://dmgme20qfr6yi" path="res://Revamp/Buff/LarvaeRewardDisplay.tscn" id="29_72iem"]
 [ext_resource type="Resource" uid="uid://qm2l2rlbwj77" path="res://Old/Mutations/MutationPresets/SustainMutations/Heckler.tres" id="29_af7hx"]
 [ext_resource type="Resource" uid="uid://njutef00oac8" path="res://Old/Mutations/MutationPresets/InvestmentMutations/LifeSteal.tres" id="30_fd62j"]
 [ext_resource type="Script" uid="uid://cq06khkyy84o5" path="res://Revamp/DirectDamage/DirectDamageRouter.gd" id="30_venfy"]
@@ -62,7 +61,6 @@
 [ext_resource type="Script" uid="uid://qkm73v3qftgr" path="res://Revamp/MatchFlow/MatchLocalViewApplier.gd" id="57_2n6q5"]
 [ext_resource type="Script" uid="uid://ddq57bg6lcsk1" path="res://Revamp/Multiplayer/MatchNetworkRoot.gd" id="57_8mjsp"]
 [ext_resource type="Script" uid="uid://bhcy41nxe3s4n" path="res://Revamp/Multiplayer/MatchNetworkLookup.gd" id="63_5j00x"]
-[ext_resource type="Script" uid="uid://bbr61twl85oqk" path="res://PhaseConfirmButton.gd" id="63_uv74c"]
 [ext_resource type="Script" uid="uid://2mkkfsgkiexj" path="res://Revamp/Multiplayer/MatchNetworkDraw.gd" id="64_af7hx"]
 [ext_resource type="Script" uid="uid://c2c2hqgcay1nf" path="res://Revamp/Multiplayer/MatchNetworkPlacement.gd" id="65_fd62j"]
 [ext_resource type="Script" uid="uid://cy3sful3ggumm" path="res://Revamp/Multiplayer/LocalGameplayReferenceBinder.gd" id="66_5j00x"]
@@ -79,6 +77,7 @@
 [ext_resource type="Script" uid="uid://ji2tm3gnhj4o" path="res://Revamp/Multiplayer/MatchNetworkScore.gd" id="78_o7028"]
 [ext_resource type="Script" uid="uid://t4xkfdp8n8kn" path="res://Revamp/MatchUI/UICard/CardMutationTooltipBinder.gd" id="79_63uau"]
 [ext_resource type="FontFile" uid="uid://3m1qkjceiwrb" path="res://Revamp/Fonts/Transcity DEMO.otf" id="79_cxut3"]
+[ext_resource type="PackedScene" uid="uid://di0rkfbiujfe5" path="res://Draw_Pile.tscn" id="80_63uau"]
 [ext_resource type="FontFile" uid="uid://do0dv62a8jo77" path="res://Revamp/Fonts/bilderberg.regular.otf" id="80_cxut3"]
 [ext_resource type="Script" uid="uid://bnbuh7nx3k3f2" path="res://Revamp/Multiplayer/MatchNetworkDebugSync.gd" id="81_o7028"]
 
@@ -177,21 +176,13 @@ player_two_hand = NodePath("../OpponenetHAnd")
 [node name="Board" parent="Core" unique_id=1318716624 node_paths=PackedStringArray("direct_damage_router") instance=ExtResource("1_yq750")]
 direct_damage_router = NodePath("../../Scripts/Core/DirectDamageRouter")
 
-[node name="PlayerHAnd" parent="Core" unique_id=371738706 node_paths=PackedStringArray("prime_location", "cost_sort", "mutation_sort") instance=ExtResource("2_mi1n2")]
+[node name="PlayerHAnd" parent="Core" unique_id=371738706 node_paths=PackedStringArray("cost_sort", "mutation_sort") instance=ExtResource("2_mi1n2")]
 position = Vector2(768, 896)
-prime_location = NodePath("../PrimeCardLocation")
 cost_sort = NodePath("../../Control/CostSortButton")
 mutation_sort = NodePath("../../Control/MutationSortButton")
 
-[node name="OpponenetHAnd" parent="Core" unique_id=1415383407 node_paths=PackedStringArray("prime_location") instance=ExtResource("2_mi1n2")]
+[node name="OpponenetHAnd" parent="Core" unique_id=1415383407 instance=ExtResource("2_mi1n2")]
 position = Vector2(768.00006, 896.00006)
-prime_location = NodePath("../PrimeCardLocation")
-
-[node name="PrimeCardLocation" type="Node2D" parent="Core" unique_id=2143511336]
-position = Vector2(312, 504)
-
-[node name="BuffCardLocation" type="Node2D" parent="Core" unique_id=1437677715]
-position = Vector2(400, 500)
 
 [node name="MatchFlowUI" type="Node2D" parent="Core" unique_id=1660901840]
 metadata/_edit_lock_ = true
@@ -350,7 +341,6 @@ print_debug = false
 
 [node name="BuffPhaseAnimationHandler" type="Node" parent="Scripts/Core/Buff" unique_id=278124127 node_paths=PackedStringArray("reward_parent")]
 script = ExtResource("31_nmm8s")
-larvae_reward_scene = ExtResource("29_72iem")
 larvae_draggers_scene = ExtResource("32_qb8ua")
 reward_parent = NodePath("../../../../Core/MatchFlowUI")
 reward_center_position = Vector2(100, 500)
@@ -381,11 +371,10 @@ staging_handler = NodePath("../BuffCardStagingHandler")
 match_network_root = NodePath("../../../../Multiplayer/MatchNetworkRoot")
 print_debug = false
 
-[node name="BuffCardStagingHandler" type="Node" parent="Scripts/Core/Buff" unique_id=617262833 node_paths=PackedStringArray("buff_flow_handler", "selection_state", "buff_card_location", "player_one_hand", "player_two_hand")]
+[node name="BuffCardStagingHandler" type="Node" parent="Scripts/Core/Buff" unique_id=617262833 node_paths=PackedStringArray("buff_flow_handler", "selection_state", "player_one_hand", "player_two_hand")]
 script = ExtResource("53_nmm8s")
 buff_flow_handler = NodePath("../BuffFlowHandler")
 selection_state = NodePath("../BuffSelectionState")
-buff_card_location = NodePath("../../../../Core/BuffCardLocation")
 player_one_hand = NodePath("../../../../Core/PlayerHAnd")
 player_two_hand = NodePath("../../../../Core/OpponenetHAnd")
 consume_rotation_degrees = -20.0
@@ -404,15 +393,11 @@ auto_sacrifice_when_cost_met = true
 [node name="SacrificeRequirement" type="Node" parent="Scripts/Core/SacrificeController" unique_id=1332384962]
 script = ExtResource("11_at0h8")
 
-[node name="PendingSacrificeBoat" type="Node" parent="Scripts/Core/SacrificeController" unique_id=1449104389 node_paths=PackedStringArray("pending_layer")]
+[node name="PendingSacrificeBoat" type="Node" parent="Scripts/Core/SacrificeController" unique_id=1449104389]
 script = ExtResource("12_30x73")
-pending_layer = NodePath("../PendingSacrificeLayer")
 
 [node name="SacrificeComitter" type="Node" parent="Scripts/Core/SacrificeController" unique_id=1945886437]
 script = ExtResource("13_6ula3")
-
-[node name="PendingSacrificeLayer" type="Node2D" parent="Scripts/Core/SacrificeController" unique_id=183134508]
-position = Vector2(132, 504)
 
 [node name="SacrificeSelectionRoot" type="Node" parent="Scripts/Core/SacrificeController" unique_id=562062986]
 script = ExtResource("11_5f7hr")
@@ -525,27 +510,6 @@ placement_completion_handler = NodePath("../../Scripts/MatchFlowRoot/MatchPlacem
 buff_flow_handler = NodePath("../../Scripts/Core/Buff/BuffFlowHandler")
 ui_card = NodePath("../../UICard")
 
-[node name="BuffConfirmButton" type="Button" parent="Control" unique_id=685589739 node_paths=PackedStringArray("buff_flow_handler", "buff_apply_handler")]
-z_index = 10
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = 312.0
-offset_top = 696.0
-offset_right = 516.0
-offset_bottom = 768.0
-grow_horizontal = 2
-grow_vertical = 0
-theme_override_font_sizes/font_size = 36
-text = "Confirm"
-script = ExtResource("63_uv74c")
-buff_flow_handler = NodePath("../../Scripts/Core/Buff/BuffFlowHandler")
-buff_apply_handler = NodePath("../../Scripts/Core/Buff/BuffMutationApplyHandler")
-use_for_buff = true
-
 [node name="Multiplayer" type="Node" parent="." unique_id=297260751]
 
 [node name="MatchNetworkRoot" type="Node" parent="Multiplayer" unique_id=1636531151 node_paths=PackedStringArray("match_flow_root", "deck_system_root", "turn_order_state", "match_score_state", "slots_root", "phase_timer", "timer_network", "buff_flow_handler", "buff_database", "placement_controller", "flow_network", "lookup_network", "draw_network", "buff_network", "placement_network", "attack_network", "score_network", "debug_sync_network")]
@@ -620,7 +584,7 @@ script = ExtResource("73_fk48e")
 match_flow_root = NodePath("../../Scripts/MatchFlowRoot")
 print_debug = false
 
-[node name="UICard" type="Control" parent="." unique_id=1479972870 node_paths=PackedStringArray("helper_label", "timer_label", "worker_button", "warrior_button", "buff_button", "timer_end_turn_button", "undo_button", "mutation_database", "player_hand")]
+[node name="UICard" type="Control" parent="." unique_id=1479972870 node_paths=PackedStringArray("helper_label", "timer_label", "worker_button", "warrior_button", "buff_button", "timer_end_turn_button", "mutation_database", "player_hand")]
 layout_mode = 3
 anchors_preset = 9
 anchor_bottom = 1.0
@@ -636,7 +600,6 @@ worker_button = NodePath("CardPanel/WorkerPanel")
 warrior_button = NodePath("CardPanel/WarriorPanel")
 buff_button = NodePath("CardPanel/BuffPile")
 timer_end_turn_button = NodePath("CardPanel/EndButton")
-undo_button = NodePath("CardPanel/Undo")
 mutation_database = NodePath("../Scripts/Core/Buff/BuffDatabase")
 player_hand = NodePath("../Core/PlayerHAnd")
 active_button_color = Color(1.4439226e-07, 0.4351746, 0.43522498, 1)
@@ -802,12 +765,6 @@ text = "1:00"
 label_settings = SubResource("LabelSettings_omgbn")
 horizontal_alignment = 1
 
-[node name="Undo" type="Button" parent="UICard/CardPanel" unique_id=642412843]
-layout_mode = 0
-offset_left = -88.0
-offset_top = 255.0
-offset_bottom = 326.0
-
 [node name="PlayerHandUiBinder" type="Node" parent="UICard" unique_id=1141576823 node_paths=PackedStringArray("match_ui")]
 script = ExtResource("76_c8bx1")
 match_ui = NodePath("..")
@@ -932,3 +889,10 @@ vertical_alignment = 1
 script = ExtResource("79_63uau")
 mutation_tooltip = NodePath("..")
 player_hands = [NodePath("../../Core/PlayerHAnd")]
+
+[node name="DrawButton" parent="." unique_id=2092556591 node_paths=PackedStringArray("match_network_root") instance=ExtResource("80_63uau")]
+offset_left = 1438.0
+offset_top = 508.0
+offset_right = 1554.0
+offset_bottom = 630.0
+match_network_root = NodePath("../Multiplayer/MatchNetworkRoot")
