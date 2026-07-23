@@ -1,0 +1,1076 @@
+[gd_scene format=3 uid="uid://cuued4urxign7"]
+
+[ext_resource type="Texture2D" uid="uid://c8ak0stbh615u" path="res://Art/MOCKUPDONOTSAVE/Untitled.png" id="1_tqh7y"]
+[ext_resource type="PackedScene" uid="uid://coux8hd7esj7g" path="res://Deck_System_Root.tscn" id="1_wfuan"]
+[ext_resource type="PackedScene" uid="uid://bw8c7m7n5yuk8" path="res://Revamp/Board/Slots.tscn" id="2_tqh7y"]
+[ext_resource type="PackedScene" uid="uid://1wr1e57v7trd" path="res://Revamp/PlayerHand/Player_Hand.tscn" id="3_hdg8l"]
+[ext_resource type="Script" uid="uid://e0tr3sanyo1r" path="res://Revamp/MatchFlow/MatchAnnouncementDisplay.gd" id="4_ipnhc"]
+[ext_resource type="Script" uid="uid://difytxi1dyr27" path="res://Revamp/MatchFlow/MatchFlowRoot.gd" id="5_r8v7d"]
+[ext_resource type="Script" uid="uid://b50mccoppp1lb" path="res://Revamp/MatchFlow/MatchAutoDrawHandler.gd" id="6_g8eeq"]
+[ext_resource type="Script" uid="uid://8nr6ngjl24kj" path="res://Revamp/MatchFlow/MatchAutoAdvanceHandler.gd" id="7_3yd5f"]
+[ext_resource type="Script" uid="uid://c6ap2csjp7k81" path="res://Revamp/MatchFlow/MatchTurnOrderState.gd" id="8_gxuca"]
+[ext_resource type="Script" uid="uid://myowbycyd18l" path="res://Revamp/MatchFlow/MatchPlacementFlowHandler.gd" id="9_4d5ft"]
+[ext_resource type="Script" uid="uid://dx8ow48eguxe7" path="res://Revamp/MatchFlow/MatchPlacementCompletionHandler.gd" id="10_0jm1l"]
+[ext_resource type="Script" uid="uid://dhe454wat35an" path="res://Revamp/MatchFlow/MatchCombatFlowHandler.gd" id="11_onymw"]
+[ext_resource type="Script" uid="uid://dxj656ms4qeq4" path="res://Revamp/MatchFlow/MatchDominantRevealHandler.gd" id="12_7pmrm"]
+[ext_resource type="Script" uid="uid://c5j44dhlx1div" path="res://Revamp/DirectDamage/MatchScoreState.gd" id="13_shnks"]
+[ext_resource type="Script" uid="uid://cn5xfv13wsg1x" path="res://Revamp/MatchFlow/PostGameTransitionHandler.gd" id="14_rc5de"]
+[ext_resource type="Script" uid="uid://cau0ky5b3kabf" path="res://Revamp/Board/AttackAnticipationFeedbackHandler.gd" id="15_wngim"]
+[ext_resource type="Script" uid="uid://co47jo7seu3wu" path="res://Revamp/MatchFlow/MatchFlowHandApplier.gd" id="16_8ls81"]
+[ext_resource type="Script" uid="uid://bfhpukgxqjd0m" path="res://Revamp/MatchFlowBoardApplier.gd" id="17_ux5vx"]
+[ext_resource type="Script" uid="uid://yycqdckwdim3" path="res://Revamp/MatchFlow/MatchDrawRevealHandler.gd" id="18_jt38c"]
+[ext_resource type="Script" uid="uid://crpvi6u42w8yj" path="res://Revamp/Buff/BuffFlowHandler.gd" id="19_03la6"]
+[ext_resource type="Resource" uid="uid://b6afw5yomddli" path="res://Old/Mutations/MutationPresets/SustainMutations/Shield.tres" id="20_c13w5"]
+[ext_resource type="Script" uid="uid://djtnl5koe1f0x" path="res://Revamp/Buff/BuffDatabase.gd" id="21_ecfkv"]
+[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Old/Mutations/MutationBehaviourHandlers/Mutation.gd" id="22_kl8rq"]
+[ext_resource type="Resource" uid="uid://b4tpqnugaguvu" path="res://Old/Mutations/MutationPresets/InheritanceMutations/BabyMaker.tres" id="23_v4ffl"]
+[ext_resource type="Resource" uid="uid://5sahtthq2tjm" path="res://Old/Mutations/MutationPresets/InheritanceMutations/Christmas.tres" id="24_606vl"]
+[ext_resource type="Resource" uid="uid://cnn0fddifxool" path="res://Old/Mutations/MutationPresets/InheritanceMutations/ColonyNest.tres" id="25_k4iwb"]
+[ext_resource type="Resource" uid="uid://njutef00oac8" path="res://Old/Mutations/MutationPresets/InvestmentMutations/LifeSteal.tres" id="26_mau0q"]
+[ext_resource type="Resource" uid="uid://c0ojr71i4k50b" path="res://Old/Mutations/MutationPresets/RallyMutations/RoyalPheromones.tres" id="27_bgvc2"]
+[ext_resource type="Resource" uid="uid://cyutbyh2av6iv" path="res://Old/Mutations/MutationPresets/RallyMutations/SteroidDealer.tres" id="28_hadmy"]
+[ext_resource type="Resource" uid="uid://c0cebfc5tmmng" path="res://Old/Mutations/MutationPresets/RallyMutations/SteroidMaxxing.tres" id="29_qwfmp"]
+[ext_resource type="Resource" uid="uid://d6umheqx0qia" path="res://Old/Mutations/MutationPresets/RetaliationMutations/IDieYouDie.tres" id="30_3yxxd"]
+[ext_resource type="Resource" uid="uid://dko3ngpbogrv1" path="res://Old/Mutations/MutationPresets/RetaliationMutations/Spiky.tres" id="31_nmpo0"]
+[ext_resource type="Resource" uid="uid://bs6mfmdmm2uj6" path="res://Old/Mutations/MutationPresets/StraightChopsMutations/DirectAttack.tres" id="32_18ybt"]
+[ext_resource type="Resource" uid="uid://dp3xgqtqwogy3" path="res://Old/Mutations/MutationPresets/StraightChopsMutations/Lance.tres" id="33_67vk2"]
+[ext_resource type="Resource" uid="uid://bk7bftdp5178x" path="res://Old/Mutations/MutationPresets/StraightChopsMutations/MeFirst.tres" id="34_hbufb"]
+[ext_resource type="Resource" uid="uid://b4sniy31fo50g" path="res://Old/Mutations/MutationPresets/StraightChopsMutations/TouchOfDeath.tres" id="35_e1fho"]
+[ext_resource type="Resource" uid="uid://qm2l2rlbwj77" path="res://Old/Mutations/MutationPresets/SustainMutations/Heckler.tres" id="36_wpvsu"]
+[ext_resource type="Resource" uid="uid://qpp1tjh0bk7v" path="res://Old/Mutations/MutationPresets/SustainMutations/RedRiot.tres" id="37_8udkp"]
+[ext_resource type="Resource" uid="uid://ceeskmu01vy5g" path="res://Old/Mutations/MutationPresets/TargetMutations/YAttack.tres" id="38_jin63"]
+[ext_resource type="Script" uid="uid://gr6bql05qnrs" path="res://Revamp/Buff/EvolutionButtonHandler.gd" id="39_e12st"]
+[ext_resource type="Script" uid="uid://61l5g8wkdar3" path="res://SacrificeController.gd" id="40_y406b"]
+[ext_resource type="Script" uid="uid://ciopi88keoi3k" path="res://SacrificeRequirement.gd" id="41_qtxgi"]
+[ext_resource type="Script" uid="uid://b4qvc7353obir" path="res://PendingSacrificeBoat.gd" id="42_fogav"]
+[ext_resource type="Script" uid="uid://vmy04gllke53" path="res://SacrificeCommitter.gd" id="43_jtkpa"]
+[ext_resource type="Script" uid="uid://db4xai716j06p" path="res://Revamp/Card/CardActions/Sacrifice/SacrificeSelectionRoot.gd" id="44_567u8"]
+[ext_resource type="Script" uid="uid://b3pcelfs57qav" path="res://Revamp/Card/CardActions/Sacrifice/SacrificeBoardSelectionBinder.gd" id="45_na3pt"]
+[ext_resource type="Script" uid="uid://dnikkosq1o0kr" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementController.gd" id="46_q10ce"]
+[ext_resource type="Script" uid="uid://cvkghlt7xdj22" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementState.gd" id="47_cmbja"]
+[ext_resource type="Script" uid="uid://dsut7kstdcc6u" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementInputRouter.gd" id="48_k85j2"]
+[ext_resource type="Script" uid="uid://6ycktn6tay80" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementPreview.gd" id="49_4ohxj"]
+[ext_resource type="Script" uid="uid://yc6i5trydgut" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementExecutor.gd" id="50_3kgal"]
+[ext_resource type="Script" uid="uid://c18hwqs033t7x" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementEventEmitter.gd" id="51_afoml"]
+[ext_resource type="Script" uid="uid://cmcxm3mp7ljvv" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementCancel.gd" id="52_itka0"]
+[ext_resource type="Script" uid="uid://cq06khkyy84o5" path="res://Revamp/DirectDamage/DirectDamageRouter.gd" id="53_ludui"]
+[ext_resource type="Script" uid="uid://ysva1maqqb8w" path="res://HandCountDisplay.gd" id="54_yia6p"]
+[ext_resource type="PackedScene" uid="uid://c1vh316hdjlc" path="res://Revamp/MatchUI/MatchUI.tscn" id="55_b5am1"]
+[ext_resource type="Script" uid="uid://ddq57bg6lcsk1" path="res://Revamp/Multiplayer/MatchNetworkRoot.gd" id="56_jpjf5"]
+[ext_resource type="Script" uid="uid://4awjofgv2dfc" path="res://Revamp/Multiplayer/MatchNetworkFlow.gd" id="57_wl8ok"]
+[ext_resource type="Script" uid="uid://bhcy41nxe3s4n" path="res://Revamp/Multiplayer/MatchNetworkLookup.gd" id="58_kspau"]
+[ext_resource type="Script" uid="uid://2mkkfsgkiexj" path="res://Revamp/Multiplayer/MatchNetworkDraw.gd" id="59_iha6l"]
+[ext_resource type="Script" uid="uid://con1w5rh38kav" path="res://Revamp/Multiplayer/MatchNetworkBuff.gd" id="60_hcadn"]
+[ext_resource type="Script" uid="uid://c2c2hqgcay1nf" path="res://Revamp/Multiplayer/MatchNetworkPlacement.gd" id="61_0lptl"]
+[ext_resource type="Script" uid="uid://00f6bgoq0mgc" path="res://Revamp/Multiplayer/MatchNetworkAttack.gd" id="62_4me1o"]
+[ext_resource type="Script" uid="uid://c62i7pwt3r30f" path="res://Revamp/Multiplayer/MatchNetworkTimer.gd" id="63_kg74s"]
+[ext_resource type="Script" uid="uid://ji2tm3gnhj4o" path="res://Revamp/Multiplayer/MatchNetworkScore.gd" id="64_57h12"]
+[ext_resource type="Script" uid="uid://bnbuh7nx3k3f2" path="res://Revamp/Multiplayer/MatchNetworkDebugSync.gd" id="65_3m1e7"]
+[ext_resource type="Script" uid="uid://qkm73v3qftgr" path="res://Revamp/MatchFlow/MatchLocalViewApplier.gd" id="66_tkh1y"]
+[ext_resource type="Script" uid="uid://cy3sful3ggumm" path="res://Revamp/Multiplayer/LocalGameplayReferenceBinder.gd" id="67_gj80f"]
+[ext_resource type="Script" uid="uid://coo0pgldjiw6w" path="res://Revamp/Multiplayer/MatchPhaseTimer.gd" id="68_x7vwt"]
+[ext_resource type="Script" uid="uid://dla1car1yk1pm" path="res://Revamp/MatchUI/UICard/MatchPhaseUI.gd" id="69_smqmq"]
+[ext_resource type="Script" uid="uid://dg2jxnlex8u2p" path="res://Revamp/MatchUI/UICard/PlayerHandUiBinder.gd" id="70_df2ag"]
+[ext_resource type="Script" uid="uid://cm16kgidxxu4h" path="res://Revamp/MutationTooltTip/MutationButtonHoverBinder.gd" id="71_50wcn"]
+[ext_resource type="FontFile" uid="uid://3m1qkjceiwrb" path="res://Revamp/Fonts/Transcity DEMO.otf" id="72_wg4pn"]
+[ext_resource type="FontFile" uid="uid://do0dv62a8jo77" path="res://Revamp/Fonts/bilderberg.regular.otf" id="73_7mdnk"]
+[ext_resource type="Script" uid="uid://cmbtqx5ng27nb" path="res://Revamp/MutationTooltTip/MutationToolTip.gd" id="74_oq5ec"]
+[ext_resource type="Texture2D" uid="uid://cgkoni68euqo3" path="res://Art/Mutations/Sigils/Final_Sigils/Draculant_Sigil.png" id="75_rya7h"]
+[ext_resource type="Script" uid="uid://t4xkfdp8n8kn" path="res://Revamp/MatchUI/UICard/CardMutationTooltipBinder.gd" id="76_8attp"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_lc0u2"]
+line_spacing = 0.0
+font_size = 64
+font_color = Color(0.93333334, 0.8784314, 0.81960785, 1)
+outline_size = 10
+outline_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
+shadow_size = 10
+shadow_color = Color(0, 0.57254905, 0.92941177, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_8jo3k"]
+line_spacing = 0.0
+font_size = 48
+font_color = Color(0.93333334, 0.8784314, 0.81960785, 1)
+outline_size = 10
+outline_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
+shadow_size = 10
+shadow_color = Color(0, 0.57254905, 0.92941177, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_sxqap"]
+line_spacing = 0.0
+font_size = 60
+font_color = Color(0.93333334, 0.8784314, 0.81960785, 1)
+outline_size = 10
+outline_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
+shadow_size = 10
+shadow_color = Color(0.83137256, 0.70980394, 0.59607846, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_mm0q7"]
+line_spacing = 0.0
+font_size = 100
+font_color = Color(0.93333334, 0.8784314, 0.81960785, 1)
+outline_size = 10
+outline_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
+shadow_size = 10
+shadow_color = Color(0.69803923, 0.56078434, 0.43137255, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_omgbn"]
+line_spacing = 0.0
+font_size = 52
+font_color = Color(0.93333334, 0.8784314, 0.81960785, 1)
+outline_size = 10
+outline_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
+shadow_size = 10
+shadow_color = Color(0.83137256, 0.70980394, 0.59607846, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_yjh5v"]
+line_spacing = 0.0
+font_size = 48
+font_color = Color(0.93333334, 0.8784314, 0.81960785, 1)
+outline_size = 10
+outline_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
+shadow_size = 10
+shadow_color = Color(0, 0.57254905, 0.92941177, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_lcv7c"]
+line_spacing = 0.0
+font_size = 36
+font_color = Color(0.93333334, 0.8784314, 0.81960785, 1)
+outline_size = 10
+outline_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
+shadow_size = 10
+shadow_color = Color(0, 0.57254905, 0.92941177, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_cxut3"]
+line_spacing = 0.0
+font_size = 48
+font_color = Color(0.93333334, 0.8784314, 0.81960785, 1)
+outline_size = 10
+outline_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
+shadow_size = 10
+shadow_color = Color(0.83137256, 0.70980394, 0.59607846, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_o7028"]
+line_spacing = 0.0
+font_size = 24
+font_color = Color(0.83137256, 0.70980394, 0.59607846, 1)
+outline_size = 10
+outline_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
+shadow_size = 10
+shadow_color = Color(0.69803923, 0.56078434, 0.43137255, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hdg8l"]
+bg_color = Color(0.1764706, 0.1764706, 0.1764706, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ipnhc"]
+bg_color = Color(0.11764706, 0.11764706, 0.11764706, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r8v7d"]
+bg_color = Color(0.09411765, 0.09411765, 0.09411765, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g8eeq"]
+bg_color = Color(0.14901961, 0.2, 0.27450982, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3yd5f"]
+bg_color = Color(0.39607844, 0.13725491, 0.14901961, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gxuca"]
+bg_color = Color(0.2546, 0.30475998, 0.38, 0.74509805)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4d5ft"]
+bg_color = Color(0.5, 0.24000001, 0.25300008, 0.74509805)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[node name="Mao" type="Node2D" unique_id=550121538]
+
+[node name="BASE" type="Sprite2D" parent="." unique_id=331924858]
+visible = false
+position = Vector2(954.56665, 535)
+scale = Vector2(0.99537474, 0.9953746)
+texture = ExtResource("1_tqh7y")
+metadata/_edit_lock_ = true
+
+[node name="Core" type="Node2D" parent="." unique_id=878801964]
+metadata/_edit_lock_ = true
+
+[node name="Deck" parent="Core" unique_id=93691211 node_paths=PackedStringArray("match_network_root", "buff_database", "player_one_hand", "player_two_hand", "worker_draw_button", "warrior_draw_button") instance=ExtResource("1_wfuan")]
+position = Vector2(1995, 938)
+match_network_root = NodePath("../../Multiplayer/MatchNetworkRoot")
+buff_database = NodePath("../../Scripts/Core/Evolution/BuffDatabase")
+player_one_hand = NodePath("../PlayerHAnd")
+player_two_hand = NodePath("../OpponenetHAnd")
+worker_draw_button = NodePath("../../UICard/Worker")
+warrior_draw_button = NodePath("../../UICard/Warrior")
+
+[node name="Board" parent="Core" unique_id=1318716624 node_paths=PackedStringArray("direct_damage_router") instance=ExtResource("2_tqh7y")]
+direct_damage_router = NodePath("../../Scripts/Core/DirectDamageRouter")
+
+[node name="PlayerHAnd" parent="Core" unique_id=371738706 instance=ExtResource("3_hdg8l")]
+position = Vector2(768, 896)
+
+[node name="OpponenetHAnd" parent="Core" unique_id=1415383407 instance=ExtResource("3_hdg8l")]
+position = Vector2(768.00006, 896.00006)
+
+[node name="MatchFlowUI" type="Node2D" parent="Core" unique_id=1660901840]
+metadata/_edit_lock_ = true
+
+[node name="MatchAnnouncementDisplay" type="Control" parent="Core/MatchFlowUI" unique_id=866682808 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "round_label", "message_label")]
+z_index = -100
+z_as_relative = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("4_ipnhc")
+match_flow_root = NodePath("../../../Scripts/MatchFlowRoot")
+turn_order_state = NodePath("../../../Scripts/MatchFlowRoot/MatchTurnOrderState")
+round_label = NodePath("RoundLabel")
+message_label = NodePath("MessageLabel")
+
+[node name="RoundLabel" type="Label" parent="Core/MatchFlowUI/MatchAnnouncementDisplay" unique_id=1682652415]
+z_index = -100
+z_as_relative = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 21.000002
+anchor_top = 0.3
+anchor_right = 25.500002
+anchor_bottom = 1.2
+offset_left = -6.1035156e-05
+offset_right = -6.1035156e-05
+offset_bottom = 12.0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MessageLabel" type="Label" parent="Core/MatchFlowUI/MatchAnnouncementDisplay" unique_id=286669320]
+z_index = -100
+z_as_relative = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 19.5
+anchor_top = 17.7
+anchor_right = 27.000002
+anchor_bottom = 18.6
+offset_left = -12.0
+offset_right = -0.00012207031
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 1
+
+[node name="Scripts" type="Node" parent="." unique_id=1166020718]
+
+[node name="CardEffectSpawnrouter" type="Node" parent="Scripts" unique_id=1854042398]
+
+[node name="MatchFlowRoot" type="Node" parent="Scripts" unique_id=1707594948 node_paths=PackedStringArray("turn_order_state", "deck_system_root", "score_state", "match_phase_ui")]
+script = ExtResource("5_r8v7d")
+turn_order_state = NodePath("MatchTurnOrderState")
+deck_system_root = NodePath("../../Core/Deck")
+score_state = NodePath("MatchScoreState")
+match_phase_ui = NodePath("../../UICard")
+enable_debug_keys = false
+
+[node name="MatchAutoDrawHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=833003799 node_paths=PackedStringArray("match_flow_root", "match_network_root", "match_phase_timer")]
+script = ExtResource("6_g8eeq")
+match_flow_root = NodePath("..")
+match_network_root = NodePath("../../../Multiplayer/MatchNetworkRoot")
+match_phase_timer = NodePath("../../../Multiplayer/MatchPhaseTimer")
+
+[node name="MatchAutoAdvanceHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=1953933337 node_paths=PackedStringArray("match_flow_root", "match_network_root", "auto_draw_handler", "buff_flow_handler")]
+script = ExtResource("7_3yd5f")
+match_flow_root = NodePath("..")
+match_network_root = NodePath("../../../Multiplayer/MatchNetworkRoot")
+auto_draw_handler = NodePath("../MatchAutoDrawHandler")
+buff_flow_handler = NodePath("../../Core/Evolution/BuffFlowHandler")
+round_intro_delay = 2.0
+round_end_delay = 2.0
+
+[node name="MatchTurnOrderState" type="Node" parent="Scripts/MatchFlowRoot" unique_id=708809136]
+script = ExtResource("8_gxuca")
+
+[node name="MatchPlacementFlowHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=1230555798 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "placement_controller")]
+script = ExtResource("9_4d5ft")
+match_flow_root = NodePath("..")
+turn_order_state = NodePath("../MatchTurnOrderState")
+placement_controller = NodePath("../../Core/PlacementController")
+
+[node name="MatchPlacementCompletionHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=754857941 node_paths=PackedStringArray("match_flow_root", "match_network_root", "turn_order_state", "phase_timer")]
+script = ExtResource("10_0jm1l")
+match_flow_root = NodePath("..")
+match_network_root = NodePath("../../../Multiplayer/MatchNetworkRoot")
+turn_order_state = NodePath("../MatchTurnOrderState")
+phase_timer = NodePath("../../../Multiplayer/MatchPhaseTimer")
+
+[node name="MatchCombatFlowHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=1772524559 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "anticipation_feedback", "match_network_root", "slots_root")]
+script = ExtResource("11_onymw")
+match_flow_root = NodePath("..")
+turn_order_state = NodePath("../MatchTurnOrderState")
+anticipation_feedback = NodePath("../AttackAnticipationFeedbackHandler")
+match_network_root = NodePath("../../../Multiplayer/MatchNetworkRoot")
+slots_root = NodePath("../../../Core/Board")
+
+[node name="MatchDominiantRevealHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=1122772169 node_paths=PackedStringArray("match_flow_root")]
+script = ExtResource("12_7pmrm")
+match_flow_root = NodePath("..")
+
+[node name="MatchScoreState" type="Node" parent="Scripts/MatchFlowRoot" unique_id=1110463725]
+script = ExtResource("13_shnks")
+
+[node name="PostGameTransitionHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=327167645 node_paths=PackedStringArray("match_flow_root")]
+script = ExtResource("14_rc5de")
+match_flow_root = NodePath("..")
+post_game_scene_path = "uid://bhhfwt6y6l505"
+
+[node name="AttackAnticipationFeedbackHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=1452981444 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "slots_root", "match_network_root")]
+script = ExtResource("15_wngim")
+match_flow_root = NodePath("..")
+turn_order_state = NodePath("../MatchTurnOrderState")
+slots_root = NodePath("../../../Core/Board")
+match_network_root = NodePath("../../../Multiplayer/MatchNetworkRoot")
+
+[node name="MatchFlowHandApplier" type="Node" parent="Scripts/MatchFlowRoot" unique_id=753206958 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "player_one_hand", "player_two_hand")]
+script = ExtResource("16_8ls81")
+match_flow_root = NodePath("..")
+turn_order_state = NodePath("../MatchTurnOrderState")
+player_one_hand = NodePath("../../../Core/PlayerHAnd")
+player_two_hand = NodePath("../../../Core/OpponenetHAnd")
+
+[node name="MatchFlowBoardApplier" type="Node" parent="Scripts/MatchFlowRoot" unique_id=340338363 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "slots_root", "match_network_root")]
+script = ExtResource("17_ux5vx")
+match_flow_root = NodePath("..")
+turn_order_state = NodePath("../MatchTurnOrderState")
+slots_root = NodePath("../../../Core/Board")
+match_network_root = NodePath("../../../Multiplayer/MatchNetworkRoot")
+
+[node name="MatchDrawRevealHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=1273772551 node_paths=PackedStringArray("match_flow_root", "match_network_root")]
+script = ExtResource("18_jt38c")
+match_flow_root = NodePath("..")
+match_network_root = NodePath("../../../Multiplayer/MatchNetworkRoot")
+
+[node name="Core" type="Node" parent="Scripts" unique_id=343949318]
+
+[node name="Evolution" type="Node" parent="Scripts/Core" unique_id=144455309]
+
+[node name="BuffFlowHandler" type="Node" parent="Scripts/Core/Evolution" unique_id=237451156 node_paths=PackedStringArray("match_flow_root", "buff_database")]
+script = ExtResource("19_03la6")
+match_flow_root = NodePath("../../../MatchFlowRoot")
+buff_database = NodePath("../BuffDatabase")
+enable_debug_finish_key = false
+enable_debug_preview_key = false
+debug_preview_mutation = ExtResource("20_c13w5")
+print_debug = false
+
+[node name="BuffDatabase" type="Node" parent="Scripts/Core/Evolution" unique_id=1175133697]
+script = ExtResource("21_ecfkv")
+buff_pool = Array[ExtResource("22_kl8rq")]([ExtResource("23_v4ffl"), ExtResource("24_606vl"), ExtResource("25_k4iwb"), ExtResource("26_mau0q"), ExtResource("27_bgvc2"), ExtResource("28_hadmy"), ExtResource("29_qwfmp"), ExtResource("30_3yxxd"), ExtResource("31_nmpo0"), ExtResource("32_18ybt"), ExtResource("33_67vk2"), ExtResource("34_hbufb"), ExtResource("35_e1fho"), ExtResource("36_wpvsu"), ExtResource("37_8udkp"), ExtResource("20_c13w5"), ExtResource("38_jin63")])
+print_debug = false
+run_smoke_test_on_ready = false
+
+[node name="EvolutionButtonHandler" type="Node" parent="Scripts/Core/Evolution" unique_id=1564994449 node_paths=PackedStringArray("mutation_button", "buff_flow_handler", "match_network_root", "match_network_buff", "deck_system_root")]
+script = ExtResource("39_e12st")
+mutation_button = NodePath("../../../../UICard/CardPanel/BuffPile")
+buff_flow_handler = NodePath("../BuffFlowHandler")
+match_network_root = NodePath("../../../../Multiplayer/MatchNetworkRoot")
+match_network_buff = NodePath("../../../../Multiplayer/MatchNetworkRoot/MatchNetworkBuff")
+deck_system_root = NodePath("../../../../Core/Deck")
+
+[node name="SacrificeController" type="Node" parent="Scripts/Core" unique_id=1432478239 node_paths=PackedStringArray("player_hand", "sacrifice_selection_root", "requirement", "pending_boat", "committer")]
+script = ExtResource("40_y406b")
+player_hand = NodePath("../../../Core/PlayerHAnd")
+sacrifice_selection_root = NodePath("SacrificeSelectionRoot")
+requirement = NodePath("SacrificeRequirement")
+pending_boat = NodePath("PendingSacrificeBoat")
+committer = NodePath("SacrificeComitter")
+auto_sacrifice_when_cost_met = true
+
+[node name="SacrificeRequirement" type="Node" parent="Scripts/Core/SacrificeController" unique_id=1332384962]
+script = ExtResource("41_qtxgi")
+
+[node name="PendingSacrificeBoat" type="Node" parent="Scripts/Core/SacrificeController" unique_id=1449104389]
+script = ExtResource("42_fogav")
+
+[node name="SacrificeComitter" type="Node" parent="Scripts/Core/SacrificeController" unique_id=1945886437]
+script = ExtResource("43_jtkpa")
+
+[node name="SacrificeSelectionRoot" type="Node" parent="Scripts/Core/SacrificeController" unique_id=562062986]
+script = ExtResource("44_567u8")
+metadata/_custom_type_script = "uid://db4xai716j06p"
+
+[node name="SacrificeBoardSelectionBinder" type="Node" parent="Scripts/Core/SacrificeController" unique_id=571826404 node_paths=PackedStringArray("slots_root", "selection_root", "player_hand")]
+script = ExtResource("45_na3pt")
+slots_root = NodePath("../../../../Core/Board")
+selection_root = NodePath("../SacrificeSelectionRoot")
+player_hand = NodePath("../../../../Core/PlayerHAnd")
+
+[node name="PlacementController" type="Node" parent="Scripts/Core" unique_id=1405375079 node_paths=PackedStringArray("slots_root", "player_hand", "sacrifice_controller", "match_network_root", "placement_state", "input_router", "placement_preview", "placement_executor", "event_emitter", "placement_cancel")]
+script = ExtResource("46_q10ce")
+slots_root = NodePath("../../../Core/Board")
+player_hand = NodePath("../../../Core/PlayerHAnd")
+sacrifice_controller = NodePath("../SacrificeController")
+match_network_root = NodePath("../../../Multiplayer/MatchNetworkRoot")
+placement_state = NodePath("PlacementState")
+input_router = NodePath("PlacementInputRouter")
+placement_preview = NodePath("PlacementPreview")
+placement_executor = NodePath("PlacementExecutor")
+event_emitter = NodePath("PlacementEventEmitter")
+placement_cancel = NodePath("PlacementCancel")
+enable_payload_debug = true
+
+[node name="PlacementState" type="Node" parent="Scripts/Core/PlacementController" unique_id=1456688179]
+script = ExtResource("47_cmbja")
+
+[node name="PlacementInputRouter" type="Node" parent="Scripts/Core/PlacementController" unique_id=1643686806]
+script = ExtResource("48_k85j2")
+
+[node name="PlacementPreview" type="Node" parent="Scripts/Core/PlacementController" unique_id=1774818153]
+script = ExtResource("49_4ohxj")
+
+[node name="PlacementExecutor" type="Node" parent="Scripts/Core/PlacementController" unique_id=988574054]
+script = ExtResource("50_3kgal")
+
+[node name="PlacementEventEmitter" type="Node" parent="Scripts/Core/PlacementController" unique_id=1389290294]
+script = ExtResource("51_afoml")
+
+[node name="PlacementCancel" type="Node" parent="Scripts/Core/PlacementController" unique_id=1193513979]
+script = ExtResource("52_itka0")
+
+[node name="DirectDamageRouter" type="Node" parent="Scripts/Core" unique_id=396013123 node_paths=PackedStringArray("score_state", "slots_root", "match_network_root")]
+script = ExtResource("53_ludui")
+score_state = NodePath("../../MatchFlowRoot/MatchScoreState")
+slots_root = NodePath("../../../Core/Board")
+print_debug = false
+match_network_root = NodePath("../../../Multiplayer/MatchNetworkRoot")
+
+[node name="Control" type="Control" parent="." unique_id=746986057 node_paths=PackedStringArray("player_hand", "count_label")]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("54_yia6p")
+player_hand = NodePath("../Core/PlayerHAnd")
+count_label = NodePath("PlayerHandCount")
+metadata/_edit_lock_ = true
+
+[node name="PlayerHandCount" type="Label" parent="Control" unique_id=918507559]
+layout_mode = 0
+offset_left = 900.0
+offset_top = 996.0
+offset_right = 972.0
+offset_bottom = 1044.0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MatchUI" parent="Control" unique_id=495517401 node_paths=PackedStringArray("match_flow_root", "match_network_root", "slots_root", "score_state", "phase_timer", "placement_completion_handler", "buff_flow_handler", "ui_card") instance=ExtResource("55_b5am1")]
+visible = false
+layout_mode = 0
+match_flow_root = NodePath("../../Scripts/MatchFlowRoot")
+match_network_root = NodePath("../../Multiplayer/MatchNetworkRoot")
+slots_root = NodePath("../../Core/Board")
+score_state = NodePath("../../Scripts/MatchFlowRoot/MatchScoreState")
+phase_timer = NodePath("../../Multiplayer/MatchPhaseTimer")
+placement_completion_handler = NodePath("../../Scripts/MatchFlowRoot/MatchPlacementCompletionHandler")
+buff_flow_handler = NodePath("../../Scripts/Core/Evolution/BuffFlowHandler")
+ui_card = NodePath("../../UICard")
+
+[node name="Multiplayer" type="Node" parent="." unique_id=297260751]
+
+[node name="MatchNetworkRoot" type="Node" parent="Multiplayer" unique_id=1636531151 node_paths=PackedStringArray("match_flow_root", "deck_system_root", "turn_order_state", "match_score_state", "slots_root", "phase_timer", "timer_network", "buff_flow_handler", "buff_database", "placement_controller", "flow_network", "lookup_network", "draw_network", "buff_network", "placement_network", "attack_network", "score_network", "debug_sync_network")]
+script = ExtResource("56_jpjf5")
+match_flow_root = NodePath("../../Scripts/MatchFlowRoot")
+deck_system_root = NodePath("../../Core/Deck")
+turn_order_state = NodePath("../../Scripts/MatchFlowRoot/MatchTurnOrderState")
+match_score_state = NodePath("../../Scripts/MatchFlowRoot/MatchScoreState")
+slots_root = NodePath("../../Core/Board")
+phase_timer = NodePath("../MatchPhaseTimer")
+timer_network = NodePath("MatchNetworkTimer")
+buff_flow_handler = NodePath("../../Scripts/Core/Evolution/BuffFlowHandler")
+buff_database = NodePath("../../Scripts/Core/Evolution/BuffDatabase")
+placement_controller = NodePath("../../Scripts/Core/PlacementController")
+flow_network = NodePath("MatchNetworkFlow")
+lookup_network = NodePath("MatchNetworkLookup")
+draw_network = NodePath("MatchNetworkDraw")
+buff_network = NodePath("MatchNetworkBuff")
+placement_network = NodePath("MatchNetworkPlacement")
+attack_network = NodePath("MatchNetworkAttack")
+score_network = NodePath("MatchNetworkScore")
+debug_sync_network = NodePath("MatchNetworkDebugSync")
+enable_ping_debug = true
+
+[node name="MatchNetworkFlow" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=880320439]
+script = ExtResource("57_wl8ok")
+
+[node name="MatchNetworkLookup" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=2049736294]
+script = ExtResource("58_kspau")
+
+[node name="MatchNetworkDraw" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=1641787042]
+script = ExtResource("59_iha6l")
+
+[node name="MatchNetworkBuff" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=769336365 node_paths=PackedStringArray("phase_timer")]
+script = ExtResource("60_hcadn")
+phase_timer = NodePath("../../MatchPhaseTimer")
+
+[node name="MatchNetworkPlacement" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=207070248]
+script = ExtResource("61_0lptl")
+print_debug = true
+
+[node name="MatchNetworkAttack" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=979088000]
+script = ExtResource("62_4me1o")
+
+[node name="MatchNetworkTimer" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=2113443062]
+script = ExtResource("63_kg74s")
+
+[node name="MatchNetworkScore" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=1627466998]
+script = ExtResource("64_57h12")
+
+[node name="MatchNetworkDebugSync" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=1984824557]
+script = ExtResource("65_3m1e7")
+enable_snapshot_debug = false
+
+[node name="MatchLocalViewApplier" type="Node" parent="Multiplayer" unique_id=1811884870 node_paths=PackedStringArray("match_network_root", "player_one_hand", "player_two_hand")]
+script = ExtResource("66_tkh1y")
+match_network_root = NodePath("../MatchNetworkRoot")
+player_one_hand = NodePath("../../Core/PlayerHAnd")
+player_two_hand = NodePath("../../Core/OpponenetHAnd")
+
+[node name="LocalGameplayReferenceBinder" type="Node" parent="Multiplayer" unique_id=1649323469 node_paths=PackedStringArray("match_network_root", "deck_system_root", "placement_controller", "sacrifice_controller", "sacrifice_board_binder")]
+script = ExtResource("67_gj80f")
+match_network_root = NodePath("../MatchNetworkRoot")
+deck_system_root = NodePath("../../Core/Deck")
+placement_controller = NodePath("../../Scripts/Core/PlacementController")
+sacrifice_controller = NodePath("../../Scripts/Core/SacrificeController")
+sacrifice_board_binder = NodePath("../../Scripts/Core/SacrificeController/SacrificeBoardSelectionBinder")
+
+[node name="MatchPhaseTimer" type="Node" parent="Multiplayer" unique_id=767461142 node_paths=PackedStringArray("match_flow_root")]
+script = ExtResource("68_x7vwt")
+match_flow_root = NodePath("../../Scripts/MatchFlowRoot")
+draw_seconds = 5.0
+
+[node name="UICard" type="Control" parent="." unique_id=1479972870 node_paths=PackedStringArray("phase_label", "going_first_label", "description_label", "timer_label", "round_number_label", "end_button", "mutation_button", "worker_button", "warrior_button")]
+layout_mode = 3
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 960.0
+offset_top = 512.0
+offset_right = 960.0
+offset_bottom = 512.0
+grow_vertical = 2
+script = ExtResource("69_smqmq")
+phase_label = NodePath("CardPanel/SpritePanel/PhasePanel/Phase")
+going_first_label = NodePath("CardPanel/SpritePanel/Who\'sGoingfirstLabel/WhosFirst")
+description_label = NodePath("CardPanel/SpritePanel/HelpPanel/Desription")
+timer_label = NodePath("CardPanel/EndButton/TimeLabel")
+round_number_label = NodePath("CardPanel/RoundPanel/RNumber")
+end_button = NodePath("CardPanel/EndButton")
+mutation_button = NodePath("CardPanel/BuffPile")
+worker_button = NodePath("Worker")
+warrior_button = NodePath("Warrior")
+draw_shadow_color = Color(0, 0.57254905, 0.92941177, 1)
+evolution_shadow_color = Color(0, 0.57254905, 0.5176471, 1)
+play_wait_shadow_color = Color(0.49411765, 0.57254905, 0.92941177, 1)
+attack_shadow_color = Color(0.9647059, 0.48235294, 0.5176471, 1)
+other_phase_shadow_color = Color(0.83137256, 0.70980394, 0.59607846, 1)
+
+[node name="PlayerHandUiBinder" type="Node" parent="UICard" unique_id=1141576823 node_paths=PackedStringArray("match_ui", "match_flow_root", "player_hand", "player_one_hand", "player_two_hand", "sacrifice_controller")]
+script = ExtResource("70_df2ag")
+match_ui = NodePath("..")
+match_flow_root = NodePath("../../Scripts/MatchFlowRoot")
+player_hand = NodePath("../../Core/PlayerHAnd")
+player_one_hand = NodePath("../../Core/PlayerHAnd")
+player_two_hand = NodePath("../../Core/OpponenetHAnd")
+sacrifice_controller = NodePath("../../Scripts/Core/SacrificeController")
+
+[node name="MutationButtonHoverBinder" type="Node" parent="UICard" unique_id=1903292537 node_paths=PackedStringArray("mutation_button", "mutation_tooltip")]
+script = ExtResource("71_50wcn")
+mutation_button = NodePath("../CardPanel/BuffPile")
+mutation_tooltip = NodePath("../../ToolTip")
+
+[node name="CardPanel" type="Panel" parent="UICard" unique_id=1032502277]
+layout_mode = 0
+offset_left = 448.0
+offset_top = -447.0
+offset_right = 868.0
+offset_bottom = 178.0
+
+[node name="SpritePanel" type="Panel" parent="UICard/CardPanel" unique_id=2073263536]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 61.0
+offset_right = 392.0
+offset_bottom = 414.0
+
+[node name="PhasePanel" type="Panel" parent="UICard/CardPanel/SpritePanel" unique_id=1426904972]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 10.0
+offset_right = 345.0
+offset_bottom = 66.0
+metadata/_edit_lock_ = true
+
+[node name="Phase" type="Label" parent="UICard/CardPanel/SpritePanel/PhasePanel" unique_id=1923702342]
+layout_mode = 0
+offset_left = -16.0
+offset_top = -7.0
+offset_right = 346.0
+offset_bottom = 61.0
+theme_override_fonts/font = ExtResource("72_wg4pn")
+theme_override_font_sizes/font_size = 100
+text = "Attack"
+label_settings = SubResource("LabelSettings_lc0u2")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="Who\'sGoingfirstLabel" type="Panel" parent="UICard/CardPanel/SpritePanel" unique_id=1360391893]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 74.0
+offset_right = 345.0
+offset_bottom = 130.0
+metadata/_edit_lock_ = true
+
+[node name="WhosFirst" type="Label" parent="UICard/CardPanel/SpritePanel/Who\'sGoingfirstLabel" unique_id=1574643725]
+layout_mode = 0
+offset_left = -16.0
+offset_right = 346.0
+offset_bottom = 56.0
+theme_override_fonts/font = ExtResource("72_wg4pn")
+theme_override_font_sizes/font_size = 100
+text = "Enemy is First"
+label_settings = SubResource("LabelSettings_8jo3k")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HelpPanel" type="Panel" parent="UICard/CardPanel/SpritePanel" unique_id=528906871]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 136.0
+offset_right = 345.0
+offset_bottom = 341.0
+metadata/_edit_lock_ = true
+
+[node name="Desription" type="RichTextLabel" parent="UICard/CardPanel/SpritePanel/HelpPanel" unique_id=1590300290]
+layout_mode = 0
+offset_right = 329.0
+offset_bottom = 209.0
+theme_override_colors/default_color = Color(0.93333334, 0.8784314, 0.81960785, 1)
+theme_override_colors/font_outline_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
+theme_override_colors/font_shadow_color = Color(0.83137256, 0.70980394, 0.59607846, 1)
+theme_override_constants/shadow_outline_size = 10
+theme_override_constants/outline_size = 10
+theme_override_fonts/normal_font = ExtResource("73_7mdnk")
+theme_override_font_sizes/normal_font_size = 24
+text = "You're
+Going First"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="BuffPile" type="Button" parent="UICard/CardPanel" unique_id=1190899923]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 437.0
+offset_right = 146.0
+offset_bottom = 559.0
+metadata/_edit_lock_ = true
+
+[node name="RoundPanel" type="Panel" parent="UICard/CardPanel" unique_id=175637096]
+layout_mode = 0
+offset_left = 30.0
+offset_top = -41.0
+offset_right = 392.0
+offset_bottom = 46.0
+
+[node name="Round" type="Label" parent="UICard/CardPanel/RoundPanel" unique_id=1288128672]
+layout_mode = 0
+offset_left = 217.0
+offset_top = -37.0
+offset_right = 373.0
+offset_bottom = 118.0
+theme_override_fonts/font = ExtResource("73_7mdnk")
+theme_override_font_sizes/font_size = 60
+text = "8
+"
+label_settings = SubResource("LabelSettings_sxqap")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="RNumber" type="Label" parent="UICard/CardPanel/RoundPanel" unique_id=672276333]
+layout_mode = 0
+offset_right = 362.0
+offset_bottom = 87.0
+theme_override_fonts/font = ExtResource("72_wg4pn")
+theme_override_font_sizes/font_size = 100
+text = "Round  "
+label_settings = SubResource("LabelSettings_mm0q7")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="EndButton" type="Button" parent="UICard/CardPanel" unique_id=1228539969]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 567.0
+offset_right = 392.0
+offset_bottom = 654.0
+
+[node name="TimeLabel" type="Label" parent="UICard/CardPanel/EndButton" unique_id=615588424]
+layout_mode = 0
+offset_top = -21.0
+offset_right = 362.0
+offset_bottom = 113.0
+theme_override_fonts/font = ExtResource("73_7mdnk")
+theme_override_font_sizes/font_size = 48
+text = "1:00"
+label_settings = SubResource("LabelSettings_omgbn")
+horizontal_alignment = 1
+
+[node name="Warrior" type="Button" parent="UICard" unique_id=1084204723]
+layout_mode = 0
+offset_left = 602.0
+offset_top = -9.0
+offset_right = 718.0
+offset_bottom = 112.0
+
+[node name="Phase2" type="Label" parent="UICard/Warrior" unique_id=1598763237]
+layout_mode = 0
+offset_right = 116.0
+offset_bottom = 124.0
+theme_override_fonts/font = ExtResource("73_7mdnk")
+theme_override_font_sizes/font_size = 100
+text = "?"
+label_settings = SubResource("LabelSettings_yjh5v")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="Worker" type="Button" parent="UICard" unique_id=1573434953]
+layout_mode = 0
+offset_left = 726.0
+offset_top = -9.0
+offset_right = 842.0
+offset_bottom = 112.0
+text = "Worker"
+metadata/_edit_lock_ = true
+
+[node name="Phase3" type="Label" parent="UICard/Worker" unique_id=1041966755]
+layout_mode = 0
+offset_right = 114.0
+offset_bottom = 121.0
+theme_override_fonts/font = ExtResource("72_wg4pn")
+theme_override_font_sizes/font_size = 100
+text = "Worker"
+label_settings = SubResource("LabelSettings_lcv7c")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="ToolTip" type="Control" parent="." unique_id=1539072932 node_paths=PackedStringArray("name_label", "description_label", "mutation_labels", "mutation_sprites")]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 1408.0
+offset_top = 781.0
+offset_right = 1882.0
+offset_bottom = 1022.0
+script = ExtResource("74_oq5ec")
+name_label = NodePath("TextBox/TBNamePanel/TBNameLabel")
+description_label = NodePath("TextBox/TBDescripPanel/TBDescripLabel")
+mutation_labels = [NodePath("TextBox/TBDescripPanel/MutationLine1"), NodePath("TextBox/TBDescripPanel/MutationLine2"), NodePath("TextBox/TBDescripPanel/MutationLine3")]
+mutation_sprites = [NodePath("TextBox/TBDescripPanel/MutatinLineSprite3"), NodePath("TextBox/TBDescripPanel/MutatinLineSprite2"), NodePath("TextBox/TBDescripPanel/MutatinLineSprite4")]
+default_description_text = "
+"
+metadata/_edit_lock_ = true
+
+[node name="TextBox" type="Panel" parent="ToolTip" unique_id=1840213442]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -241.0
+offset_right = 474.0
+grow_vertical = 0
+metadata/_edit_lock_ = true
+
+[node name="TBNamePanel" type="Panel" parent="ToolTip/TextBox" unique_id=689576668]
+layout_mode = 0
+offset_left = 17.0
+offset_top = 11.0
+offset_right = 458.0
+offset_bottom = 61.0
+metadata/_edit_lock_ = true
+
+[node name="TBNameLabel" type="Label" parent="ToolTip/TextBox/TBNamePanel" unique_id=1859164772]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 50.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("72_wg4pn")
+theme_override_font_sizes/font_size = 48
+text = "Royale Pheromones"
+label_settings = SubResource("LabelSettings_cxut3")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="TBDescripPanel" type="Panel" parent="ToolTip/TextBox" unique_id=2112799246]
+z_index = 1
+layout_mode = 0
+offset_left = 17.0
+offset_top = 75.0
+offset_right = 458.0
+offset_bottom = 220.0
+metadata/_edit_lock_ = true
+
+[node name="TBDescripLabel" type="Label" parent="ToolTip/TextBox/TBDescripPanel" unique_id=1376106244]
+visible = false
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_right = 386.0
+offset_bottom = 145.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("73_7mdnk")
+theme_override_font_sizes/font_size = 24
+text = "Heckler: Opposing card has - 1 ATK
+"
+label_settings = SubResource("LabelSettings_o7028")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+metadata/_edit_lock_ = true
+
+[node name="MutationLine1" type="Label" parent="ToolTip/TextBox/TBDescripPanel" unique_id=527951142]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 63.0
+offset_top = -1.0
+offset_bottom = 62.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("73_7mdnk")
+theme_override_font_sizes/font_size = 24
+text = " Atk opposing adjacent slots"
+label_settings = SubResource("LabelSettings_o7028")
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="MutationLine2" type="Label" parent="ToolTip/TextBox/TBDescripPanel" unique_id=1661284811]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 63.0
+offset_top = 40.0
+offset_bottom = 103.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("73_7mdnk")
+theme_override_font_sizes/font_size = 24
+text = " Atk opposing adjacent slots"
+label_settings = SubResource("LabelSettings_o7028")
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="MutationLine3" type="Label" parent="ToolTip/TextBox/TBDescripPanel" unique_id=989704665]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 63.0
+offset_top = 82.0
+offset_bottom = 145.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("73_7mdnk")
+theme_override_font_sizes/font_size = 24
+text = " Atk opposing adjacent slots"
+label_settings = SubResource("LabelSettings_o7028")
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="MutatinLineSprite3" type="Sprite2D" parent="ToolTip/TextBox/TBDescripPanel" unique_id=753539966]
+z_index = -1
+position = Vector2(35, 34)
+scale = Vector2(0.10599991, 0.10599991)
+texture = ExtResource("75_rya7h")
+
+[node name="MutatinLineSprite2" type="Sprite2D" parent="ToolTip/TextBox/TBDescripPanel" unique_id=1791274269]
+z_index = -1
+position = Vector2(34.99997, 74.99998)
+scale = Vector2(0.10599991, 0.10599991)
+texture = ExtResource("75_rya7h")
+
+[node name="MutatinLineSprite4" type="Sprite2D" parent="ToolTip/TextBox/TBDescripPanel" unique_id=919691983]
+z_index = -1
+position = Vector2(34.99997, 114.99998)
+scale = Vector2(0.10599991, 0.10599991)
+texture = ExtResource("75_rya7h")
+
+[node name="CArdMutationTooltipbinde" type="Node" parent="ToolTip" unique_id=2111843857 node_paths=PackedStringArray("mutation_tooltip", "player_hands")]
+script = ExtResource("76_8attp")
+mutation_tooltip = NodePath("..")
+player_hands = [NodePath("../../Core/PlayerHAnd")]
+
+[node name="Tugga" type="Node2D" parent="." unique_id=370844925]
+
+[node name="UIBase" type="Panel" parent="Tugga" unique_id=219476743]
+offset_left = 70.0
+offset_top = 177.0
+offset_right = 430.0
+offset_bottom = 567.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_hdg8l")
+metadata/_edit_lock_ = true
+
+[node name="BoardBack" type="Panel" parent="Tugga/UIBase" unique_id=542848315]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 15.0
+offset_right = 346.0
+offset_bottom = 379.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ipnhc")
+metadata/_edit_lock_ = true
+
+[node name="Win" type="Panel" parent="Tugga/UIBase" unique_id=1531188510]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 23.0
+offset_right = 336.0
+offset_bottom = 164.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_r8v7d")
+metadata/_edit_lock_ = true
+
+[node name="You" type="Panel" parent="Tugga/UIBase" unique_id=616909247]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 213.0
+offset_right = 171.0
+offset_bottom = 341.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_g8eeq")
+
+[node name="Opp" type="Panel" parent="Tugga/UIBase" unique_id=807123517]
+layout_mode = 0
+offset_left = 189.0
+offset_top = 213.0
+offset_right = 339.0
+offset_bottom = 341.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_3yd5f")
+
+[node name="Tugga" type="Label" parent="Tugga" unique_id=1576369895]
+offset_left = 143.0
+offset_top = 197.0
+offset_right = 370.0
+offset_bottom = 279.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0.69803923, 0.56078434, 0.43137255, 1)
+theme_override_colors/font_outline_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
+theme_override_constants/outline_size = 12
+theme_override_constants/shadow_outline_size = 16
+theme_override_fonts/font = ExtResource("72_wg4pn")
+theme_override_font_sizes/font_size = 78
+text = "TUGGA"
+
+[node name="TuggaNumber" type="Label" parent="Tugga/Tugga" unique_id=1709655992]
+layout_mode = 0
+offset_left = 74.0
+offset_top = 3.0
+offset_right = 149.0
+offset_bottom = 204.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
+theme_override_colors/font_outline_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
+theme_override_constants/outline_size = 12
+theme_override_constants/shadow_outline_size = 16
+theme_override_fonts/font = ExtResource("73_7mdnk")
+theme_override_font_sizes/font_size = 78
+text = "10"
+
+[node name="YouText" type="Label" parent="Tugga" unique_id=1525879353]
+offset_left = 119.0
+offset_top = 390.0
+offset_right = 217.0
+offset_bottom = 449.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0.0031383054, 0.16820937, 0.20007834, 1)
+theme_override_colors/font_outline_color = Color(0.45068938, 0.14134064, 0.121217035, 1)
+theme_override_constants/shadow_outline_size = 16
+theme_override_fonts/font = ExtResource("72_wg4pn")
+theme_override_font_sizes/font_size = 54
+text = "YOU"
+
+[node name="YouNumber" type="Label" parent="Tugga/YouText" unique_id=797373024]
+layout_mode = 0
+offset_left = 11.0
+offset_top = -15.0
+offset_right = 86.0
+offset_bottom = 186.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
+theme_override_colors/font_outline_color = Color(0.003921569, 0.16862746, 0.2, 1)
+theme_override_constants/outline_size = 12
+theme_override_constants/shadow_outline_size = 16
+theme_override_fonts/font = ExtResource("73_7mdnk")
+theme_override_font_sizes/font_size = 78
+text = "5"
+horizontal_alignment = 1
+
+[node name="OppText" type="Label" parent="Tugga" unique_id=1761620323]
+offset_left = 290.0
+offset_top = 390.0
+offset_right = 388.0
+offset_bottom = 449.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0.3205033, 0.025482684, 0.0067084883, 1)
+theme_override_colors/font_outline_color = Color(0.45068938, 0.14134064, 0.121217035, 1)
+theme_override_constants/shadow_outline_size = 16
+theme_override_fonts/font = ExtResource("72_wg4pn")
+theme_override_font_sizes/font_size = 54
+text = "OPP"
+
+[node name="OppNumber" type="Label" parent="Tugga/OppText" unique_id=1528784787]
+layout_mode = 0
+offset_left = 2.0
+offset_top = -15.0
+offset_right = 77.0
+offset_bottom = 186.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
+theme_override_colors/font_outline_color = Color(0.32156864, 0.023529412, 0.007843138, 1)
+theme_override_constants/outline_size = 12
+theme_override_constants/shadow_outline_size = 16
+theme_override_fonts/font = ExtResource("73_7mdnk")
+theme_override_font_sizes/font_size = 78
+text = "5"
+horizontal_alignment = 1
+
+[node name="KillFeedYou" type="Panel" parent="Tugga" unique_id=1238637724]
+offset_left = 47.0
+offset_top = 584.0
+offset_right = 265.0
+offset_bottom = 620.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_gxuca")
+
+[node name="KillFeedOpp" type="Panel" parent="Tugga" unique_id=165932088]
+offset_left = 232.0
+offset_top = 633.0
+offset_right = 450.0
+offset_bottom = 669.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_4d5ft")
