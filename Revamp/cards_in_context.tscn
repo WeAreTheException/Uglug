@@ -25,6 +25,7 @@
 [ext_resource type="FontFile" uid="uid://do0dv62a8jo77" path="res://Revamp/Fonts/bilderberg.regular.otf" id="31_uj5b2"]
 [ext_resource type="Script" uid="uid://djtnl5koe1f0x" path="res://Revamp/Buff/BuffDatabase.gd" id="32_bs6ji"]
 [ext_resource type="FontFile" uid="uid://3m1qkjceiwrb" path="res://Revamp/Fonts/Transcity DEMO.otf" id="32_pfxf1"]
+[ext_resource type="Script" uid="uid://b36x28452aktg" path="res://Revamp/MatchUiRoot.gd" id="33_1jjxb"]
 [ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Old/Mutations/MutationBehaviourHandlers/Mutation.gd" id="33_85uwd"]
 [ext_resource type="Resource" uid="uid://b4tpqnugaguvu" path="res://Old/Mutations/MutationPresets/InheritanceMutations/BabyMaker.tres" id="34_m57fn"]
 [ext_resource type="Resource" uid="uid://cnn0fddifxool" path="res://Old/Mutations/MutationPresets/InheritanceMutations/ColonyNest.tres" id="34_pe1o0"]
@@ -225,6 +226,7 @@ layout_mode = 3
 anchors_preset = 9
 anchor_bottom = 1.0
 grow_vertical = 2
+script = ExtResource("33_1jjxb")
 
 [node name="CardPanel" type="Panel" parent="UICard" unique_id=677196]
 layout_mode = 0
@@ -295,7 +297,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_lock_ = true
 
-[node name="WarriorPanel" type="Button" parent="UICard/CardPanel" unique_id=1604807938]
+[node name="WarriorButton" type="Button" parent="UICard/CardPanel" unique_id=1604807938]
 layout_mode = 0
 offset_left = 154.0
 offset_top = 438.0
@@ -303,7 +305,7 @@ offset_right = 270.0
 offset_bottom = 560.0
 metadata/_edit_lock_ = true
 
-[node name="BuffPile" type="Button" parent="UICard/CardPanel" unique_id=639663561]
+[node name="MutationButton" type="Button" parent="UICard/CardPanel" unique_id=639663561]
 layout_mode = 0
 offset_left = 30.0
 offset_top = 437.0
@@ -311,7 +313,7 @@ offset_right = 146.0
 offset_bottom = 559.0
 metadata/_edit_lock_ = true
 
-[node name="WorkerPanel" type="Button" parent="UICard/CardPanel" unique_id=22663007]
+[node name="Workerbutton" type="Button" parent="UICard/CardPanel" unique_id=22663007]
 layout_mode = 0
 offset_left = 278.0
 offset_top = 437.0
@@ -376,7 +378,7 @@ sacrifice_controller = NodePath("../../SacrificeController")
 [node name="MutationButtonHoverBinder" type="Node" parent="UICard" unique_id=1997287768 node_paths=PackedStringArray("match_ui", "mutation_button", "mutation_tooltip")]
 script = ExtResource("52_b1x47")
 match_ui = NodePath("..")
-mutation_button = NodePath("../CardPanel/BuffPile")
+mutation_button = NodePath("../CardPanel/MutationButton")
 mutation_tooltip = NodePath("../../ToolTip")
 
 [node name="TuggaControl" type="Control" parent="." unique_id=1122243279]
@@ -544,15 +546,3 @@ position = Vector2(-640, -192)
 [node name="Node" type="Node" parent="." unique_id=951332260]
 
 [node name="Node2D" type="Node2D" parent="." unique_id=457746046]
-
-[node name="WarriorButton" type="Button" parent="." unique_id=1991721333]
-offset_left = 602.0
-offset_top = -9.0
-offset_right = 718.0
-offset_bottom = 112.0
-
-[node name="WorkerButton" type="Button" parent="." unique_id=1314909433]
-offset_left = 726.0
-offset_top = -9.0
-offset_right = 842.0
-offset_bottom = 112.0
