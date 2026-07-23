@@ -1,6 +1,7 @@
 extends Node
 class_name CardMutationTooltipBinder
 
+
 @export var mutation_tooltip: MutationToolTip
 @export var player_hands: Array[PlayerHandRoot] = []
 
@@ -89,6 +90,8 @@ func _connect_card(card: CardRoot) -> void:
 			_on_card_unhovered
 		)
 
+	_connect_card_mutations(card)
+
 	connected_cards.append(card)
 
 
@@ -113,6 +116,40 @@ func _disconnect_card(card: CardRoot) -> void:
 	):
 		card.unhovered.disconnect(
 			_on_card_unhovered
+		)
+
+	_disconnect_card_mutations(card)
+
+
+func _connect_card_mutations(card: CardRoot) -> void:
+	if card.mutations == null:
+		return
+
+	var mutation_callable: Callable = (
+		_on_card_mutations_changed.bind(card)
+	)
+
+	if not card.mutations.mutations_changed.is_connected(
+		mutation_callable
+	):
+		card.mutations.mutations_changed.connect(
+			mutation_callable
+		)
+
+
+func _disconnect_card_mutations(card: CardRoot) -> void:
+	if card.mutations == null:
+		return
+
+	var mutation_callable: Callable = (
+		_on_card_mutations_changed.bind(card)
+	)
+
+	if card.mutations.mutations_changed.is_connected(
+		mutation_callable
+	):
+		card.mutations.mutations_changed.disconnect(
+			mutation_callable
 		)
 
 
@@ -151,3 +188,19 @@ func _on_card_unhovered(card: CardRoot) -> void:
 
 	if mutation_tooltip != null:
 		mutation_tooltip.show_default_tooltip()
+
+
+func _on_card_mutations_changed(
+	card: CardRoot
+) -> void:
+	if card == null:
+		return
+
+	if not is_instance_valid(card):
+		return
+
+	if current_hovered_card != card:
+		return
+
+	if mutation_tooltip != null:
+		mutation_tooltip.show_card(card)

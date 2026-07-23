@@ -1,9 +1,14 @@
 extends Node
 class_name MatchFlowRoot
 
+
 signal match_state_changed(state: MatchState)
 signal round_changed(round_number: int)
-signal match_ended(winner: SlotRow.SlotOwner, final_score: int)
+signal match_ended(
+	winner: SlotRow.SlotOwner,
+	final_score: int
+)
+
 
 enum MatchState {
 	NONE,
@@ -19,15 +24,22 @@ enum MatchState {
 	GAME_END
 }
 
+
+@export_group("Match Systems")
 @export var turn_order_state: MatchTurnOrderState
 @export var deck_system_root: DeckSystemRoot
 @export var score_state: MatchScoreState
 
+@export_group("Match UI")
+@export var match_phase_ui: MatchPhaseUI
+
+@export_group("Settings")
 @export var start_on_ready: bool = true
 @export var enable_debug_keys: bool = true
 @export var advance_debug_key: Key = KEY_M
 @export var swap_control_debug_key: Key = KEY_TAB
 @export var print_debug: bool = true
+
 
 var current_state: MatchState = MatchState.NONE
 var current_round: int = 0
@@ -36,12 +48,24 @@ var has_built_starting_hands: bool = false
 var transition_lock_count: int = 0
 
 var has_match_winner: bool = false
-var match_winner: SlotRow.SlotOwner = SlotRow.SlotOwner.PLAYER
+
+var match_winner: SlotRow.SlotOwner = (
+	SlotRow.SlotOwner.PLAYER
+)
+
 var final_score: int = 0
 
-var state_name_helper: MatchStateNameHelper = MatchStateNameHelper.new()
-var state_advance_helper: MatchStateAdvanceHelper = MatchStateAdvanceHelper.new()
-var active_owner_helper: MatchActiveOwnerResolverHelper = MatchActiveOwnerResolverHelper.new()
+var state_name_helper: MatchStateNameHelper = (
+	MatchStateNameHelper.new()
+)
+
+var state_advance_helper: MatchStateAdvanceHelper = (
+	MatchStateAdvanceHelper.new()
+)
+
+var active_owner_helper: MatchActiveOwnerResolverHelper = (
+	MatchActiveOwnerResolverHelper.new()
+)
 
 
 func _ready() -> void:
@@ -49,9 +73,12 @@ func _ready() -> void:
 		turn_order_state.setup_for_match()
 
 	_connect_score_state()
+	_connect_match_phase_ui()
 
 	if start_on_ready:
 		start_match()
+	else:
+		_sync_match_phase_ui()
 
 
 func _input(event: InputEvent) -> void:
@@ -69,11 +96,13 @@ func _input(event: InputEvent) -> void:
 	if key_event.keycode == advance_debug_key:
 		if _can_use_match_flow_debug_keys():
 			advance_debug_state()
+
 		return
 
 	if key_event.keycode == swap_control_debug_key:
 		if _can_use_swap_control_debug_key():
 			swap_controlled_owner()
+
 		return
 
 
@@ -92,9 +121,12 @@ func start_match() -> void:
 		score_state.reset_score()
 
 	if turn_order_state != null:
-		turn_order_state.setup_for_round(current_round)
+		turn_order_state.setup_for_round(
+			current_round
+		)
 
 	round_changed.emit(current_round)
+
 	set_state(MatchState.ROUND_INTRO)
 	_build_starting_hands_once()
 
@@ -107,9 +139,11 @@ func set_state(new_state: MatchState) -> void:
 		return
 
 	current_state = new_state
+
 	apply_active_owner_for_current_state()
 
 	_print_current_state()
+
 	match_state_changed.emit(current_state)
 
 
@@ -127,6 +161,7 @@ func end_match(
 	transition_lock_count = 0
 
 	current_state = MatchState.GAME_END
+
 	apply_active_owner_for_current_state()
 
 	if print_debug:
@@ -138,7 +173,11 @@ func end_match(
 		)
 
 	match_state_changed.emit(current_state)
-	match_ended.emit(match_winner, final_score)
+
+	match_ended.emit(
+		match_winner,
+		final_score
+	)
 
 
 func advance_debug_state() -> void:
@@ -151,15 +190,22 @@ func advance_round() -> void:
 
 	if is_transition_locked():
 		if print_debug:
-			print("ROUND ADVANCE BLOCKED: transition locked")
+			print(
+				"ROUND ADVANCE BLOCKED: "
+				+ "transition locked"
+			)
+
 		return
 
 	current_round += 1
 
 	if turn_order_state != null:
-		turn_order_state.setup_for_round(current_round)
+		turn_order_state.setup_for_round(
+			current_round
+		)
 
 	round_changed.emit(current_round)
+
 	set_state(MatchState.ROUND_INTRO)
 
 
@@ -168,7 +214,10 @@ func lock_transition() -> void:
 
 
 func unlock_transition() -> void:
-	transition_lock_count = max(transition_lock_count - 1, 0)
+	transition_lock_count = max(
+		transition_lock_count - 1,
+		0
+	)
 
 
 func is_transition_locked() -> bool:
@@ -181,26 +230,37 @@ func swap_controlled_owner() -> void:
 
 	turn_order_state.swap_controlled_owner()
 
+	_sync_match_phase_ui()
+
 	if print_debug:
-		print("CONTROLLED OWNER: ", get_controlled_owner_name())
+		print(
+			"CONTROLLED OWNER: ",
+			get_controlled_owner_name()
+		)
 
 
 func get_state_name(state: MatchState) -> String:
-	return state_name_helper.get_state_name(state)
+	return state_name_helper.get_state_name(
+		state
+	)
 
 
 func get_active_owner_name() -> String:
 	if turn_order_state == null:
 		return "NONE"
 
-	return turn_order_state.get_owner_name(turn_order_state.active_owner)
+	return turn_order_state.get_owner_name(
+		turn_order_state.active_owner
+	)
 
 
 func get_controlled_owner_name() -> String:
 	if turn_order_state == null:
 		return "NONE"
 
-	return turn_order_state.get_owner_name(turn_order_state.controlled_owner)
+	return turn_order_state.get_owner_name(
+		turn_order_state.controlled_owner
+	)
 
 
 func apply_active_owner_for_current_state() -> void:
@@ -214,8 +274,136 @@ func _connect_score_state() -> void:
 	if score_state == null:
 		return
 
-	if not score_state.threshold_reached.is_connected(_on_score_threshold_reached):
-		score_state.threshold_reached.connect(_on_score_threshold_reached)
+	if not score_state.threshold_reached.is_connected(
+		_on_score_threshold_reached
+	):
+		score_state.threshold_reached.connect(
+			_on_score_threshold_reached
+		)
+
+
+func _connect_match_phase_ui() -> void:
+	if match_phase_ui == null:
+		return
+
+	if not match_state_changed.is_connected(
+		_on_match_state_changed_for_ui
+	):
+		match_state_changed.connect(
+			_on_match_state_changed_for_ui
+		)
+
+	if not round_changed.is_connected(
+		_on_round_changed_for_ui
+	):
+		round_changed.connect(
+			_on_round_changed_for_ui
+		)
+
+	_sync_match_phase_ui()
+
+
+func _on_match_state_changed_for_ui(
+	_state: MatchState
+) -> void:
+	_sync_match_phase_ui()
+
+
+func _on_round_changed_for_ui(
+	_round_number: int
+) -> void:
+	_sync_match_phase_ui()
+
+
+func _sync_match_phase_ui() -> void:
+	if match_phase_ui == null:
+		return
+
+	match_phase_ui.set_round_number(
+		maxi(current_round, 1)
+	)
+
+	match_phase_ui.set_local_player_going_first(
+		_is_local_player_going_first()
+	)
+
+	if (
+		current_state == MatchState.GAME_END
+		and turn_order_state != null
+	):
+		match_phase_ui.set_game_result(
+			match_winner
+			== turn_order_state.controlled_owner
+		)
+
+	match_phase_ui.set_phase(
+		_get_match_phase_ui_phase()
+	)
+
+
+func _get_match_phase_ui_phase() -> MatchPhaseUI.Phase:
+	match current_state:
+		MatchState.NONE:
+			return MatchPhaseUI.Phase.NONE
+
+		MatchState.ROUND_INTRO:
+			return MatchPhaseUI.Phase.ROUND_INTRO
+
+		MatchState.AUTO_DRAW:
+			return MatchPhaseUI.Phase.DRAW
+
+		MatchState.BLESSING, MatchState.BUFF:
+			return MatchPhaseUI.Phase.EVOLUTION
+
+		MatchState.LEAD_PLACEMENT:
+			return _get_placement_ui_phase(
+				MatchPhaseUI.Phase.PLAY
+			)
+
+		MatchState.RESPONSE_PLACEMENT:
+			return _get_placement_ui_phase(
+				MatchPhaseUI.Phase.WAIT
+			)
+
+		MatchState.COMBAT:
+			return MatchPhaseUI.Phase.ATTACK
+
+		MatchState.DOMINANT_REVEAL:
+			return MatchPhaseUI.Phase.ATTACK
+
+		MatchState.ROUND_END:
+			return MatchPhaseUI.Phase.ROUND_END
+
+		MatchState.GAME_END:
+			return MatchPhaseUI.Phase.GAME_END
+
+		_:
+			return MatchPhaseUI.Phase.NONE
+
+
+func _get_placement_ui_phase(
+	fallback_phase: MatchPhaseUI.Phase
+) -> MatchPhaseUI.Phase:
+	if turn_order_state == null:
+		return fallback_phase
+
+	if (
+		turn_order_state.active_owner
+		== turn_order_state.controlled_owner
+	):
+		return MatchPhaseUI.Phase.PLAY
+
+	return MatchPhaseUI.Phase.WAIT
+
+
+func _is_local_player_going_first() -> bool:
+	if turn_order_state == null:
+		return false
+
+	return (
+		turn_order_state.attacking_first_owner
+		== turn_order_state.controlled_owner
+	)
 
 
 func _on_score_threshold_reached(
@@ -224,16 +412,28 @@ func _on_score_threshold_reached(
 ) -> void:
 	if not GDSync.is_host():
 		if print_debug:
-			print("CLIENT SCORE THRESHOLD IGNORED: waiting for confirmed win")
+			print(
+				"CLIENT SCORE THRESHOLD IGNORED: "
+				+ "waiting for confirmed win"
+			)
+
 		return
 
-	end_match(winner, score)
+	end_match(
+		winner,
+		score
+	)
+
 
 func apply_confirmed_match_end(
 	winner: SlotRow.SlotOwner,
 	score: int
 ) -> void:
-	end_match(winner, score)
+	end_match(
+		winner,
+		score
+	)
+
 
 func _build_starting_hands_once() -> void:
 	if has_built_starting_hands:
@@ -243,12 +443,20 @@ func _build_starting_hands_once() -> void:
 
 	if deck_system_root == null:
 		if print_debug:
-			print("starting hand skipped: deck_system_root missing")
+			print(
+				"starting hand skipped: "
+				+ "deck_system_root missing"
+			)
+
 		return
 
 	if not GDSync.is_host():
 		if print_debug:
-			print("starting hand skipped: waiting for host setup payload")
+			print(
+				"starting hand skipped: "
+				+ "waiting for host setup payload"
+			)
+
 		return
 
 	deck_system_root.build_match_decks()
@@ -274,6 +482,7 @@ func _print_current_state() -> void:
 		" | CONTROLLED: ",
 		get_controlled_owner_name()
 	)
+
 
 func _get_attacking_first_owner_name() -> String:
 	if turn_order_state == null:
@@ -302,14 +511,19 @@ func _get_response_placement_owner_name() -> String:
 	)
 
 
-func _get_owner_name(owner: SlotRow.SlotOwner) -> String:
+func _get_owner_name(
+	owner: SlotRow.SlotOwner
+) -> String:
 	if turn_order_state != null:
-		return turn_order_state.get_owner_name(owner)
+		return turn_order_state.get_owner_name(
+			owner
+		)
 
 	if owner == SlotRow.SlotOwner.PLAYER:
 		return "P1"
 
 	return "P2"
+
 
 func host_advance_match_state() -> bool:
 	if not GDSync.is_host():
@@ -317,15 +531,25 @@ func host_advance_match_state() -> bool:
 
 	if current_state == MatchState.GAME_END:
 		if print_debug:
-			print("MATCH ADVANCE BLOCKED: game ended")
+			print(
+				"MATCH ADVANCE BLOCKED: "
+				+ "game ended"
+			)
+
 		return false
 
 	if is_transition_locked():
 		if print_debug:
-			print("MATCH ADVANCE BLOCKED: transition locked")
+			print(
+				"MATCH ADVANCE BLOCKED: "
+				+ "transition locked"
+			)
+
 		return false
 
-	if state_advance_helper.should_advance_round(current_state):
+	if state_advance_helper.should_advance_round(
+		current_state
+	):
 		advance_round()
 		return true
 
@@ -333,13 +557,17 @@ func host_advance_match_state() -> bool:
 		start_match()
 		return true
 
-	var next_state := state_advance_helper.get_next_state(
-		current_state,
-		current_round
+	var next_state := (
+		state_advance_helper.get_next_state(
+			current_state,
+			current_round
+		)
 	)
 
 	set_state(next_state)
+
 	return true
+
 
 func get_network_snapshot() -> Dictionary:
 	var payload := {
@@ -349,41 +577,123 @@ func get_network_snapshot() -> Dictionary:
 		"has_match_winner": has_match_winner,
 		"winner": int(match_winner),
 		"final_score": final_score,
-		"active_owner": int(SlotRow.SlotOwner.PLAYER),
-		"attacking_first_owner": int(SlotRow.SlotOwner.PLAYER),
-		"lead_placement_owner": int(SlotRow.SlotOwner.PLAYER),
-		"response_placement_owner": int(SlotRow.SlotOwner.OPPONENT),
+		"active_owner": int(
+			SlotRow.SlotOwner.PLAYER
+		),
+		"attacking_first_owner": int(
+			SlotRow.SlotOwner.PLAYER
+		),
+		"lead_placement_owner": int(
+			SlotRow.SlotOwner.PLAYER
+		),
+		"response_placement_owner": int(
+			SlotRow.SlotOwner.OPPONENT
+		),
 	}
 
 	if turn_order_state != null:
-		payload["active_owner"] = int(turn_order_state.active_owner)
-		payload["attacking_first_owner"] = int(turn_order_state.attacking_first_owner)
-		payload["lead_placement_owner"] = int(turn_order_state.lead_placement_owner)
-		payload["response_placement_owner"] = int(turn_order_state.response_placement_owner)
+		payload["active_owner"] = int(
+			turn_order_state.active_owner
+		)
+
+		payload["attacking_first_owner"] = int(
+			turn_order_state.attacking_first_owner
+		)
+
+		payload["lead_placement_owner"] = int(
+			turn_order_state.lead_placement_owner
+		)
+
+		payload["response_placement_owner"] = int(
+			turn_order_state.response_placement_owner
+		)
 
 	return payload
 
 
-func apply_network_snapshot(payload: Dictionary) -> void:
+func apply_network_snapshot(
+	payload: Dictionary
+) -> void:
 	var old_state := current_state
 	var old_round := current_round
 
-	current_round = int(payload.get("round", current_round))
-	transition_lock_count = int(payload.get("transition_lock_count", 0))
-	has_match_winner = bool(payload.get("has_match_winner", false))
-	final_score = int(payload.get("final_score", final_score))
-	match_winner = int(payload.get("winner", match_winner)) as SlotRow.SlotOwner
+	current_round = int(
+		payload.get(
+			"round",
+			current_round
+		)
+	)
+
+	transition_lock_count = int(
+		payload.get(
+			"transition_lock_count",
+			0
+		)
+	)
+
+	has_match_winner = bool(
+		payload.get(
+			"has_match_winner",
+			false
+		)
+	)
+
+	final_score = int(
+		payload.get(
+			"final_score",
+			final_score
+		)
+	)
+
+	match_winner = int(
+		payload.get(
+			"winner",
+			match_winner
+		)
+	) as SlotRow.SlotOwner
 
 	if turn_order_state != null:
 		turn_order_state.apply_network_owners(
-			int(payload.get("active_owner", turn_order_state.active_owner)) as SlotRow.SlotOwner,
-			int(payload.get("attacking_first_owner", turn_order_state.attacking_first_owner)) as SlotRow.SlotOwner,
-			int(payload.get("lead_placement_owner", turn_order_state.lead_placement_owner)) as SlotRow.SlotOwner,
-			int(payload.get("response_placement_owner", turn_order_state.response_placement_owner)) as SlotRow.SlotOwner
+			int(
+				payload.get(
+					"active_owner",
+					turn_order_state.active_owner
+				)
+			) as SlotRow.SlotOwner,
+			int(
+				payload.get(
+					"attacking_first_owner",
+					turn_order_state
+						.attacking_first_owner
+				)
+			) as SlotRow.SlotOwner,
+			int(
+				payload.get(
+					"lead_placement_owner",
+					turn_order_state
+						.lead_placement_owner
+				)
+			) as SlotRow.SlotOwner,
+			int(
+				payload.get(
+					"response_placement_owner",
+					turn_order_state
+						.response_placement_owner
+				)
+			) as SlotRow.SlotOwner
 		)
 
-	current_state = int(payload.get("state", current_state)) as MatchState
-	is_running = current_state != MatchState.NONE and current_state != MatchState.GAME_END
+	current_state = int(
+		payload.get(
+			"state",
+			current_state
+		)
+	) as MatchState
+
+	is_running = (
+		current_state != MatchState.NONE
+		and current_state != MatchState.GAME_END
+	)
 
 	if old_round != current_round:
 		round_changed.emit(current_round)
@@ -391,6 +701,11 @@ func apply_network_snapshot(payload: Dictionary) -> void:
 	if old_state != current_state:
 		_print_current_state()
 		match_state_changed.emit(current_state)
+
+	# This also refreshes the UI if the state stayed
+	# the same but the network ownership changed.
+	_sync_match_phase_ui()
+
 
 func _can_use_match_flow_debug_keys() -> bool:
 	if not Engine.has_singleton("GDSync"):
