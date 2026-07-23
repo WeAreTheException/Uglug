@@ -5,18 +5,10 @@
 [ext_resource type="PackedScene" uid="uid://1wr1e57v7trd" path="res://Revamp/PlayerHand/Player_Hand.tscn" id="2_mi1n2"]
 [ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Old/Mutations/MutationBehaviourHandlers/Mutation.gd" id="3_3vc3c"]
 [ext_resource type="Resource" uid="uid://dwpj7bg5ognwt" path="res://Revamp/CardPresets/Samurant.tres" id="3_mm0q7"]
-[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Old/Data/CardData.gd" id="4_bv6q5"]
-[ext_resource type="Resource" uid="uid://c23eoyjw4afmw" path="res://Revamp/CardPresets/TestCardPresets/FourFiveSix.tres" id="5_sxqap"]
 [ext_resource type="Script" uid="uid://8nr6ngjl24kj" path="res://Revamp/MatchFlow/MatchAutoAdvanceHandler.gd" id="6_lc0u2"]
-[ext_resource type="Resource" path="res://Revamp/CardPresets/TestCardPresets/NineteenTwentyTwentyOne.tres" id="6_mm0q7"]
-[ext_resource type="Resource" uid="uid://bs3fo2ipl8vxe" path="res://Revamp/CardPresets/TestCardPresets/OneTwoThree.tres" id="7_lcv7c"]
-[ext_resource type="Resource" uid="uid://bgpuyk3e1al8w" path="res://Revamp/CardPresets/TestCardPresets/SevenEightNine.tres" id="8_8jo3k"]
-[ext_resource type="Resource" uid="uid://ddutm1u6hi5je" path="res://Revamp/CardPresets/TestCardPresets/SixteenSeventeenEighteen.tres" id="9_omgbn"]
 [ext_resource type="Script" uid="uid://61l5g8wkdar3" path="res://SacrificeController.gd" id="10_1j514"]
-[ext_resource type="Resource" uid="uid://m7mh32mpv5ae" path="res://Revamp/CardPresets/TestCardPresets/TenElevenTwelve.tres" id="10_1tvpp"]
 [ext_resource type="Script" uid="uid://db4xai716j06p" path="res://Revamp/Card/CardActions/Sacrifice/SacrificeSelectionRoot.gd" id="11_5f7hr"]
 [ext_resource type="Script" uid="uid://ciopi88keoi3k" path="res://SacrificeRequirement.gd" id="11_at0h8"]
-[ext_resource type="Resource" uid="uid://2h2vn6gnpisp" path="res://Revamp/CardPresets/TestCardPresets/ThirteenFourteenFifteen.tres" id="11_fabca"]
 [ext_resource type="Script" uid="uid://b3pcelfs57qav" path="res://Revamp/Card/CardActions/Sacrifice/SacrificeBoardSelectionBinder.gd" id="12_3j6fp"]
 [ext_resource type="Script" uid="uid://b4qvc7353obir" path="res://PendingSacrificeBoat.gd" id="12_30x73"]
 [ext_resource type="Script" uid="uid://vmy04gllke53" path="res://SacrificeCommitter.gd" id="13_6ula3"]
@@ -290,7 +282,6 @@ direct_damage_router = NodePath("../../Scripts/Core/DirectDamageRouter")
 
 [node name="PlayerHAnd" parent="Core" unique_id=371738706 node_paths=PackedStringArray("cost_sort", "mutation_sort") instance=ExtResource("2_mi1n2")]
 position = Vector2(768, 896)
-starting_cards = Array[ExtResource("4_bv6q5")]([ExtResource("5_sxqap"), ExtResource("6_mm0q7"), ExtResource("7_lcv7c"), ExtResource("8_8jo3k"), ExtResource("9_omgbn"), ExtResource("10_1tvpp"), ExtResource("11_fabca")])
 cost_sort = NodePath("")
 mutation_sort = NodePath("")
 
