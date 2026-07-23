@@ -709,6 +709,7 @@ offset_left = 602.0
 offset_top = -9.0
 offset_right = 718.0
 offset_bottom = 112.0
+text = "Warrior"
 metadata/_edit_lock_ = true
 
 [node name="Worker" type="Button" parent="UICard" unique_id=1573434953]
@@ -717,6 +718,7 @@ offset_left = 726.0
 offset_top = -9.0
 offset_right = 842.0
 offset_bottom = 112.0
+text = "Worker"
 metadata/_edit_lock_ = true
 
 [node name="ToolTip" type="Control" parent="." unique_id=1539072932 node_paths=PackedStringArray("name_label", "description_label")]

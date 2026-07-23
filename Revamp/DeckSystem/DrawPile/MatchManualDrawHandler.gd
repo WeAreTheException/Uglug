@@ -1,7 +1,12 @@
 extends Node
 class_name MatchManualDrawHandler
 
-@export var local_owner: SlotRow.SlotOwner = SlotRow.SlotOwner.PLAYER
+const FIRST_MANUAL_DRAW_ROUND: int = 2
+
+@export var local_owner: SlotRow.SlotOwner = (
+	SlotRow.SlotOwner.PLAYER
+)
+
 @export var max_draws_per_player: int = 2
 @export var print_debug: bool = true
 
@@ -13,6 +18,7 @@ var match_flow_root: MatchFlowRoot = null
 
 var confirmed_draw_count: int = 0
 var pending_draw_count: int = 0
+var tracked_round: int = -1
 
 
 func setup(
@@ -39,16 +45,17 @@ func setup(
 	call_deferred("_connect_runtime_signals")
 	_refresh_buttons()
 
-	if print_debug:
-		print("MANUAL DRAW SETUP")
-
 
 func _connect_runtime_signals() -> void:
 	if deck_system_root == null:
-		print("MANUAL DRAW BLOCKED: DeckSystemRoot missing")
+		print(
+			"MANUAL DRAW BLOCKED: DeckSystemRoot missing"
+		)
 		return
 
-	match_network_root = deck_system_root.match_network_root
+	match_network_root = (
+		deck_system_root.match_network_root
+	)
 
 	if match_network_root == null:
 		if print_debug:
@@ -57,10 +64,14 @@ func _connect_runtime_signals() -> void:
 		_refresh_buttons()
 		return
 
-	match_flow_root = match_network_root.match_flow_root
+	match_flow_root = (
+		match_network_root.match_flow_root
+	)
 
 	if match_flow_root == null:
-		print("MANUAL DRAW BLOCKED: MatchFlowRoot missing")
+		print(
+			"MANUAL DRAW BLOCKED: MatchFlowRoot missing"
+		)
 	else:
 		if not match_flow_root.match_state_changed.is_connected(
 			_on_match_state_changed
@@ -70,7 +81,9 @@ func _connect_runtime_signals() -> void:
 			)
 
 	if match_network_root.draw_network == null:
-		print("MANUAL DRAW BLOCKED: MatchNetworkDraw missing")
+		print(
+			"MANUAL DRAW BLOCKED: MatchNetworkDraw missing"
+		)
 	else:
 		if not match_network_root.draw_network.confirmed_draw_applied.is_connected(
 			_on_confirmed_draw_applied
@@ -79,6 +92,11 @@ func _connect_runtime_signals() -> void:
 				_on_confirmed_draw_applied
 			)
 
+	if match_flow_root != null:
+		_on_match_state_changed(
+			match_flow_root.current_state
+		)
+
 	if print_debug:
 		print(
 			"MANUAL DRAW CONNECTED | OWNER: ",
@@ -86,8 +104,6 @@ func _connect_runtime_signals() -> void:
 			" | PHASE: ",
 			_get_current_phase_name()
 		)
-
-	_refresh_buttons()
 
 
 func _on_worker_pressed() -> void:
@@ -102,25 +118,34 @@ func _on_warrior_pressed() -> void:
 	)
 
 
-func _request_draw(pile_type: String) -> void:
+func _request_draw(
+	pile_type: String
+) -> void:
 	if deck_system_root == null:
-		print("MANUAL DRAW BLOCKED: DeckSystemRoot missing")
+		print(
+			"MANUAL DRAW BLOCKED: DeckSystemRoot missing"
+		)
 		return
 
 	if not _is_draw_phase():
+		return
+
+	if not _is_manual_draw_round():
 		if print_debug:
 			print(
-				"MANUAL DRAW BLOCKED: phase is ",
-				_get_current_phase_name()
+				"MANUAL DRAW BLOCKED: initial draw round"
 			)
 		return
 
-	if (
-		confirmed_draw_count + pending_draw_count
-		>= max_draws_per_player
-	):
+	_prepare_current_draw_round()
+
+	if _get_total_draw_count() >= max_draws_per_player:
 		if print_debug:
-			print("MANUAL DRAW BLOCKED: draw limit reached")
+			print(
+				"MANUAL DRAW BLOCKED: draw limit reached"
+			)
+
+		_refresh_buttons()
 		return
 
 	pending_draw_count += 1
@@ -139,8 +164,6 @@ func _request_draw(pile_type: String) -> void:
 		print(
 			"MANUAL DRAW REQUESTED: ",
 			pile_type,
-			" | OWNER: ",
-			_get_owner_name(_get_local_owner()),
 			" | CONFIRMED: ",
 			confirmed_draw_count,
 			" | PENDING: ",
@@ -148,7 +171,9 @@ func _request_draw(pile_type: String) -> void:
 		)
 
 
-func _draw_locally(pile_type: String) -> void:
+func _draw_locally(
+	pile_type: String
+) -> void:
 	if pile_type == DeckSystemRoot.DRAW_PILE_WORKER:
 		deck_system_root.draw_worker_for_owner(
 			local_owner
@@ -158,12 +183,16 @@ func _draw_locally(pile_type: String) -> void:
 			local_owner
 		)
 
-	pending_draw_count = max(
+	pending_draw_count = maxi(
 		pending_draw_count - 1,
 		0
 	)
 
-	confirmed_draw_count += 1
+	confirmed_draw_count = mini(
+		confirmed_draw_count + 1,
+		max_draws_per_player
+	)
+
 	_refresh_buttons()
 
 
@@ -178,10 +207,15 @@ func _on_confirmed_draw_applied(
 	if not _is_draw_phase():
 		return
 
+	if not _is_manual_draw_round():
+		return
+
+	_prepare_current_draw_round()
+
 	if pending_draw_count > 0:
 		pending_draw_count -= 1
 
-	confirmed_draw_count = min(
+	confirmed_draw_count = mini(
 		confirmed_draw_count + 1,
 		max_draws_per_player
 	)
@@ -192,8 +226,6 @@ func _on_confirmed_draw_applied(
 			card.card_name,
 			" | PILE: ",
 			pile_type,
-			" | OWNER: ",
-			_get_owner_name(owner),
 			" | COUNT: ",
 			confirmed_draw_count,
 			"/",
@@ -204,29 +236,56 @@ func _on_confirmed_draw_applied(
 
 
 func _on_match_state_changed(
-	state: MatchFlowRoot.MatchState
+	_state: MatchFlowRoot.MatchState
 ) -> void:
-	if state == MatchFlowRoot.MatchState.AUTO_DRAW:
-		confirmed_draw_count = 0
-		pending_draw_count = 0
+	if _is_draw_phase():
+		_prepare_current_draw_round()
 	else:
 		pending_draw_count = 0
 
 	if print_debug:
 		print(
 			"MANUAL DRAW PHASE CHANGED: ",
-			match_flow_root.get_state_name(state)
+			_get_current_phase_name()
 		)
 
 	_refresh_buttons()
 
 
-func _refresh_buttons() -> void:
-	var draw_phase_active := _is_draw_phase()
+func _prepare_current_draw_round() -> void:
+	if match_flow_root == null:
+		return
 
-	var can_draw := (
+	if not _is_draw_phase():
+		return
+
+	var current_round: int = (
+		match_flow_root.current_round
+	)
+
+	if tracked_round == current_round:
+		return
+
+	tracked_round = current_round
+	confirmed_draw_count = 0
+	pending_draw_count = 0
+
+	if print_debug:
+		print(
+			"MANUAL DRAW COUNT RESET: ROUND ",
+			tracked_round
+		)
+
+
+func _refresh_buttons() -> void:
+	var draw_phase_active: bool = (
+		_is_draw_phase()
+		and _is_manual_draw_round()
+	)
+
+	var can_draw: bool = (
 		draw_phase_active
-		and confirmed_draw_count + pending_draw_count
+		and _get_total_draw_count()
 		< max_draws_per_player
 	)
 
@@ -255,6 +314,13 @@ func _refresh_buttons() -> void:
 		)
 
 
+func _get_total_draw_count() -> int:
+	return (
+		confirmed_draw_count
+		+ pending_draw_count
+	)
+
+
 func _set_button_state(
 	button: BaseButton,
 	should_be_visible: bool,
@@ -274,6 +340,16 @@ func _is_draw_phase() -> bool:
 	return (
 		match_flow_root.current_state
 		== MatchFlowRoot.MatchState.AUTO_DRAW
+	)
+
+
+func _is_manual_draw_round() -> bool:
+	if match_flow_root == null:
+		return false
+
+	return (
+		match_flow_root.current_round
+		>= FIRST_MANUAL_DRAW_ROUND
 	)
 
 

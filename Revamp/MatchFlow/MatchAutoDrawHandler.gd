@@ -4,6 +4,8 @@ class_name MatchAutoDrawHandler
 signal auto_draw_started(round_number: int)
 signal auto_draw_finished(round_number: int)
 
+const FIRST_MANUAL_DRAW_ROUND: int = 2
+
 @export var match_flow_root: MatchFlowRoot
 @export var match_network_root: MatchNetworkRoot
 @export var match_phase_timer: MatchPhaseTimer
@@ -103,21 +105,29 @@ func _begin_draw_phase() -> void:
 		match_flow_root.lock_transition()
 		transition_locked = true
 
-		if match_phase_timer != null:
-			match_phase_timer.start_for_state(
-				MatchFlowRoot.MatchState.AUTO_DRAW
-			)
-		else:
+		if match_phase_timer == null:
 			print(
 				"DRAW TIMER BLOCKED: "
 				+ "MatchPhaseTimer missing"
 			)
+		elif _is_initial_draw_round():
+			match_phase_timer.start_initial_auto_draw()
+		else:
+			match_phase_timer.start_for_state(
+				MatchFlowRoot.MatchState.AUTO_DRAW
+			)
 
 	if print_debug:
-		print(
-			"MANUAL DRAW PHASE STARTED: ROUND ",
-			active_round
-		)
+		if _is_initial_draw_round():
+			print(
+				"INITIAL AUTO DRAW TIMER STARTED: ROUND ",
+				active_round
+			)
+		else:
+			print(
+				"MANUAL DRAW PHASE STARTED: ROUND ",
+				active_round
+			)
 
 	auto_draw_started.emit(active_round)
 
@@ -128,6 +138,9 @@ func _on_confirmed_draw_applied(
 	pile_type: String
 ) -> void:
 	if not _is_draw_phase():
+		return
+
+	if _is_initial_draw_round():
 		return
 
 	if (
@@ -179,6 +192,9 @@ func _finish_draw_early() -> void:
 	if not _is_draw_phase():
 		return
 
+	if _is_initial_draw_round():
+		return
+
 	if is_finishing:
 		return
 
@@ -209,6 +225,17 @@ func _on_timer_finished(
 		return
 
 	if is_finishing:
+		return
+
+	if _is_initial_draw_round():
+		is_finishing = true
+
+		if print_debug:
+			print(
+				"INITIAL AUTO DRAW TIMER FINISHED"
+			)
+
+		_finish_draw_phase()
 		return
 
 	_resolve_missing_draws()
@@ -254,8 +281,6 @@ func _fill_missing_for_owner(
 	if missing_count <= 0:
 		return
 
-	# No manual selections:
-	# automatically give one Warrior first.
 	if current_count == 0:
 		_request_draw(
 			owner,
@@ -269,7 +294,6 @@ func _fill_missing_for_owner(
 				card_draw_delay
 			).timeout
 
-	# Any remaining missing card is a Worker.
 	while missing_count > 0:
 		_request_draw(
 			owner,
@@ -306,7 +330,7 @@ func _finish_draw_phase() -> void:
 
 	if print_debug:
 		print(
-			"MANUAL DRAW PHASE FINISHED: ROUND ",
+			"DRAW PHASE FINISHED: ROUND ",
 			active_round
 		)
 
@@ -359,6 +383,13 @@ func _is_draw_phase() -> bool:
 	return (
 		match_flow_root.current_state
 		== MatchFlowRoot.MatchState.AUTO_DRAW
+	)
+
+
+func _is_initial_draw_round() -> bool:
+	return (
+		active_round
+		< FIRST_MANUAL_DRAW_ROUND
 	)
 
 

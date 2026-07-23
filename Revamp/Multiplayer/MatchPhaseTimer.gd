@@ -17,12 +17,15 @@ signal timer_finished(
 
 @export var match_flow_root: MatchFlowRoot
 
-@export var draw_seconds: float = 15.0
+@export_group("Durations")
+@export var initial_auto_draw_seconds: float = 2.0
+@export var draw_seconds: float = 12.0
 @export var blessing_seconds: float = 10.0
 @export var buff_seconds: float = 10.0
 @export var placement_seconds: float = 60.0
-@export var tick_interval: float = 0.1
 
+@export_group("Timer")
+@export var tick_interval: float = 0.1
 @export var print_debug: bool = true
 
 var is_running: bool = false
@@ -47,11 +50,30 @@ func _ready() -> void:
 		)
 
 
+func start_initial_auto_draw() -> void:
+	_start_timer(
+		MatchFlowRoot.MatchState.AUTO_DRAW,
+		initial_auto_draw_seconds
+	)
+
+
 func start_for_state(
 	state: MatchFlowRoot.MatchState
 ) -> void:
-	var duration := _get_duration_for_state(state)
+	var duration: float = (
+		_get_duration_for_state(state)
+	)
 
+	_start_timer(
+		state,
+		duration
+	)
+
+
+func _start_timer(
+	state: MatchFlowRoot.MatchState,
+	duration: float
+) -> void:
 	if duration <= 0.0:
 		stop_timer()
 		return
@@ -59,7 +81,7 @@ func start_for_state(
 	stop_timer()
 
 	timer_run_id += 1
-	var local_run_id := timer_run_id
+	var local_run_id: int = timer_run_id
 
 	active_state = state
 	remaining_seconds = duration
@@ -93,7 +115,9 @@ func get_remaining_seconds() -> float:
 	return remaining_seconds
 
 
-func _run_timer(local_run_id: int) -> void:
+func _run_timer(
+	local_run_id: int
+) -> void:
 	while (
 		is_running
 		and local_run_id == timer_run_id
@@ -126,7 +150,9 @@ func _run_timer(local_run_id: int) -> void:
 		remaining_seconds
 	)
 
-	var finished_state := active_state
+	var finished_state: MatchFlowRoot.MatchState = (
+		active_state
+	)
 
 	stop_timer()
 

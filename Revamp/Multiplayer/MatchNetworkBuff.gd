@@ -15,8 +15,11 @@ var confirmed_owners: Dictionary = {}
 var is_phase_finishing: bool = false
 
 
-func setup(source_root: MatchNetworkRoot) -> void:
+func setup(
+	source_root: MatchNetworkRoot
+) -> void:
 	root = source_root
+
 	_connect_timer()
 	_connect_match_flow()
 
@@ -38,7 +41,7 @@ func on_buff_phase_started() -> void:
 		)
 		return
 
-	var mutation := (
+	var mutation: Mutation = (
 		root.buff_database.draw_random_mutation()
 	)
 
@@ -48,7 +51,7 @@ func on_buff_phase_started() -> void:
 		)
 		return
 
-	var mutation_id := (
+	var mutation_id: String = (
 		mutation.get_safe_mutation_id()
 	)
 
@@ -84,7 +87,7 @@ func receive_buff_reward(
 		)
 		return
 
-	var mutation := (
+	var mutation: Mutation = (
 		root.buff_database.get_mutation_by_id(
 			mutation_id
 		)
@@ -149,7 +152,7 @@ func receive_confirmed_buff(
 		)
 		return
 
-	var card := root.find_card_anywhere(
+	var card: CardRoot = root.find_card_anywhere(
 		target_card_runtime_id
 	)
 
@@ -160,7 +163,7 @@ func receive_confirmed_buff(
 		)
 		return
 
-	var mutation := (
+	var mutation: Mutation = (
 		root.buff_database.get_mutation_by_id(
 			mutation_id
 		)
@@ -182,7 +185,7 @@ func receive_confirmed_buff(
 		)
 		return
 
-	var applied := card.add_buff_mutation(
+	var applied: bool = card.add_buff_mutation(
 		mutation
 	)
 
@@ -192,15 +195,10 @@ func receive_confirmed_buff(
 		)
 		return
 
-	if root.deck_system_root != null:
-		var hand := (
-			root.deck_system_root.get_hand_for_owner(
-				owner
-			)
-		)
-
-		if hand != null and hand.has_card(card):
-			hand.play_evolution_feedback(card)
+	_play_local_evolution_feedback(
+		owner,
+		card
+	)
 
 	confirmed_buff_applied.emit(
 		owner,
@@ -216,6 +214,75 @@ func receive_confirmed_buff(
 			mutation.mutation_name,
 			" -> ",
 			card.card_name
+		)
+
+
+func _play_local_evolution_feedback(
+	owner: SlotRow.SlotOwner,
+	card: CardRoot
+) -> void:
+	if root == null:
+		return
+
+	# Each player plays feedback only for their own
+	# confirmed Evolution.
+	if owner != root.get_local_owner():
+		return
+
+	if root.deck_system_root == null:
+		print(
+			"EVOLUTION FEEDBACK BLOCKED: "
+			+ "DeckSystemRoot missing"
+		)
+		return
+
+	var local_hand: PlayerHandRoot = (
+		root.deck_system_root.get_hand_for_owner(
+			root.get_local_owner()
+		)
+	)
+
+	# Fall back to whichever hand actually contains
+	# this local card.
+	if (
+		local_hand == null
+		or not local_hand.has_card(card)
+	):
+		local_hand = (
+			root.deck_system_root
+			.get_hand_for_card_owner(card)
+		)
+
+	if local_hand == null:
+		print(
+			"EVOLUTION FEEDBACK BLOCKED: "
+			+ "card hand missing"
+		)
+		return
+
+	if not local_hand.has_card(card):
+		print(
+			"EVOLUTION FEEDBACK BLOCKED: "
+			+ "card not found in local hand"
+		)
+		return
+
+	# The buff phase may finish during this same
+	# network call. Defer feedback until the layout
+	# has finished responding to that phase change.
+	local_hand.call_deferred(
+		"play_evolution_feedback",
+		card
+	)
+
+	if root.print_debug:
+		print(
+			"EVOLUTION FEEDBACK QUEUED: ",
+			card.card_name,
+			" | LOCAL OWNER: ",
+			root.get_owner_name(
+				root.get_local_owner()
+			)
 		)
 
 
@@ -272,13 +339,15 @@ func _process_buff_confirm_request(
 ) -> void:
 	if is_phase_finishing:
 		print(
-			"BUFF REQUEST REJECTED: phase already finishing"
+			"BUFF REQUEST REJECTED: "
+			+ "phase already finishing"
 		)
 		return
 
 	if confirmed_owners.has(owner):
 		print(
-			"BUFF REQUEST REJECTED: owner already confirmed"
+			"BUFF REQUEST REJECTED: "
+			+ "owner already confirmed"
 		)
 		return
 
@@ -289,7 +358,7 @@ func _process_buff_confirm_request(
 		)
 		return
 
-	var card := root.find_card_anywhere(
+	var card: CardRoot = root.find_card_anywhere(
 		target_card_runtime_id
 	)
 
@@ -302,7 +371,8 @@ func _process_buff_confirm_request(
 
 	if root.lookup_network == null:
 		print(
-			"BUFF REQUEST REJECTED: lookup_network missing"
+			"BUFF REQUEST REJECTED: "
+			+ "lookup_network missing"
 		)
 		return
 
@@ -315,7 +385,7 @@ func _process_buff_confirm_request(
 		)
 		return
 
-	var mutation := (
+	var mutation: Mutation = (
 		root.buff_database.get_mutation_by_id(
 			mutation_id
 		)
@@ -329,7 +399,7 @@ func _process_buff_confirm_request(
 		return
 
 	if root.buff_flow_handler != null:
-		var offered := (
+		var offered: Mutation = (
 			root.buff_flow_handler
 			.get_active_reward_mutation()
 		)
@@ -389,12 +459,16 @@ func _broadcast_confirmed_buff(
 
 
 func _try_finish_if_all_confirmed() -> void:
-	var player_confirmed := confirmed_owners.has(
-		SlotRow.SlotOwner.PLAYER
+	var player_confirmed: bool = (
+		confirmed_owners.has(
+			SlotRow.SlotOwner.PLAYER
+		)
 	)
 
-	var opponent_confirmed := confirmed_owners.has(
-		SlotRow.SlotOwner.OPPONENT
+	var opponent_confirmed: bool = (
+		confirmed_owners.has(
+			SlotRow.SlotOwner.OPPONENT
+		)
 	)
 
 	if player_confirmed and opponent_confirmed:
@@ -439,7 +513,7 @@ func _resolve_unconfirmed_owner(
 	if root.buff_flow_handler == null:
 		return
 
-	var mutation := (
+	var mutation: Mutation = (
 		root.buff_flow_handler
 		.get_active_reward_mutation()
 	)
@@ -447,14 +521,15 @@ func _resolve_unconfirmed_owner(
 	if mutation == null:
 		return
 
-	var card := _get_fallback_card(
+	var card: CardRoot = _get_fallback_card(
 		owner,
 		mutation
 	)
 
 	if card == null:
 		print(
-			"BUFF TIMEOUT FAILED: no fallback card for ",
+			"BUFF TIMEOUT FAILED: "
+			+ "no fallback card for ",
 			root.get_owner_name(owner)
 		)
 		return
@@ -473,7 +548,7 @@ func _get_fallback_card(
 	mutation: Mutation
 ) -> CardRoot:
 	if selection_state != null:
-		var selected := (
+		var selected: CardRoot = (
 			selection_state.get_selected_card(
 				owner
 			)
@@ -493,7 +568,7 @@ func _get_fallback_card(
 	if root.deck_system_root == null:
 		return null
 
-	var hand := (
+	var hand: PlayerHandRoot = (
 		root.deck_system_root.get_hand_for_owner(
 			owner
 		)
