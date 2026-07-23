@@ -68,10 +68,8 @@
 [ext_resource type="Script" uid="uid://c62i7pwt3r30f" path="res://Revamp/Multiplayer/MatchNetworkTimer.gd" id="74_c8bx1"]
 [ext_resource type="Script" uid="uid://dx8ow48eguxe7" path="res://Revamp/MatchFlow/MatchPlacementCompletionHandler.gd" id="74_yjh5v"]
 [ext_resource type="Texture2D" uid="uid://cgkoni68euqo3" path="res://Art/Mutations/Sigils/Final_Sigils/Draculant_Sigil.png" id="75_c8bx1"]
-[ext_resource type="Texture2D" uid="uid://3a8n5ukeo0lv" path="res://Art/Mutations/Sigils/Final_Sigils/Direct_Sigil.png" id="76_7f3b3"]
 [ext_resource type="Script" uid="uid://dg2jxnlex8u2p" path="res://Revamp/MatchUI/UICard/PlayerHandUiBinder.gd" id="76_c8bx1"]
 [ext_resource type="Script" uid="uid://cm16kgidxxu4h" path="res://Revamp/MutationTooltTip/MutationButtonHoverBinder.gd" id="77_7f3b3"]
-[ext_resource type="Texture2D" uid="uid://bwmhepwpwekos" path="res://Art/Mutations/Sigils/Final_Sigils/Aviant_Sigil.png" id="77_63uau"]
 [ext_resource type="Script" uid="uid://cmbtqx5ng27nb" path="res://Revamp/MutationTooltTip/MutationToolTip.gd" id="78_7f3b3"]
 [ext_resource type="Script" uid="uid://ji2tm3gnhj4o" path="res://Revamp/Multiplayer/MatchNetworkScore.gd" id="78_o7028"]
 [ext_resource type="Script" uid="uid://t4xkfdp8n8kn" path="res://Revamp/MatchUI/UICard/CardMutationTooltipBinder.gd" id="79_63uau"]
@@ -165,7 +163,7 @@ shadow_color = Color(0.69803923, 0.56078434, 0.43137255, 1)
 [node name="Core" type="Node2D" parent="." unique_id=878801964]
 
 [node name="Deck" parent="Core" unique_id=93691211 node_paths=PackedStringArray("match_network_root", "buff_database", "player_one_hand", "player_two_hand", "worker_draw_button", "warrior_draw_button") instance=ExtResource("28_a1qt2")]
-position = Vector2(1836, 492)
+position = Vector2(1995, 938)
 match_network_root = NodePath("../../Multiplayer/MatchNetworkRoot")
 buff_database = NodePath("../../Scripts/Core/Evolution/BuffDatabase")
 player_one_hand = NodePath("../PlayerHAnd")
@@ -178,8 +176,8 @@ direct_damage_router = NodePath("../../Scripts/Core/DirectDamageRouter")
 
 [node name="PlayerHAnd" parent="Core" unique_id=371738706 node_paths=PackedStringArray("cost_sort", "mutation_sort") instance=ExtResource("2_mi1n2")]
 position = Vector2(768, 896)
-cost_sort = NodePath("../../Control/CostSortButton")
-mutation_sort = NodePath("../../Control/MutationSortButton")
+cost_sort = NodePath("")
+mutation_sort = NodePath("")
 
 [node name="OpponenetHAnd" parent="Core" unique_id=1415383407 instance=ExtResource("2_mi1n2")]
 position = Vector2(768.00006, 896.00006)
@@ -420,40 +418,6 @@ script = ExtResource("52_nmm8s")
 player_hand = NodePath("../Core/PlayerHAnd")
 count_label = NodePath("PlayerHandCount")
 
-[node name="CostSortButton" type="Button" parent="Control" unique_id=1231266524]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = 64.0
-offset_top = 1024.0
-offset_right = 208.0
-offset_bottom = 1066.0
-grow_horizontal = 2
-grow_vertical = 0
-theme_override_font_sizes/font_size = 24
-text = "Cost
-"
-
-[node name="MutationSortButton" type="Button" parent="Control" unique_id=479050822]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = 64.0
-offset_top = 960.0
-offset_right = 208.0
-offset_bottom = 1002.0
-grow_horizontal = 2
-grow_vertical = 0
-theme_override_font_sizes/font_size = 24
-text = "Mutation
-"
-
 [node name="PlayerHandCount" type="Label" parent="Control" unique_id=918507559]
 layout_mode = 0
 offset_left = 900.0
@@ -562,20 +526,24 @@ phase_label = NodePath("CardPanel/SpritePanel/PhasePanel/Phase")
 going_first_label = NodePath("CardPanel/SpritePanel/Who\'sGoingfirstLabel/WhosFirst")
 description_label = NodePath("CardPanel/SpritePanel/HelpPanel/Desription")
 timer_label = NodePath("CardPanel/EndButton/TimeLabel")
-round_number_label = NodePath("../Core/MatchFlowUI/MatchAnnouncementDisplay/RoundLabel")
+round_number_label = NodePath("CardPanel/RoundPanel/RNumber")
 end_button = NodePath("CardPanel/EndButton")
 mutation_button = NodePath("CardPanel/BuffPile")
 worker_button = NodePath("Worker")
 warrior_button = NodePath("Warrior")
 draw_shadow_color = Color(0, 0.57254905, 0.92941177, 1)
 evolution_shadow_color = Color(0, 0.57254905, 0.5176471, 1)
+play_wait_shadow_color = Color(0.49411765, 0.57254905, 0.92941177, 1)
 attack_shadow_color = Color(0.9647059, 0.48235294, 0.5176471, 1)
 other_phase_shadow_color = Color(0.83137256, 0.70980394, 0.59607846, 1)
 
-[node name="PlayerHandUiBinder" type="Node" parent="UICard" unique_id=1141576823 node_paths=PackedStringArray("match_ui", "player_hand", "sacrifice_controller")]
+[node name="PlayerHandUiBinder" type="Node" parent="UICard" unique_id=1141576823 node_paths=PackedStringArray("match_ui", "match_flow_root", "player_hand", "player_one_hand", "player_two_hand", "sacrifice_controller")]
 script = ExtResource("76_c8bx1")
 match_ui = NodePath("..")
+match_flow_root = NodePath("../../Scripts/MatchFlowRoot")
 player_hand = NodePath("../../Core/PlayerHAnd")
+player_one_hand = NodePath("../../Core/PlayerHAnd")
+player_two_hand = NodePath("../../Core/OpponenetHAnd")
 sacrifice_controller = NodePath("../../Scripts/Core/SacrificeController")
 
 [node name="MutationButtonHoverBinder" type="Node" parent="UICard" unique_id=1903292537 node_paths=PackedStringArray("mutation_button", "mutation_tooltip")]
@@ -775,7 +743,7 @@ script = ExtResource("78_7f3b3")
 name_label = NodePath("TextBox/TBNamePanel/TBNameLabel")
 description_label = NodePath("TextBox/TBDescripPanel/TBDescripLabel")
 mutation_labels = [NodePath("TextBox/TBDescripPanel/MutationLine1"), NodePath("TextBox/TBDescripPanel/MutationLine2"), NodePath("TextBox/TBDescripPanel/MutationLine3")]
-mutation_sprites = [NodePath("TextBox/TBDescripPanel/MutatinLineSprite1"), NodePath("TextBox/TBDescripPanel/MutatinLineSprite2"), NodePath("TextBox/TBDescripPanel/MutatinLineSprite3")]
+mutation_sprites = [NodePath("TextBox/TBDescripPanel/MutatinLineSprite3"), NodePath("TextBox/TBDescripPanel/MutatinLineSprite2"), NodePath("TextBox/TBDescripPanel/MutatinLineSprite4")]
 default_description_text = "
 "
 metadata/_edit_lock_ = true
@@ -843,63 +811,64 @@ metadata/_edit_lock_ = true
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_left = 29.0
-offset_bottom = 63.0
+offset_left = 63.0
+offset_top = -1.0
+offset_bottom = 62.0
 grow_horizontal = 2
 theme_override_fonts/font = ExtResource("80_cxut3")
 theme_override_font_sizes/font_size = 24
-text = "YAtk : Atk opposing adjacent slots"
+text = " Atk opposing adjacent slots"
 label_settings = SubResource("LabelSettings_o7028")
 vertical_alignment = 1
 autowrap_mode = 3
 
-[node name="MutationLine2" type="Label" parent="ToolTip/TextBox/TBDescripPanel" unique_id=644623501]
+[node name="MutationLine2" type="Label" parent="ToolTip/TextBox/TBDescripPanel" unique_id=1661284811]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_left = 29.0
+offset_left = 63.0
 offset_top = 40.0
 offset_bottom = 103.0
 grow_horizontal = 2
 theme_override_fonts/font = ExtResource("80_cxut3")
 theme_override_font_sizes/font_size = 24
-text = "Spiky : Attacking card gets 1 DMg"
+text = " Atk opposing adjacent slots"
 label_settings = SubResource("LabelSettings_o7028")
 vertical_alignment = 1
 autowrap_mode = 3
 
-[node name="MutationLine3" type="Label" parent="ToolTip/TextBox/TBDescripPanel" unique_id=512448785]
+[node name="MutationLine3" type="Label" parent="ToolTip/TextBox/TBDescripPanel" unique_id=989704665]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_left = 29.0
+offset_left = 63.0
 offset_top = 82.0
 offset_bottom = 145.0
 grow_horizontal = 2
 theme_override_fonts/font = ExtResource("80_cxut3")
 theme_override_font_sizes/font_size = 24
-text = "Spiky : Attacking card gets 1 DMG"
+text = " Atk opposing adjacent slots"
 label_settings = SubResource("LabelSettings_o7028")
 vertical_alignment = 1
 autowrap_mode = 3
 
-[node name="MutatinLineSprite1" type="Sprite2D" parent="ToolTip/TextBox/TBDescripPanel" unique_id=1717117514]
+[node name="MutatinLineSprite3" type="Sprite2D" parent="ToolTip/TextBox/TBDescripPanel" unique_id=753539966]
 z_index = -1
-position = Vector2(20.999979, 32.999977)
-scale = Vector2(0.07999992, 0.07999992)
+position = Vector2(35, 34)
+scale = Vector2(0.10599991, 0.10599991)
 texture = ExtResource("75_c8bx1")
 
-[node name="MutatinLineSprite2" type="Sprite2D" parent="ToolTip/TextBox/TBDescripPanel" unique_id=378006899]
+[node name="MutatinLineSprite2" type="Sprite2D" parent="ToolTip/TextBox/TBDescripPanel" unique_id=1791274269]
 z_index = -1
-position = Vector2(20.999979, 72.99998)
-scale = Vector2(0.07999992, 0.07999992)
-texture = ExtResource("76_7f3b3")
+position = Vector2(34.99997, 74.99998)
+scale = Vector2(0.10599991, 0.10599991)
+texture = ExtResource("75_c8bx1")
 
-[node name="MutatinLineSprite3" type="Sprite2D" parent="ToolTip/TextBox/TBDescripPanel" unique_id=2042019103]
+[node name="MutatinLineSprite4" type="Sprite2D" parent="ToolTip/TextBox/TBDescripPanel" unique_id=919691983]
 z_index = -1
-position = Vector2(20.999979, 112.99998)
-scale = Vector2(0.07999992, 0.07999992)
-texture = ExtResource("77_63uau")
+position = Vector2(34.99997, 114.99998)
+scale = Vector2(0.10599991, 0.10599991)
+texture = ExtResource("75_c8bx1")
 
 [node name="CArdMutationTooltipbinde" type="Node" parent="ToolTip" unique_id=2111843857 node_paths=PackedStringArray("mutation_tooltip", "player_hands")]
 script = ExtResource("79_63uau")

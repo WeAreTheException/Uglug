@@ -2,10 +2,19 @@ extends Node
 class_name PlayHandUiBinder
 
 
+@export_group("UI")
 @export var match_ui: MatchPhaseUI
+@export var match_flow_root: MatchFlowRoot
+
+@export_group("Hands")
 @export var player_hand: PlayerHandRoot
+@export var player_one_hand: PlayerHandRoot
+@export var player_two_hand: PlayerHandRoot
+
+@export_group("Placement")
 @export var sacrifice_controller: SacrificeController
 
+@export_group("Text Colors")
 @export var active_color: Color = Color.WHITE
 
 @export var completed_color: Color = Color(
@@ -29,12 +38,12 @@ class_name PlayHandUiBinder
 	1.0
 )
 
+@export_group("Font Sizes")
 @export var active_font_size: int = 18
 @export var normal_font_size: int = 16
 
-@export var select_card_text: String = (
-	"Select Card"
-)
+@export_group("Text")
+@export var select_card_text: String = "Select Card"
 
 @export var choose_martyrs_text: String = (
 	"Choose %s martyr%s"
@@ -42,14 +51,20 @@ class_name PlayHandUiBinder
 
 @export var place_text: String = "Place"
 
+@export_group("Debug")
 @export var print_debug: bool = false
 
 
 func _ready() -> void:
 	_connect_match_ui()
-	_connect_hand()
+
+	_connect_hand(player_hand)
+	_connect_hand(player_one_hand)
+	_connect_hand(player_two_hand)
+
 	_connect_sacrifice_controller()
-	refresh()
+
+	call_deferred("refresh")
 
 
 func refresh() -> void:
@@ -65,9 +80,7 @@ func refresh() -> void:
 	):
 		return
 
-	var primed_card: CardRoot = (
-		_get_primed_card()
-	)
+	var primed_card: CardRoot = _get_primed_card()
 
 	if primed_card == null:
 		_set_helper_text(
@@ -162,28 +175,28 @@ func _connect_match_ui() -> void:
 		)
 
 
-func _connect_hand() -> void:
-	if player_hand == null:
+func _connect_hand(hand: PlayerHandRoot) -> void:
+	if hand == null:
 		return
 
-	if not player_hand.card_primed.is_connected(
+	if not hand.card_primed.is_connected(
 		_on_card_primed
 	):
-		player_hand.card_primed.connect(
+		hand.card_primed.connect(
 			_on_card_primed
 		)
 
-	if not player_hand.card_unprimed.is_connected(
+	if not hand.card_unprimed.is_connected(
 		_on_card_unprimed
 	):
-		player_hand.card_unprimed.connect(
+		hand.card_unprimed.connect(
 			_on_card_unprimed
 		)
 
-	if not player_hand.sacrifice_selection_changed.is_connected(
+	if not hand.sacrifice_selection_changed.is_connected(
 		_on_hand_sacrifice_selection_changed
 	):
-		player_hand.sacrifice_selection_changed.connect(
+		hand.sacrifice_selection_changed.connect(
 			_on_hand_sacrifice_selection_changed
 		)
 
@@ -230,15 +243,11 @@ func _on_phase_changed(
 	refresh()
 
 
-func _on_card_primed(
-	_card: CardRoot
-) -> void:
+func _on_card_primed(_card: CardRoot) -> void:
 	refresh()
 
 
-func _on_card_unprimed(
-	_card: CardRoot
-) -> void:
+func _on_card_unprimed(_card: CardRoot) -> void:
 	refresh()
 
 
@@ -275,11 +284,39 @@ func _on_sacrifice_committed(
 	refresh()
 
 
+func _get_local_player_hand() -> PlayerHandRoot:
+	if (
+		match_flow_root == null
+		or match_flow_root.turn_order_state == null
+	):
+		return player_hand
+
+	var controlled_owner: SlotRow.SlotOwner = (
+		match_flow_root
+			.turn_order_state
+			.controlled_owner
+	)
+
+	if controlled_owner == SlotRow.SlotOwner.PLAYER:
+		if player_one_hand != null:
+			return player_one_hand
+
+	if controlled_owner == SlotRow.SlotOwner.OPPONENT:
+		if player_two_hand != null:
+			return player_two_hand
+
+	return player_hand
+
+
 func _get_primed_card() -> CardRoot:
-	if player_hand == null:
+	var local_hand: PlayerHandRoot = (
+		_get_local_player_hand()
+	)
+
+	if local_hand == null:
 		return null
 
-	return player_hand.get_primed_card()
+	return local_hand.get_primed_card()
 
 
 func _get_current_martyr_worth() -> int:
@@ -292,12 +329,15 @@ func _get_current_martyr_worth() -> int:
 			pending_cards
 		)
 
-	if player_hand == null:
+	var local_hand: PlayerHandRoot = (
+		_get_local_player_hand()
+	)
+
+	if local_hand == null:
 		return 0
 
 	return _get_cards_worth(
-		player_hand
-			.get_selected_sacrifice_cards()
+		local_hand.get_selected_sacrifice_cards()
 	)
 
 
@@ -314,7 +354,7 @@ func _get_pending_sacrifice_cards() -> Array[CardRoot]:
 func _has_pending_sacrifices() -> bool:
 	return not (
 		_get_pending_sacrifice_cards()
-		.is_empty()
+			.is_empty()
 	)
 
 

@@ -6,6 +6,6 @@
 [resource]
 script = ExtResource("1_ds36k")
 mutation_name = "Christmas"
-mutation_description = "On placement grants random warrior"
+mutation_description = "Choose random Warrior"
 sigil_texture = ExtResource("2_07ynb")
 metadata/_custom_type_script = "uid://be8yk3djwb5oc"
