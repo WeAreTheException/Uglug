@@ -626,7 +626,11 @@ sacrifice_board_binder = NodePath("../../Scripts/Core/SacrificeController/Sacrif
 [node name="MatchPhaseTimer" type="Node" parent="Multiplayer" unique_id=767461142 node_paths=PackedStringArray("match_flow_root")]
 script = ExtResource("73_fk48e")
 match_flow_root = NodePath("../../Scripts/MatchFlowRoot")
-draw_seconds = 5.0
+draw_seconds = 60.0
+blessing_seconds = 60.0
+buff_seconds = 60.0
+placement_seconds = 180.0
+print_debug = false
 
 [node name="UICard" type="Control" parent="." unique_id=1479972870 node_paths=PackedStringArray("phase_label", "going_first_label", "description_label", "timer_label", "round_number_label", "end_button", "mutation_button", "worker_button", "warrior_button")]
 layout_mode = 3
