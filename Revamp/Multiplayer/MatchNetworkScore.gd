@@ -66,10 +66,31 @@ func _host_apply_score_damage(
 		"amount": amount
 	}
 
-	GDSync.call_func_all(root._receive_confirmed_score_change, payload)
-	
-	if root.match_score_state.has_winner:
-		_broadcast_confirmed_match_winner()
+	GDSync.call_func_all(
+		root._receive_confirmed_score_change,
+		payload
+	)
+
+
+func finalize_score_after_combat() -> void:
+	if root == null:
+		return
+
+	if not root.is_host():
+		return
+
+	if root.match_score_state == null:
+		return
+
+	var winner_was_finalized: bool = (
+		root.match_score_state.finalize_pending_win_check()
+	)
+
+	if not winner_was_finalized:
+		return
+
+	_broadcast_confirmed_match_winner()
+
 
 func _broadcast_confirmed_match_winner() -> void:
 	if root == null:
@@ -86,4 +107,7 @@ func _broadcast_confirmed_match_winner() -> void:
 		"final_score": root.match_score_state.score
 	}
 
-	GDSync.call_func_all(root._receive_confirmed_match_winner, payload)
+	GDSync.call_func_all(
+		root._receive_confirmed_match_winner,
+		payload
+	)

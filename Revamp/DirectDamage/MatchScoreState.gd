@@ -4,18 +4,22 @@ class_name MatchScoreState
 signal score_changed(score: int)
 signal threshold_reached(winner: SlotRow.SlotOwner, score: int)
 
-@export var win_threshold: int = 5
+@export var win_threshold: int = 10
 @export var print_debug: bool = true
 
 var score: int = 0
+
+var win_check_pending: bool = false
 var has_winner: bool = false
 var winner: SlotRow.SlotOwner = SlotRow.SlotOwner.PLAYER
 
 
 func reset_score() -> void:
 	score = 0
+	win_check_pending = false
 	has_winner = false
 	winner = SlotRow.SlotOwner.PLAYER
+
 	score_changed.emit(score)
 
 
@@ -43,12 +47,53 @@ func apply_direct_damage(
 
 
 func _check_threshold() -> void:
+	if win_check_pending:
+		return
+
 	if score >= win_threshold:
-		_set_winner(SlotRow.SlotOwner.PLAYER)
+		_queue_win_check()
 		return
 
 	if score <= -win_threshold:
+		_queue_win_check()
+
+
+func _queue_win_check() -> void:
+	win_check_pending = true
+
+	if print_debug:
+		print(
+			"WIN CHECK QUEUED | score=",
+			score,
+			" threshold=",
+			win_threshold
+		)
+
+
+func finalize_pending_win_check() -> bool:
+	if has_winner:
+		return false
+
+	if not win_check_pending:
+		return false
+
+	win_check_pending = false
+
+	if score >= win_threshold:
+		_set_winner(SlotRow.SlotOwner.PLAYER)
+		return true
+
+	if score <= -win_threshold:
 		_set_winner(SlotRow.SlotOwner.OPPONENT)
+		return true
+
+	if print_debug:
+		print(
+			"WIN CHECK CLEARED | final score returned below threshold: ",
+			score
+		)
+
+	return false
 
 
 func _set_winner(source_winner: SlotRow.SlotOwner) -> void:
@@ -59,16 +104,15 @@ func _set_winner(source_winner: SlotRow.SlotOwner) -> void:
 	winner = source_winner
 
 	if print_debug:
-		print("WINNER REACHED: ", _get_owner_name(winner))
+		print(
+			"WINNER FINALIZED: ",
+			_get_owner_name(winner),
+			" score=",
+			score
+		)
 
 	threshold_reached.emit(winner, score)
 
-
-func _get_owner_name(owner: SlotRow.SlotOwner) -> String:
-	if owner == SlotRow.SlotOwner.PLAYER:
-		return "P1"
-
-	return "P2"
 
 func apply_confirmed_score_change(
 	previous_score: int,
@@ -80,6 +124,8 @@ func apply_confirmed_score_change(
 ) -> void:
 	score = new_score
 	score_changed.emit(score)
+
+	_check_threshold()
 
 	if print_debug:
 		var role := "CLIENT"
@@ -101,3 +147,10 @@ func apply_confirmed_score_change(
 			" amount=",
 			amount
 		)
+
+
+func _get_owner_name(owner: SlotRow.SlotOwner) -> String:
+	if owner == SlotRow.SlotOwner.PLAYER:
+		return "P1"
+
+	return "P2"
