@@ -165,7 +165,7 @@ script = ExtResource("13_opxhd")
 
 [node name="HurtFeedbackHandler" type="Node" parent="Actions/Hurt" unique_id=263819034 node_paths=PackedStringArray("hurt_audio", "hurt_flash", "hurt_sprite")]
 script = ExtResource("12_mvgl2")
-hurt_audio = NodePath("../AudioStreamPlayer2D")
+hurt_audio = NodePath("../AudioStreamPlayer")
 hurt_flash = NodePath("HurtFlash")
 hurt_sprite = NodePath("HurtSprite")
 
@@ -181,7 +181,7 @@ anchor = NodePath("../../../../Visuals/CardVisuals/FeedbackSpriteAnchor")
 sprite_size = Vector2(150, 232.5)
 fade_time = 0.5
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Actions/Hurt" unique_id=1255865697]
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Actions/Hurt" unique_id=669684615]
 stream = ExtResource("23_56um7")
 
 [node name="Die" type="Node" parent="Actions" unique_id=1463626010 node_paths=PackedStringArray("animation_runner", "death_audio")]

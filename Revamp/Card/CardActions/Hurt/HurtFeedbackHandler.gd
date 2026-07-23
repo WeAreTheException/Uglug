@@ -1,7 +1,7 @@
 extends Node
 class_name HurtFeedbackHandler
 
-@export var hurt_audio: AudioStreamPlayer2D
+@export var hurt_audio: AudioStreamPlayer
 @export var hurt_flash: HurtFlash
 @export var hurt_sprite: HurtSprite
 
