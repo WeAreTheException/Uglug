@@ -5,7 +5,6 @@
 [ext_resource type="PackedScene" uid="uid://bw8c7m7n5yuk8" path="res://Revamp/Board/Slots.tscn" id="4_n6ts1"]
 [ext_resource type="Texture2D" uid="uid://cjesmr4t5yoad" path="res://Revamp/References/aasedasd.jpg" id="5_n6ts1"]
 [ext_resource type="Resource" uid="uid://bs3fo2ipl8vxe" path="res://Revamp/CardPresets/TestCardPresets/OneTwoThree.tres" id="5_s2dsq"]
-[ext_resource type="Script" uid="uid://b36x28452aktg" path="res://Revamp/MatchUiRoot.gd" id="5_tsgf7"]
 [ext_resource type="Script" uid="uid://dg2jxnlex8u2p" path="res://Revamp/MatchUI/UICard/PlayerHandUiBinder.gd" id="6_2qwdf"]
 [ext_resource type="Script" uid="uid://blfvp1wwkpwtb" path="res://Revamp/Camera/CameraShakeValues.gd" id="6_bguvq"]
 [ext_resource type="Resource" uid="uid://c23eoyjw4afmw" path="res://Revamp/CardPresets/TestCardPresets/FourFiveSix.tres" id="6_h76ad"]
@@ -14,12 +13,10 @@
 [ext_resource type="Resource" uid="uid://m7mh32mpv5ae" path="res://Revamp/CardPresets/TestCardPresets/TenElevenTwelve.tres" id="8_rww4k"]
 [ext_resource type="Resource" uid="uid://2h2vn6gnpisp" path="res://Revamp/CardPresets/TestCardPresets/ThirteenFourteenFifteen.tres" id="9_e8ugv"]
 [ext_resource type="Script" uid="uid://c406tme7fpq2j" path="res://Revamp/DrawPhaseTestRoot.gd" id="9_proag"]
-[ext_resource type="Resource" uid="uid://ddutm1u6hi5je" path="res://Revamp/CardPresets/TestCardPresets/SixteenSeventeenEighteen.tres" id="10_6p3ob"]
 [ext_resource type="Script" uid="uid://t4xkfdp8n8kn" path="res://Revamp/MatchUI/UICard/CardMutationTooltipBinder.gd" id="10_8tkpi"]
 [ext_resource type="PackedScene" uid="uid://1wr1e57v7trd" path="res://Revamp/PlayerHand/Player_Hand.tscn" id="10_mtbf2"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Old/Data/CardData.gd" id="10_nux5c"]
 [ext_resource type="Resource" uid="uid://bn1jyervrnsg" path="res://Revamp/CardPresets/WorkerAnt.tres" id="10_x1cq6"]
-[ext_resource type="Resource" uid="uid://cb2lpikf6mimn" path="res://Revamp/CardPresets/TestCardPresets/NineteenTwentyTwentyOne.tres" id="11_6kxbn"]
 [ext_resource type="Resource" uid="uid://bxfxi0h5itrdu" path="res://Revamp/CardPresets/Lieutenant.tres" id="11_x1cq6"]
 [ext_resource type="Resource" uid="uid://dwpj7bg5ognwt" path="res://Revamp/CardPresets/Samurant.tres" id="12_2qwdf"]
 [ext_resource type="Resource" uid="uid://cu38anwcrq117" path="res://Revamp/CardPresets/SuperStimulant.tres" id="13_hlv0h"]
@@ -87,7 +84,7 @@ opponent_slot_1_card = ExtResource("19_bs6ji")
 
 [node name="PlayerHandRoot" parent="." unique_id=371738706 instance=ExtResource("10_mtbf2")]
 position = Vector2(-168, 384)
-starting_cards = Array[ExtResource("10_nux5c")]([ExtResource("5_s2dsq"), ExtResource("6_h76ad"), ExtResource("7_sw8u3"), ExtResource("8_rww4k"), ExtResource("9_e8ugv"), ExtResource("10_6p3ob"), ExtResource("11_6kxbn")])
+starting_cards = Array[ExtResource("10_nux5c")]([ExtResource("5_s2dsq"), ExtResource("6_h76ad"), ExtResource("7_sw8u3"), ExtResource("8_rww4k"), ExtResource("9_e8ugv")])
 max_hand_size = 7
 
 [node name="MatchUI" type="Node2D" parent="." unique_id=196750808]
@@ -223,26 +220,11 @@ buff_pool = Array[ExtResource("33_85uwd")]([ExtResource("34_m57fn"), ExtResource
 print_debug = false
 run_smoke_test_on_ready = false
 
-[node name="UICard" type="Control" parent="." unique_id=811118957 node_paths=PackedStringArray("round_label", "going_first_label", "phase_label", "helper_label", "timer_label", "worker_button", "warrior_button", "buff_button", "timer_end_turn_button", "undo_button", "mutation_database", "player_hand")]
+[node name="UICard" type="Control" parent="." unique_id=811118957]
 layout_mode = 3
 anchors_preset = 9
 anchor_bottom = 1.0
 grow_vertical = 2
-script = ExtResource("5_tsgf7")
-round_label = NodePath("CardPanel/RoundPanel/RoundLabel")
-going_first_label = NodePath("CardPanel/SpritePanel/Who\'sGoingfirstLabel/Who")
-phase_label = NodePath("CardPanel/SpritePanel/PhasePanel/PhaseLabel")
-helper_label = NodePath("CardPanel/SpritePanel/HelpPanel/Desription")
-timer_label = NodePath("CardPanel/EndButton/TimeLabel")
-worker_button = NodePath("CardPanel/WorkerPanel")
-warrior_button = NodePath("CardPanel/WarriorPanel")
-buff_button = NodePath("CardPanel/BuffPile")
-timer_end_turn_button = NodePath("CardPanel/EndButton")
-undo_button = NodePath("CardPanel/Undo")
-mutation_database = NodePath("../ToolTip/BuffDatabase")
-player_hand = NodePath("../PlayerHandRoot")
-active_button_color = Color(1.4439226e-07, 0.4351746, 0.43522498, 1)
-inactive_button_color = Color(0, 0.68333876, 0.6841458, 0.2509804)
 
 [node name="CardPanel" type="Panel" parent="UICard" unique_id=677196]
 layout_mode = 0
@@ -324,9 +306,9 @@ metadata/_edit_lock_ = true
 [node name="BuffPile" type="Button" parent="UICard/CardPanel" unique_id=639663561]
 layout_mode = 0
 offset_left = 30.0
-offset_top = 443.0
+offset_top = 437.0
 offset_right = 146.0
-offset_bottom = 565.0
+offset_bottom = 559.0
 metadata/_edit_lock_ = true
 
 [node name="WorkerPanel" type="Button" parent="UICard/CardPanel" unique_id=22663007]
@@ -568,3 +550,15 @@ position = Vector2(-640, -192)
 [node name="Node" type="Node" parent="." unique_id=951332260]
 
 [node name="Node2D" type="Node2D" parent="." unique_id=457746046]
+
+[node name="WarriorButton" type="Button" parent="." unique_id=1991721333]
+offset_left = 602.0
+offset_top = -9.0
+offset_right = 718.0
+offset_bottom = 112.0
+
+[node name="WorkerButton" type="Button" parent="." unique_id=1314909433]
+offset_left = 726.0
+offset_top = -9.0
+offset_right = 842.0
+offset_bottom = 112.0

@@ -12,7 +12,6 @@
 [ext_resource type="Script" uid="uid://dutbidhjeof0i" path="res://Revamp/DeckSystem/Deck/PlayerDeckLoadout.gd" id="5_uqw47"]
 [ext_resource type="Script" uid="uid://ckysxojcj6pel" path="res://Revamp/DeckSystem/StartingHand/StartingHandRecipe.gd" id="6_uqw47"]
 [ext_resource type="Script" uid="uid://brab1p6vhbisa" path="res://DeckSystemDebugInput.gd" id="12_0rkmb"]
-[ext_resource type="PackedScene" uid="uid://1wr1e57v7trd" path="res://Revamp/PlayerHand/Player_Hand.tscn" id="13_ingbf"]
 [ext_resource type="Script" uid="uid://blq43rpyvye6c" path="res://Revamp/CardDatabase.gd" id="14_uqw47"]
 [ext_resource type="Resource" uid="uid://bxrcjm4w1dy82" path="res://Revamp/CardPresets/Anthrax.tres" id="15_mm7cs"]
 [ext_resource type="Resource" uid="uid://kmwnulcu4tml" path="res://Revamp/CardPresets/Antler.tres" id="16_n3vl6"]
@@ -38,6 +37,7 @@
 [ext_resource type="Resource" uid="uid://c64jbnvj0pbwk" path="res://Revamp/CardPresets/CardSpawner/AntHill.tres" id="36_ukkbw"]
 [ext_resource type="Resource" uid="uid://mnht3u87f5og" path="res://Revamp/CardPresets/CardSpawner/Pregnant.tres" id="37_18837"]
 [ext_resource type="Resource" uid="uid://c7b01c40e24r" path="res://Revamp/CardPresets/CardSpawner/Santa.tres" id="38_4fbyu"]
+[ext_resource type="Script" uid="uid://byra1ssbr1uup" path="res://Revamp/DeckSystem/DrawPile/MatchManualDrawHandler.gd" id="39_lq2ut"]
 
 [sub_resource type="Resource" id="Resource_ingbf"]
 script = ExtResource("6_uqw47")
@@ -57,12 +57,13 @@ script = ExtResource("5_uqw47")
 starting_hand_override = SubResource("Resource_tcmww")
 metadata/_custom_type_script = "uid://dutbidhjeof0i"
 
-[node name="DeckSystemRoot" type="Node2D" unique_id=93691211 node_paths=PackedStringArray("match_setup", "player_one_draw_pile", "player_two_draw_pile", "worker_source")]
+[node name="DeckSystemRoot" type="Node2D" unique_id=93691211 node_paths=PackedStringArray("match_setup", "player_one_draw_pile", "player_two_draw_pile", "worker_source", "manual_draw_handler")]
 script = ExtResource("1_aossy")
 match_setup = NodePath("MatchSetup/MatchDeckSetup")
-player_one_draw_pile = NodePath("DrawPile")
+player_one_draw_pile = NodePath("HostDrawPile")
 player_two_draw_pile = NodePath("DrawPile2")
 worker_source = NodePath("WorkerPile")
+manual_draw_handler = NodePath("ManualDrawHandler")
 starting_hand_start_delay = 1.0
 starting_hand_card_delay = 0.14
 
@@ -87,19 +88,16 @@ randomize_on_ready = true
 [node name="MatchDeckModeConfig" type="Node" parent="MatchSetup" unique_id=496893894]
 script = ExtResource("4_cynwi")
 
+[node name="ManualDrawHandler" type="Node" parent="." unique_id=54828393]
+script = ExtResource("39_lq2ut")
+
 [node name="WorkerPile" parent="." unique_id=1079172040 instance=ExtResource("1_ornpd")]
 
-[node name="DrawPile" parent="." unique_id=399983247 instance=ExtResource("1_hbww1")]
+[node name="HostDrawPile" parent="." unique_id=399983247 instance=ExtResource("1_hbww1")]
 
 [node name="DrawPile2" parent="." unique_id=82406285 instance=ExtResource("1_hbww1")]
 
 [node name="DiscardPile" parent="." unique_id=407807974 instance=ExtResource("2_bat4r")]
-
-[node name="PlayerHandRoot" parent="." unique_id=371738706 instance=ExtResource("13_ingbf")]
-position = Vector2(1212, 732)
-
-[node name="PlayerHandRoot2" parent="." unique_id=1046376156 instance=ExtResource("13_ingbf")]
-position = Vector2(1296, 108)
 
 [node name="DeckSystemDebugInput" type="Node" parent="." unique_id=1904816924 node_paths=PackedStringArray("deck_system_root")]
 script = ExtResource("12_0rkmb")

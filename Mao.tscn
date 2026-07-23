@@ -70,14 +70,12 @@
 [ext_resource type="Script" uid="uid://00f6bgoq0mgc" path="res://Revamp/Multiplayer/MatchNetworkAttack.gd" id="73_nc85t"]
 [ext_resource type="Script" uid="uid://c62i7pwt3r30f" path="res://Revamp/Multiplayer/MatchNetworkTimer.gd" id="74_c8bx1"]
 [ext_resource type="Script" uid="uid://dx8ow48eguxe7" path="res://Revamp/MatchFlow/MatchPlacementCompletionHandler.gd" id="74_yjh5v"]
-[ext_resource type="Script" uid="uid://b36x28452aktg" path="res://Revamp/MatchUiRoot.gd" id="75_nc85t"]
 [ext_resource type="Script" uid="uid://dg2jxnlex8u2p" path="res://Revamp/MatchUI/UICard/PlayerHandUiBinder.gd" id="76_c8bx1"]
 [ext_resource type="Script" uid="uid://cm16kgidxxu4h" path="res://Revamp/MutationTooltTip/MutationButtonHoverBinder.gd" id="77_7f3b3"]
 [ext_resource type="Script" uid="uid://cmbtqx5ng27nb" path="res://Revamp/MutationTooltTip/MutationToolTip.gd" id="78_7f3b3"]
 [ext_resource type="Script" uid="uid://ji2tm3gnhj4o" path="res://Revamp/Multiplayer/MatchNetworkScore.gd" id="78_o7028"]
 [ext_resource type="Script" uid="uid://t4xkfdp8n8kn" path="res://Revamp/MatchUI/UICard/CardMutationTooltipBinder.gd" id="79_63uau"]
 [ext_resource type="FontFile" uid="uid://3m1qkjceiwrb" path="res://Revamp/Fonts/Transcity DEMO.otf" id="79_cxut3"]
-[ext_resource type="PackedScene" uid="uid://di0rkfbiujfe5" path="res://Draw_Pile.tscn" id="80_63uau"]
 [ext_resource type="FontFile" uid="uid://do0dv62a8jo77" path="res://Revamp/Fonts/bilderberg.regular.otf" id="80_cxut3"]
 [ext_resource type="Script" uid="uid://bnbuh7nx3k3f2" path="res://Revamp/Multiplayer/MatchNetworkDebugSync.gd" id="81_o7028"]
 
@@ -166,12 +164,14 @@ shadow_color = Color(0, 0.57254905, 0.92941177, 1)
 
 [node name="Core" type="Node2D" parent="." unique_id=878801964]
 
-[node name="Deck" parent="Core" unique_id=93691211 node_paths=PackedStringArray("match_network_root", "buff_database", "player_one_hand", "player_two_hand") instance=ExtResource("28_a1qt2")]
+[node name="Deck" parent="Core" unique_id=93691211 node_paths=PackedStringArray("match_network_root", "buff_database", "player_one_hand", "player_two_hand", "worker_draw_button", "warrior_draw_button") instance=ExtResource("28_a1qt2")]
 position = Vector2(1836, 492)
 match_network_root = NodePath("../../Multiplayer/MatchNetworkRoot")
 buff_database = NodePath("../../Scripts/Core/Buff/BuffDatabase")
 player_one_hand = NodePath("../PlayerHAnd")
 player_two_hand = NodePath("../OpponenetHAnd")
+worker_draw_button = NodePath("../../UICard/CardPanel/Worker")
+warrior_draw_button = NodePath("../../UICard/CardPanel/Warrior")
 
 [node name="Board" parent="Core" unique_id=1318716624 node_paths=PackedStringArray("direct_damage_router") instance=ExtResource("1_yq750")]
 direct_damage_router = NodePath("../../Scripts/Core/DirectDamageRouter")
@@ -584,7 +584,7 @@ script = ExtResource("73_fk48e")
 match_flow_root = NodePath("../../Scripts/MatchFlowRoot")
 print_debug = false
 
-[node name="UICard" type="Control" parent="." unique_id=1479972870 node_paths=PackedStringArray("helper_label", "timer_label", "worker_button", "warrior_button", "buff_button", "timer_end_turn_button", "mutation_database", "player_hand")]
+[node name="UICard" type="Control" parent="." unique_id=1479972870]
 layout_mode = 3
 anchors_preset = 9
 anchor_bottom = 1.0
@@ -593,17 +593,6 @@ offset_top = 512.0
 offset_right = 960.0
 offset_bottom = 512.0
 grow_vertical = 2
-script = ExtResource("75_nc85t")
-helper_label = NodePath("CardPanel/SpritePanel/HelpPanel/Desription")
-timer_label = NodePath("CardPanel/EndButton/TimeLabel")
-worker_button = NodePath("CardPanel/WorkerPanel")
-warrior_button = NodePath("CardPanel/WarriorPanel")
-buff_button = NodePath("CardPanel/BuffPile")
-timer_end_turn_button = NodePath("CardPanel/EndButton")
-mutation_database = NodePath("../Scripts/Core/Buff/BuffDatabase")
-player_hand = NodePath("../Core/PlayerHAnd")
-active_button_color = Color(1.4439226e-07, 0.4351746, 0.43522498, 1)
-inactive_button_color = Color(0, 0.68333876, 0.6841458, 0.2509804)
 
 [node name="CardPanel" type="Panel" parent="UICard" unique_id=1032502277]
 layout_mode = 0
@@ -611,6 +600,22 @@ offset_left = 448.0
 offset_top = -447.0
 offset_right = 868.0
 offset_bottom = 178.0
+metadata/_edit_lock_ = true
+
+[node name="Warrior" type="Button" parent="UICard/CardPanel" unique_id=1084204723]
+layout_mode = 0
+offset_left = 154.0
+offset_top = 438.0
+offset_right = 270.0
+offset_bottom = 559.0
+metadata/_edit_lock_ = true
+
+[node name="Worker" type="Button" parent="UICard/CardPanel" unique_id=1573434953]
+layout_mode = 0
+offset_left = 278.0
+offset_top = 438.0
+offset_right = 394.0
+offset_bottom = 559.0
 metadata/_edit_lock_ = true
 
 [node name="SpritePanel" type="Panel" parent="UICard/CardPanel" unique_id=2073263536]
@@ -687,27 +692,11 @@ horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_lock_ = true
 
-[node name="WarriorPanel" type="Button" parent="UICard/CardPanel" unique_id=226802285]
-layout_mode = 0
-offset_left = 154.0
-offset_top = 438.0
-offset_right = 270.0
-offset_bottom = 560.0
-metadata/_edit_lock_ = true
-
 [node name="BuffPile" type="Button" parent="UICard/CardPanel" unique_id=1190899923]
 layout_mode = 0
 offset_left = 30.0
-offset_top = 443.0
-offset_right = 146.0
-offset_bottom = 565.0
-metadata/_edit_lock_ = true
-
-[node name="WorkerPanel" type="Button" parent="UICard/CardPanel" unique_id=1520006977]
-layout_mode = 0
-offset_left = 278.0
 offset_top = 437.0
-offset_right = 394.0
+offset_right = 146.0
 offset_bottom = 559.0
 metadata/_edit_lock_ = true
 
@@ -786,6 +775,7 @@ name_label = NodePath("TextBox/TBNamePanel/TBNameLabel")
 description_label = NodePath("TextBox/TBDescripPanel/TBDescripLabel")
 default_description_text = "
 "
+metadata/_edit_lock_ = true
 
 [node name="TextBox" type="Panel" parent="ToolTip" unique_id=1840213442]
 layout_mode = 1
@@ -825,9 +815,9 @@ offset_left = 17.0
 offset_top = 75.0
 offset_right = 458.0
 offset_bottom = 220.0
-metadata/_edit_lock_ = true
 
 [node name="TBDescripLabel" type="Label" parent="ToolTip/TextBox/TBDescripPanel" unique_id=1376106244]
+visible = false
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
@@ -845,7 +835,8 @@ vertical_alignment = 1
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 145.0
+offset_top = -7.0
+offset_bottom = 138.0
 grow_horizontal = 2
 theme_override_fonts/font = ExtResource("80_cxut3")
 theme_override_font_sizes/font_size = 24
@@ -859,8 +850,8 @@ vertical_alignment = 1
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_top = 40.0
-offset_bottom = 185.0
+offset_top = 33.0
+offset_bottom = 178.0
 grow_horizontal = 2
 theme_override_fonts/font = ExtResource("80_cxut3")
 theme_override_font_sizes/font_size = 24
@@ -874,8 +865,8 @@ vertical_alignment = 1
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_top = 80.0
-offset_bottom = 225.0
+offset_top = 73.0
+offset_bottom = 218.0
 grow_horizontal = 2
 theme_override_fonts/font = ExtResource("80_cxut3")
 theme_override_font_sizes/font_size = 24
@@ -889,10 +880,3 @@ vertical_alignment = 1
 script = ExtResource("79_63uau")
 mutation_tooltip = NodePath("..")
 player_hands = [NodePath("../../Core/PlayerHAnd")]
-
-[node name="DrawButton" parent="." unique_id=2092556591 node_paths=PackedStringArray("match_network_root") instance=ExtResource("80_63uau")]
-offset_left = 1438.0
-offset_top = 508.0
-offset_right = 1554.0
-offset_bottom = 630.0
-match_network_root = NodePath("../Multiplayer/MatchNetworkRoot")
