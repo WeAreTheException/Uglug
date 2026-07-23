@@ -6,5 +6,5 @@
 [resource]
 script = ExtResource("1_d2ivu")
 mutation_name = "Baby Maker"
-mutation_description = "On death, give player 2 workers"
+mutation_description = "Spawn 2 Workers on death"
 sigil_texture = ExtResource("2_fhnxj")

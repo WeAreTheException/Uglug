@@ -6,5 +6,5 @@
 [resource]
 script = ExtResource("1_l0byo")
 mutation_name = "Spiky"
-mutation_description = "Deals 1DMG to card that attacked it"
+mutation_description = "Deals 1 DMG to attacking card"
 sigil_texture = ExtResource("2_yyyi0")

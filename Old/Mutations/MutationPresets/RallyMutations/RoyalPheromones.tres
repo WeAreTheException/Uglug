@@ -6,5 +6,5 @@
 [resource]
 script = ExtResource("1_r60ac")
 mutation_name = "RoyalPheromones"
-mutation_description = "Buff your workers +1 DMG +1HP"
+mutation_description = "Workers gain +1 ATK, +1HP"
 sigil_texture = ExtResource("2_oehpm")

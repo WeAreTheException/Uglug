@@ -5,6 +5,6 @@
 
 [resource]
 script = ExtResource("1_31jfg")
-mutation_description = "Takes damage that would be done to player"
+mutation_description = "Soaks direct damage"
 sigil_texture = ExtResource("2_taevm")
 metadata/_custom_type_script = "uid://be8yk3djwb5oc"

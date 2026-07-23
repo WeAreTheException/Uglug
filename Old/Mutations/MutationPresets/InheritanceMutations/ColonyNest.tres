@@ -7,5 +7,5 @@
 script = ExtResource("1_xffcy")
 workers_per_hit = 1
 mutation_name = "ColonyNest"
-mutation_description = "When struck, give player a worker"
+mutation_description = "Spawns Worker when struck"
 sigil_texture = ExtResource("2_o88ee")

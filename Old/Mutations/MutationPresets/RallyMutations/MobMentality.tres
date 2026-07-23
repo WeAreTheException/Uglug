@@ -6,5 +6,5 @@
 [resource]
 script = ExtResource("1_8dxua")
 mutation_name = "MobMentality"
-mutation_description = "DMG = amount of cards on your side"
+mutation_description = "ATK = # of cards on row"
 sigil_texture = ExtResource("2_sui5x")

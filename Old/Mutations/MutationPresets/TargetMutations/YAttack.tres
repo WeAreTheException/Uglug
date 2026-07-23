@@ -6,5 +6,5 @@
 [resource]
 script = ExtResource("1_srgm3")
 mutation_name = "Y Attack"
-mutation_description = "Attacks both adjacent opposing slots"
+mutation_description = "Attacks two adjacent slots"
 sigil_texture = ExtResource("2_8bobl")

@@ -6,6 +6,6 @@
 [resource]
 script = ExtResource("1_sm1fb")
 mutation_name = "Lance"
-mutation_description = "Extra Damage carries over to opponent"
+mutation_description = "Damage carries over to opponent"
 sigil_texture = ExtResource("2_4sojs")
 metadata/_custom_type_script = "uid://be8yk3djwb5oc"
