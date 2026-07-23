@@ -41,6 +41,8 @@ grow_vertical = 2
 expand_mode = 1
 
 [node name="DrawPileInput" type="Area2D" parent="." unique_id=1468180507]
+visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DrawPileInput" unique_id=1678849248]
+visible = false
 shape = SubResource("RectangleShape2D_0cqek")

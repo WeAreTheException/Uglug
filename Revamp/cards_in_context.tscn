@@ -367,12 +367,6 @@ text = "1:00"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Undo" type="Button" parent="UICard/CardPanel" unique_id=612303484]
-layout_mode = 0
-offset_left = -88.0
-offset_top = 255.0
-offset_bottom = 326.0
-
 [node name="PlayerHandUiBinder" type="Node" parent="UICard" unique_id=1897709100 node_paths=PackedStringArray("match_ui", "player_hand", "sacrifice_controller")]
 script = ExtResource("6_2qwdf")
 match_ui = NodePath("..")
