@@ -1,6 +1,5 @@
 [gd_scene format=3 uid="uid://hbyxts155x0r"]
 
-[ext_resource type="PackedScene" uid="uid://c1vh316hdjlc" path="res://Revamp/MatchUI/MatchUI.tscn" id="1_2n6q5"]
 [ext_resource type="PackedScene" uid="uid://bw8c7m7n5yuk8" path="res://Revamp/Board/Slots.tscn" id="1_yq750"]
 [ext_resource type="PackedScene" uid="uid://1wr1e57v7trd" path="res://Revamp/PlayerHand/Player_Hand.tscn" id="2_mi1n2"]
 [ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Old/Mutations/MutationBehaviourHandlers/Mutation.gd" id="3_3vc3c"]
@@ -25,7 +24,6 @@
 [ext_resource type="Script" uid="uid://difytxi1dyr27" path="res://Revamp/MatchFlow/MatchFlowRoot.gd" id="25_oekep"]
 [ext_resource type="Script" uid="uid://c6ap2csjp7k81" path="res://Revamp/MatchFlow/MatchTurnOrderState.gd" id="26_n5v11"]
 [ext_resource type="Resource" uid="uid://b4tpqnugaguvu" path="res://Old/Mutations/MutationPresets/InheritanceMutations/BabyMaker.tres" id="26_yjq0i"]
-[ext_resource type="Script" uid="uid://e0tr3sanyo1r" path="res://Revamp/MatchFlow/MatchAnnouncementDisplay.gd" id="27_7gy8c"]
 [ext_resource type="Script" uid="uid://dxj656ms4qeq4" path="res://Revamp/MatchFlow/MatchDominantRevealHandler.gd" id="27_a1qt2"]
 [ext_resource type="Script" uid="uid://myowbycyd18l" path="res://Revamp/MatchFlow/MatchPlacementFlowHandler.gd" id="27_mf2my"]
 [ext_resource type="Script" uid="uid://crpvi6u42w8yj" path="res://Revamp/Buff/BuffFlowHandler.gd" id="28_5f7hr"]
@@ -278,59 +276,11 @@ warrior_draw_button = NodePath("../../UICard/Warrior")
 [node name="Board" parent="Core" unique_id=1318716624 node_paths=PackedStringArray("direct_damage_router") instance=ExtResource("1_yq750")]
 direct_damage_router = NodePath("../../Scripts/Core/DirectDamageRouter")
 
-[node name="PlayerHAnd" parent="Core" unique_id=371738706 node_paths=PackedStringArray("cost_sort", "mutation_sort") instance=ExtResource("2_mi1n2")]
+[node name="PlayerHAnd" parent="Core" unique_id=371738706 instance=ExtResource("2_mi1n2")]
 position = Vector2(768, 896)
-cost_sort = NodePath("")
-mutation_sort = NodePath("")
 
 [node name="OpponenetHAnd" parent="Core" unique_id=1415383407 instance=ExtResource("2_mi1n2")]
 position = Vector2(768.00006, 896.00006)
-
-[node name="MatchFlowUI" type="Node2D" parent="Core" unique_id=1660901840]
-metadata/_edit_lock_ = true
-
-[node name="MatchAnnouncementDisplay" type="Control" parent="Core/MatchFlowUI" unique_id=866682808 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "round_label", "message_label")]
-z_index = -100
-z_as_relative = false
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-script = ExtResource("27_7gy8c")
-match_flow_root = NodePath("../../../Scripts/MatchFlowRoot")
-turn_order_state = NodePath("../../../Scripts/MatchFlowRoot/MatchTurnOrderState")
-round_label = NodePath("RoundLabel")
-message_label = NodePath("MessageLabel")
-
-[node name="RoundLabel" type="Label" parent="Core/MatchFlowUI/MatchAnnouncementDisplay" unique_id=1682652415]
-z_index = -100
-z_as_relative = false
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 21.000002
-anchor_top = 0.3
-anchor_right = 25.500002
-anchor_bottom = 1.2
-offset_left = -6.1035156e-05
-offset_right = -6.1035156e-05
-offset_bottom = 12.0
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="MessageLabel" type="Label" parent="Core/MatchFlowUI/MatchAnnouncementDisplay" unique_id=286669320]
-z_index = -100
-z_as_relative = false
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 19.5
-anchor_top = 17.7
-anchor_right = 27.000002
-anchor_bottom = 18.6
-offset_left = -12.0
-offset_right = -0.00012207031
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 1
 
 [node name="Scripts" type="Node" parent="." unique_id=1166020718]
 
@@ -395,12 +345,12 @@ script = ExtResource("34_f3uds")
 match_flow_root = NodePath("..")
 post_game_scene_path = "uid://bhhfwt6y6l505"
 
-[node name="AttackAnticipationFeedbackHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=1452981444 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "slots_root", "match_network_root")]
+[node name="AttackAnticipationFeedbackHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=1452981444 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "match_network_root")]
 script = ExtResource("35_wop7f")
 match_flow_root = NodePath("..")
 turn_order_state = NodePath("../MatchTurnOrderState")
-slots_root = NodePath("../../../Core/Board")
 match_network_root = NodePath("../../../Multiplayer/MatchNetworkRoot")
+print_debug = false
 
 [node name="MatchFlowHandApplier" type="Node" parent="Scripts/MatchFlowRoot" unique_id=753206958 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "player_one_hand", "player_two_hand")]
 script = ExtResource("19_2n6q5")
@@ -531,18 +481,6 @@ offset_right = 972.0
 offset_bottom = 1044.0
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="MatchUI" parent="Control" unique_id=495517401 node_paths=PackedStringArray("match_flow_root", "match_network_root", "slots_root", "score_state", "phase_timer", "placement_completion_handler", "buff_flow_handler", "ui_card") instance=ExtResource("1_2n6q5")]
-visible = false
-layout_mode = 0
-match_flow_root = NodePath("../../Scripts/MatchFlowRoot")
-match_network_root = NodePath("../../Multiplayer/MatchNetworkRoot")
-slots_root = NodePath("../../Core/Board")
-score_state = NodePath("../../Scripts/MatchFlowRoot/MatchScoreState")
-phase_timer = NodePath("../../Multiplayer/MatchPhaseTimer")
-placement_completion_handler = NodePath("../../Scripts/MatchFlowRoot/MatchPlacementCompletionHandler")
-buff_flow_handler = NodePath("../../Scripts/Core/Evolution/BuffFlowHandler")
-ui_card = NodePath("../../UICard")
 
 [node name="Multiplayer" type="Node" parent="." unique_id=297260751]
 

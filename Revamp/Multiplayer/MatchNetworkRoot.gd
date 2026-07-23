@@ -62,6 +62,7 @@ func _ready() -> void:
 	GDSync.expose_func(_receive_attack_sequence_finished)
 	GDSync.expose_func(_receive_card_died)
 	GDSync.expose_func(_receive_card_stats_snapshot)
+	GDSync.expose_func(_receive_confirmed_score_change)
 	GDSync.expose_func(_receive_confirmed_match_winner)
 	GDSync.expose_func(request_debug_snapshot_compare)
 	GDSync.expose_func(_receive_debug_snapshot_compare)
@@ -94,10 +95,13 @@ func _input(event: InputEvent) -> void:
 
 	if draw_network != null:
 		draw_network.handle_debug_input(key_event)
-	
-	if enable_match_advance_debug and key_event.keycode == match_advance_debug_key:
+
+	if (
+		enable_match_advance_debug
+		and key_event.keycode == match_advance_debug_key
+	):
 		request_advance_match_state()
-	
+
 	if debug_sync_network != null:
 		debug_sync_network.handle_debug_input(key_event)
 
@@ -135,6 +139,7 @@ func request_draw(
 
 	draw_network.request_draw(payload)
 
+
 func _receive_confirmed_draw(
 	owner: SlotRow.SlotOwner,
 	card_id: String,
@@ -164,7 +169,11 @@ func request_buff_confirm(
 		print("REQUEST BUFF FAILED: buff_network missing")
 		return
 
-	buff_network.request_buff_confirm(owner, target_card_runtime_id, mutation_id)
+	buff_network.request_buff_confirm(
+		owner,
+		target_card_runtime_id,
+		mutation_id
+	)
 
 
 func _receive_buff_reward(mutation_id: String) -> void:
@@ -184,7 +193,11 @@ func _receive_confirmed_buff(
 		print("CONFIRMED BUFF FAILED: buff_network missing")
 		return
 
-	buff_network.receive_confirmed_buff(owner, target_card_runtime_id, mutation_id)
+	buff_network.receive_confirmed_buff(
+		owner,
+		target_card_runtime_id,
+		mutation_id
+	)
 
 
 func request_blessing_confirm(
@@ -255,7 +268,7 @@ func get_owner_name(owner: SlotRow.SlotOwner) -> String:
 func _setup_children() -> void:
 	if flow_network != null:
 		flow_network.setup(self)
-		 
+
 	if lookup_network != null:
 		lookup_network.setup(self)
 
@@ -264,22 +277,22 @@ func _setup_children() -> void:
 
 	if blessing_network != null:
 		blessing_network.setup(self)
-	
+
 	if buff_network != null:
 		buff_network.setup(self)
 
 	if placement_network != null:
 		placement_network.setup(self)
-	
+
 	if timer_network != null:
 		timer_network.setup(self)
-	
+
 	if attack_network != null:
 		attack_network.setup(self)
-	
+
 	if score_network != null:
 		score_network.setup(self)
-	
+
 	if debug_sync_network != null:
 		debug_sync_network.setup(self)
 
@@ -288,11 +301,17 @@ func _connect_match_flow() -> void:
 	if match_flow_root == null:
 		return
 
-	if not match_flow_root.match_state_changed.is_connected(_on_match_state_changed):
-		match_flow_root.match_state_changed.connect(_on_match_state_changed)
+	if not match_flow_root.match_state_changed.is_connected(
+		_on_match_state_changed
+	):
+		match_flow_root.match_state_changed.connect(
+			_on_match_state_changed
+		)
 
 
-func _on_match_state_changed(state: MatchFlowRoot.MatchState) -> void:
+func _on_match_state_changed(
+	state: MatchFlowRoot.MatchState
+) -> void:
 	if not is_host():
 		return
 
@@ -327,8 +346,12 @@ func _connect_deck_setup() -> void:
 	if deck_system_root == null:
 		return
 
-	if not deck_system_root.starting_hands_dealt.is_connected(_on_starting_hands_dealt):
-		deck_system_root.starting_hands_dealt.connect(_on_starting_hands_dealt)
+	if not deck_system_root.starting_hands_dealt.is_connected(
+		_on_starting_hands_dealt
+	):
+		deck_system_root.starting_hands_dealt.connect(
+			_on_starting_hands_dealt
+		)
 
 	if is_host():
 		_try_broadcast_existing_setup_payload()
@@ -362,21 +385,31 @@ func _on_starting_hands_dealt() -> void:
 	_broadcast_match_setup_payload(payload)
 
 
-func _broadcast_match_setup_payload(payload: Dictionary) -> void:
+func _broadcast_match_setup_payload(
+	payload: Dictionary
+) -> void:
 	has_received_setup_payload = true
 
 	if print_debug:
 		print("MATCH SETUP READY: HOST")
 
-	GDSync.call_func_all(_receive_match_setup_payload, payload)
+	GDSync.call_func_all(
+		_receive_match_setup_payload,
+		payload
+	)
 
 
-func _receive_match_setup_payload(payload: Dictionary) -> void:
+func _receive_match_setup_payload(
+	payload: Dictionary
+) -> void:
 	if is_host():
 		return
 
 	if deck_system_root == null:
-		print("MATCH SETUP APPLY FAILED: deck_system_root missing")
+		print(
+			"MATCH SETUP APPLY FAILED: ",
+			"deck_system_root missing"
+		)
 		return
 
 	deck_system_root.apply_match_setup_payload(payload)
@@ -394,23 +427,37 @@ func _send_ping_debug() -> void:
 
 
 func _receive_network_ping(message: String) -> void:
-	print("NETWORK PING RECEIVED: ", message, " | HOST: ", is_host())
+	print(
+		"NETWORK PING RECEIVED: ",
+		message,
+		" | HOST: ",
+		is_host()
+	)
 
 
 func request_advance_match_state() -> void:
 	if flow_network == null:
-		print("REQUEST MATCH ADVANCE FAILED: flow_network missing")
+		print(
+			"REQUEST MATCH ADVANCE FAILED: ",
+			"flow_network missing"
+		)
 		return
 
 	flow_network.request_advance_match_state()
 
 
-func _receive_match_state_snapshot(payload: Dictionary) -> void:
+func _receive_match_state_snapshot(
+	payload: Dictionary
+) -> void:
 	if flow_network == null:
-		print("MATCH SNAPSHOT RECEIVE FAILED: flow_network missing")
+		print(
+			"MATCH SNAPSHOT RECEIVE FAILED: ",
+			"flow_network missing"
+		)
 		return
 
 	flow_network.receive_match_state_snapshot(payload)
+
 
 func _receive_blessing_flow_finished() -> void:
 	if blessing_network == null:
@@ -425,7 +472,10 @@ func _receive_buff_flow_finished() -> void:
 
 	buff_network.receive_buff_flow_finished()
 
-func _receive_attack_sequence_started(payload: Dictionary) -> void:
+
+func _receive_attack_sequence_started(
+	payload: Dictionary
+) -> void:
 	if attack_network == null:
 		return
 
@@ -453,17 +503,21 @@ func _receive_attack_finished(payload: Dictionary) -> void:
 	attack_network.receive_attack_finished(payload)
 
 
-func _receive_attack_sequence_finished(payload: Dictionary) -> void:
+func _receive_attack_sequence_finished(
+	payload: Dictionary
+) -> void:
 	if attack_network == null:
 		return
 
 	attack_network.receive_attack_sequence_finished(payload)
+
 
 func _receive_card_died(payload: Dictionary) -> void:
 	if attack_network == null:
 		return
 
 	attack_network.receive_card_died(payload)
+
 
 func _receive_timer_started(
 	state_value: int,
@@ -472,7 +526,10 @@ func _receive_timer_started(
 	if timer_network == null:
 		return
 
-	timer_network.receive_timer_started(state_value, duration)
+	timer_network.receive_timer_started(
+		state_value,
+		duration
+	)
 
 
 func _receive_timer_ticked(
@@ -482,7 +539,10 @@ func _receive_timer_ticked(
 	if timer_network == null:
 		return
 
-	timer_network.receive_timer_ticked(state_value, remaining)
+	timer_network.receive_timer_ticked(
+		state_value,
+		remaining
+	)
 
 
 func _receive_timer_finished(state_value: int) -> void:
@@ -491,33 +551,88 @@ func _receive_timer_finished(state_value: int) -> void:
 
 	timer_network.receive_timer_finished(state_value)
 
-func _receive_card_stats_snapshot(payload: Dictionary) -> void:
+
+func _receive_card_stats_snapshot(
+	payload: Dictionary
+) -> void:
 	if attack_network == null:
 		return
 
 	attack_network.receive_card_stats_snapshot(payload)
+
 
 func request_score_damage(
 	attacker_owner: SlotRow.SlotOwner,
 	amount: int
 ) -> void:
 	if score_network == null:
-		print("REQUEST SCORE DAMAGE FAILED: score_network missing")
+		print(
+			"REQUEST SCORE DAMAGE FAILED: ",
+			"score_network missing"
+		)
 		return
 
-	score_network.request_score_damage(attacker_owner, amount)
+	score_network.request_score_damage(
+		attacker_owner,
+		amount
+	)
 
 
-func _receive_confirmed_score_change(payload: Dictionary) -> void:
+func finalize_score_after_combat() -> void:
+	if score_network == null:
+		print(
+			"FINALIZE SCORE FAILED: ",
+			"score_network missing"
+		)
+		return
+
+	score_network.finalize_score_after_combat()
+
+
+func _receive_confirmed_score_change(
+	payload: Dictionary
+) -> void:
 	if match_score_state == null:
-		print("CONFIRMED SCORE FAILED: match_score_state missing")
+		print(
+			"CONFIRMED SCORE FAILED: ",
+			"match_score_state missing"
+		)
 		return
 
-	var previous_score: int = int(payload.get("previous_score", match_score_state.score))
-	var new_score: int = int(payload.get("new_score", match_score_state.score))
-	var attacker_owner: SlotRow.SlotOwner = int(payload.get("attacker_owner", SlotRow.SlotOwner.PLAYER)) as SlotRow.SlotOwner
-	var amount: int = int(payload.get("amount", 0))
-	var event_id: int = int(payload.get("event_id", -1))
+	var previous_score: int = int(
+		payload.get(
+			"previous_score",
+			match_score_state.score
+		)
+	)
+
+	var new_score: int = int(
+		payload.get(
+			"new_score",
+			match_score_state.score
+		)
+	)
+
+	var attacker_owner: SlotRow.SlotOwner = int(
+		payload.get(
+			"attacker_owner",
+			SlotRow.SlotOwner.PLAYER
+		)
+	) as SlotRow.SlotOwner
+
+	var amount: int = int(
+		payload.get(
+			"amount",
+			0
+		)
+	)
+
+	var event_id: int = int(
+		payload.get(
+			"event_id",
+			-1
+		)
+	)
 
 	match_score_state.apply_confirmed_score_change(
 		previous_score,
@@ -528,14 +643,37 @@ func _receive_confirmed_score_change(payload: Dictionary) -> void:
 		is_host()
 	)
 
-func _receive_confirmed_match_winner(payload: Dictionary) -> void:
+
+func _receive_confirmed_match_winner(
+	payload: Dictionary
+) -> void:
 	if match_flow_root == null:
-		print("CONFIRMED WIN FAILED: match_flow_root missing")
+		print(
+			"CONFIRMED WIN FAILED: ",
+			"match_flow_root missing"
+		)
 		return
 
-	var winner: SlotRow.SlotOwner = int(payload.get("winner", SlotRow.SlotOwner.PLAYER)) as SlotRow.SlotOwner
-	var final_score: int = int(payload.get("final_score", 0))
-	var event_id: int = int(payload.get("event_id", -1))
+	var winner: SlotRow.SlotOwner = int(
+		payload.get(
+			"winner",
+			SlotRow.SlotOwner.PLAYER
+		)
+	) as SlotRow.SlotOwner
+
+	var final_score: int = int(
+		payload.get(
+			"final_score",
+			0
+		)
+	)
+
+	var event_id: int = int(
+		payload.get(
+			"event_id",
+			-1
+		)
+	)
 
 	if print_debug:
 		print(
@@ -549,55 +687,86 @@ func _receive_confirmed_match_winner(payload: Dictionary) -> void:
 			final_score
 		)
 
-	match_flow_root.apply_confirmed_match_end(winner, final_score)
-	
+	match_flow_root.apply_confirmed_match_end(
+		winner,
+		final_score
+	)
+
+
 func _get_local_role_name() -> String:
 	if is_host():
 		return "HOST"
 
 	return "CLIENT"
 
+
 func request_debug_snapshot_compare() -> void:
 	if debug_sync_network == null:
-		print("DEBUG SNAPSHOT COMPARE FAILED: debug_sync_network missing")
+		print(
+			"DEBUG SNAPSHOT COMPARE FAILED: ",
+			"debug_sync_network missing"
+		)
 		return
 
 	debug_sync_network.request_snapshot_compare()
 
 
-func _receive_debug_snapshot_compare(payload: Dictionary) -> void:
+func _receive_debug_snapshot_compare(
+	payload: Dictionary
+) -> void:
 	if debug_sync_network == null:
-		print("DEBUG SNAPSHOT RECEIVE FAILED: debug_sync_network missing")
+		print(
+			"DEBUG SNAPSHOT RECEIVE FAILED: ",
+			"debug_sync_network missing"
+		)
 		return
 
 	debug_sync_network.receive_snapshot_compare(payload)
 
+
 func request_debug_resync_preview() -> void:
 	if debug_sync_network == null:
-		print("DEBUG RESYNC PREVIEW FAILED: debug_sync_network missing")
+		print(
+			"DEBUG RESYNC PREVIEW FAILED: ",
+			"debug_sync_network missing"
+		)
 		return
 
 	debug_sync_network.request_resync_preview()
 
 
-func _receive_debug_resync_preview(payload: Dictionary) -> void:
+func _receive_debug_resync_preview(
+	payload: Dictionary
+) -> void:
 	if debug_sync_network == null:
-		print("DEBUG RESYNC PREVIEW RECEIVE FAILED: debug_sync_network missing")
+		print(
+			"DEBUG RESYNC PREVIEW RECEIVE FAILED: ",
+			"debug_sync_network missing"
+		)
 		return
 
 	debug_sync_network.receive_resync_preview(payload)
 
+
 func request_debug_resync_apply() -> void:
 	if debug_sync_network == null:
-		print("DEBUG RESYNC APPLY FAILED: debug_sync_network missing")
+		print(
+			"DEBUG RESYNC APPLY FAILED: ",
+			"debug_sync_network missing"
+		)
 		return
 
 	debug_sync_network.request_resync_apply()
 
 
-func _receive_debug_resync_apply(payload: Dictionary) -> void:
+func _receive_debug_resync_apply(
+	payload: Dictionary
+) -> void:
 	if debug_sync_network == null:
-		print("DEBUG RESYNC APPLY RECEIVE FAILED: debug_sync_network missing")
+		print(
+			"DEBUG RESYNC APPLY RECEIVE FAILED: ",
+			"debug_sync_network missing"
+		)
 		return
 
-	debug_sync_network.receive_resync_apply(payload)
+	debug_sync_network.receive_debug_resync_apply(payload)

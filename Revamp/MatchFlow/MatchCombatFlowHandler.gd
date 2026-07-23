@@ -21,8 +21,12 @@ func _ready() -> void:
 	if match_flow_root == null:
 		return
 
-	if not match_flow_root.match_state_changed.is_connected(_on_match_state_changed):
-		match_flow_root.match_state_changed.connect(_on_match_state_changed)
+	if not match_flow_root.match_state_changed.is_connected(
+		_on_match_state_changed
+	):
+		match_flow_root.match_state_changed.connect(
+			_on_match_state_changed
+		)
 
 
 func _on_match_state_changed(state: MatchFlowRoot.MatchState) -> void:
@@ -31,7 +35,11 @@ func _on_match_state_changed(state: MatchFlowRoot.MatchState) -> void:
 
 	if match_network_root != null and not match_network_root.is_host():
 		if print_debug:
-			print("CLIENT COMBAT FLOW SKIPPED: waiting for host attack events")
+			print(
+				"CLIENT COMBAT FLOW SKIPPED: ",
+				"waiting for host attack events"
+			)
+
 		return
 
 	begin_combat_flow()
@@ -52,20 +60,29 @@ func begin_combat_flow() -> void:
 	if match_flow_root != null:
 		match_flow_root.lock_transition()
 
-	var first_owner: SlotRow.SlotOwner = _get_attacking_first_owner()
-	var second_owner: SlotRow.SlotOwner = _get_opposing_owner(first_owner)
+	var first_owner: SlotRow.SlotOwner = (
+		_get_attacking_first_owner()
+	)
+
+	var second_owner: SlotRow.SlotOwner = (
+		_get_opposing_owner(first_owner)
+	)
 
 	if print_debug:
-		print("COMBAT FLOW STARTED: ", _get_owner_name(first_owner), " FIRST")
+		print(
+			"COMBAT FLOW STARTED: ",
+			_get_owner_name(first_owner),
+			" FIRST"
+		)
 
 	combat_flow_started.emit(first_owner)
 
 	await _run_owner_attack_order(first_owner)
-
-	if not _is_game_ended():
-		await _run_owner_attack_order(second_owner)
+	await _run_owner_attack_order(second_owner)
 
 	_stop_all_anticipation()
+
+	_finalize_score_after_combat()
 
 	if print_debug:
 		print("COMBAT FLOW FINISHED")
@@ -80,26 +97,27 @@ func begin_combat_flow() -> void:
 	_try_auto_advance_after_combat()
 
 
-func _run_owner_attack_order(owner: SlotRow.SlotOwner) -> void:
-	if _is_game_ended():
-		return
-
+func _run_owner_attack_order(
+	owner: SlotRow.SlotOwner
+) -> void:
 	var attack_order_handler := _get_attack_order_handler()
 
 	if attack_order_handler == null:
 		return
 
 	if print_debug:
-		print("COMBAT ATTACK ORDER: ", _get_owner_name(owner))
+		print(
+			"COMBAT ATTACK ORDER: ",
+			_get_owner_name(owner)
+		)
 
 	_start_anticipation(owner)
 
-	var cards := attack_order_handler.get_attack_cards_in_order(owner)
+	var cards := attack_order_handler.get_attack_cards_in_order(
+		owner
+	)
 
 	for card in cards:
-		if _is_game_ended():
-			break
-
 		if card == null:
 			continue
 
@@ -112,9 +130,11 @@ func _run_owner_attack_order(owner: SlotRow.SlotOwner) -> void:
 		if match_network_root.attack_network == null:
 			continue
 
-		var payload := match_network_root.attack_network.build_attack_payload(
-			card,
-			owner
+		var payload := (
+			match_network_root.attack_network.build_attack_payload(
+				card,
+				owner
+			)
 		)
 
 		if payload.is_empty():
@@ -126,9 +146,21 @@ func _run_owner_attack_order(owner: SlotRow.SlotOwner) -> void:
 		):
 			continue
 
-		await match_network_root.attack_network.run_confirmed_attack(payload)
+		await match_network_root.attack_network.run_confirmed_attack(
+			payload
+		)
 
 	_stop_anticipation(owner)
+
+
+func _finalize_score_after_combat() -> void:
+	if match_network_root == null:
+		return
+
+	if not match_network_root.is_host():
+		return
+
+	match_network_root.finalize_score_after_combat()
 
 
 func _start_anticipation(owner: SlotRow.SlotOwner) -> void:
@@ -159,7 +191,20 @@ func _is_game_ended() -> bool:
 	if match_flow_root == null:
 		return false
 
-	return match_flow_root.current_state == MatchFlowRoot.MatchState.GAME_END
+	return (
+		match_flow_root.current_state
+		== MatchFlowRoot.MatchState.GAME_END
+	)
+
+
+func _has_finalized_winner() -> bool:
+	if match_network_root == null:
+		return false
+
+	if match_network_root.match_score_state == null:
+		return false
+
+	return match_network_root.match_score_state.has_winner
 
 
 func _get_attack_order_handler() -> AttackOrderHandler:
@@ -176,7 +221,9 @@ func _get_attacking_first_owner() -> SlotRow.SlotOwner:
 	return turn_order_state.attacking_first_owner
 
 
-func _get_opposing_owner(owner: SlotRow.SlotOwner) -> SlotRow.SlotOwner:
+func _get_opposing_owner(
+	owner: SlotRow.SlotOwner
+) -> SlotRow.SlotOwner:
 	if turn_order_state != null:
 		return turn_order_state.get_opposing_owner(owner)
 
@@ -186,7 +233,9 @@ func _get_opposing_owner(owner: SlotRow.SlotOwner) -> SlotRow.SlotOwner:
 	return SlotRow.SlotOwner.PLAYER
 
 
-func _get_owner_name(owner: SlotRow.SlotOwner) -> String:
+func _get_owner_name(
+	owner: SlotRow.SlotOwner
+) -> String:
 	if turn_order_state != null:
 		return turn_order_state.get_owner_name(owner)
 
@@ -206,10 +255,22 @@ func _try_auto_advance_after_combat() -> void:
 	if not match_network_root.is_host():
 		return
 
+	if _has_finalized_winner():
+		if print_debug:
+			print(
+				"COMBAT COMPLETE: WINNER FINALIZED, ",
+				"SKIPPING NORMAL MATCH ADVANCE"
+			)
+
+		return
+
 	if match_flow_root == null:
 		return
 
-	if match_flow_root.current_state != MatchFlowRoot.MatchState.COMBAT:
+	if (
+		match_flow_root.current_state
+		!= MatchFlowRoot.MatchState.COMBAT
+	):
 		return
 
 	if print_debug:

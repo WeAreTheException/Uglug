@@ -9,7 +9,6 @@
 [ext_resource type="Resource" uid="uid://0c6lqenucx25" path="res://Revamp/CardPresets/Aviant.tres" id="5_dfkt1"]
 [ext_resource type="Resource" uid="uid://2d6xo4jns8it" path="res://Revamp/CardPresets/BOB.tres" id="6_si318"]
 [ext_resource type="Resource" uid="uid://b8tgum0dpv4iv" path="res://Revamp/CardPresets/Deterrant.tres" id="7_n8v14"]
-[ext_resource type="Resource" uid="uid://b350kw1jayfdj" path="res://Revamp/CardPresets/Draculant.tres" id="8_0oyej"]
 [ext_resource type="Resource" uid="uid://dbgpqc3vdl8t" path="res://Revamp/CardPresets/Duriant.tres" id="9_7mr5n"]
 [ext_resource type="Resource" uid="uid://cbi6p6yl00o3p" path="res://Revamp/CardPresets/Eliminant.tres" id="10_xykxr"]
 [ext_resource type="Resource" uid="uid://c2bo8r00gukg4" path="res://Revamp/CardPresets/Empowerant.tres" id="11_hue4u"]
@@ -63,8 +62,6 @@ metadata/_custom_type_script = "uid://cjj3kdqxwkg4g"
 
 [sub_resource type="Resource" id="Resource_hue4u"]
 script = ExtResource("1_1o8w7")
-card_data = ExtResource("8_0oyej")
-amount = 2
 metadata/_custom_type_script = "uid://cjj3kdqxwkg4g"
 
 [sub_resource type="Resource" id="Resource_4pnv8"]
