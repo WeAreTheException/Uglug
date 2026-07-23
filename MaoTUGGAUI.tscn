@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://cuued4urxign7"]
+[gd_scene format=3 uid="uid://d4ewput4emf0u"]
 
 [ext_resource type="Texture2D" uid="uid://c8ak0stbh615u" path="res://Art/MOCKUPDONOTSAVE/Untitled.png" id="1_tqh7y"]
 [ext_resource type="PackedScene" uid="uid://coux8hd7esj7g" path="res://Deck_System_Root.tscn" id="1_wfuan"]
@@ -603,10 +603,9 @@ player_one_hand = NodePath("../../Core/PlayerHAnd")
 player_two_hand = NodePath("../../Core/OpponenetHAnd")
 sacrifice_controller = NodePath("../../Scripts/Core/SacrificeController")
 
-[node name="MutationButtonHoverBinder" type="Node" parent="UICard" unique_id=1903292537 node_paths=PackedStringArray("mutation_button", "mutation_tooltip")]
+[node name="MutationButtonHoverBinder" type="Node" parent="UICard" unique_id=1903292537 node_paths=PackedStringArray("mutation_button")]
 script = ExtResource("71_50wcn")
 mutation_button = NodePath("../CardPanel/BuffPile")
-mutation_tooltip = NodePath("../../ToolTip")
 
 [node name="CardPanel" type="Panel" parent="UICard" unique_id=1032502277]
 layout_mode = 0
@@ -789,7 +788,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_lock_ = true
 
-[node name="ToolTip" type="Control" parent="." unique_id=1539072932 node_paths=PackedStringArray("name_label", "description_label", "mutation_labels", "mutation_sprites")]
+[node name="ToolTip" type="Control" parent="." unique_id=1539072932 node_paths=PackedStringArray("name_label", "description_label")]
 layout_mode = 3
 anchors_preset = 0
 offset_left = 1408.0
@@ -799,10 +798,6 @@ offset_bottom = 1022.0
 script = ExtResource("74_oq5ec")
 name_label = NodePath("TextBox/TBNamePanel/TBNameLabel")
 description_label = NodePath("TextBox/TBDescripPanel/TBDescripLabel")
-mutation_labels = [NodePath("TextBox/TBDescripPanel/MutationLine1"), NodePath("TextBox/TBDescripPanel/MutationLine2"), NodePath("TextBox/TBDescripPanel/MutationLine3")]
-mutation_sprites = [NodePath("TextBox/TBDescripPanel/MutatinLineSprite3"), NodePath("TextBox/TBDescripPanel/MutatinLineSprite2"), NodePath("TextBox/TBDescripPanel/MutatinLineSprite4")]
-default_description_text = "
-"
 metadata/_edit_lock_ = true
 
 [node name="TextBox" type="Panel" parent="ToolTip" unique_id=1840213442]
