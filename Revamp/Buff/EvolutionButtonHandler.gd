@@ -8,78 +8,79 @@ class_name EvolutionButtonHandler
 @export var match_network_buff: MatchNetworkBuff
 @export var deck_system_root: DeckSystemRoot
 
+@export_group("Cursor")
+@export_range(16, 256, 1)
+var cursor_max_size: int = 96
+
 @export var print_debug: bool = true
 
 var active_mutation: Mutation = null
 var is_active: bool = false
-var is_dragging: bool = false
-var request_sent: bool = false
+var is_targeting: bool = false
+var request_pending: bool = false
 
-var original_global_position: Vector2
-var drag_offset: Vector2
-var original_mouse_filter: Control.MouseFilter
+var cursor_texture: Texture2D = null
 
 
 func _ready() -> void:
-	if mutation_button != null:
-		original_global_position = (
-			mutation_button.global_position
-		)
-
-		original_mouse_filter = (
-			mutation_button.mouse_filter
-		)
-
-		if not mutation_button.button_down.is_connected(
-			_on_button_down
-		):
-			mutation_button.button_down.connect(
-				_on_button_down
-			)
-
-		mutation_button.visible = false
-		mutation_button.disabled = true
-
+	_connect_button()
 	_connect_buff_flow()
 	_connect_network_buff()
 
+	call_deferred("_connect_hand_inputs")
 
-func _process(_delta: float) -> void:
-	if not is_dragging:
-		return
+	_set_button_visible(false)
+	_restore_normal_cursor()
 
-	if mutation_button == null:
-		return
 
-	mutation_button.global_position = (
-		mutation_button.get_global_mouse_position()
-		- drag_offset
-	)
+func _exit_tree() -> void:
+	_restore_normal_cursor()
 
 
 func _input(event: InputEvent) -> void:
-	if not is_dragging:
+	if not is_targeting:
 		return
 
-	if not event is InputEventMouseButton:
+	if event is InputEventKey:
+		var key_event := event as InputEventKey
+
+		if (
+			key_event.pressed
+			and not key_event.echo
+			and key_event.keycode == KEY_ESCAPE
+		):
+			_cancel_targeting()
+
+	if event is InputEventMouseButton:
+		var mouse_event := event as InputEventMouseButton
+
+		if (
+			mouse_event.pressed
+			and mouse_event.button_index
+			== MOUSE_BUTTON_RIGHT
+		):
+			_cancel_targeting()
+
+
+func _connect_button() -> void:
+	if mutation_button == null:
+		print(
+			"EVOLUTION BLOCKED: mutation button missing"
+		)
 		return
 
-	var mouse_event := event as InputEventMouseButton
-
-	if mouse_event.button_index != MOUSE_BUTTON_LEFT:
-		return
-
-	if mouse_event.pressed:
-		return
-
-	_finish_drag()
+	if not mutation_button.pressed.is_connected(
+		_on_mutation_button_pressed
+	):
+		mutation_button.pressed.connect(
+			_on_mutation_button_pressed
+		)
 
 
 func _connect_buff_flow() -> void:
 	if buff_flow_handler == null:
 		print(
-			"EVOLUTION BUTTON BLOCKED: "
-			+ "BuffFlowHandler missing"
+			"EVOLUTION BLOCKED: BuffFlowHandler missing"
 		)
 		return
 
@@ -108,8 +109,7 @@ func _connect_buff_flow() -> void:
 func _connect_network_buff() -> void:
 	if match_network_buff == null:
 		print(
-			"EVOLUTION BUTTON BLOCKED: "
-			+ "MatchNetworkBuff missing"
+			"EVOLUTION BLOCKED: MatchNetworkBuff missing"
 		)
 		return
 
@@ -121,19 +121,51 @@ func _connect_network_buff() -> void:
 		)
 
 
+func _connect_hand_inputs() -> void:
+	if deck_system_root == null:
+		print(
+			"EVOLUTION BLOCKED: DeckSystemRoot missing"
+		)
+		return
+
+	_connect_hand(
+		deck_system_root.player_one_hand
+	)
+
+	_connect_hand(
+		deck_system_root.player_two_hand
+	)
+
+
+func _connect_hand(hand: PlayerHandRoot) -> void:
+	if hand == null:
+		return
+
+	if hand.interaction_root == null:
+		return
+
+	if not hand.interaction_root.card_left_pressed.is_connected(
+		_on_card_left_pressed
+	):
+		hand.interaction_root.card_left_pressed.connect(
+			_on_card_left_pressed
+		)
+
+
 func _on_buff_started(
 	_round_number: int
 ) -> void:
 	is_active = true
-	is_dragging = false
-	request_sent = false
+	is_targeting = false
+	request_pending = false
 	active_mutation = null
+	cursor_texture = null
 
-	_restore_button_position()
+	_restore_normal_cursor()
 	_set_button_visible(false)
 
 	if print_debug:
-		print("EVOLUTION BUTTON STARTED")
+		print("EVOLUTION STARTED")
 
 
 func _on_reward_generated(
@@ -143,8 +175,11 @@ func _on_reward_generated(
 		return
 
 	active_mutation = mutation
-	request_sent = false
+	request_pending = false
+	is_targeting = false
+	cursor_texture = null
 
+	_restore_normal_cursor()
 	_update_button_visual()
 	_set_button_visible(true)
 
@@ -159,121 +194,239 @@ func _on_buff_finished(
 	_round_number: int
 ) -> void:
 	is_active = false
-	is_dragging = false
-	request_sent = false
+	is_targeting = false
+	request_pending = false
 	active_mutation = null
+	cursor_texture = null
 
-	if mutation_button != null:
-		mutation_button.mouse_filter = (
-			original_mouse_filter
-		)
-
-	_restore_button_position()
+	_restore_normal_cursor()
 	_set_button_visible(false)
 
 	if print_debug:
-		print("EVOLUTION BUTTON FINISHED")
+		print("EVOLUTION FINISHED")
 
 
-func _on_button_down() -> void:
+func _on_mutation_button_pressed() -> void:
 	if not is_active:
 		return
 
-	if request_sent:
+	if request_pending:
 		return
 
 	if active_mutation == null:
 		return
 
-	if mutation_button == null:
+	if is_targeting:
+		_cancel_targeting()
 		return
 
-	is_dragging = true
+	_begin_targeting()
 
-	drag_offset = (
-		mutation_button.get_global_mouse_position()
-		- mutation_button.global_position
+
+func _begin_targeting() -> void:
+	if active_mutation == null:
+		return
+
+	if active_mutation.sigil_texture == null:
+		print(
+			"EVOLUTION CURSOR BLOCKED: sigil missing"
+		)
+		return
+
+	cursor_texture = _build_cursor_texture(
+		active_mutation.sigil_texture
 	)
 
-	mutation_button.mouse_filter = (
-		Control.MOUSE_FILTER_IGNORE
+	if cursor_texture == null:
+		print(
+			"EVOLUTION CURSOR BLOCKED: "
+			+ "cursor texture could not be created"
+		)
+		return
+
+	is_targeting = true
+
+	var hotspot := (
+		cursor_texture.get_size() * 0.5
 	)
 
-	mutation_button.move_to_front()
-
-	if print_debug:
-		print("EVOLUTION DRAG STARTED")
-
-
-func _finish_drag() -> void:
-	is_dragging = false
+	Input.set_custom_mouse_cursor(
+		cursor_texture,
+		Input.CURSOR_ARROW,
+		hotspot
+	)
 
 	if mutation_button != null:
-		mutation_button.mouse_filter = (
-			original_mouse_filter
+		mutation_button.disabled = true
+
+	if print_debug:
+		print(
+			"EVOLUTION TARGETING STARTED: ",
+			active_mutation.mutation_name
 		)
 
-	var target_card := _get_hovered_local_card()
 
-	if target_card == null:
-		_restore_button_position()
+func _build_cursor_texture(
+	source_texture: Texture2D
+) -> Texture2D:
+	if source_texture == null:
+		return null
 
-		if print_debug:
-			print(
-				"EVOLUTION DROP FAILED: "
-				+ "no hovered local card"
-			)
+	var image := source_texture.get_image()
 
+	if image == null:
+		return null
+
+	if image.is_empty():
+		return null
+
+	var width := image.get_width()
+	var height := image.get_height()
+
+	if width <= 0 or height <= 0:
+		return null
+
+	var maximum_size := clampi(
+		cursor_max_size,
+		16,
+		256
+	)
+
+	if (
+		width > maximum_size
+		or height > maximum_size
+	):
+		var scale_factor: float = minf(
+			float(maximum_size) / float(width),
+			float(maximum_size) / float(height)
+		)
+
+		var resized_width := maxi(
+			int(round(width * scale_factor)),
+			1
+		)
+
+		var resized_height := maxi(
+			int(round(height * scale_factor)),
+			1
+		)
+
+		image.resize(
+			resized_width,
+			resized_height,
+			Image.INTERPOLATE_LANCZOS
+		)
+
+	return ImageTexture.create_from_image(image)
+
+
+func _cancel_targeting() -> void:
+	is_targeting = false
+	cursor_texture = null
+
+	_restore_normal_cursor()
+
+	if mutation_button != null:
+		mutation_button.disabled = (
+			request_pending
+			or not is_active
+			or active_mutation == null
+		)
+
+	if print_debug:
+		print("EVOLUTION TARGETING CANCELLED")
+
+
+func _on_card_left_pressed(
+	card: CardRoot
+) -> void:
+	if not is_targeting:
+		return
+
+	if request_pending:
+		return
+
+	if card == null:
+		return
+
+	if not is_instance_valid(card):
 		return
 
 	if active_mutation == null:
-		_restore_button_position()
 		return
 
-	if not target_card.can_receive_buff_mutation(
-		active_mutation
-	):
-		_restore_button_position()
-
+	if not _card_belongs_to_local_hand(card):
 		if print_debug:
 			print(
-				"EVOLUTION DROP FAILED: "
+				"EVOLUTION TARGET BLOCKED: "
+				+ "not local hand"
+			)
+		return
+
+	if not card.can_receive_buff_mutation(
+		active_mutation
+	):
+		if print_debug:
+			print(
+				"EVOLUTION TARGET BLOCKED: "
 				+ "card cannot receive mutation"
 			)
-
 		return
 
-	_request_apply(target_card)
+	_request_evolution(card)
 
 
-func _request_apply(card: CardRoot) -> void:
+func _request_evolution(
+	card: CardRoot
+) -> void:
 	if match_network_root == null:
 		print(
-			"EVOLUTION APPLY BLOCKED: "
+			"EVOLUTION REQUEST BLOCKED: "
 			+ "MatchNetworkRoot missing"
 		)
-
-		_restore_button_position()
 		return
 
-	request_sent = true
-	_restore_button_position()
-	_set_button_visible(false)
+	if active_mutation == null:
+		print(
+			"EVOLUTION REQUEST BLOCKED: "
+			+ "active mutation missing"
+		)
+		return
 
+	var requested_mutation := active_mutation
+	var mutation_id := (
+		requested_mutation.get_safe_mutation_id()
+	)
+
+	var mutation_name := (
+		requested_mutation.mutation_name
+	)
+
+	var card_name := card.card_name
+	var card_runtime_id := card.get_runtime_id()
 	var owner := match_network_root.get_local_owner()
+
+	request_pending = true
+	is_targeting = false
+	cursor_texture = null
+
+	_restore_normal_cursor()
+	_set_button_visible(false)
 
 	match_network_root.request_buff_confirm(
 		owner,
-		card.get_runtime_id(),
-		active_mutation.get_safe_mutation_id()
+		card_runtime_id,
+		mutation_id
 	)
 
+	# The network request can immediately finish Evolution
+	# and clear active_mutation, so only use saved values here.
 	if print_debug:
 		print(
 			"EVOLUTION REQUEST SENT: ",
-			active_mutation.mutation_name,
+			mutation_name,
 			" -> ",
-			card.card_name,
+			card_name,
 			" | OWNER: ",
 			owner
 		)
@@ -287,10 +440,17 @@ func _on_confirmed_buff_applied(
 	if match_network_root == null:
 		return
 
-	if owner != match_network_root.get_local_owner():
+	if (
+		owner
+		!= match_network_root.get_local_owner()
+	):
 		return
 
-	request_sent = true
+	request_pending = true
+	is_targeting = false
+	cursor_texture = null
+
+	_restore_normal_cursor()
 	_set_button_visible(false)
 
 	if print_debug:
@@ -302,48 +462,27 @@ func _on_confirmed_buff_applied(
 		)
 
 
-func _get_hovered_local_card() -> CardRoot:
+func _card_belongs_to_local_hand(
+	card: CardRoot
+) -> bool:
 	if deck_system_root == null:
-		return null
+		return false
 
-	var owner := _get_local_owner()
+	var owner := SlotRow.SlotOwner.PLAYER
 
-	var hand := deck_system_root.get_hand_for_owner(
-		owner
+	if match_network_root != null:
+		owner = match_network_root.get_local_owner()
+
+	var hand := (
+		deck_system_root.get_hand_for_owner(
+			owner
+		)
 	)
 
 	if hand == null:
-		return null
+		return false
 
-	if hand.interaction_root == null:
-		return null
-
-	if hand.interaction_root.hover_focus == null:
-		return null
-
-	var card := (
-		hand.interaction_root
-		.hover_focus
-		.focused_card
-	)
-
-	if card == null:
-		return null
-
-	if not is_instance_valid(card):
-		return null
-
-	if not hand.has_card(card):
-		return null
-
-	return card
-
-
-func _get_local_owner() -> SlotRow.SlotOwner:
-	if match_network_root != null:
-		return match_network_root.get_local_owner()
-
-	return SlotRow.SlotOwner.PLAYER
+	return hand.has_card(card)
 
 
 func _update_button_visual() -> void:
@@ -354,7 +493,10 @@ func _update_button_visual() -> void:
 		return
 
 	mutation_button.text = ""
-	mutation_button.icon = active_mutation.sigil_texture
+	mutation_button.icon = (
+		active_mutation.sigil_texture
+	)
+
 	mutation_button.expand_icon = true
 
 	mutation_button.tooltip_text = (
@@ -364,18 +506,22 @@ func _update_button_visual() -> void:
 	)
 
 
-func _set_button_visible(value: bool) -> void:
+func _set_button_visible(
+	value: bool
+) -> void:
 	if mutation_button == null:
 		return
 
 	mutation_button.visible = value
-	mutation_button.disabled = not value
+
+	mutation_button.disabled = (
+		not value
+		or request_pending
+	)
 
 
-func _restore_button_position() -> void:
-	if mutation_button == null:
-		return
-
-	mutation_button.global_position = (
-		original_global_position
+func _restore_normal_cursor() -> void:
+	Input.set_custom_mouse_cursor(
+		null,
+		Input.CURSOR_ARROW
 	)

@@ -167,8 +167,8 @@ match_network_root = NodePath("../../Multiplayer/MatchNetworkRoot")
 buff_database = NodePath("../../Scripts/Core/Evolution/BuffDatabase")
 player_one_hand = NodePath("../PlayerHAnd")
 player_two_hand = NodePath("../OpponenetHAnd")
-worker_draw_button = NodePath("../../Worker")
-warrior_draw_button = NodePath("../../Warrior")
+worker_draw_button = NodePath("../../UICard/Worker")
+warrior_draw_button = NodePath("../../UICard/Warrior")
 
 [node name="Board" parent="Core" unique_id=1318716624 node_paths=PackedStringArray("direct_damage_router") instance=ExtResource("1_yq750")]
 direct_damage_router = NodePath("../../Scripts/Core/DirectDamageRouter")
@@ -333,8 +333,9 @@ buff_pool = Array[ExtResource("3_3vc3c")]([ExtResource("26_yjq0i"), ExtResource(
 print_debug = false
 run_smoke_test_on_ready = false
 
-[node name="EvolutionButtonHandler" type="Node" parent="Scripts/Core/Evolution" unique_id=1564994449 node_paths=PackedStringArray("buff_flow_handler", "match_network_root", "match_network_buff", "deck_system_root")]
+[node name="EvolutionButtonHandler" type="Node" parent="Scripts/Core/Evolution" unique_id=1564994449 node_paths=PackedStringArray("mutation_button", "buff_flow_handler", "match_network_root", "match_network_buff", "deck_system_root")]
 script = ExtResource("43_7f3b3")
+mutation_button = NodePath("../../../../UICard/CardPanel/BuffPile")
 buff_flow_handler = NodePath("../BuffFlowHandler")
 match_network_root = NodePath("../../../../Multiplayer/MatchNetworkRoot")
 match_network_buff = NodePath("../../../../Multiplayer/MatchNetworkRoot/MatchNetworkBuff")
@@ -540,21 +541,7 @@ sacrifice_board_binder = NodePath("../../Scripts/Core/SacrificeController/Sacrif
 [node name="MatchPhaseTimer" type="Node" parent="Multiplayer" unique_id=767461142 node_paths=PackedStringArray("match_flow_root")]
 script = ExtResource("73_fk48e")
 match_flow_root = NodePath("../../Scripts/MatchFlowRoot")
-draw_seconds = 1.0
-
-[node name="Warrior" type="Button" parent="." unique_id=1084204723]
-offset_left = 1562.0
-offset_top = 503.0
-offset_right = 1678.0
-offset_bottom = 624.0
-metadata/_edit_lock_ = true
-
-[node name="Worker" type="Button" parent="." unique_id=1573434953]
-offset_left = 1686.0
-offset_top = 503.0
-offset_right = 1802.0
-offset_bottom = 624.0
-metadata/_edit_lock_ = true
+draw_seconds = 5.0
 
 [node name="UICard" type="Control" parent="." unique_id=1479972870]
 layout_mode = 3
@@ -652,6 +639,7 @@ offset_left = 30.0
 offset_top = 437.0
 offset_right = 146.0
 offset_bottom = 559.0
+metadata/_edit_lock_ = true
 
 [node name="RoundPanel" type="Panel" parent="UICard/CardPanel" unique_id=175637096]
 layout_mode = 0
@@ -713,6 +701,22 @@ match_ui = NodePath("..")
 script = ExtResource("77_7f3b3")
 match_ui = NodePath("..")
 mutation_button = NodePath("../CardPanel/BuffPile")
+
+[node name="Warrior" type="Button" parent="UICard" unique_id=1084204723]
+layout_mode = 0
+offset_left = 602.0
+offset_top = -9.0
+offset_right = 718.0
+offset_bottom = 112.0
+metadata/_edit_lock_ = true
+
+[node name="Worker" type="Button" parent="UICard" unique_id=1573434953]
+layout_mode = 0
+offset_left = 726.0
+offset_top = -9.0
+offset_right = 842.0
+offset_bottom = 112.0
+metadata/_edit_lock_ = true
 
 [node name="ToolTip" type="Control" parent="." unique_id=1539072932 node_paths=PackedStringArray("name_label", "description_label")]
 layout_mode = 3

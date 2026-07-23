@@ -192,6 +192,16 @@ func receive_confirmed_buff(
 		)
 		return
 
+	if root.deck_system_root != null:
+		var hand := (
+			root.deck_system_root.get_hand_for_owner(
+				owner
+			)
+		)
+
+		if hand != null and hand.has_card(card):
+			hand.play_evolution_feedback(card)
+
 	confirmed_buff_applied.emit(
 		owner,
 		card,
