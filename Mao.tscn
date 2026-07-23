@@ -62,6 +62,7 @@
 [ext_resource type="Script" uid="uid://cy3sful3ggumm" path="res://Revamp/Multiplayer/LocalGameplayReferenceBinder.gd" id="66_5j00x"]
 [ext_resource type="Script" uid="uid://con1w5rh38kav" path="res://Revamp/Multiplayer/MatchNetworkBuff.gd" id="67_gfrq6"]
 [ext_resource type="Script" uid="uid://4awjofgv2dfc" path="res://Revamp/Multiplayer/MatchNetworkFlow.gd" id="68_8hx3r"]
+[ext_resource type="Script" uid="uid://dla1car1yk1pm" path="res://Revamp/MatchUI/UICard/MatchPhaseUI.gd" id="69_lc0u2"]
 [ext_resource type="Script" uid="uid://coo0pgldjiw6w" path="res://Revamp/Multiplayer/MatchPhaseTimer.gd" id="73_fk48e"]
 [ext_resource type="Script" uid="uid://00f6bgoq0mgc" path="res://Revamp/Multiplayer/MatchNetworkAttack.gd" id="73_nc85t"]
 [ext_resource type="Script" uid="uid://c62i7pwt3r30f" path="res://Revamp/Multiplayer/MatchNetworkTimer.gd" id="74_c8bx1"]
@@ -76,7 +77,7 @@
 [ext_resource type="FontFile" uid="uid://do0dv62a8jo77" path="res://Revamp/Fonts/bilderberg.regular.otf" id="80_cxut3"]
 [ext_resource type="Script" uid="uid://bnbuh7nx3k3f2" path="res://Revamp/Multiplayer/MatchNetworkDebugSync.gd" id="81_o7028"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_lcv7c"]
+[sub_resource type="LabelSettings" id="LabelSettings_lc0u2"]
 line_spacing = 0.0
 font_size = 64
 font_color = Color(0.93333334, 0.8784314, 0.81960785, 1)
@@ -120,6 +121,24 @@ outline_size = 10
 outline_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
 shadow_size = 10
 shadow_color = Color(0.83137256, 0.70980394, 0.59607846, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_yjh5v"]
+line_spacing = 0.0
+font_size = 48
+font_color = Color(0.93333334, 0.8784314, 0.81960785, 1)
+outline_size = 10
+outline_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
+shadow_size = 10
+shadow_color = Color(0, 0.57254905, 0.92941177, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_lcv7c"]
+line_spacing = 0.0
+font_size = 36
+font_color = Color(0.93333334, 0.8784314, 0.81960785, 1)
+outline_size = 10
+outline_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
+shadow_size = 10
+shadow_color = Color(0, 0.57254905, 0.92941177, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_cxut3"]
 line_spacing = 0.0
@@ -544,7 +563,7 @@ script = ExtResource("73_fk48e")
 match_flow_root = NodePath("../../Scripts/MatchFlowRoot")
 draw_seconds = 5.0
 
-[node name="UICard" type="Control" parent="." unique_id=1479972870]
+[node name="UICard" type="Control" parent="." unique_id=1479972870 node_paths=PackedStringArray("phase_label", "going_first_label", "description_label", "timer_label", "round_number_label", "end_button", "mutation_button", "worker_button", "warrior_button")]
 layout_mode = 3
 anchors_preset = 9
 anchor_bottom = 1.0
@@ -553,6 +572,26 @@ offset_top = 512.0
 offset_right = 960.0
 offset_bottom = 512.0
 grow_vertical = 2
+script = ExtResource("69_lc0u2")
+phase_label = NodePath("CardPanel/SpritePanel/PhasePanel/Phase")
+going_first_label = NodePath("CardPanel/SpritePanel/Who\'sGoingfirstLabel/WhosFirst")
+description_label = NodePath("CardPanel/SpritePanel/HelpPanel/Desription")
+timer_label = NodePath("CardPanel/EndButton/TimeLabel")
+round_number_label = NodePath("../Core/MatchFlowUI/MatchAnnouncementDisplay/RoundLabel")
+end_button = NodePath("CardPanel/EndButton")
+mutation_button = NodePath("CardPanel/BuffPile")
+worker_button = NodePath("Worker")
+warrior_button = NodePath("Warrior")
+
+[node name="PlayerHandUiBinder" type="Node" parent="UICard" unique_id=1141576823 node_paths=PackedStringArray("player_hand", "sacrifice_controller")]
+script = ExtResource("76_c8bx1")
+player_hand = NodePath("../../Core/PlayerHAnd")
+sacrifice_controller = NodePath("../../Scripts/Core/SacrificeController")
+
+[node name="MutationButtonHoverBinder" type="Node" parent="UICard" unique_id=1903292537 node_paths=PackedStringArray("mutation_button", "mutation_tooltip")]
+script = ExtResource("77_7f3b3")
+mutation_button = NodePath("../CardPanel/BuffPile")
+mutation_tooltip = NodePath("../../ToolTip")
 
 [node name="CardPanel" type="Panel" parent="UICard" unique_id=1032502277]
 layout_mode = 0
@@ -584,10 +623,11 @@ offset_right = 346.0
 offset_bottom = 61.0
 theme_override_fonts/font = ExtResource("79_cxut3")
 theme_override_font_sizes/font_size = 100
-text = "Draw"
-label_settings = SubResource("LabelSettings_lcv7c")
+text = "Attack"
+label_settings = SubResource("LabelSettings_lc0u2")
 horizontal_alignment = 1
 vertical_alignment = 1
+metadata/_edit_lock_ = true
 
 [node name="Who\'sGoingfirstLabel" type="Panel" parent="UICard/CardPanel/SpritePanel" unique_id=1360391893]
 layout_mode = 0
@@ -694,22 +734,23 @@ text = "1:00"
 label_settings = SubResource("LabelSettings_omgbn")
 horizontal_alignment = 1
 
-[node name="PlayerHandUiBinder" type="Node" parent="UICard" unique_id=1141576823 node_paths=PackedStringArray("match_ui")]
-script = ExtResource("76_c8bx1")
-match_ui = NodePath("..")
-
-[node name="MutationButtonHoverBinder" type="Node" parent="UICard" unique_id=1903292537 node_paths=PackedStringArray("match_ui", "mutation_button")]
-script = ExtResource("77_7f3b3")
-match_ui = NodePath("..")
-mutation_button = NodePath("../CardPanel/BuffPile")
-
 [node name="Warrior" type="Button" parent="UICard" unique_id=1084204723]
 layout_mode = 0
 offset_left = 602.0
 offset_top = -9.0
 offset_right = 718.0
 offset_bottom = 112.0
-text = "Warrior"
+
+[node name="Phase2" type="Label" parent="UICard/Warrior" unique_id=1598763237]
+layout_mode = 0
+offset_right = 116.0
+offset_bottom = 124.0
+theme_override_fonts/font = ExtResource("80_cxut3")
+theme_override_font_sizes/font_size = 100
+text = "?"
+label_settings = SubResource("LabelSettings_yjh5v")
+horizontal_alignment = 1
+vertical_alignment = 1
 metadata/_edit_lock_ = true
 
 [node name="Worker" type="Button" parent="UICard" unique_id=1573434953]
@@ -719,6 +760,18 @@ offset_top = -9.0
 offset_right = 842.0
 offset_bottom = 112.0
 text = "Worker"
+metadata/_edit_lock_ = true
+
+[node name="Phase3" type="Label" parent="UICard/Worker" unique_id=1041966755]
+layout_mode = 0
+offset_right = 114.0
+offset_bottom = 121.0
+theme_override_fonts/font = ExtResource("79_cxut3")
+theme_override_font_sizes/font_size = 100
+text = "Worker"
+label_settings = SubResource("LabelSettings_lcv7c")
+horizontal_alignment = 1
+vertical_alignment = 1
 metadata/_edit_lock_ = true
 
 [node name="ToolTip" type="Control" parent="." unique_id=1539072932 node_paths=PackedStringArray("name_label", "description_label")]
