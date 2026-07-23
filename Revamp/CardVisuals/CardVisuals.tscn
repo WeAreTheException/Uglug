@@ -103,7 +103,7 @@ resource_name = "PlaceAnimMockup"
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Ant:position")
+tracks/0/path = NodePath("AntRoot/Ant:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -115,7 +115,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Ant:rotation")
+tracks/1/path = NodePath("AntRoot/Ant:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -127,7 +127,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Ant:scale")
+tracks/2/path = NodePath("AntRoot/Ant:scale")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -142,7 +142,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Ant:position")
+tracks/0/path = NodePath("AntRoot/Ant:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -154,7 +154,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Ant:rotation")
+tracks/1/path = NodePath("AntRoot/Ant:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -166,7 +166,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Ant:scale")
+tracks/2/path = NodePath("AntRoot/Ant:scale")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -247,7 +247,7 @@ pivot_offset = Vector2(87.5, 133.5)
 position = Vector2(87.000015, 133.5)
 scale = Vector2(0.99999994, 0.99999994)
 script = ExtResource("2_a8btx")
-ant_sprite = NodePath("Ant")
+ant_sprite = NodePath("AntRoot/Ant")
 card_image = NodePath("CardImage")
 card_shadow = NodePath("CardShadow")
 card_border = NodePath("CardBorder")
@@ -283,19 +283,28 @@ offset_right = 86.99999
 offset_bottom = 135.00002
 metadata/_edit_use_anchors_ = true
 
-[node name="Ant" type="Sprite2D" parent="Visuals/Container/MainVisuals" unique_id=1609290713]
+[node name="AntRoot" type="Sprite2D" parent="Visuals/Container/MainVisuals" unique_id=36780554]
+
+[node name="Ant" type="Sprite2D" parent="Visuals/Container/MainVisuals/AntRoot" unique_id=1609290713]
 material = SubResource("ShaderMaterial_587ti")
-position = Vector2(-1.6987324e-05, 2.15129)
-scale = Vector2(0.14506175, 0.14468679)
+position = Vector2(-1.6987326e-05, 2.15129)
+scale = Vector2(0.14506176, 0.1446868)
 texture = ExtResource("9_b5mm6")
 
-[node name="Antdows" type="Sprite2D" parent="Visuals/Container/MainVisuals" unique_id=33299499]
+[node name="Antdows" type="Sprite2D" parent="Visuals/Container/MainVisuals/AntRoot" unique_id=33299499]
 material = SubResource("ShaderMaterial_3q3n8")
 position = Vector2(0, 2.3841858e-06)
 scale = Vector2(0.14500001, 0.14516129)
 texture = ExtResource("11_tt364")
 offset = Vector2(45, 20)
 metadata/_edit_lock_ = true
+
+[node name="AntRedFlash" type="Sprite2D" parent="Visuals/Container/MainVisuals/AntRoot" unique_id=564094861]
+visible = false
+self_modulate = Color(1, 0, 0, 0.78431374)
+position = Vector2(-0.46297538, 1.2671353)
+scale = Vector2(0.14583334, 0.14572734)
+texture = ExtResource("9_b5mm6")
 
 [node name="CardFog" type="Sprite2D" parent="Visuals/Container/MainVisuals" unique_id=908625951]
 position = Vector2(9.2267965e-07, 0.49998948)
@@ -312,13 +321,6 @@ metadata/_edit_lock_ = true
 scale = Vector2(0.14000002, 0.14000002)
 texture = ExtResource("14_b5mm6")
 metadata/_edit_lock_ = true
-
-[node name="AntRedFlash" type="Sprite2D" parent="Visuals/Container/MainVisuals" unique_id=564094861]
-visible = false
-self_modulate = Color(1, 0, 0, 0.78431374)
-position = Vector2(-0.46297538, 1.2671353)
-scale = Vector2(0.14583334, 0.14572734)
-texture = ExtResource("9_b5mm6")
 
 [node name="PlaceAnimMockup" type="AnimationPlayer" parent="Visuals/Container/MainVisuals" unique_id=1507303113]
 active = false

@@ -210,10 +210,9 @@ horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_lock_ = true
 
-[node name="CArdMutationTooltipbinde" type="Node" parent="ToolTip" unique_id=1405275550 node_paths=PackedStringArray("mutation_tooltip", "player_hands")]
+[node name="CArdMutationTooltipbinde" type="Node" parent="ToolTip" unique_id=1405275550 node_paths=PackedStringArray("mutation_tooltip")]
 script = ExtResource("10_8tkpi")
 mutation_tooltip = NodePath("..")
-player_hands = [NodePath("../../PlayerHandRoot")]
 
 [node name="BuffDatabase" type="Node" parent="ToolTip" unique_id=1189748202]
 script = ExtResource("32_bs6ji")
@@ -375,11 +374,9 @@ match_ui = NodePath("..")
 player_hand = NodePath("../../PlayerHandRoot")
 sacrifice_controller = NodePath("../../SacrificeController")
 
-[node name="MutationButtonHoverBinder" type="Node" parent="UICard" unique_id=1997287768 node_paths=PackedStringArray("match_ui", "mutation_button", "mutation_tooltip")]
+[node name="MutationButtonHoverBinder" type="Node" parent="UICard" unique_id=1997287768 node_paths=PackedStringArray("mutation_button")]
 script = ExtResource("52_b1x47")
-match_ui = NodePath("..")
 mutation_button = NodePath("../CardPanel/MutationButton")
-mutation_tooltip = NodePath("../../ToolTip")
 
 [node name="TuggaControl" type="Control" parent="." unique_id=1122243279]
 visible = false

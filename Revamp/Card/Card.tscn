@@ -159,7 +159,6 @@ script = ExtResource("12_r5dqq")
 animation_runner = NodePath("HurtAnimationRunner")
 feedback_handler = NodePath("HurtFeedbackHandler")
 damage_apply_delay = 0.13
-enable_debug_key = false
 
 [node name="HurtAnimationRunner" type="Node" parent="Actions/Hurt" unique_id=2097473369]
 script = ExtResource("13_opxhd")
