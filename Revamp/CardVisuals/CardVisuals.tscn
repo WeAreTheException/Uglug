@@ -13,7 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://daql40b2mc8tc" path="res://Art/NewCardAssets/CardFog.png" id="12_d8086"]
 [ext_resource type="Script" uid="uid://ca4kswglka2cm" path="res://Revamp/CardVisuals/CardMutationVisuals.gd" id="12_tt364"]
 [ext_resource type="Shader" uid="uid://dt77y6ccd1hxy" path="res://Old/Cards/SigilOutline.gdshader" id="13_8ia1o"]
-[ext_resource type="Texture2D" uid="uid://bo1bflo0j8ibu" path="res://Art/NewCardAssets/CardBorder2.png" id="13_b5mm6"]
+[ext_resource type="Texture2D" uid="uid://wak6qieqhlsb" path="res://Art/CardBorder.png" id="13_tt364"]
 [ext_resource type="Texture2D" uid="uid://dqjpqtirjqgjr" path="res://Art/NewCardAssets/CardStats.png" id="14_b5mm6"]
 [ext_resource type="Script" uid="uid://bq48m50dnrwib" path="res://Revamp/Card/CardScripts/StatsVisual.gd" id="15_5t0dk"]
 [ext_resource type="Script" uid="uid://dvwq7j2ojg3d6" path="res://Revamp/MutationTooltTip/SigilSlot.gd" id="15_d8086"]
@@ -314,8 +314,7 @@ texture = ExtResource("12_d8086")
 [node name="CardBorder" type="Sprite2D" parent="Visuals/Container/MainVisuals" unique_id=182582064]
 position = Vector2(2.6702883e-05, -3.051758e-05)
 scale = Vector2(0.14500007, 0.14516133)
-texture = ExtResource("13_b5mm6")
-metadata/_edit_lock_ = true
+texture = ExtResource("13_tt364")
 
 [node name="StatIcons" type="Sprite2D" parent="Visuals/Container/MainVisuals" unique_id=1948607684]
 scale = Vector2(0.14000002, 0.14000002)
@@ -326,6 +325,8 @@ metadata/_edit_lock_ = true
 active = false
 reset_on_save = false
 libraries/ = SubResource("AnimationLibrary_b5mm6")
+
+[node name="CardBorder_Bar" type="Sprite2D" parent="Visuals/Container/MainVisuals" unique_id=581577172]
 
 [node name="MutationVisuals" type="Node2D" parent="Visuals" unique_id=319373443 node_paths=PackedStringArray("mutation_slot_1", "mutation_slot_2", "mutation_slot_3")]
 scale = Vector2(0.99999994, 0.99999994)
