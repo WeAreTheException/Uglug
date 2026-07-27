@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="CardData" format=3 uid="uid://2d6xo4jns8it"]
 
-[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Old/Mutations/MutationBehaviourHandlers/Mutation.gd" id="1_oypj7"]
+[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Revamp/Mutations (2)/MutationBehaviourHandlers/Mutation.gd" id="1_oypj7"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Old/Data/CardData.gd" id="2_1hbjw"]
 [ext_resource type="Texture2D" uid="uid://ss77d37y7psp" path="res://Art/Ants/BOB.PNG" id="2_gh4ig"]
 

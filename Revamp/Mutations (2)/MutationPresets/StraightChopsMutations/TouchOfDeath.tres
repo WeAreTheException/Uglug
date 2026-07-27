@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="TouchOfDeath" format=3 uid="uid://b4sniy31fo50g"]
 
-[ext_resource type="Script" uid="uid://qr780drlkuym" path="res://Old/Mutations/MutationBehaviourHandlers/TouchOfDeath.gd" id="1_a7jwl"]
+[ext_resource type="Script" uid="uid://qr780drlkuym" path="res://Revamp/Mutations (2)/MutationBehaviourHandlers/TouchOfDeath.gd" id="1_a7jwl"]
 [ext_resource type="Texture2D" uid="uid://dhymn5kdwwe11" path="res://Art/Mutations/Sigils/Final_Sigils/Eliminant_Sigil.png" id="2_4dkxk"]
 
 [resource]

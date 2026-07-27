@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="CardData" format=3 uid="uid://dwpj7bg5ognwt"]
 
-[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Old/Mutations/MutationBehaviourHandlers/Mutation.gd" id="1_w7bev"]
+[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Revamp/Mutations (2)/MutationBehaviourHandlers/Mutation.gd" id="1_w7bev"]
 [ext_resource type="Texture2D" uid="uid://p53r02fc58kt" path="res://Art/Ants/SamurAnt.PNG" id="2_1kjkp"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Old/Data/CardData.gd" id="2_jxmdk"]
 

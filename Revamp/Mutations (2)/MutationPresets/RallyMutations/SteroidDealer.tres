@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="SteroidDealer" format=3 uid="uid://cyutbyh2av6iv"]
 
-[ext_resource type="Script" uid="uid://ojqw4voniy0t" path="res://Old/Mutations/MutationBehaviourHandlers/SteroidDealer.gd" id="1_hnik0"]
+[ext_resource type="Script" uid="uid://ojqw4voniy0t" path="res://Revamp/Mutations (2)/MutationBehaviourHandlers/SteroidDealer.gd" id="1_hnik0"]
 [ext_resource type="Texture2D" uid="uid://ck5nood0tif4o" path="res://Art/Mutations/Sigils/Final_Sigils/Super_Stimulant_Sigil.png" id="2_fef1u"]
 
 [resource]

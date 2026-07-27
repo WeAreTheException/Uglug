@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="Spiky" format=3 uid="uid://dko3ngpbogrv1"]
 
-[ext_resource type="Script" uid="uid://csuhdu8m5bmcv" path="res://Old/Mutations/MutationBehaviourHandlers/Spiky.gd" id="1_l0byo"]
+[ext_resource type="Script" uid="uid://csuhdu8m5bmcv" path="res://Revamp/Mutations (2)/MutationBehaviourHandlers/Spiky.gd" id="1_l0byo"]
 [ext_resource type="Texture2D" uid="uid://nu58sndhclsg" path="res://Art/Mutations/Sigils/Final_Sigils/Duriant_Sigil.png" id="2_yyyi0"]
 
 [resource]

@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="Christmas" format=3 uid="uid://5sahtthq2tjm"]
 
-[ext_resource type="Script" uid="uid://l6decvrb2m7b" path="res://Old/Mutations/MutationBehaviourHandlers/Christmas.gd" id="1_ds36k"]
+[ext_resource type="Script" uid="uid://l6decvrb2m7b" path="res://Revamp/Mutations (2)/MutationBehaviourHandlers/Christmas.gd" id="1_ds36k"]
 [ext_resource type="Texture2D" uid="uid://b20corblroviu" path="res://Art/Mutations/Sigils/Final_Sigils/Observant_Sigil.png" id="2_07ynb"]
 
 [resource]

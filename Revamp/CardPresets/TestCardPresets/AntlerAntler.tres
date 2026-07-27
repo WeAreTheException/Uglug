@@ -1,8 +1,8 @@
 [gd_resource type="Resource" script_class="CardData" format=3 uid="uid://bkvgy3ptdrbuj"]
 
-[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Old/Mutations/MutationBehaviourHandlers/Mutation.gd" id="1_u8d61"]
+[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Revamp/Mutations (2)/MutationBehaviourHandlers/Mutation.gd" id="1_u8d61"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Old/Data/CardData.gd" id="2_6b6x4"]
-[ext_resource type="Resource" uid="uid://ceeskmu01vy5g" path="res://Old/Mutations/MutationPresets/TargetMutations/YAttack.tres" id="2_pg8fv"]
+[ext_resource type="Resource" uid="uid://ceeskmu01vy5g" path="res://Revamp/Mutations (2)/MutationPresets/TargetMutations/YAttack.tres" id="2_pg8fv"]
 [ext_resource type="Texture2D" uid="uid://brw577e6u1rp8" path="res://Art/Untitled-1.png" id="3_pg8fv"]
 
 [resource]

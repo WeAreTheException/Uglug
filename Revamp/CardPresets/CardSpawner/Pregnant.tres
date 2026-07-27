@@ -1,9 +1,9 @@
 [gd_resource type="Resource" script_class="CardData" format=3 uid="uid://mnht3u87f5og"]
 
-[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Old/Mutations/MutationBehaviourHandlers/Mutation.gd" id="1_54sm2"]
+[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Revamp/Mutations (2)/MutationBehaviourHandlers/Mutation.gd" id="1_54sm2"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Old/Data/CardData.gd" id="2_mr0ff"]
 [ext_resource type="Texture2D" uid="uid://b0dr0dd6wto4k" path="res://Art/Ants/Pregnant_Body.PNG" id="2_n17xk"]
-[ext_resource type="Resource" uid="uid://b4tpqnugaguvu" path="res://Old/Mutations/MutationPresets/InheritanceMutations/BabyMaker.tres" id="3_3ny8f"]
+[ext_resource type="Resource" uid="uid://b4tpqnugaguvu" path="res://Revamp/Mutations (2)/MutationPresets/InheritanceMutations/BabyMaker.tres" id="3_3ny8f"]
 
 [resource]
 script = ExtResource("2_mr0ff")

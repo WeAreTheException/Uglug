@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="RoyalPheromones" format=3 uid="uid://c0ojr71i4k50b"]
 
-[ext_resource type="Script" uid="uid://dhcajtdenp665" path="res://Old/Mutations/MutationBehaviourHandlers/RoyalPheromones.gd" id="1_r60ac"]
+[ext_resource type="Script" uid="uid://dhcajtdenp665" path="res://Revamp/Mutations (2)/MutationBehaviourHandlers/RoyalPheromones.gd" id="1_r60ac"]
 [ext_resource type="Texture2D" uid="uid://ddgueakee04eq" path="res://Art/Mutations/Sigils/Final_Sigils/Queen_Ant_Sigil.png" id="2_oehpm"]
 
 [resource]

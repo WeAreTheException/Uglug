@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="Shield" format=3 uid="uid://b6afw5yomddli"]
 
-[ext_resource type="Script" uid="uid://cb1b0pkk73net" path="res://Old/Mutations/MutationBehaviourHandlers/Shield.gd" id="1_yatt5"]
+[ext_resource type="Script" uid="uid://cb1b0pkk73net" path="res://Revamp/Mutations (2)/MutationBehaviourHandlers/Shield.gd" id="1_yatt5"]
 [ext_resource type="Texture2D" uid="uid://bjbe3tci8tprg" path="res://Art/Mutations/Sigils/Final_Sigils/Escutcheant_Sigil.png" id="2_pxwdf"]
 
 [resource]
