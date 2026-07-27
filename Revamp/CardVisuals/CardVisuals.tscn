@@ -448,30 +448,27 @@ metadata/_edit_use_anchors_ = true
 metadata/_edit_lock_ = true
 
 [node name="Cost" type="Node2D" parent="Visuals/StatsVisual" unique_id=954479722]
+scale = Vector2(1.5, 1.5)
 
 [node name="Blood1" type="Sprite2D" parent="Visuals/StatsVisual/Cost" unique_id=1694147808]
-position = Vector2(65.93889, -82.17592)
+position = Vector2(-53.703697, -50.61728)
 scale = Vector2(0.1, 0.09)
 texture = ExtResource("27_0lj05")
-metadata/_edit_lock_ = true
 
 [node name="Blood2" type="Sprite2D" parent="Visuals/StatsVisual/Cost" unique_id=1031819764]
-position = Vector2(50.925922, -82.40741)
+position = Vector2(-53.703697, -25.308643)
 scale = Vector2(0.1, 0.09)
 texture = ExtResource("27_0lj05")
-metadata/_edit_lock_ = true
 
 [node name="Blood3" type="Sprite2D" parent="Visuals/StatsVisual/Cost" unique_id=443046727]
-position = Vector2(59.370373, -61.47407)
+position = Vector2(-53.703697, 0)
 scale = Vector2(0.1, 0.09)
 texture = ExtResource("27_0lj05")
-metadata/_edit_lock_ = true
 
 [node name="Blood4" type="Sprite2D" parent="Visuals/StatsVisual/Cost" unique_id=2084893240]
-position = Vector2(74.38333, -61.242577)
+position = Vector2(-53.70369, 25.925922)
 scale = Vector2(0.1, 0.09)
 texture = ExtResource("27_0lj05")
-metadata/_edit_lock_ = true
 
 [node name="Attack" type="Node2D" parent="Visuals/StatsVisual" unique_id=651649053]
 
