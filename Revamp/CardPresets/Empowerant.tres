@@ -10,6 +10,7 @@
 script = ExtResource("2_vylo5")
 card_id = "empowerant"
 name = "Empowerant"
+health = 4
 cost = 3
 background_texture = ExtResource("3_6qd3c")
 ant_texture = ExtResource("2_n8a4s")
