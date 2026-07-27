@@ -59,6 +59,7 @@
 [ext_resource type="Script" uid="uid://dla1car1yk1pm" path="res://Revamp/MatchUI/UICard/MatchPhaseUI.gd" id="69_lc0u2"]
 [ext_resource type="Script" uid="uid://coo0pgldjiw6w" path="res://Revamp/Multiplayer/MatchPhaseTimer.gd" id="73_fk48e"]
 [ext_resource type="Script" uid="uid://00f6bgoq0mgc" path="res://Revamp/Multiplayer/MatchNetworkAttack.gd" id="73_nc85t"]
+[ext_resource type="Script" uid="uid://cgtvc8pm1pyda" path="res://BoardCardHover.gd" id="73_uv74c"]
 [ext_resource type="Script" uid="uid://c62i7pwt3r30f" path="res://Revamp/Multiplayer/MatchNetworkTimer.gd" id="74_c8bx1"]
 [ext_resource type="Script" uid="uid://dx8ow48eguxe7" path="res://Revamp/MatchFlow/MatchPlacementCompletionHandler.gd" id="74_yjh5v"]
 [ext_resource type="Texture2D" uid="uid://cgkoni68euqo3" path="res://Art/Mutations/Sigils/Final_Sigils/Draculant_Sigil.png" id="75_c8bx1"]
@@ -1171,3 +1172,8 @@ offset_bottom = 66.0
 text = "Persistant +1"
 label_settings = SubResource("LabelSettings_uv74c")
 vertical_alignment = 1
+
+[node name="Node" type="Node" parent="." unique_id=2001566808 node_paths=PackedStringArray("slots_root", "tooltip_coordinator")]
+script = ExtResource("73_uv74c")
+slots_root = NodePath("../Core/Board")
+tooltip_coordinator = NodePath("../ToolTip/Cordiantor")

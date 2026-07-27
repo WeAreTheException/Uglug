@@ -1,8 +1,8 @@
 extends Node
 class_name CardMutationTooltipBinder
 
-
 @export var mutation_tooltip: MutationToolTip
+@export var tooltip_coordinator: MutationTooltipCoordinator
 @export var player_hands: Array[PlayerHandRoot] = []
 
 var current_hovered_card: CardRoot = null
@@ -15,6 +15,8 @@ func _ready() -> void:
 
 
 func _exit_tree() -> void:
+	_clear_current_hovered_card()
+
 	for player_hand: PlayerHandRoot in player_hands:
 		_disconnect_hand(player_hand)
 
@@ -22,10 +24,11 @@ func _exit_tree() -> void:
 		_disconnect_card(card)
 
 	connected_cards.clear()
-	current_hovered_card = null
 
 
-func _connect_hand(player_hand: PlayerHandRoot) -> void:
+func _connect_hand(
+	player_hand: PlayerHandRoot
+) -> void:
 	if player_hand == null:
 		return
 
@@ -47,7 +50,9 @@ func _connect_hand(player_hand: PlayerHandRoot) -> void:
 		_connect_card(card)
 
 
-func _disconnect_hand(player_hand: PlayerHandRoot) -> void:
+func _disconnect_hand(
+	player_hand: PlayerHandRoot
+) -> void:
 	if player_hand == null:
 		return
 
@@ -121,7 +126,9 @@ func _disconnect_card(card: CardRoot) -> void:
 	_disconnect_card_mutations(card)
 
 
-func _connect_card_mutations(card: CardRoot) -> void:
+func _connect_card_mutations(
+	card: CardRoot
+) -> void:
 	if card.mutations == null:
 		return
 
@@ -137,7 +144,9 @@ func _connect_card_mutations(card: CardRoot) -> void:
 		)
 
 
-func _disconnect_card_mutations(card: CardRoot) -> void:
+func _disconnect_card_mutations(
+	card: CardRoot
+) -> void:
 	if card.mutations == null:
 		return
 
@@ -159,10 +168,7 @@ func _on_card_added(card: CardRoot) -> void:
 
 func _on_card_removed(card: CardRoot) -> void:
 	if current_hovered_card == card:
-		current_hovered_card = null
-
-		if mutation_tooltip != null:
-			mutation_tooltip.show_default_tooltip()
+		_clear_current_hovered_card()
 
 	_disconnect_card(card)
 
@@ -175,19 +181,14 @@ func _on_card_hovered(card: CardRoot) -> void:
 		return
 
 	current_hovered_card = card
-
-	if mutation_tooltip != null:
-		mutation_tooltip.show_card(card)
+	_show_card(card)
 
 
 func _on_card_unhovered(card: CardRoot) -> void:
 	if current_hovered_card != card:
 		return
 
-	current_hovered_card = null
-
-	if mutation_tooltip != null:
-		mutation_tooltip.show_default_tooltip()
+	_clear_current_hovered_card()
 
 
 func _on_card_mutations_changed(
@@ -202,5 +203,27 @@ func _on_card_mutations_changed(
 	if current_hovered_card != card:
 		return
 
+	_show_card(card)
+
+
+func _show_card(card: CardRoot) -> void:
+	if tooltip_coordinator != null:
+		tooltip_coordinator.set_hovered_card(card)
+		return
+
 	if mutation_tooltip != null:
 		mutation_tooltip.show_card(card)
+
+
+func _clear_current_hovered_card() -> void:
+	var previous_card: CardRoot = current_hovered_card
+	current_hovered_card = null
+
+	if tooltip_coordinator != null:
+		tooltip_coordinator.clear_hovered_card(
+			previous_card
+		)
+		return
+
+	if mutation_tooltip != null:
+		mutation_tooltip.show_default_tooltip()
