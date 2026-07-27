@@ -18,6 +18,9 @@ var hand_layout: Hand_Layout = null
 var hand_card_layer: Node2D = null
 var drag_layer: Node2D = null
 
+var input_enabled: bool = true
+var drag_active: bool = false
+
 var layer_mover := HandCardLayerMoverHelper.new()
 var setup_helper := HandInteractionSetupHelper.new()
 var callbacks := HandInteractionCallbacksHelper.new()
@@ -36,13 +39,26 @@ func setup(
 	drag_layer = new_drag_layer
 
 	callbacks.setup(self)
-	setup_helper.setup_children(self, callbacks, prime_location)
-	setup_helper.connect_spawner(self, callbacks)
+	setup_helper.setup_children(
+		self,
+		callbacks,
+		prime_location
+	)
+	setup_helper.connect_spawner(
+		self,
+		callbacks
+	)
+
+	_refresh_card_hover_input()
 
 
 func set_input_enabled(value: bool) -> void:
+	input_enabled = value
+
 	if input_router != null:
 		input_router.set_input_enabled(value)
+
+	_refresh_card_hover_input()
 
 
 func set_drag_enabled(value: bool) -> void:
@@ -126,19 +142,29 @@ func get_card_index(card: CardRoot) -> int:
 	return get_cards().find(card)
 
 
-func move_card_to_index(card: CardRoot, new_index: int) -> void:
+func move_card_to_index(
+	card: CardRoot,
+	new_index: int
+) -> void:
 	if card_spawner != null:
-		card_spawner.move_card_to_index(card, new_index)
+		card_spawner.move_card_to_index(
+			card,
+			new_index
+		)
 
 	refresh_hover_focus()
 
 
 func arrange_cards() -> void:
 	if hand_layout != null:
-		hand_layout.arrange_cards(get_cards())
+		hand_layout.arrange_cards(
+			get_cards()
+		)
 
 
-func get_insert_index_from_global_x(global_x: float) -> int:
+func get_insert_index_from_global_x(
+	global_x: float
+) -> int:
 	if hand_layout == null:
 		return 0
 
@@ -152,15 +178,36 @@ func get_top_hovered_card() -> CardRoot:
 	if hover_focus == null:
 		return null
 
-	return hover_focus.get_top_card(get_cards())
+	return hover_focus.get_top_card(
+		get_cards()
+	)
 
 
 func refresh_hover_focus() -> void:
 	if hover_focus != null:
-		hover_focus.refresh(get_cards())
+		hover_focus.refresh(
+			get_cards()
+		)
 
 
-func set_card_hover_input_enabled(value: bool) -> void:
+func apply_input_state_to_card(
+	card: CardRoot
+) -> void:
+	if card == null:
+		return
+
+	if not is_instance_valid(card):
+		return
+
+	card.set_card_input_enabled(
+		input_enabled
+		and not drag_active
+	)
+
+
+func set_card_hover_input_enabled(
+	value: bool
+) -> void:
 	for card: CardRoot in get_cards():
 		if card == null:
 			continue
@@ -171,38 +218,55 @@ func set_card_hover_input_enabled(value: bool) -> void:
 		if card.input == null:
 			continue
 
-		card.input.set_input_enabled(value)
+		card.set_card_input_enabled(value)
 
 
 func begin_drag(card: CardRoot) -> void:
 	if card == null:
 		return
 
-	# This clears every card's current hover and prevents all cards
-	# from detecting the mouse while the drag is active.
-	set_card_hover_input_enabled(false)
+	drag_active = true
+	_refresh_card_hover_input()
 
 	if hand_layout != null:
 		hand_layout.clear_ignored_card()
 
-	layer_mover.move_to_layer(card, drag_layer)
+	layer_mover.move_to_layer(
+		card,
+		drag_layer
+	)
 
 	arrange_cards()
 	refresh_hover_focus()
 
 
 func finish_drag(card: CardRoot) -> void:
+	drag_active = false
+
 	if card == null:
-		set_card_hover_input_enabled(true)
+		_refresh_card_hover_input()
 		return
 
-	layer_mover.move_to_layer(card, hand_card_layer)
+	layer_mover.move_to_layer(
+		card,
+		hand_card_layer
+	)
 
 	if hand_layout != null:
 		hand_layout.clear_ignored_card()
 
 	arrange_cards()
 
-	# Hover detection resumes only after the drag has finished.
-	set_card_hover_input_enabled(true)
+	_refresh_card_hover_input()
 	refresh_hover_focus()
+
+
+func _refresh_card_hover_input() -> void:
+	var should_enable: bool = (
+		input_enabled
+		and not drag_active
+	)
+
+	set_card_hover_input_enabled(
+		should_enable
+	)

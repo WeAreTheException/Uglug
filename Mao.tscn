@@ -59,6 +59,7 @@
 [ext_resource type="Script" uid="uid://dla1car1yk1pm" path="res://Revamp/MatchUI/UICard/MatchPhaseUI.gd" id="69_lc0u2"]
 [ext_resource type="Script" uid="uid://coo0pgldjiw6w" path="res://Revamp/Multiplayer/MatchPhaseTimer.gd" id="73_fk48e"]
 [ext_resource type="Script" uid="uid://00f6bgoq0mgc" path="res://Revamp/Multiplayer/MatchNetworkAttack.gd" id="73_nc85t"]
+[ext_resource type="Script" uid="uid://cgtvc8pm1pyda" path="res://BoardCardHover.gd" id="73_uv74c"]
 [ext_resource type="Script" uid="uid://c62i7pwt3r30f" path="res://Revamp/Multiplayer/MatchNetworkTimer.gd" id="74_c8bx1"]
 [ext_resource type="Script" uid="uid://dx8ow48eguxe7" path="res://Revamp/MatchFlow/MatchPlacementCompletionHandler.gd" id="74_yjh5v"]
 [ext_resource type="Texture2D" uid="uid://cgkoni68euqo3" path="res://Art/Mutations/Sigils/Final_Sigils/Draculant_Sigil.png" id="75_c8bx1"]
@@ -250,12 +251,32 @@ corner_radius_top_right = 2
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
+[sub_resource type="LabelSettings" id="LabelSettings_fk48e"]
+line_spacing = 0.0
+font = ExtResource("80_cxut3")
+font_size = 24
+font_color = Color(0.93333334, 0.8784314, 0.81960785, 1)
+outline_size = 10
+outline_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
+shadow_size = 10
+shadow_color = Color(0.49411765, 0.57254905, 0.92941177, 1)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tfk1j"]
 bg_color = Color(0.5, 0.24000001, 0.25300008, 0.74509805)
 corner_radius_top_left = 2
 corner_radius_top_right = 2
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
+
+[sub_resource type="LabelSettings" id="LabelSettings_uv74c"]
+line_spacing = 0.0
+font = ExtResource("80_cxut3")
+font_size = 24
+font_color = Color(0.93333334, 0.8784314, 0.81960785, 1)
+outline_size = 10
+outline_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
+shadow_size = 10
+shadow_color = Color(0.9647059, 0.48235294, 0.5176471, 1)
 
 [node name="Mao" type="Node2D" unique_id=550121538]
 
@@ -938,9 +959,9 @@ match_network_root = NodePath("../Multiplayer/MatchNetworkRoot")
 
 [node name="UIBase" type="Panel" parent="Tugga" unique_id=969712301]
 offset_left = 70.0
-offset_top = 177.0
+offset_top = 111.0
 offset_right = 430.0
-offset_bottom = 567.0
+offset_bottom = 501.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_mm0q7")
 
 [node name="BoardBack" type="Panel" parent="Tugga/UIBase" unique_id=814194750]
@@ -949,6 +970,13 @@ offset_left = 16.0
 offset_top = 15.0
 offset_right = 346.0
 offset_bottom = 379.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_lcv7c")
+
+[node name="BoardBack2" type="Panel" parent="Tugga/UIBase" unique_id=1626922334]
+layout_mode = 0
+offset_top = 411.0
+offset_right = 360.0
+offset_bottom = 604.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_lcv7c")
 
 [node name="Win" type="Panel" parent="Tugga/UIBase" unique_id=363125510]
@@ -993,9 +1021,9 @@ label_settings = SubResource("LabelSettings_cick3")
 
 [node name="Tugga" type="Label" parent="Tugga" unique_id=276463835]
 offset_left = 100.0
-offset_top = 200.0
+offset_top = 134.0
 offset_right = 399.0
-offset_bottom = 282.0
+offset_bottom = 216.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0.69803923, 0.56078434, 0.43137255, 1)
 theme_override_colors/font_outline_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
@@ -1008,9 +1036,9 @@ label_settings = SubResource("LabelSettings_pkdux")
 
 [node name="YouText" type="Label" parent="Tugga" unique_id=1992105399]
 offset_left = 119.0
-offset_top = 390.0
+offset_top = 324.0
 offset_right = 217.0
-offset_bottom = 449.0
+offset_bottom = 383.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0.0031383054, 0.16820937, 0.20007834, 1)
 theme_override_colors/font_outline_color = Color(0.45068938, 0.14134064, 0.121217035, 1)
@@ -1040,9 +1068,9 @@ metadata/_edit_lock_ = true
 
 [node name="OppText" type="Label" parent="Tugga" unique_id=771781086]
 offset_left = 290.0
-offset_top = 390.0
+offset_top = 324.0
 offset_right = 388.0
-offset_bottom = 449.0
+offset_bottom = 383.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0.3205033, 0.025482684, 0.0067084883, 1)
 theme_override_colors/font_outline_color = Color(0.45068938, 0.14134064, 0.121217035, 1)
@@ -1073,16 +1101,79 @@ metadata/_edit_lock_ = true
 
 [node name="KillFeedYou" type="Panel" parent="Tugga" unique_id=195176159]
 visible = false
-offset_left = 47.0
-offset_top = 584.0
-offset_right = 265.0
-offset_bottom = 620.0
+offset_left = 46.0
+offset_top = 534.0
+offset_right = 264.0
+offset_bottom = 570.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_fabca")
+
+[node name="Label" type="Label" parent="Tugga/KillFeedYou" unique_id=1666546666]
+layout_mode = 0
+offset_left = -15.0
+offset_top = -33.0
+offset_right = 203.0
+offset_bottom = 66.0
+text = "Persistant +1"
+label_settings = SubResource("LabelSettings_fk48e")
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="KillFeedYou2" type="Panel" parent="Tugga" unique_id=951805895]
+visible = false
+offset_left = 46.0
+offset_top = 666.0
+offset_right = 264.0
+offset_bottom = 702.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_fabca")
+
+[node name="Label" type="Label" parent="Tugga/KillFeedYou2" unique_id=220919182]
+layout_mode = 0
+offset_left = -15.0
+offset_top = -33.0
+offset_right = 203.0
+offset_bottom = 66.0
+text = "Persistant +1"
+label_settings = SubResource("LabelSettings_fk48e")
+horizontal_alignment = 2
+vertical_alignment = 1
 
 [node name="KillFeedOpp" type="Panel" parent="Tugga" unique_id=486408265]
 visible = false
-offset_left = 232.0
-offset_top = 633.0
-offset_right = 450.0
-offset_bottom = 669.0
+offset_left = 231.0
+offset_top = 579.0
+offset_right = 449.0
+offset_bottom = 615.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_tfk1j")
+
+[node name="Label2" type="Label" parent="Tugga/KillFeedOpp" unique_id=1746534190]
+layout_mode = 0
+offset_left = 13.0
+offset_top = -33.0
+offset_right = 231.0
+offset_bottom = 66.0
+text = "Persistant +1"
+label_settings = SubResource("LabelSettings_uv74c")
+vertical_alignment = 1
+
+[node name="KillFeedOpp2" type="Panel" parent="Tugga" unique_id=297217716]
+visible = false
+offset_left = 231.0
+offset_top = 624.0
+offset_right = 449.0
+offset_bottom = 660.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_tfk1j")
+
+[node name="Label2" type="Label" parent="Tugga/KillFeedOpp2" unique_id=473036652]
+layout_mode = 0
+offset_left = 13.0
+offset_top = -33.0
+offset_right = 231.0
+offset_bottom = 66.0
+text = "Persistant +1"
+label_settings = SubResource("LabelSettings_uv74c")
+vertical_alignment = 1
+
+[node name="Node" type="Node" parent="." unique_id=2001566808 node_paths=PackedStringArray("slots_root", "tooltip_coordinator")]
+script = ExtResource("73_uv74c")
+slots_root = NodePath("../Core/Board")
+tooltip_coordinator = NodePath("../ToolTip/Cordiantor")
