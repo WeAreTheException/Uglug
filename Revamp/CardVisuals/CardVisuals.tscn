@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://bt8o5l5yrmihl" path="res://Art/AntBack/CardBackground.png" id="3_4t10r"]
 [ext_resource type="Shader" uid="uid://n3l4egojry4s" path="res://Balatro.gdshader" id="5_0pq8k"]
 [ext_resource type="Shader" uid="uid://clsxlhuocr8hn" path="res://Old/Cards/BackgroundSlide.gdshader" id="6_g780n"]
+[ext_resource type="Texture2D" uid="uid://cs1mfjfdwujew" path="res://Art/CardBorder_Bar.png" id="8_8ia1o"]
 [ext_resource type="Shader" uid="uid://b4ndwq1f6teud" path="res://AntSpriteShader.gdshader" id="8_d8086"]
 [ext_resource type="Texture2D" uid="uid://crorkhppccg5v" path="res://Art/Ants/WorkerAnt.PNG" id="9_b5mm6"]
 [ext_resource type="Texture2D" uid="uid://c4v3je4ncss3j" path="res://Art/WorkerAnt_Test_Alpha.png" id="9_d8086"]
@@ -29,6 +30,7 @@
 [ext_resource type="Texture2D" uid="uid://bkltnd7edkgin" path="res://Art/NewCardAssets/SacrificeCost.png" id="27_0lj05"]
 [ext_resource type="FontFile" uid="uid://3m1qkjceiwrb" path="res://Revamp/Fonts/Transcity DEMO.otf" id="27_tt364"]
 [ext_resource type="Script" uid="uid://db56slyy24nq7" path="res://Revamp/Card/CardFeedback/StatTextFeedback.gd" id="29_0lj05"]
+[ext_resource type="Shader" uid="uid://dg6g50x1ggdt7" path="res://Revamp/CardVisuals/RhythmPulse.gdshader" id="29_3pvvv"]
 [ext_resource type="Texture2D" uid="uid://j75yocnxblk4" path="res://Art/RedBackground.png" id="29_d8086"]
 [ext_resource type="Texture2D" uid="uid://cgs5k6p3mggyf" path="res://Art/Ants/AntSprite.png" id="29_wvfxw"]
 [ext_resource type="Shader" uid="uid://c2usyy1706sqm" path="res://Revamp/Card/NewCardFeedback/CardShaders/TextAnimatedStripes.gdshader" id="30_8ia1o"]
@@ -195,6 +197,30 @@ shader = ExtResource("13_8ia1o")
 shader_parameter/line_color = Color(0.105882354, 0.09019608, 0.08627451, 1)
 shader_parameter/line_thickness = 10.0
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5t0dk"]
+shader = ExtResource("29_3pvvv")
+shader_parameter/beat_speed = 1.20000005374012
+shader_parameter/pulse_strength = 0.0650000030875
+shader_parameter/pulse_mode = 2
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4yngs"]
+shader = ExtResource("29_3pvvv")
+shader_parameter/beat_speed = 1.10000004899012
+shader_parameter/pulse_strength = 0.10000000475
+shader_parameter/pulse_mode = 2
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8nq5a"]
+shader = ExtResource("29_3pvvv")
+shader_parameter/beat_speed = 0.80000003474012
+shader_parameter/pulse_strength = 0.0850000040375
+shader_parameter/pulse_mode = 2
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8aa6v"]
+shader = ExtResource("29_3pvvv")
+shader_parameter/beat_speed = 1.15000005136512
+shader_parameter/pulse_strength = 0.0750000035625
+shader_parameter/pulse_mode = 2
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3pvvv"]
 shader = ExtResource("30_8ia1o")
 shader_parameter/color_gap = Color(0, 0, 0, 0)
@@ -283,6 +309,10 @@ offset_right = 86.99999
 offset_bottom = 135.00002
 metadata/_edit_use_anchors_ = true
 
+[node name="CardBorder_Bar" type="Sprite2D" parent="Visuals/Container/MainVisuals" unique_id=581577172]
+scale = Vector2(0.145, 0.145)
+texture = ExtResource("8_8ia1o")
+
 [node name="AntRoot" type="Sprite2D" parent="Visuals/Container/MainVisuals" unique_id=36780554]
 
 [node name="Ant" type="Sprite2D" parent="Visuals/Container/MainVisuals/AntRoot" unique_id=1609290713]
@@ -325,8 +355,6 @@ metadata/_edit_lock_ = true
 active = false
 reset_on_save = false
 libraries/ = SubResource("AnimationLibrary_b5mm6")
-
-[node name="CardBorder_Bar" type="Sprite2D" parent="Visuals/Container/MainVisuals" unique_id=581577172]
 
 [node name="MutationVisuals" type="Node2D" parent="Visuals" unique_id=319373443 node_paths=PackedStringArray("mutation_slot_1", "mutation_slot_2", "mutation_slot_3")]
 scale = Vector2(0.99999994, 0.99999994)
@@ -451,21 +479,25 @@ metadata/_edit_lock_ = true
 scale = Vector2(1.5, 1.5)
 
 [node name="Blood1" type="Sprite2D" parent="Visuals/StatsVisual/Cost" unique_id=1694147808]
+material = SubResource("ShaderMaterial_5t0dk")
 position = Vector2(-53.703697, -50.61728)
 scale = Vector2(0.1, 0.09)
 texture = ExtResource("27_0lj05")
 
 [node name="Blood2" type="Sprite2D" parent="Visuals/StatsVisual/Cost" unique_id=1031819764]
-position = Vector2(-53.703697, -25.308643)
+material = SubResource("ShaderMaterial_4yngs")
+position = Vector2(-53.703705, -25.30864)
 scale = Vector2(0.1, 0.09)
 texture = ExtResource("27_0lj05")
 
 [node name="Blood3" type="Sprite2D" parent="Visuals/StatsVisual/Cost" unique_id=443046727]
+material = SubResource("ShaderMaterial_8nq5a")
 position = Vector2(-53.703697, 0)
 scale = Vector2(0.1, 0.09)
 texture = ExtResource("27_0lj05")
 
 [node name="Blood4" type="Sprite2D" parent="Visuals/StatsVisual/Cost" unique_id=2084893240]
+material = SubResource("ShaderMaterial_8aa6v")
 position = Vector2(-53.70369, 25.925922)
 scale = Vector2(0.1, 0.09)
 texture = ExtResource("27_0lj05")
