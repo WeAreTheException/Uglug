@@ -11,6 +11,17 @@ signal worth_changed(value: int)
 signal stat_buffed(stat_name: String, amount: int)
 signal stat_debuffed(stat_name: String, amount: int)
 
+signal stat_display_changed(
+	stat_name: String,
+	value: int,
+	change_type: String,
+	modifier_state: String
+)
+
+const CHANGE_NEUTRAL: String = "neutral"
+const CHANGE_BUFFED: String = "buffed"
+const CHANGE_DEBUFFED: String = "debuffed"
+
 @export var print_feedback_debug: bool = true
 @export var feedback_step_delay: float = 0.5
 @export var source_target_delay: float = 0.2
@@ -66,7 +77,9 @@ static func flush_global_stat_feedback_collection() -> void:
 		if event.target_card.stats == null:
 			continue
 
-		var consumed_event: StatFeedbackEvent = event.target_card.stats._consume_batch_event(event)
+		var consumed_event: StatFeedbackEvent = (
+			event.target_card.stats._consume_batch_event(event)
+		)
 
 		if consumed_event == null:
 			continue
@@ -86,7 +99,9 @@ static func flush_global_stat_feedback_collection() -> void:
 		if grouped_event.target_card.stats == null:
 			continue
 
-		grouped_event.target_card.stats._schedule_feedback_event(grouped_event)
+		grouped_event.target_card.stats._schedule_feedback_event(
+			grouped_event
+		)
 
 	for stats: CardStats in global_feedback_stats:
 		if stats == null:
@@ -127,7 +142,9 @@ static func _register_global_feedback_stats(stats: CardStats) -> void:
 	global_feedback_stats.append(stats)
 
 
-static func _register_global_feedback_event(event: StatFeedbackEvent) -> void:
+static func _register_global_feedback_event(
+	event: StatFeedbackEvent
+) -> void:
 	if event == null:
 		return
 
@@ -150,11 +167,14 @@ func setup_from_data(data: CardData) -> void:
 	batch_remaining_positive_by_stat.clear()
 	batch_remaining_negative_by_stat.clear()
 
-	_emit_all_changed()
+	_emit_all_changed(CHANGE_NEUTRAL)
 
 
 func get_attack() -> int:
-	return max(base_attack + _get_modifier_total("attack"), 0)
+	return max(
+		base_attack + _get_modifier_total("attack"),
+		0
+	)
 
 
 func get_health() -> int:
@@ -162,15 +182,36 @@ func get_health() -> int:
 
 
 func get_max_health() -> int:
-	return max(base_health + _get_modifier_total("health"), 0)
+	return max(
+		base_health + _get_modifier_total("health"),
+		0
+	)
 
 
 func get_cost() -> int:
-	return max(base_cost + _get_modifier_total("cost"), 0)
+	return max(
+		base_cost + _get_modifier_total("cost"),
+		0
+	)
 
 
 func get_worth() -> int:
-	return max(base_worth + _get_modifier_total("worth"), 0)
+	return max(
+		base_worth + _get_modifier_total("worth"),
+		0
+	)
+
+
+func get_stat_modifier_state(stat_name: String) -> String:
+	var modifier_total := _get_modifier_total(stat_name)
+
+	if modifier_total > 0:
+		return CHANGE_BUFFED
+
+	if modifier_total < 0:
+		return CHANGE_DEBUFFED
+
+	return CHANGE_NEUTRAL
 
 
 func begin_stat_refresh_batch() -> void:
@@ -213,30 +254,38 @@ func add_modifier(modifier: StatModifier) -> void:
 		return
 
 	if modifier.amount > 0:
-		stat_buffed.emit(modifier.stat_name, modifier.amount)
+		stat_buffed.emit(
+			modifier.stat_name,
+			modifier.amount
+		)
+
 		_schedule_feedback_event(
 			_build_feedback_event(
 				modifier,
 				"buffer",
-				"buffed",
+				CHANGE_BUFFED,
 				abs(modifier.amount)
 			)
 		)
 		return
 
 	if modifier.amount < 0:
-		stat_debuffed.emit(modifier.stat_name, abs(modifier.amount))
+		stat_debuffed.emit(
+			modifier.stat_name,
+			abs(modifier.amount)
+		)
+
 		_schedule_feedback_event(
 			_build_feedback_event(
 				modifier,
 				"debuffer",
-				"debuffed",
+				CHANGE_DEBUFFED,
 				abs(modifier.amount)
 			)
 		)
 		return
 
-	_emit_all_changed()
+	_emit_all_changed(CHANGE_NEUTRAL)
 
 
 func remove_modifier(modifier: StatModifier) -> void:
@@ -250,7 +299,9 @@ func remove_modifier(modifier: StatModifier) -> void:
 	if _is_in_stat_refresh_batch():
 		return
 
-	_emit_all_changed()
+	# Removing a buff or debuff is a return toward neutral.
+	# It must not play the opposite feedback animation.
+	_emit_all_changed(CHANGE_NEUTRAL)
 
 
 func remove_modifiers_from_source(source: Object) -> void:
@@ -268,7 +319,8 @@ func remove_modifiers_from_source(source: Object) -> void:
 	if _is_in_stat_refresh_batch():
 		return
 
-	_emit_all_changed()
+	# Expired modifiers update numbers and stripe state neutrally.
+	_emit_all_changed(CHANGE_NEUTRAL)
 
 
 func take_damage(amount: int) -> void:
@@ -276,20 +328,32 @@ func take_damage(amount: int) -> void:
 		return
 
 	damage_taken += amount
-	damage_taken = min(damage_taken, get_max_health())
+	damage_taken = min(
+		damage_taken,
+		get_max_health()
+	)
 
-	health_changed.emit(get_health())
-	stats_changed.emit()
+	# Damage changes the number but is not a debuff.
+	_emit_changed_for_stat(
+		"health",
+		CHANGE_NEUTRAL
+	)
 
 
 func heal(amount: int) -> void:
 	if amount <= 0:
 		return
 
-	damage_taken = max(damage_taken - amount, 0)
+	damage_taken = max(
+		damage_taken - amount,
+		0
+	)
 
-	health_changed.emit(get_health())
-	stats_changed.emit()
+	# Healing changes the number but is not a stat buff.
+	_emit_changed_for_stat(
+		"health",
+		CHANGE_NEUTRAL
+	)
 
 
 func is_dead() -> bool:
@@ -298,7 +362,7 @@ func is_dead() -> bool:
 
 func reset_damage_taken() -> void:
 	damage_taken = 0
-	_emit_all_changed()
+	_emit_all_changed(CHANGE_NEUTRAL)
 
 
 func apply_network_values(
@@ -312,21 +376,44 @@ func apply_network_values(
 	base_health = max_health
 	base_cost = cost
 	base_worth = worth
-	damage_taken = max(max_health - health, 0)
+	damage_taken = max(
+		max_health - health,
+		0
+	)
+
 	modifiers.clear()
 
 	stat_refresh_batch_depth = 0
 	batch_remaining_positive_by_stat.clear()
 	batch_remaining_negative_by_stat.clear()
 
-	_emit_all_changed()
+	_emit_all_changed(CHANGE_NEUTRAL)
 
 
 func _build_batch_remaining_changes() -> void:
-	_set_remaining_change_for_stat("attack", batch_start_attack, get_attack())
-	_set_remaining_change_for_stat("health", batch_start_health, get_health())
-	_set_remaining_change_for_stat("cost", batch_start_cost, get_cost())
-	_set_remaining_change_for_stat("worth", batch_start_worth, get_worth())
+	_set_remaining_change_for_stat(
+		"attack",
+		batch_start_attack,
+		get_attack()
+	)
+
+	_set_remaining_change_for_stat(
+		"health",
+		batch_start_health,
+		get_health()
+	)
+
+	_set_remaining_change_for_stat(
+		"cost",
+		batch_start_cost,
+		get_cost()
+	)
+
+	_set_remaining_change_for_stat(
+		"worth",
+		batch_start_worth,
+		get_worth()
+	)
 
 
 func _set_remaining_change_for_stat(
@@ -341,10 +428,14 @@ func _set_remaining_change_for_stat(
 		return
 
 	if difference < 0:
-		batch_remaining_negative_by_stat[stat_name] = abs(difference)
+		batch_remaining_negative_by_stat[stat_name] = abs(
+			difference
+		)
 
 
-func _track_batch_modifier(modifier: StatModifier) -> void:
+func _track_batch_modifier(
+	modifier: StatModifier
+) -> void:
 	if modifier == null:
 		return
 
@@ -353,7 +444,7 @@ func _track_batch_modifier(modifier: StatModifier) -> void:
 			_build_feedback_event(
 				modifier,
 				"buffer",
-				"buffed",
+				CHANGE_BUFFED,
 				abs(modifier.amount)
 			)
 		)
@@ -364,7 +455,7 @@ func _track_batch_modifier(modifier: StatModifier) -> void:
 			_build_feedback_event(
 				modifier,
 				"debuffer",
-				"debuffed",
+				CHANGE_DEBUFFED,
 				abs(modifier.amount)
 			)
 		)
@@ -391,7 +482,9 @@ func _build_feedback_event(
 	return event
 
 
-func _consume_batch_event(event: StatFeedbackEvent) -> StatFeedbackEvent:
+func _consume_batch_event(
+	event: StatFeedbackEvent
+) -> StatFeedbackEvent:
 	if event == null:
 		return null
 
@@ -399,34 +492,52 @@ func _consume_batch_event(event: StatFeedbackEvent) -> StatFeedbackEvent:
 		return null
 
 	var consumed_event := StatFeedbackEvent.new()
+
 	consumed_event.source_card = event.source_card
 	consumed_event.target_card = event.target_card
-	consumed_event.source_feedback_type = event.source_feedback_type
-	consumed_event.target_feedback_type = event.target_feedback_type
+	consumed_event.source_feedback_type = (
+		event.source_feedback_type
+	)
+	consumed_event.target_feedback_type = (
+		event.target_feedback_type
+	)
 	consumed_event.modifier = event.modifier
 
 	for stat_name: String in event.stat_names:
-		var amount: int = int(event.stat_amounts.get(stat_name, 0))
+		var amount: int = int(
+			event.stat_amounts.get(stat_name, 0)
+		)
 
 		if amount <= 0:
 			continue
 
-		var used_amount: int = _consume_stat_amount_for_event(
-			event.target_feedback_type,
-			stat_name,
-			amount
+		var used_amount: int = (
+			_consume_stat_amount_for_event(
+				event.target_feedback_type,
+				stat_name,
+				amount
+			)
 		)
 
 		if used_amount <= 0:
 			continue
 
-		consumed_event.add_stat_change(stat_name, used_amount)
+		consumed_event.add_stat_change(
+			stat_name,
+			used_amount
+		)
 
-		if event.target_feedback_type == "buffed":
-			stat_buffed.emit(stat_name, used_amount)
+		if event.target_feedback_type == CHANGE_BUFFED:
+			stat_buffed.emit(
+				stat_name,
+				used_amount
+			)
 
-		if event.target_feedback_type == "debuffed":
-			stat_debuffed.emit(stat_name, used_amount)
+		if event.target_feedback_type == CHANGE_DEBUFFED:
+			stat_debuffed.emit(
+				stat_name,
+				used_amount
+			)
 
 	if consumed_event.stat_names.is_empty():
 		return null
@@ -439,55 +550,101 @@ func _consume_stat_amount_for_event(
 	stat_name: String,
 	amount: int
 ) -> int:
-	if target_feedback_type == "buffed":
-		return _consume_remaining_positive_amount(stat_name, amount)
+	if target_feedback_type == CHANGE_BUFFED:
+		return _consume_remaining_positive_amount(
+			stat_name,
+			amount
+		)
 
-	if target_feedback_type == "debuffed":
-		return _consume_remaining_negative_amount(stat_name, amount)
+	if target_feedback_type == CHANGE_DEBUFFED:
+		return _consume_remaining_negative_amount(
+			stat_name,
+			amount
+		)
 
 	return 0
 
 
-func _consume_remaining_positive_amount(stat_name: String, amount: int) -> int:
+func _consume_remaining_positive_amount(
+	stat_name: String,
+	amount: int
+) -> int:
 	var remaining: int = int(
-		batch_remaining_positive_by_stat.get(stat_name, 0)
+		batch_remaining_positive_by_stat.get(
+			stat_name,
+			0
+		)
 	)
 
 	if remaining <= 0:
 		return 0
 
-	var used_amount: int = min(amount, remaining)
-	batch_remaining_positive_by_stat[stat_name] = remaining - used_amount
+	var used_amount: int = min(
+		amount,
+		remaining
+	)
+
+	batch_remaining_positive_by_stat[stat_name] = (
+		remaining - used_amount
+	)
 
 	return used_amount
 
 
-func _consume_remaining_negative_amount(stat_name: String, amount: int) -> int:
+func _consume_remaining_negative_amount(
+	stat_name: String,
+	amount: int
+) -> int:
 	var remaining: int = int(
-		batch_remaining_negative_by_stat.get(stat_name, 0)
+		batch_remaining_negative_by_stat.get(
+			stat_name,
+			0
+		)
 	)
 
 	if remaining <= 0:
 		return 0
 
-	var used_amount: int = min(amount, remaining)
-	batch_remaining_negative_by_stat[stat_name] = remaining - used_amount
+	var used_amount: int = min(
+		amount,
+		remaining
+	)
+
+	batch_remaining_negative_by_stat[stat_name] = (
+		remaining - used_amount
+	)
 
 	return used_amount
 
 
 func _emit_unconsumed_batch_changes() -> void:
 	for stat_name in batch_remaining_positive_by_stat.keys():
-		var remaining: int = int(batch_remaining_positive_by_stat.get(stat_name, 0))
+		var remaining: int = int(
+			batch_remaining_positive_by_stat.get(
+				stat_name,
+				0
+			)
+		)
 
 		if remaining > 0:
-			_emit_changed_for_stat(str(stat_name))
+			_emit_changed_for_stat(
+				str(stat_name),
+				CHANGE_NEUTRAL
+			)
 
 	for stat_name in batch_remaining_negative_by_stat.keys():
-		var remaining: int = int(batch_remaining_negative_by_stat.get(stat_name, 0))
+		var remaining: int = int(
+			batch_remaining_negative_by_stat.get(
+				stat_name,
+				0
+			)
+		)
 
 		if remaining > 0:
-			_emit_changed_for_stat(str(stat_name))
+			_emit_changed_for_stat(
+				str(stat_name),
+				CHANGE_NEUTRAL
+			)
 
 	batch_remaining_positive_by_stat.clear()
 	batch_remaining_negative_by_stat.clear()
@@ -497,7 +654,9 @@ func _is_in_stat_refresh_batch() -> bool:
 	return stat_refresh_batch_depth > 0
 
 
-func _schedule_feedback_event(event: StatFeedbackEvent) -> void:
+func _schedule_feedback_event(
+	event: StatFeedbackEvent
+) -> void:
 	if event == null:
 		return
 
@@ -519,7 +678,9 @@ func _schedule_feedback_event(event: StatFeedbackEvent) -> void:
 	)
 
 
-func _flush_event_source_feedback(event: StatFeedbackEvent) -> void:
+func _flush_event_source_feedback(
+	event: StatFeedbackEvent
+) -> void:
 	if event == null:
 		return
 
@@ -540,12 +701,17 @@ func _flush_event_source_feedback(event: StatFeedbackEvent) -> void:
 	)
 
 
-func _flush_event_target_feedback(event: StatFeedbackEvent) -> void:
+func _flush_event_target_feedback(
+	event: StatFeedbackEvent
+) -> void:
 	if event == null:
 		return
 
 	for stat_name: String in event.stat_names:
-		_emit_changed_for_stat(stat_name)
+		_emit_changed_for_stat(
+			stat_name,
+			event.target_feedback_type
+		)
 
 	event.play_target_feedback()
 
@@ -564,32 +730,86 @@ func _flush_event_target_feedback(event: StatFeedbackEvent) -> void:
 	)
 
 
-func _emit_changed_for_stat(stat_name: String) -> void:
+func _emit_changed_for_stat(
+	stat_name: String,
+	change_type: String = CHANGE_NEUTRAL
+) -> void:
 	match stat_name:
 		"attack":
-			attack_changed.emit(get_attack())
+			var attack_value := get_attack()
+
+			attack_changed.emit(attack_value)
+
+			_emit_stat_display_changed(
+				"attack",
+				attack_value,
+				change_type
+			)
+
 			stats_changed.emit()
 			return
 
 		"health":
-			health_changed.emit(get_health())
+			var health_value := get_health()
+
+			health_changed.emit(health_value)
+
+			_emit_stat_display_changed(
+				"health",
+				health_value,
+				change_type
+			)
+
 			stats_changed.emit()
 			return
 
 		"cost":
-			cost_changed.emit(get_cost())
+			var cost_value := get_cost()
+
+			cost_changed.emit(cost_value)
+
+			_emit_stat_display_changed(
+				"cost",
+				cost_value,
+				change_type
+			)
+
 			stats_changed.emit()
 			return
 
 		"worth":
-			worth_changed.emit(get_worth())
+			var worth_value := get_worth()
+
+			worth_changed.emit(worth_value)
+
+			_emit_stat_display_changed(
+				"worth",
+				worth_value,
+				change_type
+			)
+
 			stats_changed.emit()
 			return
 
-	_emit_all_changed()
+	_emit_all_changed(change_type)
 
 
-func _get_source_card_from_modifier(modifier: StatModifier) -> CardRoot:
+func _emit_stat_display_changed(
+	stat_name: String,
+	value: int,
+	change_type: String
+) -> void:
+	stat_display_changed.emit(
+		stat_name,
+		value,
+		change_type,
+		get_stat_modifier_state(stat_name)
+	)
+
+
+func _get_source_card_from_modifier(
+	modifier: StatModifier
+) -> CardRoot:
 	if modifier == null:
 		return null
 
@@ -608,11 +828,20 @@ func _get_source_card_from_modifier(modifier: StatModifier) -> CardRoot:
 
 
 func _clamp_damage_taken() -> void:
-	damage_taken = min(damage_taken, get_max_health())
-	damage_taken = max(damage_taken, 0)
+	damage_taken = min(
+		damage_taken,
+		get_max_health()
+	)
+
+	damage_taken = max(
+		damage_taken,
+		0
+	)
 
 
-func _get_modifier_total(stat_name: String) -> int:
+func _get_modifier_total(
+	stat_name: String
+) -> int:
 	var total := 0
 
 	for modifier in modifiers:
@@ -630,10 +859,41 @@ func _get_modifier_total(stat_name: String) -> int:
 	return total
 
 
-func _emit_all_changed() -> void:
-	attack_changed.emit(get_attack())
-	health_changed.emit(get_health())
-	cost_changed.emit(get_cost())
-	worth_changed.emit(get_worth())
+func _emit_all_changed(
+	change_type: String = CHANGE_NEUTRAL
+) -> void:
+	var attack_value := get_attack()
+	var health_value := get_health()
+	var cost_value := get_cost()
+	var worth_value := get_worth()
+
+	attack_changed.emit(attack_value)
+	health_changed.emit(health_value)
+	cost_changed.emit(cost_value)
+	worth_changed.emit(worth_value)
+
+	_emit_stat_display_changed(
+		"attack",
+		attack_value,
+		change_type
+	)
+
+	_emit_stat_display_changed(
+		"health",
+		health_value,
+		change_type
+	)
+
+	_emit_stat_display_changed(
+		"cost",
+		cost_value,
+		change_type
+	)
+
+	_emit_stat_display_changed(
+		"worth",
+		worth_value,
+		change_type
+	)
 
 	stats_changed.emit()
