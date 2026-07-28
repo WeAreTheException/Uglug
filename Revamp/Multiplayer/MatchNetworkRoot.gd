@@ -76,6 +76,7 @@ func _ready() -> void:
 	_print_network_status()
 	_connect_deck_setup()
 	_connect_match_flow()
+	_connect_match_phase_ui()
 
 
 func _input(event: InputEvent) -> void:
@@ -307,6 +308,29 @@ func _connect_match_flow() -> void:
 		match_flow_root.match_state_changed.connect(
 			_on_match_state_changed
 		)
+
+
+func _connect_match_phase_ui() -> void:
+	if match_flow_root == null:
+		return
+
+	var match_phase_ui: MatchPhaseUI = (
+		match_flow_root.match_phase_ui
+	)
+
+	if match_phase_ui == null:
+		return
+
+	if not match_phase_ui.end_turn_pressed.is_connected(
+		_on_match_phase_ui_end_turn_pressed
+	):
+		match_phase_ui.end_turn_pressed.connect(
+			_on_match_phase_ui_end_turn_pressed
+		)
+
+
+func _on_match_phase_ui_end_turn_pressed() -> void:
+	request_advance_match_state()
 
 
 func _on_match_state_changed(
