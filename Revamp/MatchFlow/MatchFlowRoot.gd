@@ -300,22 +300,7 @@ func _connect_match_phase_ui() -> void:
 			_on_round_changed_for_ui
 		)
 
-	if not match_phase_ui.end_turn_pressed.is_connected(
-		_on_match_phase_end_turn_pressed
-	):
-		match_phase_ui.end_turn_pressed.connect(
-			_on_match_phase_end_turn_pressed
-		)
-
 	_sync_match_phase_ui()
-
-
-func _on_match_phase_end_turn_pressed() -> void:
-	if not enable_debug_keys:
-		return
-
-	if _can_use_match_flow_debug_keys():
-		advance_debug_state()
 
 
 func _on_match_state_changed_for_ui(
