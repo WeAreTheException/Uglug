@@ -3,7 +3,8 @@
 [ext_resource type="PackedScene" uid="uid://bw8c7m7n5yuk8" path="res://Revamp/Board/Slots.tscn" id="1_yq750"]
 [ext_resource type="PackedScene" uid="uid://1wr1e57v7trd" path="res://Revamp/PlayerHand/Player_Hand.tscn" id="2_mi1n2"]
 [ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Revamp/Mutations (2)/MutationBehaviourHandlers/Mutation.gd" id="3_3vc3c"]
-[ext_resource type="Resource" uid="uid://b10yu2ml8hwx2" path="res://Revamp/CardPresets/Stimulant.tres" id="3_lc0u2"]
+[ext_resource type="Resource" uid="uid://bckromx6ufd8m" path="res://Revamp/CardPresets/Escucheant.tres" id="3_lc0u2"]
+[ext_resource type="Resource" uid="uid://jd5rbexi4lr4" path="res://Revamp/CardPresets/Persistant.tres" id="4_nc85t"]
 [ext_resource type="Script" uid="uid://d10ttt60gxhno" path="res://Revamp/Board/AttackOrderFeedbackHandler.gd" id="4_yjh5v"]
 [ext_resource type="Script" uid="uid://8nr6ngjl24kj" path="res://Revamp/MatchFlow/MatchAutoAdvanceHandler.gd" id="6_lc0u2"]
 [ext_resource type="Script" uid="uid://61l5g8wkdar3" path="res://SacrificeController.gd" id="10_1j514"]
@@ -320,9 +321,7 @@ warrior_draw_button = NodePath("../../UICard/Warrior")
 
 [node name="Board" parent="Core" unique_id=1318716624 node_paths=PackedStringArray("direct_damage_router") instance=ExtResource("1_yq750")]
 player_slot_1_card = ExtResource("3_lc0u2")
-player_slot_3_card = ExtResource("3_lc0u2")
-opponent_slot_1_card = ExtResource("3_lc0u2")
-opponent_slot_4_card = ExtResource("3_lc0u2")
+opponent_slot_1_card = ExtResource("4_nc85t")
 direct_damage_router = NodePath("../../Scripts/Core/DirectDamageRouter")
 
 [node name="PlayerSlotLabel1" type="Label" parent="Core/Board" unique_id=693482040]
@@ -415,24 +414,6 @@ label_settings = SubResource("LabelSettings_nc85t")
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="EnemySlotLabel5" type="Label" parent="Core/Board" unique_id=1415106798]
-visible = false
-z_index = 1
-offset_left = 183.0
-offset_top = -13.0
-offset_right = 495.0
-offset_bottom = 255.0
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
-theme_override_colors/font_outline_color = Color(0.003921569, 0.16862746, 0.2, 1)
-theme_override_constants/outline_size = 12
-theme_override_constants/shadow_outline_size = 16
-theme_override_fonts/font = ExtResource("80_cxut3")
-theme_override_font_sizes/font_size = 78
-text = "Attack Order"
-label_settings = SubResource("LabelSettings_c8bx1")
-horizontal_alignment = 1
-autowrap_mode = 3
-
 [node name="EnemySlotLabel2" type="Label" parent="Core/Board" unique_id=1118908475]
 z_index = 1
 offset_left = 640.0
@@ -494,6 +475,23 @@ turn_order_state = NodePath("../../../Scripts/MatchFlowRoot/MatchTurnOrderState"
 match_network_root = NodePath("../../../Multiplayer/MatchNetworkRoot")
 player_order_labels = [NodePath("../PlayerSlotLabel1"), NodePath("../PlayerSlotLabel2"), NodePath("../PlayerSlotLabel3"), NodePath("../PlayerSlotLabel4")]
 opponent_order_labels = [NodePath("../EnemySlotLabel1"), NodePath("../EnemySlotLabel2"), NodePath("../EnemySlotLabel3"), NodePath("../EnemySlotLabel4")]
+
+[node name="EnemySlotLabel5" type="Label" parent="Core/Board" unique_id=1415106798]
+z_index = 1
+offset_left = 183.0
+offset_top = -13.0
+offset_right = 495.0
+offset_bottom = 255.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
+theme_override_colors/font_outline_color = Color(0.003921569, 0.16862746, 0.2, 1)
+theme_override_constants/outline_size = 12
+theme_override_constants/shadow_outline_size = 16
+theme_override_fonts/font = ExtResource("80_cxut3")
+theme_override_font_sizes/font_size = 78
+text = "Attack Order"
+label_settings = SubResource("LabelSettings_c8bx1")
+horizontal_alignment = 1
+autowrap_mode = 3
 
 [node name="PlayerHAnd" parent="Core" unique_id=371738706 instance=ExtResource("2_mi1n2")]
 position = Vector2(768, 896)
