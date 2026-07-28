@@ -3,13 +3,8 @@
 [ext_resource type="PackedScene" uid="uid://bw8c7m7n5yuk8" path="res://Revamp/Board/Slots.tscn" id="1_yq750"]
 [ext_resource type="PackedScene" uid="uid://1wr1e57v7trd" path="res://Revamp/PlayerHand/Player_Hand.tscn" id="2_mi1n2"]
 [ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Revamp/Mutations (2)/MutationBehaviourHandlers/Mutation.gd" id="3_3vc3c"]
-[ext_resource type="Resource" uid="uid://cbi6p6yl00o3p" path="res://Revamp/CardPresets/Eliminant.tres" id="3_fk48e"]
-[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Old/Data/CardData.gd" id="5_lc0u2"]
 [ext_resource type="Script" uid="uid://8nr6ngjl24kj" path="res://Revamp/MatchFlow/MatchAutoAdvanceHandler.gd" id="6_lc0u2"]
-[ext_resource type="Resource" uid="uid://bn1jyervrnsg" path="res://Revamp/CardPresets/WorkerAnt.tres" id="7_nc85t"]
-[ext_resource type="Texture2D" uid="uid://b0dr0dd6wto4k" path="res://Art/Ants/Pregnant_Body.PNG" id="9_63uau"]
 [ext_resource type="Script" uid="uid://61l5g8wkdar3" path="res://SacrificeController.gd" id="10_1j514"]
-[ext_resource type="Resource" uid="uid://b4tpqnugaguvu" path="res://Revamp/Mutations (2)/MutationPresets/InheritanceMutations/BabyMaker.tres" id="10_cxut3"]
 [ext_resource type="Script" uid="uid://db4xai716j06p" path="res://Revamp/Card/CardActions/Sacrifice/SacrificeSelectionRoot.gd" id="11_5f7hr"]
 [ext_resource type="Script" uid="uid://ciopi88keoi3k" path="res://SacrificeRequirement.gd" id="11_at0h8"]
 [ext_resource type="Script" uid="uid://b3pcelfs57qav" path="res://Revamp/Card/CardActions/Sacrifice/SacrificeBoardSelectionBinder.gd" id="12_3j6fp"]
@@ -67,16 +62,6 @@
 [ext_resource type="Script" uid="uid://bnbuh7nx3k3f2" path="res://Revamp/Multiplayer/MatchNetworkDebugSync.gd" id="81_o7028"]
 [ext_resource type="Script" uid="uid://cm3y3rl7340r8" path="res://Revamp/MutationTooltTip/MutationTooltipCoordinator.gd" id="85_sxqap"]
 [ext_resource type="Script" uid="uid://r2w6wt88c7f1" path="res://Revamp/ScoreBaord/MatchScoreBoard.gd" id="87_lcv7c"]
-
-[sub_resource type="Resource" id="Resource_qct7y"]
-script = ExtResource("5_lc0u2")
-name = "Pregnant"
-health = 2
-cost = 1
-ant_texture = ExtResource("9_63uau")
-base_mutations = Array[ExtResource("3_3vc3c")]([ExtResource("10_cxut3")])
-deck_amount = 2
-metadata/_custom_type_script = "uid://duslcpxrhurv8"
 
 [sub_resource type="LabelSettings" id="LabelSettings_lc0u2"]
 line_spacing = 0.0
@@ -296,12 +281,10 @@ worker_draw_button = NodePath("../../UICard/Worker")
 warrior_draw_button = NodePath("../../UICard/Warrior")
 
 [node name="Board" parent="Core" unique_id=1318716624 node_paths=PackedStringArray("direct_damage_router") instance=ExtResource("1_yq750")]
-opponent_slot_4_card = ExtResource("3_fk48e")
 direct_damage_router = NodePath("../../Scripts/Core/DirectDamageRouter")
 
 [node name="PlayerHAnd" parent="Core" unique_id=371738706 instance=ExtResource("2_mi1n2")]
 position = Vector2(768, 896)
-starting_cards = Array[ExtResource("5_lc0u2")]([ExtResource("7_nc85t"), ExtResource("7_nc85t"), ExtResource("7_nc85t"), ExtResource("7_nc85t"), ExtResource("7_nc85t"), SubResource("Resource_qct7y")])
 
 [node name="OpponenetHAnd" parent="Core" unique_id=1415383407 instance=ExtResource("2_mi1n2")]
 position = Vector2(768.00006, 896.00006)
@@ -1106,6 +1089,7 @@ autowrap_mode = 3
 metadata/_edit_lock_ = true
 
 [node name="KillFeedYou" type="Panel" parent="Tugga" unique_id=195176159]
+visible = false
 offset_left = 46.0
 offset_top = 534.0
 offset_right = 264.0
@@ -1124,6 +1108,7 @@ horizontal_alignment = 2
 vertical_alignment = 1
 
 [node name="KillFeedYou3" type="Panel" parent="Tugga" unique_id=1464580369]
+visible = false
 offset_left = 46.0
 offset_top = 579.0
 offset_right = 264.0
@@ -1142,6 +1127,7 @@ horizontal_alignment = 2
 vertical_alignment = 1
 
 [node name="KillFeedYou4" type="Panel" parent="Tugga" unique_id=414523700]
+visible = false
 offset_left = 46.0
 offset_top = 624.0
 offset_right = 264.0
@@ -1160,6 +1146,7 @@ horizontal_alignment = 2
 vertical_alignment = 1
 
 [node name="KillFeedYou2" type="Panel" parent="Tugga" unique_id=951805895]
+visible = false
 offset_left = 46.0
 offset_top = 666.0
 offset_right = 264.0
@@ -1178,6 +1165,7 @@ horizontal_alignment = 2
 vertical_alignment = 1
 
 [node name="KillFeedOpp" type="Panel" parent="Tugga" unique_id=486408265]
+visible = false
 offset_left = 231.0
 offset_top = 579.0
 offset_right = 449.0
@@ -1195,6 +1183,7 @@ label_settings = SubResource("LabelSettings_uv74c")
 vertical_alignment = 1
 
 [node name="KillFeedOpp3" type="Panel" parent="Tugga" unique_id=855001203]
+visible = false
 offset_left = 231.0
 offset_top = 534.0
 offset_right = 449.0
@@ -1212,6 +1201,7 @@ label_settings = SubResource("LabelSettings_uv74c")
 vertical_alignment = 1
 
 [node name="KillFeedOpp4" type="Panel" parent="Tugga" unique_id=987781095]
+visible = false
 offset_left = 231.0
 offset_top = 534.0
 offset_right = 449.0
@@ -1229,6 +1219,7 @@ label_settings = SubResource("LabelSettings_uv74c")
 vertical_alignment = 1
 
 [node name="KillFeedOpp5" type="Panel" parent="Tugga" unique_id=1757094001]
+visible = false
 offset_left = 231.0
 offset_top = 666.0
 offset_right = 449.0
@@ -1246,6 +1237,7 @@ label_settings = SubResource("LabelSettings_uv74c")
 vertical_alignment = 1
 
 [node name="KillFeedOpp2" type="Panel" parent="Tugga" unique_id=297217716]
+visible = false
 offset_left = 231.0
 offset_top = 624.0
 offset_right = 449.0
