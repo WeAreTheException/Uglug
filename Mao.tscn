@@ -319,15 +319,18 @@ worker_draw_button = NodePath("../../UICard/Worker")
 warrior_draw_button = NodePath("../../UICard/Warrior")
 
 [node name="Board" parent="Core" unique_id=1318716624 node_paths=PackedStringArray("direct_damage_router") instance=ExtResource("1_yq750")]
+player_slot_1_card = ExtResource("3_lc0u2")
+player_slot_3_card = ExtResource("3_lc0u2")
 opponent_slot_1_card = ExtResource("3_lc0u2")
+opponent_slot_4_card = ExtResource("3_lc0u2")
 direct_damage_router = NodePath("../../Scripts/Core/DirectDamageRouter")
 
 [node name="PlayerSlotLabel1" type="Label" parent="Core/Board" unique_id=693482040]
 z_index = 1
 offset_left = 430.0
-offset_top = 358.0
+offset_top = 375.5054
 offset_right = 544.0
-offset_bottom = 559.0
+offset_bottom = 576.5054
 rotation = -0.2617994
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
 theme_override_colors/font_outline_color = Color(0.003921569, 0.16862746, 0.2, 1)
@@ -343,9 +346,9 @@ autowrap_mode = 3
 [node name="PlayerSlotLabel2" type="Label" parent="Core/Board" unique_id=551091575]
 z_index = 1
 offset_left = 640.00006
-offset_top = 357.99997
+offset_top = 375.50537
 offset_right = 754.00006
-offset_bottom = 559.0
+offset_bottom = 576.5054
 rotation = -0.2617994
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
 theme_override_colors/font_outline_color = Color(0.003921569, 0.16862746, 0.2, 1)
@@ -361,9 +364,9 @@ autowrap_mode = 3
 [node name="PlayerSlotLabel3" type="Label" parent="Core/Board" unique_id=157246260]
 z_index = 1
 offset_left = 876.0
-offset_top = 358.0
+offset_top = 375.5054
 offset_right = 990.0
-offset_bottom = 559.0
+offset_bottom = 576.5054
 rotation = -0.2617994
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
 theme_override_colors/font_outline_color = Color(0.003921569, 0.16862746, 0.2, 1)
@@ -379,9 +382,9 @@ autowrap_mode = 3
 [node name="PlayerSlotLabel4" type="Label" parent="Core/Board" unique_id=207678299]
 z_index = 1
 offset_left = 1092.0
-offset_top = 358.00003
+offset_top = 375.50543
 offset_right = 1206.0
-offset_bottom = 559.0
+offset_bottom = 576.5054
 rotation = -0.2617994
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
 theme_override_colors/font_outline_color = Color(0.003921569, 0.16862746, 0.2, 1)
