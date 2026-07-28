@@ -1,6 +1,7 @@
 extends Node
 class_name MatchPhaseTimer
 
+
 signal timer_started(
 	state: MatchFlowRoot.MatchState,
 	duration: float
@@ -15,7 +16,12 @@ signal timer_finished(
 	state: MatchFlowRoot.MatchState
 )
 
+
+@export_group("Match Systems")
 @export var match_flow_root: MatchFlowRoot
+
+@export_group("UI")
+@export var match_phase_ui: MatchPhaseUI
 
 @export_group("Durations")
 @export var initial_auto_draw_seconds: float = 2.0
@@ -28,6 +34,7 @@ signal timer_finished(
 @export var tick_interval: float = 0.1
 @export var print_debug: bool = true
 
+
 var is_running: bool = false
 
 var active_state: MatchFlowRoot.MatchState = (
@@ -39,6 +46,19 @@ var timer_run_id: int = 0
 
 
 func _ready() -> void:
+	if (
+		match_phase_ui == null
+		and match_flow_root != null
+	):
+		match_phase_ui = (
+			match_flow_root.match_phase_ui
+		)
+
+	_update_timer_ui(
+		0.0,
+		false
+	)
+
 	if match_flow_root == null:
 		return
 
@@ -81,11 +101,17 @@ func _start_timer(
 	stop_timer()
 
 	timer_run_id += 1
+
 	var local_run_id: int = timer_run_id
 
 	active_state = state
 	remaining_seconds = duration
 	is_running = true
+
+	_update_timer_ui(
+		remaining_seconds,
+		true
+	)
 
 	if print_debug:
 		print(
@@ -107,8 +133,16 @@ func stop_timer() -> void:
 	timer_run_id += 1
 	is_running = false
 
-	active_state = MatchFlowRoot.MatchState.NONE
+	active_state = (
+		MatchFlowRoot.MatchState.NONE
+	)
+
 	remaining_seconds = 0.0
+
+	_update_timer_ui(
+		0.0,
+		false
+	)
 
 
 func get_remaining_seconds() -> float:
@@ -123,6 +157,11 @@ func _run_timer(
 		and local_run_id == timer_run_id
 		and remaining_seconds > 0.0
 	):
+		_update_timer_ui(
+			remaining_seconds,
+			true
+		)
+
 		timer_ticked.emit(
 			active_state,
 			remaining_seconds
@@ -135,7 +174,10 @@ func _run_timer(
 		if local_run_id != timer_run_id:
 			return
 
-		remaining_seconds -= tick_interval
+		remaining_seconds = maxf(
+			remaining_seconds - tick_interval,
+			0.0
+		)
 
 	if local_run_id != timer_run_id:
 		return
@@ -144,6 +186,11 @@ func _run_timer(
 		return
 
 	remaining_seconds = 0.0
+
+	_update_timer_ui(
+		remaining_seconds,
+		true
+	)
 
 	timer_ticked.emit(
 		active_state,
@@ -154,7 +201,12 @@ func _run_timer(
 		active_state
 	)
 
-	stop_timer()
+	timer_run_id += 1
+	is_running = false
+
+	active_state = (
+		MatchFlowRoot.MatchState.NONE
+	)
 
 	if print_debug:
 		print(
@@ -163,6 +215,11 @@ func _run_timer(
 		)
 
 	timer_finished.emit(finished_state)
+
+	_update_timer_ui(
+		0.0,
+		false
+	)
 
 
 func _on_match_state_changed(
@@ -198,9 +255,27 @@ func _get_state_name(
 	state: MatchFlowRoot.MatchState
 ) -> String:
 	if match_flow_root != null:
-		return match_flow_root.get_state_name(state)
+		return match_flow_root.get_state_name(
+			state
+		)
 
 	return str(int(state))
+
+
+func _update_timer_ui(
+	remaining: float,
+	is_visible: bool
+) -> void:
+	if match_phase_ui == null:
+		return
+
+	match_phase_ui.set_time_remaining(
+		remaining
+	)
+
+	match_phase_ui.set_timer_visible(
+		is_visible
+	)
 
 
 func apply_network_timer_started(
@@ -210,6 +285,11 @@ func apply_network_timer_started(
 	active_state = state
 	remaining_seconds = duration
 	is_running = false
+
+	_update_timer_ui(
+		remaining_seconds,
+		true
+	)
 
 	timer_started.emit(
 		state,
@@ -224,6 +304,11 @@ func apply_network_timer_ticked(
 	active_state = state
 	remaining_seconds = remaining
 
+	_update_timer_ui(
+		remaining_seconds,
+		true
+	)
+
 	timer_ticked.emit(
 		state,
 		remaining
@@ -236,5 +321,10 @@ func apply_network_timer_finished(
 	active_state = state
 	remaining_seconds = 0.0
 	is_running = false
+
+	_update_timer_ui(
+		0.0,
+		false
+	)
 
 	timer_finished.emit(state)

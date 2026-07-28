@@ -156,7 +156,9 @@ func clear_going_first_value() -> void:
 	_update_going_first_label()
 
 
-func set_time_remaining(seconds_remaining: float) -> void:
+func set_time_remaining(
+	seconds_remaining: float
+) -> void:
 	if timer_label == null:
 		return
 
@@ -171,7 +173,7 @@ func set_time_remaining(seconds_remaining: float) -> void:
 
 	var seconds: int = total_seconds % 60
 
-	timer_label.text = "%02d:%02d" % [
+	timer_label.text = "%d:%02d" % [
 		minutes,
 		seconds
 	]

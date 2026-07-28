@@ -3,11 +3,8 @@
 [ext_resource type="PackedScene" uid="uid://bw8c7m7n5yuk8" path="res://Revamp/Board/Slots.tscn" id="1_yq750"]
 [ext_resource type="PackedScene" uid="uid://1wr1e57v7trd" path="res://Revamp/PlayerHand/Player_Hand.tscn" id="2_mi1n2"]
 [ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Revamp/Mutations (2)/MutationBehaviourHandlers/Mutation.gd" id="3_3vc3c"]
-[ext_resource type="Resource" uid="uid://bckromx6ufd8m" path="res://Revamp/CardPresets/Escucheant.tres" id="3_lc0u2"]
 [ext_resource type="Script" uid="uid://d10ttt60gxhno" path="res://Revamp/Board/AttackOrderFeedbackHandler.gd" id="4_yjh5v"]
 [ext_resource type="Script" uid="uid://8nr6ngjl24kj" path="res://Revamp/MatchFlow/MatchAutoAdvanceHandler.gd" id="6_lc0u2"]
-[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Old/Data/CardData.gd" id="7_c8bx1"]
-[ext_resource type="Resource" uid="uid://b8tgum0dpv4iv" path="res://Revamp/CardPresets/Deterrant.tres" id="8_c8bx1"]
 [ext_resource type="Script" uid="uid://61l5g8wkdar3" path="res://SacrificeController.gd" id="10_1j514"]
 [ext_resource type="Script" uid="uid://db4xai716j06p" path="res://Revamp/Card/CardActions/Sacrifice/SacrificeSelectionRoot.gd" id="11_5f7hr"]
 [ext_resource type="Script" uid="uid://ciopi88keoi3k" path="res://SacrificeRequirement.gd" id="11_at0h8"]
@@ -322,7 +319,6 @@ warrior_draw_button = NodePath("../../UICard/Warrior")
 metadata/_edit_lock_ = true
 
 [node name="Board" parent="Core" unique_id=1318716624 instance=ExtResource("1_yq750")]
-opponent_slot_2_card = ExtResource("3_lc0u2")
 metadata/_edit_lock_ = true
 
 [node name="PlayerSlotLabel1" type="Label" parent="Core/Board" unique_id=693482040]
@@ -505,7 +501,6 @@ metadata/_edit_lock_ = true
 
 [node name="PlayerHAnd" parent="Core" unique_id=371738706 instance=ExtResource("2_mi1n2")]
 position = Vector2(768, 896)
-starting_cards = Array[ExtResource("7_c8bx1")]([ExtResource("8_c8bx1")])
 metadata/_edit_lock_ = true
 
 [node name="OpponenetHAnd" parent="Core" unique_id=1415383407 instance=ExtResource("2_mi1n2")]
@@ -523,6 +518,7 @@ deck_system_root = NodePath("../../Core/Deck")
 score_state = NodePath("MatchScoreState")
 match_phase_ui = NodePath("../../UICard")
 enable_debug_keys = false
+advance_debug_key = 4194326
 
 [node name="MatchAutoDrawHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=833003799 node_paths=PackedStringArray("match_flow_root", "match_network_root", "match_phase_timer")]
 script = ExtResource("28_mf2my")
@@ -782,9 +778,10 @@ placement_controller = NodePath("../../Scripts/Core/PlacementController")
 sacrifice_controller = NodePath("../../Scripts/Core/SacrificeController")
 sacrifice_board_binder = NodePath("../../Scripts/Core/SacrificeController/SacrificeBoardSelectionBinder")
 
-[node name="MatchPhaseTimer" type="Node" parent="Multiplayer" unique_id=767461142 node_paths=PackedStringArray("match_flow_root")]
+[node name="MatchPhaseTimer" type="Node" parent="Multiplayer" unique_id=767461142 node_paths=PackedStringArray("match_flow_root", "match_phase_ui")]
 script = ExtResource("73_fk48e")
 match_flow_root = NodePath("../../Scripts/MatchFlowRoot")
+match_phase_ui = NodePath("../../UICard")
 draw_seconds = 60.0
 blessing_seconds = 60.0
 buff_seconds = 60.0
@@ -796,9 +793,9 @@ layout_mode = 3
 anchors_preset = 9
 anchor_bottom = 1.0
 offset_left = 960.0
-offset_top = 512.0
+offset_top = 510.0
 offset_right = 960.0
-offset_bottom = 512.0
+offset_bottom = 510.0
 grow_vertical = 2
 script = ExtResource("69_lc0u2")
 phase_label = NodePath("CardPanel/SpritePanel/PhasePanel/Phase")
