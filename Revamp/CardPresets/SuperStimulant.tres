@@ -3,15 +3,15 @@
 [ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Revamp/Mutations (2)/MutationBehaviourHandlers/Mutation.gd" id="1_oylng"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Old/Data/CardData.gd" id="2_77v3d"]
 [ext_resource type="Texture2D" uid="uid://dgtbnunhcc0ey" path="res://Art/Ants/SuperStimulant.PNG" id="2_xpave"]
-[ext_resource type="Resource" uid="uid://c0cebfc5tmmng" path="res://Revamp/Mutations (2)/MutationPresets/RallyMutations/SteroidMaxxing.tres" id="3_ufrle"]
+[ext_resource type="Resource" uid="uid://cyutbyh2av6iv" path="res://Revamp/Mutations (2)/MutationPresets/RallyMutations/SteroidDealer.tres" id="3_xpave"]
 
 [resource]
 script = ExtResource("2_77v3d")
 card_id = "super_simulant"
-name = "Super Stimulant"
+name = "Stimulant"
 attack = 1
 health = 2
 cost = 2
 ant_texture = ExtResource("2_xpave")
-base_mutations = Array[ExtResource("1_oylng")]([ExtResource("3_ufrle")])
+base_mutations = Array[ExtResource("1_oylng")]([ExtResource("3_xpave")])
 metadata/_custom_type_script = "uid://duslcpxrhurv8"

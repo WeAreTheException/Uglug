@@ -1,98 +1,103 @@
-[gd_scene format=3 uid="uid://hbyxts155x0r"]
+[gd_scene format=3 uid="uid://cwpylxtto7s4u"]
 
-[ext_resource type="PackedScene" uid="uid://bw8c7m7n5yuk8" path="res://Revamp/Board/Slots.tscn" id="1_yq750"]
-[ext_resource type="PackedScene" uid="uid://1wr1e57v7trd" path="res://Revamp/PlayerHand/Player_Hand.tscn" id="2_mi1n2"]
-[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Revamp/Mutations (2)/MutationBehaviourHandlers/Mutation.gd" id="3_3vc3c"]
-[ext_resource type="Script" uid="uid://d10ttt60gxhno" path="res://Revamp/Board/AttackOrderFeedbackHandler.gd" id="4_yjh5v"]
-[ext_resource type="Script" uid="uid://8nr6ngjl24kj" path="res://Revamp/MatchFlow/MatchAutoAdvanceHandler.gd" id="6_lc0u2"]
-[ext_resource type="Script" uid="uid://61l5g8wkdar3" path="res://SacrificeController.gd" id="10_1j514"]
-[ext_resource type="Script" uid="uid://db4xai716j06p" path="res://Revamp/Card/CardActions/Sacrifice/SacrificeSelectionRoot.gd" id="11_5f7hr"]
-[ext_resource type="Script" uid="uid://ciopi88keoi3k" path="res://SacrificeRequirement.gd" id="11_at0h8"]
-[ext_resource type="Script" uid="uid://b3pcelfs57qav" path="res://Revamp/Card/CardActions/Sacrifice/SacrificeBoardSelectionBinder.gd" id="12_3j6fp"]
-[ext_resource type="Script" uid="uid://b4qvc7353obir" path="res://PendingSacrificeBoat.gd" id="12_30x73"]
-[ext_resource type="Script" uid="uid://vmy04gllke53" path="res://SacrificeCommitter.gd" id="13_6ula3"]
-[ext_resource type="Script" uid="uid://dnikkosq1o0kr" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementController.gd" id="13_ubws4"]
-[ext_resource type="Script" uid="uid://cvkghlt7xdj22" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementState.gd" id="14_5sdof"]
-[ext_resource type="Script" uid="uid://dsut7kstdcc6u" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementInputRouter.gd" id="15_20kdy"]
-[ext_resource type="Script" uid="uid://6ycktn6tay80" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementPreview.gd" id="16_5ixgq"]
-[ext_resource type="Script" uid="uid://yc6i5trydgut" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementExecutor.gd" id="17_8ve8k"]
-[ext_resource type="Script" uid="uid://yycqdckwdim3" path="res://Revamp/MatchFlow/MatchDrawRevealHandler.gd" id="18_63uau"]
-[ext_resource type="Script" uid="uid://c18hwqs033t7x" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementEventEmitter.gd" id="18_oekep"]
-[ext_resource type="Script" uid="uid://co47jo7seu3wu" path="res://Revamp/MatchFlow/MatchFlowHandApplier.gd" id="19_2n6q5"]
-[ext_resource type="Script" uid="uid://cmcxm3mp7ljvv" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementCancel.gd" id="19_n5v11"]
-[ext_resource type="Script" uid="uid://bfhpukgxqjd0m" path="res://Revamp/MatchFlowBoardApplier.gd" id="20_vcbui"]
-[ext_resource type="Resource" uid="uid://ceeskmu01vy5g" path="res://Revamp/Mutations (2)/MutationPresets/TargetMutations/YAttack.tres" id="23_uv74c"]
-[ext_resource type="Resource" uid="uid://qm2l2rlbwj77" path="res://Revamp/Mutations (2)/MutationPresets/SustainMutations/Heckler.tres" id="24_fk48e"]
-[ext_resource type="Script" uid="uid://dhe454wat35an" path="res://Revamp/MatchFlow/MatchCombatFlowHandler.gd" id="24_n5v11"]
-[ext_resource type="Script" uid="uid://difytxi1dyr27" path="res://Revamp/MatchFlow/MatchFlowRoot.gd" id="25_oekep"]
-[ext_resource type="Resource" uid="uid://qpp1tjh0bk7v" path="res://Revamp/Mutations (2)/MutationPresets/SustainMutations/RedRiot.tres" id="25_yjh5v"]
-[ext_resource type="Resource" uid="uid://dp3xgqtqwogy3" path="res://Revamp/Mutations (2)/MutationPresets/StraightChopsMutations/Lance.tres" id="26_lc0u2"]
-[ext_resource type="Script" uid="uid://c6ap2csjp7k81" path="res://Revamp/MatchFlow/MatchTurnOrderState.gd" id="26_n5v11"]
-[ext_resource type="Script" uid="uid://dxj656ms4qeq4" path="res://Revamp/MatchFlow/MatchDominantRevealHandler.gd" id="27_a1qt2"]
-[ext_resource type="Resource" uid="uid://d6umheqx0qia" path="res://Revamp/Mutations (2)/MutationPresets/RetaliationMutations/IDieYouDie.tres" id="27_af7hx"]
-[ext_resource type="Script" uid="uid://myowbycyd18l" path="res://Revamp/MatchFlow/MatchPlacementFlowHandler.gd" id="27_mf2my"]
-[ext_resource type="Resource" uid="uid://dko3ngpbogrv1" path="res://Revamp/Mutations (2)/MutationPresets/RetaliationMutations/Spiky.tres" id="27_nc85t"]
-[ext_resource type="Script" uid="uid://crpvi6u42w8yj" path="res://Revamp/Buff/BuffFlowHandler.gd" id="28_5f7hr"]
-[ext_resource type="PackedScene" uid="uid://coux8hd7esj7g" path="res://Deck_System_Root.tscn" id="28_a1qt2"]
-[ext_resource type="Resource" uid="uid://bs6mfmdmm2uj6" path="res://Revamp/Mutations (2)/MutationPresets/StraightChopsMutations/DirectAttack.tres" id="28_c8bx1"]
-[ext_resource type="Script" uid="uid://b50mccoppp1lb" path="res://Revamp/MatchFlow/MatchAutoDrawHandler.gd" id="28_mf2my"]
-[ext_resource type="Resource" uid="uid://bk7bftdp5178x" path="res://Revamp/Mutations (2)/MutationPresets/StraightChopsMutations/MeFirst.tres" id="29_7f3b3"]
-[ext_resource type="Resource" uid="uid://dcgqrr05c2pyg" path="res://Revamp/Mutations (2)/MutationPresets/StraightChopsMutations/DivergentFist.tres" id="30_63uau"]
-[ext_resource type="Script" uid="uid://cq06khkyy84o5" path="res://Revamp/DirectDamage/DirectDamageRouter.gd" id="30_venfy"]
-[ext_resource type="Script" uid="uid://c5j44dhlx1div" path="res://Revamp/DirectDamage/MatchScoreState.gd" id="31_3a8w1"]
-[ext_resource type="Resource" uid="uid://b4sniy31fo50g" path="res://Revamp/Mutations (2)/MutationPresets/StraightChopsMutations/TouchOfDeath.tres" id="31_cxut3"]
-[ext_resource type="Resource" uid="uid://cnn0fddifxool" path="res://Revamp/Mutations (2)/MutationPresets/InheritanceMutations/ColonyNest.tres" id="32_o7028"]
-[ext_resource type="Script" uid="uid://cn5xfv13wsg1x" path="res://Revamp/MatchFlow/PostGameTransitionHandler.gd" id="34_f3uds"]
-[ext_resource type="Resource" uid="uid://c0ojr71i4k50b" path="res://Revamp/Mutations (2)/MutationPresets/RallyMutations/RoyalPheromones.tres" id="34_fk48e"]
-[ext_resource type="Script" uid="uid://cau0ky5b3kabf" path="res://Revamp/Board/AttackAnticipationFeedbackHandler.gd" id="35_wop7f"]
-[ext_resource type="Script" uid="uid://djtnl5koe1f0x" path="res://Revamp/Buff/BuffDatabase.gd" id="38_i8ogu"]
-[ext_resource type="Resource" uid="uid://b6afw5yomddli" path="res://Revamp/Mutations (2)/MutationPresets/SustainMutations/Shield.tres" id="40_2ph70"]
-[ext_resource type="Script" uid="uid://gr6bql05qnrs" path="res://Revamp/Buff/EvolutionButtonHandler.gd" id="43_7f3b3"]
-[ext_resource type="Script" uid="uid://ysva1maqqb8w" path="res://HandCountDisplay.gd" id="52_nmm8s"]
-[ext_resource type="Script" uid="uid://qkm73v3qftgr" path="res://Revamp/MatchFlow/MatchLocalViewApplier.gd" id="57_2n6q5"]
-[ext_resource type="Script" uid="uid://ddq57bg6lcsk1" path="res://Revamp/Multiplayer/MatchNetworkRoot.gd" id="57_8mjsp"]
-[ext_resource type="Script" uid="uid://bhcy41nxe3s4n" path="res://Revamp/Multiplayer/MatchNetworkLookup.gd" id="63_5j00x"]
-[ext_resource type="Script" uid="uid://2mkkfsgkiexj" path="res://Revamp/Multiplayer/MatchNetworkDraw.gd" id="64_af7hx"]
-[ext_resource type="Script" uid="uid://c2c2hqgcay1nf" path="res://Revamp/Multiplayer/MatchNetworkPlacement.gd" id="65_fd62j"]
-[ext_resource type="Script" uid="uid://cy3sful3ggumm" path="res://Revamp/Multiplayer/LocalGameplayReferenceBinder.gd" id="66_5j00x"]
-[ext_resource type="Script" uid="uid://con1w5rh38kav" path="res://Revamp/Multiplayer/MatchNetworkBuff.gd" id="67_gfrq6"]
-[ext_resource type="Script" uid="uid://4awjofgv2dfc" path="res://Revamp/Multiplayer/MatchNetworkFlow.gd" id="68_8hx3r"]
-[ext_resource type="Script" uid="uid://dla1car1yk1pm" path="res://Revamp/MatchUI/UICard/MatchPhaseUI.gd" id="69_lc0u2"]
-[ext_resource type="Script" uid="uid://coo0pgldjiw6w" path="res://Revamp/Multiplayer/MatchPhaseTimer.gd" id="73_fk48e"]
-[ext_resource type="Script" uid="uid://00f6bgoq0mgc" path="res://Revamp/Multiplayer/MatchNetworkAttack.gd" id="73_nc85t"]
-[ext_resource type="Script" uid="uid://cgtvc8pm1pyda" path="res://BoardCardHover.gd" id="73_uv74c"]
-[ext_resource type="Script" uid="uid://c62i7pwt3r30f" path="res://Revamp/Multiplayer/MatchNetworkTimer.gd" id="74_c8bx1"]
-[ext_resource type="Script" uid="uid://dx8ow48eguxe7" path="res://Revamp/MatchFlow/MatchPlacementCompletionHandler.gd" id="74_yjh5v"]
-[ext_resource type="Texture2D" uid="uid://cgkoni68euqo3" path="res://Art/Mutations/Sigils/Final_Sigils/Draculant_Sigil.png" id="75_c8bx1"]
-[ext_resource type="Shader" uid="uid://cv61bla72eupf" path="res://FilmGrain.gdshader" id="75_yjh5v"]
-[ext_resource type="Script" uid="uid://dg2jxnlex8u2p" path="res://Revamp/MatchUI/UICard/PlayerHandUiBinder.gd" id="76_c8bx1"]
-[ext_resource type="Script" uid="uid://cm16kgidxxu4h" path="res://Revamp/MutationTooltTip/MutationButtonHoverBinder.gd" id="77_7f3b3"]
-[ext_resource type="Script" uid="uid://cmbtqx5ng27nb" path="res://Revamp/MutationTooltTip/MutationToolTip.gd" id="78_7f3b3"]
-[ext_resource type="Script" uid="uid://ji2tm3gnhj4o" path="res://Revamp/Multiplayer/MatchNetworkScore.gd" id="78_o7028"]
-[ext_resource type="Script" uid="uid://t4xkfdp8n8kn" path="res://Revamp/MatchUI/UICard/CardMutationTooltipBinder.gd" id="79_63uau"]
-[ext_resource type="FontFile" uid="uid://3m1qkjceiwrb" path="res://Revamp/Fonts/Transcity DEMO.otf" id="79_cxut3"]
-[ext_resource type="FontFile" uid="uid://do0dv62a8jo77" path="res://Revamp/Fonts/bilderberg.regular.otf" id="80_cxut3"]
-[ext_resource type="Script" uid="uid://bnbuh7nx3k3f2" path="res://Revamp/Multiplayer/MatchNetworkDebugSync.gd" id="81_o7028"]
-[ext_resource type="Script" uid="uid://cm3y3rl7340r8" path="res://Revamp/MutationTooltTip/MutationTooltipCoordinator.gd" id="85_sxqap"]
-[ext_resource type="Script" uid="uid://r2w6wt88c7f1" path="res://Revamp/ScoreBaord/MatchScoreBoard.gd" id="87_lcv7c"]
+[ext_resource type="PackedScene" uid="uid://coux8hd7esj7g" path="res://Deck_System_Root.tscn" id="1_gc5re"]
+[ext_resource type="PackedScene" uid="uid://bw8c7m7n5yuk8" path="res://Revamp/Board/Slots.tscn" id="2_m7etu"]
+[ext_resource type="PackedScene" uid="uid://1wr1e57v7trd" path="res://Revamp/PlayerHand/Player_Hand.tscn" id="3_mvsat"]
+[ext_resource type="Resource" uid="uid://b10yu2ml8hwx2" path="res://Revamp/CardPresets/Stimulant.tres" id="4_m7etu"]
+[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Old/Data/CardData.gd" id="4_p87v3"]
+[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Revamp/Mutations (2)/MutationBehaviourHandlers/Mutation.gd" id="5_jb1hb"]
+[ext_resource type="Script" uid="uid://d10ttt60gxhno" path="res://Revamp/Board/AttackOrderFeedbackHandler.gd" id="5_mvsat"]
+[ext_resource type="Texture2D" uid="uid://chdko376katyy" path="res://Art/Ants/Rhinocerant.PNG" id="6_58aqf"]
+[ext_resource type="Resource" uid="uid://dp3xgqtqwogy3" path="res://Revamp/Mutations (2)/MutationPresets/StraightChopsMutations/Lance.tres" id="7_qfang"]
+[ext_resource type="Resource" uid="uid://ceeskmu01vy5g" path="res://Revamp/Mutations (2)/MutationPresets/TargetMutations/YAttack.tres" id="8_fde44"]
+[ext_resource type="Script" uid="uid://difytxi1dyr27" path="res://Revamp/MatchFlow/MatchFlowRoot.gd" id="9_a2rp3"]
+[ext_resource type="Script" uid="uid://b50mccoppp1lb" path="res://Revamp/MatchFlow/MatchAutoDrawHandler.gd" id="10_pfm8o"]
+[ext_resource type="Script" uid="uid://8nr6ngjl24kj" path="res://Revamp/MatchFlow/MatchAutoAdvanceHandler.gd" id="11_s80kd"]
+[ext_resource type="Script" uid="uid://c6ap2csjp7k81" path="res://Revamp/MatchFlow/MatchTurnOrderState.gd" id="12_wqxll"]
+[ext_resource type="Script" uid="uid://myowbycyd18l" path="res://Revamp/MatchFlow/MatchPlacementFlowHandler.gd" id="13_fldu5"]
+[ext_resource type="Script" uid="uid://dx8ow48eguxe7" path="res://Revamp/MatchFlow/MatchPlacementCompletionHandler.gd" id="14_hl0nf"]
+[ext_resource type="Script" uid="uid://dhe454wat35an" path="res://Revamp/MatchFlow/MatchCombatFlowHandler.gd" id="15_q4dnp"]
+[ext_resource type="Script" uid="uid://dxj656ms4qeq4" path="res://Revamp/MatchFlow/MatchDominantRevealHandler.gd" id="16_jpdgy"]
+[ext_resource type="Script" uid="uid://c5j44dhlx1div" path="res://Revamp/DirectDamage/MatchScoreState.gd" id="17_blsnv"]
+[ext_resource type="Script" uid="uid://cn5xfv13wsg1x" path="res://Revamp/MatchFlow/PostGameTransitionHandler.gd" id="18_tp04n"]
+[ext_resource type="Script" uid="uid://cau0ky5b3kabf" path="res://Revamp/Board/AttackAnticipationFeedbackHandler.gd" id="19_5pu7j"]
+[ext_resource type="Script" uid="uid://co47jo7seu3wu" path="res://Revamp/MatchFlow/MatchFlowHandApplier.gd" id="20_5kcd2"]
+[ext_resource type="Script" uid="uid://bfhpukgxqjd0m" path="res://Revamp/MatchFlowBoardApplier.gd" id="21_6g1vh"]
+[ext_resource type="Script" uid="uid://yycqdckwdim3" path="res://Revamp/MatchFlow/MatchDrawRevealHandler.gd" id="22_quf7v"]
+[ext_resource type="Script" uid="uid://crpvi6u42w8yj" path="res://Revamp/Buff/BuffFlowHandler.gd" id="23_v0tkf"]
+[ext_resource type="Resource" uid="uid://b6afw5yomddli" path="res://Revamp/Mutations (2)/MutationPresets/SustainMutations/Shield.tres" id="24_t3xh4"]
+[ext_resource type="Script" uid="uid://djtnl5koe1f0x" path="res://Revamp/Buff/BuffDatabase.gd" id="25_51ixx"]
+[ext_resource type="Resource" uid="uid://d6umheqx0qia" path="res://Revamp/Mutations (2)/MutationPresets/RetaliationMutations/IDieYouDie.tres" id="26_towtn"]
+[ext_resource type="Resource" uid="uid://qm2l2rlbwj77" path="res://Revamp/Mutations (2)/MutationPresets/SustainMutations/Heckler.tres" id="27_ajg1d"]
+[ext_resource type="Resource" uid="uid://qpp1tjh0bk7v" path="res://Revamp/Mutations (2)/MutationPresets/SustainMutations/RedRiot.tres" id="28_xk4gb"]
+[ext_resource type="Resource" uid="uid://dko3ngpbogrv1" path="res://Revamp/Mutations (2)/MutationPresets/RetaliationMutations/Spiky.tres" id="29_2gbsc"]
+[ext_resource type="Resource" uid="uid://bs6mfmdmm2uj6" path="res://Revamp/Mutations (2)/MutationPresets/StraightChopsMutations/DirectAttack.tres" id="30_5o1is"]
+[ext_resource type="Resource" uid="uid://bk7bftdp5178x" path="res://Revamp/Mutations (2)/MutationPresets/StraightChopsMutations/MeFirst.tres" id="31_u15jd"]
+[ext_resource type="Resource" uid="uid://dcgqrr05c2pyg" path="res://Revamp/Mutations (2)/MutationPresets/StraightChopsMutations/DivergentFist.tres" id="32_744k3"]
+[ext_resource type="Resource" uid="uid://b4sniy31fo50g" path="res://Revamp/Mutations (2)/MutationPresets/StraightChopsMutations/TouchOfDeath.tres" id="33_ratiu"]
+[ext_resource type="Resource" uid="uid://cnn0fddifxool" path="res://Revamp/Mutations (2)/MutationPresets/InheritanceMutations/ColonyNest.tres" id="34_nocns"]
+[ext_resource type="Resource" uid="uid://c0ojr71i4k50b" path="res://Revamp/Mutations (2)/MutationPresets/RallyMutations/RoyalPheromones.tres" id="35_x0ycv"]
+[ext_resource type="Script" uid="uid://gr6bql05qnrs" path="res://Revamp/Buff/EvolutionButtonHandler.gd" id="36_45uqb"]
+[ext_resource type="Script" uid="uid://61l5g8wkdar3" path="res://SacrificeController.gd" id="37_tq2oy"]
+[ext_resource type="Script" uid="uid://ciopi88keoi3k" path="res://SacrificeRequirement.gd" id="38_mr2cj"]
+[ext_resource type="Script" uid="uid://b4qvc7353obir" path="res://PendingSacrificeBoat.gd" id="39_rux6v"]
+[ext_resource type="Script" uid="uid://vmy04gllke53" path="res://SacrificeCommitter.gd" id="40_ajskw"]
+[ext_resource type="Script" uid="uid://db4xai716j06p" path="res://Revamp/Card/CardActions/Sacrifice/SacrificeSelectionRoot.gd" id="41_dqeiw"]
+[ext_resource type="Script" uid="uid://b3pcelfs57qav" path="res://Revamp/Card/CardActions/Sacrifice/SacrificeBoardSelectionBinder.gd" id="42_evyul"]
+[ext_resource type="Script" uid="uid://dnikkosq1o0kr" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementController.gd" id="43_ot4s3"]
+[ext_resource type="Script" uid="uid://cvkghlt7xdj22" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementState.gd" id="44_wexop"]
+[ext_resource type="Script" uid="uid://dsut7kstdcc6u" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementInputRouter.gd" id="45_u6pjk"]
+[ext_resource type="Script" uid="uid://6ycktn6tay80" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementPreview.gd" id="46_p2nla"]
+[ext_resource type="Script" uid="uid://yc6i5trydgut" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementExecutor.gd" id="47_kab6e"]
+[ext_resource type="Script" uid="uid://c18hwqs033t7x" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementEventEmitter.gd" id="48_xyl85"]
+[ext_resource type="Script" uid="uid://cmcxm3mp7ljvv" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementCancel.gd" id="49_y8wj1"]
+[ext_resource type="Script" uid="uid://cq06khkyy84o5" path="res://Revamp/DirectDamage/DirectDamageRouter.gd" id="50_vurt2"]
+[ext_resource type="Script" uid="uid://ysva1maqqb8w" path="res://HandCountDisplay.gd" id="51_5lp0v"]
+[ext_resource type="Script" uid="uid://ddq57bg6lcsk1" path="res://Revamp/Multiplayer/MatchNetworkRoot.gd" id="52_eqwe4"]
+[ext_resource type="Script" uid="uid://4awjofgv2dfc" path="res://Revamp/Multiplayer/MatchNetworkFlow.gd" id="53_3exd2"]
+[ext_resource type="Script" uid="uid://bhcy41nxe3s4n" path="res://Revamp/Multiplayer/MatchNetworkLookup.gd" id="54_x2aub"]
+[ext_resource type="Script" uid="uid://2mkkfsgkiexj" path="res://Revamp/Multiplayer/MatchNetworkDraw.gd" id="55_4ju6x"]
+[ext_resource type="Script" uid="uid://con1w5rh38kav" path="res://Revamp/Multiplayer/MatchNetworkBuff.gd" id="56_0hp5r"]
+[ext_resource type="Script" uid="uid://c2c2hqgcay1nf" path="res://Revamp/Multiplayer/MatchNetworkPlacement.gd" id="57_inox4"]
+[ext_resource type="Script" uid="uid://00f6bgoq0mgc" path="res://Revamp/Multiplayer/MatchNetworkAttack.gd" id="58_m8pyq"]
+[ext_resource type="Script" uid="uid://c62i7pwt3r30f" path="res://Revamp/Multiplayer/MatchNetworkTimer.gd" id="59_c12yd"]
+[ext_resource type="Script" uid="uid://ji2tm3gnhj4o" path="res://Revamp/Multiplayer/MatchNetworkScore.gd" id="60_13tj3"]
+[ext_resource type="Script" uid="uid://bnbuh7nx3k3f2" path="res://Revamp/Multiplayer/MatchNetworkDebugSync.gd" id="61_5ippl"]
+[ext_resource type="Script" uid="uid://qkm73v3qftgr" path="res://Revamp/MatchFlow/MatchLocalViewApplier.gd" id="62_22jaf"]
+[ext_resource type="Script" uid="uid://cy3sful3ggumm" path="res://Revamp/Multiplayer/LocalGameplayReferenceBinder.gd" id="63_l7d5y"]
+[ext_resource type="Script" uid="uid://coo0pgldjiw6w" path="res://Revamp/Multiplayer/MatchPhaseTimer.gd" id="64_h1pmk"]
+[ext_resource type="Script" uid="uid://dla1car1yk1pm" path="res://Revamp/MatchUI/UICard/MatchPhaseUI.gd" id="65_p8rwr"]
+[ext_resource type="Script" uid="uid://dg2jxnlex8u2p" path="res://Revamp/MatchUI/UICard/PlayerHandUiBinder.gd" id="66_30o0v"]
+[ext_resource type="FontFile" uid="uid://3m1qkjceiwrb" path="res://Revamp/Fonts/Transcity DEMO.otf" id="67_yyjxw"]
+[ext_resource type="FontFile" uid="uid://do0dv62a8jo77" path="res://Revamp/Fonts/bilderberg.regular.otf" id="68_6j66a"]
+[ext_resource type="Script" uid="uid://cmbtqx5ng27nb" path="res://Revamp/MutationTooltTip/MutationToolTip.gd" id="69_jr4wr"]
+[ext_resource type="Texture2D" uid="uid://cgkoni68euqo3" path="res://Art/Mutations/Sigils/Final_Sigils/Draculant_Sigil.png" id="70_hflca"]
+[ext_resource type="Script" uid="uid://t4xkfdp8n8kn" path="res://Revamp/MatchUI/UICard/CardMutationTooltipBinder.gd" id="71_48gdb"]
+[ext_resource type="Script" uid="uid://cm3y3rl7340r8" path="res://Revamp/MutationTooltTip/MutationTooltipCoordinator.gd" id="72_tg381"]
+[ext_resource type="Script" uid="uid://cm16kgidxxu4h" path="res://Revamp/MutationTooltTip/MutationButtonHoverBinder.gd" id="73_tojbe"]
+[ext_resource type="Script" uid="uid://r2w6wt88c7f1" path="res://Revamp/ScoreBaord/MatchScoreBoard.gd" id="74_u0qpw"]
+[ext_resource type="Script" uid="uid://cgtvc8pm1pyda" path="res://BoardCardHover.gd" id="75_hwx0c"]
+[ext_resource type="Shader" uid="uid://cv61bla72eupf" path="res://FilmGrain.gdshader" id="76_0nw7s"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_nc85t"]
+[sub_resource type="LabelSettings" id="LabelSettings_gc5re"]
 line_spacing = 0.0
-font_size = 48
+font_size = 52
 font_color = Color(0.93333334, 0.8784314, 0.81960785, 1)
 outline_size = 10
 outline_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
 shadow_size = 10
 shadow_color = Color(0.83137256, 0.70980394, 0.59607846, 1)
 
-[sub_resource type="LabelSettings" id="LabelSettings_c8bx1"]
-line_spacing = 0.0
-font_size = 36
-font_color = Color(0.93333334, 0.8784314, 0.81960785, 1)
-outline_size = 10
-outline_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
-shadow_size = 10
-shadow_color = Color(0.83137256, 0.70980394, 0.59607846, 1)
+[sub_resource type="Resource" id="Resource_c8bx1"]
+script = ExtResource("4_p87v3")
+card_id = "penetrant"
+name = "Penetrant"
+rarity = 2
+attack = 3
+health = 3
+ant_texture = ExtResource("6_58aqf")
+base_mutations = Array[ExtResource("5_jb1hb")]([ExtResource("7_qfang"), ExtResource("8_fde44")])
+metadata/_custom_type_script = "uid://duslcpxrhurv8"
 
 [sub_resource type="LabelSettings" id="LabelSettings_lc0u2"]
 line_spacing = 0.0
@@ -273,7 +278,7 @@ corner_radius_bottom_left = 2
 
 [sub_resource type="LabelSettings" id="LabelSettings_fk48e"]
 line_spacing = 0.0
-font = ExtResource("80_cxut3")
+font = ExtResource("68_6j66a")
 font_size = 24
 font_color = Color(0.93333334, 0.8784314, 0.81960785, 1)
 outline_size = 10
@@ -290,7 +295,7 @@ corner_radius_bottom_left = 2
 
 [sub_resource type="LabelSettings" id="LabelSettings_uv74c"]
 line_spacing = 0.0
-font = ExtResource("80_cxut3")
+font = ExtResource("68_6j66a")
 font_size = 24
 font_color = Color(0.93333334, 0.8784314, 0.81960785, 1)
 outline_size = 10
@@ -299,7 +304,7 @@ shadow_size = 10
 shadow_color = Color(0.9647059, 0.48235294, 0.5176471, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_lc0u2"]
-shader = ExtResource("75_yjh5v")
+shader = ExtResource("76_0nw7s")
 shader_parameter/grain_amount = 0.0450000021375
 shader_parameter/grain_size = 1.00000002375
 shader_parameter/grain_speed = 6.000000285
@@ -308,7 +313,7 @@ shader_parameter/grain_speed = 6.000000285
 
 [node name="Core" type="Node2D" parent="." unique_id=878801964]
 
-[node name="Deck" parent="Core" unique_id=93691211 node_paths=PackedStringArray("match_network_root", "buff_database", "player_one_hand", "player_two_hand", "worker_draw_button", "warrior_draw_button") instance=ExtResource("28_a1qt2")]
+[node name="Deck" parent="Core" unique_id=93691211 node_paths=PackedStringArray("match_network_root", "buff_database", "player_one_hand", "player_two_hand", "worker_draw_button", "warrior_draw_button") instance=ExtResource("1_gc5re")]
 position = Vector2(1995, 938)
 match_network_root = NodePath("../../Multiplayer/MatchNetworkRoot")
 buff_database = NodePath("../../Scripts/Core/Evolution/BuffDatabase")
@@ -317,82 +322,86 @@ player_two_hand = NodePath("../OpponenetHAnd")
 worker_draw_button = NodePath("../../UICard/Worker")
 warrior_draw_button = NodePath("../../UICard/Warrior")
 
-[node name="Board" parent="Core" unique_id=1318716624 node_paths=PackedStringArray("direct_damage_router") instance=ExtResource("1_yq750")]
+[node name="Board" parent="Core" unique_id=1318716624 node_paths=PackedStringArray("direct_damage_router") instance=ExtResource("2_m7etu")]
+player_slot_1_card = ExtResource("4_m7etu")
+player_slot_2_card = ExtResource("4_m7etu")
+player_slot_3_card = ExtResource("4_m7etu")
+opponent_slot_1_card = ExtResource("4_m7etu")
 direct_damage_router = NodePath("../../Scripts/Core/DirectDamageRouter")
 
-[node name="PlayerSlotLabel1" type="Label" parent="Core/Board" unique_id=693482040]
+[node name="PlayerSlotLabel1" type="Label" parent="Core/Board" unique_id=1950194635]
 z_index = 1
 offset_left = 430.0
-offset_top = 375.5054
+offset_top = 358.0
 offset_right = 544.0
-offset_bottom = 576.5054
+offset_bottom = 559.0
 rotation = -0.2617994
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
 theme_override_colors/font_outline_color = Color(0.003921569, 0.16862746, 0.2, 1)
 theme_override_constants/outline_size = 12
 theme_override_constants/shadow_outline_size = 16
-theme_override_fonts/font = ExtResource("80_cxut3")
+theme_override_fonts/font = ExtResource("68_6j66a")
 theme_override_font_sizes/font_size = 78
 text = "1st"
-label_settings = SubResource("LabelSettings_nc85t")
+label_settings = SubResource("LabelSettings_gc5re")
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="PlayerSlotLabel2" type="Label" parent="Core/Board" unique_id=551091575]
+[node name="PlayerSlotLabel2" type="Label" parent="Core/Board" unique_id=606772197]
 z_index = 1
 offset_left = 640.00006
-offset_top = 375.50537
+offset_top = 357.99997
 offset_right = 754.00006
-offset_bottom = 576.5054
+offset_bottom = 559.0
 rotation = -0.2617994
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
 theme_override_colors/font_outline_color = Color(0.003921569, 0.16862746, 0.2, 1)
 theme_override_constants/outline_size = 12
 theme_override_constants/shadow_outline_size = 16
-theme_override_fonts/font = ExtResource("80_cxut3")
+theme_override_fonts/font = ExtResource("68_6j66a")
 theme_override_font_sizes/font_size = 78
 text = "2nd"
-label_settings = SubResource("LabelSettings_nc85t")
+label_settings = SubResource("LabelSettings_gc5re")
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="PlayerSlotLabel3" type="Label" parent="Core/Board" unique_id=157246260]
+[node name="PlayerSlotLabel3" type="Label" parent="Core/Board" unique_id=708233026]
 z_index = 1
 offset_left = 876.0
-offset_top = 375.5054
+offset_top = 358.0
 offset_right = 990.0
-offset_bottom = 576.5054
+offset_bottom = 559.0
 rotation = -0.2617994
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
 theme_override_colors/font_outline_color = Color(0.003921569, 0.16862746, 0.2, 1)
 theme_override_constants/outline_size = 12
 theme_override_constants/shadow_outline_size = 16
-theme_override_fonts/font = ExtResource("80_cxut3")
+theme_override_fonts/font = ExtResource("68_6j66a")
 theme_override_font_sizes/font_size = 78
 text = "3rd"
-label_settings = SubResource("LabelSettings_nc85t")
+label_settings = SubResource("LabelSettings_gc5re")
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="PlayerSlotLabel4" type="Label" parent="Core/Board" unique_id=207678299]
+[node name="PlayerSlotLabel4" type="Label" parent="Core/Board" unique_id=458307207]
 z_index = 1
 offset_left = 1092.0
-offset_top = 375.50543
+offset_top = 358.00003
 offset_right = 1206.0
-offset_bottom = 576.5054
+offset_bottom = 559.0
 rotation = -0.2617994
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
 theme_override_colors/font_outline_color = Color(0.003921569, 0.16862746, 0.2, 1)
 theme_override_constants/outline_size = 12
 theme_override_constants/shadow_outline_size = 16
-theme_override_fonts/font = ExtResource("80_cxut3")
+theme_override_fonts/font = ExtResource("68_6j66a")
 theme_override_font_sizes/font_size = 78
 text = "3rd"
-label_settings = SubResource("LabelSettings_nc85t")
+label_settings = SubResource("LabelSettings_gc5re")
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="EnemySlotLabel1" type="Label" parent="Core/Board" unique_id=936329764]
+[node name="EnemySlotLabel1" type="Label" parent="Core/Board" unique_id=1703216564]
 z_index = 1
 offset_left = 430.0
 offset_top = 23.99997
@@ -403,14 +412,14 @@ theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
 theme_override_colors/font_outline_color = Color(0.003921569, 0.16862746, 0.2, 1)
 theme_override_constants/outline_size = 12
 theme_override_constants/shadow_outline_size = 16
-theme_override_fonts/font = ExtResource("80_cxut3")
+theme_override_fonts/font = ExtResource("68_6j66a")
 theme_override_font_sizes/font_size = 78
 text = "4th"
-label_settings = SubResource("LabelSettings_nc85t")
+label_settings = SubResource("LabelSettings_gc5re")
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="EnemySlotLabel2" type="Label" parent="Core/Board" unique_id=1118908475]
+[node name="EnemySlotLabel2" type="Label" parent="Core/Board" unique_id=2022217622]
 z_index = 1
 offset_left = 640.0
 offset_top = 23.999998
@@ -421,14 +430,14 @@ theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
 theme_override_colors/font_outline_color = Color(0.003921569, 0.16862746, 0.2, 1)
 theme_override_constants/outline_size = 12
 theme_override_constants/shadow_outline_size = 16
-theme_override_fonts/font = ExtResource("80_cxut3")
+theme_override_fonts/font = ExtResource("68_6j66a")
 theme_override_font_sizes/font_size = 78
 text = "4th"
-label_settings = SubResource("LabelSettings_nc85t")
+label_settings = SubResource("LabelSettings_gc5re")
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="EnemySlotLabel3" type="Label" parent="Core/Board" unique_id=295283855]
+[node name="EnemySlotLabel3" type="Label" parent="Core/Board" unique_id=1995078020]
 z_index = 1
 offset_left = 858.0
 offset_top = 24.000011
@@ -439,14 +448,14 @@ theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
 theme_override_colors/font_outline_color = Color(0.003921569, 0.16862746, 0.2, 1)
 theme_override_constants/outline_size = 12
 theme_override_constants/shadow_outline_size = 16
-theme_override_fonts/font = ExtResource("80_cxut3")
+theme_override_fonts/font = ExtResource("68_6j66a")
 theme_override_font_sizes/font_size = 78
 text = "4th"
-label_settings = SubResource("LabelSettings_nc85t")
+label_settings = SubResource("LabelSettings_gc5re")
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="EnemySlotLabel4" type="Label" parent="Core/Board" unique_id=1094332006]
+[node name="EnemySlotLabel4" type="Label" parent="Core/Board" unique_id=777488257]
 z_index = 1
 offset_left = 1070.0
 offset_top = 24.0
@@ -457,42 +466,26 @@ theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
 theme_override_colors/font_outline_color = Color(0.003921569, 0.16862746, 0.2, 1)
 theme_override_constants/outline_size = 12
 theme_override_constants/shadow_outline_size = 16
-theme_override_fonts/font = ExtResource("80_cxut3")
+theme_override_fonts/font = ExtResource("68_6j66a")
 theme_override_font_sizes/font_size = 78
 text = "4th"
-label_settings = SubResource("LabelSettings_nc85t")
+label_settings = SubResource("LabelSettings_gc5re")
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="AttackOrderFeedbackHandler" type="Node" parent="Core/Board" unique_id=2007291154 node_paths=PackedStringArray("slots_root", "turn_order_state", "match_network_root", "player_order_labels", "opponent_order_labels")]
-script = ExtResource("4_yjh5v")
+[node name="AttackOrderFeedbackHandler" type="Node" parent="Core/Board" unique_id=967149422 node_paths=PackedStringArray("slots_root", "turn_order_state", "match_network_root", "player_order_labels", "opponent_order_labels")]
+script = ExtResource("5_mvsat")
 slots_root = NodePath("..")
 turn_order_state = NodePath("../../../Scripts/MatchFlowRoot/MatchTurnOrderState")
 match_network_root = NodePath("../../../Multiplayer/MatchNetworkRoot")
 player_order_labels = [NodePath("../PlayerSlotLabel1"), NodePath("../PlayerSlotLabel2"), NodePath("../PlayerSlotLabel3"), NodePath("../PlayerSlotLabel4")]
 opponent_order_labels = [NodePath("../EnemySlotLabel1"), NodePath("../EnemySlotLabel2"), NodePath("../EnemySlotLabel3"), NodePath("../EnemySlotLabel4")]
 
-[node name="EnemySlotLabel5" type="Label" parent="Core/Board" unique_id=1415106798]
-z_index = 1
-offset_left = 183.0
-offset_top = -13.0
-offset_right = 495.0
-offset_bottom = 255.0
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
-theme_override_colors/font_outline_color = Color(0.003921569, 0.16862746, 0.2, 1)
-theme_override_constants/outline_size = 12
-theme_override_constants/shadow_outline_size = 16
-theme_override_fonts/font = ExtResource("80_cxut3")
-theme_override_font_sizes/font_size = 78
-text = "Attack Order"
-label_settings = SubResource("LabelSettings_c8bx1")
-horizontal_alignment = 1
-autowrap_mode = 3
-
-[node name="PlayerHAnd" parent="Core" unique_id=371738706 instance=ExtResource("2_mi1n2")]
+[node name="PlayerHAnd" parent="Core" unique_id=371738706 instance=ExtResource("3_mvsat")]
 position = Vector2(768, 896)
+starting_cards = Array[ExtResource("4_p87v3")]([SubResource("Resource_c8bx1"), null, null, null])
 
-[node name="OpponenetHAnd" parent="Core" unique_id=1415383407 instance=ExtResource("2_mi1n2")]
+[node name="OpponenetHAnd" parent="Core" unique_id=1415383407 instance=ExtResource("3_mvsat")]
 position = Vector2(768.00006, 896.00006)
 
 [node name="Scripts" type="Node" parent="." unique_id=1166020718]
@@ -500,7 +493,7 @@ position = Vector2(768.00006, 896.00006)
 [node name="CardEffectSpawnrouter" type="Node" parent="Scripts" unique_id=1854042398]
 
 [node name="MatchFlowRoot" type="Node" parent="Scripts" unique_id=1707594948 node_paths=PackedStringArray("turn_order_state", "deck_system_root", "score_state", "match_phase_ui")]
-script = ExtResource("25_oekep")
+script = ExtResource("9_a2rp3")
 turn_order_state = NodePath("MatchTurnOrderState")
 deck_system_root = NodePath("../../Core/Deck")
 score_state = NodePath("MatchScoreState")
@@ -508,13 +501,13 @@ match_phase_ui = NodePath("../../UICard")
 enable_debug_keys = false
 
 [node name="MatchAutoDrawHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=833003799 node_paths=PackedStringArray("match_flow_root", "match_network_root", "match_phase_timer")]
-script = ExtResource("28_mf2my")
+script = ExtResource("10_pfm8o")
 match_flow_root = NodePath("..")
 match_network_root = NodePath("../../../Multiplayer/MatchNetworkRoot")
 match_phase_timer = NodePath("../../../Multiplayer/MatchPhaseTimer")
 
 [node name="MatchAutoAdvanceHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=1953933337 node_paths=PackedStringArray("match_flow_root", "match_network_root", "auto_draw_handler", "buff_flow_handler")]
-script = ExtResource("6_lc0u2")
+script = ExtResource("11_s80kd")
 match_flow_root = NodePath("..")
 match_network_root = NodePath("../../../Multiplayer/MatchNetworkRoot")
 auto_draw_handler = NodePath("../MatchAutoDrawHandler")
@@ -523,23 +516,23 @@ round_intro_delay = 2.0
 round_end_delay = 2.0
 
 [node name="MatchTurnOrderState" type="Node" parent="Scripts/MatchFlowRoot" unique_id=708809136]
-script = ExtResource("26_n5v11")
+script = ExtResource("12_wqxll")
 
 [node name="MatchPlacementFlowHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=1230555798 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "placement_controller")]
-script = ExtResource("27_mf2my")
+script = ExtResource("13_fldu5")
 match_flow_root = NodePath("..")
 turn_order_state = NodePath("../MatchTurnOrderState")
 placement_controller = NodePath("../../Core/PlacementController")
 
 [node name="MatchPlacementCompletionHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=754857941 node_paths=PackedStringArray("match_flow_root", "match_network_root", "turn_order_state", "phase_timer")]
-script = ExtResource("74_yjh5v")
+script = ExtResource("14_hl0nf")
 match_flow_root = NodePath("..")
 match_network_root = NodePath("../../../Multiplayer/MatchNetworkRoot")
 turn_order_state = NodePath("../MatchTurnOrderState")
 phase_timer = NodePath("../../../Multiplayer/MatchPhaseTimer")
 
 [node name="MatchCombatFlowHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=1772524559 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "anticipation_feedback", "match_network_root", "slots_root")]
-script = ExtResource("24_n5v11")
+script = ExtResource("15_q4dnp")
 match_flow_root = NodePath("..")
 turn_order_state = NodePath("../MatchTurnOrderState")
 anticipation_feedback = NodePath("../AttackAnticipationFeedbackHandler")
@@ -547,40 +540,40 @@ match_network_root = NodePath("../../../Multiplayer/MatchNetworkRoot")
 slots_root = NodePath("../../../Core/Board")
 
 [node name="MatchDominiantRevealHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=1122772169 node_paths=PackedStringArray("match_flow_root")]
-script = ExtResource("27_a1qt2")
+script = ExtResource("16_jpdgy")
 match_flow_root = NodePath("..")
 
 [node name="MatchScoreState" type="Node" parent="Scripts/MatchFlowRoot" unique_id=1110463725]
-script = ExtResource("31_3a8w1")
+script = ExtResource("17_blsnv")
 
 [node name="PostGameTransitionHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=327167645 node_paths=PackedStringArray("match_flow_root")]
-script = ExtResource("34_f3uds")
+script = ExtResource("18_tp04n")
 match_flow_root = NodePath("..")
 post_game_scene_path = "uid://bhqj6mqf1rn54"
 
 [node name="AttackAnticipationFeedbackHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=1452981444 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "match_network_root")]
-script = ExtResource("35_wop7f")
+script = ExtResource("19_5pu7j")
 match_flow_root = NodePath("..")
 turn_order_state = NodePath("../MatchTurnOrderState")
 match_network_root = NodePath("../../../Multiplayer/MatchNetworkRoot")
 print_debug = false
 
 [node name="MatchFlowHandApplier" type="Node" parent="Scripts/MatchFlowRoot" unique_id=753206958 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "player_one_hand", "player_two_hand")]
-script = ExtResource("19_2n6q5")
+script = ExtResource("20_5kcd2")
 match_flow_root = NodePath("..")
 turn_order_state = NodePath("../MatchTurnOrderState")
 player_one_hand = NodePath("../../../Core/PlayerHAnd")
 player_two_hand = NodePath("../../../Core/OpponenetHAnd")
 
 [node name="MatchFlowBoardApplier" type="Node" parent="Scripts/MatchFlowRoot" unique_id=340338363 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "slots_root", "match_network_root")]
-script = ExtResource("20_vcbui")
+script = ExtResource("21_6g1vh")
 match_flow_root = NodePath("..")
 turn_order_state = NodePath("../MatchTurnOrderState")
 slots_root = NodePath("../../../Core/Board")
 match_network_root = NodePath("../../../Multiplayer/MatchNetworkRoot")
 
 [node name="MatchDrawRevealHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=1273772551 node_paths=PackedStringArray("match_flow_root", "match_network_root")]
-script = ExtResource("18_63uau")
+script = ExtResource("22_quf7v")
 match_flow_root = NodePath("..")
 match_network_root = NodePath("../../../Multiplayer/MatchNetworkRoot")
 
@@ -589,22 +582,22 @@ match_network_root = NodePath("../../../Multiplayer/MatchNetworkRoot")
 [node name="Evolution" type="Node" parent="Scripts/Core" unique_id=144455309]
 
 [node name="BuffFlowHandler" type="Node" parent="Scripts/Core/Evolution" unique_id=237451156 node_paths=PackedStringArray("match_flow_root", "buff_database")]
-script = ExtResource("28_5f7hr")
+script = ExtResource("23_v0tkf")
 match_flow_root = NodePath("../../../MatchFlowRoot")
 buff_database = NodePath("../BuffDatabase")
 enable_debug_finish_key = false
 enable_debug_preview_key = false
-debug_preview_mutation = ExtResource("40_2ph70")
+debug_preview_mutation = ExtResource("24_t3xh4")
 print_debug = false
 
 [node name="BuffDatabase" type="Node" parent="Scripts/Core/Evolution" unique_id=1175133697]
-script = ExtResource("38_i8ogu")
-buff_pool = Array[ExtResource("3_3vc3c")]([ExtResource("27_af7hx"), ExtResource("40_2ph70"), ExtResource("23_uv74c"), ExtResource("24_fk48e"), ExtResource("25_yjh5v"), ExtResource("26_lc0u2"), ExtResource("27_nc85t"), ExtResource("28_c8bx1"), ExtResource("29_7f3b3"), ExtResource("30_63uau"), ExtResource("31_cxut3"), ExtResource("32_o7028"), ExtResource("29_7f3b3"), ExtResource("34_fk48e")])
+script = ExtResource("25_51ixx")
+buff_pool = Array[ExtResource("5_jb1hb")]([ExtResource("26_towtn"), ExtResource("24_t3xh4"), ExtResource("8_fde44"), ExtResource("27_ajg1d"), ExtResource("28_xk4gb"), ExtResource("7_qfang"), ExtResource("29_2gbsc"), ExtResource("30_5o1is"), ExtResource("31_u15jd"), ExtResource("32_744k3"), ExtResource("33_ratiu"), ExtResource("34_nocns"), ExtResource("31_u15jd"), ExtResource("35_x0ycv")])
 print_debug = false
 run_smoke_test_on_ready = false
 
 [node name="EvolutionButtonHandler" type="Node" parent="Scripts/Core/Evolution" unique_id=1564994449 node_paths=PackedStringArray("mutation_button", "buff_flow_handler", "match_network_root", "match_network_buff", "deck_system_root", "tooltip_coordinator")]
-script = ExtResource("43_7f3b3")
+script = ExtResource("36_45uqb")
 mutation_button = NodePath("../../../../UICard/CardPanel/BuffPile")
 buff_flow_handler = NodePath("../BuffFlowHandler")
 match_network_root = NodePath("../../../../Multiplayer/MatchNetworkRoot")
@@ -613,7 +606,7 @@ deck_system_root = NodePath("../../../../Core/Deck")
 tooltip_coordinator = NodePath("../../../../ToolTip/Cordiantor")
 
 [node name="SacrificeController" type="Node" parent="Scripts/Core" unique_id=1432478239 node_paths=PackedStringArray("player_hand", "sacrifice_selection_root", "requirement", "pending_boat", "committer")]
-script = ExtResource("10_1j514")
+script = ExtResource("37_tq2oy")
 player_hand = NodePath("../../../Core/PlayerHAnd")
 sacrifice_selection_root = NodePath("SacrificeSelectionRoot")
 requirement = NodePath("SacrificeRequirement")
@@ -622,26 +615,26 @@ committer = NodePath("SacrificeComitter")
 auto_sacrifice_when_cost_met = true
 
 [node name="SacrificeRequirement" type="Node" parent="Scripts/Core/SacrificeController" unique_id=1332384962]
-script = ExtResource("11_at0h8")
+script = ExtResource("38_mr2cj")
 
 [node name="PendingSacrificeBoat" type="Node" parent="Scripts/Core/SacrificeController" unique_id=1449104389]
-script = ExtResource("12_30x73")
+script = ExtResource("39_rux6v")
 
 [node name="SacrificeComitter" type="Node" parent="Scripts/Core/SacrificeController" unique_id=1945886437]
-script = ExtResource("13_6ula3")
+script = ExtResource("40_ajskw")
 
 [node name="SacrificeSelectionRoot" type="Node" parent="Scripts/Core/SacrificeController" unique_id=562062986]
-script = ExtResource("11_5f7hr")
+script = ExtResource("41_dqeiw")
 metadata/_custom_type_script = "uid://db4xai716j06p"
 
 [node name="SacrificeBoardSelectionBinder" type="Node" parent="Scripts/Core/SacrificeController" unique_id=571826404 node_paths=PackedStringArray("slots_root", "selection_root", "player_hand")]
-script = ExtResource("12_3j6fp")
+script = ExtResource("42_evyul")
 slots_root = NodePath("../../../../Core/Board")
 selection_root = NodePath("../SacrificeSelectionRoot")
 player_hand = NodePath("../../../../Core/PlayerHAnd")
 
 [node name="PlacementController" type="Node" parent="Scripts/Core" unique_id=1405375079 node_paths=PackedStringArray("slots_root", "player_hand", "sacrifice_controller", "match_network_root", "placement_state", "input_router", "placement_preview", "placement_executor", "event_emitter", "placement_cancel")]
-script = ExtResource("13_ubws4")
+script = ExtResource("43_ot4s3")
 slots_root = NodePath("../../../Core/Board")
 player_hand = NodePath("../../../Core/PlayerHAnd")
 sacrifice_controller = NodePath("../SacrificeController")
@@ -655,25 +648,25 @@ placement_cancel = NodePath("PlacementCancel")
 enable_payload_debug = true
 
 [node name="PlacementState" type="Node" parent="Scripts/Core/PlacementController" unique_id=1456688179]
-script = ExtResource("14_5sdof")
+script = ExtResource("44_wexop")
 
 [node name="PlacementInputRouter" type="Node" parent="Scripts/Core/PlacementController" unique_id=1643686806]
-script = ExtResource("15_20kdy")
+script = ExtResource("45_u6pjk")
 
 [node name="PlacementPreview" type="Node" parent="Scripts/Core/PlacementController" unique_id=1774818153]
-script = ExtResource("16_5ixgq")
+script = ExtResource("46_p2nla")
 
 [node name="PlacementExecutor" type="Node" parent="Scripts/Core/PlacementController" unique_id=988574054]
-script = ExtResource("17_8ve8k")
+script = ExtResource("47_kab6e")
 
 [node name="PlacementEventEmitter" type="Node" parent="Scripts/Core/PlacementController" unique_id=1389290294]
-script = ExtResource("18_oekep")
+script = ExtResource("48_xyl85")
 
 [node name="PlacementCancel" type="Node" parent="Scripts/Core/PlacementController" unique_id=1193513979]
-script = ExtResource("19_n5v11")
+script = ExtResource("49_y8wj1")
 
 [node name="DirectDamageRouter" type="Node" parent="Scripts/Core" unique_id=396013123 node_paths=PackedStringArray("score_state", "slots_root", "match_network_root")]
-script = ExtResource("30_venfy")
+script = ExtResource("50_vurt2")
 score_state = NodePath("../../MatchFlowRoot/MatchScoreState")
 slots_root = NodePath("../../../Core/Board")
 print_debug = false
@@ -682,7 +675,7 @@ match_network_root = NodePath("../../../Multiplayer/MatchNetworkRoot")
 [node name="Control" type="Control" parent="." unique_id=746986057 node_paths=PackedStringArray("player_hand", "count_label")]
 layout_mode = 3
 anchors_preset = 0
-script = ExtResource("52_nmm8s")
+script = ExtResource("51_5lp0v")
 player_hand = NodePath("../Core/PlayerHAnd")
 count_label = NodePath("PlayerHandCount")
 
@@ -698,7 +691,7 @@ vertical_alignment = 1
 [node name="Multiplayer" type="Node" parent="." unique_id=297260751]
 
 [node name="MatchNetworkRoot" type="Node" parent="Multiplayer" unique_id=1636531151 node_paths=PackedStringArray("match_flow_root", "deck_system_root", "turn_order_state", "match_score_state", "slots_root", "phase_timer", "timer_network", "buff_flow_handler", "buff_database", "placement_controller", "flow_network", "lookup_network", "draw_network", "buff_network", "placement_network", "attack_network", "score_network", "debug_sync_network")]
-script = ExtResource("57_8mjsp")
+script = ExtResource("52_eqwe4")
 match_flow_root = NodePath("../../Scripts/MatchFlowRoot")
 deck_system_root = NodePath("../../Core/Deck")
 turn_order_state = NodePath("../../Scripts/MatchFlowRoot/MatchTurnOrderState")
@@ -720,43 +713,43 @@ debug_sync_network = NodePath("MatchNetworkDebugSync")
 enable_ping_debug = true
 
 [node name="MatchNetworkFlow" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=880320439]
-script = ExtResource("68_8hx3r")
+script = ExtResource("53_3exd2")
 
 [node name="MatchNetworkLookup" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=2049736294]
-script = ExtResource("63_5j00x")
+script = ExtResource("54_x2aub")
 
 [node name="MatchNetworkDraw" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=1641787042]
-script = ExtResource("64_af7hx")
+script = ExtResource("55_4ju6x")
 
 [node name="MatchNetworkBuff" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=769336365 node_paths=PackedStringArray("phase_timer")]
-script = ExtResource("67_gfrq6")
+script = ExtResource("56_0hp5r")
 phase_timer = NodePath("../../MatchPhaseTimer")
 
 [node name="MatchNetworkPlacement" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=207070248]
-script = ExtResource("65_fd62j")
+script = ExtResource("57_inox4")
 print_debug = true
 
 [node name="MatchNetworkAttack" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=979088000]
-script = ExtResource("73_nc85t")
+script = ExtResource("58_m8pyq")
 
 [node name="MatchNetworkTimer" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=2113443062]
-script = ExtResource("74_c8bx1")
+script = ExtResource("59_c12yd")
 
 [node name="MatchNetworkScore" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=1627466998]
-script = ExtResource("78_o7028")
+script = ExtResource("60_13tj3")
 
 [node name="MatchNetworkDebugSync" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=1984824557]
-script = ExtResource("81_o7028")
+script = ExtResource("61_5ippl")
 enable_snapshot_debug = false
 
 [node name="MatchLocalViewApplier" type="Node" parent="Multiplayer" unique_id=1811884870 node_paths=PackedStringArray("match_network_root", "player_one_hand", "player_two_hand")]
-script = ExtResource("57_2n6q5")
+script = ExtResource("62_22jaf")
 match_network_root = NodePath("../MatchNetworkRoot")
 player_one_hand = NodePath("../../Core/PlayerHAnd")
 player_two_hand = NodePath("../../Core/OpponenetHAnd")
 
 [node name="LocalGameplayReferenceBinder" type="Node" parent="Multiplayer" unique_id=1649323469 node_paths=PackedStringArray("match_network_root", "deck_system_root", "placement_controller", "sacrifice_controller", "sacrifice_board_binder")]
-script = ExtResource("66_5j00x")
+script = ExtResource("63_l7d5y")
 match_network_root = NodePath("../MatchNetworkRoot")
 deck_system_root = NodePath("../../Core/Deck")
 placement_controller = NodePath("../../Scripts/Core/PlacementController")
@@ -764,7 +757,7 @@ sacrifice_controller = NodePath("../../Scripts/Core/SacrificeController")
 sacrifice_board_binder = NodePath("../../Scripts/Core/SacrificeController/SacrificeBoardSelectionBinder")
 
 [node name="MatchPhaseTimer" type="Node" parent="Multiplayer" unique_id=767461142 node_paths=PackedStringArray("match_flow_root")]
-script = ExtResource("73_fk48e")
+script = ExtResource("64_h1pmk")
 match_flow_root = NodePath("../../Scripts/MatchFlowRoot")
 draw_seconds = 60.0
 blessing_seconds = 60.0
@@ -781,7 +774,7 @@ offset_top = 512.0
 offset_right = 960.0
 offset_bottom = 512.0
 grow_vertical = 2
-script = ExtResource("69_lc0u2")
+script = ExtResource("65_p8rwr")
 phase_label = NodePath("CardPanel/SpritePanel/PhasePanel/Phase")
 going_first_label = NodePath("CardPanel/SpritePanel/Who\'sGoingfirstLabel/WhosFirst")
 description_label = NodePath("CardPanel/SpritePanel/HelpPanel/Desription")
@@ -798,7 +791,7 @@ attack_shadow_color = Color(0.9647059, 0.48235294, 0.5176471, 1)
 other_phase_shadow_color = Color(0.83137256, 0.70980394, 0.59607846, 1)
 
 [node name="PlayerHandUiBinder" type="Node" parent="UICard" unique_id=1141576823 node_paths=PackedStringArray("match_ui", "match_flow_root", "player_hand", "player_one_hand", "player_two_hand", "sacrifice_controller")]
-script = ExtResource("76_c8bx1")
+script = ExtResource("66_30o0v")
 match_ui = NodePath("..")
 match_flow_root = NodePath("../../Scripts/MatchFlowRoot")
 player_hand = NodePath("../../Core/PlayerHAnd")
@@ -834,7 +827,7 @@ offset_left = -16.0
 offset_top = -7.0
 offset_right = 346.0
 offset_bottom = 61.0
-theme_override_fonts/font = ExtResource("79_cxut3")
+theme_override_fonts/font = ExtResource("67_yyjxw")
 theme_override_font_sizes/font_size = 100
 text = "Attack"
 label_settings = SubResource("LabelSettings_lc0u2")
@@ -855,7 +848,7 @@ layout_mode = 0
 offset_left = -16.0
 offset_right = 346.0
 offset_bottom = 56.0
-theme_override_fonts/font = ExtResource("79_cxut3")
+theme_override_fonts/font = ExtResource("67_yyjxw")
 theme_override_font_sizes/font_size = 100
 text = "Enemy is First"
 label_settings = SubResource("LabelSettings_8jo3k")
@@ -879,7 +872,7 @@ theme_override_colors/font_outline_color = Color(0.16078432, 0.16078432, 0.16078
 theme_override_colors/font_shadow_color = Color(0.83137256, 0.70980394, 0.59607846, 1)
 theme_override_constants/shadow_outline_size = 10
 theme_override_constants/outline_size = 10
-theme_override_fonts/normal_font = ExtResource("80_cxut3")
+theme_override_fonts/normal_font = ExtResource("68_6j66a")
 theme_override_font_sizes/normal_font_size = 24
 text = "You're
 Going First"
@@ -908,7 +901,7 @@ offset_left = 217.0
 offset_top = -37.0
 offset_right = 373.0
 offset_bottom = 118.0
-theme_override_fonts/font = ExtResource("80_cxut3")
+theme_override_fonts/font = ExtResource("68_6j66a")
 theme_override_font_sizes/font_size = 60
 text = "8
 "
@@ -921,7 +914,7 @@ metadata/_edit_lock_ = true
 layout_mode = 0
 offset_right = 362.0
 offset_bottom = 87.0
-theme_override_fonts/font = ExtResource("79_cxut3")
+theme_override_fonts/font = ExtResource("67_yyjxw")
 theme_override_font_sizes/font_size = 100
 text = "Round  "
 label_settings = SubResource("LabelSettings_mm0q7")
@@ -941,7 +934,7 @@ layout_mode = 0
 offset_top = -21.0
 offset_right = 362.0
 offset_bottom = 113.0
-theme_override_fonts/font = ExtResource("80_cxut3")
+theme_override_fonts/font = ExtResource("68_6j66a")
 theme_override_font_sizes/font_size = 48
 text = "1:00"
 label_settings = SubResource("LabelSettings_omgbn")
@@ -958,7 +951,7 @@ offset_bottom = 112.0
 layout_mode = 0
 offset_right = 116.0
 offset_bottom = 124.0
-theme_override_fonts/font = ExtResource("80_cxut3")
+theme_override_fonts/font = ExtResource("68_6j66a")
 theme_override_font_sizes/font_size = 100
 text = "?"
 label_settings = SubResource("LabelSettings_yjh5v")
@@ -979,7 +972,7 @@ metadata/_edit_lock_ = true
 layout_mode = 0
 offset_right = 114.0
 offset_bottom = 121.0
-theme_override_fonts/font = ExtResource("79_cxut3")
+theme_override_fonts/font = ExtResource("67_yyjxw")
 theme_override_font_sizes/font_size = 100
 text = "Worker"
 label_settings = SubResource("LabelSettings_lcv7c")
@@ -994,7 +987,7 @@ offset_left = 1408.0
 offset_top = 781.0
 offset_right = 1882.0
 offset_bottom = 1022.0
-script = ExtResource("78_7f3b3")
+script = ExtResource("69_jr4wr")
 name_label = NodePath("TextBox/TBNamePanel/TBNameLabel")
 description_label = NodePath("TextBox/TBDescripPanel/MutationLine1")
 mutation_description_label_1 = NodePath("TextBox/TBDescripPanel/MutationLine1")
@@ -1029,7 +1022,7 @@ anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 50.0
 grow_horizontal = 2
-theme_override_fonts/font = ExtResource("79_cxut3")
+theme_override_fonts/font = ExtResource("67_yyjxw")
 theme_override_font_sizes/font_size = 48
 text = "Royale Pheromones"
 label_settings = SubResource("LabelSettings_cxut3")
@@ -1054,7 +1047,7 @@ anchor_right = 1.0
 offset_right = 386.0
 offset_bottom = 145.0
 grow_horizontal = 2
-theme_override_fonts/font = ExtResource("80_cxut3")
+theme_override_fonts/font = ExtResource("68_6j66a")
 theme_override_font_sizes/font_size = 24
 text = "Heckler: Opposing card has - 1 ATK
 "
@@ -1072,7 +1065,7 @@ offset_left = 63.0
 offset_top = -1.0
 offset_bottom = 62.0
 grow_horizontal = 2
-theme_override_fonts/font = ExtResource("80_cxut3")
+theme_override_fonts/font = ExtResource("68_6j66a")
 theme_override_font_sizes/font_size = 24
 text = " Atk opposing adjacent slots"
 label_settings = SubResource("LabelSettings_o7028")
@@ -1087,7 +1080,7 @@ offset_left = 63.0
 offset_top = 40.0
 offset_bottom = 103.0
 grow_horizontal = 2
-theme_override_fonts/font = ExtResource("80_cxut3")
+theme_override_fonts/font = ExtResource("68_6j66a")
 theme_override_font_sizes/font_size = 24
 text = " Atk opposing adjacent slots"
 label_settings = SubResource("LabelSettings_o7028")
@@ -1102,7 +1095,7 @@ offset_left = 63.0
 offset_top = 82.0
 offset_bottom = 145.0
 grow_horizontal = 2
-theme_override_fonts/font = ExtResource("80_cxut3")
+theme_override_fonts/font = ExtResource("68_6j66a")
 theme_override_font_sizes/font_size = 24
 text = " Atk opposing adjacent slots"
 label_settings = SubResource("LabelSettings_o7028")
@@ -1113,31 +1106,31 @@ autowrap_mode = 3
 z_index = -1
 position = Vector2(35, 34)
 scale = Vector2(0.10599991, 0.10599991)
-texture = ExtResource("75_c8bx1")
+texture = ExtResource("70_hflca")
 
 [node name="MutatinLineSprite2" type="Sprite2D" parent="ToolTip/TextBox/TBDescripPanel" unique_id=1791274269]
 z_index = -1
 position = Vector2(34.99997, 74.99998)
 scale = Vector2(0.10599991, 0.10599991)
-texture = ExtResource("75_c8bx1")
+texture = ExtResource("70_hflca")
 
 [node name="MutatinLineSprite4" type="Sprite2D" parent="ToolTip/TextBox/TBDescripPanel" unique_id=919691983]
 z_index = -1
 position = Vector2(34.99997, 114.99998)
 scale = Vector2(0.10599991, 0.10599991)
-texture = ExtResource("75_c8bx1")
+texture = ExtResource("70_hflca")
 
 [node name="CArdMutationTooltipbinde" type="Node" parent="ToolTip" unique_id=2111843857 node_paths=PackedStringArray("mutation_tooltip", "player_hands")]
-script = ExtResource("79_63uau")
+script = ExtResource("71_48gdb")
 mutation_tooltip = NodePath("..")
 player_hands = [NodePath("../../Core/PlayerHAnd"), NodePath("../../Core/OpponenetHAnd")]
 
 [node name="Cordiantor" type="Node" parent="ToolTip" unique_id=956842424 node_paths=PackedStringArray("mutation_tooltip")]
-script = ExtResource("85_sxqap")
+script = ExtResource("72_tg381")
 mutation_tooltip = NodePath("..")
 
 [node name="MutationButtonHoverBinder" type="Node" parent="ToolTip" unique_id=1903292537 node_paths=PackedStringArray("mutation_button", "evolution_button_handler", "tooltip_coordinator")]
-script = ExtResource("77_7f3b3")
+script = ExtResource("73_tojbe")
 mutation_button = NodePath("../../UICard/CardPanel/BuffPile")
 evolution_button_handler = NodePath("../../Scripts/Core/Evolution/EvolutionButtonHandler")
 tooltip_coordinator = NodePath("../Cordiantor")
@@ -1146,7 +1139,7 @@ tooltip_coordinator = NodePath("../Cordiantor")
 position = Vector2(960, 544)
 
 [node name="Tugga" type="Node2D" parent="." unique_id=1610132684 node_paths=PackedStringArray("your_score_label", "enemy_score_label", "score_state", "match_network_root")]
-script = ExtResource("87_lcv7c")
+script = ExtResource("74_u0qpw")
 your_score_label = NodePath("YouText/YouNumber")
 enemy_score_label = NodePath("OppText/OppNumber")
 score_state = NodePath("../Scripts/MatchFlowRoot/MatchScoreState")
@@ -1209,7 +1202,7 @@ theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
 theme_override_colors/font_outline_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
 theme_override_constants/outline_size = 12
 theme_override_constants/shadow_outline_size = 16
-theme_override_fonts/font = ExtResource("80_cxut3")
+theme_override_fonts/font = ExtResource("68_6j66a")
 theme_override_font_sizes/font_size = 78
 text = "10"
 label_settings = SubResource("LabelSettings_cick3")
@@ -1224,7 +1217,7 @@ theme_override_colors/font_shadow_color = Color(0.69803923, 0.56078434, 0.431372
 theme_override_colors/font_outline_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
 theme_override_constants/outline_size = 12
 theme_override_constants/shadow_outline_size = 16
-theme_override_fonts/font = ExtResource("79_cxut3")
+theme_override_fonts/font = ExtResource("67_yyjxw")
 theme_override_font_sizes/font_size = 78
 text = "Win Score"
 label_settings = SubResource("LabelSettings_pkdux")
@@ -1238,7 +1231,7 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0.0031383054, 0.16820937, 0.20007834, 1)
 theme_override_colors/font_outline_color = Color(0.45068938, 0.14134064, 0.121217035, 1)
 theme_override_constants/shadow_outline_size = 16
-theme_override_fonts/font = ExtResource("79_cxut3")
+theme_override_fonts/font = ExtResource("67_yyjxw")
 theme_override_font_sizes/font_size = 54
 text = "YOU"
 label_settings = SubResource("LabelSettings_80th6")
@@ -1253,7 +1246,7 @@ theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
 theme_override_colors/font_outline_color = Color(0.003921569, 0.16862746, 0.2, 1)
 theme_override_constants/outline_size = 12
 theme_override_constants/shadow_outline_size = 16
-theme_override_fonts/font = ExtResource("80_cxut3")
+theme_override_fonts/font = ExtResource("68_6j66a")
 theme_override_font_sizes/font_size = 78
 text = "5"
 label_settings = SubResource("LabelSettings_1tvpp")
@@ -1270,7 +1263,7 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0.3205033, 0.025482684, 0.0067084883, 1)
 theme_override_colors/font_outline_color = Color(0.45068938, 0.14134064, 0.121217035, 1)
 theme_override_constants/shadow_outline_size = 16
-theme_override_fonts/font = ExtResource("79_cxut3")
+theme_override_fonts/font = ExtResource("67_yyjxw")
 theme_override_font_sizes/font_size = 54
 text = "OPP"
 label_settings = SubResource("LabelSettings_tfk1j")
@@ -1286,7 +1279,7 @@ theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
 theme_override_colors/font_outline_color = Color(0.32156864, 0.023529412, 0.007843138, 1)
 theme_override_constants/outline_size = 12
 theme_override_constants/shadow_outline_size = 16
-theme_override_fonts/font = ExtResource("80_cxut3")
+theme_override_fonts/font = ExtResource("68_6j66a")
 theme_override_font_sizes/font_size = 78
 text = "5"
 label_settings = SubResource("LabelSettings_fabca")
@@ -1295,7 +1288,6 @@ autowrap_mode = 3
 metadata/_edit_lock_ = true
 
 [node name="KillFeedYou" type="Panel" parent="Tugga" unique_id=195176159]
-visible = false
 offset_left = 46.0
 offset_top = 534.0
 offset_right = 264.0
@@ -1314,7 +1306,6 @@ horizontal_alignment = 2
 vertical_alignment = 1
 
 [node name="KillFeedYou3" type="Panel" parent="Tugga" unique_id=1464580369]
-visible = false
 offset_left = 46.0
 offset_top = 579.0
 offset_right = 264.0
@@ -1444,7 +1435,6 @@ label_settings = SubResource("LabelSettings_uv74c")
 vertical_alignment = 1
 
 [node name="KillFeedOpp2" type="Panel" parent="Tugga" unique_id=297217716]
-visible = false
 offset_left = 231.0
 offset_top = 624.0
 offset_right = 449.0
@@ -1452,7 +1442,6 @@ offset_bottom = 660.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_tfk1j")
 
 [node name="Label2" type="Label" parent="Tugga/KillFeedOpp2" unique_id=473036652]
-visible = false
 layout_mode = 0
 offset_left = 13.0
 offset_top = -33.0
@@ -1463,15 +1452,14 @@ label_settings = SubResource("LabelSettings_uv74c")
 vertical_alignment = 1
 
 [node name="BoardCardHover" type="Node" parent="." unique_id=2001566808 node_paths=PackedStringArray("slots_root", "tooltip_coordinator")]
-script = ExtResource("73_uv74c")
+script = ExtResource("75_hwx0c")
 slots_root = NodePath("../Core/Board")
 tooltip_coordinator = NodePath("../ToolTip/Cordiantor")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=85287759]
 z_index = 10
 material = SubResource("ShaderMaterial_lc0u2")
-offset_left = -192.0
+offset_left = -128.0
 offset_top = -128.0
-offset_right = 1984.0
+offset_right = 2048.0
 offset_bottom = 1216.0
-mouse_filter = 2
