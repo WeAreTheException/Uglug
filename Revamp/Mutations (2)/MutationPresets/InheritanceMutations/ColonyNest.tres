@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="ColonyNest" format=3 uid="uid://cnn0fddifxool"]
 
-[ext_resource type="Script" uid="uid://d04qqyasff3ij" path="res://Old/Mutations/MutationBehaviourHandlers/ColonyNest.gd" id="1_xffcy"]
+[ext_resource type="Script" uid="uid://d04qqyasff3ij" path="res://Revamp/Mutations (2)/MutationBehaviourHandlers/ColonyNest.gd" id="1_xffcy"]
 [ext_resource type="Texture2D" uid="uid://bg85evwixk8bq" path="res://Art/Mutations/Sigils/Final_Sigils/Ant_Hill_Sigil.png" id="2_o88ee"]
 
 [resource]

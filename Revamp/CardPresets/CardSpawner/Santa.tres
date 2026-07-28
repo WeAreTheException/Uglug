@@ -1,8 +1,8 @@
 [gd_resource type="Resource" script_class="CardData" format=3 uid="uid://c7b01c40e24r"]
 
-[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Old/Mutations/MutationBehaviourHandlers/Mutation.gd" id="1_fa4l4"]
+[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Revamp/Mutations (2)/MutationBehaviourHandlers/Mutation.gd" id="1_fa4l4"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Old/Data/CardData.gd" id="2_1u586"]
-[ext_resource type="Resource" uid="uid://5sahtthq2tjm" path="res://Old/Mutations/MutationPresets/InheritanceMutations/Christmas.tres" id="2_oguuk"]
+[ext_resource type="Resource" uid="uid://5sahtthq2tjm" path="res://Revamp/Mutations (2)/MutationPresets/InheritanceMutations/Christmas.tres" id="2_oguuk"]
 
 [resource]
 script = ExtResource("2_1u586")

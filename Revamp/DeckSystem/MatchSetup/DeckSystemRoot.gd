@@ -527,7 +527,7 @@ func spawn_workers_from_effect_for_card_owner(
 	var owner := _get_owner_for_card(source_card)
 
 	var inherit_mutation_ids := (
-		_get_inheritable_mutation_ids(
+		_get_worker_inheritable_mutation_ids(
 			source_card
 		)
 	)
@@ -1037,6 +1037,42 @@ func _get_inheritable_mutation_ids(
 		.get_inheritable_mutations()
 	):
 		if mutation == null:
+			continue
+
+		var id := mutation.get_safe_mutation_id()
+
+		if id.strip_edges() != "":
+			ids.append(id)
+
+	return ids
+
+
+func _get_worker_inheritable_mutation_ids(
+	source_card: CardRoot
+) -> Array[String]:
+	var ids: Array[String] = []
+
+	if source_card == null:
+		return ids
+
+	if not is_instance_valid(source_card):
+		return ids
+
+	if source_card.mutations == null:
+		return ids
+
+	for mutation: Mutation in (
+		source_card
+		.mutations
+		.get_inheritable_mutations()
+	):
+		if mutation == null:
+			continue
+
+		if mutation is BabyMaker:
+			continue
+
+		if mutation is ColonyNest:
 			continue
 
 		var id := mutation.get_safe_mutation_id()

@@ -13,7 +13,7 @@ static func enqueue(owner: Node, delay: float, callback: Callable) -> void:
 		return
 
 	feedback_queue.append({
-		"owner": owner,
+		"owner_ref": weakref(owner),
 		"delay": delay,
 		"callback": callback
 	})
@@ -30,18 +30,31 @@ static func _play_queue() -> void:
 	while feedback_queue.size() > 0:
 		var entry: Dictionary = feedback_queue.pop_front()
 
-		var owner: Node = entry.get("owner", null) as Node
+		var owner_ref: WeakRef = entry.get("owner_ref", null) as WeakRef
 		var delay: float = float(entry.get("delay", 0.0))
 		var callback: Callable = entry.get("callback", Callable()) as Callable
+
+		if owner_ref == null:
+			continue
+
+		var owner: Node = owner_ref.get_ref() as Node
 
 		if owner == null:
 			continue
 
-		if not is_instance_valid(owner):
-			continue
-
 		if delay > 0.0:
-			await owner.get_tree().create_timer(delay).timeout
+			var tree := owner.get_tree()
+
+			if tree == null:
+				continue
+
+			await tree.create_timer(delay).timeout
+
+		# The owner or callback target may have been freed during the delay.
+		owner = owner_ref.get_ref() as Node
+
+		if owner == null:
+			continue
 
 		if callback.is_valid():
 			callback.call()

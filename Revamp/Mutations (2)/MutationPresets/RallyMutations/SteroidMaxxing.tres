@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="SteroidMaxxing" format=3 uid="uid://c0cebfc5tmmng"]
 
-[ext_resource type="Script" uid="uid://drdrq0r4lpax2" path="res://Old/Mutations/MutationBehaviourHandlers/SteroidMaxxing.gd" id="1_gsedg"]
+[ext_resource type="Script" uid="uid://drdrq0r4lpax2" path="res://Revamp/Mutations (2)/MutationBehaviourHandlers/SteroidMaxxing.gd" id="1_gsedg"]
 [ext_resource type="Texture2D" uid="uid://ck5nood0tif4o" path="res://Art/Mutations/Sigils/Final_Sigils/Super_Stimulant_Sigil.png" id="2_evbn8"]
 
 [resource]

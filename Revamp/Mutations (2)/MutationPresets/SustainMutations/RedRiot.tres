@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="RedRiot" format=3 uid="uid://qpp1tjh0bk7v"]
 
-[ext_resource type="Script" uid="uid://cqbai1u4ojnrw" path="res://Old/Mutations/MutationBehaviourHandlers/RedRiot.gd" id="1_31jfg"]
+[ext_resource type="Script" uid="uid://cqbai1u4ojnrw" path="res://Revamp/Mutations (2)/MutationBehaviourHandlers/RedRiot.gd" id="1_31jfg"]
 [ext_resource type="Texture2D" uid="uid://cqp27pue5dbwq" path="res://Art/Mutations/Sigils/Final_Sigils/Guardiant_Sigil.png" id="2_taevm"]
 
 [resource]

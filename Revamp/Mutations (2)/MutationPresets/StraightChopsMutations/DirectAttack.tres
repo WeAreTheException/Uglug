@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="DirectAttack" format=3 uid="uid://bs6mfmdmm2uj6"]
 
-[ext_resource type="Script" uid="uid://cf7o6ekxr2ues" path="res://Old/Mutations/MutationBehaviourHandlers/DirectAttack.gd" id="1_g8tw5"]
+[ext_resource type="Script" uid="uid://cf7o6ekxr2ues" path="res://Revamp/Mutations (2)/MutationBehaviourHandlers/DirectAttack.gd" id="1_g8tw5"]
 [ext_resource type="Texture2D" uid="uid://bwmhepwpwekos" path="res://Art/Mutations/Sigils/Final_Sigils/Aviant_Sigil.png" id="2_0dw3d"]
 
 [resource]

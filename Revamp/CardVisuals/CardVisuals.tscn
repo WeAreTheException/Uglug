@@ -32,7 +32,7 @@
 [ext_resource type="Texture2D" uid="uid://bkltnd7edkgin" path="res://Art/NewCardAssets/SacrificeCost.png" id="27_0lj05"]
 [ext_resource type="FontFile" uid="uid://3m1qkjceiwrb" path="res://Revamp/Fonts/Transcity DEMO.otf" id="27_tt364"]
 [ext_resource type="Script" uid="uid://db56slyy24nq7" path="res://Revamp/Card/CardFeedback/StatTextFeedback.gd" id="29_0lj05"]
-[ext_resource type="Shader" uid="uid://dg6g50x1ggdt7" path="res://Revamp/CardVisuals/RhythmPulse.gdshader" id="29_3pvvv"]
+[ext_resource type="Shader" path="res://Revamp/CardVisuals/RhythmPulse.gdshader" id="29_3pvvv"]
 [ext_resource type="Texture2D" uid="uid://j75yocnxblk4" path="res://Art/RedBackground.png" id="29_d8086"]
 [ext_resource type="Texture2D" uid="uid://cgs5k6p3mggyf" path="res://Art/Ants/AntSprite.png" id="29_wvfxw"]
 [ext_resource type="Shader" uid="uid://c2usyy1706sqm" path="res://Revamp/Card/NewCardFeedback/CardShaders/TextAnimatedStripes.gdshader" id="30_8ia1o"]

@@ -24,10 +24,21 @@ func apply_inherited_mutations(
 	if spawned_worker.mutations == null:
 		return
 
-	var inherited_mutations: Array[Mutation] = source_card.mutations.get_inheritable_mutations()
+	var inherited_mutations: Array[Mutation] = (
+		source_card.mutations.get_inheritable_mutations()
+	)
 
 	for mutation: Mutation in inherited_mutations:
 		if mutation == null:
 			continue
 
+		if _is_blocked_worker_inheritance_mutation(mutation):
+			continue
+
 		spawned_worker.mutations.add_buff_mutation(mutation)
+
+
+func _is_blocked_worker_inheritance_mutation(
+	mutation: Mutation
+) -> bool:
+	return mutation is BabyMaker or mutation is ColonyNest

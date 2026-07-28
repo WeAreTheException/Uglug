@@ -1,11 +1,11 @@
 [gd_resource type="Resource" script_class="CardData" format=3 uid="uid://c23eoyjw4afmw"]
 
-[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Old/Mutations/MutationBehaviourHandlers/Mutation.gd" id="1_rfls6"]
+[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Revamp/Mutations (2)/MutationBehaviourHandlers/Mutation.gd" id="1_rfls6"]
 [ext_resource type="Texture2D" uid="uid://b3o6p87wad5eh" path="res://Art/Ants/Deterrant.PNG" id="2_snqyb"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Old/Data/CardData.gd" id="2_t7a5w"]
-[ext_resource type="Resource" uid="uid://qpp1tjh0bk7v" path="res://Old/Mutations/MutationPresets/SustainMutations/RedRiot.tres" id="3_rxc0g"]
-[ext_resource type="Resource" uid="uid://dko3ngpbogrv1" path="res://Old/Mutations/MutationPresets/RetaliationMutations/Spiky.tres" id="4_c1riu"]
-[ext_resource type="Resource" uid="uid://bqxd6swy88edw" path="res://Old/Mutations/MutationPresets/RallyMutations/MobMentality.tres" id="5_d78g6"]
+[ext_resource type="Resource" uid="uid://qpp1tjh0bk7v" path="res://Revamp/Mutations (2)/MutationPresets/SustainMutations/RedRiot.tres" id="3_rxc0g"]
+[ext_resource type="Resource" uid="uid://dko3ngpbogrv1" path="res://Revamp/Mutations (2)/MutationPresets/RetaliationMutations/Spiky.tres" id="4_c1riu"]
+[ext_resource type="Resource" uid="uid://bqxd6swy88edw" path="res://Revamp/Mutations (2)/MutationPresets/RallyMutations/MobMentality.tres" id="5_d78g6"]
 
 [resource]
 script = ExtResource("2_t7a5w")

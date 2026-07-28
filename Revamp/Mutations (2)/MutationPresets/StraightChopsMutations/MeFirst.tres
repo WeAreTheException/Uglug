@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="MeFirst" format=3 uid="uid://bk7bftdp5178x"]
 
-[ext_resource type="Script" uid="uid://cvp5qldv7cg3" path="res://Old/Mutations/MutationBehaviourHandlers/MeFirst.gd" id="1_po0hp"]
+[ext_resource type="Script" uid="uid://cvp5qldv7cg3" path="res://Revamp/Mutations (2)/MutationBehaviourHandlers/MeFirst.gd" id="1_po0hp"]
 [ext_resource type="Texture2D" uid="uid://q3m6gkmiptab" path="res://Art/Mutations/Sigils/Final_Sigils/Instant_Sigil.png" id="2_hm1dj"]
 
 [resource]

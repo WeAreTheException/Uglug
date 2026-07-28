@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="MobMentality" format=3 uid="uid://bqxd6swy88edw"]
 
-[ext_resource type="Script" uid="uid://ceyng8aj5mtue" path="res://Old/Mutations/MutationBehaviourHandlers/MobMentality.gd" id="1_8dxua"]
+[ext_resource type="Script" uid="uid://ceyng8aj5mtue" path="res://Revamp/Mutations (2)/MutationBehaviourHandlers/MobMentality.gd" id="1_8dxua"]
 [ext_resource type="Texture2D" uid="uid://b83efbcooyh3u" path="res://Art/Mutations/Sigils/Final_Sigils/Empowerant_Sigil.png" id="2_sui5x"]
 
 [resource]

@@ -1,9 +1,9 @@
 [gd_resource type="Resource" script_class="CardData" format=3 uid="uid://bxrcjm4w1dy82"]
 
-[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Old/Mutations/MutationBehaviourHandlers/Mutation.gd" id="1_rtmw7"]
+[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Revamp/Mutations (2)/MutationBehaviourHandlers/Mutation.gd" id="1_rtmw7"]
 [ext_resource type="Texture2D" uid="uid://cfvqq724g5eko" path="res://Art/Ants/Anthrax.PNG" id="2_1gq4d"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Old/Data/CardData.gd" id="2_mf6a0"]
-[ext_resource type="Resource" uid="uid://d6umheqx0qia" path="res://Old/Mutations/MutationPresets/RetaliationMutations/IDieYouDie.tres" id="3_j2ldt"]
+[ext_resource type="Resource" uid="uid://d6umheqx0qia" path="res://Revamp/Mutations (2)/MutationPresets/RetaliationMutations/IDieYouDie.tres" id="3_j2ldt"]
 
 [resource]
 script = ExtResource("2_mf6a0")

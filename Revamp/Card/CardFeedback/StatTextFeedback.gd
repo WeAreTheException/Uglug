@@ -1,6 +1,10 @@
 extends Node
 class_name StatTextFeedback
 
+const STATE_NEUTRAL: String = "neutral"
+const STATE_BUFFED: String = "buffed"
+const STATE_DEBUFFED: String = "debuffed"
+
 @export var label: RichTextLabel
 @export var stripe_label: RichTextLabel
 
@@ -34,12 +38,30 @@ class_name StatTextFeedback
 @export var debuff_return_time: float = 0.18
 
 @export_group("Stripe Shader Color")
-@export var buffed_stripe_color: Color = Color(0.4, 0.9, 1.0, 0.45)
-@export var debuffed_stripe_color: Color = Color(1.0, 0.25, 0.25, 0.45)
+@export var buffed_stripe_color: Color = Color(
+	0.4,
+	0.9,
+	1.0,
+	0.45
+)
+
+@export var debuffed_stripe_color: Color = Color(
+	1.0,
+	0.25,
+	0.25,
+	0.45
+)
+
 @export var shader_color_parameter: String = "color_stripe"
 
 @export_group("Shadow")
-@export var shadow_color: Color = Color(0, 0, 0, 0.55)
+@export var shadow_color: Color = Color(
+	0,
+	0,
+	0,
+	0.55
+)
+
 @export var shadow_offset: Vector2i = Vector2i(2, 3)
 
 @export var print_debug: bool = false
@@ -56,6 +78,8 @@ var extra_offset: Vector2 = Vector2.ZERO
 var displayed_value: int = 0
 var has_value: bool = false
 
+var modifier_state: String = STATE_NEUTRAL
+
 var motion_tween: Tween = null
 
 
@@ -64,6 +88,7 @@ func _ready() -> void:
 	_cache_stripe_label()
 	_apply_shadow()
 	_setup_stripe_material()
+	_apply_modifier_state()
 
 
 func _process(delta: float) -> void:
@@ -71,28 +96,124 @@ func _process(delta: float) -> void:
 	_update_idle()
 
 
-func set_value_instant(value: int) -> void:
+func set_value_instant(
+	value: int,
+	new_modifier_state: String = STATE_NEUTRAL
+) -> void:
+	_kill_motion_tween()
+
 	displayed_value = value
 	has_value = true
+
+	extra_offset = Vector2.ZERO
+	punch_scale = Vector2.ONE
+
+	modifier_state = _normalise_state(
+		new_modifier_state
+	)
+
 	_set_text(str(value))
+	_apply_modifier_state()
 	_sync_stripe_to_label()
 
 
-func play_value_change(old_value: int, new_value: int) -> void:
-	if new_value > old_value:
-		await play_buffed_value_change(old_value, new_value)
+func set_modifier_state(
+	new_modifier_state: String
+) -> void:
+	modifier_state = _normalise_state(
+		new_modifier_state
+	)
+
+	_apply_modifier_state()
+	_sync_stripe_to_label()
+
+
+func play_value_change(
+	old_value: int,
+	new_value: int
+) -> void:
+	# Kept for compatibility.
+	# A raw number change no longer guesses buff/debuff
+	# based on whether the number increased or decreased.
+	play_value_change_with_context(
+		old_value,
+		new_value,
+		STATE_NEUTRAL,
+		modifier_state
+	)
+
+
+func play_value_change_with_context(
+	old_value: int,
+	new_value: int,
+	change_type: String,
+	new_modifier_state: String
+) -> void:
+	var safe_change_type := _normalise_state(
+		change_type
+	)
+
+	var safe_modifier_state := _normalise_state(
+		new_modifier_state
+	)
+
+	if safe_change_type == STATE_BUFFED:
+		await play_buffed_value_change(
+			old_value,
+			new_value,
+			safe_modifier_state
+		)
 		return
 
-	if new_value < old_value:
-		await play_debuffed_value_change(old_value, new_value)
+	if safe_change_type == STATE_DEBUFFED:
+		await play_debuffed_value_change(
+			old_value,
+			new_value,
+			safe_modifier_state
+		)
 		return
 
-	set_value_instant(new_value)
+	play_neutral_value_change(
+		new_value,
+		safe_modifier_state
+	)
 
 
-func play_buffed_value_change(old_value: int, new_value: int) -> void:
+func play_neutral_value_change(
+	new_value: int,
+	new_modifier_state: String
+) -> void:
+	_kill_motion_tween()
+
+	displayed_value = new_value
+	has_value = true
+
+	modifier_state = _normalise_state(
+		new_modifier_state
+	)
+
+	extra_offset = Vector2.ZERO
+	punch_scale = Vector2.ONE
+
+	if label != null:
+		label.pivot_offset = label.size * 0.5
+
+	_set_text(str(new_value))
+	_apply_modifier_state()
+	_sync_stripe_to_label()
+
+
+func play_buffed_value_change(
+	old_value: int,
+	new_value: int,
+	new_modifier_state: String = STATE_BUFFED
+) -> void:
 	if label == null:
 		return
+
+	modifier_state = _normalise_state(
+		new_modifier_state
+	)
 
 	_show_stripe_label()
 	_set_stripe_color(buffed_stripe_color)
@@ -115,14 +236,22 @@ func play_buffed_value_change(old_value: int, new_value: int) -> void:
 		"extra_offset",
 		Vector2(0.0, -buff_jump_distance),
 		buff_up_time
-	).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	).set_trans(
+		Tween.TRANS_BACK
+	).set_ease(
+		Tween.EASE_OUT
+	)
 
 	motion_tween.tween_property(
 		self,
 		"punch_scale",
 		buff_up_scale,
 		buff_up_time
-	).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	).set_trans(
+		Tween.TRANS_BACK
+	).set_ease(
+		Tween.EASE_OUT
+	)
 
 	await motion_tween.finished
 
@@ -165,7 +294,11 @@ func play_buffed_value_change(old_value: int, new_value: int) -> void:
 		"punch_scale",
 		buff_top_pause_scale,
 		buff_pop_settle_time
-	).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	).set_trans(
+		Tween.TRANS_BACK
+	).set_ease(
+		Tween.EASE_OUT
+	)
 
 	await motion_tween.finished
 
@@ -177,26 +310,44 @@ func play_buffed_value_change(old_value: int, new_value: int) -> void:
 		"extra_offset",
 		Vector2.ZERO,
 		buff_down_time
-	).set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
+	).set_trans(
+		Tween.TRANS_BOUNCE
+	).set_ease(
+		Tween.EASE_OUT
+	)
 
 	motion_tween.tween_property(
 		self,
 		"punch_scale",
 		buff_neutral_scale,
 		buff_down_time
-	).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	).set_trans(
+		Tween.TRANS_BACK
+	).set_ease(
+		Tween.EASE_OUT
+	)
 
 	await motion_tween.finished
 
 	extra_offset = Vector2.ZERO
 	punch_scale = buff_neutral_scale
 	motion_tween = null
+
+	_apply_modifier_state()
 	_sync_stripe_to_label()
 
 
-func play_debuffed_value_change(old_value: int, new_value: int) -> void:
+func play_debuffed_value_change(
+	old_value: int,
+	new_value: int,
+	new_modifier_state: String = STATE_DEBUFFED
+) -> void:
 	if label == null:
 		return
+
+	modifier_state = _normalise_state(
+		new_modifier_state
+	)
 
 	_show_stripe_label()
 	_set_stripe_color(debuffed_stripe_color)
@@ -218,7 +369,11 @@ func play_debuffed_value_change(old_value: int, new_value: int) -> void:
 		"punch_scale",
 		debuff_squeeze_scale,
 		debuff_squeeze_time
-	).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
+	).set_trans(
+		Tween.TRANS_BACK
+	).set_ease(
+		Tween.EASE_IN
+	)
 
 	await motion_tween.finished
 
@@ -228,7 +383,9 @@ func play_debuffed_value_change(old_value: int, new_value: int) -> void:
 	_sync_stripe_to_label()
 
 	if debuff_number_hold_time > 0.0:
-		await get_tree().create_timer(debuff_number_hold_time).timeout
+		await get_tree().create_timer(
+			debuff_number_hold_time
+		).timeout
 
 	motion_tween = create_tween()
 
@@ -237,12 +394,18 @@ func play_debuffed_value_change(old_value: int, new_value: int) -> void:
 		"punch_scale",
 		debuff_return_scale,
 		debuff_return_time
-	).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	).set_trans(
+		Tween.TRANS_BACK
+	).set_ease(
+		Tween.EASE_OUT
+	)
 
 	await motion_tween.finished
 
 	punch_scale = debuff_return_scale
 	motion_tween = null
+
+	_apply_modifier_state()
 	_sync_stripe_to_label()
 
 
@@ -277,22 +440,59 @@ func _update_idle() -> void:
 		label.position = start_position + extra_offset
 		label.rotation = start_rotation
 		label.scale = start_scale * punch_scale
+
 		_sync_stripe_to_label()
 		return
 
-	var vertical_wave := sin((time_passed / vertical_float_time) * TAU)
-	var horizontal_wave := sin((time_passed / horizontal_drift_time) * TAU)
-	var rotation_wave := sin((time_passed / rotation_time) * TAU)
-	var breathing_wave := sin((time_passed / breathing_scale_time) * TAU)
+	var vertical_wave := sin(
+		(time_passed / vertical_float_time) * TAU
+	)
 
-	var y_offset := vertical_wave * vertical_float_height
-	var x_offset := horizontal_wave * horizontal_drift_amount
-	var rotation_offset := deg_to_rad(rotation_wave * rotation_amount_degrees)
-	var scale_multiplier := 1.0 + (breathing_wave * breathing_scale_amount)
+	var horizontal_wave := sin(
+		(time_passed / horizontal_drift_time) * TAU
+	)
 
-	label.position = start_position + Vector2(x_offset, y_offset) + extra_offset
-	label.rotation = start_rotation + rotation_offset
-	label.scale = start_scale * scale_multiplier * punch_scale
+	var rotation_wave := sin(
+		(time_passed / rotation_time) * TAU
+	)
+
+	var breathing_wave := sin(
+		(time_passed / breathing_scale_time) * TAU
+	)
+
+	var y_offset := (
+		vertical_wave * vertical_float_height
+	)
+
+	var x_offset := (
+		horizontal_wave * horizontal_drift_amount
+	)
+
+	var rotation_offset := deg_to_rad(
+		rotation_wave * rotation_amount_degrees
+	)
+
+	var scale_multiplier := (
+		1.0
+		+ breathing_wave * breathing_scale_amount
+	)
+
+	label.position = (
+		start_position
+		+ Vector2(x_offset, y_offset)
+		+ extra_offset
+	)
+
+	label.rotation = (
+		start_rotation
+		+ rotation_offset
+	)
+
+	label.scale = (
+		start_scale
+		* scale_multiplier
+		* punch_scale
+	)
 
 	_sync_stripe_to_label()
 
@@ -310,28 +510,60 @@ func _show_stripe_label() -> void:
 		stripe_label.visible = true
 
 
+func _hide_stripe_label() -> void:
+	if stripe_label != null:
+		stripe_label.visible = false
+
+
+func _apply_modifier_state() -> void:
+	if stripe_label == null:
+		return
+
+	match modifier_state:
+		STATE_BUFFED:
+			_show_stripe_label()
+			_set_stripe_color(buffed_stripe_color)
+
+		STATE_DEBUFFED:
+			_show_stripe_label()
+			_set_stripe_color(debuffed_stripe_color)
+
+		_:
+			_hide_stripe_label()
+
+
 func _set_stripe_color(color: Color) -> void:
 	if stripe_label == null:
 		return
 
-	var material := stripe_label.material as ShaderMaterial
+	var material := (
+		stripe_label.material as ShaderMaterial
+	)
 
 	if material == null:
 		return
 
-	material.set_shader_parameter(shader_color_parameter, color)
+	material.set_shader_parameter(
+		shader_color_parameter,
+		color
+	)
 
 
 func _setup_stripe_material() -> void:
 	if stripe_label == null:
 		return
 
-	var material := stripe_label.material as ShaderMaterial
+	var material := (
+		stripe_label.material as ShaderMaterial
+	)
 
 	if material == null:
 		return
 
-	var unique_material := material.duplicate() as ShaderMaterial
+	var unique_material := (
+		material.duplicate() as ShaderMaterial
+	)
+
 	stripe_label.material = unique_material
 
 
@@ -353,20 +585,54 @@ func _sync_stripe_to_label() -> void:
 
 func _apply_shadow() -> void:
 	if label != null:
-		label.add_theme_color_override("font_shadow_color", shadow_color)
-		label.add_theme_constant_override("shadow_offset_x", shadow_offset.x)
-		label.add_theme_constant_override("shadow_offset_y", shadow_offset.y)
+		label.add_theme_color_override(
+			"font_shadow_color",
+			shadow_color
+		)
+
+		label.add_theme_constant_override(
+			"shadow_offset_x",
+			shadow_offset.x
+		)
+
+		label.add_theme_constant_override(
+			"shadow_offset_y",
+			shadow_offset.y
+		)
 
 	if stripe_label != null:
-		stripe_label.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0))
-		stripe_label.add_theme_constant_override("shadow_offset_x", 0)
-		stripe_label.add_theme_constant_override("shadow_offset_y", 0)
+		stripe_label.add_theme_color_override(
+			"font_shadow_color",
+			Color(0, 0, 0, 0)
+		)
+
+		stripe_label.add_theme_constant_override(
+			"shadow_offset_x",
+			0
+		)
+
+		stripe_label.add_theme_constant_override(
+			"shadow_offset_y",
+			0
+		)
 
 
 func _kill_motion_tween() -> void:
 	if motion_tween != null:
 		motion_tween.kill()
 		motion_tween = null
+
+
+func _normalise_state(value: String) -> String:
+	match value:
+		STATE_BUFFED:
+			return STATE_BUFFED
+
+		STATE_DEBUFFED:
+			return STATE_DEBUFFED
+
+		_:
+			return STATE_NEUTRAL
 
 
 func _debug_print(message: String) -> void:

@@ -1,11 +1,11 @@
 [gd_resource type="Resource" script_class="CardData" format=3 uid="uid://2h2vn6gnpisp"]
 
-[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Old/Mutations/MutationBehaviourHandlers/Mutation.gd" id="1_uo4dm"]
+[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Revamp/Mutations (2)/MutationBehaviourHandlers/Mutation.gd" id="1_uo4dm"]
 [ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Old/Data/CardData.gd" id="2_npelr"]
 [ext_resource type="Texture2D" uid="uid://d37k6a4e485xf" path="res://Art/Ants/Lieutenant.png" id="2_qlqhd"]
-[ext_resource type="Resource" uid="uid://c0ojr71i4k50b" path="res://Old/Mutations/MutationPresets/RallyMutations/RoyalPheromones.tres" id="3_gmke8"]
-[ext_resource type="Resource" uid="uid://bk7bftdp5178x" path="res://Old/Mutations/MutationPresets/StraightChopsMutations/MeFirst.tres" id="4_ekp1n"]
-[ext_resource type="Resource" uid="uid://cnn0fddifxool" path="res://Old/Mutations/MutationPresets/InheritanceMutations/ColonyNest.tres" id="5_uv178"]
+[ext_resource type="Resource" uid="uid://c0ojr71i4k50b" path="res://Revamp/Mutations (2)/MutationPresets/RallyMutations/RoyalPheromones.tres" id="3_gmke8"]
+[ext_resource type="Resource" uid="uid://bk7bftdp5178x" path="res://Revamp/Mutations (2)/MutationPresets/StraightChopsMutations/MeFirst.tres" id="4_ekp1n"]
+[ext_resource type="Resource" uid="uid://cnn0fddifxool" path="res://Revamp/Mutations (2)/MutationPresets/InheritanceMutations/ColonyNest.tres" id="5_uv178"]
 
 [resource]
 script = ExtResource("2_npelr")

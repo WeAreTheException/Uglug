@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="DivergentFist" format=3 uid="uid://dcgqrr05c2pyg"]
 
-[ext_resource type="Script" uid="uid://bwweclqiu0d44" path="res://Old/Mutations/MutationBehaviourHandlers/DivergentFist.gd" id="1_le0ll"]
+[ext_resource type="Script" uid="uid://bwweclqiu0d44" path="res://Revamp/Mutations (2)/MutationBehaviourHandlers/DivergentFist.gd" id="1_le0ll"]
 [ext_resource type="Texture2D" uid="uid://clqd11vmxieme" path="res://Art/Mutations/Sigils/Final_Sigils/Persistant_Sigil.png" id="2_lb54d"]
 
 [resource]
