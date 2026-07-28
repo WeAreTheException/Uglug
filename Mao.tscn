@@ -300,9 +300,9 @@ shadow_color = Color(0.9647059, 0.48235294, 0.5176471, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_lc0u2"]
 shader = ExtResource("75_yjh5v")
-shader_parameter/grain_amount = 0.0450000021375
-shader_parameter/grain_size = 1.00000002375
-shader_parameter/grain_speed = 6.000000285
+shader_parameter/grain_amount = 0.00800000038
+shader_parameter/grain_size = 6.500000285
+shader_parameter/grain_speed = 9.0000004275
 
 [node name="Mao" type="Node2D" unique_id=550121538]
 
