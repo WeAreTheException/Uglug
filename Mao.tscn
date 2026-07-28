@@ -81,7 +81,7 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_lc0u2"]
 shader = ExtResource("75_yjh5v")
-shader_parameter/grain_amount = 0.00800000038
+shader_parameter/grain_amount = 0.006000000285
 shader_parameter/grain_size = 6.500000285
 shader_parameter/grain_speed = 9.0000004275
 
@@ -313,12 +313,10 @@ shadow_color = Color(0.9647059, 0.48235294, 0.5176471, 1)
 
 [node name="ColorRect" type="ColorRect" parent="Core" unique_id=85287759]
 material = SubResource("ShaderMaterial_lc0u2")
-offset_left = -192.0
-offset_top = -128.0
-offset_right = 1984.0
-offset_bottom = 1216.0
+offset_right = 1923.0
+offset_bottom = 1083.0
 mouse_filter = 2
-metadata/_edit_lock_ = true
+color = Color(0.291, 1.094, 0.88, 1)
 
 [node name="Deck" parent="Core" unique_id=93691211 node_paths=PackedStringArray("match_network_root", "buff_database", "player_one_hand", "player_two_hand", "worker_draw_button", "warrior_draw_button") instance=ExtResource("28_a1qt2")]
 position = Vector2(1995, 938)
