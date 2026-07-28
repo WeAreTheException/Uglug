@@ -24,13 +24,23 @@ func set_hovered_card(card: CardRoot) -> void:
 	refresh()
 
 
-func clear_hovered_card(
-	card: CardRoot = null
-) -> void:
-	if (
-		card != null
-		and hovered_card != card
-	):
+func clear_hovered_card(card = null) -> void:
+	if card == null:
+		hovered_card = null
+		refresh()
+		return
+
+	if not is_instance_valid(card):
+		if not _has_valid_hovered_card():
+			refresh()
+
+		return
+
+	if not _has_valid_hovered_card():
+		refresh()
+		return
+
+	if hovered_card != card:
 		return
 
 	hovered_card = null

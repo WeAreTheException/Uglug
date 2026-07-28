@@ -57,6 +57,7 @@
 [ext_resource type="Script" uid="uid://cy3sful3ggumm" path="res://Revamp/Multiplayer/LocalGameplayReferenceBinder.gd" id="66_5j00x"]
 [ext_resource type="Script" uid="uid://con1w5rh38kav" path="res://Revamp/Multiplayer/MatchNetworkBuff.gd" id="67_gfrq6"]
 [ext_resource type="Script" uid="uid://4awjofgv2dfc" path="res://Revamp/Multiplayer/MatchNetworkFlow.gd" id="68_8hx3r"]
+[ext_resource type="Script" uid="uid://dxl7h3q16ytwa" path="res://MatchPhaseTimerLabel.gd" id="68_lc0u2"]
 [ext_resource type="Script" uid="uid://dla1car1yk1pm" path="res://Revamp/MatchUI/UICard/MatchPhaseUI.gd" id="69_lc0u2"]
 [ext_resource type="Script" uid="uid://coo0pgldjiw6w" path="res://Revamp/Multiplayer/MatchPhaseTimer.gd" id="73_fk48e"]
 [ext_resource type="Script" uid="uid://00f6bgoq0mgc" path="res://Revamp/Multiplayer/MatchNetworkAttack.gd" id="73_nc85t"]
@@ -936,7 +937,7 @@ offset_top = 567.0
 offset_right = 392.0
 offset_bottom = 654.0
 
-[node name="TimeLabel" type="Label" parent="UICard/CardPanel/EndButton" unique_id=615588424]
+[node name="TimeLabel" type="Label" parent="UICard/CardPanel/EndButton" unique_id=615588424 node_paths=PackedStringArray("phase_timer")]
 layout_mode = 0
 offset_top = -21.0
 offset_right = 362.0
@@ -946,6 +947,8 @@ theme_override_font_sizes/font_size = 48
 text = "1:00"
 label_settings = SubResource("LabelSettings_omgbn")
 horizontal_alignment = 1
+script = ExtResource("68_lc0u2")
+phase_timer = NodePath("../../../../Multiplayer/MatchPhaseTimer")
 
 [node name="Warrior" type="Button" parent="UICard" unique_id=1084204723]
 layout_mode = 0
@@ -1475,3 +1478,4 @@ offset_top = -128.0
 offset_right = 1984.0
 offset_bottom = 1216.0
 mouse_filter = 2
+metadata/_edit_lock_ = true
