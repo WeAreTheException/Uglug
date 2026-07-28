@@ -12,12 +12,14 @@ signal mutation_death_finished(runtime: MutationRuntime)
 
 var owner_card: CardRoot = null
 var mutation_runtimes: Array[MutationRuntime] = []
+var next_runtime_network_id: int = 0
 
 
 func setup_from_data(data: CardData, new_owner_card: CardRoot) -> void:
 	owner_card = new_owner_card
 	_clear_runtime_connections()
 	mutation_runtimes.clear()
+	next_runtime_network_id = 0
 
 	if data == null:
 		mutations_changed.emit()
@@ -66,7 +68,12 @@ func add_mutation(
 		return false
 
 	var runtime := MutationRuntime.new()
-	runtime.setup(mutation, target_card)
+	runtime.setup(
+		mutation,
+		target_card,
+		next_runtime_network_id
+	)
+	next_runtime_network_id += 1
 	runtime.is_base_mutation = is_base
 
 	_connect_runtime(runtime)
@@ -83,6 +90,38 @@ func remove_runtime(runtime: MutationRuntime) -> void:
 	_disconnect_runtime(runtime)
 	mutation_runtimes.erase(runtime)
 	mutations_changed.emit()
+
+
+func find_runtime_by_network_id(
+	network_runtime_id: int
+) -> MutationRuntime:
+	for runtime in mutation_runtimes:
+		if runtime == null:
+			continue
+
+		if runtime.get_network_runtime_id() == network_runtime_id:
+			return runtime
+
+	return null
+
+
+func find_runtime_by_mutation_id(
+	mutation_id: String
+) -> MutationRuntime:
+	if mutation_id.strip_edges() == "":
+		return null
+
+	for runtime in mutation_runtimes:
+		if runtime == null:
+			continue
+
+		if runtime.mutation == null:
+			continue
+
+		if runtime.mutation.get_safe_mutation_id() == mutation_id:
+			return runtime
+
+	return null
 
 
 func get_all_runtimes() -> Array[MutationRuntime]:

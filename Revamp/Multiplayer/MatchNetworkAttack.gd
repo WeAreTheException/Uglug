@@ -5,10 +5,60 @@ class_name MatchNetworkAttack
 
 var root: MatchNetworkRoot = null
 var connected_death_handlers: Array[Die] = []
+var connected_mutation_runtimes: Array[MutationRuntime] = []
+var combat_mutation_sync_active: bool = false
 
 
 func setup(source_root: MatchNetworkRoot) -> void:
 	root = source_root
+
+
+func begin_combat_mutation_sync() -> void:
+	if root == null:
+		return
+
+	if not root.is_host():
+		return
+
+	combat_mutation_sync_active = true
+	refresh_combat_mutation_sync_connections()
+
+
+func end_combat_mutation_sync() -> void:
+	combat_mutation_sync_active = false
+	_disconnect_all_mutation_runtime_signals()
+
+
+func refresh_combat_mutation_sync_connections() -> void:
+	if not combat_mutation_sync_active:
+		return
+
+	if root == null:
+		return
+
+	if not root.is_host():
+		return
+
+	if root.slots_root == null:
+		return
+
+	for slot in root.slots_root.get_all_slots():
+		if slot == null:
+			continue
+
+		var card := slot.current_card
+
+		if card == null:
+			continue
+
+		if not is_instance_valid(card):
+			continue
+
+		if card.mutations == null:
+			continue
+
+		for runtime in card.mutations.get_all_runtimes():
+			_connect_mutation_runtime_signals(runtime)
 
 
 func build_attack_payload(
@@ -71,6 +121,12 @@ func run_confirmed_attack(payload: Dictionary) -> void:
 	if card.attack == null:
 		print("CONFIRMED ATTACK FAILED: attack missing")
 		return
+
+	if root.is_host():
+		if not combat_mutation_sync_active:
+			begin_combat_mutation_sync()
+		else:
+			refresh_combat_mutation_sync_connections()
 
 	_connect_attack_signals(card.attack)
 	_connect_board_death_signals()
@@ -170,6 +226,327 @@ func is_valid_attack_payload(
 	if print_debug:
 		print("ATTACK VALIDATION PASSED: ", payload)
 	return true
+
+
+func _connect_mutation_runtime_signals(
+	runtime: MutationRuntime
+) -> void:
+	if runtime == null:
+		return
+
+	if connected_mutation_runtimes.has(runtime):
+		return
+
+	if not runtime.visual_triggered.is_connected(
+		_on_mutation_visual_triggered
+	):
+		runtime.visual_triggered.connect(
+			_on_mutation_visual_triggered
+		)
+
+	if not runtime.visual_active_changed.is_connected(
+		_on_mutation_visual_active_changed
+	):
+		runtime.visual_active_changed.connect(
+			_on_mutation_visual_active_changed
+		)
+
+	if not runtime.runtime_state_changed.is_connected(
+		_on_mutation_runtime_state_changed
+	):
+		runtime.runtime_state_changed.connect(
+			_on_mutation_runtime_state_changed
+		)
+
+	connected_mutation_runtimes.append(runtime)
+
+	if runtime.is_visual_active:
+		_broadcast_mutation_visual_active_changed(
+			runtime,
+			true
+		)
+
+
+func _disconnect_all_mutation_runtime_signals() -> void:
+	for runtime in connected_mutation_runtimes:
+		if runtime == null:
+			continue
+
+		if not is_instance_valid(runtime):
+			continue
+
+		if runtime.visual_triggered.is_connected(
+			_on_mutation_visual_triggered
+		):
+			runtime.visual_triggered.disconnect(
+				_on_mutation_visual_triggered
+			)
+
+		if runtime.visual_active_changed.is_connected(
+			_on_mutation_visual_active_changed
+		):
+			runtime.visual_active_changed.disconnect(
+				_on_mutation_visual_active_changed
+			)
+
+		if runtime.runtime_state_changed.is_connected(
+			_on_mutation_runtime_state_changed
+		):
+			runtime.runtime_state_changed.disconnect(
+				_on_mutation_runtime_state_changed
+			)
+
+	connected_mutation_runtimes.clear()
+
+
+func _on_mutation_visual_triggered(
+	runtime: MutationRuntime,
+	duration: float
+) -> void:
+	if root == null:
+		return
+
+	if not root.is_host():
+		return
+
+	var payload := _build_mutation_runtime_payload(runtime)
+
+	if payload.is_empty():
+		return
+
+	payload["duration"] = duration
+
+	GDSync.call_func_all(
+		root._receive_mutation_visual_triggered,
+		payload
+	)
+
+
+func _on_mutation_visual_active_changed(
+	runtime: MutationRuntime,
+	is_visual_active: bool
+) -> void:
+	_broadcast_mutation_visual_active_changed(
+		runtime,
+		is_visual_active
+	)
+
+
+func _broadcast_mutation_visual_active_changed(
+	runtime: MutationRuntime,
+	is_visual_active: bool
+) -> void:
+	if root == null:
+		return
+
+	if not root.is_host():
+		return
+
+	var payload := _build_mutation_runtime_payload(runtime)
+
+	if payload.is_empty():
+		return
+
+	payload["is_visual_active"] = is_visual_active
+
+	GDSync.call_func_all(
+		root._receive_mutation_visual_active_changed,
+		payload
+	)
+
+
+func _on_mutation_runtime_state_changed(
+	runtime: MutationRuntime
+) -> void:
+	if root == null:
+		return
+
+	if not root.is_host():
+		return
+
+	var payload := _build_mutation_runtime_payload(runtime)
+
+	if payload.is_empty():
+		return
+
+	payload["state"] = int(runtime.state)
+	payload["removal_delay"] = runtime.get_pending_removal_delay()
+
+	GDSync.call_func_all(
+		root._receive_mutation_runtime_state,
+		payload
+	)
+
+
+func _build_mutation_runtime_payload(
+	runtime: MutationRuntime
+) -> Dictionary:
+	if runtime == null:
+		return {}
+
+	if runtime.owner_card == null:
+		return {}
+
+	if not is_instance_valid(runtime.owner_card):
+		return {}
+
+	var mutation_id := ""
+
+	if runtime.mutation != null:
+		mutation_id = runtime.mutation.get_safe_mutation_id()
+
+	return {
+		"card_runtime_id": runtime.owner_card.get_runtime_id(),
+		"mutation_runtime_id": runtime.get_network_runtime_id(),
+		"mutation_id": mutation_id
+	}
+
+
+func receive_mutation_visual_triggered(
+	payload: Dictionary
+) -> void:
+	if print_debug:
+		print("MUTATION VISUAL TRIGGER RECEIVED: ", payload)
+
+	if root == null:
+		return
+
+	if root.is_host():
+		return
+
+	var runtime := _find_mutation_runtime_from_payload(payload)
+
+	if runtime == null:
+		print("MUTATION VISUAL TRIGGER FAILED: runtime missing")
+		return
+
+	runtime.trigger_visual(
+		float(payload.get("duration", 0.35))
+	)
+
+
+func receive_mutation_visual_active_changed(
+	payload: Dictionary
+) -> void:
+	if print_debug:
+		print("MUTATION VISUAL ACTIVE RECEIVED: ", payload)
+
+	if root == null:
+		return
+
+	if root.is_host():
+		return
+
+	var runtime := _find_mutation_runtime_from_payload(payload)
+
+	if runtime == null:
+		print("MUTATION VISUAL ACTIVE FAILED: runtime missing")
+		return
+
+	runtime.set_visual_active(
+		bool(payload.get("is_visual_active", false))
+	)
+
+
+func receive_mutation_runtime_state(
+	payload: Dictionary
+) -> void:
+	if print_debug:
+		print("MUTATION RUNTIME STATE RECEIVED: ", payload)
+
+	if root == null:
+		return
+
+	if root.is_host():
+		return
+
+	var runtime := _find_mutation_runtime_from_payload(payload)
+
+	if runtime == null:
+		print("MUTATION RUNTIME STATE FAILED: runtime missing")
+		return
+
+	var state_value: int = int(
+		payload.get(
+			"state",
+			MutationRuntime.RuntimeState.ACTIVE
+		)
+	)
+
+	match state_value:
+		MutationRuntime.RuntimeState.ACTIVE:
+			runtime.reactivate()
+
+		MutationRuntime.RuntimeState.CONSUMED:
+			var removal_delay := float(
+				payload.get("removal_delay", 0.0)
+			)
+
+			if removal_delay > 0.0:
+				# Guarantees the consumed sigil flashes even if network
+				# delivery order differs between the trigger and state calls.
+				runtime.trigger_visual(removal_delay)
+				runtime.consume_after_visual(removal_delay)
+			else:
+				runtime.consume()
+
+		MutationRuntime.RuntimeState.DISABLED:
+			runtime.disable()
+
+		MutationRuntime.RuntimeState.EXPIRED:
+			runtime.expire()
+
+
+func _find_mutation_runtime_from_payload(
+	payload: Dictionary
+) -> MutationRuntime:
+	if root == null:
+		return null
+
+	var card_runtime_id: String = payload.get(
+		"card_runtime_id",
+		""
+	)
+
+	if card_runtime_id.strip_edges() == "":
+		return null
+
+	var card: CardRoot = null
+
+	if root.slots_root != null:
+		card = root.slots_root.find_card_by_runtime_id(
+			card_runtime_id
+		)
+
+	if card == null:
+		card = root.find_card_anywhere(card_runtime_id)
+
+	if card == null:
+		return null
+
+	if card.mutations == null:
+		return null
+
+	var mutation_runtime_id: int = int(
+		payload.get("mutation_runtime_id", -1)
+	)
+
+	if mutation_runtime_id >= 0:
+		var runtime := card.mutations.find_runtime_by_network_id(
+			mutation_runtime_id
+		)
+
+		if runtime != null:
+			return runtime
+
+	var mutation_id: String = payload.get(
+		"mutation_id",
+		""
+	)
+
+	return card.mutations.find_runtime_by_mutation_id(
+		mutation_id
+	)
 
 
 func _connect_attack_signals(attack: Attack) -> void:

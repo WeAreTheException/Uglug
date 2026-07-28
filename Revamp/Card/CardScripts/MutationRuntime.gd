@@ -16,6 +16,7 @@ signal removal_requested(runtime: MutationRuntime)
 @export var mutation: Mutation
 
 var owner_card: CardRoot = null
+var network_runtime_id: int = -1
 
 var state: RuntimeState = RuntimeState.ACTIVE
 
@@ -33,11 +34,17 @@ var is_visual_active: bool = false
 
 var active_visual_sources: Dictionary = {}
 var has_requested_removal: bool = false
+var pending_removal_delay: float = 0.0
 
 
-func setup(new_mutation: Mutation, new_owner_card: CardRoot) -> void:
+func setup(
+	new_mutation: Mutation,
+	new_owner_card: CardRoot,
+	new_network_runtime_id: int = -1
+) -> void:
 	mutation = new_mutation
 	owner_card = new_owner_card
+	network_runtime_id = new_network_runtime_id
 
 	state = RuntimeState.ACTIVE
 	is_active = true
@@ -51,6 +58,15 @@ func setup(new_mutation: Mutation, new_owner_card: CardRoot) -> void:
 	is_visual_active = false
 	active_visual_sources.clear()
 	has_requested_removal = false
+	pending_removal_delay = 0.0
+
+
+func get_network_runtime_id() -> int:
+	return network_runtime_id
+
+
+func get_pending_removal_delay() -> float:
+	return pending_removal_delay
 
 
 func can_use() -> bool:
@@ -139,6 +155,7 @@ func consume() -> void:
 	if state == RuntimeState.CONSUMED:
 		return
 
+	pending_removal_delay = 0.0
 	state = RuntimeState.CONSUMED
 	is_active = false
 	is_greyed_out = true
@@ -151,12 +168,6 @@ func consume_after_visual(duration_override: float = -1.0) -> void:
 	if state == RuntimeState.CONSUMED:
 		return
 
-	state = RuntimeState.CONSUMED
-	is_active = false
-	is_greyed_out = false
-	clear_active_visual_sources()
-	runtime_state_changed.emit(self)
-
 	var duration := duration_override
 
 	if duration < 0.0:
@@ -165,17 +176,25 @@ func consume_after_visual(duration_override: float = -1.0) -> void:
 		if mutation != null:
 			duration = mutation.activation_outline_duration
 
+	pending_removal_delay = maxf(duration, 0.0)
+	state = RuntimeState.CONSUMED
+	is_active = false
+	is_greyed_out = false
+	clear_active_visual_sources()
+	runtime_state_changed.emit(self)
+
 	var tree := _get_owner_tree()
 
-	if tree == null or duration <= 0.0:
+	if tree == null or pending_removal_delay <= 0.0:
 		_request_removal()
 		return
 
-	var timer := tree.create_timer(duration)
+	var timer := tree.create_timer(pending_removal_delay)
 	timer.timeout.connect(_request_removal)
 
 
 func disable() -> void:
+	pending_removal_delay = 0.0
 	state = RuntimeState.DISABLED
 	is_active = false
 	is_greyed_out = true
@@ -184,6 +203,7 @@ func disable() -> void:
 
 
 func expire() -> void:
+	pending_removal_delay = 0.0
 	state = RuntimeState.EXPIRED
 	is_active = false
 	is_greyed_out = true
@@ -196,6 +216,7 @@ func deactivate() -> void:
 
 
 func reactivate() -> void:
+	pending_removal_delay = 0.0
 	state = RuntimeState.ACTIVE
 	is_active = true
 	is_greyed_out = false

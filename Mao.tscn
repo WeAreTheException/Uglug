@@ -754,6 +754,7 @@ print_debug = true
 
 [node name="MatchNetworkAttack" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=979088000]
 script = ExtResource("73_nc85t")
+print_debug = null
 
 [node name="MatchNetworkTimer" type="Node" parent="Multiplayer/MatchNetworkRoot" unique_id=2113443062]
 script = ExtResource("74_c8bx1")

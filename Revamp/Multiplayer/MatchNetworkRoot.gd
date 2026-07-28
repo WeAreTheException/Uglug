@@ -62,6 +62,9 @@ func _ready() -> void:
 	GDSync.expose_func(_receive_attack_sequence_finished)
 	GDSync.expose_func(_receive_card_died)
 	GDSync.expose_func(_receive_card_stats_snapshot)
+	GDSync.expose_func(_receive_mutation_visual_triggered)
+	GDSync.expose_func(_receive_mutation_visual_active_changed)
+	GDSync.expose_func(_receive_mutation_runtime_state)
 	GDSync.expose_func(_receive_confirmed_score_change)
 	GDSync.expose_func(_receive_confirmed_match_winner)
 	GDSync.expose_func(request_debug_snapshot_compare)
@@ -345,6 +348,12 @@ func _on_match_state_changed(
 	if not is_host():
 		return
 
+	if attack_network != null:
+		if state == MatchFlowRoot.MatchState.COMBAT:
+			attack_network.begin_combat_mutation_sync()
+		else:
+			attack_network.end_combat_mutation_sync()
+
 	if state == MatchFlowRoot.MatchState.BUFF:
 		if buff_network != null:
 			buff_network.on_buff_phase_started()
@@ -589,6 +598,33 @@ func _receive_card_stats_snapshot(
 		return
 
 	attack_network.receive_card_stats_snapshot(payload)
+
+
+func _receive_mutation_visual_triggered(
+	payload: Dictionary
+) -> void:
+	if attack_network == null:
+		return
+
+	attack_network.receive_mutation_visual_triggered(payload)
+
+
+func _receive_mutation_visual_active_changed(
+	payload: Dictionary
+) -> void:
+	if attack_network == null:
+		return
+
+	attack_network.receive_mutation_visual_active_changed(payload)
+
+
+func _receive_mutation_runtime_state(
+	payload: Dictionary
+) -> void:
+	if attack_network == null:
+		return
+
+	attack_network.receive_mutation_runtime_state(payload)
 
 
 func request_score_damage(
