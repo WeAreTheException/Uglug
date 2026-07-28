@@ -57,8 +57,10 @@
 [ext_resource type="Script" uid="uid://dsut7kstdcc6u" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementInputRouter.gd" id="57_7jrky"]
 [ext_resource type="Script" uid="uid://6ycktn6tay80" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementPreview.gd" id="58_8i37d"]
 [ext_resource type="Script" uid="uid://yc6i5trydgut" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementExecutor.gd" id="59_cc2nt"]
+[ext_resource type="Texture2D" uid="uid://bqud7qvy0g2kq" path="res://Art/ArrowLeft.png" id="60_h76ad"]
 [ext_resource type="Script" uid="uid://c18hwqs033t7x" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementEventEmitter.gd" id="60_vmvxe"]
 [ext_resource type="Script" uid="uid://cmcxm3mp7ljvv" path="res://Revamp/PlayPhase/Placement/PlacementScripts/PlacementCancel.gd" id="61_s0fcy"]
+[ext_resource type="Texture2D" uid="uid://cceewxc18x27w" path="res://Art/ArrowRight.png" id="61_sw8u3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vtd1f"]
 bg_color = Color(0.86036915, 0.8603692, 0.8603691, 1)
@@ -544,3 +546,12 @@ position = Vector2(-640, -192)
 [node name="Node" type="Node" parent="." unique_id=951332260]
 
 [node name="Node2D" type="Node2D" parent="." unique_id=457746046]
+
+[node name="ArrowLeft" type="Sprite2D" parent="." unique_id=920667551]
+position = Vector2(-96, -488)
+texture = ExtResource("60_h76ad")
+
+[node name="ArrowRight" type="Sprite2D" parent="." unique_id=1691873846]
+visible = false
+position = Vector2(-32, -488)
+texture = ExtResource("61_sw8u3")
