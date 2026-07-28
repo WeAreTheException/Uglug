@@ -29,7 +29,6 @@
 [ext_resource type="Resource" uid="uid://njutef00oac8" path="res://Revamp/Mutations (2)/MutationPresets/InvestmentMutations/LifeSteal.tres" id="26_mau0q"]
 [ext_resource type="Resource" uid="uid://c0ojr71i4k50b" path="res://Revamp/Mutations (2)/MutationPresets/RallyMutations/RoyalPheromones.tres" id="27_bgvc2"]
 [ext_resource type="Resource" uid="uid://cyutbyh2av6iv" path="res://Revamp/Mutations (2)/MutationPresets/RallyMutations/SteroidDealer.tres" id="28_hadmy"]
-[ext_resource type="Resource" uid="uid://c0cebfc5tmmng" path="res://Revamp/Mutations (2)/MutationPresets/RallyMutations/SteroidMaxxing.tres" id="29_qwfmp"]
 [ext_resource type="Resource" uid="uid://d6umheqx0qia" path="res://Revamp/Mutations (2)/MutationPresets/RetaliationMutations/IDieYouDie.tres" id="30_3yxxd"]
 [ext_resource type="Resource" uid="uid://dko3ngpbogrv1" path="res://Revamp/Mutations (2)/MutationPresets/RetaliationMutations/Spiky.tres" id="31_nmpo0"]
 [ext_resource type="Resource" uid="uid://bs6mfmdmm2uj6" path="res://Revamp/Mutations (2)/MutationPresets/StraightChopsMutations/DirectAttack.tres" id="32_18ybt"]
@@ -388,7 +387,7 @@ print_debug = false
 
 [node name="BuffDatabase" type="Node" parent="Scripts/Core/Evolution" unique_id=1175133697]
 script = ExtResource("21_ecfkv")
-buff_pool = Array[ExtResource("22_kl8rq")]([ExtResource("23_v4ffl"), ExtResource("24_606vl"), ExtResource("25_k4iwb"), ExtResource("26_mau0q"), ExtResource("27_bgvc2"), ExtResource("28_hadmy"), ExtResource("29_qwfmp"), ExtResource("30_3yxxd"), ExtResource("31_nmpo0"), ExtResource("32_18ybt"), ExtResource("33_67vk2"), ExtResource("34_hbufb"), ExtResource("35_e1fho"), ExtResource("36_wpvsu"), ExtResource("37_8udkp"), ExtResource("20_c13w5"), ExtResource("38_jin63")])
+buff_pool = Array[ExtResource("22_kl8rq")]([ExtResource("23_v4ffl"), ExtResource("24_606vl"), ExtResource("25_k4iwb"), ExtResource("26_mau0q"), ExtResource("27_bgvc2"), ExtResource("28_hadmy"), ExtResource("30_3yxxd"), ExtResource("31_nmpo0"), ExtResource("32_18ybt"), ExtResource("33_67vk2"), ExtResource("34_hbufb"), ExtResource("35_e1fho"), ExtResource("36_wpvsu"), ExtResource("37_8udkp"), ExtResource("20_c13w5"), ExtResource("38_jin63")])
 print_debug = false
 run_smoke_test_on_ready = false
 

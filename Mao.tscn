@@ -3,7 +3,11 @@
 [ext_resource type="PackedScene" uid="uid://bw8c7m7n5yuk8" path="res://Revamp/Board/Slots.tscn" id="1_yq750"]
 [ext_resource type="PackedScene" uid="uid://1wr1e57v7trd" path="res://Revamp/PlayerHand/Player_Hand.tscn" id="2_mi1n2"]
 [ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Revamp/Mutations (2)/MutationBehaviourHandlers/Mutation.gd" id="3_3vc3c"]
+[ext_resource type="Resource" uid="uid://b10yu2ml8hwx2" path="res://Revamp/CardPresets/Stimulant.tres" id="3_7f3b3"]
+[ext_resource type="Resource" uid="uid://b1dt5378u5ga8" path="res://Revamp/CardPresets/Guardiant.tres" id="3_c8bx1"]
+[ext_resource type="Script" uid="uid://duslcpxrhurv8" path="res://Old/Data/CardData.gd" id="4_nc85t"]
 [ext_resource type="Script" uid="uid://8nr6ngjl24kj" path="res://Revamp/MatchFlow/MatchAutoAdvanceHandler.gd" id="6_lc0u2"]
+[ext_resource type="Texture2D" uid="uid://chdko376katyy" path="res://Art/Ants/Rhinocerant.PNG" id="6_nc85t"]
 [ext_resource type="Script" uid="uid://61l5g8wkdar3" path="res://SacrificeController.gd" id="10_1j514"]
 [ext_resource type="Script" uid="uid://db4xai716j06p" path="res://Revamp/Card/CardActions/Sacrifice/SacrificeSelectionRoot.gd" id="11_5f7hr"]
 [ext_resource type="Script" uid="uid://ciopi88keoi3k" path="res://SacrificeRequirement.gd" id="11_at0h8"]
@@ -41,7 +45,6 @@
 [ext_resource type="Script" uid="uid://c5j44dhlx1div" path="res://Revamp/DirectDamage/MatchScoreState.gd" id="31_3a8w1"]
 [ext_resource type="Resource" uid="uid://b4sniy31fo50g" path="res://Revamp/Mutations (2)/MutationPresets/StraightChopsMutations/TouchOfDeath.tres" id="31_cxut3"]
 [ext_resource type="Resource" uid="uid://cnn0fddifxool" path="res://Revamp/Mutations (2)/MutationPresets/InheritanceMutations/ColonyNest.tres" id="32_o7028"]
-[ext_resource type="Resource" uid="uid://c0cebfc5tmmng" path="res://Revamp/Mutations (2)/MutationPresets/RallyMutations/SteroidMaxxing.tres" id="33_qct7y"]
 [ext_resource type="Script" uid="uid://cn5xfv13wsg1x" path="res://Revamp/MatchFlow/PostGameTransitionHandler.gd" id="34_f3uds"]
 [ext_resource type="Resource" uid="uid://c0ojr71i4k50b" path="res://Revamp/Mutations (2)/MutationPresets/RallyMutations/RoyalPheromones.tres" id="34_fk48e"]
 [ext_resource type="Script" uid="uid://cau0ky5b3kabf" path="res://Revamp/Board/AttackAnticipationFeedbackHandler.gd" id="35_wop7f"]
@@ -75,6 +78,17 @@
 [ext_resource type="Script" uid="uid://bnbuh7nx3k3f2" path="res://Revamp/Multiplayer/MatchNetworkDebugSync.gd" id="81_o7028"]
 [ext_resource type="Script" uid="uid://cm3y3rl7340r8" path="res://Revamp/MutationTooltTip/MutationTooltipCoordinator.gd" id="85_sxqap"]
 [ext_resource type="Script" uid="uid://r2w6wt88c7f1" path="res://Revamp/ScoreBaord/MatchScoreBoard.gd" id="87_lcv7c"]
+
+[sub_resource type="Resource" id="Resource_c8bx1"]
+script = ExtResource("4_nc85t")
+card_id = "penetrant"
+name = "Penetrant"
+rarity = 2
+attack = 3
+health = 3
+ant_texture = ExtResource("6_nc85t")
+base_mutations = Array[ExtResource("3_3vc3c")]([ExtResource("26_lc0u2"), ExtResource("23_uv74c")])
+metadata/_custom_type_script = "uid://duslcpxrhurv8"
 
 [sub_resource type="LabelSettings" id="LabelSettings_lc0u2"]
 line_spacing = 0.0
@@ -300,10 +314,13 @@ worker_draw_button = NodePath("../../UICard/Worker")
 warrior_draw_button = NodePath("../../UICard/Warrior")
 
 [node name="Board" parent="Core" unique_id=1318716624 node_paths=PackedStringArray("direct_damage_router") instance=ExtResource("1_yq750")]
+player_slot_1_card = ExtResource("3_7f3b3")
+opponent_slot_1_card = ExtResource("3_c8bx1")
 direct_damage_router = NodePath("../../Scripts/Core/DirectDamageRouter")
 
 [node name="PlayerHAnd" parent="Core" unique_id=371738706 instance=ExtResource("2_mi1n2")]
 position = Vector2(768, 896)
+starting_cards = Array[ExtResource("4_nc85t")]([SubResource("Resource_c8bx1"), null, null, null])
 
 [node name="OpponenetHAnd" parent="Core" unique_id=1415383407 instance=ExtResource("2_mi1n2")]
 position = Vector2(768.00006, 896.00006)
@@ -369,7 +386,7 @@ script = ExtResource("31_3a8w1")
 [node name="PostGameTransitionHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=327167645 node_paths=PackedStringArray("match_flow_root")]
 script = ExtResource("34_f3uds")
 match_flow_root = NodePath("..")
-post_game_scene_path = "uid://bhhfwt6y6l505"
+post_game_scene_path = "uid://bhqj6mqf1rn54"
 
 [node name="AttackAnticipationFeedbackHandler" type="Node" parent="Scripts/MatchFlowRoot" unique_id=1452981444 node_paths=PackedStringArray("match_flow_root", "turn_order_state", "match_network_root")]
 script = ExtResource("35_wop7f")
@@ -412,7 +429,7 @@ print_debug = false
 
 [node name="BuffDatabase" type="Node" parent="Scripts/Core/Evolution" unique_id=1175133697]
 script = ExtResource("38_i8ogu")
-buff_pool = Array[ExtResource("3_3vc3c")]([ExtResource("27_af7hx"), ExtResource("40_2ph70"), ExtResource("23_uv74c"), ExtResource("24_fk48e"), ExtResource("25_yjh5v"), ExtResource("26_lc0u2"), ExtResource("27_nc85t"), ExtResource("28_c8bx1"), ExtResource("29_7f3b3"), ExtResource("30_63uau"), ExtResource("31_cxut3"), ExtResource("32_o7028"), ExtResource("29_7f3b3"), ExtResource("33_qct7y"), ExtResource("34_fk48e"), null])
+buff_pool = Array[ExtResource("3_3vc3c")]([ExtResource("27_af7hx"), ExtResource("40_2ph70"), ExtResource("23_uv74c"), ExtResource("24_fk48e"), ExtResource("25_yjh5v"), ExtResource("26_lc0u2"), ExtResource("27_nc85t"), ExtResource("28_c8bx1"), ExtResource("29_7f3b3"), ExtResource("30_63uau"), ExtResource("31_cxut3"), ExtResource("32_o7028"), ExtResource("29_7f3b3"), ExtResource("34_fk48e")])
 print_debug = false
 run_smoke_test_on_ready = false
 

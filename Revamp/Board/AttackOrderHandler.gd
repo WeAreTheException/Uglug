@@ -56,7 +56,10 @@ func run_attack_order(slot_owner: SlotRow.SlotOwner) -> void:
 		if stop_requested:
 			break
 
-		var card: CardRoot = _get_valid_card_from_entry(entry, slot_owner)
+		var card: CardRoot = _get_valid_card_from_entry(
+			entry,
+			slot_owner
+		)
 
 		if card == null:
 			continue
@@ -71,14 +74,93 @@ func request_stop() -> void:
 	stop_requested = true
 
 
-func get_left_to_right(slot_owner: SlotRow.SlotOwner) -> bool:
+func get_left_to_right(
+	slot_owner: SlotRow.SlotOwner
+) -> bool:
 	if slot_owner == SlotRow.SlotOwner.OPPONENT:
 		return opponent_left_to_right
 
 	return player_left_to_right
 
 
-func _build_attack_entries(slot_owner: SlotRow.SlotOwner) -> Array[Dictionary]:
+func get_attack_cards_in_order(
+	slot_owner: SlotRow.SlotOwner
+) -> Array[CardRoot]:
+	var cards: Array[CardRoot] = []
+
+	if slots_root == null:
+		return cards
+
+	var entries := _build_attack_entries(slot_owner)
+	_sort_attack_entries(entries, slot_owner)
+
+	for entry in entries:
+		var card := _get_valid_card_from_entry(
+			entry,
+			slot_owner
+		)
+
+		if card != null:
+			cards.append(card)
+
+	return cards
+
+
+func get_global_attack_entries_in_order(
+	first_owner: SlotRow.SlotOwner,
+	second_owner: SlotRow.SlotOwner
+) -> Array[Dictionary]:
+	var global_entries: Array[Dictionary] = []
+
+	if slots_root == null:
+		return global_entries
+
+	var first_owner_entries := _build_attack_entries(
+		first_owner
+	)
+
+	var second_owner_entries := _build_attack_entries(
+		second_owner
+	)
+
+	for entry in first_owner_entries:
+		var global_entry: Dictionary = entry.duplicate()
+
+		global_entry["owner"] = first_owner
+		global_entry["owner_order"] = 0
+
+		global_entries.append(global_entry)
+
+	for entry in second_owner_entries:
+		var global_entry: Dictionary = entry.duplicate()
+
+		global_entry["owner"] = second_owner
+		global_entry["owner_order"] = 1
+
+		global_entries.append(global_entry)
+
+	_sort_global_attack_entries(global_entries)
+
+	return global_entries
+
+
+func get_valid_card_from_global_entry(
+	entry: Dictionary
+) -> CardRoot:
+	if not entry.has("owner"):
+		return null
+
+	var owner: SlotRow.SlotOwner = entry["owner"]
+
+	return _get_valid_card_from_entry(
+		entry,
+		owner
+	)
+
+
+func _build_attack_entries(
+	slot_owner: SlotRow.SlotOwner
+) -> Array[Dictionary]:
 	var entries: Array[Dictionary] = []
 
 	for slot in slots_root.get_slots_for_owner(slot_owner):
@@ -131,7 +213,9 @@ func _get_valid_card_from_entry(
 	return card
 
 
-func _is_card_attack_ready(card: CardRoot) -> bool:
+func _is_card_attack_ready(
+	card: CardRoot
+) -> bool:
 	if card == null:
 		print("ATTACK READY FAILED: card null")
 		return false
@@ -141,10 +225,16 @@ func _is_card_attack_ready(card: CardRoot) -> bool:
 		return false
 
 	if card.attack == null:
-		print("ATTACK READY FAILED: attack missing | ", card.card_name)
+		print(
+			"ATTACK READY FAILED: attack missing | ",
+			card.card_name
+		)
 		return false
 
-	if card.die != null and card.die.is_unavailable_for_combat():
+	if (
+		card.die != null
+		and card.die.is_unavailable_for_combat()
+	):
 		print(
 			"ATTACK READY FAILED: unavailable | ",
 			card.card_name,
@@ -188,24 +278,66 @@ func _sort_attack_entries(
 ) -> void:
 	var left_to_right := get_left_to_right(slot_owner)
 
-	entries.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
-		var a_priority: int = a["priority"]
-		var b_priority: int = b["priority"]
+	entries.sort_custom(
+		func(
+			a: Dictionary,
+			b: Dictionary
+		) -> bool:
+			var a_priority: int = a["priority"]
+			var b_priority: int = b["priority"]
 
-		if a_priority != b_priority:
-			return a_priority > b_priority
+			if a_priority != b_priority:
+				return a_priority > b_priority
 
-		var a_slot_index: int = a["slot_index"]
-		var b_slot_index: int = b["slot_index"]
+			var a_slot_index: int = a["slot_index"]
+			var b_slot_index: int = b["slot_index"]
 
-		if left_to_right:
-			return a_slot_index < b_slot_index
+			if left_to_right:
+				return a_slot_index < b_slot_index
 
-		return a_slot_index > b_slot_index
+			return a_slot_index > b_slot_index
 	)
 
 
-func _get_attack_priority(card: CardRoot) -> int:
+func _sort_global_attack_entries(
+	entries: Array[Dictionary]
+) -> void:
+	entries.sort_custom(
+		func(
+			a: Dictionary,
+			b: Dictionary
+		) -> bool:
+			var a_priority: int = a["priority"]
+			var b_priority: int = b["priority"]
+
+			if a_priority != b_priority:
+				return a_priority > b_priority
+
+			var a_owner_order: int = a["owner_order"]
+			var b_owner_order: int = b["owner_order"]
+
+			if a_owner_order != b_owner_order:
+				return a_owner_order < b_owner_order
+
+			var a_owner: SlotRow.SlotOwner = a["owner"]
+			var b_owner: SlotRow.SlotOwner = b["owner"]
+
+			var a_slot_index: int = a["slot_index"]
+			var b_slot_index: int = b["slot_index"]
+
+			if a_owner == b_owner:
+				if get_left_to_right(a_owner):
+					return a_slot_index < b_slot_index
+
+				return a_slot_index > b_slot_index
+
+			return a_owner_order < b_owner_order
+	)
+
+
+func _get_attack_priority(
+	card: CardRoot
+) -> int:
 	if card == null:
 		return 0
 
@@ -216,20 +348,3 @@ func _get_attack_priority(card: CardRoot) -> int:
 		return 0
 
 	return card.mutations.get_attack_priority()
-
-func get_attack_cards_in_order(slot_owner: SlotRow.SlotOwner) -> Array[CardRoot]:
-	var cards: Array[CardRoot] = []
-
-	if slots_root == null:
-		return cards
-
-	var entries := _build_attack_entries(slot_owner)
-	_sort_attack_entries(entries, slot_owner)
-
-	for entry in entries:
-		var card := _get_valid_card_from_entry(entry, slot_owner)
-
-		if card != null:
-			cards.append(card)
-
-	return cards

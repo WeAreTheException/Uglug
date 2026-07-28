@@ -20,7 +20,6 @@
 [ext_resource type="Resource" uid="uid://jd5rbexi4lr4" path="res://Revamp/CardPresets/Persistant.tres" id="17_duxch"]
 [ext_resource type="Resource" uid="uid://ci7yvhc8pfst6" path="res://Revamp/CardPresets/QueenAnt.tres" id="18_bcvwf"]
 [ext_resource type="Resource" uid="uid://dwpj7bg5ognwt" path="res://Revamp/CardPresets/Samurant.tres" id="19_p88jp"]
-[ext_resource type="Resource" uid="uid://b10yu2ml8hwx2" path="res://Revamp/CardPresets/Stimulant.tres" id="20_0rd41"]
 [ext_resource type="Resource" uid="uid://cu38anwcrq117" path="res://Revamp/CardPresets/SuperStimulant.tres" id="21_qcpcq"]
 [ext_resource type="Resource" uid="uid://b1dt5378u5ga8" path="res://Revamp/CardPresets/Guardiant.tres" id="22_6ihe4"]
 
@@ -125,12 +124,6 @@ card_data = ExtResource("19_p88jp")
 amount = 2
 metadata/_custom_type_script = "uid://cjj3kdqxwkg4g"
 
-[sub_resource type="Resource" id="Resource_odsm2"]
-script = ExtResource("1_1o8w7")
-card_data = ExtResource("20_0rd41")
-amount = 2
-metadata/_custom_type_script = "uid://cjj3kdqxwkg4g"
-
 [sub_resource type="Resource" id="Resource_hvptw"]
 script = ExtResource("1_1o8w7")
 card_data = ExtResource("21_qcpcq")
@@ -146,6 +139,6 @@ metadata/_custom_type_script = "uid://cjj3kdqxwkg4g"
 script = ExtResource("2_tanvt")
 deck_id = "uglug_classic"
 display_name = "Uglug Classic"
-entries = Array[ExtResource("1_1o8w7")]([SubResource("Resource_dfkt1"), SubResource("Resource_si318"), SubResource("Resource_n8v14"), SubResource("Resource_0oyej"), SubResource("Resource_7mr5n"), SubResource("Resource_xykxr"), SubResource("Resource_hue4u"), SubResource("Resource_4pnv8"), SubResource("Resource_8s8er"), SubResource("Resource_ok2aa"), SubResource("Resource_7inav"), SubResource("Resource_k44if"), SubResource("Resource_duxch"), SubResource("Resource_bcvwf"), SubResource("Resource_p88jp"), SubResource("Resource_0rd41"), SubResource("Resource_qcpcq"), SubResource("Resource_6ihe4"), SubResource("Resource_odsm2"), SubResource("Resource_hvptw"), SubResource("Resource_3hh83")])
+entries = Array[ExtResource("1_1o8w7")]([SubResource("Resource_dfkt1"), SubResource("Resource_si318"), SubResource("Resource_n8v14"), SubResource("Resource_0oyej"), SubResource("Resource_7mr5n"), SubResource("Resource_xykxr"), SubResource("Resource_hue4u"), SubResource("Resource_4pnv8"), SubResource("Resource_8s8er"), SubResource("Resource_ok2aa"), SubResource("Resource_7inav"), SubResource("Resource_k44if"), SubResource("Resource_duxch"), SubResource("Resource_bcvwf"), SubResource("Resource_p88jp"), SubResource("Resource_0rd41"), SubResource("Resource_qcpcq"), SubResource("Resource_6ihe4"), SubResource("Resource_hvptw"), SubResource("Resource_3hh83")])
 starting_hand = ExtResource("3_106yo")
 metadata/_custom_type_script = "uid://dk3gfwlv0tpwb"
