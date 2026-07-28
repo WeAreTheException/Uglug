@@ -14,6 +14,7 @@ func modify_incoming_damage(
 	if damage <= 0:
 		return damage
 
-	runtime.deactivate()
+	runtime.trigger_visual()
+	runtime.consume_after_visual()
 
 	return 0

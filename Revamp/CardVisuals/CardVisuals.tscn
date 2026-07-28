@@ -372,12 +372,10 @@ position = Vector2(-52.500004, 96.25001)
 scale = Vector2(0.028686536, 0.028686536)
 
 [node name="SigilSlot" type="Node2D" parent="Visuals/MutationVisuals/Mutations/Mutation1" unique_id=1275122917 node_paths=PackedStringArray("sprite", "input")]
-position = Vector2(-0.00012207031, 0)
+position = Vector2(-9.683433, 1.6142135)
 script = ExtResource("15_d8086")
 sprite = NodePath("BaseSprite")
 input = NodePath("../BaseSigilInput")
-hover_outline_color = Color(0.77245206, 0.47042382, 0.6667624, 1)
-pressed_outline_color = Color(0.105882354, 0.09019608, 0.08627451, 1)
 
 [node name="BaseSprite" type="Sprite2D" parent="Visuals/MutationVisuals/Mutations/Mutation1/SigilSlot" unique_id=935391738]
 material = SubResource("ShaderMaterial_6nr3l")
@@ -400,8 +398,6 @@ scale = Vector2(0.12699999, 0.12399998)
 script = ExtResource("15_d8086")
 sprite = NodePath("Mutation2Sprite")
 input = NodePath("Mutation2Input")
-hover_outline_color = Color(0.77254903, 0.47058824, 0.6666667, 1)
-pressed_outline_color = Color(0.105882354, 0.09019608, 0.08627451, 1)
 
 [node name="Mutation2Sprite" type="Sprite2D" parent="Visuals/MutationVisuals/Mutations/Mutation2" unique_id=185873266]
 material = SubResource("ShaderMaterial_0l3ys")
@@ -425,8 +421,6 @@ scale = Vector2(0.12699999, 0.12399998)
 script = ExtResource("15_d8086")
 sprite = NodePath("Mutation3Sprite")
 input = NodePath("Mutation3Input")
-hover_outline_color = Color(0.77254903, 0.47058824, 0.6666667, 1)
-pressed_outline_color = Color(0.105882354, 0.09019608, 0.08627451, 1)
 
 [node name="Mutation3Sprite" type="Sprite2D" parent="Visuals/MutationVisuals/Mutations/Mutation3" unique_id=1469740183]
 material = SubResource("ShaderMaterial_0l3ys")

@@ -6,12 +6,12 @@ class_name Christmas
 
 
 func on_placed_context(
-	_runtime: MutationRuntime,
+	runtime: MutationRuntime,
 	card: CardRoot,
 	_slot: Slot,
 	_owner: SlotRow.SlotOwner
 ) -> void:
-	call_deferred("_draw_cards", card)
+	call_deferred("_draw_cards", runtime, card)
 
 
 func on_placed(
@@ -22,16 +22,27 @@ func on_placed(
 	pass
 
 
-func _draw_cards(card: CardRoot) -> void:
+func _draw_cards(
+	runtime: MutationRuntime,
+	card: CardRoot
+) -> void:
+	if runtime == null:
+		return
+
 	if card == null:
 		return
 
 	if not is_instance_valid(card):
 		return
 
+	if cards_to_draw <= 0:
+		return
+
 	if card.deck_system_root == null:
 		print("Christmas blocked: card.deck_system_root missing")
 		return
+
+	runtime.trigger_visual()
 
 	card.deck_system_root.draw_random_cards_from_effect_for_card_owner(
 		card,

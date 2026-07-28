@@ -6,13 +6,13 @@ class_name ColonyNest
 
 
 func on_struck_context(
-	_runtime: MutationRuntime,
+	runtime: MutationRuntime,
 	context: DamageContext
 ) -> void:
 	if context == null:
 		return
 
-	_spawn_workers(context.target_card)
+	_spawn_workers(runtime, context.target_card)
 
 
 func on_struck(
@@ -20,19 +20,28 @@ func on_struck(
 	_attacker: CardRoot,
 	_damage: int
 ) -> void:
-	_spawn_workers(card)
+	_spawn_workers(null, card)
 
 
-func _spawn_workers(card: CardRoot) -> void:
+func _spawn_workers(
+	runtime: MutationRuntime,
+	card: CardRoot
+) -> void:
 	if card == null:
 		return
 
 	if not is_instance_valid(card):
 		return
 
+	if workers_per_hit <= 0:
+		return
+
 	if card.deck_system_root == null:
 		print("ColonyNest blocked: card.deck_system_root missing")
 		return
+
+	if runtime != null:
+		runtime.trigger_visual()
 
 	card.deck_system_root.spawn_workers_from_effect_for_card_owner(
 		card,

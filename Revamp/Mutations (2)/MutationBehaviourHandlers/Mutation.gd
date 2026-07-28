@@ -13,6 +13,11 @@ enum PlacementFeedbackType {
 @export var sigil_texture: Texture2D
 @export var placement_feedback_type: PlacementFeedbackType = PlacementFeedbackType.NONE
 
+@export_group("Activation Outline")
+@export var activation_outline_color: Color = Color("#b28f6e")
+@export_range(0.01, 5.0, 0.01) var activation_outline_duration: float = 0.5
+@export_range(0.0, 64.0, 0.5) var activation_outline_thickness: float = 10.0
+
 
 func get_safe_mutation_id() -> String:
 	if mutation_name.strip_edges() == "":

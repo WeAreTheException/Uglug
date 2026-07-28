@@ -16,6 +16,7 @@ var mutation_runtimes: Array[MutationRuntime] = []
 
 func setup_from_data(data: CardData, new_owner_card: CardRoot) -> void:
 	owner_card = new_owner_card
+	_clear_runtime_connections()
 	mutation_runtimes.clear()
 
 	if data == null:
@@ -68,6 +69,7 @@ func add_mutation(
 	runtime.setup(mutation, target_card)
 	runtime.is_base_mutation = is_base
 
+	_connect_runtime(runtime)
 	mutation_runtimes.append(runtime)
 	mutations_changed.emit()
 
@@ -78,6 +80,7 @@ func remove_runtime(runtime: MutationRuntime) -> void:
 	if runtime == null:
 		return
 
+	_disconnect_runtime(runtime)
 	mutation_runtimes.erase(runtime)
 	mutations_changed.emit()
 
@@ -377,3 +380,36 @@ func _make_base_attack_step() -> AttackStep:
 	step.setup(AttackStep.FORWARD, MutationSource.BASE, null)
 
 	return step
+
+
+func _connect_runtime(runtime: MutationRuntime) -> void:
+	if runtime == null:
+		return
+
+	if not runtime.removal_requested.is_connected(
+		_on_runtime_removal_requested
+	):
+		runtime.removal_requested.connect(
+			_on_runtime_removal_requested
+		)
+
+
+func _disconnect_runtime(runtime: MutationRuntime) -> void:
+	if runtime == null:
+		return
+
+	if runtime.removal_requested.is_connected(
+		_on_runtime_removal_requested
+	):
+		runtime.removal_requested.disconnect(
+			_on_runtime_removal_requested
+		)
+
+
+func _clear_runtime_connections() -> void:
+	for runtime in mutation_runtimes:
+		_disconnect_runtime(runtime)
+
+
+func _on_runtime_removal_requested(runtime: MutationRuntime) -> void:
+	remove_runtime(runtime)

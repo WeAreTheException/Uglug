@@ -5,6 +5,16 @@ class_name YAttack
 @export var attack_right: bool = true
 
 
+func on_attack_sequence_started_context(
+	runtime: MutationRuntime,
+	_context: AttackContext
+) -> void:
+	if runtime == null:
+		return
+
+	runtime.trigger_visual()
+
+
 func replaces_base_attack_step(_runtime: MutationRuntime) -> bool:
 	return true
 

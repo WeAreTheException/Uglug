@@ -7,17 +7,18 @@ func on_damage_dealt(
 	target: CardRoot,
 	damage: int
 ) -> void:
-	await _kill_target_if_damaged(card, target, damage)
+	await _kill_target_if_damaged(null, card, target, damage)
 
 
 func on_damage_dealt_context(
-	_runtime: MutationRuntime,
+	runtime: MutationRuntime,
 	context: DamageContext
 ) -> void:
 	if context == null:
 		return
 
 	await _kill_target_if_damaged(
+		runtime,
 		context.source_card,
 		context.target_card,
 		context.actual_damage
@@ -25,6 +26,7 @@ func on_damage_dealt_context(
 
 
 func _kill_target_if_damaged(
+	runtime: MutationRuntime,
 	source_card: CardRoot,
 	target: CardRoot,
 	damage: int
@@ -43,6 +45,9 @@ func _kill_target_if_damaged(
 
 	if target.die == null:
 		return
+
+	if runtime != null:
+		runtime.trigger_visual()
 
 	var death_context := DeathContext.new()
 	death_context.setup(

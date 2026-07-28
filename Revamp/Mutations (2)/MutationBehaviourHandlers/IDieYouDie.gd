@@ -3,13 +3,13 @@ class_name IDieYouDie
 
 
 func on_death_started_context(
-	_runtime: MutationRuntime,
+	runtime: MutationRuntime,
 	context: DeathContext
 ) -> void:
 	if context == null:
 		return
 
-	await _kill_opposing_card(context.dead_card, context)
+	await _kill_opposing_card(runtime, context.dead_card, context)
 
 
 func on_death(_card: CardRoot) -> void:
@@ -17,9 +17,13 @@ func on_death(_card: CardRoot) -> void:
 
 
 func _kill_opposing_card(
+	runtime: MutationRuntime,
 	dead_card: CardRoot,
 	source_context: DeathContext
 ) -> void:
+	if runtime == null:
+		return
+
 	if dead_card == null:
 		return
 
@@ -58,6 +62,8 @@ func _kill_opposing_card(
 
 	if opposing_card.die.is_unavailable_for_combat():
 		return
+
+	runtime.trigger_visual()
 
 	var death_context := DeathContext.new()
 	death_context.setup(

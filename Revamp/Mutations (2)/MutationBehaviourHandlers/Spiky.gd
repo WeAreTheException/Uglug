@@ -9,14 +9,18 @@ func on_damaged(
 	attacker: CardRoot,
 	damage: int
 ) -> void:
-	await _counter_attack(card, attacker, damage)
+	await _counter_attack(null, card, attacker, damage)
 
 
-func on_damaged_context(_runtime: MutationRuntime, context: DamageContext) -> void:
+func on_damaged_context(
+	runtime: MutationRuntime,
+	context: DamageContext
+) -> void:
 	if context == null:
 		return
 
 	await _counter_attack(
+		runtime,
 		context.target_card,
 		context.source_card,
 		context.actual_damage
@@ -24,6 +28,7 @@ func on_damaged_context(_runtime: MutationRuntime, context: DamageContext) -> vo
 
 
 func _counter_attack(
+	runtime: MutationRuntime,
 	card: CardRoot,
 	attacker: CardRoot,
 	damage: int
@@ -45,6 +50,9 @@ func _counter_attack(
 
 	if attacker.hurt == null:
 		return
+
+	if runtime != null:
+		runtime.trigger_visual()
 
 	var original_resolve_death := attacker.hurt.resolve_death_on_hurt_finish
 	attacker.hurt.resolve_death_on_hurt_finish = false

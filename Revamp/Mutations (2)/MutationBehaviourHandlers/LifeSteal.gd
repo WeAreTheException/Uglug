@@ -10,23 +10,28 @@ func on_damage_dealt(
 	_target: CardRoot,
 	damage: int
 ) -> void:
-	_apply_lifesteal(card, damage)
+	_apply_lifesteal(null, card, damage)
 
 
 func on_damage_dealt_context(
-	_runtime: MutationRuntime,
+	runtime: MutationRuntime,
 	context: DamageContext
 ) -> void:
 	if context == null:
 		return
 
 	_apply_lifesteal(
+		runtime,
 		context.source_card,
 		context.actual_damage
 	)
 
 
-func _apply_lifesteal(card: CardRoot, damage: int) -> void:
+func _apply_lifesteal(
+	runtime: MutationRuntime,
+	card: CardRoot,
+	damage: int
+) -> void:
 	if card == null:
 		return
 
@@ -43,6 +48,12 @@ func _apply_lifesteal(card: CardRoot, damage: int) -> void:
 
 	if gain_based_on_damage_dealt:
 		final_gain = damage
+
+	if final_gain <= 0:
+		return
+
+	if runtime != null:
+		runtime.trigger_visual()
 
 	_add_health_gain(card, final_gain)
 

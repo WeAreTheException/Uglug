@@ -1,42 +1,39 @@
 extends Node2D
 class_name SigilSlot
 
-signal hovered(slot: SigilSlot)
-signal unhovered(slot: SigilSlot)
-signal right_clicked(slot: SigilSlot)
-signal left_clicked(slot: SigilSlot)
-
 @export var sprite: Sprite2D
+
+# Kept so the existing CardVisuals scene does not need to be rebuilt.
+# Sigil input is now always disabled because mutation tooltips come from card hover.
 @export var input: SigilInput
-
-@export var normal_outline_color: Color = Color(0.05, 0.05, 0.05, 1.0)
-@export var hover_outline_color: Color = Color(1.0, 0.9, 0.25, 1.0)
-@export var pressed_outline_color: Color = Color(1.0, 1.0, 1.0, 1.0)
-
-@export var normal_line_thickness: float = 10.0
-@export var hover_line_thickness: float = 10.0
-@export var pressed_line_thickness: float = 12.0
 
 @export var line_color_parameter: String = "line_color"
 @export var line_thickness_parameter: String = "line_thickness"
+@export var inactive_outline_color: Color = Color(0, 0, 0, 0)
+@export var inactive_line_thickness: float = 0.0
 
 var runtime: MutationRuntime = null
 var mutation: Mutation = null
 
-var is_hovered: bool = false
-var is_pressed: bool = false
+var greyed_out_alpha: float = 0.35
 var unique_material: ShaderMaterial = null
+
+var is_activation_flashing: bool = false
+var activation_flash_version: int = 0
 
 
 func _ready() -> void:
-	_connect_input()
 	_prepare_unique_material()
+	_set_input_enabled(false)
 	clear()
 
 
-func setup_runtime(source_runtime: MutationRuntime, greyed_out_alpha: float) -> void:
+func setup_runtime(source_runtime: MutationRuntime, source_greyed_out_alpha: float) -> void:
+	_disconnect_runtime()
+
 	runtime = source_runtime
 	mutation = null
+	greyed_out_alpha = source_greyed_out_alpha
 
 	if runtime != null:
 		mutation = runtime.mutation
@@ -47,21 +44,25 @@ func setup_runtime(source_runtime: MutationRuntime, greyed_out_alpha: float) -> 
 
 	visible = true
 	_prepare_unique_material()
+	_connect_runtime()
+	_set_input_enabled(false)
 
 	if sprite != null:
 		sprite.texture = mutation.sigil_texture
 		sprite.visible = mutation.sigil_texture != null
-		sprite.modulate.a = greyed_out_alpha if runtime.is_greyed_out else 1.0
 
-	_set_input_enabled(true)
-	_apply_normal_style()
+	_apply_runtime_alpha()
+	_apply_persistent_outline_state()
 
 
 func clear() -> void:
+	_disconnect_runtime()
+
+	activation_flash_version += 1
+	is_activation_flashing = false
+
 	runtime = null
 	mutation = null
-	is_hovered = false
-	is_pressed = false
 
 	if sprite != null:
 		sprite.texture = null
@@ -69,6 +70,7 @@ func clear() -> void:
 		sprite.modulate.a = 1.0
 
 	_set_input_enabled(false)
+	_apply_inactive_outline()
 	visible = false
 
 
@@ -90,27 +92,56 @@ func get_mutation_description() -> String:
 	return mutation.mutation_description
 
 
-func _connect_input() -> void:
-	if input == null:
+func _connect_runtime() -> void:
+	if runtime == null:
 		return
 
-	if not input.sigil_hovered.is_connected(_on_input_hovered):
-		input.sigil_hovered.connect(_on_input_hovered)
+	if not runtime.visual_active_changed.is_connected(
+		_on_runtime_visual_active_changed
+	):
+		runtime.visual_active_changed.connect(
+			_on_runtime_visual_active_changed
+		)
 
-	if not input.sigil_unhovered.is_connected(_on_input_unhovered):
-		input.sigil_unhovered.connect(_on_input_unhovered)
+	if not runtime.visual_triggered.is_connected(
+		_on_runtime_visual_triggered
+	):
+		runtime.visual_triggered.connect(
+			_on_runtime_visual_triggered
+		)
 
-	if not input.sigil_left_pressed.is_connected(_on_input_left_pressed):
-		input.sigil_left_pressed.connect(_on_input_left_pressed)
+	if not runtime.runtime_state_changed.is_connected(
+		_on_runtime_state_changed
+	):
+		runtime.runtime_state_changed.connect(
+			_on_runtime_state_changed
+		)
 
-	if not input.sigil_left_released.is_connected(_on_input_left_released):
-		input.sigil_left_released.connect(_on_input_left_released)
 
-	if not input.sigil_right_pressed.is_connected(_on_input_right_pressed):
-		input.sigil_right_pressed.connect(_on_input_right_pressed)
+func _disconnect_runtime() -> void:
+	if runtime == null:
+		return
 
-	if not input.sigil_right_released.is_connected(_on_input_right_released):
-		input.sigil_right_released.connect(_on_input_right_released)
+	if runtime.visual_active_changed.is_connected(
+		_on_runtime_visual_active_changed
+	):
+		runtime.visual_active_changed.disconnect(
+			_on_runtime_visual_active_changed
+		)
+
+	if runtime.visual_triggered.is_connected(
+		_on_runtime_visual_triggered
+	):
+		runtime.visual_triggered.disconnect(
+			_on_runtime_visual_triggered
+		)
+
+	if runtime.runtime_state_changed.is_connected(
+		_on_runtime_state_changed
+	):
+		runtime.runtime_state_changed.disconnect(
+			_on_runtime_state_changed
+		)
 
 
 func _prepare_unique_material() -> void:
@@ -136,79 +167,108 @@ func _set_input_enabled(value: bool) -> void:
 	input.set_input_enabled(value)
 
 
-func _on_input_hovered(_input: SigilInput) -> void:
-	if mutation == null:
+func _on_runtime_visual_active_changed(
+	source_runtime: MutationRuntime,
+	_is_visual_active: bool
+) -> void:
+	if source_runtime != runtime:
 		return
 
-	is_hovered = true
-
-	if not is_pressed:
-		_apply_hover_style()
-
-	hovered.emit(self)
-
-
-func _on_input_unhovered(_input: SigilInput) -> void:
-	if mutation == null:
+	if is_activation_flashing:
 		return
 
-	is_hovered = false
-	is_pressed = false
-	_apply_normal_style()
-	unhovered.emit(self)
+	_apply_persistent_outline_state()
 
 
-func _on_input_left_pressed(_input: SigilInput) -> void:
-	if mutation == null:
+func _on_runtime_visual_triggered(
+	source_runtime: MutationRuntime,
+	duration: float
+) -> void:
+	if source_runtime != runtime:
 		return
 
-	is_pressed = true
-	_apply_pressed_style()
-	left_clicked.emit(self)
+	_play_activation_flash(duration)
 
 
-func _on_input_left_released(_input: SigilInput) -> void:
-	if mutation == null:
+func _on_runtime_state_changed(
+	source_runtime: MutationRuntime
+) -> void:
+	if source_runtime != runtime:
 		return
 
-	is_pressed = false
-	_apply_style_for_current_hover()
+	_apply_runtime_alpha()
+
+	if not is_activation_flashing:
+		_apply_persistent_outline_state()
 
 
-func _on_input_right_pressed(_input: SigilInput) -> void:
-	if mutation == null:
+func _play_activation_flash(duration: float) -> void:
+	activation_flash_version += 1
+	var this_flash_version := activation_flash_version
+
+	is_activation_flashing = true
+	_apply_active_outline()
+
+	var tree := get_tree()
+
+	if tree == null:
+		_finish_activation_flash(this_flash_version)
 		return
 
-	is_pressed = true
-	_apply_pressed_style()
-	right_clicked.emit(self)
+	var timer := tree.create_timer(maxf(duration, 0.01))
+	timer.timeout.connect(
+		func() -> void:
+			_finish_activation_flash(this_flash_version)
+	)
 
 
-func _on_input_right_released(_input: SigilInput) -> void:
-	if mutation == null:
+func _finish_activation_flash(flash_version: int) -> void:
+	if flash_version != activation_flash_version:
 		return
 
-	is_pressed = false
-	_apply_style_for_current_hover()
+	is_activation_flashing = false
+	_apply_persistent_outline_state()
 
 
-func _apply_style_for_current_hover() -> void:
-	if is_hovered:
-		_apply_hover_style()
-	else:
-		_apply_normal_style()
+func _apply_runtime_alpha() -> void:
+	if sprite == null:
+		return
+
+	if runtime == null:
+		sprite.modulate.a = 1.0
+		return
+
+	sprite.modulate.a = (
+		greyed_out_alpha
+		if runtime.is_greyed_out
+		else 1.0
+	)
 
 
-func _apply_normal_style() -> void:
-	_set_outline_style(normal_outline_color, normal_line_thickness)
+func _apply_persistent_outline_state() -> void:
+	if runtime != null and runtime.is_visual_active:
+		_apply_active_outline()
+		return
+
+	_apply_inactive_outline()
 
 
-func _apply_hover_style() -> void:
-	_set_outline_style(hover_outline_color, hover_line_thickness)
+func _apply_active_outline() -> void:
+	if mutation == null:
+		_apply_inactive_outline()
+		return
+
+	_set_outline_style(
+		mutation.activation_outline_color,
+		mutation.activation_outline_thickness
+	)
 
 
-func _apply_pressed_style() -> void:
-	_set_outline_style(pressed_outline_color, pressed_line_thickness)
+func _apply_inactive_outline() -> void:
+	_set_outline_style(
+		inactive_outline_color,
+		inactive_line_thickness
+	)
 
 
 func _set_outline_style(color: Color, thickness: float) -> void:
@@ -218,5 +278,12 @@ func _set_outline_style(color: Color, thickness: float) -> void:
 	if unique_material == null:
 		return
 
-	unique_material.set_shader_parameter(line_color_parameter, color)
-	unique_material.set_shader_parameter(line_thickness_parameter, thickness)
+	unique_material.set_shader_parameter(
+		line_color_parameter,
+		color
+	)
+
+	unique_material.set_shader_parameter(
+		line_thickness_parameter,
+		thickness
+	)

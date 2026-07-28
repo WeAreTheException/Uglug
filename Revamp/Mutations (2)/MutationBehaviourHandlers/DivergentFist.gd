@@ -2,6 +2,16 @@ extends Mutation
 class_name DivergentFist
 
 
+func on_attack_sequence_started_context(
+	runtime: MutationRuntime,
+	_context: AttackContext
+) -> void:
+	if runtime == null:
+		return
+
+	runtime.trigger_visual()
+
+
 func modify_attack_steps(
 	_runtime: MutationRuntime,
 	steps: Array[AttackStep]

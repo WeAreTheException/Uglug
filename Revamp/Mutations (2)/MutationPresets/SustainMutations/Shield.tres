@@ -8,4 +8,5 @@ script = ExtResource("1_yatt5")
 mutation_name = "Shield"
 mutation_description = "Takes no DMG on first hit"
 sigil_texture = ExtResource("2_pxwdf")
+activation_outline_color = Color(0.83137256, 0.70980394, 0.59607846, 1)
 metadata/_custom_type_script = "uid://be8yk3djwb5oc"
