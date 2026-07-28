@@ -1286,3 +1286,4 @@ offset_left = -128.0
 offset_top = -128.0
 offset_right = 2048.0
 offset_bottom = 1216.0
+mouse_filter = 2
