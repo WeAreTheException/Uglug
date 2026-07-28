@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://bw8c7m7n5yuk8" path="res://Revamp/Board/Slots.tscn" id="1_yq750"]
 [ext_resource type="PackedScene" uid="uid://1wr1e57v7trd" path="res://Revamp/PlayerHand/Player_Hand.tscn" id="2_mi1n2"]
 [ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Revamp/Mutations (2)/MutationBehaviourHandlers/Mutation.gd" id="3_3vc3c"]
+[ext_resource type="Resource" uid="uid://b10yu2ml8hwx2" path="res://Revamp/CardPresets/Stimulant.tres" id="3_lc0u2"]
 [ext_resource type="Script" uid="uid://d10ttt60gxhno" path="res://Revamp/Board/AttackOrderFeedbackHandler.gd" id="4_yjh5v"]
 [ext_resource type="Script" uid="uid://8nr6ngjl24kj" path="res://Revamp/MatchFlow/MatchAutoAdvanceHandler.gd" id="6_lc0u2"]
 [ext_resource type="Script" uid="uid://61l5g8wkdar3" path="res://SacrificeController.gd" id="10_1j514"]
@@ -78,7 +79,16 @@
 
 [sub_resource type="LabelSettings" id="LabelSettings_nc85t"]
 line_spacing = 0.0
-font_size = 52
+font_size = 48
+font_color = Color(0.93333334, 0.8784314, 0.81960785, 1)
+outline_size = 10
+outline_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
+shadow_size = 10
+shadow_color = Color(0.83137256, 0.70980394, 0.59607846, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_c8bx1"]
+line_spacing = 0.0
+font_size = 36
 font_color = Color(0.93333334, 0.8784314, 0.81960785, 1)
 outline_size = 10
 outline_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
@@ -309,6 +319,7 @@ worker_draw_button = NodePath("../../UICard/Worker")
 warrior_draw_button = NodePath("../../UICard/Warrior")
 
 [node name="Board" parent="Core" unique_id=1318716624 node_paths=PackedStringArray("direct_damage_router") instance=ExtResource("1_yq750")]
+opponent_slot_1_card = ExtResource("3_lc0u2")
 direct_damage_router = NodePath("../../Scripts/Core/DirectDamageRouter")
 
 [node name="PlayerSlotLabel1" type="Label" parent="Core/Board" unique_id=693482040]
@@ -398,6 +409,24 @@ theme_override_fonts/font = ExtResource("80_cxut3")
 theme_override_font_sizes/font_size = 78
 text = "4th"
 label_settings = SubResource("LabelSettings_nc85t")
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="EnemySlotLabel5" type="Label" parent="Core/Board" unique_id=1415106798]
+visible = false
+z_index = 1
+offset_left = 183.0
+offset_top = -13.0
+offset_right = 495.0
+offset_bottom = 255.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
+theme_override_colors/font_outline_color = Color(0.003921569, 0.16862746, 0.2, 1)
+theme_override_constants/outline_size = 12
+theme_override_constants/shadow_outline_size = 16
+theme_override_fonts/font = ExtResource("80_cxut3")
+theme_override_font_sizes/font_size = 78
+text = "Attack Order"
+label_settings = SubResource("LabelSettings_c8bx1")
 horizontal_alignment = 1
 autowrap_mode = 3
 
@@ -1444,8 +1473,8 @@ tooltip_coordinator = NodePath("../ToolTip/Cordiantor")
 [node name="ColorRect" type="ColorRect" parent="." unique_id=85287759]
 z_index = 10
 material = SubResource("ShaderMaterial_lc0u2")
-offset_left = -128.0
+offset_left = -192.0
 offset_top = -128.0
-offset_right = 2048.0
+offset_right = 1984.0
 offset_bottom = 1216.0
 mouse_filter = 2
