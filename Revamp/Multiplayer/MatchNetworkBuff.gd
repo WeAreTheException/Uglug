@@ -12,6 +12,7 @@ signal confirmed_buff_applied(
 
 var root: MatchNetworkRoot = null
 var confirmed_owners: Dictionary = {}
+var offered_mutations: Dictionary = {}
 var is_phase_finishing: bool = false
 
 
@@ -32,6 +33,7 @@ func on_buff_phase_started() -> void:
 		return
 
 	confirmed_owners.clear()
+	offered_mutations.clear()
 	is_phase_finishing = false
 
 	if root.buff_database == null:
@@ -41,33 +43,71 @@ func on_buff_phase_started() -> void:
 		)
 		return
 
-	var mutation: Mutation = (
-		root.buff_database.draw_random_mutation()
-	)
-
-	if mutation == null:
+	if not root.buff_database.has_available_mutations_for_owner(
+		SlotRow.SlotOwner.PLAYER
+	):
 		print(
-			"HOST BUFF ROLL BLOCKED: no mutation"
+			"HOST BUFF ROLL BLOCKED: "
+			+ "no P1 Evolution"
 		)
 		return
 
-	var mutation_id: String = (
-		mutation.get_safe_mutation_id()
+	if not root.buff_database.has_available_mutations_for_owner(
+		SlotRow.SlotOwner.OPPONENT
+	):
+		print(
+			"HOST BUFF ROLL BLOCKED: "
+			+ "no P2 Evolution"
+		)
+		return
+
+	var player_mutation: Mutation = (
+		root.buff_database.draw_mutation_for_owner(
+			SlotRow.SlotOwner.PLAYER
+		)
 	)
 
-	if root.print_debug:
-		print(
-			"HOST BUFF ROLLED: ",
-			mutation_id
+	var opponent_mutation: Mutation = (
+		root.buff_database.draw_mutation_for_owner(
+			SlotRow.SlotOwner.OPPONENT
 		)
+	)
 
-	GDSync.call_func_all(
-		root._receive_buff_reward,
-		mutation_id
+	if player_mutation == null:
+		print(
+			"HOST BUFF ROLL BLOCKED: "
+			+ "P1 mutation missing"
+		)
+		return
+
+	if opponent_mutation == null:
+		print(
+			"HOST BUFF ROLL BLOCKED: "
+			+ "P2 mutation missing"
+		)
+		return
+
+	offered_mutations[
+		SlotRow.SlotOwner.PLAYER
+	] = player_mutation
+
+	offered_mutations[
+		SlotRow.SlotOwner.OPPONENT
+	] = opponent_mutation
+
+	_broadcast_buff_reward(
+		SlotRow.SlotOwner.PLAYER,
+		player_mutation
+	)
+
+	_broadcast_buff_reward(
+		SlotRow.SlotOwner.OPPONENT,
+		opponent_mutation
 	)
 
 
 func receive_buff_reward(
+	owner: SlotRow.SlotOwner,
 	mutation_id: String
 ) -> void:
 	if root == null:
@@ -77,13 +117,6 @@ func receive_buff_reward(
 		print(
 			"BUFF RECEIVE FAILED: "
 			+ "buff_database missing"
-		)
-		return
-
-	if root.buff_flow_handler == null:
-		print(
-			"BUFF RECEIVE FAILED: "
-			+ "buff_flow_handler missing"
 		)
 		return
 
@@ -100,13 +133,29 @@ func receive_buff_reward(
 		)
 		return
 
+	offered_mutations[owner] = mutation
+
 	if root.print_debug:
 		print(
-			"BUFF RECEIVE: ",
+			"BUFF OFFER RECEIVED: ",
+			root.get_owner_name(owner),
+			" | ",
 			mutation.mutation_name,
-			" | HOST: ",
-			root.is_host()
+			" | LOCAL OWNER: ",
+			root.get_owner_name(
+				root.get_local_owner()
+			)
 		)
+
+	if owner != root.get_local_owner():
+		return
+
+	if root.buff_flow_handler == null:
+		print(
+			"BUFF RECEIVE FAILED: "
+			+ "buff_flow_handler missing"
+		)
+		return
 
 	root.buff_flow_handler.begin_buff_flow_with_reward(
 		mutation
@@ -329,6 +378,7 @@ func _on_match_state_changed(
 ) -> void:
 	if state == MatchFlowRoot.MatchState.BUFF:
 		confirmed_owners.clear()
+		offered_mutations.clear()
 		is_phase_finishing = false
 
 
@@ -398,22 +448,23 @@ func _process_buff_confirm_request(
 		)
 		return
 
-	if root.buff_flow_handler != null:
-		var offered: Mutation = (
-			root.buff_flow_handler
-			.get_active_reward_mutation()
-		)
+	var offered: Mutation = _get_offered_mutation(
+		owner
+	)
 
-		if (
-			offered != null
-			and offered.get_safe_mutation_id()
-			!= mutation_id
-		):
-			print(
-				"BUFF REQUEST REJECTED: "
-				+ "mutation was not offered"
-			)
-			return
+	if offered == null:
+		print(
+			"BUFF REQUEST REJECTED: "
+			+ "owner has no offered mutation"
+		)
+		return
+
+	if offered.get_safe_mutation_id() != mutation_id:
+		print(
+			"BUFF REQUEST REJECTED: "
+			+ "mutation was not offered to owner"
+		)
+		return
 
 	if not card.can_receive_buff_mutation(
 		mutation
@@ -433,6 +484,32 @@ func _process_buff_confirm_request(
 	)
 
 	_try_finish_if_all_confirmed()
+
+
+func _broadcast_buff_reward(
+	owner: SlotRow.SlotOwner,
+	mutation: Mutation
+) -> void:
+	if mutation == null:
+		return
+
+	var mutation_id: String = (
+		mutation.get_safe_mutation_id()
+	)
+
+	if root.print_debug:
+		print(
+			"HOST BUFF ROLLED FOR ",
+			root.get_owner_name(owner),
+			": ",
+			mutation_id
+		)
+
+	GDSync.call_func_all(
+		root._receive_buff_reward,
+		owner,
+		mutation_id
+	)
 
 
 func _broadcast_confirmed_buff(
@@ -510,12 +587,8 @@ func _resolve_unconfirmed_owner(
 	if confirmed_owners.has(owner):
 		return
 
-	if root.buff_flow_handler == null:
-		return
-
-	var mutation: Mutation = (
-		root.buff_flow_handler
-		.get_active_reward_mutation()
+	var mutation: Mutation = _get_offered_mutation(
+		owner
 	)
 
 	if mutation == null:
@@ -597,6 +670,15 @@ func _get_fallback_card(
 		return null
 
 	return valid_cards.pick_random()
+
+
+func _get_offered_mutation(
+	owner: SlotRow.SlotOwner
+) -> Mutation:
+	if not offered_mutations.has(owner):
+		return null
+
+	return offered_mutations[owner] as Mutation
 
 
 func _finish_buff_phase() -> void:

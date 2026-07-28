@@ -613,6 +613,7 @@ print_debug = false
 [node name="BuffDatabase" type="Node" parent="Scripts/Core/Evolution" unique_id=1175133697]
 script = ExtResource("38_i8ogu")
 buff_pool = Array[ExtResource("3_3vc3c")]([ExtResource("27_af7hx"), ExtResource("40_2ph70"), ExtResource("23_uv74c"), ExtResource("24_fk48e"), ExtResource("25_yjh5v"), ExtResource("26_lc0u2"), ExtResource("27_nc85t"), ExtResource("28_c8bx1"), ExtResource("29_7f3b3"), ExtResource("30_63uau"), ExtResource("31_cxut3"), ExtResource("32_o7028"), ExtResource("29_7f3b3"), ExtResource("34_fk48e")])
+forbidden_mutations = null
 print_debug = false
 run_smoke_test_on_ready = false
 

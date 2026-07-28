@@ -177,12 +177,18 @@ func request_buff_confirm(
 	)
 
 
-func _receive_buff_reward(mutation_id: String) -> void:
+func _receive_buff_reward(
+	owner: SlotRow.SlotOwner,
+	mutation_id: String
+) -> void:
 	if buff_network == null:
 		print("BUFF RECEIVE FAILED: buff_network missing")
 		return
 
-	buff_network.receive_buff_reward(mutation_id)
+	buff_network.receive_buff_reward(
+		owner,
+		mutation_id
+	)
 
 
 func _receive_confirmed_buff(
