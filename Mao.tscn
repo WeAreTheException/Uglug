@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://bw8c7m7n5yuk8" path="res://Revamp/Board/Slots.tscn" id="1_yq750"]
 [ext_resource type="PackedScene" uid="uid://1wr1e57v7trd" path="res://Revamp/PlayerHand/Player_Hand.tscn" id="2_mi1n2"]
 [ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Revamp/Mutations (2)/MutationBehaviourHandlers/Mutation.gd" id="3_3vc3c"]
+[ext_resource type="Script" uid="uid://d10ttt60gxhno" path="res://Revamp/Board/AttackOrderFeedbackHandler.gd" id="4_yjh5v"]
 [ext_resource type="Script" uid="uid://8nr6ngjl24kj" path="res://Revamp/MatchFlow/MatchAutoAdvanceHandler.gd" id="6_lc0u2"]
 [ext_resource type="Script" uid="uid://61l5g8wkdar3" path="res://SacrificeController.gd" id="10_1j514"]
 [ext_resource type="Script" uid="uid://db4xai716j06p" path="res://Revamp/Card/CardActions/Sacrifice/SacrificeSelectionRoot.gd" id="11_5f7hr"]
@@ -74,6 +75,15 @@
 [ext_resource type="Script" uid="uid://bnbuh7nx3k3f2" path="res://Revamp/Multiplayer/MatchNetworkDebugSync.gd" id="81_o7028"]
 [ext_resource type="Script" uid="uid://cm3y3rl7340r8" path="res://Revamp/MutationTooltTip/MutationTooltipCoordinator.gd" id="85_sxqap"]
 [ext_resource type="Script" uid="uid://r2w6wt88c7f1" path="res://Revamp/ScoreBaord/MatchScoreBoard.gd" id="87_lcv7c"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_nc85t"]
+line_spacing = 0.0
+font_size = 52
+font_color = Color(0.93333334, 0.8784314, 0.81960785, 1)
+outline_size = 10
+outline_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
+shadow_size = 10
+shadow_color = Color(0.83137256, 0.70980394, 0.59607846, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_lc0u2"]
 line_spacing = 0.0
@@ -300,6 +310,158 @@ warrior_draw_button = NodePath("../../UICard/Warrior")
 
 [node name="Board" parent="Core" unique_id=1318716624 node_paths=PackedStringArray("direct_damage_router") instance=ExtResource("1_yq750")]
 direct_damage_router = NodePath("../../Scripts/Core/DirectDamageRouter")
+
+[node name="PlayerSlotLabel1" type="Label" parent="Core/Board" unique_id=693482040]
+z_index = 1
+offset_left = 430.0
+offset_top = 358.0
+offset_right = 544.0
+offset_bottom = 559.0
+rotation = -0.2617994
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
+theme_override_colors/font_outline_color = Color(0.003921569, 0.16862746, 0.2, 1)
+theme_override_constants/outline_size = 12
+theme_override_constants/shadow_outline_size = 16
+theme_override_fonts/font = ExtResource("80_cxut3")
+theme_override_font_sizes/font_size = 78
+text = "1st"
+label_settings = SubResource("LabelSettings_nc85t")
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="PlayerSlotLabel2" type="Label" parent="Core/Board" unique_id=551091575]
+z_index = 1
+offset_left = 640.00006
+offset_top = 357.99997
+offset_right = 754.00006
+offset_bottom = 559.0
+rotation = -0.2617994
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
+theme_override_colors/font_outline_color = Color(0.003921569, 0.16862746, 0.2, 1)
+theme_override_constants/outline_size = 12
+theme_override_constants/shadow_outline_size = 16
+theme_override_fonts/font = ExtResource("80_cxut3")
+theme_override_font_sizes/font_size = 78
+text = "2nd"
+label_settings = SubResource("LabelSettings_nc85t")
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="PlayerSlotLabel3" type="Label" parent="Core/Board" unique_id=157246260]
+z_index = 1
+offset_left = 876.0
+offset_top = 358.0
+offset_right = 990.0
+offset_bottom = 559.0
+rotation = -0.2617994
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
+theme_override_colors/font_outline_color = Color(0.003921569, 0.16862746, 0.2, 1)
+theme_override_constants/outline_size = 12
+theme_override_constants/shadow_outline_size = 16
+theme_override_fonts/font = ExtResource("80_cxut3")
+theme_override_font_sizes/font_size = 78
+text = "3rd"
+label_settings = SubResource("LabelSettings_nc85t")
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="PlayerSlotLabel4" type="Label" parent="Core/Board" unique_id=207678299]
+z_index = 1
+offset_left = 1092.0
+offset_top = 358.00003
+offset_right = 1206.0
+offset_bottom = 559.0
+rotation = -0.2617994
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
+theme_override_colors/font_outline_color = Color(0.003921569, 0.16862746, 0.2, 1)
+theme_override_constants/outline_size = 12
+theme_override_constants/shadow_outline_size = 16
+theme_override_fonts/font = ExtResource("80_cxut3")
+theme_override_font_sizes/font_size = 78
+text = "3rd"
+label_settings = SubResource("LabelSettings_nc85t")
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="EnemySlotLabel1" type="Label" parent="Core/Board" unique_id=936329764]
+z_index = 1
+offset_left = 430.0
+offset_top = 23.99997
+offset_right = 544.0
+offset_bottom = 224.99997
+rotation = -0.2617994
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
+theme_override_colors/font_outline_color = Color(0.003921569, 0.16862746, 0.2, 1)
+theme_override_constants/outline_size = 12
+theme_override_constants/shadow_outline_size = 16
+theme_override_fonts/font = ExtResource("80_cxut3")
+theme_override_font_sizes/font_size = 78
+text = "4th"
+label_settings = SubResource("LabelSettings_nc85t")
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="EnemySlotLabel2" type="Label" parent="Core/Board" unique_id=1118908475]
+z_index = 1
+offset_left = 640.0
+offset_top = 23.999998
+offset_right = 754.0
+offset_bottom = 225.0
+rotation = -0.2617994
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
+theme_override_colors/font_outline_color = Color(0.003921569, 0.16862746, 0.2, 1)
+theme_override_constants/outline_size = 12
+theme_override_constants/shadow_outline_size = 16
+theme_override_fonts/font = ExtResource("80_cxut3")
+theme_override_font_sizes/font_size = 78
+text = "4th"
+label_settings = SubResource("LabelSettings_nc85t")
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="EnemySlotLabel3" type="Label" parent="Core/Board" unique_id=295283855]
+z_index = 1
+offset_left = 858.0
+offset_top = 24.000011
+offset_right = 972.0
+offset_bottom = 225.00002
+rotation = -0.2617994
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
+theme_override_colors/font_outline_color = Color(0.003921569, 0.16862746, 0.2, 1)
+theme_override_constants/outline_size = 12
+theme_override_constants/shadow_outline_size = 16
+theme_override_fonts/font = ExtResource("80_cxut3")
+theme_override_font_sizes/font_size = 78
+text = "4th"
+label_settings = SubResource("LabelSettings_nc85t")
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="EnemySlotLabel4" type="Label" parent="Core/Board" unique_id=1094332006]
+z_index = 1
+offset_left = 1070.0
+offset_top = 24.0
+offset_right = 1184.0
+offset_bottom = 225.0
+rotation = -0.2617994
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
+theme_override_colors/font_outline_color = Color(0.003921569, 0.16862746, 0.2, 1)
+theme_override_constants/outline_size = 12
+theme_override_constants/shadow_outline_size = 16
+theme_override_fonts/font = ExtResource("80_cxut3")
+theme_override_font_sizes/font_size = 78
+text = "4th"
+label_settings = SubResource("LabelSettings_nc85t")
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="AttackOrderFeedbackHandler" type="Node" parent="Core/Board" unique_id=2007291154 node_paths=PackedStringArray("slots_root", "turn_order_state", "match_network_root", "player_order_labels", "opponent_order_labels")]
+script = ExtResource("4_yjh5v")
+slots_root = NodePath("..")
+turn_order_state = NodePath("../../../Scripts/MatchFlowRoot/MatchTurnOrderState")
+match_network_root = NodePath("../../../Multiplayer/MatchNetworkRoot")
+player_order_labels = [NodePath("../PlayerSlotLabel1"), NodePath("../PlayerSlotLabel2"), NodePath("../PlayerSlotLabel3"), NodePath("../PlayerSlotLabel4")]
+opponent_order_labels = [NodePath("../EnemySlotLabel1"), NodePath("../EnemySlotLabel2"), NodePath("../EnemySlotLabel3"), NodePath("../EnemySlotLabel4")]
 
 [node name="PlayerHAnd" parent="Core" unique_id=371738706 instance=ExtResource("2_mi1n2")]
 position = Vector2(768, 896)
