@@ -64,6 +64,7 @@
 [ext_resource type="Script" uid="uid://c62i7pwt3r30f" path="res://Revamp/Multiplayer/MatchNetworkTimer.gd" id="74_c8bx1"]
 [ext_resource type="Script" uid="uid://dx8ow48eguxe7" path="res://Revamp/MatchFlow/MatchPlacementCompletionHandler.gd" id="74_yjh5v"]
 [ext_resource type="Texture2D" uid="uid://cgkoni68euqo3" path="res://Art/Mutations/Sigils/Final_Sigils/Draculant_Sigil.png" id="75_c8bx1"]
+[ext_resource type="Shader" uid="uid://cv61bla72eupf" path="res://FilmGrain.gdshader" id="75_yjh5v"]
 [ext_resource type="Script" uid="uid://dg2jxnlex8u2p" path="res://Revamp/MatchUI/UICard/PlayerHandUiBinder.gd" id="76_c8bx1"]
 [ext_resource type="Script" uid="uid://cm16kgidxxu4h" path="res://Revamp/MutationTooltTip/MutationButtonHoverBinder.gd" id="77_7f3b3"]
 [ext_resource type="Script" uid="uid://cmbtqx5ng27nb" path="res://Revamp/MutationTooltTip/MutationToolTip.gd" id="78_7f3b3"]
@@ -278,6 +279,12 @@ outline_size = 10
 outline_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
 shadow_size = 10
 shadow_color = Color(0.9647059, 0.48235294, 0.5176471, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lc0u2"]
+shader = ExtResource("75_yjh5v")
+shader_parameter/grain_amount = 0.0450000021375
+shader_parameter/grain_size = 1.00000002375
+shader_parameter/grain_speed = 6.000000285
 
 [node name="Mao" type="Node2D" unique_id=550121538]
 
@@ -1239,6 +1246,7 @@ offset_bottom = 702.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_tfk1j")
 
 [node name="Label2" type="Label" parent="Tugga/KillFeedOpp5" unique_id=584685499]
+visible = false
 layout_mode = 0
 offset_left = 13.0
 offset_top = -33.0
@@ -1257,6 +1265,7 @@ offset_bottom = 660.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_tfk1j")
 
 [node name="Label2" type="Label" parent="Tugga/KillFeedOpp2" unique_id=473036652]
+visible = false
 layout_mode = 0
 offset_left = 13.0
 offset_top = -33.0
@@ -1270,3 +1279,11 @@ vertical_alignment = 1
 script = ExtResource("73_uv74c")
 slots_root = NodePath("../Core/Board")
 tooltip_coordinator = NodePath("../ToolTip/Cordiantor")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=85287759]
+z_index = 10
+material = SubResource("ShaderMaterial_lc0u2")
+offset_left = -128.0
+offset_top = -128.0
+offset_right = 2048.0
+offset_bottom = 1216.0
