@@ -5,6 +5,8 @@
 [ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Revamp/Mutations (2)/MutationBehaviourHandlers/Mutation.gd" id="3_3vc3c"]
 [ext_resource type="Script" uid="uid://d10ttt60gxhno" path="res://Revamp/Board/AttackOrderFeedbackHandler.gd" id="4_yjh5v"]
 [ext_resource type="Script" uid="uid://8nr6ngjl24kj" path="res://Revamp/MatchFlow/MatchAutoAdvanceHandler.gd" id="6_lc0u2"]
+[ext_resource type="Texture2D" uid="uid://bqud7qvy0g2kq" path="res://Art/ArrowLeft.png" id="7_c8bx1"]
+[ext_resource type="Texture2D" uid="uid://cceewxc18x27w" path="res://Art/ArrowRight.png" id="8_7f3b3"]
 [ext_resource type="Script" uid="uid://61l5g8wkdar3" path="res://SacrificeController.gd" id="10_1j514"]
 [ext_resource type="Script" uid="uid://db4xai716j06p" path="res://Revamp/Card/CardActions/Sacrifice/SacrificeSelectionRoot.gd" id="11_5f7hr"]
 [ext_resource type="Script" uid="uid://ciopi88keoi3k" path="res://SacrificeRequirement.gd" id="11_at0h8"]
@@ -76,6 +78,12 @@
 [ext_resource type="Script" uid="uid://bnbuh7nx3k3f2" path="res://Revamp/Multiplayer/MatchNetworkDebugSync.gd" id="81_o7028"]
 [ext_resource type="Script" uid="uid://cm3y3rl7340r8" path="res://Revamp/MutationTooltTip/MutationTooltipCoordinator.gd" id="85_sxqap"]
 [ext_resource type="Script" uid="uid://r2w6wt88c7f1" path="res://Revamp/ScoreBaord/MatchScoreBoard.gd" id="87_lcv7c"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lc0u2"]
+shader = ExtResource("75_yjh5v")
+shader_parameter/grain_amount = 0.006000000285
+shader_parameter/grain_size = 6.500000285
+shader_parameter/grain_speed = 9.0000004275
 
 [sub_resource type="LabelSettings" id="LabelSettings_nc85t"]
 line_spacing = 0.0
@@ -299,15 +307,16 @@ outline_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
 shadow_size = 10
 shadow_color = Color(0.9647059, 0.48235294, 0.5176471, 1)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_lc0u2"]
-shader = ExtResource("75_yjh5v")
-shader_parameter/grain_amount = 0.00800000038
-shader_parameter/grain_size = 6.500000285
-shader_parameter/grain_speed = 9.0000004275
-
 [node name="Mao" type="Node2D" unique_id=550121538]
 
 [node name="Core" type="Node2D" parent="." unique_id=878801964]
+
+[node name="ColorRect" type="ColorRect" parent="Core" unique_id=85287759]
+material = SubResource("ShaderMaterial_lc0u2")
+offset_right = 1923.0
+offset_bottom = 1083.0
+mouse_filter = 2
+color = Color(0.291, 1.094, 0.88, 1)
 
 [node name="Deck" parent="Core" unique_id=93691211 node_paths=PackedStringArray("match_network_root", "buff_database", "player_one_hand", "player_two_hand", "worker_draw_button", "warrior_draw_button") instance=ExtResource("28_a1qt2")]
 position = Vector2(1995, 938)
@@ -475,9 +484,9 @@ opponent_order_labels = [NodePath("../EnemySlotLabel1"), NodePath("../EnemySlotL
 
 [node name="EnemySlotLabel5" type="Label" parent="Core/Board" unique_id=1415106798]
 z_index = 1
-offset_left = 183.0
+offset_left = 742.0
 offset_top = -13.0
-offset_right = 495.0
+offset_right = 1054.0
 offset_bottom = 255.0
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
 theme_override_colors/font_outline_color = Color(0.003921569, 0.16862746, 0.2, 1)
@@ -495,6 +504,15 @@ position = Vector2(768, 896)
 
 [node name="OpponenetHAnd" parent="Core" unique_id=1415383407 instance=ExtResource("2_mi1n2")]
 position = Vector2(768.00006, 896.00006)
+
+[node name="ArrowLeft" type="Sprite2D" parent="Core" unique_id=1182217168]
+visible = false
+position = Vector2(876, 50)
+texture = ExtResource("7_c8bx1")
+
+[node name="ArrowRight" type="Sprite2D" parent="Core" unique_id=1069426587]
+position = Vector2(932, 49)
+texture = ExtResource("8_7f3b3")
 
 [node name="Scripts" type="Node" parent="." unique_id=1166020718]
 
@@ -1470,13 +1488,3 @@ vertical_alignment = 1
 script = ExtResource("73_uv74c")
 slots_root = NodePath("../Core/Board")
 tooltip_coordinator = NodePath("../ToolTip/Cordiantor")
-
-[node name="ColorRect" type="ColorRect" parent="." unique_id=85287759]
-z_index = 10
-material = SubResource("ShaderMaterial_lc0u2")
-offset_left = -192.0
-offset_top = -128.0
-offset_right = 1984.0
-offset_bottom = 1216.0
-mouse_filter = 2
-metadata/_edit_lock_ = true
