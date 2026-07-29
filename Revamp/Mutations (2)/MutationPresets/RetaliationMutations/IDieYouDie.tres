@@ -6,5 +6,5 @@
 [resource]
 script = ExtResource("1_ditrh")
 mutation_name = "I Die You Die"
-mutation_description = "Kills the opposing card on death"
+mutation_description = "Kills any card on opposing slot"
 sigil_texture = ExtResource("2_npaoq")

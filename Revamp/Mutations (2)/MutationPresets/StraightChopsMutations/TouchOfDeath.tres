@@ -6,6 +6,6 @@
 [resource]
 script = ExtResource("1_a7jwl")
 mutation_name = "TouchOfDeath"
-mutation_description = "Kills any card it damages"
+mutation_description = "Kills any card it attacks"
 sigil_texture = ExtResource("2_4dkxk")
 metadata/_custom_type_script = "uid://be8yk3djwb5oc"
