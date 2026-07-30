@@ -48,7 +48,9 @@
 [ext_resource type="Resource" uid="uid://c0ojr71i4k50b" path="res://Revamp/Mutations (2)/MutationPresets/RallyMutations/RoyalPheromones.tres" id="34_fk48e"]
 [ext_resource type="Script" uid="uid://cau0ky5b3kabf" path="res://Revamp/Board/AttackAnticipationFeedbackHandler.gd" id="35_wop7f"]
 [ext_resource type="Script" uid="uid://djtnl5koe1f0x" path="res://Revamp/Buff/BuffDatabase.gd" id="38_i8ogu"]
+[ext_resource type="Script" uid="uid://b64q3q37yv55s" path="res://Revamp/Mutations (2)/MutationBehaviourHandlers/BabyMaker.gd" id="39_63uau"]
 [ext_resource type="Resource" uid="uid://b6afw5yomddli" path="res://Revamp/Mutations (2)/MutationPresets/SustainMutations/Shield.tres" id="40_2ph70"]
+[ext_resource type="Script" uid="uid://cf7o6ekxr2ues" path="res://Revamp/Mutations (2)/MutationBehaviourHandlers/DirectAttack.gd" id="40_cxut3"]
 [ext_resource type="Script" uid="uid://gr6bql05qnrs" path="res://Revamp/Buff/EvolutionButtonHandler.gd" id="43_7f3b3"]
 [ext_resource type="Script" uid="uid://ysva1maqqb8w" path="res://HandCountDisplay.gd" id="52_nmm8s"]
 [ext_resource type="Script" uid="uid://qkm73v3qftgr" path="res://Revamp/MatchFlow/MatchLocalViewApplier.gd" id="57_2n6q5"]
@@ -102,6 +104,14 @@ outline_size = 10
 outline_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
 shadow_size = 10
 shadow_color = Color(0.83137256, 0.70980394, 0.59607846, 1)
+
+[sub_resource type="Resource" id="Resource_o7028"]
+script = ExtResource("39_63uau")
+metadata/_custom_type_script = "uid://b64q3q37yv55s"
+
+[sub_resource type="Resource" id="Resource_qct7y"]
+script = ExtResource("40_cxut3")
+metadata/_custom_type_script = "uid://cf7o6ekxr2ues"
 
 [sub_resource type="LabelSettings" id="LabelSettings_lc0u2"]
 line_spacing = 0.0
@@ -618,7 +628,7 @@ print_debug = false
 
 [node name="BuffDatabase" type="Node" parent="Scripts/Core/Evolution" unique_id=1175133697]
 script = ExtResource("38_i8ogu")
-buff_pool = Array[ExtResource("3_3vc3c")]([ExtResource("27_af7hx"), ExtResource("40_2ph70"), ExtResource("23_uv74c"), ExtResource("24_fk48e"), ExtResource("25_yjh5v"), ExtResource("26_lc0u2"), ExtResource("27_nc85t"), ExtResource("28_c8bx1"), ExtResource("29_7f3b3"), ExtResource("30_63uau"), ExtResource("31_cxut3"), ExtResource("32_o7028"), ExtResource("29_7f3b3"), ExtResource("34_fk48e")])
+buff_pool = Array[ExtResource("3_3vc3c")]([ExtResource("27_af7hx"), ExtResource("40_2ph70"), ExtResource("23_uv74c"), ExtResource("24_fk48e"), ExtResource("25_yjh5v"), ExtResource("26_lc0u2"), ExtResource("27_nc85t"), ExtResource("28_c8bx1"), ExtResource("29_7f3b3"), ExtResource("30_63uau"), ExtResource("31_cxut3"), ExtResource("32_o7028"), ExtResource("29_7f3b3"), ExtResource("34_fk48e"), ExtResource("27_af7hx"), ExtResource("40_2ph70"), ExtResource("25_yjh5v"), ExtResource("27_nc85t"), ExtResource("29_7f3b3"), ExtResource("32_o7028"), SubResource("Resource_o7028"), SubResource("Resource_qct7y")])
 forbidden_mutations = null
 print_debug = false
 run_smoke_test_on_ready = false
