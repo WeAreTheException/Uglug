@@ -64,6 +64,14 @@ size = Vector2(192, 288)
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ieatu"]
 shader = ExtResource("53_v78fr")
 shader_parameter/outline_color = Color(1, 1, 1, 1)
+shader_parameter/secondary_color = Color(0.25, 0.6, 1, 1)
+shader_parameter/color_speed = 0.8
+shader_parameter/color_scale = 2.0
+shader_parameter/pulse_speed = 2.0
+shader_parameter/pulse_strength = 0.15
+shader_parameter/shimmer_speed = 1.5
+shader_parameter/shimmer_width = 0.15
+shader_parameter/shimmer_strength = 0.5
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hapoa"]
 shader = ExtResource("53_p4xss")

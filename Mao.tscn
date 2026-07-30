@@ -1190,6 +1190,7 @@ offset_bottom = 379.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_lcv7c")
 
 [node name="BoardBack2" type="Panel" parent="Tugga/UIBase" unique_id=1626922334]
+visible = false
 layout_mode = 0
 offset_top = 411.0
 offset_right = 360.0
