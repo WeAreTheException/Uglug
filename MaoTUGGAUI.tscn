@@ -22,22 +22,6 @@
 [ext_resource type="Script" uid="uid://crpvi6u42w8yj" path="res://Revamp/Buff/BuffFlowHandler.gd" id="19_03la6"]
 [ext_resource type="Resource" uid="uid://b6afw5yomddli" path="res://Revamp/Mutations (2)/MutationPresets/SustainMutations/Shield.tres" id="20_c13w5"]
 [ext_resource type="Script" uid="uid://djtnl5koe1f0x" path="res://Revamp/Buff/BuffDatabase.gd" id="21_ecfkv"]
-[ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Revamp/Mutations (2)/MutationBehaviourHandlers/Mutation.gd" id="22_kl8rq"]
-[ext_resource type="Resource" uid="uid://b4tpqnugaguvu" path="res://Revamp/Mutations (2)/MutationPresets/InheritanceMutations/BabyMaker.tres" id="23_v4ffl"]
-[ext_resource type="Resource" uid="uid://5sahtthq2tjm" path="res://Revamp/Mutations (2)/MutationPresets/InheritanceMutations/Christmas.tres" id="24_606vl"]
-[ext_resource type="Resource" uid="uid://cnn0fddifxool" path="res://Revamp/Mutations (2)/MutationPresets/InheritanceMutations/ColonyNest.tres" id="25_k4iwb"]
-[ext_resource type="Resource" uid="uid://njutef00oac8" path="res://Revamp/Mutations (2)/MutationPresets/InvestmentMutations/LifeSteal.tres" id="26_mau0q"]
-[ext_resource type="Resource" uid="uid://c0ojr71i4k50b" path="res://Revamp/Mutations (2)/MutationPresets/RallyMutations/RoyalPheromones.tres" id="27_bgvc2"]
-[ext_resource type="Resource" uid="uid://cyutbyh2av6iv" path="res://Revamp/Mutations (2)/MutationPresets/RallyMutations/SteroidDealer.tres" id="28_hadmy"]
-[ext_resource type="Resource" uid="uid://d6umheqx0qia" path="res://Revamp/Mutations (2)/MutationPresets/RetaliationMutations/IDieYouDie.tres" id="30_3yxxd"]
-[ext_resource type="Resource" uid="uid://dko3ngpbogrv1" path="res://Revamp/Mutations (2)/MutationPresets/RetaliationMutations/Spiky.tres" id="31_nmpo0"]
-[ext_resource type="Resource" uid="uid://bs6mfmdmm2uj6" path="res://Revamp/Mutations (2)/MutationPresets/StraightChopsMutations/DirectAttack.tres" id="32_18ybt"]
-[ext_resource type="Resource" uid="uid://dp3xgqtqwogy3" path="res://Revamp/Mutations (2)/MutationPresets/StraightChopsMutations/Lance.tres" id="33_67vk2"]
-[ext_resource type="Resource" uid="uid://bk7bftdp5178x" path="res://Revamp/Mutations (2)/MutationPresets/StraightChopsMutations/MeFirst.tres" id="34_hbufb"]
-[ext_resource type="Resource" uid="uid://b4sniy31fo50g" path="res://Revamp/Mutations (2)/MutationPresets/StraightChopsMutations/TouchOfDeath.tres" id="35_e1fho"]
-[ext_resource type="Resource" uid="uid://qm2l2rlbwj77" path="res://Revamp/Mutations (2)/MutationPresets/SustainMutations/Heckler.tres" id="36_wpvsu"]
-[ext_resource type="Resource" uid="uid://qpp1tjh0bk7v" path="res://Revamp/Mutations (2)/MutationPresets/SustainMutations/RedRiot.tres" id="37_8udkp"]
-[ext_resource type="Resource" uid="uid://ceeskmu01vy5g" path="res://Revamp/Mutations (2)/MutationPresets/TargetMutations/YAttack.tres" id="38_jin63"]
 [ext_resource type="Script" uid="uid://gr6bql05qnrs" path="res://Revamp/Buff/EvolutionButtonHandler.gd" id="39_e12st"]
 [ext_resource type="Script" uid="uid://61l5g8wkdar3" path="res://SacrificeController.gd" id="40_y406b"]
 [ext_resource type="Script" uid="uid://ciopi88keoi3k" path="res://SacrificeRequirement.gd" id="41_qtxgi"]
@@ -387,7 +371,6 @@ print_debug = false
 
 [node name="BuffDatabase" type="Node" parent="Scripts/Core/Evolution" unique_id=1175133697]
 script = ExtResource("21_ecfkv")
-buff_pool = Array[ExtResource("22_kl8rq")]([ExtResource("23_v4ffl"), ExtResource("24_606vl"), ExtResource("25_k4iwb"), ExtResource("26_mau0q"), ExtResource("27_bgvc2"), ExtResource("28_hadmy"), ExtResource("30_3yxxd"), ExtResource("31_nmpo0"), ExtResource("32_18ybt"), ExtResource("33_67vk2"), ExtResource("34_hbufb"), ExtResource("35_e1fho"), ExtResource("36_wpvsu"), ExtResource("37_8udkp"), ExtResource("20_c13w5"), ExtResource("38_jin63")])
 print_debug = false
 run_smoke_test_on_ready = false
 

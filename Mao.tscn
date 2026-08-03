@@ -125,13 +125,11 @@ metadata/_custom_type_script = "uid://5bxqs68s2bk1"
 [sub_resource type="Resource" id="Resource_8hx3r"]
 script = ExtResource("26_5j00x")
 mutation = ExtResource("30_gfrq6")
-amount = 2
 metadata/_custom_type_script = "uid://5bxqs68s2bk1"
 
 [sub_resource type="Resource" id="Resource_fk48e"]
 script = ExtResource("26_5j00x")
 mutation = ExtResource("31_bvwb1")
-amount = 2
 metadata/_custom_type_script = "uid://5bxqs68s2bk1"
 
 [sub_resource type="Resource" id="Resource_yjh5v"]
@@ -183,7 +181,7 @@ metadata/_custom_type_script = "uid://5bxqs68s2bk1"
 [sub_resource type="Resource" id="Resource_qct7y"]
 script = ExtResource("26_5j00x")
 mutation = ExtResource("39_7f3b3")
-amount = 2
+amount = 3
 metadata/_custom_type_script = "uid://5bxqs68s2bk1"
 
 [sub_resource type="LabelSettings" id="LabelSettings_lc0u2"]
