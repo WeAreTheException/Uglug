@@ -592,6 +592,7 @@ position = Vector2(876, 50)
 texture = ExtResource("7_c8bx1")
 
 [node name="ArrowRight" type="Sprite2D" parent="Core" unique_id=1069426587]
+visible = false
 position = Vector2(932, 49)
 texture = ExtResource("8_7f3b3")
 
@@ -849,11 +850,13 @@ script = ExtResource("78_o7028")
 script = ExtResource("81_o7028")
 enable_snapshot_debug = false
 
-[node name="MatchLocalViewApplier" type="Node" parent="Multiplayer" unique_id=1811884870 node_paths=PackedStringArray("match_network_root", "player_one_hand", "player_two_hand")]
+[node name="MatchLocalViewApplier" type="Node" parent="Multiplayer" unique_id=1811884870 node_paths=PackedStringArray("match_network_root", "player_one_hand", "player_two_hand", "left_to_right_arrow", "right_to_left_arrow")]
 script = ExtResource("57_2n6q5")
 match_network_root = NodePath("../MatchNetworkRoot")
 player_one_hand = NodePath("../../Core/PlayerHAnd")
 player_two_hand = NodePath("../../Core/OpponenetHAnd")
+left_to_right_arrow = NodePath("../../Core/ArrowLeft")
+right_to_left_arrow = NodePath("../../Core/ArrowRight")
 
 [node name="LocalGameplayReferenceBinder" type="Node" parent="Multiplayer" unique_id=1649323469 node_paths=PackedStringArray("match_network_root", "deck_system_root", "placement_controller", "sacrifice_controller", "sacrifice_board_binder")]
 script = ExtResource("66_5j00x")
