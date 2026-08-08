@@ -10,6 +10,9 @@ signal rematch_pressed
 @export var rematch_button: BaseButton
 @export var quit_button: BaseButton
 
+@export_group("Rematch")
+@export var waiting_text: String = "WAITING..."
+
 @export_group("Animation")
 @export var spiral_fade_duration: float = 0.8
 @export var button_fade_duration: float = 0.2
@@ -17,7 +20,7 @@ signal rematch_pressed
 
 @export_group("Debug")
 @export var enable_debug_key: bool = true
-@export var debug_show_key: Key = KEY_F8
+@export var debug_show_key: Key = KEY_KP_9
 @export var print_debug: bool = true
 
 
@@ -26,6 +29,8 @@ var active_tween: Tween = null
 
 var is_end_screen_active: bool = false
 var rematch_requested: bool = false
+
+var original_rematch_text: String = ""
 
 
 func _ready() -> void:
@@ -39,6 +44,8 @@ func _ready() -> void:
 		)
 
 	if rematch_button != null:
+		original_rematch_text = rematch_button.text
+
 		if not rematch_button.pressed.is_connected(
 			_on_rematch_pressed
 		):
@@ -93,6 +100,7 @@ func show_end_screen() -> void:
 
 	_set_spiral_progress(0.0)
 	_prepare_buttons_for_reveal()
+	_reset_rematch_button()
 
 	if print_debug:
 		print("END SCREEN: SHOWING")
@@ -152,6 +160,7 @@ func _prepare_buttons_for_reveal() -> void:
 	if rematch_button != null:
 		rematch_button.visible = false
 		rematch_button.disabled = true
+
 		_set_button_alpha(
 			rematch_button,
 			0.0
@@ -160,6 +169,7 @@ func _prepare_buttons_for_reveal() -> void:
 	if quit_button != null:
 		quit_button.visible = false
 		quit_button.disabled = true
+
 		_set_button_alpha(
 			quit_button,
 			0.0
@@ -173,6 +183,7 @@ func _reveal_buttons() -> void:
 	if rematch_button != null:
 		rematch_button.visible = true
 		rematch_button.disabled = false
+
 		_set_button_alpha(
 			rematch_button,
 			0.0
@@ -181,6 +192,7 @@ func _reveal_buttons() -> void:
 	if quit_button != null:
 		quit_button.visible = true
 		quit_button.disabled = false
+
 		_set_button_alpha(
 			quit_button,
 			0.0
@@ -206,6 +218,45 @@ func _reveal_buttons() -> void:
 		)
 
 
+func _on_rematch_pressed() -> void:
+	if rematch_requested:
+		return
+
+	rematch_requested = true
+
+	if rematch_button != null:
+		rematch_button.text = waiting_text
+		rematch_button.disabled = true
+
+	if print_debug:
+		print("END SCREEN: REMATCH PRESSED")
+		print("END SCREEN: WAITING FOR OPPONENT")
+
+	rematch_pressed.emit()
+
+
+func _on_quit_pressed() -> void:
+	if print_debug:
+		print("END SCREEN: QUIT PRESSED")
+
+	get_tree().quit()
+
+
+func reset_rematch_state() -> void:
+	rematch_requested = false
+	_reset_rematch_button()
+
+
+func _reset_rematch_button() -> void:
+	if rematch_button == null:
+		return
+
+	rematch_button.text = original_rematch_text
+
+	if is_end_screen_active:
+		rematch_button.disabled = false
+
+
 func _hide_buttons() -> void:
 	if rematch_button != null:
 		rematch_button.visible = false
@@ -220,30 +271,10 @@ func _finish_hiding() -> void:
 	visible = false
 	rematch_requested = false
 
+	_reset_rematch_button()
+
 	if print_debug:
 		print("END SCREEN: HIDDEN")
-
-
-func _on_rematch_pressed() -> void:
-	if rematch_requested:
-		return
-
-	rematch_requested = true
-
-	if rematch_button != null:
-		rematch_button.disabled = true
-
-	if print_debug:
-		print("END SCREEN: REMATCH PRESSED")
-
-	rematch_pressed.emit()
-
-
-func _on_quit_pressed() -> void:
-	if print_debug:
-		print("END SCREEN: QUIT PRESSED")
-
-	get_tree().quit()
 
 
 func _set_spiral_progress(value: float) -> void:
@@ -276,6 +307,7 @@ func _reset_visual_state() -> void:
 
 	_set_spiral_progress(0.0)
 	_hide_buttons()
+	_reset_rematch_button()
 
 	visible = false
 
