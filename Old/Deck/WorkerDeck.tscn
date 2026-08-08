@@ -16,7 +16,7 @@
 [ext_resource type="Texture2D" uid="uid://cgs5k6p3mggyf" path="res://Art/Ants/AntSprite.png" id="7_hsdj0"]
 [ext_resource type="Script" uid="uid://be8yk3djwb5oc" path="res://Revamp/Mutations (2)/MutationBehaviourHandlers/Mutation.gd" id="8_fboto"]
 [ext_resource type="Script" uid="uid://c4gh41beiex8k" path="res://Old/Deck/CardSpawnHandler.gd" id="9_l83sp"]
-[ext_resource type="Shader" uid="uid://cmmdj008ojau0" path="res://Old/Deck/Glow&ClickRipple.gdshader" id="17_ybeps"]
+[ext_resource type="Shader" uid="uid://cmmdj008ojau0" path="res://Revamp/Shaders/Glow&ClickRipple.gdshader" id="17_ybeps"]
 [ext_resource type="Texture2D" uid="uid://cwrn656wtnb84" path="res://Old/Sprites/Ant.png" id="18_360fs"]
 
 [sub_resource type="Resource" id="Resource_hsdj0"]

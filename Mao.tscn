@@ -68,14 +68,16 @@
 [ext_resource type="Script" uid="uid://c62i7pwt3r30f" path="res://Revamp/Multiplayer/MatchNetworkTimer.gd" id="74_c8bx1"]
 [ext_resource type="Script" uid="uid://dx8ow48eguxe7" path="res://Revamp/MatchFlow/MatchPlacementCompletionHandler.gd" id="74_yjh5v"]
 [ext_resource type="Texture2D" uid="uid://cgkoni68euqo3" path="res://Art/Mutations/Sigils/Final_Sigils/Draculant_Sigil.png" id="75_c8bx1"]
-[ext_resource type="Shader" uid="uid://cv61bla72eupf" path="res://FilmGrain.gdshader" id="75_yjh5v"]
+[ext_resource type="Shader" uid="uid://cv61bla72eupf" path="res://Revamp/Shaders/FilmGrain.gdshader" id="75_yjh5v"]
 [ext_resource type="Script" uid="uid://dg2jxnlex8u2p" path="res://Revamp/MatchUI/UICard/PlayerHandUiBinder.gd" id="76_c8bx1"]
 [ext_resource type="Script" uid="uid://cm16kgidxxu4h" path="res://Revamp/MutationTooltTip/MutationButtonHoverBinder.gd" id="77_7f3b3"]
 [ext_resource type="Script" uid="uid://cmbtqx5ng27nb" path="res://Revamp/MutationTooltTip/MutationToolTip.gd" id="78_7f3b3"]
 [ext_resource type="Script" uid="uid://ji2tm3gnhj4o" path="res://Revamp/Multiplayer/MatchNetworkScore.gd" id="78_o7028"]
 [ext_resource type="Script" uid="uid://t4xkfdp8n8kn" path="res://Revamp/MatchUI/UICard/CardMutationTooltipBinder.gd" id="79_63uau"]
 [ext_resource type="FontFile" uid="uid://3m1qkjceiwrb" path="res://Revamp/Fonts/Transcity DEMO.otf" id="79_cxut3"]
+[ext_resource type="Shader" uid="uid://doa3ova2unapc" path="res://SpiralTransition.gdshader" id="80_63uau"]
 [ext_resource type="FontFile" uid="uid://do0dv62a8jo77" path="res://Revamp/Fonts/bilderberg.regular.otf" id="80_cxut3"]
+[ext_resource type="Script" uid="uid://bjqc0bqbke66g" path="res://Revamp/MatchEnd/MatchEnd.gd" id="80_o7028"]
 [ext_resource type="Script" uid="uid://bnbuh7nx3k3f2" path="res://Revamp/Multiplayer/MatchNetworkDebugSync.gd" id="81_o7028"]
 [ext_resource type="Script" uid="uid://cm3y3rl7340r8" path="res://Revamp/MutationTooltTip/MutationTooltipCoordinator.gd" id="85_sxqap"]
 [ext_resource type="Script" uid="uid://r2w6wt88c7f1" path="res://Revamp/ScoreBaord/MatchScoreBoard.gd" id="87_lcv7c"]
@@ -184,6 +186,15 @@ mutation = ExtResource("39_7f3b3")
 amount = 3
 metadata/_custom_type_script = "uid://5bxqs68s2bk1"
 
+[sub_resource type="LabelSettings" id="LabelSettings_8jo3k"]
+line_spacing = 0.0
+font_size = 48
+font_color = Color(0.93333334, 0.8784314, 0.81960785, 1)
+outline_size = 10
+outline_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
+shadow_size = 10
+shadow_color = Color(0, 0.57254905, 0.92941177, 1)
+
 [sub_resource type="LabelSettings" id="LabelSettings_lc0u2"]
 line_spacing = 0.0
 font_size = 64
@@ -193,9 +204,9 @@ outline_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
 shadow_size = 10
 shadow_color = Color(0, 0.57254905, 0.92941177, 1)
 
-[sub_resource type="LabelSettings" id="LabelSettings_8jo3k"]
+[sub_resource type="LabelSettings" id="LabelSettings_7f3b3"]
 line_spacing = 0.0
-font_size = 48
+font = ExtResource("80_cxut3")
 font_color = Color(0.93333334, 0.8784314, 0.81960785, 1)
 outline_size = 10
 outline_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
@@ -387,6 +398,15 @@ outline_size = 10
 outline_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
 shadow_size = 10
 shadow_color = Color(0.9647059, 0.48235294, 0.5176471, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cxut3"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_63uau"]
+shader = ExtResource("80_63uau")
+shader_parameter/progress = 1.0
+shader_parameter/spiral_turns = 10.0
+shader_parameter/edge_softness = 0.03200000152
+shader_parameter/reverse = false
 
 [node name="Mao" type="Node2D" unique_id=550121538]
 
@@ -875,7 +895,7 @@ buff_seconds = 60.0
 placement_seconds = 180.0
 print_debug = false
 
-[node name="UICard" type="Control" parent="." unique_id=1479972870 node_paths=PackedStringArray("phase_label", "going_first_label", "description_label", "timer_label", "round_number_label", "end_button", "mutation_button", "worker_button", "warrior_button")]
+[node name="UICard" type="Control" parent="." unique_id=1479972870 node_paths=PackedStringArray("phase_label", "going_first_label", "timer_label", "round_number_label", "end_button", "mutation_button", "worker_button", "warrior_button")]
 layout_mode = 3
 anchors_preset = 9
 anchor_bottom = 1.0
@@ -885,9 +905,8 @@ offset_right = 960.0
 offset_bottom = 512.0
 grow_vertical = 2
 script = ExtResource("69_lc0u2")
-phase_label = NodePath("CardPanel/SpritePanel/PhasePanel/Phase")
+phase_label = NodePath("CardPanel/SpritePanel/Who\'sGoingfirstLabel/Phase")
 going_first_label = NodePath("CardPanel/SpritePanel/Who\'sGoingfirstLabel/WhosFirst")
-description_label = NodePath("CardPanel/SpritePanel/HelpPanel/Desription")
 timer_label = NodePath("CardPanel/EndButton/TimeLabel")
 round_number_label = NodePath("CardPanel/RoundPanel/RoundNumber")
 end_button = NodePath("CardPanel/EndButton")
@@ -931,20 +950,6 @@ offset_right = 345.0
 offset_bottom = 66.0
 metadata/_edit_lock_ = true
 
-[node name="Phase" type="Label" parent="UICard/CardPanel/SpritePanel/PhasePanel" unique_id=1923702342]
-layout_mode = 0
-offset_left = -16.0
-offset_top = -7.0
-offset_right = 346.0
-offset_bottom = 61.0
-theme_override_fonts/font = ExtResource("79_cxut3")
-theme_override_font_sizes/font_size = 100
-text = "Attack"
-label_settings = SubResource("LabelSettings_lc0u2")
-horizontal_alignment = 1
-vertical_alignment = 1
-metadata/_edit_lock_ = true
-
 [node name="Who\'sGoingfirstLabel" type="Panel" parent="UICard/CardPanel/SpritePanel" unique_id=1360391893]
 layout_mode = 0
 offset_left = 16.0
@@ -956,12 +961,25 @@ metadata/_edit_lock_ = true
 [node name="WhosFirst" type="Label" parent="UICard/CardPanel/SpritePanel/Who\'sGoingfirstLabel" unique_id=1574643725]
 layout_mode = 0
 offset_left = -16.0
+offset_top = -66.0
 offset_right = 346.0
-offset_bottom = 56.0
+offset_bottom = -10.0
 theme_override_fonts/font = ExtResource("79_cxut3")
 theme_override_font_sizes/font_size = 100
 text = "Enemy is First"
 label_settings = SubResource("LabelSettings_8jo3k")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Phase" type="Label" parent="UICard/CardPanel/SpritePanel/Who\'sGoingfirstLabel" unique_id=1923702342]
+layout_mode = 0
+offset_left = -16.0
+offset_right = 346.0
+offset_bottom = 68.0
+theme_override_fonts/font = ExtResource("79_cxut3")
+theme_override_font_sizes/font_size = 100
+text = "Attack"
+label_settings = SubResource("LabelSettings_lc0u2")
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -973,19 +991,17 @@ offset_right = 345.0
 offset_bottom = 341.0
 metadata/_edit_lock_ = true
 
-[node name="Desription" type="RichTextLabel" parent="UICard/CardPanel/SpritePanel/HelpPanel" unique_id=1590300290]
+[node name="Desription" type="Label" parent="UICard/CardPanel/SpritePanel/HelpPanel" unique_id=1338678193]
 layout_mode = 0
 offset_right = 329.0
 offset_bottom = 209.0
-theme_override_colors/default_color = Color(0.93333334, 0.8784314, 0.81960785, 1)
-theme_override_colors/font_outline_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
 theme_override_colors/font_shadow_color = Color(0.83137256, 0.70980394, 0.59607846, 1)
-theme_override_constants/shadow_outline_size = 10
+theme_override_colors/font_outline_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
 theme_override_constants/outline_size = 10
-theme_override_fonts/normal_font = ExtResource("80_cxut3")
-theme_override_font_sizes/normal_font_size = 24
+theme_override_constants/shadow_outline_size = 10
 text = "You're
 Going First"
+label_settings = SubResource("LabelSettings_7f3b3")
 horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_lock_ = true
@@ -1572,3 +1588,38 @@ vertical_alignment = 1
 script = ExtResource("73_uv74c")
 slots_root = NodePath("../Core/Board")
 tooltip_coordinator = NodePath("../ToolTip/Cordiantor")
+
+[node name="GameEnd" type="CanvasLayer" parent="." unique_id=1429167550]
+
+[node name="Control" type="Control" parent="GameEnd" unique_id=1127105502 node_paths=PackedStringArray("spiral_fade", "rematch_button", "quit_button")]
+material = SubResource("ShaderMaterial_cxut3")
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("80_o7028")
+spiral_fade = NodePath("../FadeINOut")
+rematch_button = NodePath("../RematchBtn")
+quit_button = NodePath("../Quit")
+button_fade_duration = 1.0
+debug_show_key = 4194328
+
+[node name="FadeINOut" type="ColorRect" parent="GameEnd" unique_id=1411548914]
+material = SubResource("ShaderMaterial_63uau")
+offset_right = 1923.0
+offset_bottom = 1083.0
+mouse_filter = 2
+
+[node name="RematchBtn" type="Button" parent="GameEnd" unique_id=370094383]
+offset_left = 576.0
+offset_top = 830.0
+offset_right = 891.0
+offset_bottom = 958.0
+text = "Rematch"
+
+[node name="Quit" type="Button" parent="GameEnd" unique_id=1551762484]
+offset_left = 965.0
+offset_top = 830.0
+offset_right = 1280.0
+offset_bottom = 958.0
+text = "Rematch"

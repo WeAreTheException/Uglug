@@ -77,7 +77,7 @@
 [ext_resource type="Script" uid="uid://cm16kgidxxu4h" path="res://Revamp/MutationTooltTip/MutationButtonHoverBinder.gd" id="73_tojbe"]
 [ext_resource type="Script" uid="uid://r2w6wt88c7f1" path="res://Revamp/ScoreBaord/MatchScoreBoard.gd" id="74_u0qpw"]
 [ext_resource type="Script" uid="uid://cgtvc8pm1pyda" path="res://BoardCardHover.gd" id="75_hwx0c"]
-[ext_resource type="Shader" uid="uid://cv61bla72eupf" path="res://FilmGrain.gdshader" id="76_0nw7s"]
+[ext_resource type="Shader" uid="uid://cv61bla72eupf" path="res://Revamp/Shaders/FilmGrain.gdshader" id="76_0nw7s"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_gc5re"]
 line_spacing = 0.0

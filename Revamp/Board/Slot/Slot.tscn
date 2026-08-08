@@ -9,8 +9,8 @@
 [ext_resource type="Script" uid="uid://ib588s15omow" path="res://Revamp/Board/SlotPlacementPreviewFeedback.gd" id="6_dshdd"]
 [ext_resource type="Script" uid="uid://vydoy4hkyhm0" path="res://Revamp/Board/SlotAttackPreviewFeedback.gd" id="7_jvbdb"]
 [ext_resource type="Script" uid="uid://b8p1hjr1y54ms" path="res://Revamp/Board/Slot/SlotDamagedFeedback.gd" id="8_g8crw"]
-[ext_resource type="Shader" uid="uid://wj81o6v8d22h" path="res://Squiggle.gdshader" id="9_aufiu"]
-[ext_resource type="Shader" path="res://Revamp/Board/Slot/SlotTelegraph.gdshader" id="10_17qp8"]
+[ext_resource type="Shader" uid="uid://wj81o6v8d22h" path="res://Revamp/Shaders/Squiggle.gdshader" id="9_aufiu"]
+[ext_resource type="Shader" uid="uid://bfd3cbihwlaba" path="res://Revamp/Shaders/SlotTelegraph.gdshader" id="10_17qp8"]
 [ext_resource type="Texture2D" uid="uid://cssbudxkdxpuf" path="res://Art/AttackReticle.png" id="11_5ggg6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0ebxi"]

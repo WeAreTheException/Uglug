@@ -11,7 +11,7 @@
 [ext_resource type="Script" uid="uid://bvxcpx68kfwbq" path="res://Old/Deck/DeckDrawLimitHandler.gd" id="6_n0yp5"]
 [ext_resource type="Script" uid="uid://c4gh41beiex8k" path="res://Old/Deck/CardSpawnHandler.gd" id="7_7lkv5"]
 [ext_resource type="Resource" uid="uid://jd5rbexi4lr4" path="res://Revamp/CardPresets/Persistant.tres" id="11_rufbv"]
-[ext_resource type="Shader" uid="uid://cmmdj008ojau0" path="res://Old/Deck/Glow&ClickRipple.gdshader" id="14_my1u3"]
+[ext_resource type="Shader" uid="uid://cmmdj008ojau0" path="res://Revamp/Shaders/Glow&ClickRipple.gdshader" id="14_my1u3"]
 [ext_resource type="Script" uid="uid://c8owoh3gv45g4" path="res://Old/Deck/DeckView.gd" id="15_iie84"]
 [ext_resource type="Script" uid="uid://chw242mi2nxl4" path="res://Old/Deck/DeckInputListener.gd" id="16_4kasc"]
 [ext_resource type="Texture2D" uid="uid://dgceyq4phwwts" path="res://Art/AntBack/WarriorDeck.png" id="26_i1d6c"]

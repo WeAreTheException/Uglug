@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://21w8glb26358"]
 
-[ext_resource type="Shader" uid="uid://cnas0qc66obri" path="res://GreenScreen.gdshader" id="1_bb25q"]
+[ext_resource type="Shader" uid="uid://cnas0qc66obri" path="res://Revamp/Shaders/GreenScreen.gdshader" id="1_bb25q"]
 [ext_resource type="Script" uid="uid://choypsxnhsnwf" path="res://Art/WizantAnim/BlessingAnimationHandler.gd" id="1_ru1o7"]
 [ext_resource type="VideoStream" uid="uid://cymr7f4io0xnx" path="res://Art/WizantAnim/Wizant.ogv" id="3_m4pko"]
 

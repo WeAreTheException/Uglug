@@ -7,7 +7,7 @@
 [ext_resource type="FontFile" uid="uid://m0pv3sk8qbih" path="res://Revamp/Fonts/antrf___.ttf" id="4_pwdvd"]
 [ext_resource type="Texture2D" uid="uid://cc4ocag1vy2ry" path="res://Revamp/MainMenu/LobbyColonyIcon/PublicLobby.png" id="5_r0187"]
 [ext_resource type="Texture2D" uid="uid://ctaca0j33sko4" path="res://Revamp/MainMenu/LobbyColonyIcon/PrivateLobby.png" id="6_wy54h"]
-[ext_resource type="Shader" uid="uid://dt77y6ccd1hxy" path="res://Old/Cards/SigilOutline.gdshader" id="6_yi6la"]
+[ext_resource type="Shader" uid="uid://dt77y6ccd1hxy" path="res://Revamp/Shaders/SigilOutline.gdshader" id="6_yi6la"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_td5jp"]
 size = Vector2(145, 142)

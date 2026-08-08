@@ -102,6 +102,7 @@ var default_description_text: String = ""
 
 var default_phase_shadow_color: Color = Color.WHITE
 var default_going_first_shadow_color: Color = Color.WHITE
+var default_description_color: Color = Color.WHITE
 
 
 func _ready() -> void:
@@ -365,29 +366,32 @@ func _update_going_first_label() -> void:
 
 
 func _update_phase_shadow_colors() -> void:
+	_set_label_shadow_color(
+		going_first_label,
+		default_going_first_shadow_color
+	)
+
 	if current_phase == Phase.NONE:
 		_set_label_shadow_color(
 			phase_label,
 			default_phase_shadow_color
 		)
 
-		_set_label_shadow_color(
-			going_first_label,
-			default_going_first_shadow_color
+		_set_description_text_color(
+			default_description_color
 		)
 
 		return
 
-	var shadow_color: Color = _get_phase_shadow_color()
+	var phase_color: Color = _get_phase_shadow_color()
 
 	_set_label_shadow_color(
 		phase_label,
-		shadow_color
+		phase_color
 	)
 
-	_set_label_shadow_color(
-		going_first_label,
-		shadow_color
+	_set_description_text_color(
+		phase_color
 	)
 
 
@@ -633,6 +637,12 @@ func _store_inspector_defaults() -> void:
 			description_label.text
 		)
 
+		default_description_color = (
+			description_label.get_theme_color(
+				"default_color"
+			)
+		)
+
 
 func _prepare_label_settings(label: Label) -> void:
 	if label == null:
@@ -662,6 +672,19 @@ func _set_label_shadow_color(
 		_prepare_label_settings(label)
 
 	label.label_settings.shadow_color = shadow_color
+
+
+
+func _set_description_text_color(
+	text_color: Color
+) -> void:
+	if description_label == null:
+		return
+
+	description_label.add_theme_color_override(
+		"default_color",
+		text_color
+	)
 
 
 func _on_end_button_pressed() -> void:

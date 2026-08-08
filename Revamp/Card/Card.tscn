@@ -54,8 +54,8 @@
 [ext_resource type="Script" uid="uid://dnonrwbr6yrbq" path="res://Revamp/Card/CardActions/StatChange/Debuffer/DebufferFeedbackHandler.gd" id="41_g71cv"]
 [ext_resource type="Script" uid="uid://bnaqssvcuoaqq" path="res://Revamp/Card/CardActions/StatChange/Debuffer/DebufferVfx.gd" id="42_hapoa"]
 [ext_resource type="Texture2D" uid="uid://dh4y21ac2drn" path="res://Revamp/Icons/HurtNumberIcon-removebg-preview.png" id="52_v78fr"]
-[ext_resource type="Shader" uid="uid://c5xrs0vmimxhu" path="res://Revamp/CardVisuals/GlowyOutline.gdshader" id="53_p4xss"]
-[ext_resource type="Shader" uid="uid://q5qsewd5kabi" path="res://Revamp/Card/OutlineForceColor.gdshader" id="53_v78fr"]
+[ext_resource type="Shader" uid="uid://c5xrs0vmimxhu" path="res://Revamp/Shaders/GlowyOutline.gdshader" id="53_p4xss"]
+[ext_resource type="Shader" uid="uid://q5qsewd5kabi" path="res://Revamp/Shaders/OutlineForceColor.gdshader" id="53_v78fr"]
 [ext_resource type="Texture2D" uid="uid://6sc1vr2d4fqo" path="res://Art/AntBack/BlueBackground.png" id="55_hcpqy"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g8l5j"]

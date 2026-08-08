@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cfsbl06ahe2c3" path="res://Revamp/MainMenu/MainMenu.gd" id="1_sg7ab"]
 [ext_resource type="Texture2D" uid="uid://cqv0rmj0hhsdx" path="res://Revamp/MainMenu/PlaceholderArt/WorldMap.jpg" id="2_kpx3y"]
-[ext_resource type="Shader" uid="uid://cv61bla72eupf" path="res://FilmGrain.gdshader" id="3_h8pjb"]
+[ext_resource type="Shader" uid="uid://cv61bla72eupf" path="res://Revamp/Shaders/FilmGrain.gdshader" id="3_h8pjb"]
 [ext_resource type="Script" uid="uid://30ojatnmofq6" path="res://Revamp/MainMenu/Scripts/MultiplayerConnectionHandler.gd" id="3_kpx3y"]
 [ext_resource type="PackedScene" uid="uid://n0rxxqny4h76" path="res://Revamp/MainMenu/Popups/CreateLobbyPopup.tscn" id="3_vapy7"]
 [ext_resource type="PackedScene" uid="uid://dw6pojo7xhmdk" path="res://Revamp/MainMenu/Popups/JoinPrivatePopup.tscn" id="4_ah1a3"]
