@@ -193,7 +193,7 @@ font_color = Color(0.93333334, 0.8784314, 0.81960785, 1)
 outline_size = 10
 outline_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
 shadow_size = 10
-shadow_color = Color(0, 0.57254905, 0.92941177, 1)
+shadow_color = Color(0.83137256, 0.70980394, 0.59607846, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_lc0u2"]
 line_spacing = 0.0
@@ -207,11 +207,12 @@ shadow_color = Color(0, 0.57254905, 0.92941177, 1)
 [sub_resource type="LabelSettings" id="LabelSettings_7f3b3"]
 line_spacing = 0.0
 font = ExtResource("80_cxut3")
+font_size = 24
 font_color = Color(0.93333334, 0.8784314, 0.81960785, 1)
 outline_size = 10
 outline_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
-shadow_size = 10
-shadow_color = Color(0, 0.57254905, 0.92941177, 1)
+shadow_size = 8
+shadow_color = Color(0.69803923, 0.56078434, 0.43137255, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_sxqap"]
 line_spacing = 0.0
